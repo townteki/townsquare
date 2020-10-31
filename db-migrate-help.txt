@@ -1,0 +1,21 @@
+wt -v -h /mnt/c/Melo/GitHub/db/db -C "extensions=[./ext/compressors/snappy/.libs/libwiredtiger_snappy.so]" -R salvage collection-0-3435952005049563610.wt
+
+
+wt -v -h /home/trimm/dbdata -C "extensions=[./ext/compressors/snappy/.libs/libwiredtiger_snappy.so]" -R dump -f ../collection.dump collection-0-3435952005049563610.wt
+./wt -v -h ../ -C "extensions=[./ext/compressors/snappy/.libs/libwiredtiger_snappy.so]" -R dump -f ../collection.dump collection-0--8093416649487779131.wt
+./wt -v -h ../../dbtarget -C "extensions=[./ext/compressors/snappy/.libs/libwiredtiger_snappy.so]" -R load -f ../collection.dump -r collection-0--8093416649487779131
+
+
+cp -r "../../../../mnt/c/Program Files/MongoDB/Server/4.2/data/"* ../../dbtarget
+
+cp -r ../../dbtarget/* "../../../../mnt/c/Program Files/MongoDB/Server/4.2/data/"
+
+
+collection-0-4644586018633776035.wt - users
+collection-4-4644586018633776035 - cards - collection-10-2182516010029920000
+collection-2-4644586018633776035 - packs - collection-12-2182516010029920000
+collection-0-3435952005049563610 - decks  collection-8-2182516010029920000
+
+
+./wt -v -h ../ -C "extensions=[./ext/compressors/snappy/.libs/libwiredtiger_snappy.so]" -R dump -f ../collection.dump collection-2-4644586018633776035
+./wt -v -h ../../dbtarget -C "extensions=[./ext/compressors/snappy/.libs/libwiredtiger_snappy.so]" -R load -f ../collection.dump -r collection-12-2182516010029920000
