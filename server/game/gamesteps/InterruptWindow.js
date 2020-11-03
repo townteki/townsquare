@@ -10,7 +10,7 @@ class InterruptWindow extends BaseStep {
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
             new SimpleStep(game, () => this.openAbilityWindow('cancelinterrupt')),
-            new SimpleStep(game, () => this.automaticSaveWithDupes()),
+            new SimpleStep(game, () => this.automaticSave()),
             new SimpleStep(game, () => this.openAbilityWindow('forcedinterrupt')),
             new SimpleStep(game, () => this.openAbilityWindow('interrupt')),
             new SimpleStep(game, () => this.executeHandler()),
@@ -44,16 +44,18 @@ class InterruptWindow extends BaseStep {
         return this.pipeline.continue();
     }
 
-    automaticSaveWithDupes() {
+    automaticSave() {
         if(this.event.cancelled) {
             return;
         }
 
+        /* TODO M2 here add saves if any
         for(let event of this.event.getConcurrentEvents()) {
-            if(event.allowAutomaticSave() && this.game.saveWithDupe(event.card)) {
+            if(event.allowAutomaticSave()) {
                 event.cancel();
             }
         }
+        */
     }
 
     openAbilityWindow(abilityType) {

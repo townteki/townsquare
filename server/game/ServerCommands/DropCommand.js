@@ -44,7 +44,7 @@ class DropCommand {
             'draw deck': DrawDeckCardTypes,
             'hand': DrawDeckCardTypes,
             'out of game': DrawDeckCardTypes.concat(PlotCardTypes),
-            'play area': ['attachment', 'dude', 'deed'],
+            'play area': ['goods', 'spell', 'dude', 'deed'],
             'plot deck': PlotCardTypes,
             'revealed plots': PlotCardTypes,
             'shadows': DrawDeckCardTypes,
@@ -58,7 +58,7 @@ class DropCommand {
             return false;
         }
 
-        return allowedTypes.includes(this.card.type_code);
+        return allowedTypes.includes(this.card.getType());
     }
 
     addGameMessage() {

@@ -46,6 +46,7 @@ class Player extends Spectator {
         this.keywordSettings = user.settings.keywordSettings;
 
         this.deck = {};
+        this.handSize = StartingHandSize;
         this.costReducers = [];
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;        
@@ -219,14 +220,28 @@ class Player extends Spectator {
         return numCards;
     }
 
+    discardDrawHand() {
+        this.discardCards(this.drawHand, () => {
+            //callback(discarded);
+        });
+
+        this.drawHandRevealed = false;
+        this.drawHandSelected = false;
+        this.handRank = {rank: 0};
+    }
+
+    resetPass() {
+        this.pass = false;
+    }
+
     revealDrawHand() {
         if(this.drawHand.length > 1) {
-            this.handRank = new HandRank(this.drawHand.toArray()).Rank();
+            this.handRank = new HandRank(this.drawHand).Rank();
         }  
 
-        this.drawHand.each((card) => {
+        for (let card of this.drawHand) {
             card.facedown = false;
-        });
+        }
 
         this.drawHandRevealed = true;
 
@@ -370,6 +385,10 @@ class Player extends Spectator {
 
         this.shuffleDrawDeck();
         this.drawCardsToHand(StartingHandSize, 'hand');
+    }    
+
+    sundownRedraw() {
+        this.drawCardsToHand(this.handSize - this.hand.length, 'hand');
     }    
 
     createOutfitAndLegend() {
@@ -550,7 +569,7 @@ class Player extends Spectator {
         card.facedown = false;
         card.new = true;
 
-        switch(card.type_code) {
+        switch(card.getType()) {
             case 'dude':
                 card.updateGameLocation(target);
                 break;
@@ -648,7 +667,6 @@ class Player extends Spectator {
         }
 
         attachment.moveTo('play area', card);
-        attachment.takeControl(controller);
         card.attachments.push(attachment);
 
         this.game.queueSimpleStep(() => {
@@ -739,14 +757,28 @@ class Player extends Spectator {
         }, memo);
 
         this.ghostrock += production;
+
+        return production;
     }
 
     payUpkeep() {
         this.upkeepPaid = true;
+
+        let memo = 0;
+        let upkeepCards = this.findCards(this.cardsInPlay, (card) => (card.upkeep > 0));
+        let upkeep = _.reduce(upkeepCards, (memo, card) => {
+            return (memo += card.upkeep);
+        }, memo);
+
+        this.ghostrock -= upkeep;
+        return upkeep;
     }
 
     resetForRound() {
         this.upkeepPaid = false;
+        this.passTurn = false;
+     
+        _.each(this.cardsInPlay, card => card.clearNew());
     }    
 
     promptForAttachment(card, playingType) {
@@ -883,9 +915,17 @@ class Player extends Spectator {
     getTotalControl() {
         var control = this.cardsInPlay.reduce((memo, card) => {
             return memo + card.getControl();
-        }, this.outfit.control);
+        }, 0);
 
         return control;
+    }   
+    
+    getTotalInfluence() {
+        var influence = this.cardsInPlay.reduce((memo, card) => {
+            return memo + card.getInfluence();
+        }, 0);
+
+        return influence;
     }    
 
     removeAttachment(attachment, allowSave = true) {
@@ -899,12 +939,6 @@ class Player extends Spectator {
         this.deck.selected = false;
         this.deck = deck;
         this.deck.selected = true;
-
-        /*this.outfit.cardData = deck.outfit;
-        this.outfit.cardData.name = deck.outfit.name;
-        this.outfit.cardData.code = deck.outfit.code;
-        this.outfit.cardData.type_code = 'outfit';*/
-        //this.outfit.cardData.strength = 0;
     }
 
     moveCard(card, targetLocation, options = {}, callback) {
@@ -1074,8 +1108,8 @@ class Player extends Spectator {
     getStats(isActivePlayer) {
         return {
             ghostrock: this.ghostrock,
-            influence: this.influence,
-            control: this.control
+            influence: this.getTotalInfluence(),
+            control: this.getTotalControl()
         };
     }
 
@@ -1116,6 +1150,8 @@ class Player extends Spectator {
             stats: this.getStats(isActivePlayer),
             keywordSettings: this.keywordSettings,
             timerSettings: this.timerSettings,
+            totalControl: this.getTotalControl(),
+            totalInfluence: this.getTotalInfluence(),            
             user: {
                 username: this.user.username
             }

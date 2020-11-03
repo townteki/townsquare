@@ -25,7 +25,7 @@ class SundownPhase extends Phase {
         let potentialWinner = [];
         _.each(this.game.getPlayers(), player => {
             let opponents = _.reject(this.game.getPlayers(), activePlayer => activePlayer === player);
-            if(_.every(opponents, opponent => opponent.getTotalInfluence() < player.getTotalControl())) {
+            if(opponents.length > 0 && _.every(opponents, opponent => opponent.getTotalInfluence() < player.getTotalControl())) {
                 //console.log("player control points" + player.getTotalControl());
                 potentialWinner.push(player);
             }
@@ -40,7 +40,7 @@ class SundownPhase extends Phase {
 
     unbootCards() { 
         _.each(this.game.getPlayers(), player => {
-            player.cardsInPlay.each(card => {
+            _.each(player.cardsInPlay, card => {
                 player.unbootCard(card);
             });
         });

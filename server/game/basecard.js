@@ -94,10 +94,20 @@ class BaseCard {
 
     action(properties) {
         var action = new CardAction(this.game, this, properties);
+
+        if(!action.isClickToActivate() && action.allowMenu()) {
+            var index = this.abilities.actions.length;
+            this.menu.push(action.getMenuItem(index));
+        }
         this.abilities.actions.push(action);
-        return action;
     }
 
+    //Comprehensive Rules React Priorities
+    // 1) Traits with "instead"
+    // 2) Reacts with "instead"
+    // 3) Other traits
+    // 4) Other reacts
+    //
     reaction(properties) {
         var reaction = new CardReaction(this.game, this, properties);
         this.abilities.reactions.push(reaction);
@@ -459,7 +469,7 @@ class BaseCard {
     }
 
     getType() {
-        return this.cardTypeSet || this.getPrintedType();
+        return this.type_code;
     }
 
     getPrintedType() {
@@ -613,9 +623,9 @@ class BaseCard {
     }   
 
     updateGameLocation(target) {
-        if(this.type_code === 'dude') {
+        if(this.getType() === 'dude') {
             this.gamelocation = target;
-        } else if(this.type_code === 'deed') {
+        } else if(this.getType() === 'deed') {
             this.gamelocation = this.uuid;
         }
     }    
@@ -634,7 +644,7 @@ class BaseCard {
     }
 
     isAttachment() {
-        if(_.intersection(['spell', 'goods'],[this.type]).length > 0) {
+        if(_.intersection(['spell', 'goods'],[this.getType()]).length > 0) {
             return true;
         }
     }    
@@ -671,7 +681,6 @@ class BaseCard {
             title: this.title,
             tokens: this.tokens,
             type_code: this.cardData.type_code,
-            type: this.getType(),
             upkeep: this.upkeep,
             uuid: this.uuid,
             value: this.value,

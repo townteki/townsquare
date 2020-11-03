@@ -58,7 +58,7 @@ class SetupPhase extends Phase {
     announceSetupCards() {
         for(const player of this.game.getPlayers()) {
             let cards = [...player.cardsInPlay];
-            let dudes = cards.filter(card => card.type_code === 'dude');
+            let dudes = cards.filter(card => card.getType() === 'dude');
             this.game.addMessage('{0} has following starting dudes: {1}.', player, dudes);
         }
     }

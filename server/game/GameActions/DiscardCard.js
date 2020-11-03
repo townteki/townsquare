@@ -6,7 +6,7 @@ class DiscardCard extends GameAction {
     }
 
     canChangeGameState({ card }) {
-        return ['draw deck', 'hand', 'play area', 'shadows', 'duplicate'].includes(card.location);
+        return ['draw deck', 'hand', 'play area', 'draw hand'].includes(card.location);
     }
 
     createEvent({ card, allowSave = true, isPillage = false, source }) {
