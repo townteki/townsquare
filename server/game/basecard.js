@@ -622,6 +622,17 @@ class BaseCard {
         this.isDirty = false;
     }   
 
+    moveToLocation(player, destinationUuid) {
+        let origin = player.findLocation(this.gamelocation);
+        if (origin) {
+            origin.removeDude(this);
+        }
+        let destination = player.findLocation(destinationUuid);
+        if (destination) {
+            destination.addDude(this);
+        }
+    }
+
     updateGameLocation(target) {
         if(this.getType() === 'dude') {
             this.gamelocation = target;
@@ -629,6 +640,15 @@ class BaseCard {
             this.gamelocation = this.uuid;
         }
     }    
+
+    // This will be overriden by card subclasses that modify adjacency.
+    // TODO M2 check if this can be done with persistent effects
+    modifiedAdjacentLocations() {
+        return {
+            additionalAdjacency: null,
+            removedAdjacency: null
+        }
+    }
 
     onClick(player) {
         var action = this.abilities.actions.find(action => action.isClickToActivate());

@@ -6,22 +6,20 @@ const CardMatcher = require('./CardMatcher');
 const DrawCard = require('./drawcard.js');
 const Deck = require('./Deck');
 const HandRank = require('./handrank.js');
-const GameLocation = require('./gamelocation.js');
+const Location = require('./gamelocation.js');
 const AtomicEvent = require('./AtomicEvent');
 const Event = require('./event');
 const AbilityContext = require('./AbilityContext.js');
 const AttachmentPrompt = require('./gamesteps/attachmentprompt.js');
+const DeedStreetSidePrompt = require('./gamesteps/deedstreetsideprompt.js');
 const PlayableLocation = require('./playablelocation.js');
 const PlayActionPrompt = require('./gamesteps/playactionprompt.js');
 const PlayerPromptState = require('./playerpromptstate.js');
+const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
 const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
 
-const { DrawPhaseCards, MarshalIntoShadowsCost, SetupGold } = require('./Constants');
-
-const StartingHandSize = 5;
-
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const { UUID, TownSquareUUID, StartingHandSize } = require('./Constants');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -363,8 +361,7 @@ class Player extends Spectator {
         //it as abstract adjacency direction.
         //this.game.townsquare.attach(this.outfit.uuid, this.name);
 
-        var outfit = new GameLocation(this.outfit.uuid, 0);
-        outfit.attach('townsquare', 'townsquare');
+        var outfit = new Location.GameLocation(this.outfit, null, 0);
         this.locations.push(outfit);
         this.moveCard(this.outfit, 'play area');
     }    
@@ -421,10 +418,6 @@ class Player extends Spectator {
     }
 
     getBaseCost(playingType, card) {
-        if(playingType === 'marshalIntoShadows') {
-            return MarshalIntoShadowsCost;
-        }
-
         if(playingType === 'outOfShadows' || playingType === 'play' && card.location === 'shadows') {
             return card.getShadowCost();
         }
@@ -571,7 +564,7 @@ class Player extends Spectator {
 
         switch(card.getType()) {
             case 'dude':
-                card.updateGameLocation(target);
+                card.moveToLocation(this, target);
                 break;
             case 'deed':
                 this.addDeedToStreet(card, target);
@@ -685,11 +678,7 @@ class Player extends Spectator {
 
     setDrawDeckVisibility(value) {
         this.showDeck = value;
-    }
-
-    isValidDropCombination(source, target) {
-        return source !== target;
-    }    
+    } 
 
     getSourceList(source) {
         switch(source) {
@@ -741,7 +730,7 @@ class Player extends Spectator {
 
     startPosse() {
         _.each(this.hand, (card) => {
-            this.drop(card.uuid, 'hand', this.outfit.uuid);
+            this.game.drop(this.name, card.uuid, 'hand', 'play area', this.outfit.uuid);
             this.ghostrock -= card.cost;
         });
 
@@ -786,72 +775,48 @@ class Player extends Spectator {
         this.game.queueStep(new AttachmentPrompt(this.game, this, card, playingType));
     }
 
-    drop(cardId, source, target) {
-        if(!this.isValidDropCombination(source, target)) {
-            return false;
-        }
-
-        var sourceList = this.getSourceList(source);
-        var card = this.findCardByUuid(sourceList, cardId);
-
-        if(!card) {
-            if(source === 'play area') {
-                var otherPlayer = this.game.getOtherPlayer(this);
-
-                if(!otherPlayer) {
-                    return false;
-                }
-
-                card = otherPlayer.findCardInPlayByUuid(cardId);
-
-                if(!card) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-
-        if(card.controller !== this) {
-            return false;
-        }
-
-        if(target === 'discard pile') {
-            this.discardCard(card, false);
-            return true;
-        }
-
-        if(this.inPlayLocation(target)) {
-            this.putIntoPlay(card, 'play', {}, target);
-        } else {
-            this.moveCard(card, target);
-        }
-
-        return true;
-    }    
-
-    leftDeedOrder() {
-        let sorted = _.sortBy(this.locations, 'order');
+    leftmostDeed() {
+        let sorted = _.sortBy(this.locations.filter(location => location.order != null), 'order');
         let leftmost = sorted.shift();
-        return leftmost.order;
+        return leftmost;
     }
 
-    rightDeedOrder() {
-        let sorted = _.sortBy(this.locations, 'order');
+    rightmostDeed() {
+        let sorted = _.sortBy(this.locations.filter(location => location.order != null), 'order');
         let rightmost = sorted.pop();
-        return rightmost.order;
+        return rightmost;
     }
 
     addDeedToStreet(card, target) {
-        if(/left/.test(target)) {
-            this.locations.push(new GameLocation(card.uuid, this.leftDeedOrder() - 1));
+        if(card.hasKeyword('Out of Town')) {
+            this.locations.push(new Location.GameLocation(card, null, null));
+        } else if(/left/.test(target)) {
+            this.addDeedToLeft(card);
         } else if(/right/.test(target)) {
-            this.locations.push(new GameLocation(card.uuid, this.rightDeedOrder() + 1));
+            this.addDeedToRight(card);
+        } else {
+            this.promptForDeedStreetSide(card);
         }
     }
+
+    addDeedToLeft(card) {
+        let leftDeed = this.leftmostDeed();
+        let newLocation = new Location.GameLocation(card, leftDeed, leftDeed.order - 1);        
+        this.locations.push(newLocation);
+    }
+
+    addDeedToRight(card) {
+        let rightDeed = this.rightmostDeed();
+        let newLocation = new Location.GameLocation(card, rightDeed, rightDeed.order + 1);
+        this.locations.push(newLocation);
+    }   
+    
+    promptForDeedStreetSide(card) {
+        this.game.queueStep(new DeedStreetSidePrompt(this.game, this, card, 'play'));
+    }    
     
     inPlayLocation(target) {
-        if(UUID.test(target) || /townsquare/.test(target) || /street/.test(target)) {
+        if(UUID.test(target) || target === TownSquareUUID || /street/.test(target)) {
             return true;
         }
     }   
@@ -941,6 +906,58 @@ class Player extends Spectator {
         this.deck.selected = true;
     }
 
+    findLocation(locationUuid) {
+        if (locationUuid === TownSquareUUID) {
+            return this.game.townsquare;
+        }
+        return this.locations.find(location => location.uuid === locationUuid);
+    }
+
+    getDudesInLocation(locationUuid) {
+        return this.cardsInPlay.filter(card => card.getType() === 'dude' && card.gamelocation === locationUuid);
+    }
+
+    moveDude(dude, targetLocationUuid, options = { needToBoot: null, allowBooted: false }) {
+        let origin = this.findLocation(dude.gamelocation);
+        let destination = this.findLocation(targetLocationUuid);
+        if (origin.uuid === destination.uuid) {
+            if (options.needToBoot) {
+                this.bootCard(dude);
+            }
+            return;
+        }
+
+        if (options.needToBoot === null) {
+            if (!options.allowBooted && dude.booted) {
+                var prompt = new ChooseYesNoPrompt(this.game, this, {
+                    title: dude.title + ' is already booted. Proceed anyway?',
+                    onYes: () => dude.moveToLocation(this, destination.uuid)
+                });
+                this.game.queueStep(prompt); 
+                return;
+            }
+            if (!origin.isAdjacent(destination.uuid)) {
+                options.needToBoot = true;
+            } else {
+                if (origin.isTownSquare()) {
+                    if (destination.uuid === this.outfit.uuid) {
+                        options.needToBoot = true;
+                    }
+                } else if (origin.uuid !== this.outfit.uuid) {
+                    options.needToBoot = true;
+                }
+            }
+        }
+
+        if (options.needToBoot) {
+            this.bootCard(dude);
+        }
+
+        dude.moveToLocation(this, destination.uuid);
+        // TODO M2 this event needs to be implemented
+        //this.game.raiseEvent('onDudeMoved', { dude: dude, origin: origin, destination: destinaation, player: this });
+    }
+
     moveCard(card, targetLocation, options = {}, callback) {
         this.removeCardFromPile(card);
         let targetPile = this.getSourceList(targetLocation);
@@ -954,34 +971,38 @@ class Player extends Spectator {
             return;
         }        
 
-        if(card.owner !== this && targetLocation !== 'play area') {
-            card.owner.moveCard(card, targetLocation, options, callback);
-            return;
-        }
-
         if(card.location === 'play area') {
-            var params = {
-                player: this,
-                card: card
-            };
 
-            this.game.raiseEvent('onCardLeftPlay', params, () => {
-                card.attachments.each(attachment => {
-                    this.removeAttachment(attachment, false);
+            if(card.owner !== this) {
+                card.owner.moveCard(card, targetLocation);
+                return;
+            }
+
+            if (targetLocation !== 'play area') {
+
+                var params = {
+                    player: this,
+                    card: card
+                };
+
+                this.game.raiseEvent('onCardLeftPlay', params, () => {
+                    card.attachments.each(attachment => {
+                        this.removeAttachment(attachment, false);
+                    });
+
+                    card.leavesPlay();
+
+                    if (card.parent) {
+                        card.parent.removeAttachment(card);
+                    }
+
+                    card.moveTo(targetLocation);
+
+                    if (callback) {
+                        callback();
+                    }
                 });
-
-                card.leavesPlay();
-
-                if(card.parent) {
-                    card.parent.removeAttachment(card);
-                }
-
-                card.moveTo(targetLocation);
-
-                if(callback) {
-                    callback();
-                }
-            });
+            }
         }
 
         if(card.location === 'hand') {

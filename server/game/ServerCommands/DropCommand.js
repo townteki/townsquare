@@ -12,7 +12,14 @@ class DropCommand {
     }
 
     execute() {
-        if(this.originalLocation === this.targetLocation || this.card.controller !== this.player) {
+        if(this.card.controller !== this.player) {
+            return;
+        }
+
+        if(this.originalLocation == this.targetLocation) {
+            if(this.card.getType() === 'dude' && this.targetLocation === 'play area') {
+                this.player.moveDude(this.card, this.gameLocation);
+            }
             return;
         }
 
@@ -20,9 +27,9 @@ class DropCommand {
             return;
         }
 
-        if(this.targetLocation === 'play area') {
+        if(this.originalLocation !== 'play area' && this.targetLocation === 'play area') {
             this.player.putIntoPlay(this.card, 'play', { force: true }, this.gameLocation);
-        } else if(this.targetLocation === 'dead pile' && this.card.location === 'play area') {
+        } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
             this.game.killCharacter(this.card, { allowSave: false, force: true });
         } else if(this.targetLocation === 'discard pile' && DiscardCard.allow({ card: this.card, force: true })) {
             this.player.discardCard(this.card, false, { force: true });
@@ -33,23 +40,24 @@ class DropCommand {
         this.addGameMessage();
     }
 
+    isValidLocation() {
+        if (this.card.getType() === 'dude') {
+
+        } else {
+            return this.originalLocation !== this.targetLocation;
+        }
+    }
+
     isValidDropCombination() {
-        const PlotCardTypes = ['plot'];
         const DrawDeckCardTypes = ['goods', 'dude', 'action', 'deed', 'spell', 'joker'];
         const AllowedTypesForPile = {
-            'active plot': PlotCardTypes,
             'being played': ['event'],
             'dead pile': ['character'],
             'discard pile': DrawDeckCardTypes,
             'draw deck': DrawDeckCardTypes,
             'hand': DrawDeckCardTypes,
-            'out of game': DrawDeckCardTypes.concat(PlotCardTypes),
-            'play area': ['goods', 'spell', 'dude', 'deed'],
-            'plot deck': PlotCardTypes,
-            'revealed plots': PlotCardTypes,
-            'shadows': DrawDeckCardTypes,
-            // Agenda specific piles
-            'conclave': DrawDeckCardTypes
+            'out of game': DrawDeckCardTypes,
+            'play area': ['goods', 'spell', 'dude', 'deed']
         };
 
         let allowedTypes = AllowedTypesForPile[this.targetLocation];

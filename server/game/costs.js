@@ -243,12 +243,9 @@ const Costs = {
     playLimited: function() {
         return {
             canPay: function(context) {
-                return !context.source.isLimited() || context.player.limitedPlayed < context.player.maxLimited;
+                return true;
             },
             pay: function(context) {
-                if(context.source.isLimited()) {
-                    context.player.limitedPlayed += 1;
-                }
             }
         };
     },
@@ -258,19 +255,9 @@ const Costs = {
     payPrintedGoldCost: function() {
         return {
             canPay: function(context) {
-                var hasDupe = context.player.getDuplicateInPlay(context.source);
-                if(hasDupe) {
-                    return true;
-                }
-
-                return context.player.getSpendableGold() >= context.source.getCost();
+                return context.player.ghostrock >= context.source.getCost();
             },
             pay: function(context) {
-                var hasDupe = context.player.getDuplicateInPlay(context.source);
-                if(hasDupe) {
-                    return;
-                }
-
                 context.game.spendGold({ amount: context.source.getCost(), player: context.player });
             }
         };

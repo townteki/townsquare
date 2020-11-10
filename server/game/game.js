@@ -36,7 +36,7 @@ const CardVisibility = require('./CardVisibility');
 const PlainTextGameChatFormatter = require('./PlainTextGameChatFormatter');
 const GameActions = require('./GameActions');
 const TimeLimit = require('./timeLimit.js');
-const PrizedKeywordListener = require('./PrizedKeywordListener');
+const Location = require('./gamelocation.js');
 
 class Game extends EventEmitter {
     constructor(details, options = {}) {
@@ -77,6 +77,8 @@ class Game extends EventEmitter {
         this.remainingPhases = [];
         this.skipPhase = {};
         this.cardVisibility = new CardVisibility(this);
+
+        this.townsquare = new Location.TownSquare();
 
         for(let player of Object.values(details.players || {})) {
             this.playersAndSpectators[player.user.username] = new Player(player.id, player.user, this.owner === player.user.username, this);
@@ -381,7 +383,7 @@ class Game extends EventEmitter {
         let activePlayer = spendParams.activePlayer || this.currentAbilityContext && this.currentAbilityContext.player;
         spendParams = Object.assign({ playingType: 'ability', activePlayer: activePlayer }, spendParams);
 
-        this.queueStep(new ChooseGoldSourceAmounts(this, spendParams, callback));
+        //this.queueStep(new ChooseGoldSourceAmounts(this, spendParams, callback));
     }
 
     /**
@@ -663,6 +665,8 @@ class Game extends EventEmitter {
             let timeLimitInMinutes = this.gameTimeLimit;
             this.timeLimit.initialiseTimeLimit(timeLimitStartType, timeLimitInMinutes);
         }
+
+
 
         for(let player of this.getPlayers()) {
             player.initialise();

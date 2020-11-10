@@ -27,7 +27,8 @@
                 "NODE_ENV": "development"
             },
             "console": "internalConsole",
-            "sourceMaps": false
+            "sourceMaps": false,
+            "outputCapture": "std"
         },
         {
             "name": "Launch (Game Server)",
@@ -46,7 +47,8 @@
                 "NODE_ENV": "development"
             },
             "console": "internalConsole",
-            "sourceMaps": false
+            "sourceMaps": false,
+            "outputCapture": "std"
         },
         {
             "type": "node",

@@ -1,13 +1,16 @@
-//const _ = require('underscore');
-const uuid = require('uuid');
-const logger = require('../log.js');
+const _ = require('underscore');
+const { TownSquareUUID } = require('./Constants');
+
 /**
  * Base class representing a location on the game board.
  */
 class GameLocation {
-    constructor(location, order) {
+    constructor(locationCard, neighbourLocation, order) {
         //Passed in location for construction. Card uuid is main identifier.
-        this.uuid = location;
+        this.uuid = locationCard.uuid;
+        if (this.uuid !== TownSquareUUID) {
+            this.modifiedAdjacentLocations = locationCard.modifiedAdjacentLocations();
+        }
         this.adjacencyMap = new Map();
         /*Keeps track of location order on player street
           for flexbox order parameter info
@@ -15,8 +18,20 @@ class GameLocation {
           >=1 === right of outfit
           <=-1 === left of outfit
         */
-		logger.info("bla");
         this.order = order;
+        if (neighbourLocation) {
+            this.attach(neighbourLocation.uuid);
+            neighbourLocation.attach(this.uuid);
+        }
+        if (order != null) {
+            this.attach(locationCard.game.townsquare.uuid, 'townsquare');
+            locationCard.game.townsquare.attach(this.uuid);
+        }
+        this.occupants = [];
+    }
+
+    getLocationCard(player) {
+        player.findLocation(this.uuid);
     }
 
     isAdjacent(uuid) {
@@ -26,6 +41,10 @@ class GameLocation {
             }
         }
 
+        return false;
+    }
+
+    isTownSquare() {
         return false;
     }
 
@@ -57,28 +76,21 @@ class GameLocation {
         }
     }
 
-    /* Considering removing card state and mapping only between some identifier
-       and each card's card.location parameter
-
-    addCard(card) {
-        if(!card) {
+    addDude(card) {
+        if(!card || card.getType() !== 'dude') {
             return;
         }
-
-        this.cards.push(card);
+        card.updateGameLocation(this.uuid);
+        this.occupants.push(card.uuid);
     }
 
-    removeCard(card) {
-        if(!card || !this.cards.includes(card)) {
+    removeDude(card) {
+        if(!card || !this.occupants.includes(card.uuid)) {
             return;
         }
-
-        this.cards = _(this.cards.reject(c => c === card));
+        card.gamelocation = null;
+        this.occupants = _.reject(this.occupants, c => c === card.uuid);
     }
-
-    cards() {
-        return this.cards;
-    }*/
 
 }
 
@@ -89,9 +101,15 @@ class GameLocation {
  */
 class TownSquare extends GameLocation {
     constructor() {
-        super(uuid.v1(), 0);
+        // TODO M2 probably will have to create town square card since it is possible to
+        // attach to town square
+        super({ uuid: TownSquareUUID}, null, null);
 
         this.key = 'townsquare';
+    }
+
+    isTownSquare() {
+        return true;
     }
 
     north() {
@@ -112,4 +130,7 @@ class TownSquare extends GameLocation {
 }
 
 
-module.exports = GameLocation;
+module.exports = {
+    GameLocation: GameLocation,
+    TownSquare: TownSquare
+}
