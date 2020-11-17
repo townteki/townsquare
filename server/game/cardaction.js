@@ -70,7 +70,7 @@ class CardAction extends BaseAbility {
             return 'any';
         }
 
-        if(!['any', 'plot', 'draw', 'marshal', 'challenge', 'dominance', 'standing', 'taxation'].includes(properties.phase)) {
+        if(!['any', 'gambling', 'upkeep', 'hign noon', 'shootout', 'sundown'].includes(properties.phase)) {
             throw new Error(`'${properties.phase}' is not a valid 'phase' property`);
         }
 

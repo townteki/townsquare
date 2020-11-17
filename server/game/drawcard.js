@@ -116,18 +116,10 @@ class DrawCard extends BaseCard {
     clearBlank() {
         super.clearBlank();
         this.attachments.each(attachment => {
-            if(!this.allowAttachment(attachment)) {
+            if(!this.canAttach(this.controller, attachment)) {
                 this.controller.discardCard(attachment, false);
             }
         });
-    }
-
-    /**
-     * Checks 'no attachment' restrictions for this card when attempting to
-     * attach the passed attachment card.
-     */
-    allowAttachment(attachment) {
-        return (this.getType() === 'dude' || this.getType() === 'deed' || this.getType() === 'outfit');
     }
 
     /**
@@ -135,7 +127,40 @@ class DrawCard extends BaseCard {
      * Opponent cards only, specific factions, etc) for this card.
      */
     canAttach(player, card) {
-        return card && ((this.getType() === 'goods') || (this.getType() === 'spell'));
+        if (!card) {
+            return false;
+        }
+
+        if ((this.getType() !== 'goods') && (this.getType() !== 'spell')) {
+            return false;
+        }
+        if (card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
+            return false;
+        }    
+        return true;
+    }
+
+    hasAttachment(forTrading = true) {
+        if (this.attachments.isEmpty()) {
+            return false;
+        }
+        if (!forTrading) {
+            return true;
+        }
+
+        let tradingAttachments = this.attachments.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded());
+        return tradingAttachments.length > 0;
+    }
+    
+    getAttachmentsByKeywords(keywords) {
+        return this.attachments.filter(attachment => {
+            for (let keyword of keywords) {
+                if (!attachment.hasKeyword(keyword)) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 
     removeAttachment(attachment) {

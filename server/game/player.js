@@ -38,6 +38,7 @@ class Player extends Spectator {
         this.deadPile = [];
         this.discardPile = [];
         this.additionalPiles = {};
+        this.triggerRestrictions = [];
 
         this.owner = owner;
         this.promptedActionWindows = user.promptedActionWindows;
@@ -640,14 +641,13 @@ class Player extends Spectator {
         return (
             card.location === 'play area' &&
             card !== attachment &&
-            card.allowAttachment(attachment) &&
             attachment.canAttach(this, card)
         );
     }
 
     attach(controller, attachment, card, playingType, facedown = false) {
         if(!card || !attachment || !this.canAttach(attachment, card)) {
-            return;
+            return false;
         }
 
         let originalLocation = attachment.location;
@@ -661,6 +661,9 @@ class Player extends Spectator {
 
         attachment.moveTo('play area', card);
         card.attachments.push(attachment);
+        if (playingType === 'trading') {
+            attachment.traded = true;
+        }
 
         this.game.queueSimpleStep(() => {
             attachment.applyPersistentEffects();
@@ -674,6 +677,8 @@ class Player extends Spectator {
         }
 
         this.game.resolveEvent(event);
+
+        return true;
     }
 
     setDrawDeckVisibility(value) {
@@ -1006,7 +1011,7 @@ class Player extends Spectator {
         }
 
         if(card.location === 'hand') {
-            this.game.raiseEvent('onCardLeftHand', card);
+            this.game.raiseEvent('onCardLeftHand', { player: this, card: card });
         }
 
         if(card.location !== 'play area') {
@@ -1020,11 +1025,11 @@ class Player extends Spectator {
         }
 
         if(targetLocation === 'hand') {
-            this.game.raiseEvent('onCardEntersHand', card);
+            this.game.raiseEvent('onCardEntersHand', { player: this, card: card });
         }
 
         if(targetLocation === 'draw hand') {
-            this.game.raiseEvent('onCardEntersDrawHand', card);
+            this.game.raiseEvent('onCardEntersDrawHand', { player: this, card: card });
         }
 
         if(['dead pile', 'discard pile'].includes(targetLocation)) {

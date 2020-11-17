@@ -24,6 +24,7 @@ class AbilityTarget {
         this.selector = CardSelector.for(properties);
         this.messages = properties.messages;
         this.ifAble = !!properties.ifAble;
+        this.autoSelect = properties.autoSelect || true;
     }
 
     canResolve(context) {
@@ -82,6 +83,10 @@ class AbilityTarget {
             return;
         }
 
+        if (this.autoSelect && result.eligibleChoices.length == 1) {
+            result.resolve(result.eligibleChoices[0]);
+            return;
+        }
         let otherProperties = Object.assign({}, this.properties);
         delete otherProperties.cardCondition;
         delete otherProperties.choosingPlayer;

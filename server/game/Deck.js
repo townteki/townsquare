@@ -1,5 +1,10 @@
 const cards = require('./cards');
 const DrawCard = require('./drawcard.js');
+const DudeCard = require('./dudecard');
+const DeedCard = require('./deedcard');
+const GoodsCard = require('./goodscard');
+const SpellCard = require('./spellcard.js');
+const ActionCard = require('./actioncard.js');
 
 class Deck {
     constructor(data) {
@@ -42,7 +47,6 @@ class Deck {
             if(this.isDrawCard(cardData)) {
                 var drawCard = this.createCardForType(DrawCard, player, cardData);
                 drawCard.location = 'draw deck';
-                //drawCard.moveTo('draw deck');
 
                 if(!drawCard.starting) {
                     result.drawCards.push(drawCard);
@@ -81,10 +85,28 @@ class Deck {
     }
 
     createCardForType(baseClass, player, cardData) {
-        // do not use specific classes as we do not have them yet
-        //let cardClass = cards[cardData.code] || baseClass;
-
         let cardClass = baseClass;
+
+        // maybe do it the same way as cards (card type js files in folder)
+        if (cardData.type_code === 'dude') {
+            cardClass = DudeCard;
+        }
+        if (cardData.type_code === 'deed') {
+            cardClass = DeedCard;
+        }
+        if (cardData.type_code === 'goods') {
+            cardClass = GoodsCard;
+        }
+        if (cardData.type_code === 'spell') {
+            cardClass = SpellCard;
+        }
+        if (cardData.type_code === 'action') {
+            cardClass = ActionCard;
+        }
+
+        // do not use specific classes as we do not have them yet
+        //let cardClass = cards[cardData.code] || cardClass;
+
         return new cardClass(player, cardData);
     }
 

@@ -32,6 +32,7 @@ class BaseCard {
         this.eventsForRegistration = [];
         this.blankCount = 0;
         this.gamelocation = '';
+        this.blanks = new ReferenceCountedSetProperty();
 
         this.cost = cardData.cost;
         this.value = cardData.rank;
@@ -97,7 +98,7 @@ class BaseCard {
 
         if(!action.isClickToActivate() && action.allowMenu()) {
             var index = this.abilities.actions.length;
-            this.menu.push(action.getMenuItem(index));
+            this.menu.push(action.getMenuItem(index, properties.player));
         }
         this.abilities.actions.push(action);
     }
