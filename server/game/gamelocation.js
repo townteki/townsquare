@@ -30,8 +30,8 @@ class GameLocation {
         this.occupants = [];
     }
 
-    getLocationCard(player) {
-        player.findLocation(this.uuid);
+    getLocationCard(game) {
+        game.findLocation(this.uuid);
     }
 
     isAdjacent(uuid) {

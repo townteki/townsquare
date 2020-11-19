@@ -33,12 +33,10 @@ class HandRank {
         //console.log(this.pokerHands);
     }
 
-    //This method should return the "best" rank at the given context of the game
-    //i.e. lowest possible hand in Gamblin', highest in Noon
     Rank() {
         let bestRank = _.orderBy(this.pokerHands, 'rank', 'desc');
         //console.log(bestRank);
-        return (bestRank[0] ? bestRank[0].rank : 0);
+        return (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
     }
 
 }
@@ -60,17 +58,19 @@ class PokerHands {
             strippedHand.push({uuid: card.uuid, value: card.value, suit: card.suit, type: card.type});
         });
 
-        this.DeadMansHand = new DeadMansHand(strippedHand, jokers);
-        this.FiveOfAKind = new FiveOfAKind(strippedHand, jokers);
-        this.StraightFlush = new StraightFlush(strippedHand, jokers);
-        this.FourOfAKind = new FourOfAKind(strippedHand, jokers);
-        this.FullHouse = new FullHouse(strippedHand, jokers);
-        this.Flush = new Flush(strippedHand, jokers);
-        this.Straight = new Straight(strippedHand, jokers);
-        this.ThreeOfAKind = new ThreeOfAKind(strippedHand, jokers);
-        this.TwoPair = new TwoPair(strippedHand, jokers);
-        this.OnePair = new OnePair(strippedHand, jokers);
-        this.HighCards = new HighCard(strippedHand);
+        let orderedHand = _.orderBy(strippedHand, 'value', 'desc');
+
+        this.DeadMansHand = new DeadMansHand(orderedHand, jokers);
+        this.FiveOfAKind = new FiveOfAKind(orderedHand, jokers);
+        this.StraightFlush = new StraightFlush(orderedHand, jokers);
+        this.FourOfAKind = new FourOfAKind(orderedHand, jokers);
+        this.FullHouse = new FullHouse(orderedHand, jokers);
+        this.Flush = new Flush(orderedHand, jokers);
+        this.Straight = new Straight(orderedHand, jokers);
+        this.ThreeOfAKind = new ThreeOfAKind(orderedHand, jokers);
+        this.TwoPair = new TwoPair(orderedHand, jokers);
+        this.OnePair = new OnePair(orderedHand, jokers);
+        this.HighCards = new HighCard(orderedHand);
     }
 }
 
@@ -90,6 +90,8 @@ class DeadMansHand {
 
         if((this.matches.length + jokers) >= 5) {
             this.rank = 11;
+            this.rankName = 'Dead Man\'s Hand';
+            this.rankShortName = 'DMH';
         }
     }
 }
@@ -106,7 +108,9 @@ class FiveOfAKind {
 
             if((this.matches.length + jokers) >= 5) {
                 this.rank = 10;
-                break;
+                this.rankName = 'Five of a Kind';
+                this.rankShortName = '5oaK';
+                this.tiebreaker = [i];
             }
         }
     }
@@ -131,7 +135,9 @@ class StraightFlush {
 
                 if((this.matches.length + jokers) >= 5) {
                     this.rank = 9;
-                    break;
+                    this.rankName = 'Straight Flush';
+                    this.rankShortName = 'SF';
+                    this.tiebreaker = [i];
                 }
             }
         });
@@ -149,6 +155,9 @@ class FourOfAKind {
 
             if((this.matches.length + jokers) === 4) {
                 this.rank = 8;
+                this.rankName = 'Four of a Kind';
+                this.rankShortName = '4oaK';
+                this.tiebreaker = [i];
                 break;
             }
         }
@@ -181,6 +190,9 @@ class FullHouse {
 
                         if((this.matches.length + jokers) >= 5) {
                             this.rank = 7;
+                            this.rankName = 'Full House';
+                            this.rankShortName = 'FH';
+                            this.tiebreaker = [i, j];
                             break;
                         }
                     }
@@ -193,16 +205,18 @@ class FullHouse {
 class Flush {
     constructor(hand, jokers) {
 
-        let orderedHand = _.orderBy(hand, 'value', 'desc');
         let suits = ['clubs', 'diamonds', 'hearts', 'spades'];
 
         suits.forEach((suit) => {
-            this.matches = _.filter(orderedHand, (card) => {
+            this.matches = _.filter(hand, (card) => {
                 return card.suit === suit;
             });
 
             if((this.matches.length + jokers) >= 5) {
                 this.rank = 6;
+                this.rankName = 'Flush';
+                this.rankShortName = 'Fl';
+                this.tiebreaker = hand;
                 return;
             }
 
@@ -223,6 +237,9 @@ class Straight {
 
             if((this.matches.length + jokers) >= 5) {
                 this.rank = 5;
+                this.rankName = 'Straight';
+                this.rankShortName = 'Str';
+                this.tiebreaker = [i];
                 break;
             }
         }
@@ -240,6 +257,9 @@ class ThreeOfAKind {
 
             if((this.matches.length + jokers) === 3) {
                 this.rank = 4;
+                this.rankName = 'Three of a Kind';
+                this.rankShortName = '3oaK';
+                this.tiebreaker = [i];
                 break;
             }
         }
@@ -271,6 +291,9 @@ class TwoPair {
 
                         if((this.matches.length + jokers) >= 5) {
                             this.rank = 3;
+                            this.rankName = 'Two Pair';            
+                            this.rankShortName = '2P';
+                            this.tiebreaker = [i,j];
                             break;
                         }
                     }
@@ -291,6 +314,9 @@ class OnePair {
 
             if((this.matches.length + jokers) === 2) {
                 this.rank = 2;
+                this.rankName = 'One Pair';
+                this.rankShortName = '1P';
+                this.tiebreaker = [i];
                 break;
             }
         }
@@ -299,13 +325,15 @@ class OnePair {
 
 class HighCard {
     constructor(hand) {
-        this.matches = _.take(_.orderBy(hand, 'value', 'desc'), 5);
+        this.matches = _.take(hand, 5);
 
         if(this.matches.length > 0) {
             this.rank = 1;
+            this.rankName = 'High Card';
+            this.rankShortName = 'Hi';
+            this.tiebreaker = hand;
         }
     }
 }
-
 
 module.exports = HandRank;

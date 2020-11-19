@@ -1,7 +1,7 @@
 const _ = require('underscore');
 
 const DrawCard = require('./drawcard.js');
-const TradingPrompt = require('./gamesteps/tradingprompt.js');
+const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -20,11 +20,12 @@ class DudeCard extends DrawCard {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && 
                     card.gamelocation === this.gamelocation &&
-                    card.uuid !== this.uuid
+                    card.uuid !== this.uuid &&
+                    card.controller !== this.controller
             },
             targetController: 'opponent',
             handler: context => {
-                //this.game.killCharacter(context.target);
+                this.game.startShootout(this, context.target);
                 this.game.addMessage('{0} uses {1} to call out {2}', context.player, this.title, context.target.title);
             },
             player: this.owner

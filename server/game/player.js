@@ -773,7 +773,11 @@ class Player extends Spectator {
         this.passTurn = false;
      
         _.each(this.cardsInPlay, card => card.clearNew());
-    }    
+    }
+
+    getHandRank() {
+        return this.handRank;
+    }
 
     promptForAttachment(card, playingType) {
         // TODO: Really want to move this out of here.
@@ -923,8 +927,8 @@ class Player extends Spectator {
     }
 
     moveDude(dude, targetLocationUuid, options = { needToBoot: null, allowBooted: false }) {
-        let origin = this.findLocation(dude.gamelocation);
-        let destination = this.findLocation(targetLocationUuid);
+        let origin = this.game.findLocation(dude.gamelocation);
+        let destination = this.game.findLocation(targetLocationUuid);
         if (origin.uuid === destination.uuid) {
             if (options.needToBoot) {
                 this.bootCard(dude);
