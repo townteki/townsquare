@@ -12,13 +12,14 @@ class GamblingPhase extends Phase {
 
         this.initialise([
             new SimpleStep(game, () => this.ante()),
-            new SimpleStep(game, () => this.drawHands()),
+            new SimpleStep(game, () => this.game.drawHands()),
+            // TODO M2 Shootout testing - comment out RevealDrawHandPrompt and CheatingResolutionPrompt
             new RevealDrawHandPrompt(game),
-            new SimpleStep(game, () => this.revealHands()),
+            new SimpleStep(game, () => this.game.revealHands()),
             new CheatingResolutionPrompt(game),
             new SimpleStep(game, () => this.determineWinner()),
             new SimpleStep(game, () => this.gainLowballPot()),
-            new SimpleStep(game, () => this.discardCards())
+            new SimpleStep(game, () => this.game.discardDrawHands())
         ]);
     }
 
@@ -29,26 +30,7 @@ class GamblingPhase extends Phase {
         });
     }
 
-    drawHands() {
-        _.each(this.game.getPlayers(), player => {
-            player.drawCardsToHand(5, 'draw hand');
-        });
-    }
-
-    revealHands() {
-        _.each(this.game.getPlayers(), player => {
-            player.revealDrawHand();            
-        });
-    }
-
-    discardCards() {
-        _.each(this.game.getPlayers(), player => {
-            player.discardDrawHand();
-        });
-    }
-
     determineWinner() {
-
         let winner = _.reduce(this.game.getPlayers(), (player, memo) => {
 
             let pHand = player.getHandRank();

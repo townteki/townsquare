@@ -1,4 +1,4 @@
-const UiPrompt = require('./uiprompt.js');
+const UiPrompt = require('../uiprompt.js');
 
 class TradingPrompt extends UiPrompt {
     constructor(game, player, attachments) {

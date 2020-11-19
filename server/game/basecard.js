@@ -624,11 +624,11 @@ class BaseCard {
     }   
 
     moveToLocation(player, destinationUuid) {
-        let origin = player.findLocation(this.gamelocation);
+        let origin = this.game.findLocation(this.gamelocation);
         if (origin) {
             origin.removeDude(this);
         }
-        let destination = player.findLocation(destinationUuid);
+        let destination = this.game.findLocation(destinationUuid);
         if (destination) {
             destination.addDude(this);
         }
