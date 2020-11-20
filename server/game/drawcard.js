@@ -213,7 +213,7 @@ class DrawCard extends BaseCard {
                 return attachment.getSummary(activePlayer);
             }),
             booted: this.booted,
-            control: this.control,
+            control: this.control
         };
 
         if(baseSummary.facedown) {

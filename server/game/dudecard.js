@@ -2,6 +2,7 @@ const _ = require('underscore');
 
 const DrawCard = require('./drawcard.js');
 const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
+const {ShootoutStatuses} = require('./Constants');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -10,6 +11,8 @@ class DudeCard extends DrawCard {
         this.maxWeapons = 1;
         this.maxHorses = 1;
         this.maxAttires = 1;
+
+        this.shootoutStatus = ShootoutStatuses.None;
     }
 
     setupCardAbilities(ability) {
@@ -21,12 +24,27 @@ class DudeCard extends DrawCard {
                 cardCondition: card => card.getType() === 'dude' && 
                     card.gamelocation === this.gamelocation &&
                     card.uuid !== this.uuid &&
-                    card.controller !== this.controller
+                    card.controller !== this.controller,
+                autoSelect: false
             },
             targetController: 'opponent',
             handler: context => {
-                this.game.startShootout(this, context.target);
-                this.game.addMessage('{0} uses {1} to call out {2}', context.player, this.title, context.target.title);
+                this.shootoutStatus = ShootoutStatuses.CallingOut;
+                context.target.shootoutStatus = ShootoutStatuses.CalledOut;
+                if (!context.target.booted) {
+                    this.game.promptWithMenu(context.target.controller, this, {
+                        activePrompt: {
+                            menuTitle: this.title + ' is calling out ' + context.target.title,
+                            buttons: [
+                                { text: 'Accept Callout', method: 'acceptCallout', arg: context.target.uuid },
+                                { text: 'Run like hell', method: 'rejectCallout', arg: context.target.uuid }
+                            ]
+                        },
+                        waitingPromptTitle: 'Waiting for opponent to decide if he runs or fights'
+                    });
+                } else {
+                    this.acceptCallout(context);
+                }
             },
             player: this.owner
         });
@@ -48,6 +66,10 @@ class DudeCard extends DrawCard {
             },
             player: this.owner
         });        
+    }
+
+    sendHome(booted = true, allowBooted = true) {
+        this.owner.moveDude(this, this.owner.outfit.uuid, { needToBoot: booted, allowBooted: allowBooted });
     }
 
     canAttachWeapon(weapon) {
@@ -73,6 +95,36 @@ class DudeCard extends DrawCard {
         }
         return true;
     }
+
+    acceptCallout(player, targetUuid) {
+        var targetDude = player.findCardInPlayByUuid(targetUuid);
+        this.game.startShootout(this, targetDude);
+        this.game.addMessage('{0} uses {1} to call out {2} who accepts.', this.owner, this, targetDude);
+        return true;
+    }
+
+    rejectCallout(player, targetUuid) {
+        var targetDude = player.findCardInPlayByUuid(targetUuid);
+        this.shootoutStatus = ShootoutStatuses.None;
+        targetDude.shootoutStatus = ShootoutStatuses.None;
+        targetDude.sendHome();
+        this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama.', this.owner, this, targetDude);
+        return true;
+    }
+
+    getSummary(activePlayer) {
+        let drawCardSummary = super.getSummary(activePlayer);
+
+        let publicSummary = {
+            shootoutStatus: this.shootoutStatus
+        };
+
+        if(drawCardSummary.facedown) {
+            return Object.assign(drawCardSummary, publicSummary);
+        }
+
+        return Object.assign(drawCardSummary, publicSummary, {});
+    }    
 }
 
 module.exports = DudeCard;
