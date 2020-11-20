@@ -24,7 +24,7 @@ class AbilityTarget {
         this.selector = CardSelector.for(properties);
         this.messages = properties.messages;
         this.ifAble = !!properties.ifAble;
-        this.autoSelect = properties.autoSelect || true;
+        this.autoSelect = properties.autoSelect === null ? true : properties.autoSelect;
     }
 
     canResolve(context) {

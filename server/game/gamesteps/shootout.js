@@ -6,6 +6,7 @@ const ShootoutPossePrompt = require('./shootout/shootoutposseprompt.js');
 const TakeYerLumpsPrompt = require('./shootout/takeyerlumpsprompt.js');
 const SimpleStep = require('./simplestep.js');
 const RunOrGunPrompt = require('./shootout/runorgunprompt.js');
+const {ShootoutStatuses} = require('../Constants');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
@@ -14,8 +15,12 @@ class Shootout extends Phase {
         this.highNoonPhase = phase;
         this.leader = leader;
         this.leaderPosse = [leader.uuid];
+        leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
+        this.leaderPlayerName = leader.controller.name;
         this.mark = mark;
         this.markPosse = [mark.uuid];
+        mark.shootoutStatus = ShootoutStatuses.MarkPosse;
+        this.markPlayerName = mark.controller.name;
         this.leaderMarkOrder = [this.leader.controller.name, this.mark.controller.name];
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
@@ -26,6 +31,20 @@ class Shootout extends Phase {
             new SimpleStep(this, () => this.beginShootoutRound())
         ]);
     }
+
+    get leaderPlayer() {
+        if (!this.game || !this.leaderPlayerName) {
+            return null;
+        }
+        return this.game.getPlayerByName(this.leaderPlayerName);
+    }
+
+    get markPlayer() {
+        if (!this.game || !this.markPlayerName) {
+            return null;
+        }
+        return this.game.getPlayerByName(this.markPlayerName);
+    }    
 
     beginShootoutRound() {
         this.remainingSteps = [
@@ -67,9 +86,19 @@ class Shootout extends Phase {
     endPhase() {
         this.game.raiseEvent('onShootoutEnded', { phase: this.name });
         this.game.currentPhase = this.highNoonPhase;
-        for(const player of this.game.getPlayers()) {
-            player.phase = this.highNoonPhase;
-        }
+        var attackingPlayer = this.leaderPlayer;
+        var defendingPlayer = this.markPlayer;
+        attackingPlayer.phase = this.highNoonPhase;
+        defendingPlayer.phase = this.highNoonPhase;
+
+        this.leaderPosse.forEach(dudeUuid => {
+            var dude = attackingPlayer.findCardInPlayByUuid(dudeUuid);
+            dude.shootoutStatus = ShootoutStatuses.None; 
+        });
+        this.markPosse.forEach(dudeUuid => {
+            var dude = defendingPlayer.findCardInPlayByUuid(dudeUuid);
+            dude.shootoutStatus = ShootoutStatuses.None; 
+        });
         this.game.endShootout();
         this.game.addAlert('phasestart', 'Shootout ended!');     
     }
@@ -116,7 +145,12 @@ class Shootout extends Phase {
 
     chamberAnotherRound() {
         // TODO M2 Shootout testing - to end the shootout
+        this.markPosse.forEach(dudeUuid => {
+            var dude = this.markPlayer.findCardInPlayByUuid(dudeUuid);
+            dude.shootoutStatus = ShootoutStatuses.None; 
+        });
         this.markPosse = [];
+        //
 
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));
         if (!this.checkEndCondition) {
