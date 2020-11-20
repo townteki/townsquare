@@ -97,14 +97,14 @@ class DudeCard extends DrawCard {
     }
 
     acceptCallout(player, targetUuid) {
-        var targetDude = player.findCardInPlayByUuid(targetUuid);
+        let targetDude = player.findCardInPlayByUuid(targetUuid);
         this.game.startShootout(this, targetDude);
         this.game.addMessage('{0} uses {1} to call out {2} who accepts.', this.owner, this, targetDude);
         return true;
     }
 
     rejectCallout(player, targetUuid) {
-        var targetDude = player.findCardInPlayByUuid(targetUuid);
+        let targetDude = player.findCardInPlayByUuid(targetUuid);
         this.shootoutStatus = ShootoutStatuses.None;
         targetDude.shootoutStatus = ShootoutStatuses.None;
         targetDude.sendHome();
