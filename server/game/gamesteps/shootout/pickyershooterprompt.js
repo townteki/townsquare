@@ -7,16 +7,18 @@ class PickYerShooterPrompt extends PlayerOrderPrompt {
     } 
 
     continue() {
-        this.game.promptForSelect(this.currentPlayer, {
-            activePromptTitle: 'Select Yer Shooter',
-            cardCondition: card => card.getType() === 'dude' && 
-                this.shootout.isDudeInShootout(card),
-            onSelect: (player, card) => {
-                return true;
-            }
-        });
+        if (!this.isComplete()) {
+            this.game.promptForSelect(this.currentPlayer, {
+                activePromptTitle: 'Select Yer Shooter',
+                cardCondition: card => card.getType() === 'dude' && 
+                    this.shootout.isDudeInShootout(card),
+                onSelect: (player, card) => {
+                    this.completePlayer();
+                    return true;
+                }
+            });
+        }
 
-        this.completePlayer();
         return this.isComplete();        
     }
 

@@ -7,22 +7,25 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
     } 
 
     continue() {
-        this.game.promptForSelect(this.currentPlayer, {
-            activePromptTitle: 'Select dudes to flee the shootout',
-            additionalButtons: [
-                { text: 'All dudes run', arg: 'allrun' }
-            ],
-            cardCondition: card => card.getType() === 'dude' && 
-                this.shootout.isDudeInShootout(card),
-            onSelect: (player, card) => {
-                return true;
-            },
-            onMenuCommand: (player, arg) => {
-                return true;
-            }
-        });
+        if (!this.isComplete()) {
+            this.game.promptForSelect(this.currentPlayer, {
+                activePromptTitle: 'Select dudes to flee the shootout',
+                additionalButtons: [
+                    { text: 'All dudes run', arg: 'allrun' }
+                ],
+                cardCondition: card => card.getType() === 'dude' && 
+                    this.shootout.isDudeInShootout(card),
+                onSelect: (player, card) => {
+                    this.completePlayer();
+                    return true;
+                },
+                onMenuCommand: (player, arg) => {
+                    this.completePlayer();
+                    return true;
+                }
+            });
+        }
 
-        this.completePlayer();
         return this.isComplete();        
     }
 

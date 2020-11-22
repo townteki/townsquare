@@ -18,7 +18,7 @@ class DudeCard extends DrawCard {
     setupCardAbilities(ability) {
         this.action({
             title: 'Call Out',
-            condition: () => this.game.currentPhase === 'high noon',
+            condition: () => this.game.currentPhase === 'high noon' && !this.booted,
             target: {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && 
@@ -43,7 +43,7 @@ class DudeCard extends DrawCard {
                         waitingPromptTitle: 'Waiting for opponent to decide if he runs or fights'
                     });
                 } else {
-                    this.acceptCallout(context);
+                    this.acceptCallout(context.target.controller, context.target.uuid);
                 }
             },
             player: this.owner
@@ -110,6 +110,39 @@ class DudeCard extends DrawCard {
         targetDude.sendHome();
         this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama.', this.owner, this, targetDude);
         return true;
+    }
+
+    canJoinPosse(isJob = false, allowBooted = false) {
+        let shootout = this.game.shootout;
+        if (this.gamelocation === shootout.mark.gamelocation) {
+            return true;
+        }  
+        if (this.getLocation().isAdjacent(shootout.mark.gamelocation) && (!this.booted || allowBooted)) {
+            return true;
+        }
+
+        if (isJob && shootout.belongsToLeaderPlayer(this) && (!this.booted || allowBooted)) {
+            if (this.gamelocation === shootout.leader.gamelocation) {
+                return true;
+            } 
+            if (this.getLocation.isAdjacent(shootout.leader.gamelocation)) {
+                return true;
+            }         
+        }
+
+        return false;
+    }
+
+    moveToShootoutLocation(needToBoot = true, allowBooted = false) {
+        let shootout = this.game.shootout;
+        if (this.gamelocation === shootout.mark.gamelocation) {
+            return;
+        }
+        if (shootout.isJob()) {
+            // if this shootout is a Job, all dudes that had to be booted should already be booted.
+            needToBoot = false;
+        }
+        this.controller.moveDude(this, shootout.mark.gamelocation, { needToBoot: needToBoot, allowBooted: allowBooted });
     }
 
     getSummary(activePlayer) {

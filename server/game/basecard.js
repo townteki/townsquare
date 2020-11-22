@@ -621,10 +621,17 @@ class BaseCard {
 
     clearDirty() {
         this.isDirty = false;
-    }   
+    }
+
+    getLocation() {
+        if (!this.gamelocation) {
+            return;
+        }
+        return this.game.findLocation(this.gamelocation);
+    }
 
     moveToLocation(player, destinationUuid) {
-        let origin = this.game.findLocation(this.gamelocation);
+        let origin = this.getLocation();
         if (origin) {
             origin.removeDude(this);
         }
