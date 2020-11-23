@@ -20,6 +20,11 @@ class ShootoutPossePrompt extends PlayerOrderPrompt {
                     card.canJoinPosse(),
                 onSelect: (player, dudeSelection) => {
                     dudeSelection.forEach(dude => this.shootout.addToPosse(dude));
+                    if (this.shootout.leaderPlayer === player) {
+                        this.game.addMessage('{0} with {1} as leader forms their posse including dudes: {2}.', player, this.shootout.leader, dudeSelection);
+                    } else {
+                        this.game.addMessage('{0} with {1} as mark forms their posse including dudes: {2}.', player, this.shootout.mark, dudeSelection);   
+                    }                 
                     this.completePlayer();                 
                     return true;
                 }
