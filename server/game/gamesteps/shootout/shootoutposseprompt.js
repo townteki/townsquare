@@ -27,6 +27,10 @@ class ShootoutPossePrompt extends PlayerOrderPrompt {
                     }                 
                     this.completePlayer();                 
                     return true;
+                },
+                onCancel: () => {
+                    this.completePlayer();
+                    return true;
                 }
             });
         }

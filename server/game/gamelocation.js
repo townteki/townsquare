@@ -31,7 +31,7 @@ class GameLocation {
     }
 
     getLocationCard(game) {
-        game.findLocation(this.uuid);
+        return game.findCardInPlayByUuid(this.uuid);
     }
 
     isAdjacent(uuid) {

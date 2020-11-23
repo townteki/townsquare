@@ -2,7 +2,7 @@ const _ = require('underscore');
 
 const DrawCard = require('./drawcard.js');
 const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
-const {ShootoutStatuses} = require('./Constants');
+const {ShootoutStatuses, Tokens} = require('./Constants');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -143,6 +143,22 @@ class DudeCard extends DrawCard {
             needToBoot = false;
         }
         this.controller.moveDude(this, shootout.mark.gamelocation, { needToBoot: needToBoot, allowBooted: allowBooted });
+    }
+    
+    get bounty() {
+        return this.tokens[Tokens.bounty] || 0;
+    }
+
+    increaseBounty(amount = 1) {
+        this.modifyToken(Tokens.bounty, amount);
+    }
+
+    decreaseBounty(amount = 1) {
+        this.modifyToken(Tokens.bounty, amount * -1);
+    }
+
+    isWanted() {
+        return this.tokens[Tokens.bounty] > 0;
     }
 
     getSummary(activePlayer) {
