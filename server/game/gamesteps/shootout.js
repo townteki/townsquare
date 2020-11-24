@@ -16,10 +16,12 @@ class Shootout extends Phase {
         this.options = options;
         this.leader = leader;
         this.leaderPosse = [leader.uuid];
+        this.leaderShooter = null;
         leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
         this.leaderPlayerName = leader.controller.name;
         this.mark = mark;
         this.markPosse = [mark.uuid];
+        this.markShooter = null;
         mark.shootoutStatus = ShootoutStatuses.MarkPosse;
         this.markPlayerName = mark.controller.name;
         this.leaderMarkOrder = [this.leader.controller.name, this.mark.controller.name];
