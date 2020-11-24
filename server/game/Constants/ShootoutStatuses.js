@@ -9,3 +9,4 @@ const ShootoutStatuses = {
    };
 
    module.exports = ShootoutStatuses;
+   
