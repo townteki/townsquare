@@ -561,12 +561,12 @@ class BaseCard {
         return cardText.includes(text.toLowerCase());
     }
 
-    get gold() {
-        return this.tokens[Tokens.gold] || 0;
+    get ghostrock() {
+        return this.tokens[Tokens.ghostrock] || 0;
     }
 
-    modifyGold(amount) {
-        this.modifyToken(Tokens.gold, amount);
+    modifyGhostrock(amount) {
+        this.modifyToken(Tokens.ghostrock, amount);
     }
 
     addToken(type, number) {

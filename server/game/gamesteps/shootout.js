@@ -47,6 +47,10 @@ class Shootout extends Phase {
         return this.game.getPlayerByName(this.markPlayerName);
     }
 
+    get shootoutLocation() {
+        return this.game.findLocation(this.mark.gamelocation);
+    }   
+
     isJob() {
         return this.options.isJob;
     }
@@ -96,24 +100,13 @@ class Shootout extends Phase {
         attackingPlayer.phase = this.highNoonPhase;
         defendingPlayer.phase = this.highNoonPhase;
 
-        this.leaderPosse.forEach(dudeUuid => {
-            var dude = attackingPlayer.findCardInPlayByUuid(dudeUuid);
-            dude.shootoutStatus = ShootoutStatuses.None; 
-        });
-        this.markPosse.forEach(dudeUuid => {
-            var dude = defendingPlayer.findCardInPlayByUuid(dudeUuid);
-            dude.shootoutStatus = ShootoutStatuses.None; 
-        });
+        this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.game.endShootout();
         this.game.addAlert('phasestart', 'Shootout ended!');     
     }
 
     queueStep(step) {
         this.pipeline.queueStep(step);
-    }
-
-    getLocation() {
-        return this.game.findLocation(this.mark.gamelocation);
     }
 
     isDudeInLeaderPosse(dude) {
@@ -160,18 +153,40 @@ class Shootout extends Phase {
     }
 
     gatherPosses() {
+        this.actOnAllParticipants(dude => dude.moveToShootoutLocation());
+    }
+
+    actOnLeaderPosse(action) {
         this.leaderPosse.forEach(dudeUuid => {
             let dude = this.leaderPlayer.findCardInPlayByUuid(dudeUuid);
-            dude.moveToShootoutLocation();
-        });
-        this.markPosse.forEach(dudeUuid => {
-            let dude = this.markPlayer.findCardInPlayByUuid(dudeUuid);
-            dude.moveToShootoutLocation();
+            action(dude);
         });
     }
 
-    breakinAndEnterin() {
+    actOnMarkPosse(action) {
+        this.markPosse.forEach(dudeUuid => {
+            let dude = this.markPlayer.findCardInPlayByUuid(dudeUuid);
+            action(dude);
+        });
+    }
 
+    actOnAllParticipants(action) {
+        this.actOnLeaderPosse(action);
+        this.actOnMarkPosse(action);
+    }
+
+    breakinAndEnterin() {
+        if (this.shootoutLocation.isTownSquare()) {
+            return;
+        }
+        let locationCard = this.shootoutLocation.getLocationCard(this.game);
+        if (locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
+            if (locationCard.owner !== this.leaderPlayer) {
+                this.actOnLeaderPosse(dude => dude.increaseBounty());
+            } else {
+                this.actOnMarkPosse(dude => dude.increaseBounty());
+            }
+        }
     }
 
     draw() {

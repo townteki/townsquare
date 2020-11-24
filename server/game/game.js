@@ -209,6 +209,18 @@ class Game extends EventEmitter {
         }, 0);
     }
 
+    findCardInPlayByUuid(uuid) {
+        if (!uuid) {
+            return;
+        }
+        for (let player of this.getPlayers()) {
+            let foundCard = player.findCardInPlayByUuid(uuid); 
+            if (foundCard) {
+                return foundCard;
+            }            
+        }
+    }    
+
     findAnyLocations(predicate) {
         var foundLocations = [];
 
