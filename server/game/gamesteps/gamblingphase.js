@@ -2,7 +2,7 @@ const _ = require('underscore');
 const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const CheatingResolutionPrompt = require('./gambling/cheatingresolutionprompt.js');
-const RevealDrawHandPrompt = require('./revealdrawhandprompt.js');
+const DrawHandPrompt = require('./shootout/drawhandprompt.js');
 
 class GamblingPhase extends Phase {
     constructor(game) {
@@ -13,8 +13,8 @@ class GamblingPhase extends Phase {
         this.initialise([
             new SimpleStep(game, () => this.ante()),
             new SimpleStep(game, () => this.game.drawHands()),
-            // TODO M2 Shootout testing - comment out RevealDrawHandPrompt and CheatingResolutionPrompt
-            new RevealDrawHandPrompt(game),
+            // TODO M2 Shootout testing - comment out DrawHandPrompt and CheatingResolutionPrompt
+            new DrawHandPrompt(game),
             new SimpleStep(game, () => this.game.revealHands()),
             new CheatingResolutionPrompt(game),
             new SimpleStep(game, () => this.determineWinner()),

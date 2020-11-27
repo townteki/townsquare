@@ -1,5 +1,4 @@
 const Phase = require('./phase.js');
-const RevealDrawHandPrompt = require('./revealdrawhandprompt.js');
 const ContinuousPlayerOrderPrompt = require('./continuousplayerorderprompt.js');
 const PickYerShooterPrompt = require('./shootout/pickyershooterprompt.js');
 const ShootoutPossePrompt = require('./shootout/shootoutposseprompt.js');
@@ -7,6 +6,7 @@ const TakeYerLumpsPrompt = require('./shootout/takeyerlumpsprompt.js');
 const SimpleStep = require('./simplestep.js');
 const RunOrGunPrompt = require('./shootout/runorgunprompt.js');
 const {ShootoutStatuses} = require('../Constants');
+const DrawPrompt = require('./shootout/drawhandprompt.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
@@ -63,7 +63,6 @@ class Shootout extends Phase {
             new PickYerShooterPrompt(this.game, this.leaderMarkOrder),
             new SimpleStep(this.game, () => this.announcePreDraw()),
             new SimpleStep(this.game, () => this.draw()),
-            new RevealDrawHandPrompt(this.game),
             new SimpleStep(this.game, () => this.revealHands()),
             new ContinuousPlayerOrderPrompt(this.game, 'Make Resolution plays'),
             new SimpleStep(this.game, () => this.determineWinner()),
@@ -192,7 +191,7 @@ class Shootout extends Phase {
     }
 
     draw() {
-
+        this.queueStep(new DrawPrompt(this.game));
     }
 
     revealHands() {
