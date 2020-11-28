@@ -1,0 +1,87 @@
+const ShootoutStatuses = require("../../Constants/ShootoutStatuses");
+
+class ShootoutPosse {
+    constructor(shootout, dude) {
+        this.shootout = shootout;
+        this.player = dude.controller;
+        this.posse = [dude.uuid];
+        this.shooterUuid = null;
+        this.studBonus = 0;
+        this.drawBonus = 0;
+        this.isLeading = this.shootout.leader === dude;
+    }
+
+    isDudeInPosse(dude) {
+        return this.posse.includes(dude.uuid);
+    }
+
+    isEmpty() {
+        return this.posse.length === 0;
+    }
+
+    addToPosse(dude) {
+        this.posse.push(dude.uuid);
+        if (this.isLeading) {
+            dude.shootoutStatus = ShootoutStatuses.LeaderPosse;
+        } else {
+            dude.shootoutStatus = ShootoutStatuses.MarkPosse;
+        }      
+    }
+
+    removeFromPosse(dude) {
+        this.posse = this.posse.filter(posseDudeUuid => posseDudeUuid !== dude.uuid);
+        dude.shootoutStatus = ShootoutStatuses.None;
+    }
+
+    getStudBonus(onlyShooter = false) {
+        let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
+        if (onlyShooter) {
+            return shooter.isStud() ? shooter.bullets : 0;
+        }
+
+        let bonus = this.studBonus;
+        this.posse.forEach(dudeUuid => {
+            let dude = this.player.findCardInPlayByUuid(dudeUuid);
+            if (dude.isStud()) {
+                bonus += dude === shooter ? dude.bullets : 1;
+            }   
+        });
+
+        return bonus;
+    }
+
+    getDrawBonus(onlyShooter = false) {
+        let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
+        if (onlyShooter) {
+            return shooter.isDraw() ? shooter.bullets : 0;
+        }
+
+        let bonus = this.drawBonus;
+        this.posse.forEach(dudeUuid => {
+            let dude = this.player.findCardInPlayByUuid(dudeUuid);
+            if (dude.isDraw()) {
+                bonus += dude === shooter ? dude.bullets : 1;
+            }   
+        });
+
+        return bonus;
+    }
+
+    pickShooter(shooter) {
+        this.shooterUuid = shooter.uuid;
+        if (this.isLeading) {
+            shooter.shootoutStatus = ShootoutStatuses.LeaderShooter;
+        } else {
+            shooter.shootoutStatus = ShootoutStatuses.MarkShooter;
+        }
+    }
+
+    actOnPosse(action) {
+        this.posse.forEach(dudeUuid => {
+            let dude = this.player.findCardInPlayByUuid(dudeUuid);
+            action(dude);
+        });
+    }    
+}
+
+module.exports = ShootoutPosse;

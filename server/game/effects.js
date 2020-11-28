@@ -96,6 +96,26 @@ function dynamicCardModifier(propName) {
 }
 
 const Effects = {
+    setAsStud: function(sourceUuid) {
+        return {
+            apply: function(card) {
+                card.addStudEffect(sourceUuid, 'Stud');
+            },
+            unapply: function(card) {
+                card.removeStudEffect(sourceUuid);
+            }
+        };
+    },
+    setAsDraw: function(sourceUuid) {
+        return {
+            apply: function(card) {
+                card.addStudEffect(sourceUuid, 'Draw');
+            },
+            unapply: function(card) {
+                card.removeStudEffect(sourceUuid);
+            }
+        };
+    },
     setSetupGold: function(value) {
         return {
             targetType: 'player',
