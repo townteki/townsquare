@@ -24,7 +24,15 @@ class DrawHandPrompt extends UiPrompt {
 
     activePrompt(player) {
         if (!this.getDrawCount(player).handDrawn) {
-            return this.menuPrompt(player);
+            let drawCount = this.getDrawCount(player);
+            return {
+                menuTitle: 'Draw shootout hand',
+                buttons: [
+                    { text: ' + Cards', arg: 'moreCards' },
+                    { text: 'Draw ' + drawCount.number + ' Cards', arg: 'draw' },
+                    { text: ' - Cards', arg: 'lessCards' }
+                ]
+            };
         } else {
             return {
                 menuTitle: 'Reveal draw hand?',
@@ -56,30 +64,6 @@ class DrawHandPrompt extends UiPrompt {
         let drawCount = this.getDrawCount(player);
         drawCount.number += amount;
         drawCount.number = drawCount.number < 5 ? 5 : drawCount.number;        
-    }
-
-    moreCards(player) {
-        this.updateDrawCount(player, 1);
-    }
-
-    lessCards(player) {
-        this.updateDrawCount(player, -1);
-    }
-
-    draw(player) {
-        player.drawCardsToHand(this.drawCount, 'draw hand');
-    }
-
-    menuPrompt(player) {
-        let drawCount = this.getDrawCount(player);
-        return {
-            menuTitle: 'Draw shootout hand',
-            buttons: [
-                { text: ' + Cards', arg: 'moreCards' },
-                { text: 'Draw ' + drawCount.number + ' Cards', arg: 'draw' },
-                { text: ' - Cards', arg: 'lessCards' }
-            ]
-        };
     }
 
     onMenuCommand(player, arg) {

@@ -6,7 +6,8 @@ const TakeYerLumpsPrompt = require('./shootout/takeyerlumpsprompt.js');
 const SimpleStep = require('./simplestep.js');
 const RunOrGunPrompt = require('./shootout/runorgunprompt.js');
 const {ShootoutStatuses} = require('../Constants');
-const DrawPrompt = require('./shootout/drawhandprompt.js');
+const DrawHandPrompt = require('./shootout/drawhandprompt.js');
+const ShootoutPosse = require('./shootout/shootoutposse.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
@@ -15,14 +16,12 @@ class Shootout extends Phase {
         this.highNoonPhase = phase;
         this.options = options;
         this.leader = leader;
-        this.leaderPosse = [leader.uuid];
-        this.leaderShooter = null;
         leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
+        this.leaderPosse = new ShootoutPosse(this, leader);
         this.leaderPlayerName = leader.controller.name;
         this.mark = mark;
-        this.markPosse = [mark.uuid];
-        this.markShooter = null;
         mark.shootoutStatus = ShootoutStatuses.MarkPosse;
+        this.markPosse = new ShootoutPosse(this, mark);
         this.markPlayerName = mark.controller.name;
         this.leaderMarkOrder = [this.leader.controller.name, this.mark.controller.name];
         this.shootoutLoseWinOrder = [];
@@ -111,11 +110,11 @@ class Shootout extends Phase {
     }
 
     isDudeInLeaderPosse(dude) {
-        return this.leaderPosse.includes(dude.uuid);
+        return this.leaderPosse.isDudeInPosse(dude);
     }
 
     isDudeInMarkPosse(dude) {
-        return this.markPosse.includes(dude.uuid);
+        return this.markPosse.isDudeInPosse(dude);
     }
 
     isDudeInShootout(dude) {
@@ -131,44 +130,53 @@ class Shootout extends Phase {
     }
 
     checkEndCondition() {
-        return this.leaderPosse.length === 0 || this.markPosse.length === 0;
+        return !this.leaderPosse || !this.markPosse || this.leaderPosse.isEmpty() || this.markPosse.isEmpty();
+    }
+
+    getLeaderDrawCount() {
+        return { player: this.leaderPlayer, number: 5 + this.leaderPosse.getStudBonus() };
+    }
+
+    getMarkDrawCount() {
+        return { player: this.markPlayer, number: 5 + this.markPosse.getStudBonus() };
     }
 
     addToPosse(dude) {
         if (this.belongsToLeaderPlayer(dude)) {
-            this.leaderPosse.push(dude.uuid);
-            dude.shootoutStatus = ShootoutStatuses.LeaderPosse;
+            this.leaderPosse.addToPosse(dude);
         } else if (this.belongsToMarkPlayer(dude)) {
-            this.markPosse.push(dude.uuid);
-            dude.shootoutStatus = ShootoutStatuses.MarkPosse;
+            this.markPosse.addToPosse(dude);
         }
     }
 
     removeFromPosse(dude) {
         if (this.belongsToLeaderPlayer(dude)) {
-            this.leaderPosse = this.leaderPosse.filter(posseDudeUuid => posseDudeUuid !== dude.uuid);
+            this.leaderPosse.removeFromPosse(dude);
         } else if (this.belongsToMarkPlayer(dude)) {
-            this.markPosse = this.markPosse.filter(posseDudeUuid => posseDudeUuid !== dude.uuid);
-        }
-        dude.shootoutStatus = ShootoutStatuses.None;      
+            this.markPosse.removeFromPosse(dude);
+        }   
     }
 
     gatherPosses() {
         this.actOnAllParticipants(dude => dude.moveToShootoutLocation());
     }
 
+    pickShooter(dude) {
+        if (this.isDudeInLeaderPosse(dude)) {
+            this.leaderPosse.pickShooter(dude);
+            return;
+        }
+        if (this.isDudeInMarkPosse(dude)) {
+            this.markPosse.pickShooter(dude);
+        }
+    }
+
     actOnLeaderPosse(action) {
-        this.leaderPosse.forEach(dudeUuid => {
-            let dude = this.leaderPlayer.findCardInPlayByUuid(dudeUuid);
-            action(dude);
-        });
+        this.leaderPosse.actOnPosse(action);
     }
 
     actOnMarkPosse(action) {
-        this.markPosse.forEach(dudeUuid => {
-            let dude = this.markPlayer.findCardInPlayByUuid(dudeUuid);
-            action(dude);
-        });
+        this.markPosse.actOnPosse(action);
     }
 
     actOnAllParticipants(action) {
@@ -191,7 +199,7 @@ class Shootout extends Phase {
     }
 
     draw() {
-        this.queueStep(new DrawPrompt(this.game));
+        this.queueStep(new DrawHandPrompt(this.game, [ this.getLeaderDrawCount(), this.getMarkDrawCount() ]));
     }
 
     revealHands() {
@@ -204,11 +212,11 @@ class Shootout extends Phase {
 
     chamberAnotherRound() {
         // TODO M2 Shootout testing - to end the shootout
-        this.markPosse.forEach(dudeUuid => {
+        this.markPosse.posse.forEach(dudeUuid => {
             var dude = this.markPlayer.findCardInPlayByUuid(dudeUuid);
             dude.shootoutStatus = ShootoutStatuses.None; 
         });
-        this.markPosse = [];
+        this.markPosse.posse = [];
         //
 
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));

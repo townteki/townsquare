@@ -15,14 +15,7 @@ class PickYerShooterPrompt extends PlayerOrderPrompt {
                     this.shootout.isDudeInShootout(card) &&
                     card.controller === this.currentPlayer,
                 onSelect: (player, card) => {
-                    if (player === this.shootout.leaderPlayer) {
-                        this.shootout.leaderShooter = card;
-                        card.shootoutStatus = ShootoutStatuses.LeaderShooter;
-                    }
-                    if (player === this.shootout.markPlayer) {
-                        this.shootout.markShooter = card;
-                        card.shootoutStatus = ShootoutStatuses.MarkShooter;
-                    }
+                    this.shootout.pickShooter(card);
                     this.completePlayer();
                     return true;
                 }

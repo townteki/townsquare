@@ -55,6 +55,7 @@ class BaseCard {
 
         this.abilities = { actions: [], reactions: [], persistentEffects: [], playActions: [] };
         this.parseKeywords(cardData.keywords || '');
+        this.setupCardTextProperties(AbilityDsl);
         this.setupCardAbilities(AbilityDsl);
     }
 
@@ -73,6 +74,19 @@ class BaseCard {
             }
             this.addKeyword(keyword.toLowerCase().trim());
         });
+    }
+
+    setupCardTextProperties(ability) {
+        this.printedKeywords = this.keywords;
+
+        if(this.printedKeywords.length > 0) {
+            this.persistentEffect({
+                match: this,
+                location: 'any',
+                targetLocation: 'any',
+                effect: ability.effects.addMultipleKeywords(this.printedKeywords)
+            });
+        }
     }
 
     //Unsure if we really need this...

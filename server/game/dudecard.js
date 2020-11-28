@@ -68,6 +68,20 @@ class DudeCard extends DrawCard {
         });        
     }
 
+    setupCardTextProperties(ability) {
+        super.setupCardTextProperties(ability);
+        this.studReferenceArray = [];
+        this.studReferenceArray.unshift({ source: this.uuid, shooter: this.shooter});
+    }
+
+    addStudEffect(source, shooterType) {
+        this.studReferenceArray.unshift({ source: source, shooter: shooterType});
+    }
+
+    removeStudEffect(source) {
+        this.studReferenceArray = this.studReferenceArray.filter(studRef => studRef.source !== source);
+    }
+
     sendHome(booted = true, allowBooted = true) {
         this.owner.moveDude(this, this.owner.outfit.uuid, { needToBoot: booted, allowBooted: allowBooted });
     }
@@ -159,6 +173,14 @@ class DudeCard extends DrawCard {
 
     isWanted() {
         return this.tokens[Tokens.bounty] > 0;
+    }
+
+    isStud() {
+        return this.studReferenceArray[0].shooter === 'Stud';
+    }
+
+    isDraw() {
+        return this.studReferenceArray[0].shooter === 'Draw';
     }
 
     getSummary(activePlayer) {
