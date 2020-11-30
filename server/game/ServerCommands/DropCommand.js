@@ -52,10 +52,11 @@ class DropCommand {
         const DrawDeckCardTypes = ['goods', 'dude', 'action', 'deed', 'spell', 'joker'];
         const AllowedTypesForPile = {
             'being played': ['event'],
-            'dead pile': ['character'],
+            'dead pile': DrawDeckCardTypes,
             'discard pile': DrawDeckCardTypes,
             'draw deck': DrawDeckCardTypes,
             'hand': DrawDeckCardTypes,
+            'draw hand': DrawDeckCardTypes,
             'out of game': DrawDeckCardTypes,
             'play area': ['goods', 'spell', 'dude', 'deed']
         };

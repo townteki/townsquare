@@ -60,6 +60,25 @@ class DrawCard extends BaseCard {
         return clone;
     }
 
+    getMenu(player) {
+        let menu = super.getMenu(player);
+
+        if (this.location === 'draw hand') {
+            if(!menu) {
+                menu = [];
+            }
+            menu = menu.concat({ method: 'discard', text: 'Discard', handler: context => {
+                context.player;
+            }});
+        }
+
+        return menu;
+    }
+
+    discard(player) {
+        player.discardCard(this);
+    }
+
     hasPrintedCost() {
         return !this.facedown && this.cardData.cost !== '-';
     }

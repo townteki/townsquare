@@ -333,6 +333,7 @@ class Game extends EventEmitter {
             case 'legend':
                 this.callCardMenuCommand(player.legend, player, menuItem);
                 break;
+            case 'draw hand':
             case 'play area':
                 if(card.controller !== player && !menuItem.anyPlayer) {
                     return;
@@ -930,6 +931,15 @@ class Game extends EventEmitter {
 
     discardDrawHands() {
         this.getPlayers().forEach(player => player.discardDrawHand());
+    }
+
+    drawCardToHand(playerName, handType) {
+        var player = this.getPlayerByName(playerName);
+        if(!player) {
+            return;
+        }
+        
+        player.drawCardsToHand(1, handType);
     }
 
     drawHands(numberToDraw = 5) {
