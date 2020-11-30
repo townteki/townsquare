@@ -82,6 +82,10 @@ class DrawHandPrompt extends UiPrompt {
             return false;
         }
         if (arg === 'revealdraw') {
+            if (player.drawHand.length !== 5) {
+                player.drawHandSelected = false;
+                return false;
+            }
             player.drawHandSelected = true;   
             this.game.addMessage('{0} is ready to reveal their draw hand', player);
             return true;

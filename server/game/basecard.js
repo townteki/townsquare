@@ -445,7 +445,7 @@ class BaseCard {
         }
 
         return [
-            { command: 'click', text: 'Target / Boot / Unboot' }
+            { command: 'click', text: 'Boot / Unboot', location: [ 'play area' ] }
         ].concat(menuActionPairs.map(([action, index]) => action.getMenuItem(index, player)));
     }
 

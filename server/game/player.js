@@ -1022,7 +1022,7 @@ class Player extends Spectator {
             card.moveTo(targetLocation);
         }
 
-        if(targetLocation === 'draw deck' && !options.bottom) {
+        if((targetLocation === 'draw deck' || targetLocation === 'discard pile') && !options.bottom) {
             targetPile.unshift(card);
         } else {
             targetPile.push(card);
