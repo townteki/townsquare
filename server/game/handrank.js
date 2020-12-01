@@ -1,23 +1,5 @@
 const _ = require('lodash');
 
-/**
- * Class to evaluate hand rank from a hand of cards.
- */
-/*
- const handEvaluators = [
-     DeadMansHand,
-     FiveOfAKind,
-     StraightFlush,
-     FourOfAKind,
-     FullHouse,
-     Flush,
-     Straight,
-     ThreeOfAKind,
-     TwoPair,
-     OnePair,
-     HighCard
- ];
-*/
 class HandRank {
     constructor(hand) {
         if(!hand) {
@@ -72,6 +54,19 @@ class PokerHands {
         this.OnePair = new OnePair(orderedHand, jokers);
         this.HighCards = new HighCard(orderedHand);
     }
+
+    static isCheatin(matches) {
+        while (matches.length > 1) {
+            let card = matches.pop();
+            let cheatin = matches.some(matchCard => {
+                return matchCard.value === card.value && matchCard.suit === card.suit;
+            });
+            if (cheatin) {
+                return true;
+            }
+        }
+        return false;    
+    }
 }
 
 
@@ -92,6 +87,7 @@ class DeadMansHand {
             this.rank = 11;
             this.rankName = 'Dead Man\'s Hand';
             this.rankShortName = 'DMH';
+            this.cheatin = false;
         }
     }
 }
@@ -111,6 +107,7 @@ class FiveOfAKind {
                 this.rankName = 'Five of a Kind';
                 this.rankShortName = '5oaK';
                 this.tiebreaker = [i];
+                this.cheatin = jokers == 0;
             }
         }
     }
@@ -138,6 +135,7 @@ class StraightFlush {
                     this.rankName = 'Straight Flush';
                     this.rankShortName = 'SF';
                     this.tiebreaker = [i];
+                    this.cheatin = false;
                 }
             }
         });
@@ -158,6 +156,7 @@ class FourOfAKind {
                 this.rankName = 'Four of a Kind';
                 this.rankShortName = '4oaK';
                 this.tiebreaker = [i];
+                this.cheatin = PokerHands.isCheatin(this.matches);
                 break;
             }
         }
@@ -186,13 +185,14 @@ class FullHouse {
 
                     if(matches2.length + jokers >= 2) {
 
-                        this.matches = matches3 + matches2;
+                        this.matches = matches3.concat(matches2);
 
                         if((this.matches.length + jokers) >= 5) {
                             this.rank = 7;
                             this.rankName = 'Full House';
                             this.rankShortName = 'FH';
                             this.tiebreaker = [i, j];
+                            this.cheatin = PokerHands.isCheatin(this.matches);
                             break;
                         }
                     }
@@ -217,6 +217,7 @@ class Flush {
                 this.rankName = 'Flush';
                 this.rankShortName = 'Fl';
                 this.tiebreaker = hand;
+                this.cheatin = PokerHands.isCheatin(this.matches);
                 return;
             }
 
@@ -240,6 +241,7 @@ class Straight {
                 this.rankName = 'Straight';
                 this.rankShortName = 'Str';
                 this.tiebreaker = [i];
+                this.cheatin = false;
                 break;
             }
         }
@@ -260,6 +262,7 @@ class ThreeOfAKind {
                 this.rankName = 'Three of a Kind';
                 this.rankShortName = '3oaK';
                 this.tiebreaker = [i];
+                this.cheatin = PokerHands.isCheatin(this.matches);
                 break;
             }
         }
@@ -287,13 +290,14 @@ class TwoPair {
 
                     if(matchesSecond.length + jokers >= 2) {
 
-                        this.matches = matchesFirst + matchesSecond;
+                        this.matches = matchesFirst.concat(matchesSecond);
 
                         if((this.matches.length + jokers) >= 5) {
                             this.rank = 3;
                             this.rankName = 'Two Pair';            
                             this.rankShortName = '2P';
                             this.tiebreaker = [i,j];
+                            this.cheatin = PokerHands.isCheatin(this.matches);
                             break;
                         }
                     }
@@ -317,6 +321,7 @@ class OnePair {
                 this.rankName = 'One Pair';
                 this.rankShortName = '1P';
                 this.tiebreaker = [i];
+                this.cheatin = PokerHands.isCheatin(this.matches);
                 break;
             }
         }
@@ -332,6 +337,7 @@ class HighCard {
             this.rankName = 'High Card';
             this.rankShortName = 'Hi';
             this.tiebreaker = hand;
+            this.cheatin = false;
         }
     }
 }

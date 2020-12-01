@@ -43,6 +43,8 @@ const CardSelector = require('../CardSelector.js');
  * ordered            - an optional boolean indicating whether or not to display
  *                      the order of the selection during the prompt.
  * mustSelect         - an array of cards which must be selected.
+ * autoSelect         - boolean that ensures that the card is automatically selected
+ *                      if it is the only selectable card.
  */
 class SelectCardPrompt extends UiPrompt {
     constructor(game, choosingPlayer, properties) {
@@ -60,6 +62,7 @@ class SelectCardPrompt extends UiPrompt {
         this.context = properties.context;
         this.selector = properties.selector || CardSelector.for(properties);
         this.selectedCards = [];
+        this.autoSelect = properties.autoSelect;
         this.mustSelect = properties.mustSelect || [];
         if(this.mustSelect.length > 0) {
             if(this.selector.hasReachedLimit(this.mustSelect, this.numPlayers) && this.mustSelect.length > this.selector.numCards) {
@@ -92,6 +95,13 @@ class SelectCardPrompt extends UiPrompt {
     continue() {
         if(!this.isComplete()) {
             this.highlightSelectableCards();
+            let possibleCards = this.choosingPlayer.getSelectableCards();
+            if (this.autoSelect && possibleCards && possibleCards.length == 1) {
+                if(!this.selectCard(possibleCards[0])) {
+                    return false;
+                }
+                this.fireOnSelect();
+            }
         }
 
         return super.continue();

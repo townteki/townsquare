@@ -238,13 +238,9 @@ class Player extends Spectator {
             this.handRank = new HandRank(this.drawHand).Rank();
         }  
 
-        for (let card of this.drawHand) {
-            card.facedown = false;
-        }
-
         this.drawHandRevealed = true;
-
-        this.game.addMessage('{0} reveals {1} (Rank {2})', this, this.handRank.rankName, this.handRank.rank);
+        let cheatin = this.handRank.cheatin ? 'Cheatin\' ' : ''
+        this.game.addMessage('{0} reveals {1}{2} (Rank {3})', this, cheatin, this.handRank.rankName, this.handRank.rank);
     }    
 
     drawCardsToHand(numCards, target = 'hand') {
