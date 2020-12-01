@@ -83,10 +83,6 @@ class AbilityTarget {
             return;
         }
 
-        if (this.autoSelect && result.eligibleChoices.length == 1) {
-            result.resolve(result.eligibleChoices[0]);
-            return;
-        }
         let otherProperties = Object.assign({}, this.properties);
         delete otherProperties.cardCondition;
         delete otherProperties.choosingPlayer;
@@ -95,6 +91,7 @@ class AbilityTarget {
             context: context,
             source: context.source,
             selector: this.selector,
+            autoSelect: this.autoSelect,
             onSelect: (player, card) => {
                 result.resolve(card);
                 if(!card || card.length === 0) {

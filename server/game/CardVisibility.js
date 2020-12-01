@@ -1,15 +1,9 @@
 const OpenInformationLocations = [
-    'active plot',
-    'agenda',
     'being played',
     'dead pile',
     'discard pile',
-    'duplicate',
-    'faction',
     'out of game',
-    'play area',
-    'revealed plots',
-    'title'
+    'play area'
 ];
 
 class CardVisibility {
@@ -18,7 +12,8 @@ class CardVisibility {
         this.rules = [
             (card) => this.isPublicRule(card),
             (card, player) => this.isControllerRule(card, player),
-            (card, player) => this.isSpectatorRule(card, player)
+            (card, player) => this.isSpectatorRule(card, player),
+            (card, player) => this.isDrawHandRule(card, player)
         ];
     }
 
@@ -32,6 +27,10 @@ class CardVisibility {
 
     removeRule(rule) {
         this.rules = this.rules.filter(r => r !== rule);
+    }
+
+    isDrawHandRule(card, player) {
+        return card.location === 'draw hand' && player.drawHandRevealed;
     }
 
     isPublicRule(card) {
