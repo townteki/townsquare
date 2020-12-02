@@ -298,7 +298,7 @@ class TwoPair {
 
                         this.matches = matchesFirst.concat(matchesSecond);
 
-                        if((this.matches.length + jokers) >= 5) {
+                        if((this.matches.length + jokers) >= 4) {
                             this.rank = 3;
                             this.rankName = 'Two Pair';            
                             this.rankShortName = '2P';
