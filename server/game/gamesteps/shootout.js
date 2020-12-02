@@ -233,16 +233,9 @@ class Shootout extends Phase {
     }
 
     chamberAnotherRound() {
-        // TODO M2 Shootout testing - to end the shootout
-        this.markPosse.posse.forEach(dudeUuid => {
-            var dude = this.markPlayer.findCardInPlayByUuid(dudeUuid);
-            dude.shootoutStatus = ShootoutStatuses.None; 
-        });
-        this.markPosse.posse = [];
-        //
-
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));
-        if (!this.checkEndCondition) {
+        if (!this.checkEndCondition()) {
+            this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
         }   
     }
