@@ -18,7 +18,7 @@ class TradingPrompt extends UiPrompt {
             cardCondition: card => card.gamelocation == this.fromDudeCard.gamelocation && card != this.fromDudeCard,
             onSelect: (player, toDudeCard) => {
                 let targetPlayer = toDudeCard.controller;
-                if (toDudeCard.hasAttachment(true)) {
+                if (toDudeCard.hasAttachmentForTrading()) {
                     this.game.promptForSelect(targetPlayer, {
                         activePromptTitle: 'Select attachment(s) for swapping',
                         multiSelect: true,

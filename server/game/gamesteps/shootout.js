@@ -109,16 +109,16 @@ class Shootout extends Phase {
         this.pipeline.queueStep(step);
     }
 
-    isDudeInLeaderPosse(dude) {
-        return this.leaderPosse.isDudeInPosse(dude);
+    isInLeaderPosse(card) {
+        return this.leaderPosse.isInPosse(card);
     }
 
-    isDudeInMarkPosse(dude) {
-        return this.markPosse.isDudeInPosse(dude);
+    isInMarkPosse(card) {
+        return this.markPosse.isInPosse(card);
     }
 
-    isDudeInShootout(dude) {
-        return this.isDudeInLeaderPosse(dude) || this.isDudeInMarkPosse(dude);
+    isInShootout(card) {
+        return this.isInLeaderPosse(card) || this.isInMarkPosse(card);
     }
 
     belongsToLeaderPlayer(dude) {
@@ -162,11 +162,11 @@ class Shootout extends Phase {
     }
 
     pickShooter(dude) {
-        if (this.isDudeInLeaderPosse(dude)) {
+        if (this.isInLeaderPosse(dude)) {
             this.leaderPosse.pickShooter(dude);
             return;
         }
-        if (this.isDudeInMarkPosse(dude)) {
+        if (this.isInMarkPosse(dude)) {
             this.markPosse.pickShooter(dude);
         }
     }
@@ -208,6 +208,28 @@ class Shootout extends Phase {
 
     determineWinner() {
         this.shootoutLoseWinOrder = [];
+        let markHand = this.markPlayer.getHandRank();
+        let leaderHand = this.leaderPlayer.getHandRank();
+        let winner = this.markPlayer;
+        let loser = this.leaderPlayer;
+        if (leaderHand.rank == markHand.rank) {
+            for(let i = 0; i < leaderHand.tiebreaker.length; i++) {
+                if(leaderHand.tiebreaker[i] > markHand.tiebreaker[i]) {
+                    winner = this.leaderPlayer;
+                    loser = this.markPlayer;
+                }
+            }
+            winner.handResult.casaulties = loser.handResult.casaulties = 1;
+            this.game.addMessage('Shootout ended in a tie, but {0} wins on tiebreaker.', winner);
+        } else {
+            if (leaderHand.rank > markHand.rank) {
+                winner = this.leaderPlayer;
+                loser = this.markPlayer;
+            }
+            loser.handResult.casaulties = Math.abs(leaderHand.rank - markHand.rank);
+            this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', winner, Math.abs(leaderHand.rank - markHand.rank));
+        }
+        this.shootoutLoseWinOrder = [ loser, winner ];
     }
 
     chamberAnotherRound() {

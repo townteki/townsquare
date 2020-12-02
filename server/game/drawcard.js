@@ -159,15 +159,23 @@ class DrawCard extends BaseCard {
         return true;
     }
 
-    hasAttachment(forTrading = true) {
+    hasAttachmentForTrading(condition = () => true) {
+        return this.hasAttachment(condition, true);
+    }
+
+    hasAttachment(condition = () => true, forTrading = false) {
         if (this.attachments.isEmpty()) {
+            return false;
+        }
+        let attsFitCondition = this.attachments.filter(attachment => condition(attachment));
+        if (attsFitCondition.length == 0) {
             return false;
         }
         if (!forTrading) {
             return true;
         }
 
-        let tradingAttachments = this.attachments.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded());
+        let tradingAttachments = attsFitCondition.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded());
         return tradingAttachments.length > 0;
     }
     

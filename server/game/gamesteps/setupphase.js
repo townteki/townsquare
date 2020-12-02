@@ -13,14 +13,14 @@ class SetupPhase extends Phase {
             new SimpleStep(game, () => this.turnOnEffects()),
             new SimpleStep(game, () => this.drawStartingPosse()),
             // TODO M2 Shootout testing - uncomment next line and comment out StartingPossePrompt
-            //new SimpleStep(game, () => this.startPosses()),
-            new StartingPossePrompt(game),
+            new SimpleStep(game, () => this.startPosses()),
+            //new StartingPossePrompt(game),
             new SimpleStep(game, () => this.startGame()),
             new SimpleStep(game, () => this.announceSetupCards()),
             new SimpleStep(game, () => game.raiseEvent('onSetupFinished')),
-            new SimpleStep(game, () => game.activatePersistentEffects()),
+            new SimpleStep(game, () => game.activatePersistentEffects())
             // TODO M2 Shootout testing - comment out GrifterPrompt
-            new GrifterPrompt(game)
+            //new GrifterPrompt(game)
         ]);
     }
 
