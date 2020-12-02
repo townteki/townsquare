@@ -11,8 +11,17 @@ class ShootoutPosse {
         this.isLeading = this.shootout.leader === dude;
     }
 
-    isDudeInPosse(dude) {
-        return this.posse.includes(dude.uuid);
+    isInPosse(card) {
+        if (card.getType() === 'dude') {
+            return this.posse.includes(card.uuid);
+        }
+        if (card.getType() === 'goods' || card.getType() === 'spell') {
+            return this.posse.some(dudeUuid => {
+                let dude = this.player.findCardInPlayByUuid(dudeUuid);
+                return dude.hasAttachment(attachment => attachment.uuid === card.uuid);
+            });
+        }
+        return false;
     }
 
     isEmpty() {

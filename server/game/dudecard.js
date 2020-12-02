@@ -51,7 +51,7 @@ class DudeCard extends DrawCard {
 
         this.action({
             title: 'Trade',
-            condition: () => this.game.currentPhase === 'high noon' && this.hasAttachment(true),
+            condition: () => this.game.currentPhase === 'high noon' && this.hasAttachmentForTrading(),
             target: {
                 activePromptTitle: 'Select attachment(s) to trade',
                 multiSelect: true,
@@ -181,6 +181,18 @@ class DudeCard extends DrawCard {
 
     isDraw() {
         return this.studReferenceArray[0].shooter === 'Draw';
+    }
+
+    isHarrowed() {
+        return this.hasKeyword('harrowed');
+    }
+
+    leavesPlay() {
+        super.leavesPlay();
+
+        if (this.game.shootout) {
+            this.game.shootout.removeFromPosse(this);
+        }
     }
 
     getSummary(activePlayer) {

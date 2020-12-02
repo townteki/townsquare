@@ -1,4 +1,5 @@
 const AbilityAdapter = require('./AbilityAdapter');
+const AceCard = require('./AceCard');
 const AddToHand = require('./AddToHand');
 const CancelEffects = require('./CancelEffects');
 const CheckReserve = require('./CheckReserve');
@@ -28,6 +29,7 @@ const UnbootCard = require('./UnbootCard');
 const TakeControl = require('./TakeControl');
 
 const GameActions = {
+    aceCard: props => new AbilityAdapter(AceCard, props),
     addToHand: props => new AbilityAdapter(AddToHand, props),
     cancelEffects: props => new AbilityAdapter(CancelEffects, props),
     checkReserve: props => new AbilityAdapter(CheckReserve, props),

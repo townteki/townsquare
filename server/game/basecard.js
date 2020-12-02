@@ -374,6 +374,8 @@ class BaseCard {
 
     leavesPlay() {
         this.tokens = {};        
+        this.clearNew();
+        this.gamelocation = '';
     }
 
     clearTokens() {
@@ -689,7 +691,27 @@ class BaseCard {
         if(_.intersection(['spell', 'goods'],[this.getType()]).length > 0) {
             return true;
         }
-    }    
+    }
+
+    coversCasaulties(type = 'any') {
+        if (this.getType() === 'dude') {
+            let harrowCasaulty = this.isHarrowed() ? 1 : 0;
+            if (type === 'ace' || type === 'any') {
+                return 2 + harrowCasaulty;
+            }
+            if (type === 'discard') {
+                return 1 + harrowCasaulty;
+            }
+            return harrowCasaulty;
+        }
+        if ((this.getType() === 'goods' || this.getType() === 'spell') && this.hasKeyword('sidekick')) {
+            if (type === 'ace') {
+                return 0;
+            }
+            return 1;
+        }
+        return 0;
+    }
 
     getShortSummary() {
         return {

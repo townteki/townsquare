@@ -14,7 +14,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                     { text: 'All dudes run', arg: 'allrun' }
                 ],
                 cardCondition: card => card.getType() === 'dude' && 
-                    this.shootout.isDudeInShootout(card),
+                    this.shootout.isInShootout(card),
                 onSelect: (player, card) => {
                     this.completePlayer();
                     return true;

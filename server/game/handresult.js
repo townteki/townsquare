@@ -1,24 +1,30 @@
 const _ = require('lodash');
 
-class HandRank {
+/**
+ * Class to evaluate hand rank from a hand of cards.
+ */
+class HandResult {
     constructor(hand) {
-        if(!hand) {
-            return;
-        }
-
-        if(!_.isArray(hand)) {
+        this.casaulties = 0;
+        this.rank = {rank : 0, rankName: ''};
+        if(!hand || !_.isArray(hand)) {
             return;
         }
 
         this.pokerHands = _.filter(new PokerHands(hand), (hr) => (hr.rank !== undefined));
-
-        //console.log(this.pokerHands);
+        let bestRank = _.orderBy(this.pokerHands, 'rank', 'desc');
+        this.rank = (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
     }
 
-    Rank() {
-        let bestRank = _.orderBy(this.pokerHands, 'rank', 'desc');
-        //console.log(bestRank);
-        return (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
+    getRank() {
+        return this.rank;
+    }
+
+    coverCasaulties(number) {
+        this.casaulties -= number;
+        if (this.casaulties < 0) {
+            this.casaulties = 0;
+        }
     }
 
 }
@@ -342,4 +348,4 @@ class HighCard {
     }
 }
 
-module.exports = HandRank;
+module.exports = HandResult;

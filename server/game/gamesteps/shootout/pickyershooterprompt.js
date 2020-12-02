@@ -13,7 +13,7 @@ class PickYerShooterPrompt extends PlayerOrderPrompt {
                 activePromptTitle: 'Select Yer Shooter',
                 autoSelect: true,
                 cardCondition: card => card.getType() === 'dude' && 
-                    this.shootout.isDudeInShootout(card) &&
+                    this.shootout.isInShootout(card) &&
                     card.controller === this.currentPlayer,
                 onSelect: (player, card) => {
                     this.shootout.pickShooter(card);
