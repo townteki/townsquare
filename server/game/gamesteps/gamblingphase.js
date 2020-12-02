@@ -14,9 +14,9 @@ class GamblingPhase extends Phase {
             new SimpleStep(game, () => this.ante()),
             new SimpleStep(game, () => this.game.drawHands()),
             // TODO M2 Shootout testing - comment out DrawHandPrompt and CheatingResolutionPrompt
-            //new DrawHandPrompt(game),
+            new DrawHandPrompt(game),
             new SimpleStep(game, () => this.game.revealHands()),
-            //new CheatingResolutionPrompt(game),
+            new CheatingResolutionPrompt(game),
             new SimpleStep(game, () => this.determineWinner()),
             new SimpleStep(game, () => this.gainLowballPot()),
             new SimpleStep(game, () => this.game.discardDrawHands())
