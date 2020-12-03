@@ -5,7 +5,7 @@ const Spectator = require('./spectator.js');
 const CardMatcher = require('./CardMatcher');
 const DrawCard = require('./drawcard.js');
 const Deck = require('./Deck');
-const HandRank = require('./handrank.js');
+const HandResult = require('./handresult.js');
 const Location = require('./gamelocation.js');
 const AtomicEvent = require('./AtomicEvent');
 const Event = require('./event');
@@ -226,7 +226,7 @@ class Player extends Spectator {
 
         this.drawHandRevealed = false;
         this.drawHandSelected = false;
-        this.handRank = {rank: 0};
+        this.handResult = new HandResult();
     }
 
     resetPass() {
@@ -235,16 +235,12 @@ class Player extends Spectator {
 
     revealDrawHand() {
         if(this.drawHand.length > 1) {
-            this.handRank = new HandRank(this.drawHand).Rank();
+            this.handResult = new HandResult(this.drawHand);
         }  
 
-        for (let card of this.drawHand) {
-            card.facedown = false;
-        }
-
         this.drawHandRevealed = true;
-
-        this.game.addMessage('{0} reveals {1} (Rank {2})', this, this.handRank.rankName, this.handRank.rank);
+        let cheatin = this.getHandRank().cheatin ? 'Cheatin\' ' : ''
+        this.game.addMessage('{0} reveals {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }    
 
     drawCardsToHand(numCards, target = 'hand') {
@@ -373,7 +369,7 @@ class Player extends Spectator {
         this.addOutfitToTown();
 
         this.ghostrock = this.outfit.wealth || 0;
-        this.handRank = {rank: 0};
+        this.handResult = new HandResult();
     }
 
     startGame() {
@@ -773,7 +769,11 @@ class Player extends Spectator {
         this.passTurn = false;
      
         _.each(this.cardsInPlay, card => card.clearNew());
-    }    
+    }
+
+    getHandRank() {
+        return this.handResult.rank;
+    }
 
     promptForAttachment(card, playingType) {
         // TODO: Really want to move this out of here.
@@ -824,7 +824,23 @@ class Player extends Spectator {
         if(UUID.test(target) || target === TownSquareUUID || /street/.test(target)) {
             return true;
         }
-    }   
+    }
+
+    aceCard(card, allowSave = true, callback = () => true, options = {}) {
+        let action = GameActions.aceCard({
+            card,
+            allowSave,
+            source: options.source,
+            originalLocation: card.location
+        });
+        let event = this.game.resolveGameAction(action);
+        event.thenExecute(() => {
+            let cards = event.childEvents.map(childEvent => childEvent.card);
+            callback(cards);
+        });
+
+        return event;
+    }
 
     discardCard(card, allowSave = true, options = {}) {
         this.discardCards([card], allowSave, () => true, options);
@@ -923,8 +939,8 @@ class Player extends Spectator {
     }
 
     moveDude(dude, targetLocationUuid, options = { needToBoot: null, allowBooted: false }) {
-        let origin = this.findLocation(dude.gamelocation);
-        let destination = this.findLocation(targetLocationUuid);
+        let origin = this.game.findLocation(dude.gamelocation);
+        let destination = this.game.findLocation(targetLocationUuid);
         if (origin.uuid === destination.uuid) {
             if (options.needToBoot) {
                 this.bootCard(dude);
@@ -1018,7 +1034,7 @@ class Player extends Spectator {
             card.moveTo(targetLocation);
         }
 
-        if(targetLocation === 'draw deck' && !options.bottom) {
+        if((targetLocation === 'draw deck' || targetLocation === 'discard pile') && !options.bottom) {
             targetPile.unshift(card);
         } else {
             targetPile.push(card);
@@ -1165,7 +1181,7 @@ class Player extends Spectator {
             disconnected: !!this.disconnectedAt,
             outfit: this.outfit.getSummary(activePlayer),
             firstPlayer: this.firstPlayer,
-            handRank: this.handRank,
+            handRank: this.handResult.rank,
             locations: this.locations,
             id: this.id,
             left: this.left,

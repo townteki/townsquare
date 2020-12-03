@@ -33,13 +33,6 @@ const EventRegistrar = require('./eventregistrar.js');
 class CardAction extends BaseAbility {
     constructor(game, card, properties) {
         super(properties);
-
-        const DefaultLocationForType = {
-            event: 'hand',
-            agenda: 'agenda',
-            plot: 'active plot'
-        };
-
         this.game = game;
         this.card = card;
         this.title = properties.title;
@@ -48,7 +41,15 @@ class CardAction extends BaseAbility {
         this.anyPlayer = properties.anyPlayer || false;
         this.condition = properties.condition;
         this.clickToActivate = !!properties.clickToActivate;
-        this.location = properties.location || DefaultLocationForType[card.getPrintedType()] || 'play area';
+        if (properties.location) {
+            if (Array.isArray(properties.location)) {
+                this.location = properties.location;
+            } else {
+                this.location = [ properties.location ];
+            }
+        } else {
+            this.location = [ 'play area' ];
+        }
         this.events = new EventRegistrar(game, this);
         this.activationContexts = [];
 
@@ -77,8 +78,12 @@ class CardAction extends BaseAbility {
         return properties.phase;
     }
 
+    isLocationValid(location) {
+        return this.location.includes(location);
+    }
+
     allowMenu() {
-        return ['play area', 'agenda', 'active plot'].includes(this.location) && this.card.getPrintedType() !== 'event';
+        return this.isLocationValid(this.card.location);
     }
 
     allowPlayer(player) {
@@ -115,11 +120,11 @@ class CardAction extends BaseAbility {
             return false;
         }
 
-        if(this.card.getPrintedType() === 'event' && !context.player.isCardInPlayableLocation(this.card, 'play')) {
+        if(this.card.getPrintedType() === 'action' && !context.player.isCardInPlayableLocation(this.card, 'play')) {
             return false;
         }
 
-        if(this.card.getPrintedType() !== 'event' && this.location !== this.card.location) {
+        if(this.card.getPrintedType() !== 'action' && !this.isLocationValid(this.card.location)) {
             return false;
         }
 
@@ -166,11 +171,11 @@ class CardAction extends BaseAbility {
     }
 
     isPlayableEventAbility() {
-        return this.card.getPrintedType() === 'event' && this.location === 'hand';
+        return this.card.getPrintedType() === 'action' && this.isLocationValid('hand');
     }
 
     incrementLimit() {
-        if(this.location !== this.card.location) {
+        if(!this.isLocationValid(this.card.location)) {
             return;
         }
 
@@ -206,7 +211,7 @@ class CardAction extends BaseAbility {
     }
 
     isEventListeningLocation(location) {
-        return this.location === location;
+        return this.isLocationValid(location);
     }
 
     registerEvents() {

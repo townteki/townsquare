@@ -60,6 +60,25 @@ class DrawCard extends BaseCard {
         return clone;
     }
 
+    getMenu(player) {
+        let menu = super.getMenu(player);
+
+        if (this.location === 'draw hand') {
+            if(!menu) {
+                menu = [];
+            }
+            menu = menu.concat({ method: 'discard', text: 'Discard', handler: context => {
+                context.player;
+            }});
+        }
+
+        return menu;
+    }
+
+    discard(player) {
+        player.discardCard(this);
+    }
+
     hasPrintedCost() {
         return !this.facedown && this.cardData.cost !== '-';
     }
@@ -140,15 +159,23 @@ class DrawCard extends BaseCard {
         return true;
     }
 
-    hasAttachment(forTrading = true) {
+    hasAttachmentForTrading(condition = () => true) {
+        return this.hasAttachment(condition, true);
+    }
+
+    hasAttachment(condition = () => true, forTrading = false) {
         if (this.attachments.isEmpty()) {
+            return false;
+        }
+        let attsFitCondition = this.attachments.filter(attachment => condition(attachment));
+        if (attsFitCondition.length == 0) {
             return false;
         }
         if (!forTrading) {
             return true;
         }
 
-        let tradingAttachments = this.attachments.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded());
+        let tradingAttachments = attsFitCondition.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded());
         return tradingAttachments.length > 0;
     }
     
@@ -213,7 +240,7 @@ class DrawCard extends BaseCard {
                 return attachment.getSummary(activePlayer);
             }),
             booted: this.booted,
-            control: this.control,
+            control: this.control
         };
 
         if(baseSummary.facedown) {

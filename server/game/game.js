@@ -37,6 +37,8 @@ const PlainTextGameChatFormatter = require('./PlainTextGameChatFormatter');
 const GameActions = require('./GameActions');
 const TimeLimit = require('./timeLimit.js');
 const Location = require('./gamelocation.js');
+const Shootout = require('./gamesteps/shootout.js');
+const PlayerOrderPrompt = require('./gamesteps/playerorderprompt.js');
 
 class Game extends EventEmitter {
     constructor(details, options = {}) {
@@ -70,6 +72,7 @@ class Game extends EventEmitter {
         this.abilityWindowStack = [];
         this.password = details.password;
         this.cancelPromptUsed = false;
+        this.shootout = null;
 
         this.cardData = options.cardData || [];
         this.packData = options.packData || [];
@@ -206,6 +209,40 @@ class Game extends EventEmitter {
         }, 0);
     }
 
+    findCardInPlayByUuid(uuid) {
+        if (!uuid) {
+            return;
+        }
+        for (let player of this.getPlayers()) {
+            let foundCard = player.findCardInPlayByUuid(uuid); 
+            if (foundCard) {
+                return foundCard;
+            }            
+        }
+    }    
+
+    findAnyLocations(predicate) {
+        var foundLocations = [];
+
+        _.each(this.getPlayers(), player => {
+            foundLocations = foundLocations.concat(player.findLocations(predicate));
+        });
+
+        return foundLocations;
+    }
+    
+    findLocation(uuid) {
+        if (!uuid) {
+            return;
+        }
+        for (let player of this.getPlayers()) {
+            let foundLocation = player.findLocation(uuid); 
+            if (foundLocation) {
+                return foundLocation;
+            }
+        }
+    }
+
     addEffect(source, properties) {
         this.addSimultaneousEffects([{ source: source, properties: properties }]);
     }
@@ -296,6 +333,7 @@ class Game extends EventEmitter {
             case 'legend':
                 this.callCardMenuCommand(player.legend, player, menuItem);
                 break;
+            case 'draw hand':
             case 'play area':
                 if(card.controller !== player && !menuItem.anyPlayer) {
                     return;
@@ -891,6 +929,27 @@ class Game extends EventEmitter {
         inPlayCards[0].owner.discardCards(inPlayCards, options.allowSave, callback, options);
     }
 
+    discardDrawHands() {
+        this.getPlayers().forEach(player => player.discardDrawHand());
+    }
+
+    drawCardToHand(playerName, handType) {
+        var player = this.getPlayerByName(playerName);
+        if(!player) {
+            return;
+        }
+        
+        player.drawCardsToHand(1, handType);
+    }
+
+    drawHands(numberToDraw = 5) {
+        this.getPlayers().forEach(player => player.drawCardsToHand(numberToDraw, 'draw hand'));
+    }
+
+    revealHands() {
+        this.getPlayers().forEach(player => player.revealDrawHand());
+    }    
+
     killCharacters(cards, options = {}) {
         options = Object.assign({ allowSave: true, isBurn: false }, options);
         this.queueStep(new KillCharacters(this, cards, options));
@@ -952,6 +1011,27 @@ class Game extends EventEmitter {
         card.controller.cardsInPlay.push(card);
 
         this.handleControlChange(card);
+    }
+
+    startShootout(leader, mark) {
+        if (!this.shootout) {
+            this.shootout = new Shootout(this, this.currentPhase, leader, mark);
+        } else {
+            // TODO M2 info that shootout is already happening
+            return;
+        }
+        this.currentPhase = this.shootout.name;
+        this.queueStep(this.shootout);
+    }
+
+    endShootout() {
+        if (!this.shootout) {
+             // TODO M2 info that shootout is not happening
+             return;
+        } else {
+            this.shootout = null;
+            this.passToNextPlayer();
+        }      
     }
 
     handleControlChange(card) {
@@ -1111,6 +1191,12 @@ class Game extends EventEmitter {
         this.pipeline.continue();
     }
 
+    passToNextPlayer() {
+        if (this.currentPhase === 'high noon') {
+            this.pipeline.getCurrentStep().passToNextPlayer();
+        }
+    }
+
     getGameElementType() {
         return 'game';
     }
@@ -1193,7 +1279,6 @@ class Game extends EventEmitter {
             playerSummaries[player.name] = {
                 agenda: player.agenda ? player.agenda.code : undefined,
                 deck: deck,
-                faction: player.faction.code,
                 id: player.id,
                 lobbyId: player.lobbyId,
                 left: player.left,

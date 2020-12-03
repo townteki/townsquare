@@ -1,46 +1,20 @@
 //const _ = require('underscore');
 const Phase = require('./phase.js');
-const SimpleStep = require('./simplestep.js');
-const PlayerOrderContinuousPrompt = require('./playerordercontinuousprompt.js');
+const ContinuousPlayerOrderPrompt = require('./continuousplayerorderprompt.js');
 
 class HighNoonPhase extends Phase {
     constructor(game) {
         super(game, 'high noon');
+        this.prompt = new ContinuousPlayerOrderPrompt(game, 'Actin\', Callin\' Out, Movin\', Shoppin\', or Tradin\'');
         this.initialise([
-            new PlayerOrderContinuousPrompt(game)
+            this.prompt
         ]);
     }
 
-    /*
-    prepareDecks() {
-        this.game.raiseEvent('onDecksPrepared');
-        _.each(this.game.getPlayers(), player => {
-            if(player.agenda) {
-                player.agenda.applyPersistentEffects();
-            }
-        });
-        this.game.allCards.each(card => {
-            card.applyAnyLocationPersistentEffects();
-        });
+    passToNextPlayer() {
+        this.prompt.nextPlayer();
     }
 
-    drawStartingPosse() {
-        _.each(this.game.getPlayers(), player => {
-            player.drawCardsToHand('hand', player.startingPosse);
-        });
-    }
-
-    startGame() {
-        _.each(this.game.getPlayers(), player => {
-            player.startGame();
-        });
-    }
-
-    setupDone() {
-        _.each(this.game.getPlayers(), p => {
-            p.setupDone();
-        });
-    }*/
 }
 
 module.exports = HighNoonPhase;

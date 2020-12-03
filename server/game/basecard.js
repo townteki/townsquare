@@ -55,6 +55,7 @@ class BaseCard {
 
         this.abilities = { actions: [], reactions: [], persistentEffects: [], playActions: [] };
         this.parseKeywords(cardData.keywords || '');
+        this.setupCardTextProperties(AbilityDsl);
         this.setupCardAbilities(AbilityDsl);
     }
 
@@ -73,6 +74,19 @@ class BaseCard {
             }
             this.addKeyword(keyword.toLowerCase().trim());
         });
+    }
+
+    setupCardTextProperties(ability) {
+        this.printedKeywords = this.keywords;
+
+        if(this.printedKeywords.length > 0) {
+            this.persistentEffect({
+                match: this,
+                location: 'any',
+                targetLocation: 'any',
+                effect: ability.effects.addMultipleKeywords(this.printedKeywords)
+            });
+        }
     }
 
     //Unsure if we really need this...
@@ -360,6 +374,8 @@ class BaseCard {
 
     leavesPlay() {
         this.tokens = {};        
+        this.clearNew();
+        this.gamelocation = '';
     }
 
     clearTokens() {
@@ -431,7 +447,7 @@ class BaseCard {
         }
 
         return [
-            { command: 'click', text: 'Target / Boot / Unboot' }
+            { command: 'click', text: 'Boot / Unboot', location: [ 'play area' ] }
         ].concat(menuActionPairs.map(([action, index]) => action.getMenuItem(index, player)));
     }
 
@@ -561,12 +577,12 @@ class BaseCard {
         return cardText.includes(text.toLowerCase());
     }
 
-    get gold() {
-        return this.tokens[Tokens.gold] || 0;
+    get ghostrock() {
+        return this.tokens[Tokens.ghostrock] || 0;
     }
 
-    modifyGold(amount) {
-        this.modifyToken(Tokens.gold, amount);
+    modifyGhostrock(amount) {
+        this.modifyToken(Tokens.ghostrock, amount);
     }
 
     addToken(type, number) {
@@ -621,14 +637,21 @@ class BaseCard {
 
     clearDirty() {
         this.isDirty = false;
-    }   
+    }
+
+    getLocation() {
+        if (!this.gamelocation) {
+            return;
+        }
+        return this.game.findLocation(this.gamelocation);
+    }
 
     moveToLocation(player, destinationUuid) {
-        let origin = player.findLocation(this.gamelocation);
+        let origin = this.getLocation();
         if (origin) {
             origin.removeDude(this);
         }
-        let destination = player.findLocation(destinationUuid);
+        let destination = this.game.findLocation(destinationUuid);
         if (destination) {
             destination.addDude(this);
         }
@@ -668,7 +691,27 @@ class BaseCard {
         if(_.intersection(['spell', 'goods'],[this.getType()]).length > 0) {
             return true;
         }
-    }    
+    }
+
+    coversCasaulties(type = 'any') {
+        if (this.getType() === 'dude') {
+            let harrowCasaulty = this.isHarrowed() ? 1 : 0;
+            if (type === 'ace' || type === 'any') {
+                return 2 + harrowCasaulty;
+            }
+            if (type === 'discard') {
+                return 1 + harrowCasaulty;
+            }
+            return harrowCasaulty;
+        }
+        if ((this.getType() === 'goods' || this.getType() === 'spell') && this.hasKeyword('sidekick')) {
+            if (type === 'ace') {
+                return 0;
+            }
+            return 1;
+        }
+        return 0;
+    }
 
     getShortSummary() {
         return {
