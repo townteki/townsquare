@@ -581,7 +581,7 @@ class BaseCard {
         return this.tokens[Tokens.ghostrock] || 0;
     }
 
-    modifyGhostrock(amount) {
+    modifyGhostRock(amount) {
         this.modifyToken(Tokens.ghostrock, amount);
     }
 

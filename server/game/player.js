@@ -20,6 +20,7 @@ const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
 
 const { UUID, TownSquareUUID, StartingHandSize } = require('./Constants');
+const GhostRockSource = require('./GhostRockSource.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -39,6 +40,7 @@ class Player extends Spectator {
         this.discardPile = [];
         this.additionalPiles = {};
         this.triggerRestrictions = [];
+        this.playCardRestrictions = [];
 
         this.owner = owner;
         this.promptedActionWindows = user.promptedActionWindows;
@@ -47,6 +49,7 @@ class Player extends Spectator {
         this.deck = {};
         this.handSize = StartingHandSize;
         this.costReducers = [];
+        this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;        
         this.shuffleArray = shuffle;
@@ -202,11 +205,6 @@ class Player extends Spectator {
         }
 
         return amount;
-    }
-
-    modifyUsedPlots(value) {
-        this.usedPlotsModifier += value;
-        this.game.raiseEvent('onUsedPlotsModified', { player: this });
     }
 
     getNumCardsToDraw(amount) {
@@ -426,6 +424,25 @@ class Player extends Spectator {
         return card.getCost();
     }
 
+    addGhostRockSource(source) {
+        this.ghostrockSources.unshift(source);
+    }
+
+    removeGhostRockSource(source) {
+        this.ghostrockSources = this.ghostrockSources.filter(s => s !== source);
+    }
+
+    getSpendableGhostRockSources(spendParams) {
+        let activePlayer = spendParams.activePlayer || this.game.currentAbilityContext && this.game.currentAbilityContext.player || this;
+        let defaultedSpendParams = Object.assign({ activePlayer: activePlayer, playingType: 'ability' }, spendParams);
+        return this.ghostrockSources.filter(source => source.allowSpendingFor(defaultedSpendParams));
+    }
+
+    getSpendableGhostRock(spendParams = {}) {
+        let validSources = this.getSpendableGhostRockSources(spendParams);
+        return validSources.reduce((sum, source) => sum + source.ghostrock, 0);
+    }
+
     markUsedReducers(playingType, card) {
         var matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card));
         for(let reducer of matchingReducers) {
@@ -463,8 +480,8 @@ class Player extends Spectator {
         }
     }
 
-    isCharacterDead(card) {
-        return card.getPrintedType() === 'character' && card.isUnique() && this.deadPile.some(c => c.name === card.name);
+    isAced(card) {
+        return card.isUnique() && this.deadPile.some(c => c.title === card.title);
     }
 
     playCard(card) {
@@ -497,13 +514,11 @@ class Player extends Spectator {
     }
 
     canPlay(card, playingType = 'play') {
-        return true;
-        //TODO M2 is this needed?
-        //return !this.playCardRestrictions.some(restriction => restriction(card, playingType));
+        return !this.playCardRestrictions.some(restriction => restriction(card, playingType));
     }
 
     canPutIntoPlay(card, playingType = 'play', options = {}) {
-        if(card.getPrintedType() === 'event') {
+        if(card.getType() === 'action') {
             return false;
         }
 
@@ -521,25 +536,25 @@ class Player extends Spectator {
             return true;
         }
 
-        if(this.isCharacterDead(card) && !this.canResurrect(card)) {
+        if(this.isAced(card)) {
             return false;
         }
 
         if(owner === this) {
-            let controlsAnOpponentsCopy = this.anyCardsInPlay(c => c.name === card.name && c.owner !== this && !c.facedown);
+            let controlsAnOpponentsCopy = this.anyCardsInPlay(c => c.title === card.title && c.owner !== this && !c.facedown);
             let opponentControlsOurCopy = this.game.getPlayers().some(player => {
-                return player !== this && player.anyCardsInPlay(c => c.name === card.name && c.owner === this && c !== card && !c.facedown);
+                return player !== this && player.anyCardsInPlay(c => c.title === card.title && c.owner === this && c !== card && !c.facedown);
             });
 
             return !controlsAnOpponentsCopy && !opponentControlsOurCopy;
         }
 
-        if(owner.isCharacterDead(card) && !owner.canResurrect(card)) {
+        if(owner.isAced(card)) {
             return false;
         }
 
-        let controlsACopy = this.anyCardsInPlay(c => c.name === card.name && !c.facedown);
-        let opponentControlsACopy = owner.anyCardsInPlay(c => c.name === card.name && c !== card && !c.facedown);
+        let controlsACopy = this.anyCardsInPlay(c => c.title === card.title && !c.facedown);
+        let opponentControlsACopy = owner.anyCardsInPlay(c => c.title === card.title && c !== card && !c.facedown);
 
         return !controlsACopy && !opponentControlsACopy;
     }

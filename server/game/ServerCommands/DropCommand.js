@@ -37,7 +37,9 @@ class DropCommand {
             this.player.moveCard(this.card, this.targetLocation);
         }
 
-        this.addGameMessage();
+        if (this.game.currentPhase !== 'setup') {
+            this.addGameMessage();
+        }
     }
 
     isValidLocation() {

@@ -30,7 +30,7 @@ const NullEvent = require('./NullEvent');
 const AtomicEvent = require('./AtomicEvent.js');
 const GroupedCardEvent = require('./GroupedCardEvent.js');
 const SimultaneousEvents = require('./SimultaneousEvents');
-const ChooseGoldSourceAmounts = require('./gamesteps/ChooseGoldSourceAmounts.js');
+const ChooseGRSourceAmounts = require('./gamesteps/ChooseGRSourceAmounts.js');
 const DropCommand = require('./ServerCommands/DropCommand');
 const CardVisibility = require('./CardVisibility');
 const PlainTextGameChatFormatter = require('./PlainTextGameChatFormatter');
@@ -378,15 +378,6 @@ class Game extends EventEmitter {
         command.execute();
     }
 
-    addPower(player, power) {
-        if(!player.faction.allowGameAction('gainPower')) {
-            this.addMessage('{0} is unable to gain power for their faction', player);
-            return;
-        }
-
-        player.faction.modifyPower(power);
-    }
-
     addGhostRock(player, ghostrock) {
         if(ghostrock > 0 && player.cannotGainGhostRock) {
             this.addMessage('{0} cannot gain ghost rock', player);
@@ -403,69 +394,69 @@ class Game extends EventEmitter {
     }
 
     /**
-     * Spends a specified amount of gold for a player. "Spend" refers to any
-     * usage of gold that returns gold to the treasury as part of an ability
-     * cost, or gold that has been moved from a player's gold pool to a card.
+     * Spends a specified amount of ghostrock for a player. "Spend" refers to any
+     * usage of ghostrock that returns ghostrock to the bank as part of Shoppin', 
+     * an ability cost, or ghostrock that has been moved from a player's stash to a card.
      *
      * @param {Object} spendParams
      * @param {number} spendParams.amount
-     * The amount of gold being spent
+     * The amount of ghostrock being spent
      * @param {Player} spendParams.player
-     * The player whose gold is being spent
+     * The player whose ghostrock is being spent
      * @param {string} spendParams.playingType
-     * The type of usage for the gold (e.g. 'marshal', 'ambush', 'ability', etc)
+     * The type of usage for the ghostrock (e.g. 'shoppin', 'ability', etc)
      * @param {Function} callback
-     * Optional callback that will be called after the gold has been spent
+     * Optional callback that will be called after the ghostrock has been spent
      */
-    spendGold(spendParams, callback = () => true) {
+    spendGhostRock(spendParams, callback = () => true) {
         let activePlayer = spendParams.activePlayer || this.currentAbilityContext && this.currentAbilityContext.player;
         spendParams = Object.assign({ playingType: 'ability', activePlayer: activePlayer }, spendParams);
 
-        //this.queueStep(new ChooseGoldSourceAmounts(this, spendParams, callback));
+        this.queueStep(new ChooseGRSourceAmounts(this, spendParams, callback));
     }
 
     /**
-     * Transfers gold from one gold source to another. Both the source and the
+     * Transfers ghostrock from one ghostrock source to another. Both the source and the
      * target for the transfer can be either a card or a player.
      *
      * @param {Object} transferParams
      * @param {number} transferParams.amount
-     * The amount of gold being moved
+     * The amount of ghostrock being moved
      * @param {(BaseCard|Player)} transferParams.from
-     * The source object from which gold is being moved
+     * The source object from which ghostrock is being moved
      * @param {(BaseCard|Player)} transferParams.to
-     * The target object to which gold is being moved
+     * The target object to which ghostrock is being moved
      */
-    transferGold(transferParams) {
+    transferGhostRock(transferParams) {
         let { from, to, amount } = transferParams;
-        let appliedGold = Math.min(from.gold, amount);
+        let appliedGR = Math.min(from.ghostrock, amount);
 
         if(from.getGameElementType() === 'player') {
             let activePlayer = transferParams.activePlayer || this.currentAbilityContext && this.currentAbilityContext.player;
-            appliedGold = Math.min(from.getSpendableGold({ player: from, activePlayer: activePlayer }), amount);
-            this.spendGold({ amount: appliedGold, player: from, activePlayer: activePlayer }, () => {
-                to.modifyGold(appliedGold);
-                this.raiseEvent('onGoldTransferred', { source: from, target: to, amount: appliedGold });
+            appliedGR = Math.min(from.getSpendableGold({ player: from, activePlayer: activePlayer }), amount);
+            this.spendGhostRock({ amount: appliedGR, player: from, activePlayer: activePlayer }, () => {
+                to.modifyGhostRock(appliedGR);
+                this.raiseEvent('onGhostRockTransferred', { source: from, target: to, amount: appliedGR });
             });
             return;
         }
 
-        from.modifyGold(-appliedGold);
-        to.modifyGold(appliedGold);
+        from.modifyGhostRock(-appliedGR);
+        to.modifyGhostRock(appliedGR);
 
-        this.raiseEvent('onGoldTransferred', { source: from, target: to, amount: appliedGold });
+        this.raiseEvent('onGhostRockTransferred', { source: from, target: to, amount: appliedGR });
     }
 
     /**
-     * Returns the specified amount of gold from a player to the treasury.
+     * Returns the specified amount of ghostrock from a player to the bank.
      *
      * @param {Object} params
-     * @param {Player} params.player The player whose gold pool will be deducted
-     * @param {number} params.amount The amount of gold being returned
+     * @param {Player} params.player The player whose stash will be deducted
+     * @param {number} params.amount The amount of ghostrock being returned
      */
-    returnGoldToTreasury(params) {
+    returnGhostRockToBank(params) {
         let { player, amount } = params;
-        let appliedAmount = Math.min(player.gold, amount);
+        let appliedAmount = Math.min(player.ghostrock, amount);
 
         player.modifyGhostRock(-appliedAmount);
     }
