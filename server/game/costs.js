@@ -275,7 +275,7 @@ const Costs = {
             },
             pay: function(context) {
                 context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
-                context.game.spendGold({ amount: context.costs.ghostrock, player: context.player, playingType: playingType });
+                context.game.spendGhostRock({ amount: context.costs.ghostrock, player: context.player, playingType: playingType });
                 context.player.markUsedReducers(playingType, context.source);
             }
         };

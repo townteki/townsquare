@@ -2,13 +2,14 @@ const BaseAbility = require('../baseability');
 const Costs = require('../costs');
 
 class ShoppinCardAction extends BaseAbility {
-    constructor() {
+    constructor(target = '') {
         super({
             abilitySourceType: 'game',
             cost: [
                 Costs.payReduceableGRCost('shoppin')
             ]
         });
+        this.target = target;
         this.title = 'Play';
     }
 
@@ -36,8 +37,8 @@ class ShoppinCardAction extends BaseAbility {
             type: 'card'
         };
         context.game.raiseEvent('onCardPlayedAsShoppin', params, () => {
-            context.game.addMessage('{0} does Shoppin\' to bring into play {1} costing {2} gold', context.player, context.source, context.costs.gold);
-            context.player.putIntoPlay(context.source, 'shoppin');
+            context.game.addMessage('{0} does Shoppin\' to bring into play {1} costing {2} GR', context.player, context.source, context.costs.ghostrock);
+            context.player.putIntoPlay(context.source, 'shoppin', {}, this.target);
         });
     }
 

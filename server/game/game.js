@@ -268,10 +268,6 @@ class Game extends EventEmitter {
             return;
         }
 
-        if(['hand', 'discard pile', 'boothill pile'].includes(card.location) && player.playCard(card)) {
-            return;
-        }
-
         if(card.onClick(player)) {
             return;
         } 
@@ -333,6 +329,7 @@ class Game extends EventEmitter {
             case 'legend':
                 this.callCardMenuCommand(player.legend, player, menuItem);
                 break;
+            case 'hand':
             case 'draw hand':
             case 'play area':
                 if(card.controller !== player && !menuItem.anyPlayer) {

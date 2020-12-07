@@ -564,28 +564,26 @@ class Player extends Spectator {
             return;
         }
 
-        if(card.isAttachment()) {
-            this.promptForAttachment(card, playingType);
-            return;
+        if (!target) {
+            target = '';
         }
 
-        let originalLocation = card.location;
-
         card.facedown = false;
-        card.new = true;
-
         switch(card.getType()) {
+            case 'spell':
+            case 'goods':
+                this.game.queueStep(new AttachmentPrompt(this.game, this, card, playingType, target));
+                break;
             case 'dude':
-                card.moveToLocation(this, target);
+                card.moveToLocation(this, target, playingType);
+                this.moveCard(card, 'play area');  
                 break;
             case 'deed':
                 this.addDeedToStreet(card, target);
                 break;
             default:
                 //empty
-        }
-
-        this.moveCard(card, 'play area');      
+        }    
 
         if(card.controller !== this) {
             card.controller.allCards = _(card.controller.allCards.reject(c => c === card));
@@ -596,7 +594,7 @@ class Player extends Spectator {
 
         card.applyPersistentEffects();        
 
-        this.game.raiseEvent('onCardEntersPlay', { card: card, playingType: playingType, originalLocation: originalLocation });
+        this.game.raiseEvent('onCardEntersPlay', { card: card, playingType: playingType, originalLocation: card.location });
     }
 
     revealSetupCards() {
@@ -644,16 +642,20 @@ class Player extends Spectator {
         });
     }
 
-    canAttach(attachment, card) {
+    canAttach(attachment, card, playingType) {
         if(!attachment || !card) {
             return false;
         }
 
-        return (
-            card.location === 'play area' &&
-            card !== attachment &&
-            attachment.canAttach(this, card)
-        );
+        if (card.location !== 'play area' || card === attachment || !attachment.canAttach(this, card)) {
+            return false;
+        }
+
+        if (playingType === 'shoppin' && (card.getLocation().getController(this.game) !== this) || card.booted) {
+            return false;
+        }
+
+        return true;
     }
 
     attach(controller, attachment, card, playingType, facedown = false) {
@@ -790,11 +792,6 @@ class Player extends Spectator {
         return this.handResult.rank;
     }
 
-    promptForAttachment(card, playingType) {
-        // TODO: Really want to move this out of here.
-        this.game.queueStep(new AttachmentPrompt(this.game, this, card, playingType));
-    }
-
     leftmostDeed() {
         let sorted = _.sortBy(this.locations.filter(location => location.order != null), 'order');
         let leftmost = sorted.shift();
@@ -817,6 +814,7 @@ class Player extends Spectator {
         } else {
             this.promptForDeedStreetSide(card);
         }
+        this.moveCard(card, 'play area');  
     }
 
     addDeedToLeft(card) {

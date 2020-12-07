@@ -646,17 +646,6 @@ class BaseCard {
         return this.game.findLocation(this.gamelocation);
     }
 
-    moveToLocation(player, destinationUuid) {
-        let origin = this.getLocation();
-        if (origin) {
-            origin.removeDude(this);
-        }
-        let destination = this.game.findLocation(destinationUuid);
-        if (destination) {
-            destination.addDude(this);
-        }
-    }
-
     updateGameLocation(target) {
         if(this.getType() === 'dude') {
             this.gamelocation = target;
