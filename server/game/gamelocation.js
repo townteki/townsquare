@@ -30,6 +30,14 @@ class GameLocation {
         this.occupants = [];
     }
 
+    getController(game) {
+        let locationCard = this.getLocationCard(game);
+        if (!locationCard) {
+            return;
+        }
+        return locationCard.controller;
+    }
+
     getLocationCard(game) {
         return game.findCardInPlayByUuid(this.uuid);
     }

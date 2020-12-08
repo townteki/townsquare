@@ -2,13 +2,13 @@ const range = require('lodash.range');
 
 const BaseStep = require('./basestep');
 
-class ChooseGoldSourceAmounts extends BaseStep {
+class ChooseGRSourceAmounts extends BaseStep {
     constructor(game, spendParams, callback) {
         super(game);
 
         this.remainingAmount = spendParams.amount;
         this.player = spendParams.player;
-        this.sources = this.player.getSpendableGoldSources(spendParams);
+        this.sources = this.player.getSpendableGhostRockSources(spendParams);
         this.spendParams = spendParams;
         this.callback = callback;
     }
@@ -20,13 +20,13 @@ class ChooseGoldSourceAmounts extends BaseStep {
             }
 
             this.currentSource = this.sources.shift();
-            let currentAvailable = this.currentSource.gold;
+            let currentAvailable = this.currentSource.ghostrock;
             let maxAmount = Math.min(this.remainingAmount, currentAvailable);
             let minAmount = Math.max(0, this.remainingAmount - this.getMaxRemainingAvailable());
 
             if(this.sources.length > 0 && minAmount !== maxAmount) {
                 let buttons = range(minAmount, maxAmount + 1).reverse().map(amount => {
-                    return { text: amount.toString(), method: 'payGold', arg: amount };
+                    return { text: amount.toString(), method: 'payGhostRock', arg: amount };
                 });
                 this.game.promptWithMenu(this.player, this, {
                     activePrompt: {
@@ -37,17 +37,17 @@ class ChooseGoldSourceAmounts extends BaseStep {
                 return false;
             }
 
-            this.payGold(this.player, maxAmount);
+            this.payGhostRock(this.player, maxAmount);
         }
     }
 
     getMaxRemainingAvailable() {
-        return this.sources.reduce((sum, source) => sum + source.gold, 0);
+        return this.sources.reduce((sum, source) => sum + source.ghostrock, 0);
     }
 
-    payGold(player, amount) {
+    payGhostRock(player, amount) {
         this.remainingAmount -= amount;
-        this.currentSource.modifyGold(-amount);
+        this.currentSource.modifyGhostRock(-amount);
 
         if(this.remainingAmount === 0) {
             this.callback();
@@ -57,4 +57,4 @@ class ChooseGoldSourceAmounts extends BaseStep {
     }
 }
 
-module.exports = ChooseGoldSourceAmounts;
+module.exports = ChooseGRSourceAmounts;

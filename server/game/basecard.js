@@ -581,7 +581,7 @@ class BaseCard {
         return this.tokens[Tokens.ghostrock] || 0;
     }
 
-    modifyGhostrock(amount) {
+    modifyGhostRock(amount) {
         this.modifyToken(Tokens.ghostrock, amount);
     }
 
@@ -644,17 +644,6 @@ class BaseCard {
             return;
         }
         return this.game.findLocation(this.gamelocation);
-    }
-
-    moveToLocation(player, destinationUuid) {
-        let origin = this.getLocation();
-        if (origin) {
-            origin.removeDude(this);
-        }
-        let destination = this.game.findLocation(destinationUuid);
-        if (destination) {
-            destination.addDude(this);
-        }
     }
 
     updateGameLocation(target) {

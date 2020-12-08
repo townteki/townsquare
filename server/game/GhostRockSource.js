@@ -1,16 +1,16 @@
-class GoldSource {
+class GhostRockSource {
     constructor(playerOrCard, allowSpendingFunc = () => true) {
         this.playerOrCard = playerOrCard;
         this.allowSpendingFunc = allowSpendingFunc;
     }
 
-    get gold() {
-        return this.playerOrCard.gold;
+    get ghostrock() {
+        return this.playerOrCard.ghostrock;
     }
 
     get name() {
         if(this.playerOrCard.getGameElementType() === 'player') {
-            return `${this.playerOrCard.name}'s gold pool`;
+            return `${this.playerOrCard.name}'s stash`;
         }
 
         return this.playerOrCard.name;
@@ -20,9 +20,9 @@ class GoldSource {
         return this.allowSpendingFunc(spendParams);
     }
 
-    modifyGold(amount) {
-        this.playerOrCard.modifyGold(amount);
+    modifyGhostRock(amount) {
+        this.playerOrCard.modifyGhostRock(amount);
     }
 }
 
-module.exports = GoldSource;
+module.exports = GhostRockSource;

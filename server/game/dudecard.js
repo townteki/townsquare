@@ -86,6 +86,17 @@ class DudeCard extends DrawCard {
         this.owner.moveDude(this, this.owner.outfit.uuid, { needToBoot: booted, allowBooted: allowBooted });
     }
 
+    moveToLocation(player, destinationUuid = '', playingType) {
+        let origin = this.getLocation();
+        if (origin) {
+            origin.removeDude(this);
+        }
+        let destination = this.game.findLocation(playingType === 'shoppin' && destinationUuid === '' ? player.outfit.uuid : destinationUuid);
+        if (destination) {
+            destination.addDude(this);
+        }
+    }
+
     canAttachWeapon(weapon) {
         let weapons = this.getAttachmentsByKeywords([ 'weapon' ]);
         if (weapons && weapons.length >= this.maxWeapons) {

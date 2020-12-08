@@ -185,7 +185,7 @@ const Costs = {
      */
     playEvent: function() {
         return [
-            Costs.payReduceableGoldCost('play'),
+            Costs.payReduceableGRCost('play'),
             Costs.expendEvent(),
             Costs.playLimited()
         ];
@@ -263,31 +263,20 @@ const Costs = {
         };
     },
     /**
-     * Cost that will pay the printed gold cost on the card minus any active
+     * Cost that will pay the printed ghostrock cost on the card minus any active
      * reducer effects the play has activated. Upon playing the card, all
      * matching reducer effects will expire, if applicable.
      */
-    payReduceableGoldCost: function(playingType) {
+    payReduceableGRCost: function(playingType) {
         return {
             canPay: function(context) {
-                var hasDupe = context.player.getDuplicateInPlay(context.source);
-                if(hasDupe && playingType === 'marshal') {
-                    return true;
-                }
-
                 let reducedCost = context.player.getReducedCost(playingType, context.source);
-                return context.player.getSpendableGold({ playingType: playingType }) >= reducedCost;
+                return context.player.getSpendableGhostRock({ playingType: playingType }) >= reducedCost;
             },
             pay: function(context) {
-                var hasDupe = context.player.getDuplicateInPlay(context.source);
-                context.costs.isDupe = !!hasDupe;
-                if(hasDupe && playingType === 'marshal') {
-                    context.costs.gold = 0;
-                } else {
-                    context.costs.gold = context.player.getReducedCost(playingType, context.source);
-                    context.game.spendGold({ amount: context.costs.gold, player: context.player, playingType: playingType });
-                    context.player.markUsedReducers(playingType, context.source);
-                }
+                context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
+                context.game.spendGhostRock({ amount: context.costs.ghostrock, player: context.player, playingType: playingType });
+                context.player.markUsedReducers(playingType, context.source);
             }
         };
     },

@@ -62,21 +62,28 @@ class DrawCard extends BaseCard {
 
     getMenu(player) {
         let menu = super.getMenu(player);
-
-        if (this.location === 'draw hand') {
-            if(!menu) {
-                menu = [];
-            }
-            menu = menu.concat({ method: 'discard', text: 'Discard', handler: context => {
-                context.player;
-            }});
+        if(!menu) {
+            menu = [];
         }
+        let discardItem = { method: 'discard', text: 'Discard' };
+        let playItem = { method: 'playCard', text: 'Play' };
 
-        return menu;
+        switch (this.location) {
+            case 'draw hand':
+                return menu.concat(discardItem);
+            case 'hand':
+                return menu.concat(discardItem).concat(playItem);
+            default:
+                return menu;
+        }
     }
 
     discard(player) {
         player.discardCard(this);
+    }
+
+    playCard(player) {
+        player.playCard(this);
     }
 
     hasPrintedCost() {
