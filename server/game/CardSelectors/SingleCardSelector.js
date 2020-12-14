@@ -8,7 +8,7 @@ class SingleCardSelector extends BaseCardSelector {
     }
 
     defaultActivePromptTitle() {
-        return 'Select a character';
+        return 'Select a card';
     }
 
     automaticFireOnSelect() {

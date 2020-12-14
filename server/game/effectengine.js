@@ -6,7 +6,18 @@ class EffectEngine {
     constructor(game) {
         this.game = game;
         this.events = new EventRegistrar(game, this);
-        this.events.register(['onCardMoved', 'onCardTakenControl', 'onCardBlankToggled', 'onChallengeFinished', 'onPhaseEnded', 'onAtEndOfChallenge', 'onAtEndOfPhase', 'onRoundEnded']);
+        this.events.register([
+            'onCardMoved', 
+            'onCardTakenControl', 
+            'onCardBlankToggled', 
+            'onShootoutFinished', 
+            'onShootoutRoundFinished', 
+            'onPhaseEnded', 
+            'onAtEndOfChallenge', 
+            'onAtEndOfPhase', 
+            'onRoundEnded',
+            'onResolutionStepFinished'
+        ]);
         this.effects = [];
         this.customDurationEvents = [];
         this.effectsBeingRecalculated = [];
@@ -121,8 +132,12 @@ class EffectEngine {
         }
     }
 
-    onChallengeFinished() {
-        this.unapplyAndRemove(effect => effect.duration === 'untilEndOfChallenge');
+    onShootoutFinished() {
+        this.unapplyAndRemove(effect => effect.duration === 'untilEndOfShootout');
+    }
+
+    onShootoutRoundFinished() {
+        this.unapplyAndRemove(effect => effect.duration === 'untilEndOfShootoutRound');
     }
 
     onPhaseEnded() {
@@ -139,6 +154,10 @@ class EffectEngine {
 
     onRoundEnded() {
         this.unapplyAndRemove(effect => effect.duration === 'untilEndOfRound');
+    }
+
+    onResolutionStepFinished() {
+        this.game.getPlayers().forEach(player => player.resetCheatinResInfo());        
     }
 
     activatePersistentEffects() {

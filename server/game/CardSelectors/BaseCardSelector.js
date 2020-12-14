@@ -94,7 +94,7 @@ class BaseCardSelector {
      * @returns {string}
      */
     defaultActivePromptTitle() {
-        return 'Select characters';
+        return 'Select card(s)';
     }
 
     /**

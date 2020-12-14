@@ -36,11 +36,15 @@ class DrawCard extends BaseCard {
         }  
         if(cardData.control) {
             this.icons.control = cardData.control;
-        }                        
+        }         
+        
+        this.actionPlacementLocation = 'discard pile';
     }
 
-    createSnapshot() {
-        let clone = new DrawCard(this.owner, this.cardData);
+    createSnapshot(clone) {
+        if (!clone) {
+            clone = new DrawCard(this.owner, this.cardData);
+        }
 
         clone.attachments = this.attachments.map(attachment => attachment.createSnapshot());
         clone.booted = this.booted;
@@ -49,7 +53,6 @@ class DrawCard extends BaseCard {
         clone.gamelocation = this.gamelocation;
         clone.influence = this.influence;
         clone.production = this.production;
-        clone.shooter = this.shooter;
         clone.upkeep = this.upkeep;
         clone.value = this.value;
         clone.location = this.location;
@@ -72,6 +75,9 @@ class DrawCard extends BaseCard {
             case 'draw hand':
                 return menu.concat(discardItem);
             case 'hand':
+                if (this.getType() === 'action') {
+                    return menu.concat(discardItem);
+                }
                 return menu.concat(discardItem).concat(playItem);
             default:
                 return menu;

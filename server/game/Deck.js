@@ -104,8 +104,8 @@ class Deck {
             cardClass = ActionCard;
         }
 
-        // do not use specific classes as we do not have them yet
-        //let cardClass = cards[cardData.code] || cardClass;
+        // TODO M2 add other cards that needs specific classes
+        cardClass = cards[cardData.code] || cardClass;
 
         return new cardClass(player, cardData);
     }

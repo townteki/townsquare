@@ -32,6 +32,7 @@ class Player extends Spectator {
 		//DTR specific
 		this.locations = []
 
+        this.beingPlayed = [];
         this.drawDeck = [];
         this.hand = [];
         this.drawHand = [];
@@ -53,6 +54,7 @@ class Player extends Spectator {
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;        
         this.shuffleArray = shuffle;
+        this.resetCheatinResInfo();
 
         this.createAdditionalPile('out of game');
         this.promptState = new PlayerPromptState();
@@ -70,6 +72,10 @@ class Player extends Spectator {
 
     isSpectator() {
         return false;
+    }
+
+    getOpponent() {
+        return this.game.getOpponents(this)[0];
     }
 
     isCardUuidInList(list, card) {
@@ -192,7 +198,9 @@ class Player extends Spectator {
     }
 
     isCardInPlayableLocation(card, playingType) {
-        return this.playableLocations.some(location => location.playingType === playingType && location.contains(card));
+        return true;
+        // TODO M2 check if we need playable locations
+        //return this.playableLocations.some(location => location.playingType === playingType && location.contains(card));
     }
 
 
@@ -205,6 +213,26 @@ class Player extends Spectator {
         }
 
         return amount;
+    }
+
+    resetCheatinResInfo() {
+        this.maxAllowedCheatin = 1;
+        this.numCheatinPlayed = 0;        
+    }
+
+    incrementCheatinResPlayed() {
+        this.numCheatinPlayed += 1;
+    }
+
+    canPlayCheatinResolution() {
+        if (this.maxAllowedCheatin <= this.numCheatinPlayed) {
+            return false;
+        }
+        return this.getOpponent().isCheatin();
+    }
+
+    isCheatin() {
+        return this.getHandRank() && this.getHandRank().cheatin
     }
 
     getNumCardsToDraw(amount) {
@@ -237,7 +265,7 @@ class Player extends Spectator {
         }  
 
         this.drawHandRevealed = true;
-        let cheatin = this.getHandRank().cheatin ? 'Cheatin\' ' : ''
+        let cheatin = this.isCheatin() ? 'Cheatin\' ' : ''
         this.game.addMessage('{0} reveals {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }    
 
@@ -700,6 +728,8 @@ class Player extends Spectator {
 
     getSourceList(source) {
         switch(source) {
+            case 'being played':
+                return this.beingPlayed;
             case 'hand':
                 return this.hand;
             case 'draw hand':
@@ -721,6 +751,9 @@ class Player extends Spectator {
 
     updateSourceList(source, targetList) {
         switch(source) {
+            case 'being played':
+                this.beingPlayed = targetList;
+                return;
             case 'hand':
                 this.hand = targetList;
                 break;
@@ -1180,13 +1213,14 @@ class Player extends Spectator {
     getState(activePlayer) {
         let isActivePlayer = activePlayer === this;
         let promptState = isActivePlayer ? this.promptState.getState() : {};
+        let fullDiscardPile = this.discardPile.concat(this.beingPlayed);
 
         let state = {
             legend: this.legend,
             cardPiles: {
                 cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
                 deadPile: this.getSummaryForCardList(this.deadPile, activePlayer).reverse(),
-                discardPile: this.getSummaryForCardList(this.discardPile, activePlayer),
+                discardPile: this.getSummaryForCardList(fullDiscardPile, activePlayer),
                 drawDeck: this.getSummaryForCardList(this.drawDeck, activePlayer),
                 hand: this.getSummaryForCardList(this.hand, activePlayer),
                 drawHand: this.getSummaryForCardList(this.drawHand, activePlayer)

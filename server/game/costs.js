@@ -137,7 +137,7 @@ const Costs = {
     /**
      * Cost that will place the played event card in the player's discard pile.
      */
-    expendEvent: function() {
+    expendAction: function() {
         return {
             canPay: function(context) {
                 return context.player.isCardInPlayableLocation(context.source, 'play') && context.player.canPlay(context.source, 'play');
@@ -183,11 +183,10 @@ const Costs = {
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
      */
-    playEvent: function() {
+    playAction: function() {
         return [
             Costs.payReduceableGRCost('play'),
-            Costs.expendEvent(),
-            Costs.playLimited()
+            Costs.expendAction()
         ];
     },
     /**
@@ -236,19 +235,6 @@ const Costs = {
             return maxPower;
         }, 0)
     }),
-    /**
-     * Cost that ensures that the player can still play a Limited card this
-     * round.
-     */
-    playLimited: function() {
-        return {
-            canPay: function(context) {
-                return true;
-            },
-            pay: function(context) {
-            }
-        };
-    },
     /**
      * Cost that will pay the exact printed gold cost for the card.
      */
