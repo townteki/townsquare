@@ -4,9 +4,9 @@ class TheStakesJustRose extends DrawCard {
     setupCardAbilities() {
         this.action({
             title: 'The Stakes Just Rose',
-            playType: 'shootout',
+            playType: 'shootout:join',
             target: {
-                cardCondition: { location: 'play area', participating: false, controller: 'choosingPlayer'},
+                cardCondition: { location: 'play area', participating: false, controller: 'current'},
                 cardType: 'dude'
             },
             handler: context => {
