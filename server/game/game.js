@@ -149,6 +149,7 @@ class Game extends EventEmitter {
         let players = this.getPlayers();
         let index = players.findIndex(predicate);
         if(index === -1) {
+            // TODO M2 instead of returning all players, we should pull for low value to determine first player
             return players;
         }
 
@@ -999,6 +1000,13 @@ class Game extends EventEmitter {
         card.controller.cardsInPlay.push(card);
 
         this.handleControlChange(card);
+    }
+
+    isParticipatingInShootout(card) {
+        if (!this.shootout) {
+            return false;
+        }
+        return this.shootout.isInShootout(card);
     }
 
     startShootout(leader, mark) {

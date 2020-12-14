@@ -13,7 +13,6 @@ class AbilityResolver extends BaseStep {
         this.pipeline.initialise([
             new SimpleStep(game, () => this.createSnapshot()),
             new SimpleStep(game, () => this.markActionAsTaken()),
-            new SimpleStep(game, () => this.recordShadowStatus()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
             new SimpleStep(game, () => this.context.resolutionStage = 'cost'),
             new SimpleStep(game, () => this.resolveCosts()),
@@ -24,7 +23,6 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
-            new SimpleStep(game, () => this.incrementAbilityLimit()),
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.raiseCardPlayedIfEvent()),
             new SimpleStep(game, () => this.game.popAbilityContext())
@@ -68,7 +66,7 @@ class AbilityResolver extends BaseStep {
     }
 
     createSnapshot() {
-        if(['attachment', 'character', 'event', 'location'].includes(this.context.source.getType())) {
+        if(['attachment', 'dude', 'action', 'deed'].includes(this.context.source.getType())) {
             this.context.cardStateWhenInitiated = this.context.source.createSnapshot();
         }
     }
@@ -77,10 +75,6 @@ class AbilityResolver extends BaseStep {
         if(this.ability.isAction()) {
             this.game.markActionAsTaken(this.context);
         }
-    }
-
-    recordShadowStatus() {
-        this.needsOutOfShadowEvent = this.ability.isPlayableEventAbility() && this.context.source.location === 'shadows';
     }
 
     resolveCosts() {
@@ -169,18 +163,6 @@ class AbilityResolver extends BaseStep {
         }
     }
 
-    incrementAbilityLimit() {
-        if(this.cancelled) {
-            return;
-        }
-
-        this.ability.incrementLimit();
-
-        if(this.ability.max) {
-            this.context.player.incrementAbilityMax(this.context.source.name);
-        }
-    }
-
     executeHandler() {
         if(this.cancelled) {
             return;
@@ -194,6 +176,9 @@ class AbilityResolver extends BaseStep {
         if(this.ability.isCardAbility()) {
             let targets = this.context.targets.getTargets();
             this.game.raiseEvent('onCardAbilityInitiated', { player: this.context.player, source: this.context.source, ability: this.ability, targets: targets }, () => {
+                if (this.ability.playType === 'cheatin resolution') {           
+                    this.context.player.incrementCheatinResPlayed();
+                }
                 this.ability.executeHandler(this.context);
             });
         } else {
@@ -208,15 +193,12 @@ class AbilityResolver extends BaseStep {
         // with an interrupt to a card being played. If any are ever released,
         // then this event will need to wrap the execution of the entire
         // ability instead.
-        if(this.ability.isPlayableEventAbility()) {
+        if(this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
-                this.context.source.owner.moveCard(this.context.source, this.context.source.eventPlacementLocation);
+                this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
             }
 
             let event = new Event('onCardPlayed', { player: this.context.player, card: this.context.source, originalLocation: this.context.originalLocation });
-            if(this.needsOutOfShadowEvent) {
-                event.addChildEvent(new Event('onCardOutOfShadows', { player: this.context.player, card: this.context.source, type: 'card' }));
-            }
 
             this.game.resolveEvent(event);
         }

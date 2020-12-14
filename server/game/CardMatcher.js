@@ -5,22 +5,19 @@ class CardMatcher {
         return (
             Matcher.containsValue(properties.type, card.getType()) &&
             Matcher.anyValue(properties.faction, faction => card.isFaction(faction)) &&
-            Matcher.containsValue(properties.kneeled, card.kneeled) &&
+            Matcher.containsValue(properties.booted, card.booted) &&
             Matcher.containsValue(properties.location, card.location) &&
             Matcher.containsValue(properties.name, card.name) &&
-            Matcher.anyValue(properties.trait, trait => card.hasTrait(trait)) &&
+            Matcher.anyValue(properties.keyword, keyword => card.hasKeyword(keyword)) &&
             Matcher.containsValue(properties.unique, card.isUnique()) &&
-            Matcher.containsValue(properties.loyal, card.isLoyal()) &&
-            Matcher.containsValue(properties.limited, card.isLimited()) &&
             Matcher.anyValue(properties.printedCostOrLower, amount => card.hasPrintedCost() && card.getPrintedCost() <= amount) &&
             Matcher.anyValue(properties.printedCostOrHigher, amount => card.hasPrintedCost() && card.getPrintedCost() >= amount) &&
             Matcher.anyValue(properties.printedStrengthOrLower, amount => card.hasPrintedStrength() && card.getPrintedStrength() <= amount) &&
             Matcher.anyValue(properties.printedStrengthOrHigher, amount => card.hasPrintedStrength() && card.getPrintedStrength() >= amount) &&
-            Matcher.anyValue(properties.shadow, isShadow => card.isShadow() === isShadow) &&
             Matcher.anyValue(properties.hasAttachments, hasAttachments => hasAttachments === (card.attachments.length > 0)) &&
-            Matcher.anyValue(properties.attacking, attacking => card.isAttacking() === attacking) &&
-            Matcher.anyValue(properties.defending, defending => card.isDefending() === defending) &&
-            Matcher.anyValue(properties.participating, participating => card.isParticipating() === participating) &&
+            Matcher.anyValue(properties.inLeaderPosse, inLeaderPosse => card.isInLeaderPosse() === inLeaderPosse) &&
+            Matcher.anyValue(properties.inMarkPosse, inMarkPosse => card.isInMarkPosse() === inMarkPosse) &&
+            Matcher.anyValue(properties.participating, participating => !card.game.shootout || card.isParticipating() === participating) &&
             Matcher.containsValue(properties.facedown, card.facedown) &&
             Matcher.containsValue(properties.parent, card.parent) &&
             Matcher.anyValue(properties.not, notProperties => !CardMatcher.isMatch(card, notProperties))

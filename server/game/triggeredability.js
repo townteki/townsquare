@@ -14,8 +14,8 @@ class TriggeredAbility extends BaseAbility {
         this.eventType = eventType;
         this.location = this.buildLocation(card, properties.location);
 
-        if(card.getPrintedType() === 'event' && !properties.ignoreEventCosts) {
-            this.cost = this.cost.concat(Costs.playEvent());
+        if(card.getPrintedType() === 'action' && !properties.ignoreEventCosts) {
+            this.cost = this.cost.concat(Costs.playAction());
         }
 
         if(this.max) {
@@ -80,7 +80,7 @@ class TriggeredAbility extends BaseAbility {
     }
 
     meetsRequirements(context) {
-        let isPlayableEventAbility = this.isPlayableEventAbility();
+        let isPlayableActionAbility = this.isPlayableActionAbility();
 
         if(this.game.currentPhase === 'setup') {
             return false;
@@ -106,11 +106,11 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(isPlayableEventAbility && !context.player.isCardInPlayableLocation(this.card, 'play')) {
+        if(isPlayableActionAbility && !context.player.isCardInPlayableLocation(this.card, 'play')) {
             return false;
         }
 
-        if(!isPlayableEventAbility && !this.location.includes(this.card.location)) {
+        if(!isPlayableActionAbility && !this.location.includes(this.card.location)) {
             return false;
         }
 
@@ -129,14 +129,14 @@ class TriggeredAbility extends BaseAbility {
         //
         // Also apparently the draw deck because of Maester Gormon.
         // Also also apparently under conclave due to Archmaester Marwyn.
-        if(this.isPlayableEventAbility()) {
+        if(this.isPlayableActionAbility()) {
             return ['conclave', 'discard pile', 'draw deck', 'hand', 'shadows', 'play area'].includes(location);
         }
 
         return this.location.includes(location);
     }
 
-    isPlayableEventAbility() {
+    isPlayableActionAbility() {
         return this.card.getPrintedType() === 'event' && this.location.includes('hand');
     }
 

@@ -6,8 +6,7 @@ class SetupCardAction extends BaseAbility {
         super({
             abilitySourceType: 'game',
             cost: [
-                Costs.payPrintedGoldCost(),
-                Costs.playLimited()
+                Costs.payPrintedGoldCost()
             ]
         });
         this.title = 'Setup';

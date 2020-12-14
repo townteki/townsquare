@@ -5,7 +5,7 @@ const ShootoutPossePrompt = require('./shootout/shootoutposseprompt.js');
 const TakeYerLumpsPrompt = require('./shootout/takeyerlumpsprompt.js');
 const SimpleStep = require('./simplestep.js');
 const RunOrGunPrompt = require('./shootout/runorgunprompt.js');
-const {ShootoutStatuses} = require('../Constants');
+const {ShootoutStatuses, ShootoutSteps} = require('../Constants');
 const DrawHandPrompt = require('./shootout/drawhandprompt.js');
 const ShootoutPosse = require('./shootout/shootoutposse.js');
 
@@ -26,6 +26,7 @@ class Shootout extends Phase {
         this.leaderMarkOrder = [this.leader.controller.name, this.mark.controller.name];
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
+        this.currentStep = ShootoutSteps.any;
         this.initialise([
             new ShootoutPossePrompt(this.game, this, this.leaderMarkOrder),
             new SimpleStep(this.game, () => this.gatherPosses()),
@@ -58,15 +59,14 @@ class Shootout extends Phase {
 
     beginShootoutRound() {
         this.remainingSteps = [
-            new ContinuousPlayerOrderPrompt(this.game, 'Make Shootout plays'),
-            new PickYerShooterPrompt(this.game, this.leaderMarkOrder),
-            new SimpleStep(this.game, () => this.announcePreDraw()),
+            new SimpleStep(this.game, () => this.shootoutPlays()),
+            new SimpleStep(this.game, () => this.pickYerShooterStep()),
             new SimpleStep(this.game, () => this.draw()),
             new SimpleStep(this.game, () => this.revealHands()),
-            new ContinuousPlayerOrderPrompt(this.game, 'Make Resolution plays'),
+            new SimpleStep(this.game, () => this.resolutionPlays()),
+            new SimpleStep(this.game, () => this.endResolution()),
             new SimpleStep(this.game, () => this.determineWinner()),
-            new TakeYerLumpsPrompt(this.game, this.shootoutLoseWinOrder),
-            new RunOrGunPrompt(this.game, this.shootoutLoseWinOrder)
+            new SimpleStep(this.game, () => this.casaultiesAndRunOrGun())
         ];
 
         this.game.raiseEvent('onBeginShootoutRound');
@@ -93,7 +93,7 @@ class Shootout extends Phase {
     }
 
     endPhase() {
-        this.game.raiseEvent('onShootoutEnded', { phase: this.name });
+        this.game.raiseEvent('onShootoutFinished', { phase: this.name });
         this.game.currentPhase = this.highNoonPhase;
         var attackingPlayer = this.leaderPlayer;
         var defendingPlayer = this.markPlayer;
@@ -107,6 +107,15 @@ class Shootout extends Phase {
 
     queueStep(step) {
         this.pipeline.queueStep(step);
+    }
+
+    getPosseByPlayer(player) {
+        if (player === this.leaderPlayer) {
+            return this.leaderPosse;
+        }
+        if (player === this.markPlayer) {
+            return this.markPosse;
+        }
     }
 
     isInLeaderPosse(card) {
@@ -141,6 +150,11 @@ class Shootout extends Phase {
         return { player: this.markPlayer, number: 5 + this.markPosse.getStudBonus() };
     }
 
+    runHome(card) {
+        this.removeFromPosse(card);
+        card.sendHome();
+    }
+
     addToPosse(dude) {
         if (this.belongsToLeaderPlayer(dude)) {
             this.leaderPosse.addToPosse(dude);
@@ -159,6 +173,16 @@ class Shootout extends Phase {
 
     gatherPosses() {
         this.actOnAllParticipants(dude => dude.moveToShootoutLocation());
+    }
+
+    shootoutPlays() {
+        this.currentStep = ShootoutSteps.shootout;
+        this.queueStep(new ContinuousPlayerOrderPrompt(this.game, 'Make Shootout plays'));
+    }
+
+    pickYerShooterStep() {
+        this.currentStep = ShootoutSteps.any;
+        this.queueStep(new PickYerShooterPrompt(this.game, this.leaderMarkOrder));
     }
 
     pickShooter(dude) {
@@ -199,11 +223,23 @@ class Shootout extends Phase {
     }
 
     draw() {
+        this.currentStep = ShootoutSteps.any;
         this.queueStep(new DrawHandPrompt(this.game, [ this.getLeaderDrawCount(), this.getMarkDrawCount() ]));
     }
 
     revealHands() {
+        this.currentStep = ShootoutSteps.reveal;
         this.game.revealHands();
+    }
+
+    resolutionPlays() {
+        this.currentStep = ShootoutSteps.resolution;
+        this.queueStep(new ContinuousPlayerOrderPrompt(this.game, 'Make Resolution plays'));
+    }
+
+    endResolution() {
+        this.currentStep = ShootoutSteps.any;
+        this.game.raiseEvent('onResolutionStepFinished', { phase: this.name });        
     }
 
     determineWinner() {
@@ -229,7 +265,12 @@ class Shootout extends Phase {
             loser.handResult.casaulties = Math.abs(leaderHand.rank - markHand.rank);
             this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', winner, Math.abs(leaderHand.rank - markHand.rank));
         }
-        this.shootoutLoseWinOrder = [ loser, winner ];
+        this.shootoutLoseWinOrder = [ loser.name, winner.name ];
+    }
+
+    casaultiesAndRunOrGun() {
+        this.queueStep(new TakeYerLumpsPrompt(this.game, this.shootoutLoseWinOrder));
+        this.queueStep(new RunOrGunPrompt(this.game, this.shootoutLoseWinOrder));
     }
 
     chamberAnotherRound() {
@@ -238,10 +279,6 @@ class Shootout extends Phase {
             this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
         }   
-    }
-
-    announcePreDraw() {
-
     }
 
 }

@@ -16,8 +16,8 @@ class EachPlayerCardSelector extends BaseCardSelector {
     }
 
     defaultActivePromptTitle() {
-        return this.numCardsPerPlayer === 1 ? 'Select a character controlled by each player' :
-            `Select ${this.numCardsPerPlayer} characters controlled by each player`;
+        return this.numCardsPerPlayer === 1 ? 'Select a card controlled by each player' :
+            `Select ${this.numCardsPerPlayer} cards controlled by each player`;
     }
 
     hasEnoughSelected(selectedCards, numPlayers) {
