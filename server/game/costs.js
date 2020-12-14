@@ -137,7 +137,7 @@ const Costs = {
     /**
      * Cost that will place the played event card in the player's discard pile.
      */
-    expendEvent: function() {
+    expendAction: function() {
         return {
             canPay: function(context) {
                 return context.player.isCardInPlayableLocation(context.source, 'play') && context.player.canPlay(context.source, 'play');
@@ -183,11 +183,10 @@ const Costs = {
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
      */
-    playEvent: function() {
+    playAction: function() {
         return [
-            Costs.payReduceableGoldCost('play'),
-            Costs.expendEvent(),
-            Costs.playLimited()
+            Costs.payReduceableGRCost('play'),
+            Costs.expendAction()
         ];
     },
     /**
@@ -237,19 +236,6 @@ const Costs = {
         }, 0)
     }),
     /**
-     * Cost that ensures that the player can still play a Limited card this
-     * round.
-     */
-    playLimited: function() {
-        return {
-            canPay: function(context) {
-                return true;
-            },
-            pay: function(context) {
-            }
-        };
-    },
-    /**
      * Cost that will pay the exact printed gold cost for the card.
      */
     payPrintedGoldCost: function() {
@@ -263,31 +249,20 @@ const Costs = {
         };
     },
     /**
-     * Cost that will pay the printed gold cost on the card minus any active
+     * Cost that will pay the printed ghostrock cost on the card minus any active
      * reducer effects the play has activated. Upon playing the card, all
      * matching reducer effects will expire, if applicable.
      */
-    payReduceableGoldCost: function(playingType) {
+    payReduceableGRCost: function(playingType) {
         return {
             canPay: function(context) {
-                var hasDupe = context.player.getDuplicateInPlay(context.source);
-                if(hasDupe && playingType === 'marshal') {
-                    return true;
-                }
-
                 let reducedCost = context.player.getReducedCost(playingType, context.source);
-                return context.player.getSpendableGold({ playingType: playingType }) >= reducedCost;
+                return context.player.getSpendableGhostRock({ playingType: playingType }) >= reducedCost;
             },
             pay: function(context) {
-                var hasDupe = context.player.getDuplicateInPlay(context.source);
-                context.costs.isDupe = !!hasDupe;
-                if(hasDupe && playingType === 'marshal') {
-                    context.costs.gold = 0;
-                } else {
-                    context.costs.gold = context.player.getReducedCost(playingType, context.source);
-                    context.game.spendGold({ amount: context.costs.gold, player: context.player, playingType: playingType });
-                    context.player.markUsedReducers(playingType, context.source);
-                }
+                context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
+                context.game.spendGhostRock({ amount: context.costs.ghostrock, player: context.player, playingType: playingType });
+                context.player.markUsedReducers(playingType, context.source);
             }
         };
     },

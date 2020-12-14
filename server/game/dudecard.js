@@ -12,12 +12,74 @@ class DudeCard extends DrawCard {
         this.maxHorses = 1;
         this.maxAttires = 1;
 
+        this.currentBullets = this.cardData.bullets;
+        this.currentInfluence = this.cardData.influence;
+        this.currentControl = this.cardData.control;
+        this.currentUpkeep = this.cardData.upkeep;
+
         this.shootoutStatus = ShootoutStatuses.None;
+    }
+
+    get bullets() {
+        if (this.currentBullets < 0) {
+            return 0;
+        }
+        return this.currentBullets;
+    }
+
+    set bullets(amount) {
+        this.currentBullets = amount;
+    }
+
+    get shooter() {
+        return this.studReferenceArray[0].shooter;
+    }
+
+    get influence() {
+        if (this.currentInfluence < 0) {
+            return 0;
+        }
+        return this.currentInfluence;
+    }
+
+    set influence(amount) {
+        this.currentInfluence = amount;
+    }
+
+    get control() {
+        return this.currentControl;
+    }
+
+    set control(amount) {
+        this.currentControl = amount;
+    }
+
+    get upkeep() {
+        if (this.currentUpkeep < 0) {
+            return 0;
+        }
+        return this.currentUpkeep;
+    }
+
+    set upkeep(amount) {
+        this.currentUpkeep = amount;
+    }
+
+    modifyBullets(amount, applying = true) {
+        this.currentBullets += amount;
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardBulletsChanged', params);
     }
 
     setupCardAbilities(ability) {
         this.action({
             title: 'Call Out',
+            abilitySourceType: 'game',
             condition: () => this.game.currentPhase === 'high noon' && !this.booted,
             target: {
                 activePromptTitle: 'Select dude to call out',
@@ -51,6 +113,7 @@ class DudeCard extends DrawCard {
 
         this.action({
             title: 'Trade',
+            abilitySourceType: 'game',
             condition: () => this.game.currentPhase === 'high noon' && this.hasAttachmentForTrading(),
             target: {
                 activePromptTitle: 'Select attachment(s) to trade',
@@ -71,7 +134,24 @@ class DudeCard extends DrawCard {
     setupCardTextProperties(ability) {
         super.setupCardTextProperties(ability);
         this.studReferenceArray = [];
-        this.studReferenceArray.unshift({ source: this.uuid, shooter: this.shooter});
+        this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
+    }
+
+    createSnapshot() {
+        let clone = new DudeCard(this.owner, this.cardData);
+        clone = super.createSnapshot(clone);
+
+        clone.maxWeapons = this.maxWeapons;
+        clone.maxHorses = this.maxHorses;
+        clone.maxAttires = this.maxAttires;
+        clone.currentBullets = this.currentBullets;
+        clone.currentInfluence = this.currentInfluence;
+        clone.currentControl = this.currentControl;
+        clone.currentUpkeep = this.currentUpkeep;
+        clone.shootoutStatus = this.shootoutStatus;
+        clone.studReferenceArray = this.studReferenceArray;
+
+        return clone;
     }
 
     addStudEffect(source, shooterType) {
@@ -84,6 +164,17 @@ class DudeCard extends DrawCard {
 
     sendHome(booted = true, allowBooted = true) {
         this.owner.moveDude(this, this.owner.outfit.uuid, { needToBoot: booted, allowBooted: allowBooted });
+    }
+
+    moveToLocation(player, destinationUuid = '', playingType) {
+        let origin = this.getLocation();
+        if (origin) {
+            origin.removeDude(this);
+        }
+        let destination = this.game.findLocation(playingType === 'shoppin' && destinationUuid === '' ? player.outfit.uuid : destinationUuid);
+        if (destination) {
+            destination.addDude(this);
+        }
     }
 
     canAttachWeapon(weapon) {
@@ -195,10 +286,15 @@ class DudeCard extends DrawCard {
         }
     }
 
+    isParticipating() {
+        return this.shootoutStatus != ShootoutStatuses.None;
+    }
+
     getSummary(activePlayer) {
         let drawCardSummary = super.getSummary(activePlayer);
 
         let publicSummary = {
+            shooter: this.shooter,
             shootoutStatus: this.shootoutStatus
         };
 

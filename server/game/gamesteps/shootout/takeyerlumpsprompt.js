@@ -15,7 +15,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         if (this.isComplete()) {
             return true;
         }
-        if (this.currentPlayer.handResult.casaulties == 0) {
+        if (this.currentPlayer.handResult.casaulties == 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
             this.completePlayer();
             return this.continue();
         }

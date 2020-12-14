@@ -1,7 +1,16 @@
 const AbilityContext = require('./AbilityContext.js');
 const BaseAbility = require('./baseability.js');
+const { ShootoutSteps } = require('./Constants/index.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
+
+const ActionPlayTypes = ['any', 'noon', 'shootout', 'shootout:join', 'resolution', 'cheatin resolution'];
+const AllowedTypesForPhase = {
+    'high noon': ['noon'],
+    'shootout plays': ['shootout', 'shootout:join'],
+    'shootout resolution': ['resolution', 'cheatin resolution'],
+    'gambling': ['cheatin resolution']
+};
 
 /**
  * Represents an action ability provided by card text.
@@ -37,9 +46,10 @@ class CardAction extends BaseAbility {
         this.card = card;
         this.title = properties.title;
         this.max = properties.max;
-        this.phase = this.buildPhase(properties);
+        this.playType = this.buildPlayType(properties);
         this.anyPlayer = properties.anyPlayer || false;
         this.condition = properties.condition;
+        this.used = false;
         this.clickToActivate = !!properties.clickToActivate;
         if (properties.location) {
             if (Array.isArray(properties.location)) {
@@ -47,14 +57,16 @@ class CardAction extends BaseAbility {
             } else {
                 this.location = [ properties.location ];
             }
+        } else if(card.getType() === 'action') {
+            this.location = [ 'hand' ];
         } else {
             this.location = [ 'play area' ];
         }
         this.events = new EventRegistrar(game, this);
         this.activationContexts = [];
 
-        if(card.getPrintedType() === 'event') {
-            this.cost = this.cost.concat(Costs.playEvent());
+        if(card.getType() === 'action') {
+            this.cost = this.cost.concat(Costs.playAction());
         }
 
         if(this.max) {
@@ -66,16 +78,28 @@ class CardAction extends BaseAbility {
         }
     }
 
-    buildPhase(properties) {
-        if(!properties.phase) {
+    buildPlayType(properties) {
+        if(!properties.playType) {
             return 'any';
         }
 
-        if(!['any', 'gambling', 'upkeep', 'hign noon', 'shootout', 'sundown'].includes(properties.phase)) {
-            throw new Error(`'${properties.phase}' is not a valid 'phase' property`);
+        if(!ActionPlayTypes.includes(properties.playType)) {
+            throw new Error(`'${properties.playType}' is not a valid 'playType' property`);
         }
 
-        return properties.phase;
+        return properties.playType;
+    }
+
+    defaultCondition() {
+        if (this.playType === 'cheatin resolution') {
+            return this.card.controller.canPlayCheatinResolution();
+        }
+        if (this.playType.includes('shootout')) {
+            if (this.playType === 'shootout' && this.card.getType() !== 'action') {
+                return this.game.shootout.isInShootout(this.card);
+            }
+        }
+        return true;
     }
 
     isLocationValid(location) {
@@ -100,19 +124,32 @@ class CardAction extends BaseAbility {
     }
 
     meetsRequirements(context) {
-        if(this.phase !== 'any' && this.phase !== this.game.currentPhase || this.game.currentPhase === 'setup') {
-            return false;
+        if(this.playType !== 'any') {
+            if(this.game.shootout) {
+                if (this.game.shootout.currentStep === ShootoutSteps.shootout && 
+                    !AllowedTypesForPhase['shootout plays'].includes(this.playType)) {
+                    return false;
+                } else if (this.game.shootout.currentStep === ShootoutSteps.resolution &&
+                    !AllowedTypesForPhase['shootout resolution'].includes(this.playType)) {
+
+                }
+            } else {
+                let allowedTypes = AllowedTypesForPhase[this.game.currentPhase];
+
+                if(!allowedTypes) {
+                    return false;
+                }
+                if (!allowedTypes.includes(this.playType)) {           
+                    return false;
+                }
+            }
         }
 
         if(this.isCardAbility() && !context.player.canTrigger(this)) {
             return false;
         }
 
-        if(this.limit && this.limit.isAtMax()) {
-            return false;
-        }
-
-        if(this.max && context.player.isAbilityAtMax(context.source.name)) {
+        if(this.used) {
             return false;
         }
 
@@ -120,16 +157,20 @@ class CardAction extends BaseAbility {
             return false;
         }
 
-        if(this.card.getPrintedType() === 'action' && !context.player.isCardInPlayableLocation(this.card, 'play')) {
+        if(this.card.getType() === 'action' && !context.player.isCardInPlayableLocation(this.card, 'play')) {
             return false;
         }
 
-        if(this.card.getPrintedType() !== 'action' && !this.isLocationValid(this.card.location)) {
+        if(this.card.getType() !== 'action' && !this.isLocationValid(this.card.location)) {
             return false;
         }
 
         if(this.card.isAnyBlank()) {
             return false ;
+        }
+
+        if(!this.defaultCondition()) {
+            return false;
         }
 
         if(this.condition && !this.condition(context)) {
@@ -170,8 +211,8 @@ class CardAction extends BaseAbility {
         return this.clickToActivate;
     }
 
-    isPlayableEventAbility() {
-        return this.card.getPrintedType() === 'action' && this.isLocationValid('hand');
+    isPlayableActionAbility() {
+        return this.card.getType() === 'action' && this.isLocationValid('hand');
     }
 
     incrementLimit() {

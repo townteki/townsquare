@@ -1,5 +1,8 @@
 const PublicLocations = new Set(['dead pile', 'discard pile', 'out of game', 'play area']);
+const AbilityContext = require('../AbilityContext');
 const DiscardCard = require('../GameActions/DiscardCard');
+const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
+const ShoppinCardAction = require('../PlayActions/ShoppinCardAction');
 
 class DropCommand {
     constructor(game, player, card, targetLocation, gameLocation) {
@@ -28,7 +31,20 @@ class DropCommand {
         }
 
         if(this.originalLocation !== 'play area' && this.targetLocation === 'play area') {
-            this.player.putIntoPlay(this.card, 'play', { force: true }, this.gameLocation);
+            if (this.originalLocation === 'hand' && this.game.currentPhase !== 'setup') {
+                let abilityContext = new AbilityContext({ 
+                    game: this.game, 
+                    source: this.card, 
+                    player: this.player
+                });
+                this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
+                    title: 'Are you perfoming Shoppin\' play?',
+                    onYes: () => this.game.resolveAbility(new ShoppinCardAction(this.gameLocation), abilityContext),
+                    onNo: () => this.player.putIntoPlay(this.card, 'play', { force: true }, this.gameLocation)
+                }));
+            } else {
+                this.player.putIntoPlay(this.card, 'play', { force: true }, this.gameLocation);
+            }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
             this.game.killCharacter(this.card, { allowSave: false, force: true });
         } else if(this.targetLocation === 'discard pile' && DiscardCard.allow({ card: this.card, force: true })) {
@@ -37,7 +53,9 @@ class DropCommand {
             this.player.moveCard(this.card, this.targetLocation);
         }
 
-        this.addGameMessage();
+        if (this.game.currentPhase !== 'setup') {
+            this.addGameMessage();
+        }
     }
 
     isValidLocation() {
@@ -51,7 +69,7 @@ class DropCommand {
     isValidDropCombination() {
         const DrawDeckCardTypes = ['goods', 'dude', 'action', 'deed', 'spell', 'joker'];
         const AllowedTypesForPile = {
-            'being played': ['event'],
+            'being played': ['action'],
             'dead pile': DrawDeckCardTypes,
             'discard pile': DrawDeckCardTypes,
             'draw deck': DrawDeckCardTypes,

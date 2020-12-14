@@ -9,14 +9,16 @@ class GamblingPhase extends Phase {
         super(game, 'gambling');
 
         this.lowballPot = 0;
+        this.resolutionsStep = false;
 
         this.initialise([
             new SimpleStep(game, () => this.ante()),
             new SimpleStep(game, () => this.game.drawHands()),
-            // TODO M2 Shootout testing - comment out DrawHandPrompt and CheatingResolutionPrompt
+            // TODO M2 Shootout testing - comment out DrawHandPrompt and cheatinResolutions
             new DrawHandPrompt(game),
             new SimpleStep(game, () => this.game.revealHands()),
-            new CheatingResolutionPrompt(game),
+            new SimpleStep(game, () => this.cheatinResolutions()),
+            new SimpleStep(game, () => this.endResolution()),
             new SimpleStep(game, () => this.determineWinner()),
             new SimpleStep(game, () => this.gainLowballPot()),
             new SimpleStep(game, () => this.game.discardDrawHands())
@@ -28,6 +30,16 @@ class GamblingPhase extends Phase {
             this.game.addGhostRock(player, -1);
             this.lowballPot++;
         });
+    }
+
+    cheatinResolutions() {
+        this.resolutionsStep = true;
+        this.game.queueStep(new CheatingResolutionPrompt(this.game));  
+    }
+
+    endResolution() {
+        this.resolutionsStep = false;
+        this.game.raiseEvent('onResolutionStepFinished', { phase: this.name });   
     }
 
     determineWinner() {

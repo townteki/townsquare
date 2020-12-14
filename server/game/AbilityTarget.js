@@ -25,6 +25,7 @@ class AbilityTarget {
         this.messages = properties.messages;
         this.ifAble = !!properties.ifAble;
         this.autoSelect = properties.autoSelect === null ? true : properties.autoSelect;
+        this.activePromptTitle = properties.activePromptTitle;
     }
 
     canResolve(context) {
@@ -69,6 +70,13 @@ class AbilityTarget {
             return context.game.getOpponentsInFirstPlayerOrder(context.player);
         }
 
+        if(this.choosingPlayer === 'thisIfLegal') {
+            if (!context.player.isCheatin()) {
+                return [context.player];
+            }
+            return [context.player.getOpponent()];
+        }
+
         return [context.player];
     }
 
@@ -88,6 +96,7 @@ class AbilityTarget {
         delete otherProperties.choosingPlayer;
         delete otherProperties.messages;
         let promptProperties = {
+            activePromptTitle: this.activePromptTitle,
             context: context,
             source: context.source,
             selector: this.selector,

@@ -7,7 +7,7 @@ const PlayableLocation = require('./playablelocation.js');
 const CannotRestriction = require('./cannotrestriction.js');
 const ChallengeRestriction = require('./ChallengeRestriction.js');
 const ImmunityRestriction = require('./immunityrestriction.js');
-const GoldSource = require('./GoldSource.js');
+const GhostRockSource = require('./GhostRockSource.js');
 const {Tokens} = require('./Constants');
 
 function cannotEffect(type) {
@@ -99,20 +99,28 @@ const Effects = {
     setAsStud: function(sourceUuid) {
         return {
             apply: function(card) {
-                card.addStudEffect(sourceUuid, 'Stud');
+                if (card.getType() === 'dude') {
+                    card.addStudEffect(sourceUuid, 'Stud');
+                }
             },
             unapply: function(card) {
-                card.removeStudEffect(sourceUuid);
+                if (card.getType() === 'dude') {
+                    card.removeStudEffect(sourceUuid);
+                }
             }
         };
     },
     setAsDraw: function(sourceUuid) {
         return {
             apply: function(card) {
-                card.addStudEffect(sourceUuid, 'Draw');
+                if (card.getType() === 'dude') {
+                    card.addStudEffect(sourceUuid, 'Draw');
+                }
             },
             unapply: function(card) {
-                card.removeStudEffect(sourceUuid);
+                if (card.getType() === 'dude') {
+                    card.removeStudEffect(sourceUuid);
+                }
             }
         };
     },
@@ -187,14 +195,14 @@ const Effects = {
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },
-    modifyStrength: function(value) {
+    modifyBullets: function(value) {
         return {
-            gameAction: value < 0 ? 'decreaseStrength' : 'increaseStrength',
+            gameAction: value < 0 ? 'decreaseBullets' : 'increaseBullets',
             apply: function(card) {
-                card.modifyStrength(value, true);
+                card.modifyBullets(value, true);
             },
             unapply: function(card) {
-                card.modifyStrength(-value, false);
+                card.modifyBullets(-value, false);
             },
             order: value >= 0 ? 0 : 1000
         };
@@ -523,13 +531,13 @@ const Effects = {
             }
         };
     },
-    setEventPlacementLocation: function(location) {
+    setActionPlacementLocation: function(location) {
         return {
             apply: function(card) {
-                card.eventPlacementLocation = location;
+                card.actionPlacementLocation = location;
             },
             unapply: function(card) {
-                card.eventPlacementLocation = 'discard pile';
+                card.actionPlacementLocation = 'discard pile';
             }
         };
     },
@@ -845,18 +853,18 @@ const Effects = {
             }
         };
     },
-    canSpendGold: function(allowSpendingFunc) {
+    canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {
-                let goldSource = new GoldSource(card, allowSpendingFunc);
-                context.canSpendGold = context.canSpendGold || {};
-                context.canSpendGold[card.uuid] = goldSource;
-                card.controller.addGoldSource(goldSource);
+                let ghostrockSource = new GhostRockSource(card, allowSpendingFunc);
+                context.canSpendGhostRock = context.canSpendGhostRock || {};
+                context.canSpendGhostRock[card.uuid] = ghostrockSource;
+                card.controller.addGoldSource(ghostrockSource);
             },
             unapply: function(card, context) {
-                let goldSource = context.canSpendGold[card.uuid];
-                card.controller.removeGoldSource(goldSource);
-                delete context.canSpendGold[card.uuid];
+                let ghostrockSource = context.canSpendGhostRock[card.uuid];
+                card.controller.removeGoldSource(ghostrockSource);
+                delete context.canSpendGhostRock[card.uuid];
             }
         };
     },

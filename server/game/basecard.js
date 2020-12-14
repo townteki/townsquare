@@ -43,7 +43,6 @@ class BaseCard {
         this.influence = cardData.influence;
         this.control = cardData.control;
         this.bullets = cardData.bullets;
-        this.shooter = cardData.shooter;
         this.wealth = cardData.wealth;
         this.upkeep = cardData.upkeep;
 
@@ -191,9 +190,9 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * challenge.
      */
-    untilEndOfChallenge(propertyFactory) {
+    untilEndOfShootout(propertyFactory) {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfChallenge', location: 'any' }, properties));
+        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfShootout', location: 'any' }, properties));
     }
 
     /**
@@ -268,7 +267,6 @@ class BaseCard {
         clone.production = this.production;
         clone.influence = this.influence;
         clone.bullets = this.bullets;
-        clone.shooter = this.shooter;
         clone.wealth = this.wealth;
         clone.upkeep = this.upkeep;        
         clone.keywords = this.keywords.clone();
@@ -436,6 +434,7 @@ class BaseCard {
             return;
         }
 
+        let menu = [];
         let actionIndexPairs = this.abilities.actions.map((action, index) => [action, index]);
         let menuActionPairs = actionIndexPairs.filter(pair => {
             let action = pair[0];
@@ -446,9 +445,11 @@ class BaseCard {
             return;
         }
 
-        return [
-            { command: 'click', text: 'Boot / Unboot', location: [ 'play area' ] }
-        ].concat(menuActionPairs.map(([action, index]) => action.getMenuItem(index, player)));
+        if (this.location === 'play area') {
+            menu = [ { command: 'click', text: 'Boot / Unboot' } ];
+        }
+
+        return menu.concat(menuActionPairs.map(([action, index]) => action.getMenuItem(index, player)));
     }
 
     isCopyOf(card) {
@@ -478,7 +479,23 @@ class BaseCard {
     }
 
     isParticipating() {
-        return this.game.currentChallenge && this.game.currentChallenge.isParticipating(this);
+        return this.game.shootout && this.game.shootout.isInShootout(this);
+    }
+
+    isInLeaderPosse() {
+        return this.game.shootout && this.game.shootout.isInLeaderPosse(this);
+    }
+
+    isInMarkPosse() {
+        return this.game.shootout && this.game.shootout.isInMarkPosse(this);
+    }
+
+    isLeader() {
+        return this.game.shootout && this.game.shootout.leader === this;
+    }
+
+    isMark() {
+        return this.game.shootout && this.game.shootout.mark === this;
     }
 
     setCardType(cardType) {
@@ -581,7 +598,7 @@ class BaseCard {
         return this.tokens[Tokens.ghostrock] || 0;
     }
 
-    modifyGhostrock(amount) {
+    modifyGhostRock(amount) {
         this.modifyToken(Tokens.ghostrock, amount);
     }
 
@@ -644,17 +661,6 @@ class BaseCard {
             return;
         }
         return this.game.findLocation(this.gamelocation);
-    }
-
-    moveToLocation(player, destinationUuid) {
-        let origin = this.getLocation();
-        if (origin) {
-            origin.removeDude(this);
-        }
-        let destination = this.game.findLocation(destinationUuid);
-        if (destination) {
-            destination.addDude(this);
-        }
     }
 
     updateGameLocation(target) {
@@ -728,6 +734,16 @@ class BaseCard {
         }     
 
         let state = {
+            printedStats: {
+                bullets: this.cardData.bullets,
+                shooter: this.cardData.shooter,
+                influence: this.cardData.influence,
+                control: this.cardData.control,
+                value: this.cardData.value,
+                suit: this.cardData.suit,
+                upkeep: this.cardData.upkeep,
+                production: this.cardData.production
+            },
             bullets: this.bullets,
             code: this.cardData.code,
             cost: this.cardData.cost,
@@ -740,7 +756,6 @@ class BaseCard {
             menu: this.getMenu(activePlayer),
             new: this.new,
             production: this.production,
-            shooter: this.shooter,
             suit: this.suit,
             title: this.title,
             tokens: this.tokens,
