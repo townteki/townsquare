@@ -2,6 +2,7 @@ const _ = require('underscore');
 
 const DrawCard = require('./drawcard.js');
 const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
+const GameActions = require('./GameActions');
 const {ShootoutStatuses, Tokens} = require('./Constants');
 
 class DudeCard extends DrawCard {
@@ -91,22 +92,7 @@ class DudeCard extends DrawCard {
             },
             targetController: 'opponent',
             handler: context => {
-                this.shootoutStatus = ShootoutStatuses.CallingOut;
-                context.target.shootoutStatus = ShootoutStatuses.CalledOut;
-                if (!context.target.booted) {
-                    this.game.promptWithMenu(context.target.controller, this, {
-                        activePrompt: {
-                            menuTitle: this.title + ' is calling out ' + context.target.title,
-                            buttons: [
-                                { text: 'Accept Callout', method: 'acceptCallout', arg: context.target.uuid },
-                                { text: 'Run like hell', method: 'rejectCallout', arg: context.target.uuid }
-                            ]
-                        },
-                        waitingPromptTitle: 'Waiting for opponent to decide if he runs or fights'
-                    });
-                } else {
-                    this.acceptCallout(context.target.controller, context.target.uuid);
-                }
+                this.game.resolveGameAction(GameActions.callOut({ caller: this, callee: context.target, isCardEffect: false }))
             },
             player: this.owner
         });
@@ -162,19 +148,54 @@ class DudeCard extends DrawCard {
         this.studReferenceArray = this.studReferenceArray.filter(studRef => studRef.source !== source);
     }
 
-    sendHome(booted = true, allowBooted = true) {
-        this.owner.moveDude(this, this.owner.outfit.uuid, { needToBoot: booted, allowBooted: allowBooted });
+    sendHome(options = {}) {
+        this.owner.moveDude(this, this.owner.outfit.uuid, options);
     }
 
-    moveToLocation(player, destinationUuid = '', playingType) {
+    moveToLocation(destinationUuid) {
         let origin = this.getLocation();
         if (origin) {
             origin.removeDude(this);
         }
-        let destination = this.game.findLocation(playingType === 'shoppin' && destinationUuid === '' ? player.outfit.uuid : destinationUuid);
+        let destination = this.game.findLocation(destinationUuid);
         if (destination) {
             destination.addDude(this);
         }
+    }
+
+    callOut(card, canReject = true) {
+        this.shootoutStatus = ShootoutStatuses.CallingOut;
+        card.shootoutStatus = ShootoutStatuses.CalledOut;
+        if (!card.booted && canReject) {
+            this.game.promptWithMenu(card.controller, this, {
+                activePrompt: {
+                    menuTitle: this.title + ' is calling out ' + card.title,
+                    buttons: [
+                        { text: 'Accept Callout', method: 'acceptCallout', arg: card.uuid },
+                        { text: 'Run like hell', method: 'rejectCallout', arg: card.uuid }
+                    ]
+                },
+                waitingPromptTitle: 'Waiting for opponent to decide if he runs or fights'
+            });
+        } else {
+            this.acceptCallout(card.controller, card.uuid);
+        }
+    }
+
+    acceptCallout(player, targetUuid) {
+        let targetDude = player.findCardInPlayByUuid(targetUuid);
+        this.game.startShootout(this, targetDude);
+        this.game.addMessage('{0} uses {1} to call out {2} who accepts.', this.owner, this, targetDude);
+        return true;
+    }
+
+    rejectCallout(player, targetUuid) {
+        let targetDude = player.findCardInPlayByUuid(targetUuid);
+        this.shootoutStatus = ShootoutStatuses.None;
+        targetDude.shootoutStatus = ShootoutStatuses.None;
+        this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false } }));
+        this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama.', this.owner, this, targetDude);
+        return true;
     }
 
     canAttachWeapon(weapon) {
@@ -201,32 +222,27 @@ class DudeCard extends DrawCard {
         return true;
     }
 
-    acceptCallout(player, targetUuid) {
-        let targetDude = player.findCardInPlayByUuid(targetUuid);
-        this.game.startShootout(this, targetDude);
-        this.game.addMessage('{0} uses {1} to call out {2} who accepts.', this.owner, this, targetDude);
-        return true;
-    }
-
-    rejectCallout(player, targetUuid) {
-        let targetDude = player.findCardInPlayByUuid(targetUuid);
-        this.shootoutStatus = ShootoutStatuses.None;
-        targetDude.shootoutStatus = ShootoutStatuses.None;
-        targetDude.sendHome();
-        this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama.', this.owner, this, targetDude);
-        return true;
-    }
-
-    canJoinPosse(isJob = false, allowBooted = false) {
+    needToMoveToJoinPosse() {
         let shootout = this.game.shootout;
-        if (this.gamelocation === shootout.mark.gamelocation) {
+        if (!shootout) {
+            return false;
+        }
+        return this.gamelocation !== shootout.mark.gamelocation;
+    }
+
+    canJoinPosse(allowBooted = false) {
+        if (!this.needToMoveToJoinPosse()) {
             return true;
-        }  
+        }
+        let shootout = this.game.shootout;
+        if (!shootout) {
+            return false;
+        } 
         if (this.getLocation().isAdjacent(shootout.mark.gamelocation) && (!this.booted || allowBooted)) {
             return true;
         }
 
-        if (isJob && shootout.belongsToLeaderPlayer(this) && (!this.booted || allowBooted)) {
+        if (shootout.isJob() && shootout.belongsToLeaderPlayer(this) && (!this.booted || allowBooted)) {
             if (this.gamelocation === shootout.leader.gamelocation) {
                 return true;
             } 
@@ -247,7 +263,14 @@ class DudeCard extends DrawCard {
             // if this shootout is a Job, all dudes that had to be booted should already be booted.
             needToBoot = false;
         }
-        this.controller.moveDude(this, shootout.mark.gamelocation, { needToBoot: needToBoot, allowBooted: allowBooted });
+        let options = { 
+            isCardEffect: false, 
+            needToBoot: needToBoot, 
+            allowBooted: allowBooted 
+        };
+        this.game.raiseEvent('onDudeMoved', { card: this, targetUuid: shootout.mark.gamelocation, moveType: 'toPosse', options: options }, event => {
+            event.card.controller.moveDude(event.card, event.targetUuid, event.options);
+        });
     }
     
     get bounty() {

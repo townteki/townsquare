@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const PlayerOrderPrompt = require('../playerorderprompt.js');
 
 /* TODO M2
@@ -76,7 +77,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             onSelect: (player, card) => {
                 let numCoveredCasaulties = card.coversCasaulties('send');
                 if (numCoveredCasaulties > 0) {
-                    card.sendHome();
+                    this.game.resolveGameAction(GameActions.sendHome({ card, options: { isCardEffect: false } }));
                     player.handResult.coverCasaulties(numCoveredCasaulties);         
                 }
                 return true;

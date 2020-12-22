@@ -1,4 +1,5 @@
 const DrawCard = require('../../drawcard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class TheStakesJustRose extends DrawCard {
     setupCardAbilities() {
@@ -10,8 +11,7 @@ class TheStakesJustRose extends DrawCard {
                 cardType: 'dude'
             },
             handler: context => {
-                this.game.shootout.addToPosse(context.target);
-                context.target.moveToShootoutLocation(false, true);
+                this.game.resolveGameAction(GameActions.joinPosse( { card: context.target }));
                 context.target.untilEndOfShootout(ability => ({
                     match: context.target,
                     effect: ability.effects.setAsStud()

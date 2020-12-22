@@ -75,7 +75,11 @@ class Player extends Spectator {
     }
 
     getOpponent() {
-        return this.game.getOpponents(this)[0];
+        let opponents = this.game.getOpponents(this);
+        if (opponents.length === 0) {
+            return { name: 'test player', isCheatin: () => false };
+        }
+        return opponents[0];
     }
 
     isCardUuidInList(list, card) {
@@ -589,7 +593,7 @@ class Player extends Spectator {
 
     putIntoPlay(card, playingType = 'play', options = {}, target = '') {
         if(!options.force && !this.canPutIntoPlay(card, playingType, options)) {
-            return;
+            return false;
         }
 
         if (!target) {
@@ -602,8 +606,8 @@ class Player extends Spectator {
             case 'goods':
                 this.game.queueStep(new AttachmentPrompt(this.game, this, card, playingType, target));
                 break;
-            case 'dude':
-                card.moveToLocation(this, target, playingType);
+            case 'dude':  
+                card.moveToLocation(playingType === 'shoppin' && target === '' ? this.outfit.uuid : target);
                 this.moveCard(card, 'play area');  
                 break;
             case 'deed':
@@ -623,6 +627,7 @@ class Player extends Spectator {
         card.applyPersistentEffects();        
 
         this.game.raiseEvent('onCardEntersPlay', { card: card, playingType: playingType, originalLocation: card.location });
+        return true;
     }
 
     revealSetupCards() {
@@ -876,8 +881,7 @@ class Player extends Spectator {
         let action = GameActions.aceCard({
             card,
             allowSave,
-            source: options.source,
-            originalLocation: card.location
+            source: options.source
         });
         let event = this.game.resolveGameAction(action);
         event.thenExecute(() => {
@@ -984,7 +988,13 @@ class Player extends Spectator {
         return this.cardsInPlay.filter(card => card.getType() === 'dude' && card.gamelocation === locationUuid);
     }
 
-    moveDude(dude, targetLocationUuid, options = { needToBoot: null, allowBooted: false }) {
+    moveDude(dude, targetLocationUuid, params = {}) {
+        let options = {
+            isCardEffect: params.isCardEffect != null ? params.isCardEffect : true,
+            moveType: params.moveType != null ? params.moveType : 'default',
+            needToBoot: params.needToBoot != null ? params.needToBoot : null,
+            allowBooted: params.allowBooted != null ? params.allowBooted : false
+        }
         let origin = this.game.findLocation(dude.gamelocation);
         let destination = this.game.findLocation(targetLocationUuid);
         if (origin.uuid === destination.uuid) {
@@ -994,13 +1004,8 @@ class Player extends Spectator {
             return;
         }
 
-        if (options.needToBoot === null) {
+        if (options.needToBoot === null && !options.isCardEffect) {
             if (!options.allowBooted && dude.booted) {
-                var prompt = new ChooseYesNoPrompt(this.game, this, {
-                    title: dude.title + ' is already booted. Proceed anyway?',
-                    onYes: () => dude.moveToLocation(this, destination.uuid)
-                });
-                this.game.queueStep(prompt); 
                 return;
             }
             if (!origin.isAdjacent(destination.uuid)) {
@@ -1020,9 +1025,7 @@ class Player extends Spectator {
             this.bootCard(dude);
         }
 
-        dude.moveToLocation(this, destination.uuid);
-        // TODO M2 this event needs to be implemented
-        //this.game.raiseEvent('onDudeMoved', { dude: dude, origin: origin, destination: destinaation, player: this });
+        dude.moveToLocation(destination.uuid);
     }
 
     moveCard(card, targetLocation, options = {}, callback) {
@@ -1102,8 +1105,8 @@ class Player extends Spectator {
         }
     }
 
-    bootCard(card, options = {}) {
-        return this.game.resolveGameAction(GameActions.bootCard({ card, force: options.force }));
+    bootCard(card, playType) {
+        return this.game.resolveGameAction(GameActions.bootCard({ card, playType }));
     }
 
     unbootCard(card, options = {}) {

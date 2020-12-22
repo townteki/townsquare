@@ -269,13 +269,13 @@ const Costs = {
     /**
      * Cost in which the player must pay a fixed, non-reduceable amount of gold.
      */
-    payGold: function(amount) {
+    payGhostRock: function(amount) {
         return {
             canPay: function(context) {
-                return context.player.getSpendableGold({ player: context.player, playingType: 'ability' }) >= amount;
+                return context.player.getSpendableGhostRock({ player: context.player, playingType: 'ability' }) >= amount;
             },
             pay: function(context) {
-                context.game.spendGold({ amount: amount, player: context.player });
+                context.game.spendGhostRock({ amount: amount, player: context.player });
             }
         };
     },

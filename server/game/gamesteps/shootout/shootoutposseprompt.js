@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const PlayerOrderPrompt = require('../playerorderprompt.js');
 
 class ShootoutPossePrompt extends PlayerOrderPrompt {
@@ -19,7 +20,10 @@ class ShootoutPossePrompt extends PlayerOrderPrompt {
                     card !== this.shootout.leader &&
                     card.canJoinPosse(),
                 onSelect: (player, dudeSelection) => {
-                    dudeSelection.forEach(dude => this.shootout.addToPosse(dude));
+                    //Do not move to posse yet, it will be done once both posses are selected (Shootout.gatherPosses())
+                    dudeSelection.forEach(dude => 
+                        this.game.resolveGameAction(GameActions.joinPosse({ card: dude, options: { isCardEffect: false, moveToPosse: false } }))
+                    );
                     if (this.shootout.leaderPlayer === player) {
                         this.game.addMessage('{0} with {1} as leader forms their posse including dudes: {2}.', player, this.shootout.leader, dudeSelection);
                     } else {

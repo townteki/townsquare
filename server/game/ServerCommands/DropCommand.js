@@ -1,5 +1,6 @@
 const PublicLocations = new Set(['dead pile', 'discard pile', 'out of game', 'play area']);
 const AbilityContext = require('../AbilityContext');
+const GameActions = require('../GameActions');
 const DiscardCard = require('../GameActions/DiscardCard');
 const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
 const ShoppinCardAction = require('../PlayActions/ShoppinCardAction');
@@ -21,7 +22,11 @@ class DropCommand {
 
         if(this.originalLocation == this.targetLocation) {
             if(this.card.getType() === 'dude' && this.targetLocation === 'play area') {
-                this.player.moveDude(this.card, this.gameLocation);
+                this.game.resolveGameAction(GameActions.moveDude({ 
+                    card: this.card, 
+                    targetUuid: this.gameLocation, 
+                    options: { isCardEffect: false } 
+                }))
             }
             return;
         }
