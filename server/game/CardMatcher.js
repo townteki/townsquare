@@ -18,6 +18,7 @@ class CardMatcher {
             Matcher.anyValue(properties.inLeaderPosse, inLeaderPosse => card.isInLeaderPosse() === inLeaderPosse) &&
             Matcher.anyValue(properties.inMarkPosse, inMarkPosse => card.isInMarkPosse() === inMarkPosse) &&
             Matcher.anyValue(properties.participating, participating => !card.game.shootout || card.isParticipating() === participating) &&
+            Matcher.anyValue(properties.wanted, wanted => card.getType() === 'dude' && card.isWanted() === wanted) &&
             Matcher.containsValue(properties.facedown, card.facedown) &&
             Matcher.containsValue(properties.parent, card.parent) &&
             Matcher.anyValue(properties.not, notProperties => !CardMatcher.isMatch(card, notProperties))

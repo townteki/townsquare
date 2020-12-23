@@ -507,7 +507,7 @@ class BaseCard {
     }
 
     getPrintedType() {
-        return this.cardData.type;
+        return this.cardData.type_code;
     }
 
     getPrintedFaction() {

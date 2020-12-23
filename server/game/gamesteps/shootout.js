@@ -8,6 +8,7 @@ const RunOrGunPrompt = require('./shootout/runorgunprompt.js');
 const {ShootoutStatuses, ShootoutSteps} = require('../Constants');
 const DrawHandPrompt = require('./shootout/drawhandprompt.js');
 const ShootoutPosse = require('./shootout/shootoutposse.js');
+const GameActions = require('../GameActions/index.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
@@ -152,7 +153,7 @@ class Shootout extends Phase {
 
     runHome(card) {
         this.removeFromPosse(card);
-        card.sendHome();
+        this.game.resolveGameAction(GameActions.sendHome({ card: card, options: { isCardEffect: false } }));
     }
 
     addToPosse(dude) {

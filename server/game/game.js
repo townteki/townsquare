@@ -902,7 +902,7 @@ class Game extends EventEmitter {
 
     saveCard(card) {
         card.markAsSaved();
-        this.raiseEvent('onCardSaved', { card: card });
+        this.vent('onCardSaved', { card: card });
     }
 
     discardFromPlay(cards, options = { allowSave: true }, callback = () => true) {

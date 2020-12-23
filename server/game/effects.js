@@ -135,13 +135,13 @@ const Effects = {
             }
         };
     },
-    entersPlayKneeled: function() {
+    entersPlayBooted: function() {
         return {
             apply: function(card) {
-                card.entersPlayKneeled = true;
+                card.entersPlayBooted = true;
             },
             unapply: function(card) {
-                card.entersPlayKneeled = false;
+                card.entersPlayBooted = false;
             }
         };
     },
@@ -642,7 +642,7 @@ const Effects = {
                 if(card.location === 'out of game') {
                     let originalLocation = context.removeFromGame[card.uuid];
                     if(originalLocation === 'play area') {
-                        card.owner.putIntoPlay(card, 'play', { isEffectExpiration: true });
+                        card.owner.putIntoPlay(card, { isEffectExpiration: true });
                     } else {
                         card.owner.moveCard(card, originalLocation);
                     }

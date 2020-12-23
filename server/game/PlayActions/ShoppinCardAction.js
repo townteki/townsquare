@@ -30,15 +30,12 @@ class ShoppinCardAction extends BaseAbility {
 
     executeHandler(context) {
         let params = {
-            card: context.source,
-            originalController: context.source.controller,
-            originalLocation: context.source.location,
-            player: context.player,
-            type: 'card'
+            context: context,
+            target: this.target,
+            playingType: 'shoppin'
         };
-        context.game.raiseEvent('onCardPlayedAsShoppin', params, () => {
-            context.game.addMessage('{0} does Shoppin\' to bring into play {1} costing {2} GR', context.player, context.source, context.costs.ghostrock);
-            context.player.putIntoPlay(context.source, 'shoppin', {}, this.target);
+        context.game.raiseEvent('onCardEntersPlay', params, event => {
+            event.context.player.putIntoPlay(event.context.source, { playingType: event.playingType, target: event.target, context: context });          
         });
     }
 

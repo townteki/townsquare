@@ -1,5 +1,6 @@
 const PublicLocations = new Set(['dead pile', 'discard pile', 'out of game', 'play area']);
 const AbilityContext = require('../AbilityContext');
+const GameActions = require('../GameActions');
 const DiscardCard = require('../GameActions/DiscardCard');
 const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
 const ShoppinCardAction = require('../PlayActions/ShoppinCardAction');
@@ -21,7 +22,11 @@ class DropCommand {
 
         if(this.originalLocation == this.targetLocation) {
             if(this.card.getType() === 'dude' && this.targetLocation === 'play area') {
-                this.player.moveDude(this.card, this.gameLocation);
+                this.game.resolveGameAction(GameActions.moveDude({ 
+                    card: this.card, 
+                    targetUuid: this.gameLocation, 
+                    options: { isCardEffect: false } 
+                }))
             }
             return;
         }
@@ -40,10 +45,18 @@ class DropCommand {
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
                     title: 'Are you perfoming Shoppin\' play?',
                     onYes: () => this.game.resolveAbility(new ShoppinCardAction(this.gameLocation), abilityContext),
-                    onNo: () => this.player.putIntoPlay(this.card, 'play', { force: true }, this.gameLocation)
+                    onNo: () => this.game.resolveGameAction(GameActions.putIntoPlay({ 
+                        player: this.player,
+                        card: this.card, 
+                        params: { target: this.gameLocation }
+                    }))
                 }));
             } else {
-                this.player.putIntoPlay(this.card, 'play', { force: true }, this.gameLocation);
+                this.game.resolveGameAction(GameActions.putIntoPlay({ 
+                    player: this.player,
+                    card: this.card, 
+                    params: { playingType: 'setup', target: this.gameLocation, force: true }
+                }))
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
             this.game.killCharacter(this.card, { allowSave: false, force: true });

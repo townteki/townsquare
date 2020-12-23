@@ -9,8 +9,8 @@ class BootCard extends GameAction {
         return ['outfit', 'play area'].includes(card.location) && !card.booted;
     }
 
-    createEvent({ card }) {
-        return this.event('onCardBooted', { card }, event => {
+    createEvent({ card, playType }) {
+        return this.event('onCardBooted', { card, playType }, event => {
             event.card.booted = true;
         });
     }
