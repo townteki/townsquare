@@ -549,12 +549,12 @@ class Player extends Spectator {
         return !this.playCardRestrictions.some(restriction => restriction(card, playingType));
     }
 
-    canPutIntoPlay(card, playingType = 'play', options = {}) {
+    canPutIntoPlay(card, params = {}) {
         if(card.getType() === 'action') {
             return false;
         }
 
-        if(!options.isEffectExpiration && !this.canPlay(card, playingType)) {
+        if(!params.isEffectExpiration && !this.canPlay(card, params.playingType)) {
             return false;
         }
 
@@ -591,43 +591,56 @@ class Player extends Spectator {
         return !controlsACopy && !opponentControlsACopy;
     }
 
-    putIntoPlay(card, playingType = 'play', options = {}, target = '') {
-        if(!options.force && !this.canPutIntoPlay(card, playingType, options)) {
-            return false;
+    putIntoPlay(card, params = {}) {
+        let updatedParams = {
+            originalLocation: card.location,
+            playingType: params.playingType || 'play',
+            target: params.target || '',
+            context: params.context || {},
+            booted: !!params.booted
         }
 
-        if (!target) {
-            target = '';
+        if(!updatedParams.force && !this.canPutIntoPlay(card, updatedParams)) {
+            return;
         }
 
         card.facedown = false;
+        card.booted = params.playingType !== 'setup' && !!card.entersPlayBooted || !!updatedParams.booted;
         switch(card.getType()) {
             case 'spell':
             case 'goods':
-                this.game.queueStep(new AttachmentPrompt(this.game, this, card, playingType, target));
+                this.game.queueStep(new AttachmentPrompt(this.game, this, card, updatedParams, ((card, params) => this.entersPlay(card, params))));
                 break;
             case 'dude':  
-                card.moveToLocation(playingType === 'shoppin' && target === '' ? this.outfit.uuid : target);
+                let target = updatedParams.playingType === 'shoppin' && updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
+                card.moveToLocation(target);
                 this.moveCard(card, 'play area');  
+                this.entersPlay(card, updatedParams);
                 break;
             case 'deed':
-                this.addDeedToStreet(card, target);
+                this.addDeedToStreet(card, updatedParams.target);
+                this.entersPlay(card, updatedParams);
                 break;
             default:
                 //empty
         }    
+    }
 
+    entersPlay(card, params) {
         if(card.controller !== this) {
             card.controller.allCards = _(card.controller.allCards.reject(c => c === card));
             this.allCards.push(card);
-        }           
-        
+        }                 
         card.controller = this;
-
-        card.applyPersistentEffects();        
-
-        this.game.raiseEvent('onCardEntersPlay', { card: card, playingType: playingType, originalLocation: card.location });
-        return true;
+        card.applyPersistentEffects();
+        this.game.raiseEvent('onCardEntersPlay', { 
+            card: card, 
+            player: this,
+            originalLocation: params.originalLocation,
+            playingType: params.playingType,
+            target: params.target,
+            context: params.context
+        });     
     }
 
     revealSetupCards() {
@@ -991,9 +1004,9 @@ class Player extends Spectator {
     moveDude(dude, targetLocationUuid, params = {}) {
         let options = {
             isCardEffect: params.isCardEffect != null ? params.isCardEffect : true,
-            moveType: params.moveType != null ? params.moveType : 'default',
+            moveType: params.moveType || 'default',
             needToBoot: params.needToBoot != null ? params.needToBoot : null,
-            allowBooted: params.allowBooted != null ? params.allowBooted : false
+            allowBooted: !!params.allowBooted
         }
         let origin = this.game.findLocation(dude.gamelocation);
         let destination = this.game.findLocation(targetLocationUuid);

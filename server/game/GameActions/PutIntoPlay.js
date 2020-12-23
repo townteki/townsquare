@@ -7,14 +7,25 @@ class PutIntoPlay extends GameAction {
 
     canChangeGameState({ player, card }) {
         player = player || card.controller;
-        return player.canPutIntoPlay(card);
+        return card.location !== 'play area' &&
+            player.canPutIntoPlay(card);
     }
 
-    createEvent({ player, card, kneeled }) {
+    createEvent({ player, card, params = {} }) {
         player = player || card.controller;
-        return this.event('__PLACEHOLDER_EVENT__', { player, card }, event => {
-            event.player.putIntoPlay(event.card, 'play', { kneeled });
+        return this.event('onCardPutIntoPlay', this.getDefaultParams(player, card, params), event => {
+            event.player.putIntoPlay(event.card, { playingType: event.playingType, target: event.target, context: event.context, force: event.force });
         });
+    }
+
+    getDefaultParams(player, card, params) {
+        return {
+            player,
+            card,
+            target: params.target || '',
+            playingType: params.playingType || 'play',
+            context: params.context || {}
+        }
     }
 }
 
