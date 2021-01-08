@@ -905,17 +905,18 @@ class Game extends EventEmitter {
         this.vent('onCardSaved', { card: card });
     }
 
-    discardFromPlay(cards, options = { allowSave: true }, callback = () => true) {
+    discardFromPlay(cards, allowSave = true, callback = () => true, options) {
         let inPlayCards = cards.filter(card => card.location === 'play area');
         if(inPlayCards.length === 0) {
-            return;
+            return false;
         }
 
         // The player object used is irrelevant - it shouldn't be referenced by
         // any abilities that respond to cards being discarded from play. This
         // should be a temporary workaround until better support is added for
         // simultaneous resolution of events.
-        inPlayCards[0].owner.discardCards(inPlayCards, options.allowSave, callback, options);
+        inPlayCards[0].owner.discardCards(inPlayCards, allowSave, callback, options);
+        return true;
     }
 
     discardDrawHands() {
@@ -1009,9 +1010,14 @@ class Game extends EventEmitter {
         return this.shootout.isInShootout(card);
     }
 
-    startShootout(leader, mark) {
+    // context is used for job - AbilityContext
+    startShootout(leader, mark, context) {
         if (!this.shootout) {
-            this.shootout = new Shootout(this, this.currentPhase, leader, mark);
+            let options = {};
+            if (context && context.ability.isJob) {
+                options = { isJob: true, jobAbility: context.ability }
+            }
+            this.shootout = new Shootout(this, this.currentPhase, leader, mark, options);
         } else {
             // TODO M2 info that shootout is already happening
             return;

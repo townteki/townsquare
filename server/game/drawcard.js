@@ -84,14 +84,6 @@ class DrawCard extends BaseCard {
         }
     }
 
-    discard(player) {
-        player.discardCard(this);
-    }
-
-    playCard(player) {
-        player.playCard(this);
-    }
-
     hasPrintedCost() {
         return !this.facedown && this.cardData.cost !== '-';
     }

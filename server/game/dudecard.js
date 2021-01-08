@@ -230,28 +230,38 @@ class DudeCard extends DrawCard {
         return this.gamelocation !== shootout.mark.gamelocation;
     }
 
-    canJoinPosse(allowBooted = false) {
+    requirementsToJoinPosse(allowBooted = false) {
         if (!this.needToMoveToJoinPosse()) {
-            return true;
+            return { canJoin: true, needToBoot: false };
         }
         let shootout = this.game.shootout;
         if (!shootout) {
-            return false;
+            return { canJoin: false };
         } 
         if (this.getLocation().isAdjacent(shootout.mark.gamelocation) && (!this.booted || allowBooted)) {
-            return true;
+            return { canJoin: true, needToBoot: true };
         }
 
         if (shootout.isJob() && shootout.belongsToLeaderPlayer(this) && (!this.booted || allowBooted)) {
             if (this.gamelocation === shootout.leader.gamelocation) {
-                return true;
+                return { canJoin: true, needToBoot: true };
             } 
-            if (this.getLocation.isAdjacent(shootout.leader.gamelocation)) {
-                return true;
+            if (this.getLocation().isAdjacent(shootout.leader.gamelocation)) {
+                return { canJoin: true, needToBoot: true };
             }         
         }
 
-        return false;
+        return { canJoin: false };
+    }
+
+    canLeadJob(player) {
+        if (this.controller !== player) {
+            return false;
+        }
+        if (this.booted) {
+            return false;
+        }
+        return true;
     }
 
     moveToShootoutLocation(needToBoot = true, allowBooted = false) {

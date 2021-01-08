@@ -5,7 +5,7 @@ const _ = require('lodash');
  */
 class HandResult {
     constructor(hand) {
-        this.casaulties = 0;
+        this.casualties = 0;
         this.rank = {rank : 0, rankName: ''};
         if(!hand || !_.isArray(hand)) {
             return;
@@ -20,10 +20,10 @@ class HandResult {
         return this.rank;
     }
 
-    coverCasaulties(number) {
-        this.casaulties -= number;
-        if (this.casaulties < 0) {
-            this.casaulties = 0;
+    coverCasualties(number) {
+        this.casualties -= number;
+        if (this.casualties < 0) {
+            this.casualties = 0;
         }
     }
 

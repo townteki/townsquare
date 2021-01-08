@@ -1,10 +1,10 @@
 const AnyNumberCost = require('./costs/AnyNumberCost');
 const ChooseCost = require('./costs/choosecost.js');
 const CostBuilders = require('./costs/CostBuilders.js');
-const KneelCost = require('./costs/KneelCost.js');
+const BootCost = require('./costs/BootCost.js');
 const XValuePrompt = require('./costs/XValuePrompt.js');
 const SelfCost = require('./costs/SelfCost.js');
-const StandCost = require('./costs/StandCost.js');
+const UnbootCost = require('./costs/UnbootCost.js');
 const MoveTokenFromSelfCost = require('./costs/MoveTokenFromSelfCost.js');
 const MovePowerFromFactionCost = require('./costs/MovePowerFromFactionCost');
 const DiscardFromDeckCost = require('./costs/DiscardFromDeckCost');
@@ -21,40 +21,40 @@ const Costs = {
         return new ChooseCost(choices);
     },
     /**
-     * Cost that will kneel the card that initiated the ability.
+     * Cost that will boot the card that initiated the ability.
      */
-    kneelSelf: function() {
-        let action = new KneelCost();
-        let unpayAction = new StandCost();
+    bootSelf: function() {
+        let action = new BootCost();
+        let unpayAction = new UnbootCost();
         return new SelfCost(action, unpayAction);
     },
     /**
-     * Cost that will kneel the parent card the current card is attached to.
+     * Cost that will boot the parent card the current card is attached to.
      */
-    kneelParent: () => CostBuilders.kneel.parent(),
+    bootParent: () => CostBuilders.boot.parent(),
     /**
-     * Cost that will kneel the player's faction card.
+     * Cost that will boot the player's faction card.
      */
-    kneelFactionCard: () => CostBuilders.kneel.faction(),
+    bootFactionCard: () => CostBuilders.boot.faction(),
     /**
-     * Cost that kneels a specific card passed into the function
+     * Cost that boots a specific card passed into the function
      */
-    kneelSpecific: cardFunc => CostBuilders.kneel.specific(cardFunc),
+    bootSpecific: cardFunc => CostBuilders.boot.specific(cardFunc),
     /**
-     * Cost that requires kneeling a card that matches the passed condition
+     * Cost that requires booting a card that matches the passed condition
      * predicate function.
      */
-    kneel: condition => CostBuilders.kneel.select(condition),
+    boot: condition => CostBuilders.boot.select(condition),
     /**
-     * Cost that requires kneeling a certain number of cards that match the
+     * Cost that requires booting a certain number of cards that match the
      * passed condition predicate function.
      */
-    kneelMultiple: (amount, condition) => CostBuilders.kneel.selectMultiple(amount, condition),
+    bootMultiple: (amount, condition) => CostBuilders.boot.selectMultiple(amount, condition),
     /**
-     * Cost that requires kneeling any number of cards that match the
+     * Cost that requires booting any number of cards that match the
      * passed condition predicate function.
      */
-    kneelAny: (condition, zeroAllowed) => CostBuilders.kneel.selectAny(condition, zeroAllowed),
+    bootAny: (condition, zeroAllowed) => CostBuilders.boot.selectAny(condition, zeroAllowed),
     /**
      * Cost that will sacrifice the card that initiated the ability.
      */

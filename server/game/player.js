@@ -894,7 +894,7 @@ class Player extends Spectator {
         let action = GameActions.aceCard({
             card,
             allowSave,
-            source: options.source
+            options
         });
         let event = this.game.resolveGameAction(action);
         event.thenExecute(() => {
@@ -905,17 +905,17 @@ class Player extends Spectator {
         return event;
     }
 
-    discardCard(card, allowSave = true, options = {}) {
+    discardCard(card, allowSave = true, options) {
         this.discardCards([card], allowSave, () => true, options);
     }
 
-    discardCards(cards, allowSave = true, callback = () => true, options = {}) {
+    discardCards(cards, allowSave = true, callback = () => true, options) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.discardCard({
                 card,
                 allowSave,
-                source: options.source,
-                originalLocation: cards[0].location
+                originalLocation: cards[0].location,
+                options
             }))
         );
         let event = this.game.resolveGameAction(action);

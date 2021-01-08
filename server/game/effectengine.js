@@ -10,7 +10,7 @@ class EffectEngine {
             'onCardMoved', 
             'onCardTakenControl', 
             'onCardBlankToggled', 
-            'onShootoutFinished', 
+            'onShootoutPhaseFinished', 
             'onShootoutRoundFinished', 
             'onPhaseEnded', 
             'onAtEndOfChallenge', 
@@ -132,8 +132,8 @@ class EffectEngine {
         }
     }
 
-    onShootoutFinished() {
-        this.unapplyAndRemove(effect => effect.duration === 'untilEndOfShootout');
+    onShootoutPhaseFinished() {
+        this.unapplyAndRemove(effect => effect.duration === 'untilEndOfShootoutPhase');
     }
 
     onShootoutRoundFinished() {
