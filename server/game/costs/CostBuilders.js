@@ -1,3 +1,4 @@
+const BootCost = require('./BootCost');
 const CostBuilder = require('./CostBuilder');
 const DiscardDuplicateCost = require('./DiscardDuplicateCost');
 const DiscardFromHandCost = require('./DiscardFromHandCost');
@@ -5,16 +6,17 @@ const DiscardFromShadowsCost = require('./DiscardFromShadowsCost');
 const DiscardPowerCost = require('./DiscardPowerCost');
 const DiscardTokenCost = require('./DiscardTokenCost');
 const KillCost = require('./KillCost');
-const KneelCost = require('./KneelCost');
+const LowerBountyCost = require('./LowerBountyCost');
 const PlaceInDeadPileFromHandCost = require('./PlaceInDeadPileFromHandCost');
 const PutIntoPlayCost = require('./PutIntoPlayCost');
 const PutIntoShadowsCost = require('./PutIntoShadowsCost');
+const RaiseBountyCost = require('./RaiseBountyCost');
 const RemoveFromChallengeCost = require('./RemoveFromChallengeCost');
 const RemoveFromGameCost = require('./RemoveFromGameCost');
 const ReturnToHandCost = require('./ReturnToHandCost');
 const RevealCost = require('./RevealCost');
 const SacrificeCost = require('./SacrificeCost');
-const StandCost = require('./StandCost');
+const UnbootCost = require('./UnbootCost');
 
 const CostBuilders = {
     discardDuplicate: new CostBuilder(new DiscardDuplicateCost(), {
@@ -45,7 +47,17 @@ const CostBuilders = {
         select: 'Select card to kill',
         selectMultiple: number => `Select ${number} cards to kill`
     }),
-    kneel: new CostBuilder(new KneelCost(), {
+    raiseBounty: new CostBuilder(new RaiseBountyCost(), {
+        select: 'Select card to raise bounty',
+        selectMultiple: number => `Select ${number} cards to raise bounty`,
+        selectAny: 'Select any number of cards to raise bounty'
+    }),
+    lowerBounty: new CostBuilder(new LowerBountyCost(), {
+        select: 'Select card to lower bounty',
+        selectMultiple: number => `Select ${number} cards to lower bounty`,
+        selectAny: 'Select any number of cards to lower bounty'
+    }),
+    boot: new CostBuilder(new BootCost(), {
         select: 'Select card to kneel',
         selectMultiple: number => `Select ${number} cards to kneel`,
         selectAny: 'Select any number of cards to kneel'
@@ -83,7 +95,7 @@ const CostBuilders = {
         selectMultiple: number => `Select ${number} cards to sacrifice`,
         selectAny: 'Select any number of cards to sacrifice'
     }),
-    stand: new CostBuilder(new StandCost(), {
+    unboot: new CostBuilder(new UnbootCost(), {
         select: 'Select card to stand',
         selectMultiple: number => `Select ${number} cards to stand`
     })

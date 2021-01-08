@@ -15,7 +15,7 @@ class TheEvidence extends GoodsCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.removeBounty({ card: context.target, options: { removeAll: true } }));
-                this.game.resolveGameAction(GameActions.discardCard({ card: this }));
+                context.player.discardCard(this);
                 this.game.addMessage('{0} plays {1} on {2} to reduce their bounty to 0.', context.player, this, context.target);
             }
         });
@@ -30,7 +30,7 @@ class TheEvidence extends GoodsCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.addBounty({ card: context.target, amount: 2 }));
-                this.game.resolveGameAction(GameActions.aceCard({ card: this }));
+                context.player.aceCard(this);
                 this.game.addMessage('{0} plays {1} on {2} to increase their bounty by 2.', context.player, this, context.target);
             }
         });

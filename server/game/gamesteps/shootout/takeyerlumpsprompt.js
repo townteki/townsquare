@@ -3,8 +3,8 @@ const PlayerOrderPrompt = require('../playerorderprompt.js');
 
 /* TODO M2
     Based on the rules, we should firt choose which dudes are aced, which discarded and which sent home (e.g. harrowed)
-    Then, once chosen, all the casaulties are taken based on the selection order.
-    For now, each casaulty will be taken right after the card is selected.
+    Then, once chosen, all the casualties are taken based on the selection order.
+    For now, each casualty will be taken right after the card is selected.
 */
 class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     constructor(game, playerNameOrder) {
@@ -16,18 +16,18 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         if (this.isComplete()) {
             return true;
         }
-        if (this.currentPlayer.handResult.casaulties == 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        if (this.currentPlayer.handResult.casualties == 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
             this.completePlayer();
             return this.continue();
         }
 
         this.game.promptWithMenu(this.currentPlayer, this, {
             activePrompt: {
-                menuTitle: 'Select Yer Lumps to Take (' + this.currentPlayer.handResult.casaulties + ' remaining)',
+                menuTitle: 'Select Yer Lumps to Take (' + this.currentPlayer.handResult.casualties + ' remaining)',
                 buttons: [
-                    { text: 'Ace', method: 'coverCasaulty', arg: 'ace' },
-                    { text: 'Discard', method: 'coverCasaulty', arg: 'discard' },
-                    { text: 'Send Home', method: 'sendHomeCasaulty' },
+                    { text: 'Ace', method: 'coverCasualty', arg: 'ace' },
+                    { text: 'Discard', method: 'coverCasualty', arg: 'discard' },
+                    { text: 'Send Home', method: 'sendHomeCasualty' },
                     { text: 'Done', method: 'done' }
                 ]
             }
@@ -36,29 +36,29 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         return false;        
     }
 
-    coverCasaulty(player, arg) {
-        let title = 'Select card to ' + arg + ' to cover casaulties';
+    coverCasualty(player, arg) {
+        let title = 'Select card to ' + arg + ' to cover casualties';
         this.game.promptForSelect(player, {
             activePromptTitle: title,
             numCards: 1,
             cardCondition: card => card.controller === player && 
                 card.location === 'play area' &&
                 this.shootout.isInShootout(card) &&
-                card.coversCasaulties() > 0,
+                card.coversCasualties() > 0,
             onSelect: (player, card) => {
-                let numCoveredCasaulties = 0;
+                let numCoveredCasualties = 0;
                 if (arg === 'ace') {
-                    numCoveredCasaulties = card.coversCasaulties('ace');
-                    if (numCoveredCasaulties > 0) {
-                        player.aceCard(card);     
+                    numCoveredCasualties = card.coversCasualties('ace');
+                    if (numCoveredCasualties > 0) {
+                        player.aceCard(card, true, () => true, { isCasualty: true });     
                     }         
                 } else if (arg === 'discard') {
-                    numCoveredCasaulties = card.coversCasaulties('discard');
-                    if (numCoveredCasaulties > 0) {
-                        player.discardCard(card);
+                    numCoveredCasualties = card.coversCasualties('discard');
+                    if (numCoveredCasualties > 0) {
+                        player.discardCard(card, true, { isCasualty: true });
                     }
                 }
-                player.handResult.coverCasaulties(numCoveredCasaulties);
+                player.handResult.coverCasualties(numCoveredCasualties);
                 return true;
             }
         });
@@ -66,19 +66,19 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         return true;
     }
 
-    sendHomeCasaulty(player) {
+    sendHomeCasualty(player) {
         this.game.promptForSelect(player, {
-            activePromptTitle: 'Select card to send home to cover casaulties',
+            activePromptTitle: 'Select card to send home to cover casualties',
             numCards: 1,
             cardCondition: card => card.controller === player && 
                 card.location === 'play area' &&
                 this.shootout.isInShootout(card) &&
-                card.coversCasaulties('send') > 0,
+                card.coversCasualties('send') > 0,
             onSelect: (player, card) => {
-                let numCoveredCasaulties = card.coversCasaulties('send');
-                if (numCoveredCasaulties > 0) {
+                let numCoveredCasualties = card.coversCasualties('send');
+                if (numCoveredCasualties > 0) {
                     this.game.resolveGameAction(GameActions.sendHome({ card, options: { isCardEffect: false } }));
-                    player.handResult.coverCasaulties(numCoveredCasaulties);         
+                    player.handResult.coverCasualties(numCoveredCasualties);         
                 }
                 return true;
             }
@@ -88,8 +88,8 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     }
 
     done() {
-        if (this.currentPlayer.handResult.casaulties > 0) {
-            this.game.addAlert('danger', '{0} ends \`Take Yer Lumps\` step with {1} casaulties remaining!', this.currentPlayer, this.currentPlayer.handResult.casaulties);
+        if (this.currentPlayer.handResult.casualties > 0) {
+            this.game.addAlert('danger', '{0} ends \`Take Yer Lumps\` step with {1} casualties remaining!', this.currentPlayer, this.currentPlayer.handResult.casualties);
         }
         this.completePlayer();
         return true;

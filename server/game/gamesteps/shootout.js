@@ -9,6 +9,7 @@ const {ShootoutStatuses, ShootoutSteps} = require('../Constants');
 const DrawHandPrompt = require('./shootout/drawhandprompt.js');
 const ShootoutPosse = require('./shootout/shootoutposse.js');
 const GameActions = require('../GameActions/index.js');
+const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
@@ -17,23 +18,50 @@ class Shootout extends Phase {
         this.highNoonPhase = phase;
         this.options = options;
         this.leader = leader;
-        leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
-        this.leaderPosse = new ShootoutPosse(this, leader);
-        this.leaderPlayerName = leader.controller.name;
         this.mark = mark;
-        mark.shootoutStatus = ShootoutStatuses.MarkPosse;
-        this.markPosse = new ShootoutPosse(this, mark);
-        this.markPlayerName = mark.controller.name;
-        this.leaderMarkOrder = [this.leader.controller.name, this.mark.controller.name];
+        this.leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
+        this.leaderPlayerName = this.leader.controller.name;
+        this.leaderPosse = new ShootoutPosse(this, this.leaderPlayer, this.leader);
+        if (!this.isJob()) {
+            this.mark.shootoutStatus = ShootoutStatuses.MarkPosse;
+            this.opposingPlayerName = this.mark.controller.name;
+            this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, this.mark);
+        }
+
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
         this.currentStep = ShootoutSteps.any;
         this.initialise([
-            new ShootoutPossePrompt(this.game, this, this.leaderMarkOrder),
+            new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
+            new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
             new SimpleStep(this.game, () => this.gatherPosses()),
             new SimpleStep(this.game, () => this.breakinAndEnterin()),
             new SimpleStep(this, () => this.beginShootoutRound())
         ]);
+    }
+
+    initialiseLeaderPosse() {
+        this.queueStep(new ShootoutPossePrompt(this.game, this, this.leaderPlayer));      
+    }
+
+    initialiseOpposingPosse() {
+        if (!this.isJob()) {
+            this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));
+        } else {
+            let opponent = this.leaderPlayer.getOpponent();
+            this.opposingPlayerName = opponent.name;
+            this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
+                title: 'Do you want to oppose?',
+                onYes: () => {
+                    this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
+                    this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
+                },
+                onNo: () => {
+                    this.recordJobStatus();
+                }
+            }));
+        }
+        this.leaderOpponentOrder = [this.leader.controller.name, this.opposingPlayerName];
     }
 
     get leaderPlayer() {
@@ -43,11 +71,11 @@ class Shootout extends Phase {
         return this.game.getPlayerByName(this.leaderPlayerName);
     }
 
-    get markPlayer() {
-        if (!this.game || !this.markPlayerName) {
+    get opposingPlayer() {
+        if (!this.game || !this.opposingPlayerName) {
             return null;
         }
-        return this.game.getPlayerByName(this.markPlayerName);
+        return this.game.getPlayerByName(this.opposingPlayerName);
     }
 
     get shootoutLocation() {
@@ -59,6 +87,10 @@ class Shootout extends Phase {
     }
 
     beginShootoutRound() {
+        if (this.checkEndCondition()) {
+            return;
+        }
+        this.game.raiseEvent('onShootoutSlinginLeadStarted');
         this.remainingSteps = [
             new SimpleStep(this.game, () => this.shootoutPlays()),
             new SimpleStep(this.game, () => this.pickYerShooterStep()),
@@ -67,7 +99,7 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.resolutionPlays()),
             new SimpleStep(this.game, () => this.endResolution()),
             new SimpleStep(this.game, () => this.determineWinner()),
-            new SimpleStep(this.game, () => this.casaultiesAndRunOrGun())
+            new SimpleStep(this.game, () => this.casualtiesAndRunOrGun())
         ];
 
         this.game.raiseEvent('onBeginShootoutRound');
@@ -89,21 +121,23 @@ class Shootout extends Phase {
         for(const player of this.game.getPlayers()) {
             player.phase = this.name;
         }        
-        this.game.raiseEvent('onShootoutStarted');
-        this.game.addAlert('phasestart', 'Shootout started!');          
+        this.game.raiseEvent('onShootoutPhaseStarted');
+        let phaseName = this.isJob() ? 'Job' : 'Shootout';
+        this.game.addAlert('phasestart', phaseName + ' started!');        
     }
 
     endPhase() {
-        this.game.raiseEvent('onShootoutFinished', { phase: this.name });
+        this.game.raiseEvent('onShootoutPhaseFinished', { phase: this.name });
         this.game.currentPhase = this.highNoonPhase;
         var attackingPlayer = this.leaderPlayer;
-        var defendingPlayer = this.markPlayer;
+        var defendingPlayer = this.opposingPlayer;
         attackingPlayer.phase = this.highNoonPhase;
         defendingPlayer.phase = this.highNoonPhase;
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.game.endShootout();
-        this.game.addAlert('phasestart', 'Shootout ended!');     
+        let phaseName = this.isJob() ? 'Job' : 'Shootout';
+        this.game.addAlert('phasestart', phaseName + ' ended!');        
     }
 
     queueStep(step) {
@@ -114,8 +148,8 @@ class Shootout extends Phase {
         if (player === this.leaderPlayer) {
             return this.leaderPosse;
         }
-        if (player === this.markPlayer) {
-            return this.markPosse;
+        if (player === this.opposingPlayer) {
+            return this.opposingPosse;
         }
     }
 
@@ -123,32 +157,32 @@ class Shootout extends Phase {
         return this.leaderPosse.isInPosse(card);
     }
 
-    isInMarkPosse(card) {
-        return this.markPosse.isInPosse(card);
+    isInOpposingPosse(card) {
+        return this.opposingPosse.isInPosse(card);
     }
 
     isInShootout(card) {
-        return this.isInLeaderPosse(card) || this.isInMarkPosse(card);
+        return this.isInLeaderPosse(card) || this.isInOpposingPosse(card);
     }
 
     belongsToLeaderPlayer(dude) {
-        return dude.controller.name === this.leader.controller.name;
+        return dude.controller.name === this.leaderPlayerName;
     }
 
-    belongsToMarkPlayer(dude) {
-        return dude.controller.name === this.mark.controller.name;
+    belongsToOpposingPlayer(dude) {
+        return dude.controller.name === this.opposingPlayerName;
     }
 
     checkEndCondition() {
-        return !this.leaderPosse || !this.markPosse || this.leaderPosse.isEmpty() || this.markPosse.isEmpty();
+        return !this.leaderPosse || !this.opposingPosse || this.leaderPosse.isEmpty() || this.opposingPosse.isEmpty();
     }
 
     getLeaderDrawCount() {
         return { player: this.leaderPlayer, number: 5 + this.leaderPosse.getStudBonus() };
     }
 
-    getMarkDrawCount() {
-        return { player: this.markPlayer, number: 5 + this.markPosse.getStudBonus() };
+    getOpposingDrawCount() {
+        return { player: this.opposingPlayer, number: 5 + this.opposingPosse.getStudBonus() };
     }
 
     runHome(card) {
@@ -159,21 +193,23 @@ class Shootout extends Phase {
     addToPosse(dude) {
         if (this.belongsToLeaderPlayer(dude)) {
             this.leaderPosse.addToPosse(dude);
-        } else if (this.belongsToMarkPlayer(dude)) {
-            this.markPosse.addToPosse(dude);
+        } else if (this.belongsToOpposingPlayer(dude)) {
+            this.opposingPosse.addToPosse(dude);
         }
     }
 
     removeFromPosse(dude) {
-        if (this.belongsToLeaderPlayer(dude)) {
+        if (this.belongsToLeaderPlayer(dude) && this.leaderPosse) {
             this.leaderPosse.removeFromPosse(dude);
-        } else if (this.belongsToMarkPlayer(dude)) {
-            this.markPosse.removeFromPosse(dude);
+        } else if (this.belongsToOpposingPlayer(dude) && this.opposingPosse) {
+            this.opposingPosse.removeFromPosse(dude);
         }   
     }
 
     gatherPosses() {
-        this.actOnAllParticipants(dude => dude.moveToShootoutLocation());
+        if (!this.checkEndCondition()) {
+            this.actOnAllParticipants(dude => dude.moveToShootoutLocation());
+        }
     }
 
     shootoutPlays() {
@@ -183,7 +219,7 @@ class Shootout extends Phase {
 
     pickYerShooterStep() {
         this.currentStep = ShootoutSteps.any;
-        this.queueStep(new PickYerShooterPrompt(this.game, this.leaderMarkOrder));
+        this.queueStep(new PickYerShooterPrompt(this.game, this.leaderOpponentOrder));
     }
 
     pickShooter(dude) {
@@ -191,26 +227,30 @@ class Shootout extends Phase {
             this.leaderPosse.pickShooter(dude);
             return;
         }
-        if (this.isInMarkPosse(dude)) {
-            this.markPosse.pickShooter(dude);
+        if (this.isInOpposingPosse(dude)) {
+            this.opposingPosse.pickShooter(dude);
         }
     }
 
     actOnLeaderPosse(action) {
-        this.leaderPosse.actOnPosse(action);
+        if (this.leaderPosse) {
+            this.leaderPosse.actOnPosse(action);
+        }
     }
 
-    actOnMarkPosse(action) {
-        this.markPosse.actOnPosse(action);
+    actOnOpposingPosse(action) {
+        if (this.opposingPosse) {
+            this.opposingPosse.actOnPosse(action);
+        }
     }
 
     actOnAllParticipants(action) {
         this.actOnLeaderPosse(action);
-        this.actOnMarkPosse(action);
+        this.actOnOpposingPosse(action);
     }
 
     breakinAndEnterin() {
-        if (this.shootoutLocation.isTownSquare()) {
+        if (this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
             return;
         }
         let locationCard = this.shootoutLocation.getLocationCard(this.game);
@@ -218,14 +258,14 @@ class Shootout extends Phase {
             if (locationCard.owner !== this.leaderPlayer) {
                 this.actOnLeaderPosse(dude => dude.increaseBounty());
             } else {
-                this.actOnMarkPosse(dude => dude.increaseBounty());
+                this.actOnOpposingPosse(dude => dude.increaseBounty());
             }
         }
     }
 
     draw() {
         this.currentStep = ShootoutSteps.any;
-        this.queueStep(new DrawHandPrompt(this.game, [ this.getLeaderDrawCount(), this.getMarkDrawCount() ]));
+        this.queueStep(new DrawHandPrompt(this.game, [ this.getLeaderDrawCount(), this.getOpposingDrawCount() ]));
     }
 
     revealHands() {
@@ -245,31 +285,31 @@ class Shootout extends Phase {
 
     determineWinner() {
         this.shootoutLoseWinOrder = [];
-        let markHand = this.markPlayer.getHandRank();
+        let opposingHand = this.opposingPlayer.getHandRank();
         let leaderHand = this.leaderPlayer.getHandRank();
-        let winner = this.markPlayer;
+        let winner = this.opposingPlayer;
         let loser = this.leaderPlayer;
-        if (leaderHand.rank == markHand.rank) {
+        if (leaderHand.rank == opposingHand.rank) {
             for(let i = 0; i < leaderHand.tiebreaker.length; i++) {
-                if(leaderHand.tiebreaker[i] > markHand.tiebreaker[i]) {
+                if(leaderHand.tiebreaker[i] > opposingHand.tiebreaker[i]) {
                     winner = this.leaderPlayer;
-                    loser = this.markPlayer;
+                    loser = this.opposingPlayer;
                 }
             }
-            winner.handResult.casaulties = loser.handResult.casaulties = 1;
+            winner.handResult.casualties = loser.handResult.casualties = 1;
             this.game.addMessage('Shootout ended in a tie, but {0} wins on tiebreaker.', winner);
         } else {
-            if (leaderHand.rank > markHand.rank) {
+            if (leaderHand.rank > opposingHand.rank) {
                 winner = this.leaderPlayer;
-                loser = this.markPlayer;
+                loser = this.opposingPlayer;
             }
-            loser.handResult.casaulties = Math.abs(leaderHand.rank - markHand.rank);
-            this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', winner, Math.abs(leaderHand.rank - markHand.rank));
+            loser.handResult.casualties = Math.abs(leaderHand.rank - opposingHand.rank);
+            this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', winner, Math.abs(leaderHand.rank - opposingHand.rank));
         }
         this.shootoutLoseWinOrder = [ loser.name, winner.name ];
     }
 
-    casaultiesAndRunOrGun() {
+    casualtiesAndRunOrGun() {
         this.queueStep(new TakeYerLumpsPrompt(this.game, this.shootoutLoseWinOrder));
         this.queueStep(new RunOrGunPrompt(this.game, this.shootoutLoseWinOrder));
     }
@@ -279,7 +319,24 @@ class Shootout extends Phase {
         if (!this.checkEndCondition()) {
             this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
-        }   
+        } else {
+            if (this.isJob()) {
+                this.actOnLeaderPosse(card => this.runHome(card)); 
+            }
+        }
+    }
+
+    recordJobStatus() {
+        if (!this.isJob()) {
+            return;
+        }
+        if (!this.opposingPosse || this.opposingPosse.isEmpty()) {
+            this.options.jobAbility.setResult(true, this);
+        }
+        if (!this.leaderPosse || this.leaderPosse.isEmpty()) {
+            this.options.jobAbility.setResult(false, this);
+        }
+        
     }
 
 }

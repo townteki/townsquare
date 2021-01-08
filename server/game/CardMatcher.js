@@ -16,7 +16,7 @@ class CardMatcher {
             Matcher.anyValue(properties.printedStrengthOrHigher, amount => card.hasPrintedStrength() && card.getPrintedStrength() >= amount) &&
             Matcher.anyValue(properties.hasAttachments, hasAttachments => hasAttachments === (card.attachments.length > 0)) &&
             Matcher.anyValue(properties.inLeaderPosse, inLeaderPosse => card.isInLeaderPosse() === inLeaderPosse) &&
-            Matcher.anyValue(properties.inMarkPosse, inMarkPosse => card.isInMarkPosse() === inMarkPosse) &&
+            Matcher.anyValue(properties.inOpposingPosse, inOpposingPosse => card.isInOpposingPosse() === inOpposingPosse) &&
             Matcher.anyValue(properties.participating, participating => !card.game.shootout || card.isParticipating() === participating) &&
             Matcher.anyValue(properties.wanted, wanted => card.getType() === 'dude' && card.isWanted() === wanted) &&
             Matcher.containsValue(properties.facedown, card.facedown) &&

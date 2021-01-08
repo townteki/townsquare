@@ -1,21 +1,21 @@
 const GameActions = require('../GameActions');
 
-class KneelCost {
+class LowerBountyCost {
     constructor() {
-        this.name = 'kneel';
+        this.name = 'lowerBounty';
     }
 
     isEligible(card) {
-        return GameActions.kneelCard({ card }).allow();
+        return GameActions.removeBounty({ card }).allow();
     }
 
     pay(cards, context) {
         context.game.resolveGameAction(
             GameActions.simultaneously(
-                cards.map(card => GameActions.kneelCard({ card }))
+                cards.map(card => GameActions.removeBounty({ card }))
             )
         );
     }
 }
 
-module.exports = KneelCost;
+module.exports = LowerBountyCost;

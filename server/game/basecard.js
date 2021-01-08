@@ -14,6 +14,7 @@ const GameActions = require('./GameActions');
 const KeywordsProperty = require('./PropertyTypes/KeywordsProperty');
 const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty');
 const {Tokens} = require('./Constants');
+const JobAction = require('./jobaction');
 
 const LocationsWithEventHandling = ['play area', 'outfit', 'legend'];
 
@@ -31,7 +32,7 @@ class BaseCard {
         this.facedown = false;
         this.eventsForRegistration = [];
         this.blankCount = 0;
-        this.gamelocation = '';
+        this.gameLoc = '';
         this.blanks = new ReferenceCountedSetProperty();
 
         this.cost = cardData.cost;
@@ -106,14 +107,25 @@ class BaseCard {
     setupCardAbilities() {
     }
 
-    action(properties) {
-        var action = new CardAction(this.game, this, properties);
-
+    addActionToMenu(action, properties) {
         if(!action.isClickToActivate() && action.allowMenu()) {
             var index = this.abilities.actions.length;
             this.menu.push(action.getMenuItem(index, properties.player));
         }
+    }
+
+    action(properties) {
+        var action = new CardAction(this.game, this, properties);
+        this.addActionToMenu(action, properties);
+
         this.abilities.actions.push(action);
+    }
+
+    job(properties) {
+        var job = new JobAction(this.game, this, properties);
+        this.addActionToMenu(job, properties);
+
+        this.abilities.actions.push(job);
     }
 
     //Comprehensive Rules React Priorities
@@ -190,9 +202,9 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * challenge.
      */
-    untilEndOfShootout(propertyFactory) {
+    untilEndOfShootoutPhase(propertyFactory) {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfShootout', location: 'any' }, properties));
+        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfShootoutPhase', location: 'any' }, properties));
     }
 
     /**
@@ -486,8 +498,8 @@ class BaseCard {
         return this.game.shootout && this.game.shootout.isInLeaderPosse(this);
     }
 
-    isInMarkPosse() {
-        return this.game.shootout && this.game.shootout.isInMarkPosse(this);
+    isInOpposingPosse() {
+        return this.game.shootout && this.game.shootout.isInOpposingPosse(this);
     }
 
     isLeader() {
@@ -592,6 +604,27 @@ class BaseCard {
     hasText(text) {
         let cardText = this.cardData.text.toLowerCase();
         return cardText.includes(text.toLowerCase());
+    }
+
+    get gamelocation() {
+        if (this.location !== 'play area') {
+            return '';
+        }
+        if (this.getType() === 'dude') {
+            return this.gameLoc;
+        }
+        if (this.getType() === 'deed') {
+            return this.uuid;
+        }
+        if (this.getType() === 'goods' || this.getType() === 'spell') {
+            return this.parent ? this.parent.gamelocation : '';
+        }
+
+        return '';
+    }
+
+    set gamelocation(gamelocation) {
+        this.gameLoc = gamelocation;
     }
 
     get ghostrock() {
@@ -699,16 +732,16 @@ class BaseCard {
         }
     }
 
-    coversCasaulties(type = 'any') {
+    coversCasualties(type = 'any') {
         if (this.getType() === 'dude') {
-            let harrowCasaulty = this.isHarrowed() ? 1 : 0;
+            let harrowCasualty = this.isHarrowed() ? 1 : 0;
             if (type === 'ace' || type === 'any') {
-                return 2 + harrowCasaulty;
+                return 2 + harrowCasualty;
             }
             if (type === 'discard') {
-                return 1 + harrowCasaulty;
+                return 1 + harrowCasualty;
             }
-            return harrowCasaulty;
+            return harrowCasualty;
         }
         if ((this.getType() === 'goods' || this.getType() === 'spell') && this.hasKeyword('sidekick')) {
             if (type === 'ace') {

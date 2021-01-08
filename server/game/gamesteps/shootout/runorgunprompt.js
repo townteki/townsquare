@@ -27,6 +27,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 this.shootout.isInShootout(card),
             onSelect: (player, cards) => {
                 cards.forEach(card => this.shootout.runHome(card));
+                this.shootout.recordJobStatus();
                 this.completePlayer();
                 return true;
             },
@@ -37,9 +38,10 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             onMenuCommand: (player, arg) => {
                 if (this.shootout.leaderPlayer === player) {
                     this.shootout.actOnLeaderPosse(card => this.shootout.runHome(card));
-                } else if (this.shootout.markPlayer === player) {
-                    this.shootout.actOnMarkPosse(card => this.shootout.runHome(card));
+                } else if (this.shootout.opposingPlayer === player) {
+                    this.shootout.actOnOpposingPosse(card => this.shootout.runHome(card));
                 }
+                this.shootout.recordJobStatus();
                 this.completePlayer();
                 return true;
             }

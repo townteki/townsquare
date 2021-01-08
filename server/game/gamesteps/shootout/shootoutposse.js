@@ -1,10 +1,10 @@
 const ShootoutStatuses = require("../../Constants/ShootoutStatuses");
 
 class ShootoutPosse {
-    constructor(shootout, dude) {
+    constructor(shootout, player, dude) {
         this.shootout = shootout;
-        this.player = dude.controller;
-        this.posse = [dude.uuid];
+        this.player = player;
+        this.posse = dude ? [dude.uuid] : [];
         this.shooterUuid = null;
         this.studBonus = 0;
         this.drawBonus = 0;
