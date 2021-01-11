@@ -19,6 +19,7 @@ class DudeCard extends DrawCard {
         this.currentUpkeep = this.cardData.upkeep;
 
         this.shootoutStatus = ShootoutStatuses.None;
+        this.controlDeterminator = 'influence:deed';
     }
 
     get bullets() {
@@ -64,6 +65,17 @@ class DudeCard extends DrawCard {
 
     set upkeep(amount) {
         this.currentUpkeep = amount;
+    }
+
+    getStat(statName) {
+        switch (statName) {
+            // TODO M2 need to separate general influence and influence for controling deeds
+            case 'influence': 
+            case 'influence:deed': 
+                return this.influence;
+            case 'bullets':
+                return this.bullets;
+        }
     }
 
     modifyBullets(amount, applying = true) {
@@ -312,6 +324,10 @@ class DudeCard extends DrawCard {
     }
 
     leavesPlay() {
+        let currentLocation = this.getLocation();
+        if (currentLocation) {
+            currentLocation.removeDude(this);
+        }
         super.leavesPlay();
 
         if (this.game.shootout) {

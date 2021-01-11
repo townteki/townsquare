@@ -121,12 +121,6 @@ class Player extends Spectator {
         this.locations.push(location);
     }
 
-    findLocations(predicate) {
-        if(!predicate) {
-            return this.locations;
-        }
-    }
-
     findCardByName(list, name) {
         return this.findCard(list, card => card.name === name);
     }
@@ -697,7 +691,7 @@ class Player extends Spectator {
             return false;
         }
 
-        if (playingType === 'shoppin' && (card.getLocation().getController(this.game) !== this) || card.booted) {
+        if (playingType === 'shoppin' && (card.getLocation().determineController(this.game) !== this) || card.booted) {
             return false;
         }
 
@@ -809,9 +803,17 @@ class Player extends Spectator {
     
     receiveProduction() {
         let memo = 0;
-        let producers = this.findCards(this.cardsInPlay, (card) => (card.production > 0));
+        let producers = this.game.findCardsInPlay(card => card.production > 0);
         let production = _.reduce(producers, (memo, card) => {
-            return(memo += card.production);
+            if (card.controller === this) {
+                let partialProduction = card.production;
+                if (card.getType() === 'deed') {
+                    partialProduction = card.receiveProduction(this);
+                }
+                return(memo += partialProduction);
+            } else {
+                return memo;
+            }
         }, memo);
 
         this.ghostrock += production;
