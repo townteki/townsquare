@@ -10,7 +10,7 @@ class SundownPhase extends Phase {
             new SimpleStep(game, () => this.checkWinCondition()),
             new SimpleStep(game, () => this.unbootCards()),
             new SimpleStep(game, () => this.sundownRedraw()),            
-            new SimpleStep(game, () => this.resetPlayerStatus()),
+            new SimpleStep(game, () => this.roundEnded()),
             new SundownPrompt(game)
         ]);
     }
@@ -45,11 +45,18 @@ class SundownPhase extends Phase {
             });
         });
     }
-    
-    resetPlayerStatus() {
-        _.each(this.game.getPlayers(), player => {
-            player.resetForRound();
-        });
+
+    roundEnded() {
+        this.game.raiseEvent('onRoundEnded');
+
+        let players = this.game.getPlayers();
+        players.forEach(player => player.resetForRound());
+        this.game.round++;
+
+        this.game.addAlert('endofround', 'End of day {0}', this.game.round);
+        this.game.addAlert('startofround', 'Day {0}', this.game.round + 1);
+
+        this.game.checkForTimeExpired();
     }
 
 }

@@ -802,9 +802,8 @@ class Player extends Spectator {
     }
     
     receiveProduction() {
-        let memo = 0;
         let producers = this.game.findCardsInPlay(card => card.production > 0);
-        let production = _.reduce(producers, (memo, card) => {
+        let production = producers.reduce((memo, card) => {
             if (card.controller === this) {
                 let partialProduction = card.production;
                 if (card.getType() === 'deed') {
@@ -814,31 +813,37 @@ class Player extends Spectator {
             } else {
                 return memo;
             }
-        }, memo);
+        }, 0);
 
         this.ghostrock += production;
 
         return production;
     }
 
-    payUpkeep() {
-        this.upkeepPaid = true;
+    determineUpkeep() {
+        let upkeepCards = this.game.findCardsInPlay(card => 
+            card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.controller === this && card.getInfluence() > 0));
+        let upkeep = upkeepCards.reduce((memo, card) => {
+            let additionalUpkeep = card.gang_code !== this.outfit.gang_code ? card.getInfluence() : 0;
+            return memo + card.upkeep + additionalUpkeep;
+        }, 0);
 
-        let memo = 0;
-        let upkeepCards = this.findCards(this.cardsInPlay, (card) => (card.upkeep > 0));
-        let upkeep = _.reduce(upkeepCards, (memo, card) => {
-            return (memo += card.upkeep);
-        }, memo);
-
-        this.ghostrock -= upkeep;
         return upkeep;
+    }
+
+    payUpkeep(upkeep = null) {
+        if (upkeep === null) {
+            upkeep = this.determineUpkeep();
+        }
+        this.upkeepPaid = true;
+        this.ghostrock -= upkeep;
     }
 
     resetForRound() {
         this.upkeepPaid = false;
         this.passTurn = false;
      
-        _.each(this.cardsInPlay, card => card.clearNew());
+        this.cardsInPlay.forEach(card => card.resetForRound());
     }
 
     getHandRank() {
@@ -964,7 +969,8 @@ class Player extends Spectator {
     }
 
     getTotalControl() {
-        var control = this.cardsInPlay.reduce((memo, card) => {
+        let controlCards = this.game.findCardsInPlay(card => card.getControl() > 0 && card.controller === this);
+        let control = controlCards.reduce((memo, card) => {
             return memo + card.getControl();
         }, 0);
 
@@ -972,7 +978,8 @@ class Player extends Spectator {
     }   
     
     getTotalInfluence() {
-        var influence = this.cardsInPlay.reduce((memo, card) => {
+        let influenceCards = this.game.findCardsInPlay(card => card.getInfluence() > 0 && card.controller === this);
+        let influence = influenceCards.reduce((memo, card) => {
             return memo + card.getInfluence();
         }, 0);
 

@@ -189,6 +189,11 @@ class BaseCard {
         this.abilities.persistentEffects.push(Object.assign({ duration: 'persistent', location: location }, properties));
     }
 
+    refreshAbilities() {
+        this.abilities.reactions.forEach(reaction => reaction.used = false);
+        this.abilities.actions.forEach(action => action.used = false);
+    }
+
     /**
      * Applies an effect with the specified properties while the current card is
      * attached to another card. By default the effect will target the parent
@@ -293,6 +298,11 @@ class BaseCard {
         clone.tokens = Object.assign({}, this.tokens);
 
         return clone;
+    }
+
+    resetForRound() {
+        this.refreshAbilities();
+        this.clearNew();
     }
 
     getPrintedNumberFor(value) {
