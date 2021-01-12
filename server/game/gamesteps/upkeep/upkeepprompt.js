@@ -1,13 +1,18 @@
 const AllPlayerPrompt = require('../allplayerprompt.js');
 
 class UpkeepPrompt extends AllPlayerPrompt {
+    constructor(game) {
+        super(game);
+        this.title = 'Discard Unwanted Cards with Upkeep';
+    }
+
     completionCondition(player) {
         return player.upkeepPaid;
     }
 
     activePrompt() {
         return {
-            menuTitle: 'Discard Unwanted Cards with Upkeep',
+            menuTitle: this.title,
             buttons: [
                 { arg: 'selected', text: 'Done' }
             ]
@@ -19,8 +24,14 @@ class UpkeepPrompt extends AllPlayerPrompt {
     }
 
     onMenuCommand(player) {
-        let upkeep = player.payUpkeep();
-        this.game.addMessage('{0} has paid upkeep of {1} GR', player, upkeep);
+        let upkeep = player.determineUpkeep();
+        let difference = upkeep - player.ghostrock;
+        if (difference > 0) {
+            this.title = 'Discard Cards to pay Upkeep (' + difference + ' remaining)';
+        } else {
+            player.payUpkeep(upkeep);
+            this.game.addMessage('{0} has paid upkeep of {1} GR', player, upkeep);
+        }
     }
 }
 
