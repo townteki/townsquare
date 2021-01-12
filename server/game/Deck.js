@@ -5,6 +5,7 @@ const DeedCard = require('./deedcard');
 const GoodsCard = require('./goodscard');
 const SpellCard = require('./spellcard.js');
 const ActionCard = require('./actioncard.js');
+const OutfitCard = require('./outfitcard');
 
 class Deck {
     constructor(data) {
@@ -13,7 +14,7 @@ class Deck {
 
     createOutfitCard(player) {
         if(this.data.outfit) {
-            return new DrawCard(player, {
+            return new OutfitCard(player, {
                 code: this.data.outfit.code,
                 type_code: 'outfit',
                 gang_code: this.data.outfit.gang_code,
@@ -23,7 +24,7 @@ class Deck {
             });
         }
 
-        return new DrawCard(player, { type: 'outfit' });
+        return new OutfitCard(player, { type: 'outfit' });
     }
 
     createLegendCard(player) {

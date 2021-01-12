@@ -21,7 +21,7 @@ const LocationsWithEventHandling = ['play area', 'outfit', 'legend'];
 class BaseCard {
     constructor(owner, cardData) {
         this.owner = owner;
-        this.controller = owner;
+        this.controllingPlayer = owner;
         this.game = this.owner.game;
         this.cardData = cardData;
 
@@ -57,6 +57,14 @@ class BaseCard {
         this.parseKeywords(cardData.keywords || '');
         this.setupCardTextProperties(AbilityDsl);
         this.setupCardAbilities(AbilityDsl);
+    }
+
+    get controller() {
+        return this.controllingPlayer;
+    }
+
+    set controller(controller) {
+        this.controllingPlayer = controller;
     }
 
     parseKeywords(keywords) {
@@ -694,6 +702,14 @@ class BaseCard {
             return;
         }
         return this.game.findLocation(this.gamelocation);
+    }
+
+    getLocationCard() {
+        let location = this.getLocation();
+        if (!location) {
+            return;
+        }
+        return location.getLocationCard(this.game);
     }
 
     updateGameLocation(target) {

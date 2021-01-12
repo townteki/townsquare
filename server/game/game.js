@@ -220,16 +220,14 @@ class Game extends EventEmitter {
                 return foundCard;
             }            
         }
-    }    
-
-    findAnyLocations(predicate) {
-        var foundLocations = [];
-
-        _.each(this.getPlayers(), player => {
-            foundLocations = foundLocations.concat(player.findLocations(predicate));
-        });
-
-        return foundLocations;
+    }   
+    
+    findCardsInPlay(predicate) {
+        let foundCards = [];
+        for (let player of this.getPlayers()) {
+            foundCards = foundCards.concat(player.findCards(player.cardsInPlay, predicate));        
+        }
+        return foundCards;
     }
     
     findLocation(uuid) {

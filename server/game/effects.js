@@ -135,6 +135,20 @@ const Effects = {
             }
         };
     },
+    determineControlByBullets: function() {
+        return {
+            apply: function(card) {
+                if (card.getType() === 'dude') {
+                    card.controlDeterminator = 'bullets';
+                }
+            },
+            unapply: function(card) {
+                if (card.getType() === 'dude') {
+                    card.controlDeterminator = 'influence:deed';
+                }
+            }
+        };
+    }, 
     entersPlayBooted: function() {
         return {
             apply: function(card) {
