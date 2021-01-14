@@ -20,6 +20,8 @@ class DudeCard extends DrawCard {
 
         this.shootoutStatus = ShootoutStatuses.None;
         this.controlDeterminator = 'influence:deed';
+
+        this.setupDudeCardAbilities();
     }
 
     get bullets() {
@@ -89,7 +91,7 @@ class DudeCard extends DrawCard {
         this.game.raiseEvent('onCardBulletsChanged', params);
     }
 
-    setupCardAbilities(ability) {
+    setupDudeCardAbilities() {
         this.action({
             title: 'Call Out',
             abilitySourceType: 'game',

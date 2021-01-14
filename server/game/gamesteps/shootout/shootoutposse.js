@@ -1,14 +1,14 @@
 const ShootoutStatuses = require("../../Constants/ShootoutStatuses");
 
 class ShootoutPosse {
-    constructor(shootout, player, dude) {
+    constructor(shootout, player, isLeading) {
         this.shootout = shootout;
         this.player = player;
-        this.posse = dude ? [dude.uuid] : [];
+        this.posse = [];
         this.shooterUuid = null;
         this.studBonus = 0;
         this.drawBonus = 0;
-        this.isLeading = this.shootout.leader === dude;
+        this.isLeading = isLeading;
     }
 
     isInPosse(card) {
