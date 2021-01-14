@@ -1024,13 +1024,17 @@ class Game extends EventEmitter {
         this.queueStep(this.shootout);
     }
 
-    endShootout() {
+    endShootout(isCancel = false) {
         if (!this.shootout) {
              // TODO M2 info that shootout is not happening
              return;
         } else {
             this.shootout = null;
-            this.passToNextPlayer();
+            if (isCancel) {
+                this.pipeline.cancelStep();
+            } else {
+                this.passToNextPlayer();
+            }
         }      
     }
 

@@ -29,6 +29,7 @@ class BaseCard {
         this.code = cardData.code;
         this.name = cardData.name;
         this.title = cardData.title;
+        this.gang_code = cardData.gang_code;
         this.facedown = false;
         this.eventsForRegistration = [];
         this.blankCount = 0;
