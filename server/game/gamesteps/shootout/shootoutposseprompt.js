@@ -21,6 +21,7 @@ class ShootoutPossePrompt extends UiPrompt {
                     card !== this.shootout.leader &&
                     card.requirementsToJoinPosse().canJoin,
                 onSelect: (player, dudeSelection) => {
+                    this.joinLeaderAndMark(player);
                     //Do not move to posse yet, it will be done once both posses are selected (Shootout.gatherPosses())
                     dudeSelection.forEach(dude => 
                         this.game.resolveGameAction(GameActions.joinPosse({ card: dude, options: { isCardEffect: false, moveToPosse: false } }))
@@ -38,13 +39,23 @@ class ShootoutPossePrompt extends UiPrompt {
                     this.complete();                 
                     return true;
                 },
-                onCancel: () => {
+                onCancel: (player) => {
+                    this.joinLeaderAndMark(player);
                     this.complete();
                     return true;
                 }
             });
         }
         return this.isComplete();
+    }
+
+    joinLeaderAndMark(player) {
+        //Leader and mark (if not job because in job mark does not have to be in posse) join posses first.
+        if (this.shootout.leaderPlayer === player) {
+            this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.leader, options: { isCardEffect: false, moveToPosse: false } }));
+        } else if (!this.shootout.isJob()) {
+            this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.mark, options: { isCardEffect: false, moveToPosse: false } }));
+        }
     }
 
 }

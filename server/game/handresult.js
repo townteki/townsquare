@@ -1,5 +1,7 @@
 const _ = require('lodash');
 
+const Suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
+
 /**
  * Class to evaluate hand rank from a hand of cards.
  */
@@ -79,11 +81,11 @@ class PokerHands {
 class DeadMansHand {
     constructor(hand, jokers) {
 
-        let dmh = [{value: 1, suit: 'spades'},
-                   {value: 1, suit: 'clubs'},
-                   {value: 8, suit: 'spades'},
-                   {value: 8, suit: 'clubs'},
-                   {value: 11, suit: 'diamonds'}];
+        let dmh = [{value: 1, suit: 'Spades'},
+                   {value: 1, suit: 'Clubs'},
+                   {value: 8, suit: 'Spades'},
+                   {value: 8, suit: 'Clubs'},
+                   {value: 11, suit: 'Diamonds'}];
 
         this.matches = _.intersectionWith(dmh, hand, (left, right) => {
             return ((left.value === right.value) && (left.suit === right.suit));
@@ -122,9 +124,7 @@ class FiveOfAKind {
 class StraightFlush {
     constructor(hand, jokers) {
 
-        let suits = ['clubs', 'diamonds', 'hearts', 'spades'];
-
-        suits.forEach((suit) => {
+        Suits.forEach((suit) => {
             for(let i = 13; i > 0; i--) {
                 let straightFlush = [{value: i, suit: suit},
                                      {value: i - 1, suit: suit},
@@ -211,9 +211,7 @@ class FullHouse {
 class Flush {
     constructor(hand, jokers) {
 
-        let suits = ['clubs', 'diamonds', 'hearts', 'spades'];
-
-        suits.forEach((suit) => {
+        Suits.forEach((suit) => {
             this.matches = _.filter(hand, (card) => {
                 return card.suit === suit;
             });

@@ -21,11 +21,11 @@ class Shootout extends Phase {
         this.mark = mark;
         this.leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
         this.leaderPlayerName = this.leader.controller.name;
-        this.leaderPosse = new ShootoutPosse(this, this.leaderPlayer, this.leader);
+        this.leaderPosse = new ShootoutPosse(this, this.leaderPlayer, true);
         if (!this.isJob()) {
             this.mark.shootoutStatus = ShootoutStatuses.MarkPosse;
             this.opposingPlayerName = this.mark.controller.name;
-            this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, this.mark);
+            this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
         }
 
         this.shootoutLoseWinOrder = [];
@@ -36,7 +36,7 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
             new SimpleStep(this.game, () => this.gatherPosses()),
             new SimpleStep(this.game, () => this.breakinAndEnterin()),
-            new SimpleStep(this, () => this.beginShootoutRound())
+            new SimpleStep(this.game, () => this.beginShootoutRound())
         ]);
     }
 
@@ -214,6 +214,7 @@ class Shootout extends Phase {
 
     shootoutPlays() {
         this.currentStep = ShootoutSteps.shootout;
+        this.game.raiseEvent('onShootoutPlaysStarted', { shootout: this });
         this.queueStep(new ContinuousPlayerOrderPrompt(this.game, 'Make Shootout plays'));
     }
 

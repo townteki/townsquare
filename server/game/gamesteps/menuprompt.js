@@ -21,7 +21,7 @@ class MenuPrompt extends UiPrompt {
         this.context = context;
 
         if(properties.source && !properties.waitingPromptTitle && !properties.hideSourceFromOpponents) {
-            properties.waitingPromptTitle = 'Waiting for opponent to use ' + properties.source.name;
+            properties.waitingPromptTitle = 'Waiting for opponent to use ' + properties.source.title;
         }
 
         this.properties = properties;
@@ -32,7 +32,7 @@ class MenuPrompt extends UiPrompt {
     }
 
     activePrompt() {
-        let promptTitle = this.properties.promptTitle || (this.properties.source ? this.properties.source.name : undefined);
+        let promptTitle = this.properties.promptTitle || (this.properties.source ? this.properties.source.title : undefined);
 
         return Object.assign({ promptTitle: promptTitle }, this.properties.activePrompt);
     }

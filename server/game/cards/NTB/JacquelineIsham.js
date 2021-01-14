@@ -1,0 +1,24 @@
+const GameActions = require('../../GameActions/index.js');
+const DudeCard = require('../../dudecard.js');
+
+class JacquelineIsham extends DudeCard {
+    setupCardAbilities() {
+        this.reaction({
+            when: {
+                onDudeJoinedPosse: event => !event.leaderPosse && event.card === this
+            },
+            canRepeat: true,
+            handler: () => {
+                this.untilEndOfShootoutPhase(ability => ({
+                    match: this,
+                    effect: ability.effects.setAsStud()
+                }));
+                this.game.addMessage('{0} uses {1} and makes her a stud.', this.controller, this);
+            }
+        });
+    }
+}
+
+JacquelineIsham.code = '07009';
+
+module.exports = JacquelineIsham;
