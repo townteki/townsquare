@@ -126,7 +126,7 @@ class Shootout extends Phase {
         this.game.addAlert('phasestart', phaseName + ' started!');        
     }
 
-    endPhase() {
+    endPhase(isCancel = false) {
         this.game.raiseEvent('onShootoutPhaseFinished', { phase: this.name });
         this.game.currentPhase = this.highNoonPhase;
         var attackingPlayer = this.leaderPlayer;
@@ -135,7 +135,7 @@ class Shootout extends Phase {
         defendingPlayer.phase = this.highNoonPhase;
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
-        this.game.endShootout();
+        this.game.endShootout(isCancel);
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
         this.game.addAlert('phasestart', phaseName + ' ended!');        
     }

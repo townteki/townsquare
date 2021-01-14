@@ -1,5 +1,4 @@
 const TextHelper = require('./TextHelper');
-const CancelChallengePrompt = require('./gamesteps/CancelChallengePrompt');
 const Deck = require('./Deck');
 const RematchPrompt = require('./gamesteps/RematchPrompt');
 const {Tokens} = require('./Constants');
@@ -8,35 +7,28 @@ class ChatCommands {
     constructor(game) {
         this.game = game;
         this.commands = {
-            '/add-faction': this.addFaction,
-            '/add-icon': this.addIcon,
+            '/ace': this.ace,
             '/add-keyword': this.addKeyword,
-            '/add-trait': this.addTrait,
             '/add-card': this.addCard,
-            '/bestow': this.bestow,
+            '/bullets': this.bullets,
             '/blank': this.blank,
             '/cancel-prompt': this.cancelPrompt,
-            '/cancel-challenge': this.cancelChallenge,
+            '/cancel-shootout': this.cancelShootout,
+            '/clear-shooter': this.clearShooter,
+            '/control': this.control,
             '/discard': this.discard,
             '/disconnectme': this.disconnectMe,
             '/draw': this.draw,
             '/give-control': this.giveControl,
-            '/give-icon': this.addIcon,
-            '/kill': this.kill,
+            '/inf': this.influence,
+            '/join-posse': this.joinPosse,
             '/move-bottom': this.moveBottom,
-            '/pillage': this.pillage,
-            '/power': this.power,
             '/rematch': this.rematch,
-            '/remove-faction': this.removeFaction,
             '/remove-from-game': this.removeFromGame,
-            '/remove-icon': this.removeIcon,
+            '/remove-from-posse': this.removeFromPosse,
             '/remove-keyword': this.removeKeyword,
-            '/remove-trait': this.removeTrait,
-            '/reset-challenges-count': this.resetChallengeCount,
             '/reveal-hand': this.revealHand,
-            '/str': this.strength,
-            '/strength': this.strength,
-            '/take-icon': this.removeIcon,
+            '/shooter': this.shooter,
             '/token': this.setToken,
             '/unblank': this.unblank
         };
@@ -58,38 +50,147 @@ class ChatCommands {
         player.drawCardsToHand(num);
     }
 
-    power(player, args) {
+    bullets(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
         this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card to set power for',
-            waitingPromptTitle: 'Waiting for opponent to set power',
-            cardCondition: card => ['faction', 'play area'].includes(card.location) && card.controller === player,
-            cardType: ['attachment', 'character', 'faction', 'location'],
+            activePromptTitle: 'Select a card to set bullets for',
+            waitingPromptTitle: 'Waiting for opponent to set bullets',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
             onSelect: (p, card) => {
-                let power = num - card.power;
-                card.power += power;
+                let bullets = num - card.bullets;
+                card.bullets += bullets;
 
-                if(card.power < 0) {
-                    card.power = 0;
+                if(card.bullets < 0) {
+                    card.bullets = 0;
                 }
-
-                let cardFragment = card.getType() === 'faction' ? 'their faction card' : card;
-                this.game.addAlert('danger', '{0} uses the /power command to set the power of {1} to {2}', p, cardFragment, num);
+                this.game.addAlert('danger', '{0} uses the /bullets command to set the bullets of {1} to {2}', p, card, num);
                 return true;
             }
         });
     }
 
-    kill(player) {
+    influence(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        var type = this.getNumberOrDefault(args[2], 'influence');
         this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a character',
-            waitingPromptTitle: 'Waiting for opponent to kill character',
-            cardCondition: card => card.location === 'play area' && card.controller === player && card.getType() === 'character',
-            gameAction: 'kill',
+            activePromptTitle: 'Select a card to set ' + type + ' for',
+            waitingPromptTitle: 'Waiting for opponent to set ' + type,
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
             onSelect: (p, card) => {
-                card.controller.killCharacter(card);
+                // TODO M2 so far we only use standard influence, no influence:deed
+                let influence = num - card.influence;
+                card.influence += influence;
 
-                this.game.addAlert('danger', '{0} uses the /kill command to kill {1}', p, card);
+                if(card.influence < 0) {
+                    card.influence = 0;
+                }
+                this.game.addAlert('danger', '{0} uses the /influence command to set the influence of {1} to {2}', p, card, num);
+                return true;
+            }
+        });
+    }
+
+    control(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set control for',
+            waitingPromptTitle: 'Waiting for opponent to set control',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell'],
+            onSelect: (p, card) => {
+                let control = num - card.control;
+                card.control += control;
+
+                if(card.control < 0) {
+                    card.control = 0;
+                }
+                this.game.addAlert('danger', '{0} uses the /control command to set the control of {1} to {2}', p, card, num);
+                return true;
+            }
+        });
+    }
+
+    shooter(player, args) {
+        var type = args[1];
+        if (!type || type === 'stud') {
+            type = 'Stud';
+        }
+        if (type === 'draw') {
+            type = 'Draw';
+        }
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude to set shooter type for',
+            waitingPromptTitle: 'Waiting for opponent to set shooter type',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                card.addStudEffect('chatcommand', type);
+                this.game.addAlert('danger', '{0} uses the /shooter command to set the {1} to {2}', p, card, type);
+                return true;
+            }
+        });
+    }
+
+    clearShooter(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude to clear chatcommand shooter type for',
+            waitingPromptTitle: 'Waiting for opponent to clear shooter type',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                card.removeStudEffect('chatcommand');
+                this.game.addAlert('danger', '{0} uses the /clear-shooter command to clear chatcommand shooter type for {1}', p, card);
+                return true;
+            }
+        });        
+    }
+
+    ace(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card',
+            waitingPromptTitle: 'Waiting for opponent to ace card',
+            cardCondition: card => ['hand', 'draw hand', 'discard pile', 'play area'].includes(card.location) && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                card.controller.aceCard(card);
+
+                this.game.addAlert('danger', '{0} uses the /ace command to ace {1}', p, card);
+                return true;
+            }
+        });
+    }
+
+    joinPosse(player) {
+        if (!this.game.shootout) {
+            return;
+        }
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude to join posse',
+            waitingPromptTitle: 'Waiting for opponent to select dude to join posse',
+            cardCondition: card => card.location === 'play area' && card.controller === player && !card.isParticipating(),
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                this.game.shootout.addToPosse(card);
+                this.game.addAlert('danger', '{0} uses the /join-posse command to add {1} to posse', p, card);
+                return true;
+            }
+        });
+    }
+
+    removeFromPosse(player) {
+        if (!this.game.shootout) {
+            return;
+        }
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude to remove from posse',
+            waitingPromptTitle: 'Waiting for opponent to select dude to remove from posse',
+            cardCondition: card => card.location === 'play area' && card.controller === player && card.isParticipating(),
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                this.game.shootout.removeFromPosse(card);
+                this.game.addAlert('danger', '{0} uses the /remove-from-posse command to remove {1} from posse', p, card);
                 return true;
             }
         });
@@ -118,45 +219,6 @@ class ChatCommands {
                 card.clearBlank('full');
 
                 this.game.addAlert('danger', '{0} uses the /unblank command to remove the blank condition from {1}', p, card);
-                return true;
-            }
-        });
-    }
-
-    addTrait(player, args) {
-        var trait = args[1];
-
-        if(!trait) {
-            return false;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card',
-            waitingPromptTitle: 'Waiting for opponent to add trait to card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
-            onSelect: (p, card) => {
-                card.addTrait(trait);
-
-                this.game.addAlert('danger', '{0} uses the /add-trait command to add the {1} trait to {2}', p, trait, card);
-                return true;
-            }
-        });
-    }
-
-    removeTrait(player, args) {
-        var trait = args[1];
-        if(!trait) {
-            return false;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card',
-            waitingPromptTitle: 'Waiting for opponent to remove trait remove card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
-            onSelect: (p, card) => {
-                card.removeTrait(trait);
-
-                this.game.addAlert('danger', '{0} uses the /remove-trait command to remove the {1} trait from {2}', p, trait, card);
                 return true;
             }
         });
@@ -208,76 +270,9 @@ class ChatCommands {
         player.discardAtRandom(num);
     }
 
-    pillage(player) {
-        this.game.addAlert('danger', '{0} uses the /pillage command to discard 1 card from the top of their draw deck', player);
-
-        player.discardFromDraw(1, discarded => {
-            this.game.addMessage('{0} discards {1} due to Pillage', player, discarded);
-        });
-    }
-
-    strength(player, args) {
-        let num = this.getNumberOrDefault(args[1], 1);
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card to set strength for',
-            waitingPromptTitle: 'Waiting for opponent to set strength',
-            cardCondition: card => card.location === 'play area' && card.controller === player && card.getType() === 'character',
-            onSelect: (p, card) => {
-                if(typeof (card.strengthSet) === 'number') {
-                    card.strengthSet = num;
-                } else {
-                    card.strengthModifier = num - card.getPrintedStrength();
-                }
-                this.game.addAlert('danger', '{0} uses the /strength command to set the strength of {1} to {2}', p, card, num);
-                return true;
-            }
-        });
-    }
-
-    addIcon(player, args) {
-        var icon = args[1];
-
-        if(!this.isValidIcon(icon)) {
-            return false;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a character',
-            waitingPromptTitle: 'Waiting for opponent to give icon',
-            cardCondition: card => card.location === 'play area' && card.controller === player && card.getType() === 'character',
-            onSelect: (p, card) => {
-                card.addIcon(icon);
-                this.game.addAlert('danger', '{0} uses the /give-icon command to give {1} a {2} icon', p, card, icon);
-
-                return true;
-            }
-        });
-    }
-
-    removeIcon(player, args) {
-        var icon = args[1];
-
-        if(!this.isValidIcon(icon)) {
-            return false;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a character',
-            waitingPromptTitle: 'Waiting for opponent to remove icon',
-            cardCondition: card => card.location === 'play area' && card.controller === player && card.getType() === 'character',
-            onSelect: (p, card) => {
-                card.removeIcon(icon);
-                this.game.addAlert('danger', '{0} uses the /take-icon command to remove a {1} icon from {2}', p, icon, card);
-
-                return true;
-            }
-        });
-    }
-
     giveControl(player) {
         this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a character',
+            activePromptTitle: 'Select a dude',
             waitingPromptTitle: 'Waiting for opponent to give control',
             cardCondition: card => ['play area', 'discard pile', 'dead pile'].includes(card.location) && card.controller === player,
             onSelect: (p, card) => {
@@ -293,24 +288,19 @@ class ChatCommands {
         });
     }
 
-    resetChallengeCount(player) {
-        player.challenges.reset();
-        this.game.addAlert('danger', '{0} uses /reset-challenges-count to reset the number of challenges performed', player);
-    }
-
     cancelPrompt(player) {
         this.game.addAlert('danger', '{0} uses the /cancel-prompt to skip the current step.', player);
         this.game.pipeline.cancelStep();
         this.game.cancelPromptUsed = true;
     }
 
-    cancelChallenge(player) {
-        if(!this.game.isDuringChallenge()) {
+    // TODO M2 not really working, should be updated
+    cancelShootout(player) {
+        if (!this.game.shootout) {
             return;
         }
-
-        this.game.addAlert('danger', '{0} uses /cancel-challenge to attempt to cancel the current challenge', player);
-        this.game.queueStep(new CancelChallengePrompt(this.game, player));
+        this.game.addAlert('danger', '{0} uses the /cancel-shootout to end the shootout.', player);
+        this.game.shootout.endPhase(); 
     }
 
     setToken(player, args) {
@@ -324,8 +314,8 @@ class ChatCommands {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to set token',
-            cardCondition: card => ['agenda', 'active plot', 'play area', 'shadows'].includes(card.location) && card.controller === player,
-            cardType: ['agenda', 'attachment', 'character', 'event', 'location', 'plot'],
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'outfit'],
             onSelect: (p, card) => {
                 let numTokens = card.tokens[token] || 0;
 
@@ -337,66 +327,8 @@ class ChatCommands {
         });
     }
 
-    bestow(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
-
-        if(player.getSpendableGold({ activePlayer: player }) < num) {
-            return false;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card to bestow ' + num + ' gold',
-            waitingPromptTitle: 'Waiting for opponent to bestow',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
-            onSelect: (p, card) => {
-                this.game.transferGold({ from: player, to: card, amount: num });
-                this.game.addAlert('danger', '{0} uses the /bestow command to add {1} gold to {2}', p, num, card);
-
-                return true;
-            }
-        });
-    }
-
     disconnectMe(player) {
         player.socket.disconnect();
-    }
-
-    addFaction(player, args) {
-        let faction = args[1];
-        if(!faction) {
-            return false;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card',
-            waitingPromptTitle: 'Waiting for opponent to add faction to card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
-            onSelect: (p, card) => {
-                card.addFaction(faction);
-
-                this.game.addAlert('danger', '{0} uses the /add-faction command to add the {1} faction to {2}', p, faction, card);
-                return true;
-            }
-        });
-    }
-
-    removeFaction(player, args) {
-        let faction = args[1];
-        if(!faction) {
-            return false;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card',
-            waitingPromptTitle: 'Waiting for opponent to add faction to card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
-            onSelect: (p, card) => {
-                card.removeFaction(faction);
-
-                this.game.addAlert('danger', '{0} uses the /remove-faction command to remove the {1} keyword from {2}', p, faction, card);
-                return true;
-            }
-        });
     }
 
     moveBottom(player) {
@@ -421,8 +353,8 @@ class ChatCommands {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to remove a card from the game',
-            cardCondition: card => card.controller === player && card.owner === player && !['active plot', 'out of game'].includes(card.location),
-            cardType: ['attachment', 'character', 'event', 'location', 'plot'],
+            cardCondition: card => card.controller === player && card.owner === player && !['out of game'].includes(card.location),
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
             onSelect: (p, card) => {
                 player.removeCardFromGame(card);
                 this.game.addAlert('danger', '{0} uses the /remove-from-game command to remove {1} from the game', player, card);
@@ -432,9 +364,9 @@ class ChatCommands {
     }
 
     addCard(player, args) {
-        let cardName = args.slice(1).join(' ');
+        let cardInfo = args.slice(1).join(' ');
         let card = Object.values(this.game.cardData).find(c => {
-            return c.label.toLowerCase() === cardName.toLowerCase() || c.name.toLowerCase() === cardName.toLowerCase();
+            return c.title.toLowerCase() === cardInfo.toLowerCase() || c.code === cardInfo;
         });
 
         if(!card) {
@@ -448,8 +380,6 @@ class ChatCommands {
 
         if(deck.isDrawCard(card)) {
             player.moveCard(preparedCard, 'draw deck');
-        } else if(deck.isPlotCard(card)) {
-            player.moveCard(preparedCard, 'plot deck');
         }
 
         this.game.allCards.push(preparedCard);
@@ -471,16 +401,6 @@ class ChatCommands {
         }
 
         return num;
-    }
-
-    isValidIcon(icon) {
-        if(!icon) {
-            return false;
-        }
-
-        var lowerIcon = icon.toLowerCase();
-
-        return lowerIcon === 'military' || lowerIcon === 'intrigue' || lowerIcon === 'power';
     }
 
     isValidToken(token) {
