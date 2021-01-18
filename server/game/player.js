@@ -527,6 +527,7 @@ class Player extends Spectator {
         }
 
         if(playActions.length === 1) {
+            context.ability = playActions[0];
             this.game.resolveAbility(playActions[0], context);
         } else {
             this.game.queueStep(new PlayActionPrompt(this.game, this, playActions, context));
@@ -626,6 +627,7 @@ class Player extends Spectator {
             this.allCards.push(card);
         }                 
         card.controller = this;
+        card.entersPlay();
         card.applyPersistentEffects();
         this.game.raiseEvent('onCardEntersPlay', { 
             card: card, 
@@ -821,8 +823,8 @@ class Player extends Spectator {
     }
 
     determineUpkeep() {
-        let upkeepCards = this.game.findCardsInPlay(card => 
-            card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.controller === this && card.getInfluence() > 0));
+        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && 
+            (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.getInfluence() > 0)));
         let upkeep = upkeepCards.reduce((memo, card) => {
             let additionalUpkeep = card.gang_code !== this.outfit.gang_code ? card.getInfluence() : 0;
             return memo + card.upkeep + additionalUpkeep;
@@ -1063,6 +1065,11 @@ class Player extends Spectator {
             return;
         }        
 
+        var params = {
+            player: this,
+            card: card
+        };
+
         if(card.location === 'play area') {
 
             if(card.owner !== this) {
@@ -1071,11 +1078,6 @@ class Player extends Spectator {
             }
 
             if (targetLocation !== 'play area') {
-
-                var params = {
-                    player: this,
-                    card: card
-                };
 
                 this.game.raiseEvent('onCardLeftPlay', params, () => {
                     card.attachments.each(attachment => {

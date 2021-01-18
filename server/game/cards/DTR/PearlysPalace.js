@@ -4,7 +4,7 @@ class PearlysPalace extends DeedCard {
     setupCardAbilities(ability) {
         this.reaction({
             when: {
-                onShootoutPlaysStarted: () => true
+                onPlayWindowOpened: event => event.playWindow.name === 'shootout plays'
             },
             cost: ability.costs.bootSelf(),
             handler: (context) => {

@@ -55,14 +55,6 @@ class ContinuousPlayerOrderPrompt extends PlayerOrderPrompt {
         };
     }
 
-    shootoutPlay(player) {
-        if(player !== this.currentPlayer) {
-            return false;
-        }
-
-        this.nextPlayer();
-    }
-
     nextPlayer() {
         this.lazyFetchPlayers();
         
@@ -71,14 +63,6 @@ class ContinuousPlayerOrderPrompt extends PlayerOrderPrompt {
         }
         
         this.players.push(this.players.shift());
-    }
-
-    passToDraw(player) {
-        if(player !== this.currentPlayer) {
-            return false;
-        }
-
-        this.completePlayer();
     }
 
     onMenuCommand(player, arg, method) {

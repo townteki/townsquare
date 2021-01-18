@@ -16,7 +16,7 @@ class EffectEngine {
             'onAtEndOfChallenge', 
             'onAtEndOfPhase', 
             'onRoundEnded',
-            'onResolutionStepFinished'
+            'onPlayWindowClosed'
         ]);
         this.effects = [];
         this.customDurationEvents = [];
@@ -156,8 +156,10 @@ class EffectEngine {
         this.unapplyAndRemove(effect => effect.duration === 'untilEndOfRound');
     }
 
-    onResolutionStepFinished() {
-        this.game.getPlayers().forEach(player => player.resetCheatinResInfo());        
+    onPlayWindowClosed(event) {
+        if (event.playWindow.name === 'shootout resolution' || event.playWindow.name === 'gambling') {
+            this.game.getPlayers().forEach(player => player.resetCheatinResInfo());
+        }
     }
 
     activatePersistentEffects() {

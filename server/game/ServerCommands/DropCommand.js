@@ -37,14 +37,18 @@ class DropCommand {
 
         if(this.originalLocation !== 'play area' && this.targetLocation === 'play area') {
             if (this.originalLocation === 'hand' && this.game.currentPhase !== 'setup') {
-                let abilityContext = new AbilityContext({ 
-                    game: this.game, 
-                    source: this.card, 
-                    player: this.player
-                });
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
                     title: 'Are you perfoming Shoppin\' play?',
-                    onYes: () => this.game.resolveAbility(new ShoppinCardAction(this.gameLocation), abilityContext),
+                    onYes: () => {
+                        let shoppingAction = new ShoppinCardAction(this.gameLocation);
+                        let abilityContext = new AbilityContext({ 
+                            ability: shoppingAction,
+                            game: this.game, 
+                            source: this.card, 
+                            player: this.player
+                        });
+                        this.game.resolveAbility(shoppingAction, abilityContext);
+                    },
                     onNo: () => this.game.resolveGameAction(GameActions.putIntoPlay({ 
                         player: this.player,
                         card: this.card, 

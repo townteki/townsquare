@@ -5,8 +5,8 @@ const DrawCard = require('./drawcard.js');
 class GoodsCard extends DrawCard {
     constructor(owner, cardData) {
         super(owner, cardData);
-
         this.traded = false;
+        this.resetHandler = () => this.reset();
     }
 
     canAttach(player, card) {
@@ -40,6 +40,18 @@ class GoodsCard extends DrawCard {
 
     wasTraded() {
         return this.traded;
+    }
+
+    entersPlay() {
+        this.game.on('onRoundEnded', this.resetHandler);
+    }
+
+    leavesPlay() {
+        this.game.removeListener('onRoundEnded', this.resetHandler);
+    }
+
+    reset() {
+        this.traded = false;
     }
 
 }

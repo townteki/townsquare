@@ -1,6 +1,5 @@
 const AbilityContext = require('./AbilityContext.js');
 const BaseAbility = require('./baseability.js');
-const { ShootoutSteps } = require('./Constants/index.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
 
@@ -82,22 +81,24 @@ class CardAction extends BaseAbility {
         if(!properties.playType) {
             return 'any';
         }
-
-        if(!ActionPlayTypes.includes(properties.playType)) {
-            throw new Error(`'${properties.playType}' is not a valid 'playType' property`);
+        let result = properties.playType;
+        if (!Array.isArray(properties.playType)) {
+            result = [properties.playType];
+        }
+        let errorType = result.find(type => !ActionPlayTypes.includes(type));
+        if(errorType) {
+            throw new Error(`'${errorType}' is not a valid 'playType' property`);
         }
 
-        return properties.playType;
+        return result;
     }
 
     defaultCondition() {
-        if (this.playType === 'cheatin resolution') {
+        if (this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
         }
-        if (this.playType.includes('shootout')) {
-            if (this.playType === 'shootout' && this.card.getType() !== 'action') {
-                return this.game.shootout.isInShootout(this.card);
-            }
+        if (this.game.isShootoutPlayWindow() && this.card.getType() !== 'action') {
+            return this.game.shootout.isInShootout(this.card);
         }
         return true;
     }
@@ -124,24 +125,13 @@ class CardAction extends BaseAbility {
     }
 
     meetsRequirements(context) {
-        if(this.playType !== 'any') {
-            if(this.game.shootout) {
-                if (this.game.shootout.currentStep === ShootoutSteps.shootout && 
-                    !AllowedTypesForPhase['shootout plays'].includes(this.playType)) {
-                    return false;
-                } else if (this.game.shootout.currentStep === ShootoutSteps.resolution &&
-                    !AllowedTypesForPhase['shootout resolution'].includes(this.playType)) {
-
-                }
-            } else {
-                let allowedTypes = AllowedTypesForPhase[this.game.currentPhase];
-
-                if(!allowedTypes) {
-                    return false;
-                }
-                if (!allowedTypes.includes(this.playType)) {           
-                    return false;
-                }
+        if(this.playType !== 'any' && this.game.currentPlayWindow) {
+            let allowedTypes = AllowedTypesForPhase[this.game.currentPlayWindow.name];
+            if(!allowedTypes) {
+                return false;
+            }
+            if (!this.playType.some(type => AllowedTypesForPhase[this.game.currentPlayWindow.name].includes(type))) {
+                return false;
             }
         }
 

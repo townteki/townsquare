@@ -9,7 +9,6 @@ class GamblingPhase extends Phase {
         super(game, 'gambling');
 
         this.lowballPot = 0;
-        this.resolutionsStep = false;
 
         this.initialise([
             new SimpleStep(game, () => this.ante()),
@@ -18,7 +17,6 @@ class GamblingPhase extends Phase {
             new DrawHandPrompt(game),
             new SimpleStep(game, () => this.game.revealHands()),
             new SimpleStep(game, () => this.cheatinResolutions()),
-            new SimpleStep(game, () => this.endResolution()),
             new SimpleStep(game, () => this.determineWinner()),
             new SimpleStep(game, () => this.gainLowballPot()),
             new SimpleStep(game, () => this.game.discardDrawHands())
@@ -33,13 +31,7 @@ class GamblingPhase extends Phase {
     }
 
     cheatinResolutions() {
-        this.resolutionsStep = true;
         this.game.queueStep(new CheatingResolutionPrompt(this.game));  
-    }
-
-    endResolution() {
-        this.resolutionsStep = false;
-        this.game.raiseEvent('onResolutionStepFinished', { phase: this.name });   
     }
 
     determineWinner() {
