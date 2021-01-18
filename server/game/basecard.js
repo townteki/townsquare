@@ -401,6 +401,9 @@ class BaseCard {
         }
     }
 
+    entersPlay() {
+    }
+
     leavesPlay() {
         this.tokens = {};        
         this.clearNew();

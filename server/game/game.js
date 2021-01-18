@@ -751,14 +751,22 @@ class Game extends EventEmitter {
         this.pipeline.queueStep(new SimpleStep(this, handler));
     }
 
+    isShootoutPlayWindow() {
+        return this.currentPlayWindow && (this.currentPlayWindow.name === 'shootout plays' || this.currentPlayWindow.name === 'shootout resolution');
+    }
+
     markActionAsTaken(context) {
-        if(this.currentActionWindow) {
-            if(this.currentActionWindow.currentPlayer !== context.player) {
-                this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the action window', context.player, context.source, this.currentActionWindow.currentPlayer);
+        if(this.currentPlayWindow) {
+            if(this.currentPlayWindow.currentPlayer !== context.player) {
+                this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.currentPlayWindow.name);
             }
-            this.currentActionWindow.markActionAsTaken(context.player);
-        } else if(this.currentPhase !== 'marshal' || this.hasOpenInterruptOrReactionWindow()) {
-            this.addAlert('danger', '{0} uses {1} outside of an action window', context.player, context.source);
+            // Trade is specific as you can do multiple goods swaps in one trade action currently so there is no clear
+            // end of the action. It is up to user to push 'Done'
+            if (context.ability && context.ability.title !== 'Trade') {
+                this.currentPlayWindow.markActionAsTaken(context.player);
+            }
+        } else if(this.currentPhase !== 'setup' || this.hasOpenInterruptOrReactionWindow()) {
+            this.addAlert('danger', '{0} uses {1} outside of a play window', context.player, context.source);
         }
     }
 
@@ -1032,8 +1040,6 @@ class Game extends EventEmitter {
             this.shootout = null;
             if (isCancel) {
                 this.pipeline.cancelStep();
-            } else {
-                this.passToNextPlayer();
             }
         }      
     }

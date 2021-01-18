@@ -228,7 +228,7 @@ class DudeCard extends DrawCard {
         return true;
     }
 
-    canAtachAttire(attire) {
+    canAttachAttire(attire) {
         let attires = this.getAttachmentsByKeywords([ 'attire' ]);
         if (attires && attires.length >= this.maxAttires) {
             return false;
