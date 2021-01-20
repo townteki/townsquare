@@ -13,7 +13,6 @@ class EffectEngine {
             'onShootoutPhaseFinished', 
             'onShootoutRoundFinished', 
             'onPhaseEnded', 
-            'onAtEndOfChallenge', 
             'onAtEndOfPhase', 
             'onRoundEnded',
             'onPlayWindowClosed'
@@ -140,16 +139,12 @@ class EffectEngine {
         this.unapplyAndRemove(effect => effect.duration === 'untilEndOfShootoutRound');
     }
 
-    onPhaseEnded() {
-        this.unapplyAndRemove(effect => effect.duration === 'untilEndOfPhase');
+    onPhaseEnded(event) {
+        this.unapplyAndRemove(effect => effect.duration === 'untilEndOfPhase' && (!effect.phase || event.phase === effect.phase));
     }
 
-    onAtEndOfChallenge() {
-        this.unapplyAndRemove(effect => effect.duration === 'atEndOfChallenge');
-    }
-
-    onAtEndOfPhase() {
-        this.unapplyAndRemove(effect => effect.duration === 'atEndOfPhase');
+    onAtEndOfPhase(event) {
+        this.unapplyAndRemove(effect => effect.duration === 'atEndOfPhase' && (!effect.phase || event.phase === effect.phase));
     }
 
     onRoundEnded() {

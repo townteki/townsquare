@@ -5,16 +5,16 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     constructor(game, name, activePromptTitle, playerNameOrder = [], buttonFunctions = {}) {
         super(game, activePromptTitle, playerNameOrder, buttonFunctions);
         this.name = name;
-        this.eventRaised = false;
+        this.playWindowOpened = false;
     }
 
     continue() {
         let result = super.continue();
 
         if(!this.isComplete()) {
-            if (!this.eventRaised) {
+            if (!this.playWindowOpened || !this.game.currentPlayWindow) {
                 this.game.currentPlayWindow = this;
-                this.eventRaised = true;
+                this.playWindowOpened = true;
                 this.game.raiseEvent('onPlayWindowOpened', { playWindow: this });
             }
         } else {

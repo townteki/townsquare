@@ -1,9 +1,9 @@
-const AbilityLimit = require('./abilitylimit.js');
 const Effects = require('./effects.js');
 const Costs = require('./costs.js');
+const AbilityUsage = require('./abilityusage.js');
 
 const AbilityDsl = {
-    limit: AbilityLimit,
+    usage: AbilityUsage,
     effects: Effects,
     costs: Costs
 };

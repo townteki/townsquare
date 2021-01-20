@@ -457,9 +457,13 @@ class Game extends EventEmitter {
         player.modifyGhostRock(-appliedAmount);
     }
 
-    checkWinCondition(player) {
-        if(player.getTotalPower() >= 15 && player.canWinGame()) {
-            this.recordWinner(player, 'power');
+    checkWinCondition(player) { 
+        let opponent = player.getOpponent();
+        if (opponent.name === 'test player') {
+            return;
+        }
+        if(player.getTotalControl() > opponent.getTotalInfluence()) {
+            this.addAlert('info', 'CHECK: {0} checks {1}.', player, opponent);
         }
     }
 

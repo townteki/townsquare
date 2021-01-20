@@ -1,4 +1,5 @@
 const AbilityContext = require('./AbilityContext.js');
+const AbilityUsage = require('./abilityusage.js');
 const BaseAbility = require('./baseability.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
@@ -28,11 +29,7 @@ const AllowedTypesForPhase = {
  *                any phase.
  * location     - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
- * limit        - optional AbilityLimit object that represents the max number of
- *                uses for the action as well as when it resets.
- * max          - optional AbilityLimit object that represents the max number of
- *                times the ability by card title can be used. Contrast with
- *                `limit` which limits per individual card.
+ * limit        - the max number of uses for the repeatable reaction.
  * anyPlayer    - boolean indicating that the action may be executed by a player
  *                other than the card's controller. Defaults to false.
  * clickToActivate - boolean that indicates the action should be activated when
@@ -44,11 +41,12 @@ class CardAction extends BaseAbility {
         this.game = game;
         this.card = card;
         this.title = properties.title;
-        this.max = properties.max;
         this.playType = this.buildPlayType(properties);
+        if (this.isCardAbility()) {
+            this.usage = new AbilityUsage(properties, this.playType);
+        }
         this.anyPlayer = properties.anyPlayer || false;
         this.condition = properties.condition;
-        this.used = false;
         this.clickToActivate = !!properties.clickToActivate;
         if (properties.location) {
             if (Array.isArray(properties.location)) {
@@ -66,10 +64,6 @@ class CardAction extends BaseAbility {
 
         if(card.getType() === 'action') {
             this.cost = this.cost.concat(Costs.playAction());
-        }
-
-        if(this.max) {
-            this.card.owner.registerAbilityMax(this.card.name, this.max);
         }
 
         if(!this.gameAction) {
@@ -139,7 +133,7 @@ class CardAction extends BaseAbility {
             return false;
         }
 
-        if(this.used) {
+        if(this.usage.isUsed()) {
             return false;
         }
 
@@ -170,6 +164,7 @@ class CardAction extends BaseAbility {
         return this.canResolvePlayer(context) && this.canPayCosts(context) && this.canResolveTargets(context) && this.gameAction.allow(context);
     }
 
+    // Main execute function that excutes the ability. Once the targets are selected, the executeHandler is called.
     execute(player, arg) {
         var context = this.createContext(player, arg);
 
@@ -182,6 +177,11 @@ class CardAction extends BaseAbility {
         this.game.resolveAbility(this, context);
 
         return true;
+    }
+
+    executeHandler(context) {
+        super.executeHandler(context);
+        this.usage.increment();
     }
 
     getMenuItem(arg, player) {
@@ -211,10 +211,6 @@ class CardAction extends BaseAbility {
         }
 
         super.incrementLimit();
-    }
-
-    hasMax() {
-        return !!this.max;
     }
 
     deactivate(player) {
@@ -247,15 +243,15 @@ class CardAction extends BaseAbility {
 
     registerEvents() {
         this.events.register(['onBeginRound']);
-        if(this.limit) {
-            this.limit.registerEvents(this.game);
+        if(this.usage) {
+            this.usage.registerEvents(this.game);
         }
     }
 
     unregisterEvents() {
         this.events.unregisterAll();
-        if(this.limit) {
-            this.limit.unregisterEvents(this.game);
+        if(this.usage) {
+            this.usage.unregisterEvents(this.game);
         }
     }
 }

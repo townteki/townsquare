@@ -92,6 +92,11 @@ class GameLocation {
         return false;
     }
 
+    isHome(player) {
+        let locationCard = this.getLocationCard(player.game);
+        return locationCard && locationCard.getType() === 'outfit' && locationCard.owner == player;
+    }
+
     attach(uuid, direction) {
         this.adjacencyMap.set(uuid, direction);
     }
