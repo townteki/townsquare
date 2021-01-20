@@ -22,11 +22,7 @@ const TriggeredAbility = require('./triggeredability.js');
  *           choice, use the choices sub object instead.
  * choices - object whose keys are text to prompt the player and whose values
  *           are handlers when the player chooses it from the prompt.
- * limit   - optional AbilityLimit object that represents the max number of uses
- *           for the reaction as well as when it resets.
- * max     - optional AbilityLimit object that represents the max number of
- *           times the ability by card title can be used. Contrast with `limit`
- *           which limits per individual card.
+ * limit   - the max number of uses for the repeatable reaction.
  * location - string or array of strings indicating the location the card should
  *            be in in order to activate the reaction. Defaults to 'play area'.
  * player   - optional function that returns which player to prompt for the

@@ -12,7 +12,7 @@ class TheStakesJustRose extends DrawCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse( { card: context.target }));
-                context.target.untilEndOfShootoutPhase(ability => ({
+                this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: ability.effects.setAsStud()
                 }));

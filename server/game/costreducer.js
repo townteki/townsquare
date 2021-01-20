@@ -1,14 +1,16 @@
+const AbilityUsage = require("./abilityusage");
+
 class CostReducer {
     constructor(game, source, properties) {
         this.game = game;
         this.source = source;
         this.uses = 0;
-        this.limit = properties.limit;
+        this.usage = new AbilityUsage({ limit: properties.limit || 0, repeatable: true });
         this.match = properties.match || (() => true);
         this.amount = properties.amount || 1;
         this.playingTypes = this.buildPlayingTypes(properties);
-        if(this.limit) {
-            this.limit.registerEvents(game);
+        if(this.usage) {
+            this.usage.registerEvents(game);
         }
     }
 
@@ -27,7 +29,7 @@ class CostReducer {
     }
 
     canReduce(playingType, card) {
-        if(this.limit && this.limit.isAtMax()) {
+        if(this.usage && this.usage.isUsed()) {
             return false;
         }
 
@@ -47,18 +49,18 @@ class CostReducer {
     }
 
     markUsed() {
-        if(this.limit) {
-            this.limit.increment();
+        if(this.usage) {
+            this.usage.increment();
         }
     }
 
     isExpired() {
-        return !!this.limit && this.limit.isAtMax() && !this.limit.isRepeatable();
+        return !!this.usage && this.usage.isUsed() && !this.usage.isRepeatable();
     }
 
     unregisterEvents() {
-        if(this.limit) {
-            this.limit.unregisterEvents(this.game);
+        if(this.usage) {
+            this.usage.unregisterEvents(this.game);
         }
     }
 }

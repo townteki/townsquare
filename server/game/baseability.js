@@ -1,6 +1,7 @@
 const {flatMap} = require('../Array');
 
 const AbilityChoosePlayerDefinition = require('./AbilityChoosePlayerDefinition');
+const AbilityUsage = require('./abilityusage');
 const AbilityMessage = require('./AbilityMessage');
 const AbilityTarget = require('./AbilityTarget.js');
 const ChooseGameAction = require('./GameActions/ChooseGameAction');
@@ -29,7 +30,7 @@ class BaseAbility {
         this.cost = this.buildCost(properties.cost);
         this.targets = this.buildTargets(properties);
         this.choosePlayerDefinition = AbilityChoosePlayerDefinition.create(properties);
-        this.limit = properties.limit;
+        this.usage = AbilityUsage.createDefault();
         this.message = AbilityMessage.create(properties.message);
         this.cannotBeCanceled = !!properties.cannotBeCanceled;
         this.abilitySourceType = properties.abilitySourceType || 'card';
@@ -228,8 +229,8 @@ class BaseAbility {
      * Increments the usage of the ability toward its limit, if it has one.
      */
     incrementLimit() {
-        if(this.limit) {
-            this.limit.increment();
+        if(this.usage) {
+            this.usage.increment();
         }
     }
 
@@ -266,9 +267,6 @@ class BaseAbility {
         return false;
     }
 
-    hasMax() {
-        return false;
-    }
 }
 
 module.exports = BaseAbility;

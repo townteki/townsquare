@@ -7,9 +7,9 @@ class JacquelineIsham extends DudeCard {
             when: {
                 onDudeJoinedPosse: event => !event.leaderPosse && event.card === this
             },
-            canRepeat: true,
-            handler: () => {
-                this.untilEndOfShootoutPhase(ability => ({
+            repeatable: true,
+            handler: context => {
+                this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: ability.effects.setAsStud()
                 }));

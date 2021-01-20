@@ -479,33 +479,6 @@ class Player extends Spectator {
         }
     }
 
-    registerAbilityMax(cardName, limit) {
-        if(this.abilityMaxByTitle[cardName]) {
-            return;
-        }
-
-        this.abilityMaxByTitle[cardName] = limit;
-        limit.registerEvents(this.game);
-    }
-
-    isAbilityAtMax(cardName) {
-        let limit = this.abilityMaxByTitle[cardName];
-
-        if(!limit) {
-            return false;
-        }
-
-        return limit.isAtMax();
-    }
-
-    incrementAbilityMax(cardName) {
-        let limit = this.abilityMaxByTitle[cardName];
-
-        if(limit) {
-            limit.increment();
-        }
-    }
-
     isAced(card) {
         return card.isUnique() && this.deadPile.some(c => c.title === card.title);
     }
