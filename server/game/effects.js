@@ -1,4 +1,3 @@
-const AbilityLimit = require('./abilitylimit.js');
 const AllowedChallenge = require('./AllowedChallenge');
 const CardMatcher = require('./CardMatcher');
 const CardTextDefinition = require('./CardTextDefinition');
@@ -1082,7 +1081,7 @@ const Effects = {
             playingTypes: playingTypes,
             amount: amount,
             match: match,
-            limit: AbilityLimit.fixed(1)
+            limit: 1
         });
     },
     reduceNextMarshalledCardCost: function(amount, match) {
@@ -1111,7 +1110,7 @@ const Effects = {
             playingTypes: playingTypes,
             amount: amount,
             match: match,
-            limit: AbilityLimit.perRound(1)
+            limit: 1
         });
     },
     reduceFirstPlayedCardCostEachRound: function(amount, match) {

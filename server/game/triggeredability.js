@@ -8,7 +8,6 @@ class TriggeredAbility extends BaseAbility {
 
         this.game = game;
         this.card = card;
-        this.max = properties.max;
         this.when = properties.when;
         this.playerFunc = properties.player || (() => this.card.controller);
         this.eventType = eventType;
@@ -18,9 +17,6 @@ class TriggeredAbility extends BaseAbility {
             this.cost = this.cost.concat(Costs.playAction());
         }
 
-        if(this.max) {
-            this.card.owner.registerAbilityMax(this.card.name, this.max);
-        }
     }
 
     isTriggeredAbility() {
@@ -90,11 +86,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(this.limit && this.limit.isAtMax()) {
-            return false;
-        }
-
-        if(this.max && context.player.isAbilityAtMax(context.source.name)) {
+        if(this.usage && this.usage.isUsed()) {
             return false;
         }
 
@@ -148,10 +140,6 @@ class TriggeredAbility extends BaseAbility {
         super.incrementLimit();
     }
 
-    hasMax() {
-        return !!this.max;
-    }
-
     registerEvents() {
         if(this.events) {
             return;
@@ -169,8 +157,8 @@ class TriggeredAbility extends BaseAbility {
             this.events.push(event);
         }
 
-        if(this.limit) {
-            this.limit.registerEvents(this.game);
+        if(this.usage) {
+            this.usage.registerEvents(this.game);
         }
     }
 
@@ -179,8 +167,8 @@ class TriggeredAbility extends BaseAbility {
             for(let event of this.events) {
                 this.game.removeListener(event.name, event.handler);
             }
-            if(this.limit) {
-                this.limit.unregisterEvents(this.game);
+            if(this.usage) {
+                this.usage.unregisterEvents(this.game);
             }
             this.events = null;
         }

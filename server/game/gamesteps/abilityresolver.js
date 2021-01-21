@@ -12,7 +12,6 @@ class AbilityResolver extends BaseStep {
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
             new SimpleStep(game, () => this.createSnapshot()),
-            new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
             new SimpleStep(game, () => this.context.resolutionStage = 'cost'),
             new SimpleStep(game, () => this.resolveCosts()),
@@ -23,6 +22,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
+            new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.raiseCardPlayedIfEvent()),
             new SimpleStep(game, () => this.game.popAbilityContext())
@@ -72,6 +72,9 @@ class AbilityResolver extends BaseStep {
     }
 
     markActionAsTaken() {
+        if(this.cancelled) {
+            return;
+        }
         if(this.ability.isAction()) {
             this.game.markActionAsTaken(this.context);
         }
@@ -124,7 +127,9 @@ class AbilityResolver extends BaseStep {
 
         if(this.playerResult.cancelled) {
             this.cancelled = true;
-            this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
+            if (this.ability.abilitySourceType !== 'game') {
+                this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
+            }
             return;
         }
     }
@@ -145,7 +150,9 @@ class AbilityResolver extends BaseStep {
         let cancelledTargeting = this.targetResults.some(result => result.cancelled);
         if(cancelledTargeting) {
             this.cancelled = true;
-            this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
+            if (this.ability.abilitySourceType !== 'game') {
+                this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
+            }
             return;
         }
 

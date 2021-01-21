@@ -195,6 +195,19 @@ class BaseCard {
         this.abilities.actions.forEach(action => action.used = false);
     }
 
+    applyAbilityEffect(ability, propertyFactory) {
+        if (this.game.shootout) {
+            this.untilEndOfShootoutPhase(propertyFactory);
+        } else {
+            var properties = propertyFactory(AbilityDsl);
+            if (ability.playType === 'noon') {
+                this.game.addEffect(this, Object.assign({ duration: 'untilEndOfRound', location: 'any' }, properties));
+            } else {
+                this.game.addEffect(this, Object.assign({ duration: 'untilEndOfPhase', location: 'any', phase: this.game.currentPhase }, properties));
+            }
+        }
+    }
+
     /**
      * Applies an effect with the specified properties while the current card is
      * attached to another card. By default the effect will target the parent
@@ -224,27 +237,18 @@ class BaseCard {
     /**
      * Applies an immediate effect which lasts until the end of the phase.
      */
-    untilEndOfPhase(propertyFactory) {
+    untilEndOfPhase(propertyFactory, phaseName = '') {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfPhase', location: 'any' }, properties));
-    }
-
-    /**
-     * Applies an immediate effect which expires at the end of the current
-     * challenge. Per game rules this duration is outside of the challenge.
-     */
-    atEndOfChallenge(propertyFactory) {
-        var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'atEndOfChallenge', location: 'any' }, properties));
+        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfPhase', location: 'any', phase: phaseName }, properties));
     }
 
     /**
      * Applies an immediate effect which expires at the end of the phase. Per
      * game rules this duration is outside of the phase.
      */
-    atEndOfPhase(propertyFactory) {
+    atEndOfPhase(propertyFactory, phaseName = '') {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'atEndOfPhase', location: 'any' }, properties));
+        this.game.addEffect(this, Object.assign({ duration: 'atEndOfPhase', location: 'any', phase: phaseName }, properties));
     }
 
     /**
@@ -716,6 +720,11 @@ class BaseCard {
             return;
         }
         return this.game.findLocation(this.gamelocation);
+    }
+
+    isInTownSquare() {
+        let location = this.getLocation();
+        return location && location.isTownSquare();
     }
 
     getLocationCard() {

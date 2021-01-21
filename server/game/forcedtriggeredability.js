@@ -16,8 +16,7 @@ const TriggeredAbility = require('./triggeredability.js');
  * handler - function that will be executed if the player chooses 'Yes' when
  *           asked to trigger the reaction. If the reaction has more than one
  *           choice, use the choices sub object instead.
- * limit   - optional AbilityLimit object that represents the max number of uses
- *           for the reaction as well as when it resets.
+ * limit   - the max number of uses for the repeatable reaction.
  * location - string or array of string  indicating the location the card should
  *            be in in order to activate the reaction. Defaults to 'play area'.
  */

@@ -115,8 +115,9 @@ class DudeCard extends DrawCard {
             condition: () => this.game.currentPhase === 'high noon' && !this.booted,
             target: {
                 activePromptTitle: 'Select dude to call out',
-                cardCondition: card => card.getType() === 'dude' && 
+                cardCondition: card => card.getType() === 'dude' && this.gamelocation &&
                     card.gamelocation === this.gamelocation &&
+                    !this.getLocation().isHome(card.controller) &&
                     card.uuid !== this.uuid &&
                     card.controller !== this.controller,
                 autoSelect: false
@@ -125,7 +126,7 @@ class DudeCard extends DrawCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.callOut({ caller: this, callee: context.target, isCardEffect: false }))
             },
-            player: this.owner
+            player: this.controller
         });
 
         this.action({
@@ -144,7 +145,7 @@ class DudeCard extends DrawCard {
             handler: context => {
                 this.game.queueStep(new TradingPrompt(this.game, context.player, context.target));
             },
-            player: this.owner
+            player: this.controller
         });        
     }
 

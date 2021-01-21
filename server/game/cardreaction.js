@@ -1,17 +1,15 @@
+const AbilityUsage = require('./abilityusage.js');
 const PromptedTriggeredAbility = require('./promptedtriggeredability.js');
 
 class CardReaction extends PromptedTriggeredAbility {
     constructor(game, card, properties) {
         super(game, card, 'reaction', properties);
-        this.used = false;
-        this.canRepeat = properties.canRepeat;
+        this.usage = new AbilityUsage(properties);
     }
 
     executeHandler(context) {
         super.executeHandler(context);
-        if (!this.canRepeat) {
-            this.used = true;
-        }
+        this.usage.increment();
     }
 
     meetsRequirements(context) {
@@ -19,7 +17,7 @@ class CardReaction extends PromptedTriggeredAbility {
             return false;
         }
 
-        if(this.used) {
+        if(this.usage.isUsed()) {
             return false;
         }
         

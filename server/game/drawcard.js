@@ -150,7 +150,7 @@ class DrawCard extends BaseCard {
                 card.control = 0;
             }
 
-            this.game.raiseEvent('onCardControlChanged', this, card.control - oldControl);
+            this.game.raiseEvent('onCardControlChanged', { card: this, changedAmount: card.control - oldControl });
 
             this.game.checkWinCondition(this.controller);
         });

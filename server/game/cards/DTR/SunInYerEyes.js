@@ -11,7 +11,7 @@ class SunInYerEyes extends DrawCard {
                 cardType: 'dude'
             },
             handler: context => {
-                context.target.untilEndOfShootoutPhase(ability => ({
+                this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: [
                         ability.effects.setAsDraw(),
