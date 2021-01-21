@@ -1,3 +1,4 @@
+const Costs = require('../../costs.js');
 const GoodsCard = require('../../goodscard.js');
 
 class Shotgun extends GoodsCard {
@@ -8,7 +9,7 @@ class Shotgun extends GoodsCard {
         this.action({
             title: 'Shotgun',
             playType: 'shootout',
-            cost: ,
+            cost: ability.costs.bootSelf(),
             target: {
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true, 
                     condition: card => card.value <= this.parent.bullets
