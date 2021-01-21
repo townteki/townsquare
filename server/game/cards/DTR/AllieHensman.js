@@ -2,11 +2,11 @@ const DudeCard = require('../../dudecard.js');
 const Costs = require('../../costs.js');
 
 class AllieHensman extends DudeCard {
-    setupCardAbilities() {
+    setupCardAbilities(ability) {
         this.action({
             title: 'Allie Hensman',
             playType: 'noon',
-            cost: Costs.bootSelf(),
+            cost: ability.costs.bootSelf(),
             handler: context => {
                 if (this.isInTownSquare()) {
                     this.modifyControl(1);

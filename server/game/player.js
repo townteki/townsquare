@@ -248,6 +248,7 @@ class Player extends Spectator {
             //callback(discarded);
         });
 
+        this.drawHand = [];
         this.drawHandRevealed = false;
         this.drawHandSelected = false;
         this.handResult = new HandResult();

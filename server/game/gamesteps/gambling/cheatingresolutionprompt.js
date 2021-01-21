@@ -4,6 +4,7 @@ class CheatingResolutionPrompt extends PlayerOrderPrompt {
     constructor(game, playerNameOrder = []) {
         super(game, playerNameOrder);
         this.name = 'gambling';
+        this.playWindowOpened = false;
     }
 
     activeCondition(player) {
@@ -27,8 +28,11 @@ class CheatingResolutionPrompt extends PlayerOrderPrompt {
         let completed = super.continue();
 
         if(!completed) {
-            this.game.currentPlayWindow = this;
-            this.game.raiseEvent('onPlayWindowOpened', { playWindow: this });
+            if (!this.playWindowOpened || !this.game.currentPlayWindow) {
+                this.game.currentPlayWindow = this;
+                this.playWindowOpened = true;
+                this.game.raiseEvent('onPlayWindowOpened', { playWindow: this });
+            }
         } else {
             this.game.currentPlayWindow = null;
             this.game.raiseEvent('onPlayWindowClosed', { playWindow: this });
