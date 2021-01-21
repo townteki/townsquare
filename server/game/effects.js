@@ -217,59 +217,29 @@ const Effects = {
             },
             unapply: function(card) {
                 card.modifyBullets(-value, false);
-            },
-            order: value >= 0 ? 0 : 1000
-        };
-    },
-    setStrength: function(value) {
-        return {
-            gameAction: card => card.getType() === 'character' && card.getStrength() > value ? 'decreaseStrength' : 'increaseStrength',
-            apply: function(card) {
-                card.strengthSet = value;
-            },
-            unapply: function(card) {
-                card.strengthSet = undefined;
             }
         };
     },
-    modifyStrengthMultiplier: function(value) {
+    modifyInfluence: function(value) {
         return {
+            gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
-                card.modifyStrengthMultiplier(value, true);
+                card.modifyBullets(value, true);
             },
             unapply: function(card) {
-                card.modifyStrengthMultiplier(1.0 / value, false);
+                card.modifyBullets(-value, false);
             }
         };
     },
-    modifyDominanceStrength: function(value) {
+    modifyControl: function(value) {
         return {
+            gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
-                card.modifyDominanceStrength(value);
+                card.modifyControl(value, true);
             },
             unapply: function(card) {
-                card.modifyDominanceStrength(-value);
+                card.modifyBullets(-value, false);
             }
-        };
-    },
-    dynamicDominanceStrength: function(calculate) {
-        return {
-            apply: function(card, context) {
-                context.dynamicDominanceStrength = context.dynamicDominanceStrength || {};
-                context.dynamicDominanceStrength[card.uuid] = calculate(card, context) || 0;
-                card.modifyDominanceStrength(context.dynamicDominanceStrength[card.uuid], true);
-            },
-            reapply: function(card, context) {
-                let currentDominanceStrength = context.dynamicDominanceStrength[card.uuid];
-                let newDominanceStrength = calculate(card, context) || 0;
-                context.dynamicDominanceStrength[card.uuid] = newDominanceStrength;
-                card.modifyDominanceStrength(newDominanceStrength - currentDominanceStrength, true);
-            },
-            unapply: function(card, context) {
-                card.modifyDominanceStrength(-context.dynamicDominanceStrength[card.uuid], false);
-                delete context.dynamicDominanceStrength[card.uuid];
-            },
-            isStateDependent: true
         };
     },
     modifyGold: dynamicCardModifier('goldModifier'),

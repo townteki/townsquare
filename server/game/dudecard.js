@@ -12,10 +12,10 @@ class DudeCard extends DrawCard {
         this.maxWeapons = 1;
         this.maxHorses = 1;
         this.maxAttires = 1;
+        this.maxBullets = null;
 
         this.currentBullets = this.cardData.bullets;
         this.currentInfluence = this.cardData.influence;
-        this.currentControl = this.cardData.control;
         this.currentUpkeep = this.cardData.upkeep;
 
         this.shootoutStatus = ShootoutStatuses.None;
@@ -27,6 +27,9 @@ class DudeCard extends DrawCard {
     get bullets() {
         if (this.currentBullets < 0) {
             return 0;
+        }
+        if (this.maxBullets && this.maxBullets < this.currentPhase) {
+            return this.maxBullets;
         }
         return this.currentBullets;
     }
@@ -48,14 +51,6 @@ class DudeCard extends DrawCard {
 
     set influence(amount) {
         this.currentInfluence = amount;
-    }
-
-    get control() {
-        return this.currentControl;
-    }
-
-    set control(amount) {
-        this.currentControl = amount;
     }
 
     get upkeep() {
@@ -89,6 +84,28 @@ class DudeCard extends DrawCard {
             applying: applying
         };
         this.game.raiseEvent('onCardBulletsChanged', params);
+    }
+
+    modifyInfluence(amount, applying = true) {
+        this.currentInfluence += amount;
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardInfluenceChanged', params);
+    }
+
+    modifyUpkeep(amount, applying = true) {
+        this.currentUpkeep += amount;
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardUpkeepChanged', params);
     }
 
     setupDudeCardAbilities() {

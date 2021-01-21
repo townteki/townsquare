@@ -23,6 +23,7 @@ class DrawCard extends BaseCard {
 
         this.booted = false;
         this.minCost = 0;
+        this.currentControl = this.cardData.control;
 
         if(cardData.starting) {
             this.starting = true;
@@ -39,6 +40,29 @@ class DrawCard extends BaseCard {
         }         
         
         this.actionPlacementLocation = 'discard pile';
+    }
+
+    get control() {
+        return this.currentControl;
+    }
+
+    set control(amount) {
+        if (amount < 0) {
+            this.currentControl = 0;
+        } else {
+            this.currentControl = amount;
+        }
+    }
+
+    modifyControl(amount, applying = true) {
+        this.currentControl += amount;
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardControlChanged', params);
     }
 
     createSnapshot(clone) {
