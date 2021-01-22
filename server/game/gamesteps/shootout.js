@@ -228,15 +228,15 @@ class Shootout extends Phase {
         }
     }
 
-    actOnLeaderPosse(action) {
+    actOnLeaderPosse(action, exception) {
         if (this.leaderPosse) {
-            this.leaderPosse.actOnPosse(action);
+            this.leaderPosse.actOnPosse(action, exception);
         }
     }
 
-    actOnOpposingPosse(action) {
+    actOnOpposingPosse(action, exception) {
         if (this.opposingPosse) {
-            this.opposingPosse.actOnPosse(action);
+            this.opposingPosse.actOnPosse(action, exception);
         }
     }
 
@@ -252,9 +252,9 @@ class Shootout extends Phase {
         let locationCard = this.shootoutLocation.getLocationCard(this.game);
         if (locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
             if (locationCard.owner !== this.leaderPlayer) {
-                this.actOnLeaderPosse(dude => dude.increaseBounty());
+                this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
             } else {
-                this.actOnOpposingPosse(dude => dude.increaseBounty());
+                this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
             }
         }
     }

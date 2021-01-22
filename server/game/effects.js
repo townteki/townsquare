@@ -36,6 +36,19 @@ function losesAspectEffect(aspect) {
     };
 }
 
+function shootoutOptionEffect(key) {
+    return function() {
+        return {
+            apply: function(card) {
+                card.shootoutOptions.add(key);
+            },
+            unapply: function(card) {
+                card.shootoutOptions.remove(key);
+            }
+        };
+    };
+}
+
 function challengeOptionEffect(key) {
     return function() {
         return {
@@ -168,6 +181,8 @@ const Effects = {
             }
         };
     },
+    doesNotGetBountyOnJoin: shootoutOptionEffect('doesNotGetBountyOnJoin'),
+
     cannotBeDeclaredAsAttacker: cannotEffect('declareAsAttacker'),
     cannotBeDeclaredAsDefender: cannotEffect('declareAsDefender'),
     cannotParticipate: cannotEffect('participateInChallenge'),
@@ -223,10 +238,10 @@ const Effects = {
         return {
             gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
-                card.modifyBullets(value, true);
+                card.modifyInfluence(value, true);
             },
             unapply: function(card) {
-                card.modifyBullets(-value, false);
+                card.modifyInfluence(-value, false);
             }
         };
     },

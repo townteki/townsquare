@@ -40,6 +40,7 @@ class DrawCard extends BaseCard {
         }         
         
         this.actionPlacementLocation = 'discard pile';
+        this.shootoutOptions = new ReferenceCountedSetProperty();
     }
 
     get control() {

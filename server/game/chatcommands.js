@@ -12,6 +12,7 @@ class ChatCommands {
             '/add-card': this.addCard,
             '/bullets': this.bullets,
             '/blank': this.blank,
+            '/bounty': this.bounty,
             '/cancel-prompt': this.cancelPrompt,
             '/cancel-shootout': this.cancelShootout,
             '/clear-shooter': this.clearShooter,
@@ -65,6 +66,27 @@ class ChatCommands {
                     card.bullets = 0;
                 }
                 this.game.addAlert('danger', '{0} uses the /bullets command to set the bullets of {1} to {2}', p, card, num);
+                return true;
+            }
+        });
+    }
+
+    bounty(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set bounty for',
+            waitingPromptTitle: 'Waiting for opponent to set bounty',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                let change = card.bounty - num;
+                if(num > 0) {
+                    card.decreaseBounty(change);
+                } else {
+                    card.increaseBounty(change * -1);
+                }
+
+                this.game.addAlert('danger', '{0} uses the /bounty command to set the bounty of {1} to {2}', p, card, num);
                 return true;
             }
         });

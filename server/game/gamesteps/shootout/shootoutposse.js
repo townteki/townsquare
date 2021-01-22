@@ -85,11 +85,8 @@ class ShootoutPosse {
         }
     }
 
-    actOnPosse(action) {
-        this.posse.forEach(dudeUuid => {
-            let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            action(dude);
-        });
+    actOnPosse(action, exception = () => false) {
+        this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(dude => !exception(dude)).forEach(dude => action(dude));
     }    
 }
 

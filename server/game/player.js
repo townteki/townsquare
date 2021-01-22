@@ -47,6 +47,7 @@ class Player extends Spectator {
         this.promptedActionWindows = user.promptedActionWindows;
         this.keywordSettings = user.settings.keywordSettings;
 
+        this.rankModifier = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
         this.costReducers = [];
@@ -823,7 +824,19 @@ class Player extends Spectator {
     }
 
     getHandRank() {
-        return this.handResult.rank;
+        return this.handResult.getHandRank();
+    }
+
+    getTotalRank() {
+        return this.getHandRank().rank + this.rankModifier;
+    }
+
+    addHandRankMessage(showHand = true) {
+        if (showHand) {
+            let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
+            this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
+        }
+        this.game.addMessage('{0}\'s Total rank: {1} (modifier {2})', this, this.getTotalRank(), this.rankModifier);
     }
 
     leftmostDeed() {
