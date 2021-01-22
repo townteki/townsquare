@@ -48,6 +48,8 @@ class Message {
             return { name: arg.user.username, argType: 'nonAvatarPlayer' };
         } else if(arg instanceof Message) {
             return arg.flatten();
+        } else if (arg.title === 'Town Square') {
+            return arg.title;
         }
 
         return arg;

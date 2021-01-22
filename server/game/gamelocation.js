@@ -176,6 +176,14 @@ class TownSquare extends GameLocation {
             }
         }
     }
+
+    getLocationCard() {
+        return { 
+            title: 'Town Square', 
+            getType: () => 'townsquare',
+            hasKeyword: () => false
+        };
+    }
 }
 
 

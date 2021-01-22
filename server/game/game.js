@@ -544,7 +544,7 @@ class Game extends EventEmitter {
             }
 
             let card = Object.values(this.cardData).find(c => {
-                return c.label.toLowerCase() === message.toLowerCase() || c.name.toLowerCase() === message.toLowerCase();
+                return c.title.toLowerCase() === message.toLowerCase();
             });
 
             if(card) {

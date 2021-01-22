@@ -321,10 +321,12 @@ class DudeCard extends DrawCard {
 
     increaseBounty(amount = 1) {
         this.modifyToken(Tokens.bounty, amount);
+        this.game.raiseEvent('onCardBountyChanged', { card: this, amount: amount });
     }
 
     decreaseBounty(amount = 1) {
         this.modifyToken(Tokens.bounty, amount * -1);
+        this.game.raiseEvent('onCardBountyChanged', { card: this, amount: amount * -1 });
     }
 
     isWanted() {

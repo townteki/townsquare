@@ -19,10 +19,8 @@ class QuickdrawHandgun extends GoodsCard {
                 opponent.drawHand = savedThisInfo.drawHand;
                 opponent.handResult = savedThisInfo.handResult;
                 this.game.addMessage('{0} uses {1} to swap draw hands.', context.player, this, this.parent);
-                let cheatin = context.player.isCheatin() ? 'Cheatin\' ' : '';
-                this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', context.player, cheatin, context.player.getHandRank().rankName, context.player.getHandRank().rank);
-                cheatin = opponent.isCheatin() ? 'Cheatin\' ' : '';
-                this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', opponent, cheatin, opponent.getHandRank().rankName, opponent.getHandRank().rank);
+                context.player.addHandRankMessage();
+                opponent.addHandRankMessage();
             }
         });
     }
