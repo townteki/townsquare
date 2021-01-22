@@ -8,18 +8,18 @@ const Suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
 class HandResult {
     constructor(hand) {
         this.casualties = 0;
-        this.rank = {rank : 0, rankName: ''};
+        this.handRank = {rank : 0, rankName: ''};
         if(!hand || !_.isArray(hand)) {
             return;
         }
 
         this.pokerHands = _.filter(new PokerHands(hand), (hr) => (hr.rank !== undefined));
         let bestRank = _.orderBy(this.pokerHands, 'rank', 'desc');
-        this.rank = (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
+        this.handRank = (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
     }
 
-    getRank() {
-        return this.rank;
+    getHandRank() {
+        return this.handRank;
     }
 
     coverCasualties(number) {
