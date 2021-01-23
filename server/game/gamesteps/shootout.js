@@ -305,7 +305,7 @@ class Shootout extends Phase {
             this.loser = tiebreakResult.loser;
             this.game.addMessage('Shootout ended in a tie, but {0} wins on {1}.', this.winner, tiebreakResult.decision);
         } else {
-            if (leaderRank.rank > opposingRank) {
+            if (leaderRank > opposingRank) {
                 this.winner = this.leaderPlayer;
                 this.loser = this.opposingPlayer;
             }

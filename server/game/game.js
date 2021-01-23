@@ -823,7 +823,7 @@ class Game extends EventEmitter {
     }
 
     openAbilityWindow(properties) {
-        let windowClass = ['forcedreaction', 'forcedinterrupt', 'whenrevealed'].includes(properties.abilityType) ? ForcedTriggeredAbilityWindow : TriggeredAbilityWindow;
+        let windowClass = ['traitreaction', 'forcedinterrupt', 'whenrevealed'].includes(properties.abilityType) ? ForcedTriggeredAbilityWindow : TriggeredAbilityWindow;
         let window = new windowClass(this, { abilityType: properties.abilityType, event: properties.event });
         this.abilityWindowStack.push(window);
         this.queueStep(window);
@@ -976,6 +976,7 @@ class Game extends EventEmitter {
 
     revealHands() {
         this.getPlayers().forEach(player => player.revealDrawHand());
+        this.raiseEvent('onDrawHandsRevealed', { shootout: this.shootout });
     }    
 
     killCharacters(cards, options = {}) {

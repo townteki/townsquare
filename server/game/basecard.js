@@ -4,7 +4,7 @@ const _ = require('underscore');
 const AbilityDsl = require('./abilitydsl');
 const CardAction = require('./cardaction');
 const CardForcedInterrupt = require('./cardforcedinterrupt');
-const CardForcedReaction = require('./cardforcedreaction');
+const CardTraitReaction = require('./cardtraitreaction');
 const CardInterrupt = require('./cardinterrupt');
 const CardMatcher = require('./CardMatcher');
 const CardReaction = require('./cardreaction');
@@ -148,8 +148,8 @@ class BaseCard {
         this.abilities.reactions.push(reaction);
     }
 
-    forcedReaction(properties) {
-        var reaction = new CardForcedReaction(this.game, this, properties);
+    traitReaction(properties) {
+        var reaction = new CardTraitReaction(this.game, this, properties);
         this.abilities.reactions.push(reaction);
     }
 
