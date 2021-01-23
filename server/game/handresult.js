@@ -7,7 +7,6 @@ const Suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
  */
 class HandResult {
     constructor(hand) {
-        this.casualties = 0;
         this.handRank = {rank : 0, rankName: ''};
         if(!hand || !_.isArray(hand)) {
             return;
@@ -20,13 +19,6 @@ class HandResult {
 
     getHandRank() {
         return this.handRank;
-    }
-
-    coverCasualties(number) {
-        this.casualties -= number;
-        if (this.casualties < 0) {
-            this.casualties = 0;
-        }
     }
 
 }

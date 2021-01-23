@@ -234,6 +234,10 @@ class BaseAbility {
         }
     }
 
+    resetAbilityUsage() {
+        this.usage.reset();
+    }
+
     outputMessage(context) {
         this.message.output(context.game, context);
     }

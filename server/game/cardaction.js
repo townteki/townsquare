@@ -87,6 +87,22 @@ class CardAction extends BaseAbility {
         return result;
     }
 
+    playTypePlayed() {
+        if (this.playType.includes('noon') && this.game.getCurrentPlayWindowName() === 'high noon') {
+            return 'noon';
+        } 
+        if (this.playType.includes('shootout') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
+            return 'shootout';
+        } 
+        if (this.playType.includes('resolution') && this.game.getCurrentPlayWindowName() === 'shootout resolution') {
+            return 'resolution';
+        } 
+        if (this.playType.includes('cheatin resolution') && 
+            (this.game.getCurrentPlayWindowName() === 'shootout resolution' || this.game.getCurrentPlayWindowName() === 'gambling')) {
+            return 'cheatin resolution';
+        } 
+    }
+
     defaultCondition() {
         if (this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
@@ -120,11 +136,11 @@ class CardAction extends BaseAbility {
 
     meetsRequirements(context) {
         if(this.playType !== 'any' && this.game.currentPlayWindow) {
-            let allowedTypes = AllowedTypesForPhase[this.game.currentPlayWindow.name];
+            let allowedTypes = AllowedTypesForPhase[this.game.getCurrentPlayWindowName()];
             if(!allowedTypes) {
                 return false;
             }
-            if (!this.playType.some(type => AllowedTypesForPhase[this.game.currentPlayWindow.name].includes(type))) {
+            if (!this.playType.some(type => AllowedTypesForPhase[this.game.getCurrentPlayWindowName()].includes(type))) {
                 return false;
             }
         }

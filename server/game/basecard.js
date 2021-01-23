@@ -190,9 +190,9 @@ class BaseCard {
         this.abilities.persistentEffects.push(Object.assign({ duration: 'persistent', location: location }, properties));
     }
 
-    refreshAbilities() {
-        this.abilities.reactions.forEach(reaction => reaction.used = false);
-        this.abilities.actions.forEach(action => action.used = false);
+    resetAbilities() {
+        this.abilities.reactions.forEach(reaction => reaction.resetAbilityUsage());
+        this.abilities.actions.forEach(action => action.resetAbilityUsage());
     }
 
     applyAbilityEffect(ability, propertyFactory) {
@@ -200,7 +200,7 @@ class BaseCard {
             this.untilEndOfShootoutPhase(propertyFactory);
         } else {
             var properties = propertyFactory(AbilityDsl);
-            if (ability.playType === 'noon') {
+            if (ability.playTypePlayed() === 'noon') {
                 this.game.addEffect(this, Object.assign({ duration: 'untilEndOfRound', location: 'any' }, properties));
             } else {
                 this.game.addEffect(this, Object.assign({ duration: 'untilEndOfPhase', location: 'any', phase: this.game.currentPhase }, properties));
@@ -306,7 +306,6 @@ class BaseCard {
     }
 
     resetForRound() {
-        this.refreshAbilities();
         this.clearNew();
     }
 

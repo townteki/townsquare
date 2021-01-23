@@ -48,6 +48,7 @@ class Player extends Spectator {
         this.keywordSettings = user.settings.keywordSettings;
 
         this.rankModifier = 0;
+        this.casualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
         this.costReducers = [];
@@ -819,7 +820,6 @@ class Player extends Spectator {
     resetForRound() {
         this.upkeepPaid = false;
         this.passTurn = false;
-     
         this.cardsInPlay.forEach(card => card.resetForRound());
     }
 
@@ -828,7 +828,14 @@ class Player extends Spectator {
     }
 
     getTotalRank() {
-        return this.getHandRank().rank + this.rankModifier;
+        let totalRank = this.getHandRank().rank + this.rankModifier;
+        if (totalRank < 1) {
+            return 1;
+        }
+        if (totalRank > 11) {
+            return 11;
+        }
+        return totalRank;
     }
 
     addHandRankMessage(showHand = true) {
@@ -837,6 +844,22 @@ class Player extends Spectator {
             this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
         }
         this.game.addMessage('{0}\'s Total rank: {1} (modifier {2})', this, this.getTotalRank(), this.rankModifier);
+    }
+
+    modifyRank(amount) {
+        this.rankModifier += amount;
+        this.game.raiseEvent('onHandRankModified', { player: this, amount: amount} );
+    }
+
+    addCasualties(number) {
+        this.casualties += number;
+    }
+
+    coverCasualties(number) {
+        this.casualties -= number;
+        if (this.casualties < 0) {
+            this.casualties = 0;
+        }
     }
 
     leftmostDeed() {
