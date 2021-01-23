@@ -183,7 +183,7 @@ class AbilityResolver extends BaseStep {
         if(this.ability.isCardAbility()) {
             let targets = this.context.targets.getTargets();
             this.game.raiseEvent('onCardAbilityInitiated', { player: this.context.player, source: this.context.source, ability: this.ability, targets: targets }, () => {
-                if (this.ability.playType === 'cheatin resolution') {           
+                if (this.ability.playTypePlayed() === 'cheatin resolution') {           
                     this.context.player.incrementCheatinResPlayed();
                 }
                 this.ability.executeHandler(this.context);

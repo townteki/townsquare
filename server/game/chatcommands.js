@@ -28,6 +28,7 @@ class ChatCommands {
             '/remove-from-game': this.removeFromGame,
             '/remove-from-posse': this.removeFromPosse,
             '/remove-keyword': this.removeKeyword,
+            '/reset-abilities': this.resetAbilities,
             '/reveal-hand': this.revealHand,
             '/shooter': this.shooter,
             '/token': this.setToken,
@@ -132,6 +133,19 @@ class ChatCommands {
                 return true;
             }
         });
+    }
+
+    resetAbilities(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to reset ability for',
+            waitingPromptTitle: 'Waiting for opponent to reset ability',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            onSelect: (p, card) => {
+                card.resetAbilities();
+                this.game.addAlert('danger', '{0} uses the /reset-ability command to reset abilities for card {1}', p, card);
+                return true;
+            }
+        });        
     }
 
     shooter(player, args) {

@@ -16,14 +16,14 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         if (this.isComplete()) {
             return true;
         }
-        if (this.currentPlayer.handResult.casualties == 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        if (this.currentPlayer.casualties == 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
             this.completePlayer();
             return this.continue();
         }
 
         this.game.promptWithMenu(this.currentPlayer, this, {
             activePrompt: {
-                menuTitle: 'Select Yer Lumps to Take (' + this.currentPlayer.handResult.casualties + ' remaining)',
+                menuTitle: 'Select Yer Lumps to Take (' + this.currentPlayer.casualties + ' remaining)',
                 buttons: [
                     { text: 'Ace', method: 'coverCasualty', arg: 'ace' },
                     { text: 'Discard', method: 'coverCasualty', arg: 'discard' },
@@ -58,7 +58,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                         player.discardCard(card, true, { isCasualty: true });
                     }
                 }
-                player.handResult.coverCasualties(numCoveredCasualties);
+                player.coverCasualties(numCoveredCasualties);
                 return true;
             }
         });
@@ -78,7 +78,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 let numCoveredCasualties = card.coversCasualties('send');
                 if (numCoveredCasualties > 0) {
                     this.game.resolveGameAction(GameActions.sendHome({ card, options: { isCardEffect: false } }));
-                    player.handResult.coverCasualties(numCoveredCasualties);         
+                    player.coverCasualties(numCoveredCasualties);         
                 }
                 return true;
             }
@@ -88,8 +88,8 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     }
 
     done() {
-        if (this.currentPlayer.handResult.casualties > 0) {
-            this.game.addAlert('danger', '{0} ends \`Take Yer Lumps\` step with {1} casualties remaining!', this.currentPlayer, this.currentPlayer.handResult.casualties);
+        if (this.currentPlayer.casualties > 0) {
+            this.game.addAlert('danger', '{0} ends \`Take Yer Lumps\` step with {1} casualties remaining!', this.currentPlayer, this.currentPlayer.casualties);
         }
         this.completePlayer();
         return true;

@@ -234,6 +234,10 @@ class BaseAbility {
         }
     }
 
+    resetAbilityUsage() {
+        this.usage.reset();
+    }
+
     outputMessage(context) {
         this.message.output(context.game, context);
     }
@@ -265,6 +269,9 @@ class BaseAbility {
 
     isForcedAbility() {
         return false;
+    }
+
+    playTypePlayed() {
     }
 
 }

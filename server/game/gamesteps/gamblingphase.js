@@ -34,25 +34,38 @@ class GamblingPhase extends Phase {
         this.game.queueStep(new CheatingResolutionPrompt(this.game));  
     }
 
-    determineWinner() {
-        let winner = _.reduce(this.game.getPlayers(), (player, memo) => {
+    findWinner() {
+        return _.reduce(this.game.getPlayers(), (player, memo) => {
 
-            let pHand = player.getHandRank();
-            let mHand = memo.getHandRank();
+            let pRank = player.getTotalRank();
+            let mRank = memo.getTotalRank();
 
-            if(pHand.rank < mHand.rank) {
+            if(pRank < mRank) {
                 return player;
-            } else if(pHand.rank === mHand.rank) {
-                for(let i = 0; i < pHand.tiebreaker.length; i++) {
-                    if(pHand.tiebreaker[i] < mHand.tiebreaker[i]) {
-                        return player;
-                    }
+            } else if(pRank === mRank) {
+                let tiebreakResult = this.game.resolveTiebreaker(player, memo, true);
+                if (tiebreakResult === 'exact tie') {
+                    return null;
                 }
+                return tiebreakResult.winner;
             }
 
             return memo;
             
         });
+    }
+
+    determineWinner() {
+        let winner = this.findWinner();
+
+        if (!winner) {
+            this.game.addAlert('info', 'There is winner of the lowball, players have to draw new hands.');
+            this.game.discardDrawHands();
+            this.game.drawHands();
+            this.game.revealHands();
+            // TODO M2 add window for cheatin resolutions
+            winner = this.findWinner();
+        }
 
         let firstPlayer = winner;
 

@@ -28,6 +28,7 @@ class Shootout extends Phase {
             this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
         }
 
+        this.jobSuccessful = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
         this.initialise([
@@ -85,12 +86,22 @@ class Shootout extends Phase {
         return this.options.isJob;
     }
 
+    resetForTheRound() {
+        this.winner = null;
+        this.looser = null;
+        this.leaderPlayer.rankModifier = 0;
+        this.leaderPlayer.casualties = 0;
+        this.opposingPlayer.rankModifier = 0;
+        this.opposingPlayer.casualties = 0;
+    }
+
     beginShootoutRound() {
         if (this.checkEndCondition()) {
             return;
         }
         this.game.raiseEvent('onShootoutSlinginLeadStarted');
         this.remainingSteps = [
+            new SimpleStep(this.game, () => this.resetForTheRound()),
             new SimpleStep(this.game, () => this.shootoutPlays()),
             new SimpleStep(this.game, () => this.pickYerShooterStep()),
             new SimpleStep(this.game, () => this.draw()),
@@ -134,6 +145,13 @@ class Shootout extends Phase {
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.game.endShootout(isCancel);
+        if (this.isJob()) {
+            if (this.jobSuccessful) {
+                this.options.jobAbility.setResult(true, this);
+            } else {
+                this.options.jobAbility.setResult(false, this);
+            }
+        }
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
         this.game.addAlert('phasestart', phaseName + ' ended!');        
     }
@@ -269,28 +287,32 @@ class Shootout extends Phase {
 
     determineWinner() {
         this.shootoutLoseWinOrder = [];
-        let opposingHand = this.opposingPlayer.getHandRank();
-        let leaderHand = this.leaderPlayer.getHandRank();
-        let winner = this.opposingPlayer;
-        let loser = this.leaderPlayer;
-        if (leaderHand.rank == opposingHand.rank) {
-            for(let i = 0; i < leaderHand.tiebreaker.length; i++) {
-                if(leaderHand.tiebreaker[i] > opposingHand.tiebreaker[i]) {
-                    winner = this.leaderPlayer;
-                    loser = this.opposingPlayer;
-                }
+        let opposingRank = this.opposingPlayer.getTotalRank();
+        let leaderRank = this.leaderPlayer.getTotalRank();
+        this.winner = this.opposingPlayer;
+        this.loser = this.leaderPlayer;
+        if (leaderRank === opposingRank) {
+            let tiebreakResult = this.game.resolveTiebreaker(this.leaderPlayer, this.opposingPlayer);
+            this.leaderPlayer = this.opposingPlayer = 1;
+            if (tiebreakResult.decision === 'exact tie') {
+                this.game.addMessage('Shootout ended in an exact tie, there is no winner or loser.');
+                this.shootoutLoseWinOrder = [ this.leaderPlayer.name, this.opposingPlayer.name ];
+                this.winner = null;
+                this.loser = null;
+                return;
             }
-            winner.handResult.casualties = loser.handResult.casualties = 1;
-            this.game.addMessage('Shootout ended in a tie, but {0} wins on tiebreaker.', winner);
+            this.winner = tiebreakResult.winner;
+            this.loser = tiebreakResult.loser;
+            this.game.addMessage('Shootout ended in a tie, but {0} wins on {1}.', this.winner, tiebreakResult.decision);
         } else {
-            if (leaderHand.rank > opposingHand.rank) {
-                winner = this.leaderPlayer;
-                loser = this.opposingPlayer;
+            if (leaderRank.rank > opposingRank) {
+                this.winner = this.leaderPlayer;
+                this.loser = this.opposingPlayer;
             }
-            loser.handResult.casualties = Math.abs(leaderHand.rank - opposingHand.rank);
-            this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', winner, Math.abs(leaderHand.rank - opposingHand.rank));
+            this.loser.casualties = Math.abs(leaderRank - opposingRank);
+            this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', this.winner, Math.abs(leaderRank - opposingRank));
         }
-        this.shootoutLoseWinOrder = [ loser.name, winner.name ];
+        this.shootoutLoseWinOrder = [ this.loser.name, this.winner.name ];
     }
 
     casualtiesAndRunOrGun() {
@@ -315,10 +337,10 @@ class Shootout extends Phase {
             return;
         }
         if (!this.opposingPosse || this.opposingPosse.isEmpty()) {
-            this.options.jobAbility.setResult(true, this);
+            this.jobSuccessful = true;
         }
         if (!this.leaderPosse || this.leaderPosse.isEmpty()) {
-            this.options.jobAbility.setResult(false, this);
+            this.jobSuccessful = false;
         }
         
     }

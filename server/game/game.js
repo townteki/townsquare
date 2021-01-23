@@ -467,6 +467,27 @@ class Game extends EventEmitter {
         }
     }
 
+    resolveTiebreaker(player1, player2, isForLowball = false) {
+        if (player1.rankModifier < 0) {
+            if (player2.rankModifier < 0) {
+                return { decision: 'exact tie' };
+            }
+            return isForLowball ? { winner: player2, loser: player1, decision: 'rank modifier' } : { winner: player1, loser: player2, decision: 'rank modifier' }
+        }
+        if (player1.rankModifier > 0) {
+            if (player2.rankModifier > 0) {
+                return { decision: 'exact tie' };
+            }
+            return isForLowball ? { winner: player1, loser: player2, decision: 'rank modifier' } : { winner: player2, loser: player1, decision: 'rank modifier' }
+        }
+        for(let i = 0; i < player1.getHandRank().tiebreaker.length; i++) {
+            if(player1.getHandRank().tiebreaker[i] > player2.getHandRank().tiebreaker[i]) {
+                return isForLowball ? { winner: player2, loser: player1, decision: 'tiebreaker' } : { winner: player1, loser: player2, decision: 'tiebreaker' }
+            }
+        }
+        return { decision: 'exact tie' };
+    }
+
     checkPlayerElimination() {
         if(this.currentPhase === 'setup') {
             return;
@@ -755,14 +776,21 @@ class Game extends EventEmitter {
         this.pipeline.queueStep(new SimpleStep(this, handler));
     }
 
+    getCurrentPlayWindowName() {
+        if (!this.currentPlayWindow) {
+            return;
+        }
+        return this.currentPlayWindow.name;
+    }
+
     isShootoutPlayWindow() {
-        return this.currentPlayWindow && (this.currentPlayWindow.name === 'shootout plays' || this.currentPlayWindow.name === 'shootout resolution');
+        return this.getCurrentPlayWindowName() === 'shootout plays' || this.getCurrentPlayWindowName() === 'shootout resolution';
     }
 
     markActionAsTaken(context) {
         if(this.currentPlayWindow) {
             if(this.currentPlayWindow.currentPlayer !== context.player) {
-                this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.currentPlayWindow.name);
+                this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.getCurrentPlayWindowName());
             }
             // Trade is specific as you can do multiple goods swaps in one trade action currently so there is no clear
             // end of the action. It is up to user to push 'Done'
