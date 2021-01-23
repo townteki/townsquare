@@ -271,6 +271,9 @@ class BaseAbility {
         return false;
     }
 
+    playTypePlayed() {
+    }
+
 }
 
 module.exports = BaseAbility;
