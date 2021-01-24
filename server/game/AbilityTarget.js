@@ -26,6 +26,7 @@ class AbilityTarget {
         this.ifAble = !!properties.ifAble;
         this.autoSelect = properties.autoSelect === null ? true : properties.autoSelect;
         this.activePromptTitle = properties.activePromptTitle;
+        this.cardType = properties.cardType;
     }
 
     canResolve(context) {
@@ -90,6 +91,11 @@ class AbilityTarget {
             result.reject();
             return;
         }
+        let buttons = [];
+        if (this.cardType.includes('location') || this.cardType.includes('townsquare')) {
+            buttons = [ { text: 'Town Square' } ];
+            this.activePromptTitle = this.activePromptTitle || 'Select target location for movement';
+        }
 
         let otherProperties = Object.assign({}, this.properties);
         delete otherProperties.cardCondition;
@@ -101,6 +107,7 @@ class AbilityTarget {
             source: context.source,
             selector: this.selector,
             autoSelect: this.autoSelect,
+            additionalButtons: buttons,
             onSelect: (player, card) => {
                 result.resolve(card);
                 if(!card || card.length === 0) {
@@ -118,6 +125,11 @@ class AbilityTarget {
                 }
                 this.messages.outputSkipped(context.game, context);
                 return true;
+            },
+            onMenuCommand: () => {
+                result.resolve(context.game.townsquare.getLocationCard()); 
+                this.messages.outputSelected(context.game, context);
+                return true;               
             }
         };
         context.game.promptForSelect(result.choosingPlayer, Object.assign(promptProperties, otherProperties));
