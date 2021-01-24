@@ -180,6 +180,7 @@ class TownSquare extends GameLocation {
     getLocationCard() {
         return { 
             title: 'Town Square', 
+            uuid: this.uuid,
             getType: () => 'townsquare',
             hasKeyword: () => false
         };
