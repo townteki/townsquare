@@ -15,7 +15,6 @@ const DeedStreetSidePrompt = require('./gamesteps/deedstreetsideprompt.js');
 const PlayableLocation = require('./playablelocation.js');
 const PlayActionPrompt = require('./gamesteps/playactionprompt.js');
 const PlayerPromptState = require('./playerpromptstate.js');
-const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
 const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
 
@@ -689,7 +688,9 @@ class Player extends Spectator {
         if(originalParent) {
             originalParent.removeAttachment(attachment);
         }
-
+        if(originalLocation != 'play area') {
+            attachment.owner.cardsInPlay.push(attachment);
+        }
         attachment.moveTo('play area', card);
         card.attachments.push(attachment);
         if (playingType === 'trading') {
@@ -701,6 +702,10 @@ class Player extends Spectator {
         });
 
         let event = new AtomicEvent();
+        if(card.location === 'hand') {
+            event.addChildEvent(new Event('onCardLeftHand', { player: this, card: card }));
+        }
+
         event.addChildEvent(new Event('onCardAttached', { attachment: attachment, target: card }));
 
         if(originalLocation !== 'play area') {
@@ -909,12 +914,18 @@ class Player extends Spectator {
         }
     }
 
-    aceCard(card, allowSave = true, callback = () => true, options = {}) {
-        let action = GameActions.aceCard({
-            card,
-            allowSave,
-            options
-        });
+    aceCard(card, allowSave = true, options = {}) {
+        this.aceCards([card], allowSave, ()=> true, options);
+    }
+
+    aceCards(cards, allowSave = true, callback = () => true, options = {}) {
+        let action = GameActions.simultaneously(
+            cards.map(card => GameActions.aceCard({
+                card,
+                allowSave,
+                options
+            }))
+        );
         let event = this.game.resolveGameAction(action);
         event.thenExecute(() => {
             let cards = event.childEvents.map(childEvent => childEvent.card);

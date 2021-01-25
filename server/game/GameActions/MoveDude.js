@@ -5,9 +5,10 @@ class MoveDude extends GameAction {
         super('moveDude');
     }
 
-    canChangeGameState({ card }) {
+    canChangeGameState({ card, targetUuid }) {
         return (
             card.getType() === 'dude' &&
+            card.gamelocation !== targetUuid &&
             ['outfit', 'play area'].includes(card.location)
         );
     }

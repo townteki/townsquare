@@ -252,7 +252,7 @@ const Effects = {
                 card.modifyControl(value, true);
             },
             unapply: function(card) {
-                card.modifyBullets(-value, false);
+                card.modifyControl(-value, false);
             }
         };
     },

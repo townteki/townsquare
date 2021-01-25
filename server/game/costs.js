@@ -70,18 +70,18 @@ const Costs = {
      */
     sacrificeAny: (condition, zeroAllowed) => CostBuilders.sacrifice.selectAny(condition, zeroAllowed),
     /**
-     * Cost that will kill the card that initiated the ability.
+     * Cost that will ace the card that initiated the ability.
      */
-    killSelf: () => CostBuilders.kill.self(),
+    aceSelf: () => CostBuilders.ace.self(),
     /**
-     * Cost that will kill the parent card the current card is attached to.
+     * Cost that will ace the parent card the current card is attached to.
      */
-    killParent: () => CostBuilders.kill.parent(),
+    aceParent: () => CostBuilders.ace.parent(),
     /**
-     * Cost that requires killing a character that matches the passed condition
+     * Cost that requires acing a card that matches the passed condition
      * predicate function.
      */
-    kill: condition => CostBuilders.kill.select(condition),
+    ace: condition => CostBuilders.ace.select(condition),
     /**
      * Cost that will put into play the card that initiated the ability.
      */

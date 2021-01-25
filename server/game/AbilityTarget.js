@@ -26,7 +26,7 @@ class AbilityTarget {
         this.ifAble = !!properties.ifAble;
         this.autoSelect = properties.autoSelect === null ? true : properties.autoSelect;
         this.activePromptTitle = properties.activePromptTitle;
-        this.cardType = properties.cardType;
+        this.cardType = properties.cardType || [];
     }
 
     canResolve(context) {
@@ -95,6 +95,8 @@ class AbilityTarget {
         if (this.cardType.includes('location') || this.cardType.includes('townsquare')) {
             buttons = [ { text: 'Town Square' } ];
             this.activePromptTitle = this.activePromptTitle || 'Select target location for movement';
+            // TODO M2 probably should add condition for location that will filter current location
+            //this.cardCondition = 
         }
 
         let otherProperties = Object.assign({}, this.properties);

@@ -258,6 +258,14 @@ class Shootout extends Phase {
         }
     }
 
+    actOnPlayerPosse(player, action, exception) {
+        if (this.leaderPlayer === player) {
+            this.actOnLeaderPosse(action, exception);
+        } else if (this.opposingPlayer === player) {
+            this.actOnOpposingPosse(action, exception);
+        }
+    }
+
     actOnAllParticipants(action) {
         this.actOnLeaderPosse(action);
         this.actOnOpposingPosse(action);

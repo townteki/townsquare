@@ -8,6 +8,13 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         this.playWindowOpened = false;
     }
 
+    skipCondition() {
+        if (this.game.shootout && this.game.shootout.checkEndCondition()) {
+            return true;
+        }
+        return false; 
+    }
+
     continue() {
         let result = super.continue();
 

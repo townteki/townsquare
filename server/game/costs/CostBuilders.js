@@ -5,7 +5,7 @@ const DiscardFromHandCost = require('./DiscardFromHandCost');
 const DiscardFromShadowsCost = require('./DiscardFromShadowsCost');
 const DiscardPowerCost = require('./DiscardPowerCost');
 const DiscardTokenCost = require('./DiscardTokenCost');
-const KillCost = require('./KillCost');
+const AceCost = require('./AceCost');
 const LowerBountyCost = require('./LowerBountyCost');
 const PlaceInDeadPileFromHandCost = require('./PlaceInDeadPileFromHandCost');
 const PutIntoPlayCost = require('./PutIntoPlayCost');
@@ -43,9 +43,9 @@ const CostBuilders = {
             selectMultiple: number => `Select ${number} cards to discard ${amount} ${token}`
         });
     },
-    kill: new CostBuilder(new KillCost(), {
-        select: 'Select card to kill',
-        selectMultiple: number => `Select ${number} cards to kill`
+    ace: new CostBuilder(new AceCost(), {
+        select: 'Select card to ace',
+        selectMultiple: number => `Select ${number} cards to ace`
     }),
     raiseBounty: new CostBuilder(new RaiseBountyCost(), {
         select: 'Select card to raise bounty',

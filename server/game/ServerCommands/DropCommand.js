@@ -20,7 +20,7 @@ class DropCommand {
             return;
         }
 
-        if(this.originalLocation == this.targetLocation) {
+        if(this.originalLocation === this.targetLocation) {
             if(this.card.getType() === 'dude' && this.targetLocation === 'play area') {
                 this.game.resolveGameAction(GameActions.moveDude({ 
                     card: this.card, 

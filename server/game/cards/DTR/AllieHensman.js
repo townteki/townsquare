@@ -1,5 +1,4 @@
 const DudeCard = require('../../dudecard.js');
-const Costs = require('../../costs.js');
 
 class AllieHensman extends DudeCard {
     setupCardAbilities(ability) {

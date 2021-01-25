@@ -30,7 +30,7 @@ class EffectEngine {
         this.effects.push(effect);
         this.effects = sortBy(this.effects, effect => effect.order);
         effect.addTargets(this.getTargets());
-        if(effect.duration === 'custom') {
+        if(effect.duration === 'custom' || effect.until) {
             this.registerCustomDurationEvents(effect);
         }
     }
