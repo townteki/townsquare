@@ -107,7 +107,8 @@ class CardAction extends BaseAbility {
         if (this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
         }
-        if (this.game.isShootoutPlayWindow() && this.card.getType() !== 'action') {
+        if (this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') &&
+            this.card.getType() !== 'action' && this.card.getType() !== 'deed') {
             return this.game.shootout.isInShootout(this.card);
         }
         return true;

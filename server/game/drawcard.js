@@ -265,8 +265,20 @@ class DrawCard extends BaseCard {
         super.leavesPlay();
     }
 
+    canBeAced() {
+        return this.allowGameAction('ace');
+    }
+
     canBeDiscarded() {
         return this.allowGameAction('discard');
+    }
+
+    canBeBooted() {
+        return this.allowGameAction('boot');
+    }
+
+    canBeUnbooted() {
+        return this.allowGameAction('unboot');
     }
 
     getSummary(activePlayer) {

@@ -729,7 +729,7 @@ class BaseCard {
     getLocationCard() {
         let location = this.getLocation();
         if (!location) {
-            return;
+            return {};
         }
         return location.getLocationCard(this.game);
     }

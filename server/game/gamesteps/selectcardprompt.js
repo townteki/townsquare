@@ -133,7 +133,7 @@ class SelectCardPrompt extends UiPrompt {
                 { text: this.properties.doneButtonText || 'Done', arg: 'done' }
             ]),
             controls: this.properties.additionalControls,
-            promptTitle: this.properties.source ? this.properties.source.name : undefined
+            promptTitle: this.properties.source ? this.properties.source.title : undefined
         };
     }
 

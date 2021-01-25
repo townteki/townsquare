@@ -39,6 +39,7 @@ const TimeLimit = require('./timeLimit.js');
 const Location = require('./gamelocation.js');
 const Shootout = require('./gamesteps/shootout.js');
 const PlayerOrderPrompt = require('./gamesteps/playerorderprompt.js');
+const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
 
 class Game extends EventEmitter {
     constructor(details, options = {}) {
@@ -484,6 +485,9 @@ class Game extends EventEmitter {
             if(player1.getHandRank().tiebreaker[i] > player2.getHandRank().tiebreaker[i]) {
                 return isForLowball ? { winner: player2, loser: player1, decision: 'tiebreaker' } : { winner: player1, loser: player2, decision: 'tiebreaker' }
             }
+            if(player1.getHandRank().tiebreaker[i] < player2.getHandRank().tiebreaker[i]) {
+                return isForLowball ? { winner: player1, loser: player2, decision: 'tiebreaker' } : { winner: player2, loser: player1, decision: 'tiebreaker' }
+            }
         }
         return { decision: 'exact tie' };
     }
@@ -630,6 +634,10 @@ class Game extends EventEmitter {
 
     promptForSelect(player, properties) {
         this.queueStep(new SelectCardPrompt(this, player, properties));
+    }
+
+    promptForYesNo(player, properties) {
+        this.queueStep(new ChooseYesNoPrompt(this, player, properties));
     }
 
     promptForDeckSearch(player, properties) {
@@ -977,7 +985,7 @@ class Game extends EventEmitter {
     revealHands() {
         this.getPlayers().forEach(player => player.revealDrawHand());
         this.raiseEvent('onDrawHandsRevealed', { shootout: this.shootout });
-    }    
+    }
 
     killCharacters(cards, options = {}) {
         options = Object.assign({ allowSave: true, isBurn: false }, options);
