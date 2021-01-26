@@ -13,18 +13,22 @@ class Deck {
     }
 
     createOutfitCard(player) {
+
+        let cardData = { type: 'outfit' };
         if(this.data.outfit) {
-            return new OutfitCard(player, {
+            cardData = {
                 code: this.data.outfit.code,
                 type_code: 'outfit',
                 gang_code: this.data.outfit.gang_code,
                 title: this.data.outfit.title,
                 wealth: this.data.outfit.wealth,
                 production: this.data.outfit.production
-            });
+            };
         }
 
-        return new OutfitCard(player, { type: 'outfit' });
+        let cardClass = cards[cardData.code] || OutfitCard;
+
+        return new cardClass(player, cardData);
     }
 
     createLegendCard(player) {
@@ -105,7 +109,6 @@ class Deck {
             cardClass = ActionCard;
         }
 
-        // TODO M2 add other cards that needs specific classes
         cardClass = cards[cardData.code] || cardClass;
 
         return new cardClass(player, cardData);
