@@ -140,6 +140,7 @@ class ChatCommands {
             activePromptTitle: 'Select a card to reset ability for',
             waitingPromptTitle: 'Waiting for opponent to reset ability',
             cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action', 'outfit'],
             onSelect: (p, card) => {
                 card.resetAbilities();
                 this.game.addAlert('danger', '{0} uses the /reset-ability command to reset abilities for card {1}', p, card);

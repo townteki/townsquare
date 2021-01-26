@@ -34,6 +34,7 @@ class SundownPhase extends Phase {
         if(potentialWinner.length === 1) {
             this.game.recordWinner(potentialWinner[0], 'Control points greater than influence');
         }
+        this.game.raiseEvent('onSundownAfterVictoryCheck');
         
     }
                  
