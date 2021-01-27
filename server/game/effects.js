@@ -256,10 +256,28 @@ const Effects = {
             }
         };
     },
-    modifyGold: dynamicCardModifier('goldModifier'),
-    modifyInitiative: dynamicCardModifier('initiativeModifier'),
-    modifyReserve: dynamicCardModifier('reserveModifier'),
-    modifyClaim: dynamicCardModifier('claimModifier'),
+    modifyProduction: function(value) {
+        return {
+            gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
+            apply: function(card) {
+                card.modifyProduction(value, true);
+            },
+            unapply: function(card) {
+                card.modifyProduction(-value, false);
+            }
+        };
+    },
+    modifyUpkeep: function(value) {
+        return {
+            gameAction: value < 0 ? 'decreaseUpkeep' : 'increaseUpkeep',
+            apply: function(card) {
+                card.modifyUpkeep(value, true);
+            },
+            unapply: function(card) {
+                card.modifyUpkeep(-value, false);
+            }
+        };
+    },
     setClaim: function(value) {
         return {
             apply: function(card) {

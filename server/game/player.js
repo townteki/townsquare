@@ -664,6 +664,7 @@ class Player extends Spectator {
             return false;
         }
 
+        // TODO M2 check if can be attached by discarding som other attachment (e.g. Weapon)
         if (card.location !== 'play area' || card === attachment || !attachment.canAttach(this, card)) {
             return false;
         }
@@ -675,13 +676,17 @@ class Player extends Spectator {
         return true;
     }
 
-    attach(controller, attachment, card, playingType, facedown = false) {
+    attach(attachment, card, playingType, facedown = false) {
         if(!card || !attachment || !this.canAttach(attachment, card)) {
             return false;
         }
 
         let originalLocation = attachment.location;
         let originalParent = attachment.parent;
+
+        if (attachment.controller !== card.controller) {
+            this.game.takeControl(card.controller, attachment);
+        }
 
         attachment.owner.removeCardFromPile(attachment);
 
@@ -807,7 +812,7 @@ class Player extends Spectator {
         let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && 
             (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.getInfluence() > 0)));
         let upkeep = upkeepCards.reduce((memo, card) => {
-            let additionalUpkeep = card.gang_code !== this.outfit.gang_code ? card.getInfluence() : 0;
+            let additionalUpkeep = card.gang_code !== this.outfit.gang_code && card.gang_code != 'neutral' ? card.getInfluence() : 0;
             return memo + card.upkeep + additionalUpkeep;
         }, 0);
 
@@ -820,6 +825,10 @@ class Player extends Spectator {
         }
         this.upkeepPaid = true;
         this.ghostrock -= upkeep;
+    }
+
+    spendGhostRock(amount) {
+        this.game.spendGhostRock({ amount: amount, player: this });
     }
 
     resetForRound() {
@@ -955,6 +964,21 @@ class Player extends Spectator {
         });
 
         return event;
+    }
+
+    pull() {
+        if (this.drawDeck.length === 0) {
+            this.shuffleDiscardToDrawDeck();
+        }
+        let pulledCard = this.drawDeck[0];
+        this.moveCard(pulledCard, 'discard pile', { isPull: true });
+        this.game.raiseEvent('onCardPulled', { card: pulledCard });
+        return pulledCard;
+    }
+
+    pullForSkill(difficulty, skill) {
+        let pulledCard = this.pull();
+        return pulledCard.value + skill - difficulty;
     }
 
     returnCardToHand(card, allowSave = true) {
@@ -1179,7 +1203,7 @@ class Player extends Spectator {
     removeCardFromPile(card) {
         if(card.controller !== this) {
             card.controller.removeCardFromPile(card);
-            card.takeControl(card.owner);
+            this.game.takeControl(card.owner, card);
             return;
         }
 

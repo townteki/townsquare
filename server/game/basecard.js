@@ -15,6 +15,7 @@ const KeywordsProperty = require('./PropertyTypes/KeywordsProperty');
 const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty');
 const {Tokens} = require('./Constants');
 const JobAction = require('./jobaction');
+const NullCard = require('./nullcard');
 
 const LocationsWithEventHandling = ['play area', 'outfit', 'legend'];
 
@@ -278,7 +279,22 @@ class BaseCard {
     hasKeyword(keyword) {
         var keywordCount = this.keywords[keyword.toLowerCase()] || 0;
         return keywordCount > 0;
-    }   
+    }
+
+    hasOneOfKeywords(keywords) {
+        if (!Array.isArray(keywords)) {
+            return this.hasKeyword(keywords);
+        }
+        return keywords.find(keyword => this.keywords[keyword.toLowerCase()]);
+    }
+
+    hasAllOfKeywords(keywords) {
+        if (!Array.isArray(keywords)) {
+            return this.hasKeyword(keywords);
+        }
+        let foundKeywords = keywords.filter(keyword => this.keywords[keyword.toLowerCase()]);
+        return foundKeywords.length === keywords.length;
+    }
     
     hasPrintedKeyword(keyword) {
         return this.printedKeywords.includes(keyword.toLowerCase());
@@ -635,10 +651,10 @@ class BaseCard {
         if (this.getType() === 'dude') {
             return this.gameLoc;
         }
-        if (this.getType() === 'deed') {
+        if (this.getType() === 'deed' || this.getType() === 'outfit') {
             return this.uuid;
         }
-        if (this.getType() === 'goods' || this.getType() === 'spell') {
+        if (this.getType() === 'goods' || this.getType() === 'spell' || this.getType() === 'action') {
             return this.parent ? this.parent.gamelocation : '';
         }
 
@@ -655,6 +671,26 @@ class BaseCard {
 
     modifyGhostRock(amount) {
         this.modifyToken(Tokens.ghostrock, amount);
+    }
+
+    modifyProduction(amount) {
+        this.production += amount;
+
+        let params = {
+            card: this,
+            amount: amount
+        };
+        this.game.raiseEvent('onCardProductionChanged', params);
+    }
+
+    modifyUpkeep(amount) {
+        this.upkeep += amount;
+
+        let params = {
+            card: this,
+            amount: amount
+        };
+        this.game.raiseEvent('onCardUpkeepChanged', params);
     }
 
     addToken(type, number) {
@@ -718,6 +754,12 @@ class BaseCard {
         return this.game.findLocation(this.gamelocation);
     }
 
+    isInSameLocation(card) {
+        let thisLocation = this.getLocation();
+        let cardLocation = card.getLocation();
+        return thisLocation && cardLocation && thisLocation.uuid === cardLocation.uuid
+    }
+
     isInTownSquare() {
         let location = this.getLocation();
         return location && location.isTownSquare();
@@ -726,7 +768,7 @@ class BaseCard {
     getLocationCard() {
         let location = this.getLocation();
         if (!location) {
-            return {};
+            return new NullCard();
         }
         return location.getLocationCard(this.game);
     }

@@ -1002,7 +1002,7 @@ class Game extends EventEmitter {
         });
     }
 
-    takeControl(player, card, source = null) {
+    takeControl(player, card) {
         var oldController = card.controller;
         var newController = player;
 
@@ -1010,31 +1010,25 @@ class Game extends EventEmitter {
             return;
         }
 
-        if(card.location !== 'play area' && !newController.canPutIntoPlay(card)) {
-            return;
-        }
-
-        if(card.location === 'play area' && !newController.canControl(card)) {
+        if(!newController.canPutIntoPlay(card)) {
             return;
         }
 
         this.applyGameAction('takeControl', card, card => {
-            if(card.parent) {
-                card.takeControl(newController, source);
-            } else {
-                oldController.removeCardFromPile(card);
-                card.takeControl(newController, source);
-                newController.cardsInPlay.push(card);
-            }
+            oldController.removeCardFromPile(card);
+            oldController.allCards = oldController.allCards.filter(c => c !== card);
+            newController.cardsInPlay.push(card);
+            newController.allCards.push(card);
+            card.controller = newController;
 
             if(card.location !== 'play area') {
                 let originalLocation = card.location;
                 card.moveTo('play area');
                 card.applyPersistentEffects();
-                this.raiseEvent('onCardEntersPlay', { card: card, playingType: 'play', originalLocation: originalLocation });
+                this.raiseMergedEvent('onCardEntersPlay', { card: card, playingType: 'play', originalLocation: originalLocation });
             }
 
-            this.handleControlChange(card);
+            this.raiseEvent('onCardTakenControl', { card: card });
         });
     }
 
