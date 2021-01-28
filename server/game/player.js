@@ -669,7 +669,7 @@ class Player extends Spectator {
             return false;
         }
 
-        if (playingType === 'shoppin' && (card.getLocation().determineController(this.game) !== this) || card.booted) {
+        if (playingType === 'shoppin' && (card.getLocation().determineController(this.game) !== this || card.booted)) {
             return false;
         }
 
