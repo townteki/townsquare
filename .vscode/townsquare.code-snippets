@@ -18,7 +18,7 @@
 
 	"Dude Template": {
 		"scope": "javascript,typescript",
-		"prefix": "dudetemp",
+		"prefix": "dudecard",
 		"body": [
 			"const DudeCard = require('../../dudecard.js');",
 			"",
@@ -37,27 +37,57 @@
 
 	"Deed Template": {
 		"scope": "javascript,typescript",
-		"prefix": "deedtemp",
+		"prefix": "deedcard",
 		"body": [
-
+			"const DeedCard = require('../../deedcard.js');",
+			"",
+			"class ${1:DeedName} extends DeedCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;"
 		],
 		"description": "Template for new Deed card"
 	},
 
 	"Goods Template": {
 		"scope": "javascript,typescript",
-		"prefix": "goodstemp",
+		"prefix": "goodscard",
 		"body": [
-
+			"const GoodsCard = require('../../goodscard.js');",
+			"",
+			"class ${1:GoodsName} extends GoodsCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,whileattached,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;"
 		],
 		"description": "Template for new Goods card"
 	},
 
 	"Action Template": {
 		"scope": "javascript,typescript",
-		"prefix": "actiontemp",
+		"prefix": "actioncard",
 		"body": [
-
+			"const ActionCard = require('../../actioncard.js');",
+			"",
+			"class ${1:ActionName} extends ActionCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;"
 		],
 		"description": "Template for new Action card"
 	},
