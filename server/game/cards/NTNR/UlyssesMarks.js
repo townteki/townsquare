@@ -16,7 +16,7 @@ class UlyssesMarks extends DudeCard {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to kick out of the saloon',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: card => card != this && card.gamelocation === this.gamelocation,
+                        cardCondition: card => card != this && this.isInSameLocation(card),
                         cardType: 'dude',
                         autoSelect: true,
                         onSelect: (player, card) => {
