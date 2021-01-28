@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const OutfitCard = require('../../outfitcard.js');
 
 class TheSloaneGang extends OutfitCard {
@@ -12,6 +13,7 @@ class TheSloaneGang extends OutfitCard {
                 cardType: 'dude'
             },
             handler: context => {
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }));
                 if (!this.dudesOnAMission) {
                     this.dudesOnAMission = [context.target];
                     this.game.once('onSundownAfterVictoryCheck', () => {

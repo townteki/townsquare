@@ -1,5 +1,6 @@
 const _ = require('underscore');
 const { TownSquareUUID } = require('./Constants');
+const NullCard = require('./nullcard');
 
 /**
  * Base class representing a location on the game board.
@@ -178,12 +179,11 @@ class TownSquare extends GameLocation {
     }
 
     getLocationCard() {
-        return { 
+        return Object.assign(new NullCard(), {
             title: 'Town Square', 
             uuid: this.uuid,
-            getType: () => 'townsquare',
-            hasKeyword: () => false
-        };
+            getType: () => 'townsquare'
+        });
     }
 }
 

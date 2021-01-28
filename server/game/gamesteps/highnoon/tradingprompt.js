@@ -45,7 +45,7 @@ class TradingPrompt extends UiPrompt {
 
     attachAttachments(attachments, fromDude, toDude, actionWord) {
         attachments.forEach(fromAttachment => {
-            if (this.player.attach(this.player, fromAttachment, toDude, 'trading')) {
+            if (this.player.attach(fromAttachment, toDude, 'trading')) {
                 this.game.addMessage('{0} {1} {2} from {3} to {4}', this.player, actionWord, fromAttachment, fromDude, toDude);
             }
         });

@@ -1,0 +1,259 @@
+{
+	// Place your townsquare workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+	"Dude Template": {
+		"scope": "javascript,typescript",
+		"prefix": "dudecard",
+		"body": [
+			"const DudeCard = require('../../dudecard.js');",
+			"",
+			"class ${1:DudeName} extends DudeCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;"
+		],
+		"description": "Template for new Dude card"
+	},
+
+	"Deed Template": {
+		"scope": "javascript,typescript",
+		"prefix": "deedcard",
+		"body": [
+			"const DeedCard = require('../../deedcard.js');",
+			"",
+			"class ${1:DeedName} extends DeedCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;"
+		],
+		"description": "Template for new Deed card"
+	},
+
+	"Goods Template": {
+		"scope": "javascript,typescript",
+		"prefix": "goodscard",
+		"body": [
+			"const GoodsCard = require('../../goodscard.js');",
+			"",
+			"class ${1:GoodsName} extends GoodsCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,whileattached,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;"
+		],
+		"description": "Template for new Goods card"
+	},
+
+	"Action Template": {
+		"scope": "javascript,typescript",
+		"prefix": "actioncard",
+		"body": [
+			"const ActionCard = require('../../actioncard.js');",
+			"",
+			"class ${1:ActionName} extends ActionCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;"
+		],
+		"description": "Template for new Action card"
+	},
+
+	"Prompt For Select": {
+		"scope": "javascript,typescript",
+		"prefix": "promptselect",
+		"body": [
+			"this.game.promptForSelect(${1:player}, {",
+			"\tactivePromptTitle: 'Select a ${2:card}',",
+			"\twaitingPromptTitle: 'Waiting for opponent to select ${3:card}',",
+			"\tcardCondition: card => ${4:true},",
+			"\tcardType: '${5:dude}',",
+			"\tonSelect: (player, card) => {",
+			"\t\t$6",
+			"\t\treturn true;",
+			"\t}",
+			"});"
+		],
+		"description": "Prompt for select"
+	},
+
+	"Prompt With Menu": {
+		"scope": "javascript,typescript",
+		"prefix": "promptmenu",
+		"body": [
+			"this.game.promptWithMenu(${1:player}, ${2:this}, {",
+			"\tmenuTitle: '$3',",
+			"\tbuttons: [",
+			"\t\t{ text: '$4', method: '$5', arg: ${6:arg} }",
+			"\t]",
+			"});"
+		],
+		"description": "Prompt with menu"
+	},
+
+	"Persistent Effect": {
+		"scope": "javascript,typescript",
+		"prefix": "persistenteffect",
+		"body": [
+			"this.persistentEffect({",
+			"\tcondition: () => ${1:true},",
+			"\tmatch: ${2:this},",
+			"\teffect: [",
+			"\t\tability.effects.${3:modifyBullets()}",
+			"\t]",
+			"});"
+		],
+		"description": "Persistent Effect of a Card"
+	},
+
+	"Card Action": {
+		"scope": "javascript,typescript",
+		"prefix": "cardaction",
+		"body": [
+			"this.action({",
+			"\ttitle: '${1:Title}',",
+			"\tplayType: ['${2|noon,shootout,shootout:join,resolution,cheatin resolution|}'],",     
+			"\tcost: ability.costs.${3:bootSelf()},",  
+			"\ttarget: ${4:targetselect}",
+			"\thandler: context => {",
+			"\t\t$20",
+			"\t}",
+			"});"
+		],
+		"description": "Card action/ability"
+	},
+
+	"Card Reaction": {
+		"scope": "javascript,typescript",
+		"prefix": "cardreaction",
+		"body": [
+			"this.reaction({",
+			"\twhen: {",
+			"\t\t${1:onEvent}: event => ${2:true}",
+			"\t},",
+			"\tcost: [ ability.costs.${3:bootSelf()} ],",
+			"\ttarget: ${4:targetselect}",
+			"\thandler: context => {",
+			"\t\t$20",
+			"\t}",
+			"});"
+		],
+		"description": "Card reaction"
+	},
+
+	"Card Job": {
+		"scope": "javascript,typescript",
+		"prefix": "cardjob",
+		"body": [
+			"this.job({",
+			"\ttitle: '${1:Title}',",
+			"\tplayType: '${2:noon}',",     
+			"\tcost: ability.costs.${3:bootSelf()},",  
+			"\tbootLeader: ${4:true},",  
+			"\ttarget: ${5:targetselect}",
+			"\thandler: context => {",
+			"\t\t$20",
+			"\t},",
+			"\tonSuccess: (job) => {",
+			"\t\t$21",
+			"\t},",
+			"\tonFail: (job) => {",
+			"\t\t$22",
+            "\t}",
+			"});"
+		],
+		"description": "Card job"
+	},
+
+	"Trait Reaction": {
+		"scope": "javascript,typescript",
+		"prefix": "traitreaction",
+		"body": [
+			"this.traitReaction({",
+			"\twhen: {",
+			"\t\t${1:onEvent}: event => ${2:true}",
+			"\t},",
+			"\thandler: context => {",
+			"\t\t$3",
+			"\t}",
+			"});"
+		],
+		"description": "Reaction in card trait"
+	},
+
+	"While Attached": {
+		"scope": "javascript,typescript",
+		"prefix": "whileattached",
+		"body": [
+			"this.whileAttached({",
+			"\tcondition: () => ${1:true},",
+			"\teffect: [",
+			"\t\tability.effects.${2:modifyBullets()}",
+			"\t]",
+			"});"
+		],
+		"description": "Attachment effect while attached"
+	},
+
+	"Ability Effect": {
+		"scope": "javascript,typescript",
+		"prefix": "abilityeffect",
+		"body": [
+			"this.applyAbilityEffect(${1:context.ability}, ability => ({",
+			"\tmatch: ${2:this},",
+			"\teffect: [",
+			"\t\tability.effects.${3:modifyBullets()}",
+			"\t]",
+			"}));"
+		],
+		"description": "Apply ability effect"		
+	},
+
+	"Target Select": {
+		"scope": "javascript,typescript",
+		"prefix": "targetselect",
+		"body": [
+			"{",
+			"\tactivePromptTitle: '${8:Prompt}',",
+			"\tchoosingPlayer: ${9|'current','each','eachOpponent','thisIfLegal',(player)=>true|},",
+            "\tcardCondition: { location: '${10:play area}', controller: '${11|opponent,current,each|}', condition: card => ${12:true} },",
+			"\tcardType: ['${13|location,dude,deed,goods,spell,action,outfit|}']",
+			"},"
+		],
+		"description": "Selecting target for ability"
+	},
+
+}

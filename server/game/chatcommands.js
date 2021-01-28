@@ -421,7 +421,7 @@ class ChatCommands {
 
         this.game.allCards.push(preparedCard);
 
-        this.game.addAlert('danger', '{0} uses the /add-card command to add {1} to their deck', player, card);
+        this.game.addAlert('danger', '{0} uses the /add-card command to add {1} to their deck', player, preparedCard);
 
         return true;
     }
