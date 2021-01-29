@@ -357,10 +357,6 @@ class DudeCard extends DrawCard {
         }
     }
 
-    isParticipating() {
-        return this.shootoutStatus != ShootoutStatuses.None;
-    }
-
     getSummary(activePlayer) {
         let drawCardSummary = super.getSummary(activePlayer);
 

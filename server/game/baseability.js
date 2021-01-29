@@ -35,6 +35,14 @@ class BaseAbility {
         this.cannotBeCanceled = !!properties.cannotBeCanceled;
         this.abilitySourceType = properties.abilitySourceType || 'card';
         this.gameAction = this.buildGameAction(properties);
+        this.resetOptions();
+    }
+
+    resetOptions() {
+        this.options = {
+            skipCost: () => false,
+            callback: () => true
+        }
     }
 
     buildCost(cost) {
@@ -102,7 +110,12 @@ class BaseAbility {
      * @returns {Boolean}
      */
     canPayCosts(context) {
-        return this.executeWithTemporaryContext(context, 'cost', () => this.cost.every(cost => cost.canPay(context)));
+        return this.executeWithTemporaryContext(context, 'cost', () => this.cost.every(cost => {
+            if (this.options.skipCost && this.options.skipCost(cost)) {
+                return true;
+            }
+            return cost.canPay(context);
+        }));
     }
 
     /**
@@ -141,6 +154,9 @@ class BaseAbility {
      */
     resolveCosts(context) {
         return this.cost.map(cost => {
+            if (this.options.skipCost && this.options.skipCost(cost)) {
+                return { resolved: true, value: true };
+            }
             if(cost.resolve) {
                 return cost.resolve(context);
             }
@@ -154,7 +170,9 @@ class BaseAbility {
      */
     payCosts(context) {
         for(let cost of this.cost) {
-            cost.pay(context);
+            if (!this.options.skipCost || !this.options.skipCost(cost)) {
+                cost.pay(context);
+            }
         }
     }
 
@@ -248,7 +266,12 @@ class BaseAbility {
      * does nothing.
      */
     executeHandler(context) {
-        context.game.resolveGameAction(this.gameAction, context);
+        context.game.resolveGameAction(this.gameAction, context).thenExecute(() => {
+            if (this.options.callback) {
+                this.options.callback(this);
+            }
+            this.resetOptions();
+        });
     }
 
     isAction() {

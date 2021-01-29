@@ -1,7 +1,6 @@
-const DrawCard = require('../../drawcard.js');
-const GameActions = require('../../GameActions/index.js');
+const ActionCard = require('../../actioncard.js');
 
-class Kidnappin extends DrawCard {
+class Kidnappin extends ActionCard {
     setupCardAbilities() {
         this.job({
             title: 'Kidnappin\'',

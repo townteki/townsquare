@@ -72,7 +72,7 @@ class AbilityResolver extends BaseStep {
     }
 
     markActionAsTaken() {
-        if(this.cancelled) {
+        if(this.cancelled || this.ability.options.doNotMarkActionAsTaken) {
             return;
         }
         if(this.ability.isAction()) {

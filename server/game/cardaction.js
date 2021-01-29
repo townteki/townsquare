@@ -150,7 +150,7 @@ class CardAction extends BaseAbility {
             return false;
         }
 
-        if(this.usage.isUsed()) {
+        if(!this.options.allowUsed && this.usage.isUsed()) {
             return false;
         }
 
@@ -182,8 +182,8 @@ class CardAction extends BaseAbility {
     }
 
     // Main execute function that excutes the ability. Once the targets are selected, the executeHandler is called.
-    execute(player, arg) {
-        var context = this.createContext(player, arg);
+    execute(player) {
+        var context = this.createContext(player);
 
         if(!this.meetsRequirements(context)) {
             return false;
@@ -203,7 +203,13 @@ class CardAction extends BaseAbility {
 
     getMenuItem(arg, player) {
         let context = this.createContext(player);
-        return { text: this.title, method: 'doAction', arg: arg, anyPlayer: !!this.anyPlayer, disabled: !this.meetsRequirements(context) };
+        return { 
+            text: this.title, 
+            method: 'doAction', 
+            arg: arg, 
+            anyPlayer: !!this.anyPlayer, 
+            disabled: !this.meetsRequirements(context) 
+        };
     }
 
     isAction() {

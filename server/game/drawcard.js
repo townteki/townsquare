@@ -94,7 +94,7 @@ class DrawCard extends BaseCard {
             menu = [];
         }
         let discardItem = { method: 'discard', text: 'Discard' };
-        let playItem = { method: 'playCard', text: 'Play' };
+        let playItem = { method: 'playCard', text: 'Shoppin\' play' };
 
         switch (this.location) {
             case 'draw hand':
