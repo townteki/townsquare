@@ -115,10 +115,13 @@
 		"prefix": "promptmenu",
 		"body": [
 			"this.game.promptWithMenu(${1:player}, ${2:this}, {",
-			"\tmenuTitle: '$3',",
-			"\tbuttons: [",
-			"\t\t{ text: '$4', method: '$5', arg: ${6:arg} }",
-			"\t]",
+			"\tactivePrompt: {",
+			"\t\tmenuTitle: '$3',",
+			"\t\tbuttons: [",
+			"\t\t\t{ text: '$4', method: '$5', arg: ${6:arg} }",
+			"\t\t]",
+			"\t},",
+			"\tsource: ${7:this}",
 			"});"
 		],
 		"description": "Prompt with menu"

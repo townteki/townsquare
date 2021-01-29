@@ -1,6 +1,6 @@
-const DrawCard = require('../../drawcard.js');
+const ActionCard = require('../../actioncard.js');
 
-class SunInYerEyes extends DrawCard {
+class SunInYerEyes extends ActionCard {
     setupCardAbilities() {
         this.action({
             title: 'Sun in Yer Eyes',

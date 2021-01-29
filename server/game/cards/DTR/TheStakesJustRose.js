@@ -1,7 +1,7 @@
-const DrawCard = require('../../drawcard.js');
+const ActionCard = require('../../actioncard.js');
 const GameActions = require('../../GameActions/index.js');
 
-class TheStakesJustRose extends DrawCard {
+class TheStakesJustRose extends ActionCard {
     setupCardAbilities() {
         this.action({
             title: 'The Stakes Just Rose',

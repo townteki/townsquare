@@ -87,7 +87,11 @@ class ShootoutPosse {
 
     actOnPosse(action, exception = () => false) {
         this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(dude => !exception(dude)).forEach(dude => action(dude));
-    }    
+    }
+    
+    getDudes(condition = () => true) {
+        return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(card => condition(card));
+    }
 }
 
 module.exports = ShootoutPosse;

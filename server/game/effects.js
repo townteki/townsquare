@@ -256,6 +256,17 @@ const Effects = {
             }
         };
     },
+    modifyValue: function(value) {
+        return {
+            gameAction: value < 0 ? 'decreaseValue' : 'increaseValue',
+            apply: function(card) {
+                card.modifyValue(value, true);
+            },
+            unapply: function(card) {
+                card.modifyValue(-value, false);
+            }
+        };
+    },
     modifyProduction: function(value) {
         return {
             gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
@@ -298,33 +309,33 @@ const Effects = {
             }
         };
     },
-    dynamicStrength: function(calculate, gameAction = 'increaseStrength') {
+    dynamicBullets: function(calculate, gameAction = 'increaseBullets') {
         return {
             gameAction: gameAction,
             apply: function(card, context) {
-                context.dynamicStrength = context.dynamicStrength || {};
-                context.dynamicStrength[card.uuid] = calculate(card, context) || 0;
-                let value = context.dynamicStrength[card.uuid];
-                card.modifyStrength(value, true);
+                context.dynamicBullets = context.dynamicBullets || {};
+                context.dynamicBullets[card.uuid] = calculate(card, context) || 0;
+                let value = context.dynamicBullets[card.uuid];
+                card.modifyBullets(value, true);
             },
             reapply: function(card, context) {
-                let currentStrength = context.dynamicStrength[card.uuid];
-                let newStrength = calculate(card, context) || 0;
-                context.dynamicStrength[card.uuid] = newStrength;
-                let value = newStrength - currentStrength;
-                card.modifyStrength(value, true);
+                let currentBullets = context.dynamicBullets[card.uuid];
+                let newBullets = calculate(card, context) || 0;
+                context.dynamicBullets[card.uuid] = newStrength;
+                let value = newBullets - currentBullets;
+                card.modifyBullets(value, true);
             },
             unapply: function(card, context) {
-                let value = context.dynamicStrength[card.uuid];
-                card.modifyStrength(-value, false);
-                delete context.dynamicStrength[card.uuid];
+                let value = context.dynamicBullets[card.uuid];
+                card.modifyBullets(-value, false);
+                delete context.dynamicBullets[card.uuid];
             },
             isStateDependent: true
         };
     },
     dynamicDecreaseStrength: function(calculate) {
         let negatedCalculate = (card, context) => -(calculate(card, context) || 0);
-        return Effects.dynamicStrength(negatedCalculate, 'decreaseStrength');
+        return Effects.dynamicStrength(negatedCalculate, 'decreaseBullets');
     },
     doesNotContributeStrength: challengeOptionEffect('doesNotContributeStrength'),
     doesNotReturnUnspentGold: function() {

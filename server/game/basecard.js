@@ -114,24 +114,13 @@ class BaseCard {
     setupCardAbilities() {
     }
 
-    addActionToMenu(action, properties) {
-        if(!action.isClickToActivate() && action.allowMenu()) {
-            var index = this.abilities.actions.length;
-            this.menu.push(action.getMenuItem(index, properties.player));
-        }
-    }
-
     action(properties) {
         var action = new CardAction(this.game, this, properties);
-        this.addActionToMenu(action, properties);
-
         this.abilities.actions.push(action);
     }
 
     job(properties) {
         var job = new JobAction(this.game, this, properties);
-        this.addActionToMenu(job, properties);
-
         this.abilities.actions.push(job);
     }
 
@@ -270,10 +259,11 @@ class BaseCard {
         var action = this.abilities.actions[arg];
 
         if(!action) {
-            return;
+            return true;
         }
 
-        action.execute(player, arg);
+        action.execute(player);
+        return true;
     }
 
     hasKeyword(keyword) {
@@ -485,21 +475,65 @@ class BaseCard {
         }
 
         let menu = [];
-        let actionIndexPairs = this.abilities.actions.map((action, index) => [action, index]);
-        let menuActionPairs = actionIndexPairs.filter(pair => {
-            let action = pair[0];
-            return action.allowPlayer(player) && !action.isClickToActivate() && action.allowMenu();
-        });
-
-        if(menuActionPairs.length === 0) {
+        let menuActionItems = this.getActionMenuItems(player);
+        if (menuActionItems.filter(menuItem => 
+            menuItem.action.allowPlayer(player) && !menuItem.action.isClickToActivate() && menuItem.action.allowMenu()).length === 0) {
             return;
         }
 
         if (this.location === 'play area') {
             menu = [ { command: 'click', text: 'Boot / Unboot' } ];
         }
+        let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
+        if (menuCardActionItems.length > 0) {
+            menu = menu.concat({ 
+                text: 'Use ability', 
+                method: 'useAbility', 
+                disabled: menuCardActionItems.every(menuItem => menuItem.item.disabled) 
+            });
+        }
+        let menuOtherActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType !== 'card');
+        if (menuOtherActionItems.length > 0) {
+            menu = menu.concat(menuOtherActionItems.map(menuItem => menuItem.item));
+        }
+        return menu;
+    }
 
-        return menu.concat(menuActionPairs.map(([action, index]) => action.getMenuItem(index, player)));
+    getActionMenuItems(player, options) {
+        return this.abilities.actions.map((action, index) => { 
+            if (options) {
+                action.options = options;
+            }
+            return { 
+                action: action, 
+                item: action.getMenuItem(index, player)
+            } 
+        });
+    }
+
+    useAbility(player, options = {}) {
+        let menuActionItems = this.getActionMenuItems(player, options).filter(menuItem => menuItem.action.abilitySourceType === 'card');
+        if (menuActionItems.length === 0) {
+            return;
+        }
+        if (menuActionItems.length === 1) {
+            if (!menuActionItems[0].item.disabled) {
+                this.doAction(player, menuActionItems[0].item.arg);
+            }
+            return;
+        }
+        let buttons = menuActionItems.map(menuItem => menuItem.item).concat([{ text: 'Cancel', method: 'cancelAbilityMenu' }]);
+        this.game.promptWithMenu(player, this, {
+            activePrompt: {
+                menuTitle: 'Choose ability to execute',
+                buttons: buttons
+            },
+            source: this
+        });
+    }
+
+    cancelAbilityMenu() {
+        return true;
     }
 
     isCopyOf(card) {
@@ -530,6 +564,10 @@ class BaseCard {
 
     isParticipating() {
         return this.game.shootout && this.game.shootout.isInShootout(this);
+    }
+
+    isOpposing(card) {
+        return this.isParticipating() && this.controller !== card.controller;
     }
 
     isInLeaderPosse() {
@@ -671,6 +709,16 @@ class BaseCard {
 
     modifyGhostRock(amount) {
         this.modifyToken(Tokens.ghostrock, amount);
+    }
+
+    modifyValue(amount) {
+        this.value += amount;
+
+        let params = {
+            card: this,
+            amount: amount
+        };
+        this.game.raiseEvent('onCardValueChanged', params);
     }
 
     modifyProduction(amount) {
