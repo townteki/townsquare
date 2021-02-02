@@ -1,25 +1,15 @@
 const _ = require('underscore');
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
-const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty');
 const StandardPlayActions = require('./PlayActions/StandardActions');
 
-this.icons = {
-    bullets: 0,
-    influence: 0,
-    control: 0
-}
+const LocationsWithEventHandling = ['play area', 'legend'];
 
 class DrawCard extends BaseCard {
     constructor(owner, cardData) {
         super(owner, cardData);
 
         this.attachments = _([]);
-        this.icons = {
-            bullet: 0,
-            influence: 0,
-            control: 0
-        };
 
         this.booted = false;
         this.minCost = 0;
@@ -27,20 +17,23 @@ class DrawCard extends BaseCard {
 
         if(cardData.starting) {
             this.starting = true;
-        }
-
-        if(cardData.bullets) {
-            this.icons.bullets = cardData.bullets;
-        }  
-        if(cardData.influence) {
-            this.icons.influence = cardData.influence;
-        }  
-        if(cardData.control) {
-            this.icons.control = cardData.control;
-        }         
+        }       
         
         this.actionPlacementLocation = 'discard pile';
-        this.shootoutOptions = new ReferenceCountedSetProperty();
+    }
+
+    get gamelocation() {
+        let tempLocation = super.gamelocation;
+
+        if (this.getType() === 'goods' || this.getType() === 'spell' || this.getType() === 'action') {
+            return this.parent ? this.parent.gamelocation : '';
+        }
+
+        return tempLocation;
+    }
+
+    set gamelocation(gamelocation) {
+        super.gamelocation = gamelocation;
     }
 
     get control() {
@@ -66,24 +59,14 @@ class DrawCard extends BaseCard {
         this.game.raiseEvent('onCardControlChanged', params);
     }
 
-    createSnapshot(clone) {
+    createSnapshot(clone, cloneBaseAttributes = true) {
         if (!clone) {
             clone = new DrawCard(this.owner, this.cardData);
         }
-
+        clone = super.createSnapshot(clone, cloneBaseAttributes);
         clone.attachments = this.attachments.map(attachment => attachment.createSnapshot());
         clone.booted = this.booted;
-        clone.bullets = this.bullets;
-        clone.control = this.control;
-        clone.gamelocation = this.gamelocation;
-        clone.influence = this.influence;
-        clone.production = this.production;
-        clone.upkeep = this.upkeep;
-        clone.value = this.value;
-        clone.location = this.location;
-        clone.keywords = this.keywords;
         clone.parent = this.parent;
-        clone.tokens = Object.assign({}, this.tokens);
 
         return clone;
     }
@@ -139,23 +122,57 @@ class DrawCard extends BaseCard {
 
     getControl() {
         return this.control || 0;
-    }    
-
-    modifyControl(control) {
-        this.game.applyGameAction('gainControl', this, card => {
-            let oldControl = card.control;
-
-            card.control += control;
-
-            if(card.control < 0) {
-                card.control = 0;
-            }
-
-            this.game.raiseEvent('onCardControlChanged', { card: this, changedAmount: card.control - oldControl });
-
-            this.game.checkWinCondition(this.controller);
-        });
     }
+    
+    moveTo(targetLocation, parent) {
+        let originalLocation = this.location;
+        let originalParent = this.parent;
+
+        if(originalParent && originalParent !== parent) {
+            originalParent.removeAttachment(this);
+        }
+
+        if(originalLocation !== targetLocation) {
+            // Clear any tokens on the card unless it is transitioning position
+            // within the same area e.g. moving an attachment from one character
+            // to another, or a character transferring control between players.
+            this.clearTokens();
+        }
+
+        this.location = targetLocation;
+        this.parent = parent;
+
+        if(LocationsWithEventHandling.includes(targetLocation) && !LocationsWithEventHandling.includes(originalLocation)) {
+            this.events.register(this.eventsForRegistration);
+        } else if(LocationsWithEventHandling.includes(originalLocation) && !LocationsWithEventHandling.includes(targetLocation)) {
+            this.events.unregisterAll();
+        }
+
+        for(let action of this.abilities.actions) {
+            if(action.isEventListeningLocation(targetLocation) && !action.isEventListeningLocation(originalLocation)) {
+                action.registerEvents();
+            } else if(action.isEventListeningLocation(originalLocation) && !action.isEventListeningLocation(targetLocation)) {
+                action.unregisterEvents();
+            }
+        }
+        for(let reaction of this.abilities.reactions) {
+            if(reaction.isEventListeningLocation(targetLocation) && !reaction.isEventListeningLocation(originalLocation)) {
+                reaction.registerEvents();
+            } else if(reaction.isEventListeningLocation(originalLocation) && !reaction.isEventListeningLocation(targetLocation)) {
+                reaction.unregisterEvents();
+                this.game.clearAbilityResolution(reaction);
+            }
+        }
+
+        if(targetLocation !== 'play area') {
+            this.facedown = false;
+        }
+
+        if(originalLocation !== targetLocation || originalParent !== parent) {
+            this.game.raiseEvent('onCardMoved', { card: this, originalLocation: originalLocation, newLocation: targetLocation, parentChanged: originalParent !== parent });
+        }
+    }
+
 
     /**
      * Defines restrictions on what cards this attachment can be placed on.
@@ -167,6 +184,23 @@ class DrawCard extends BaseCard {
             }
 
             return CardMatcher.createAttachmentMatcher(restriction);
+        });
+    }
+
+    /**
+     * Applies an effect with the specified properties while the current card is
+     * attached to another card. By default the effect will target the parent
+     * card, but you can provide a match function to narrow down whether the
+     * effect is applied (for cases where the effect only applies to specific
+     * characters).
+     */
+    whileAttached(properties) {
+        this.persistentEffect({
+            condition: () => !!this.parent && (!properties.condition || properties.condition()),
+            match: (card, context) => card === this.parent && (!properties.match || properties.match(card, context)),
+            targetController: 'any',
+            effect: properties.effect,
+            recalculateWhen: properties.recalculateWhen
         });
     }
 
@@ -237,21 +271,6 @@ class DrawCard extends BaseCard {
         attachment.parent = undefined;
     }
 
-    addChildCard(card, location) {
-        this.childCards.push(card);
-        card.moveTo(location, this);
-    }
-
-    removeChildCard(card) {
-        if(!card) {
-            return;
-        }
-
-        this.attachments = this.attachments.filter(a => a !== card);
-        this.dupes = this.dupes.filter(a => a !== card);
-        this.childCards = this.childCards.filter(a => a !== card);
-    }
-
     getPlayActions() {
         return StandardPlayActions
             .concat(this.abilities.playActions)
@@ -261,7 +280,12 @@ class DrawCard extends BaseCard {
     leavesPlay() {
         this.booted = false;
         this.control = 0;
-
+        this.attachments.each(attachment => {
+            attachment.controller.moveCard(attachment, 'discard pile', { raiseEvents: false });
+        });
+        if (this.parent) {
+            this.parent.removeAttachment(this);
+        }
         super.leavesPlay();
     }
 

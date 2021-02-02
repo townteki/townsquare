@@ -19,7 +19,7 @@ class PhilipSwinford extends DudeCard {
                                 onSelect: (p, card) => {
                                     this.game.resolveGameAction(GameActions.discardCard({ card: card })).thenExecute(() => {
                                         this.game.resolveGameAction(GameActions.drawCards({ player: p, amount: 1 })).thenExecute(() => {
-                                            this.game.addMessage('{0} discards {1} to draw a card thanks to the {2}.', this.controller, card, this);
+                                            this.game.addMessage('{0} discards {1} to draw a card thanks to the {2}.', p, card, this);
                                         });
                                     });
                                     return true;

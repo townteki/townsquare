@@ -490,10 +490,13 @@ class Player extends Spectator {
             return false;
         }
 
+        let cardToUpgrade = this.findUpgrade(card);
+
         let context = new AbilityContext({
             game: this.game,
             player: this,
-            source: card
+            source: card,
+            cardToUpgrade: cardToUpgrade
         });
         var playActions = card.getPlayActions().filter(action => action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
 
@@ -526,6 +529,10 @@ class Player extends Spectator {
 
         if(!params.isEffectExpiration && !this.canPlay(card, params.playingType)) {
             return false;
+        }
+
+        if (params.context && params.context.cardToUpgrade) {
+            return true;
         }
 
         return this.canControl(card);
@@ -582,13 +589,31 @@ class Player extends Spectator {
                 this.game.queueStep(new AttachmentPrompt(this.game, this, card, updatedParams, ((card, params) => this.entersPlay(card, params))));
                 break;
             case 'dude':  
-                let target = updatedParams.playingType === 'shoppin' && updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
-                card.moveToLocation(target);
-                this.moveCard(card, 'play area');  
+                if (updatedParams.context && updatedParams.context.cardToUpgrade) {
+                    updatedParams.context.cardToUpgrade.upgrade(card);
+                } else {
+                    let target = updatedParams.playingType === 'shoppin' && updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
+                    card.moveToLocation(target);
+                    this.moveCard(card, 'play area');  
+                }
                 this.entersPlay(card, updatedParams);
+                if (updatedParams.playingType === 'shoppin') {
+                    if (updatedParams.context && updatedParams.context.cardToUpgrade) {
+                        this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
+                    } else {
+                        this.game.addMessage('{0} does Shoppin\' to hire {1}, costing {2} GR', this, card, updatedParams.context.costs.ghostrock);
+                    }
+                } else {
+                    this.game.addMessage('{0} brings into play dude {1}', this, card);
+                }
                 break;
             case 'deed':
                 this.addDeedToStreet(card, updatedParams.target);
+                if (updatedParams.playingType === 'shoppin') {
+                    this.game.addMessage('{0} does Shoppin\' to build {1} on his street, costing {2} GR', this, card, updatedParams.context.costs.ghostrock);
+                } else {
+                    this.game.addMessage('{0} brings into play deed {1}', this, card);
+                }
                 this.entersPlay(card, updatedParams);
                 break;
             default:
@@ -604,14 +629,37 @@ class Player extends Spectator {
         card.controller = this;
         card.entersPlay();
         card.applyPersistentEffects();
-        this.game.raiseEvent('onCardEntersPlay', { 
-            card: card, 
-            player: this,
-            originalLocation: params.originalLocation,
-            playingType: params.playingType,
-            target: params.target,
-            context: params.context
-        });     
+        if (!params.context || !params.context.cardToUpgrade) {
+            this.game.raiseEvent('onCardEntersPlay', { 
+                card: card, 
+                player: this,
+                originalLocation: params.originalLocation,
+                playingType: params.playingType,
+                target: params.target,
+                context: params.context
+            });     
+        }
+    }
+
+    findUpgrade(card) {
+        if (card.getType() !== 'dude') {
+            return false;
+        }
+        let cardTitle = card.title.trim();
+        let pattern = '(.+)[ ]?\\(Exp\\.[0-9]\\)?';
+        let match = cardTitle.match(pattern);
+        if (match) {
+            cardTitle = match[1].trim();
+        }
+
+        return this.cardsInPlay.find(cardInPlay => {
+            if (cardInPlay.title === cardTitle) {
+                let cardInPlayExp = cardInPlay.keywords.getExperienceLevel();
+                let cardToPlayExp = card.keywords.getExperienceLevel();
+                return Math.abs(cardInPlayExp - cardToPlayExp) === 1;
+            }
+            return false;
+        });
     }
 
     revealSetupCards() {
@@ -706,18 +754,20 @@ class Player extends Spectator {
             attachment.applyPersistentEffects();
         });
 
-        let event = new AtomicEvent();
-        if(card.location === 'hand') {
-            event.addChildEvent(new Event('onCardLeftHand', { player: this, card: card }));
+        if (playingType != 'upgrade') {
+            let event = new AtomicEvent();
+            if(card.location === 'hand') {
+                event.addChildEvent(new Event('onCardLeftHand', { player: this, card: card }));
+            }
+
+            event.addChildEvent(new Event('onCardAttached', { attachment: attachment, target: card }));
+
+            if(originalLocation !== 'play area') {
+                event.addChildEvent(new Event('onCardEntersPlay', { card: attachment, playingType: playingType, originalLocation: originalLocation }));
+            }
+
+            this.game.resolveEvent(event);
         }
-
-        event.addChildEvent(new Event('onCardAttached', { attachment: attachment, target: card }));
-
-        if(originalLocation !== 'play area') {
-            event.addChildEvent(new Event('onCardEntersPlay', { card: attachment, playingType: playingType, originalLocation: originalLocation }));
-        }
-
-        this.game.resolveEvent(event);
 
         return true;
     }
@@ -923,11 +973,11 @@ class Player extends Spectator {
         }
     }
 
-    aceCard(card, allowSave = true, options = {}) {
+    aceCard(card, allowSave = true, options) {
         this.aceCards([card], allowSave, ()=> true, options);
     }
 
-    aceCards(cards, allowSave = true, callback = () => true, options = {}) {
+    aceCards(cards, allowSave = true, callback = () => true, options) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.aceCard({
                 card,
@@ -1101,7 +1151,7 @@ class Player extends Spectator {
         this.removeCardFromPile(card);
         let targetPile = this.getSourceList(targetLocation);
 
-        options = Object.assign({ allowSave: false, bottom: false, isDupe: false }, options);
+        options = Object.assign({ allowSave: false, bottom: false, isDupe: false, raiseEvents: true }, options);
 
         if(!targetPile) {
             return;
@@ -1124,27 +1174,25 @@ class Player extends Spectator {
 
             if (targetLocation !== 'play area') {
 
-                this.game.raiseEvent('onCardLeftPlay', params, () => {
-                    card.attachments.each(attachment => {
-                        this.removeAttachment(attachment, false);
-                    });
-
+                let cardLeavePlay = () => {
                     card.leavesPlay();
-
-                    if (card.parent) {
-                        card.parent.removeAttachment(card);
-                    }
-
                     card.moveTo(targetLocation);
+                }
 
-                    if (callback) {
-                        callback();
-                    }
-                });
+                if (options.raiseEvents) {
+                    this.game.raiseEvent('onCardLeftPlay', params, () => {
+                        cardLeavePlay(card);
+                        if (callback) {
+                            callback(card);
+                        }
+                    });
+                } else {
+                    cardLeavePlay(card);
+                }
             }
         }
 
-        if(card.location === 'hand') {
+        if(card.location === 'hand' && options.raiseEvents) {
             this.game.raiseEvent('onCardLeftHand', { player: this, card: card });
         }
 
@@ -1158,19 +1206,19 @@ class Player extends Spectator {
             targetPile.push(card);
         }
 
-        if(targetLocation === 'hand') {
+        if(targetLocation === 'hand' && options.raiseEvents) {
             this.game.raiseEvent('onCardEntersHand', { player: this, card: card });
         }
 
-        if(targetLocation === 'draw hand') {
+        if(targetLocation === 'draw hand' && options.raiseEvents) {
             this.game.raiseEvent('onCardEntersDrawHand', { player: this, card: card });
         }
 
-        if(['dead pile', 'discard pile'].includes(targetLocation)) {
+        if(['dead pile', 'discard pile'].includes(targetLocation) && options.raiseEvents) {
             this.game.raiseEvent('onCardPlaced', { card: card, location: targetLocation, player: this });
         }
         if(callback) {
-            callback();
+            callback(card);
         }
     }
 

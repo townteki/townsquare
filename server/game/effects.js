@@ -1311,7 +1311,6 @@ const Effects = {
             apply: function(player, context) {
                 for(let card of player.hand) {
                     player.removeCardFromPile(card);
-                    context.source.addChildCard(card, 'underneath');
                     card.facedown = true;
                 }
             },

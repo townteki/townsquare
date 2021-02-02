@@ -30,10 +30,10 @@ class ChooseYesNoPrompt extends UiPrompt {
 
     onMenuCommand(player, arg) {
         if (arg === 'yes') {
-            this.onYes();
+            this.onYes(player);
         }
         if (arg === 'no') {
-            this.onNo();
+            this.onNo(player);
         }        
         this.complete();
         return true;

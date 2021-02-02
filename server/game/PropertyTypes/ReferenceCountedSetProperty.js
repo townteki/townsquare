@@ -21,6 +21,11 @@ class ReferenceCountedSetProperty {
         return currentCount > 0;
     }
 
+    getValue(value) {
+        let lowerCaseValue = value.toLowerCase();
+        return this.referenceCounts.get(lowerCaseValue) || 0;
+    }
+
     getValues() {
         let values = [];
 

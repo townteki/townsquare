@@ -11,6 +11,7 @@ class AbilityContext {
         this.costValues = {};
         this.targets = new ResolvedTargets();
         this.resolutionStage = 'effect';
+        this.cardToUpgrade = properties.cardToUpgrade;
     }
 
     addCost(name, value) {
