@@ -256,10 +256,16 @@ const Costs = {
     payReduceableGRCost: function(playingType) {
         return {
             canPay: function(context) {
+                if (context.cardToUpgrade) {
+                    return true;
+                }
                 let reducedCost = context.player.getReducedCost(playingType, context.source);
                 return context.player.getSpendableGhostRock({ playingType: playingType }) >= reducedCost;
             },
             pay: function(context) {
+                if (context.cardToUpgrade) {
+                    return;
+                }
                 context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
                 context.game.spendGhostRock({ amount: context.costs.ghostrock, player: context.player, playingType: playingType });
                 context.player.markUsedReducers(playingType, context.source);

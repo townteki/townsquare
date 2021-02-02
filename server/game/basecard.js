@@ -17,8 +17,6 @@ const {Tokens} = require('./Constants');
 const JobAction = require('./jobaction');
 const NullCard = require('./nullcard');
 
-const LocationsWithEventHandling = ['play area', 'outfit', 'legend'];
-
 class BaseCard {
     constructor(owner, cardData) {
         this.owner = owner;
@@ -38,23 +36,22 @@ class BaseCard {
         this.blanks = new ReferenceCountedSetProperty();
 
         this.cost = cardData.cost;
-        this.value = cardData.rank;
+        this.currentValue = cardData.rank;
         this.suit = cardData.suit;
         this.type = cardData.type;
         this.type_code = cardData.type_code;
-        this.production = cardData.production;
+        this.currentBullets = this.cardData.bullets;
+        this.currentInfluence = this.cardData.influence;
+        this.currentProduction = cardData.production;
         this.wealth = cardData.wealth;
-        this.upkeep = cardData.upkeep;
 
         this.tokens = {};
 
         this.abilityRestrictions = [];
-        this.menu = _([]);
         this.events = new EventRegistrar(this.game, this);
 
         this.abilities = { actions: [], reactions: [], persistentEffects: [], playActions: [] };
-        this.parseKeywords(cardData.keywords || '');
-        this.setupCardTextProperties(AbilityDsl);
+        this.keywords = new KeywordsProperty(this.cardData.keywords || '');
         this.setupCardAbilities(AbilityDsl);
     }
 
@@ -66,45 +63,64 @@ class BaseCard {
         this.controllingPlayer = controller;
     }
 
+    get value() {
+        if (this.currentValue < 0) {
+            return 0;
+        }
+        return this.currentValue;
+    }
+
+    set value(amount) {
+        this.currentValue = amount;
+    }
+
+    get bullets() {
+        if (this.currentBullets < 0) {
+            return 0;
+        }
+        return this.currentBullets;
+    }
+
+    set bullets(amount) {
+        this.currentBullets = amount;
+    }
+
+    get influence() {
+        if (this.currentInfluence < 0) {
+            return 0;
+        }
+        return this.currentInfluence;
+    }
+
+    set influence(amount) {
+        this.currentInfluence = amount;
+    }
+
+    get production() {
+        if (this.currentProduction < 0) {
+            return 0;
+        }
+        return this.currentProduction;
+    }
+
+    set production(amount) {
+        this.currentProduction = amount;
+    }
+
     parseKeywords(keywords) {
-        this.keywords = {};
+        let parsedKeywords = {};
+        if (keywords === '') {
+            return parsedKeywords;
+        }
 
         var firstLine = keywords.split('\n')[0];
 
-        _.each(firstLine.split('\u2022'), keyword => {
-            let results = /(.*)(\d)$/.exec(keyword);    
-            
-            if(results) {
-                let value = results[2];
-                keyword = results[1].trim();
-                this.addKeywordModifier(keyword, value);
-            }
-            this.addKeyword(keyword.toLowerCase().trim());
+        firstLine.split('\u2022').forEach(keyword => {
+
+            parsedKeywords[keyword.toLowerCase().trim()] = { count: 1, modifier: modifier };
         });
-    }
 
-    setupCardTextProperties(ability) {
-        this.printedKeywords = this.keywords;
-
-        if(this.printedKeywords.length > 0) {
-            this.persistentEffect({
-                match: this,
-                location: 'any',
-                targetLocation: 'any',
-                effect: ability.effects.addMultipleKeywords(this.printedKeywords)
-            });
-        }
-    }
-
-    //Unsure if we really need this...
-    addKeywordModifier(keyword,value) {
-        switch(keyword) {
-            case 'Shaman':
-                this.shamanSkill = value;
-                break;
-            default:
-                break;
-        }
+        return parsedKeywords;
     }
 
     registerEvents(events) {
@@ -196,23 +212,6 @@ class BaseCard {
     }
 
     /**
-     * Applies an effect with the specified properties while the current card is
-     * attached to another card. By default the effect will target the parent
-     * card, but you can provide a match function to narrow down whether the
-     * effect is applied (for cases where the effect only applies to specific
-     * characters).
-     */
-    whileAttached(properties) {
-        this.persistentEffect({
-            condition: () => !!this.parent && (!properties.condition || properties.condition()),
-            match: (card, context) => card === this.parent && (!properties.match || properties.match(card, context)),
-            targetController: 'any',
-            effect: properties.effect,
-            recalculateWhen: properties.recalculateWhen
-        });
-    }
-
-    /**
      * Applies an immediate effect which lasts until the end of the current
      * challenge.
      */
@@ -267,43 +266,60 @@ class BaseCard {
     }
 
     hasKeyword(keyword) {
-        var keywordCount = this.keywords[keyword.toLowerCase()] || 0;
-        return keywordCount > 0;
+        return this.keywords.contains(keyword.toLowerCase());
     }
 
     hasOneOfKeywords(keywords) {
         if (!Array.isArray(keywords)) {
             return this.hasKeyword(keywords);
         }
-        return keywords.find(keyword => this.keywords[keyword.toLowerCase()]);
+        return keywords.some(keyword => this.hasKeyword(keyword.toLowerCase()));
     }
 
     hasAllOfKeywords(keywords) {
         if (!Array.isArray(keywords)) {
             return this.hasKeyword(keywords);
         }
-        let foundKeywords = keywords.filter(keyword => this.keywords[keyword.toLowerCase()]);
-        return foundKeywords.length === keywords.length;
+        return keywords.every(keyword => this.hasKeyword(keyword.toLowerCase()));
     }
     
     hasPrintedKeyword(keyword) {
-        return this.printedKeywords.includes(keyword.toLowerCase());
+        return this.keywords.hasPrintedKeyword(keyword.toLowerCase());
     }    
 
-    createSnapshot() {
-        let clone = new BaseCard(this.owner, this.cardData);
+    createSnapshot(clone, cloneBaseAttributes = true) {
+        if (!clone) {
+            clone = new BaseCard(this.owner, this.cardData);
+        }
 
+        if (cloneBaseAttributes) {
+            clone = this.cloneBaseAttributes(clone);
+        }
+        clone.location = this.location;
         clone.blankCount = this.blankCount;
-        clone.controller = this.controller;
-        clone.gameLocation = this.gameLocation;
-        clone.value = this.value;
-        clone.production = this.production;
-        clone.influence = this.influence;
-        clone.bullets = this.bullets;
-        clone.wealth = this.wealth;
-        clone.upkeep = this.upkeep;        
-        clone.keywords = this.keywords.clone();
+        clone.controllingPlayer = this.controllingPlayer;
+        clone.gameLoc = this.gameLoc;
+        clone.blanks = this.blanks;
+        
         clone.tokens = Object.assign({}, this.tokens);
+        clone.abilityRestrictions = this.abilityRestrictions;
+        clone.events = this.events;
+        clone.eventsForRegistration = this.eventsForRegistration
+
+        return clone;
+    }
+
+    cloneBaseAttributes(clone) {
+        if (!clone) {
+            return;
+        }
+        clone.suit = this.suit;
+        clone.currentValue = this.currentValue;
+        clone.currentProduction = this.currentProduction;
+        clone.currentInfluence = this.currentInfluence;
+        clone.currentBullets = this.currentBullets;
+        clone.wealth = this.wealth;
+        clone.keywords = this.keywords.clone();
 
         return clone;
     }
@@ -322,24 +338,6 @@ class BaseCard {
 
     getPlayActions() {
         return [];
-    }
-/* TODO M2 what to do with this?
-
-    takeControl(controller, source) {
-        if(!controller && controller === this.owner) {
-            this.controller = this.owner;
-            return;
-        }
-
-        this.controller = controller;
-    }
-*/
-    getKeywords() {
-        return this.keywords.getValues();
-    }
-
-    getPrizedValue() {
-        return this.keywords.getPrizedValue();
     }
 
     hasTrait(trait) {
@@ -418,55 +416,6 @@ class BaseCard {
 
     clearTokens() {
         this.tokens = {};
-    }
-
-    moveTo(targetLocation, parent) {
-        let originalLocation = this.location;
-        let originalParent = this.parent;
-
-        if(originalParent) {
-            originalParent.removeChildCard(this);
-        }
-
-        if(originalLocation !== targetLocation) {
-            // Clear any tokens on the card unless it is transitioning position
-            // within the same area e.g. moving an attachment from one character
-            // to another, or a character transferring control between players.
-            this.clearTokens();
-        }
-
-        this.location = targetLocation;
-        this.parent = parent;
-
-        if(LocationsWithEventHandling.includes(targetLocation) && !LocationsWithEventHandling.includes(originalLocation)) {
-            this.events.register(this.eventsForRegistration);
-        } else if(LocationsWithEventHandling.includes(originalLocation) && !LocationsWithEventHandling.includes(targetLocation)) {
-            this.events.unregisterAll();
-        }
-
-        for(let action of this.abilities.actions) {
-            if(action.isEventListeningLocation(targetLocation) && !action.isEventListeningLocation(originalLocation)) {
-                action.registerEvents();
-            } else if(action.isEventListeningLocation(originalLocation) && !action.isEventListeningLocation(targetLocation)) {
-                action.unregisterEvents();
-            }
-        }
-        for(let reaction of this.abilities.reactions) {
-            if(reaction.isEventListeningLocation(targetLocation) && !reaction.isEventListeningLocation(originalLocation)) {
-                reaction.registerEvents();
-            } else if(reaction.isEventListeningLocation(originalLocation) && !reaction.isEventListeningLocation(targetLocation)) {
-                reaction.unregisterEvents();
-                this.game.clearAbilityResolution(reaction);
-            }
-        }
-
-        if(targetLocation !== 'play area') {
-            this.facedown = false;
-        }
-
-        if(originalLocation !== targetLocation || originalParent !== parent) {
-            this.game.raiseEvent('onCardMoved', { card: this, originalLocation: originalLocation, newLocation: targetLocation, parentChanged: originalParent !== parent });
-        }
     }
 
     getMenu(player) {
@@ -598,8 +547,16 @@ class BaseCard {
         return this.cardData.type_code;
     }
 
-    getPrintedFaction() {
-        return this.cardData.faction;
+    getPrintedStat(stat) {
+        switch (stat) {
+            case 'suit': return this.cardData.suit;
+            case 'value': return this.cardData.rank;
+            case 'bullets': return this.cardData.bullets;
+            case 'influence': return this.cardData.influence;
+            case 'control': return this.cardData.control;
+            case 'upkeep': return this.cardData.upkeep;
+            case 'production': return this.cardData.production;           
+        }
     }
 
     setBlank(type) {
@@ -635,9 +592,9 @@ class BaseCard {
         }
 
         if(!this.keywords[lowerCaseKeyword]) {
-            this.keywords[lowerCaseKeyword] = 1;
+            this.keywords[lowerCaseKeyword] = { count: 1, modifier: 0 };
         } else {
-            this.keywords[lowerCaseKeyword]++;
+            this.keywords[lowerCaseKeyword].count++;
         }
     }
 
@@ -654,8 +611,8 @@ class BaseCard {
 
     removeKeyword(keyword) {
         var lowerCaseKeyword = keyword.toLowerCase();
-        this.keywords[lowerCaseKeyword] = this.keywords[lowerCaseKeyword] || 0;
-        this.keywords[lowerCaseKeyword]--;
+        this.keywords[lowerCaseKeyword].count = this.keywords[lowerCaseKeyword].count || 0;
+        this.keywords[lowerCaseKeyword].count--;
     }
 
     removeFaction(faction) {
@@ -692,9 +649,6 @@ class BaseCard {
         if (this.getType() === 'deed' || this.getType() === 'outfit') {
             return this.uuid;
         }
-        if (this.getType() === 'goods' || this.getType() === 'spell' || this.getType() === 'action') {
-            return this.parent ? this.parent.gamelocation : '';
-        }
 
         return '';
     }
@@ -719,6 +673,28 @@ class BaseCard {
             amount: amount
         };
         this.game.raiseEvent('onCardValueChanged', params);
+    }
+
+    modifyBullets(amount, applying = true) {
+        this.currentBullets += amount;
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardBulletsChanged', params);
+    }
+
+    modifyInfluence(amount, applying = true) {
+        this.currentInfluence += amount;
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardInfluenceChanged', params);
     }
 
     modifyProduction(amount) {

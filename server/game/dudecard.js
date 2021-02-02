@@ -14,43 +14,25 @@ class DudeCard extends DrawCard {
         this.maxAttires = 1;
         this.maxBullets = null;
 
-        this.currentBullets = this.cardData.bullets;
-        this.currentInfluence = this.cardData.influence;
         this.currentUpkeep = this.cardData.upkeep;
 
         this.shootoutStatus = ShootoutStatuses.None;
         this.controlDeterminator = 'influence:deed';
-
+        this.studReferenceArray = [];
+        this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
         this.setupDudeCardAbilities();
     }
 
     get bullets() {
-        if (this.currentBullets < 0) {
-            return 0;
-        }
-        if (this.maxBullets && this.maxBullets < this.currentPhase) {
+        let tempBullets = super.bullets;
+        if (this.maxBullets && this.maxBullets < tempBullets) {
             return this.maxBullets;
         }
-        return this.currentBullets;
-    }
-
-    set bullets(amount) {
-        this.currentBullets = amount;
+        return tempBullets;
     }
 
     get shooter() {
         return this.studReferenceArray[0].shooter;
-    }
-
-    get influence() {
-        if (this.currentInfluence < 0) {
-            return 0;
-        }
-        return this.currentInfluence;
-    }
-
-    set influence(amount) {
-        this.currentInfluence = amount;
     }
 
     get upkeep() {
@@ -73,28 +55,6 @@ class DudeCard extends DrawCard {
             case 'bullets':
                 return this.bullets;
         }
-    }
-
-    modifyBullets(amount, applying = true) {
-        this.currentBullets += amount;
-
-        let params = {
-            card: this,
-            amount: amount,
-            applying: applying
-        };
-        this.game.raiseEvent('onCardBulletsChanged', params);
-    }
-
-    modifyInfluence(amount, applying = true) {
-        this.currentInfluence += amount;
-
-        let params = {
-            card: this,
-            amount: amount,
-            applying: applying
-        };
-        this.game.raiseEvent('onCardInfluenceChanged', params);
     }
 
     modifyUpkeep(amount, applying = true) {
@@ -149,22 +109,15 @@ class DudeCard extends DrawCard {
         });        
     }
 
-    setupCardTextProperties(ability) {
-        super.setupCardTextProperties(ability);
-        this.studReferenceArray = [];
-        this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
-    }
-
-    createSnapshot() {
-        let clone = new DudeCard(this.owner, this.cardData);
-        clone = super.createSnapshot(clone);
+    createSnapshot(clone, cloneBaseAttributes = true) {
+        if (!clone) {
+            clone = new DudeCard(this.owner, this.cardData);
+        }
+        clone = super.createSnapshot(clone, cloneBaseAttributes);
 
         clone.maxWeapons = this.maxWeapons;
         clone.maxHorses = this.maxHorses;
         clone.maxAttires = this.maxAttires;
-        clone.currentBullets = this.currentBullets;
-        clone.currentInfluence = this.currentInfluence;
-        clone.currentControl = this.currentControl;
         clone.currentUpkeep = this.currentUpkeep;
         clone.shootoutStatus = this.shootoutStatus;
         clone.studReferenceArray = this.studReferenceArray;
@@ -193,6 +146,36 @@ class DudeCard extends DrawCard {
         if (destination) {
             destination.addDude(this);
         }
+    }
+
+    upgrade(expDude) {
+        expDude.controller.moveCard(expDude, 'play area', { raiseEvents: false });
+        expDude = this.createSnapshot(expDude, false);
+
+        expDude.currentValue = this.currentValue - this.getPrintedStat('value') + expDude.getPrintedStat('value');
+        expDude.currentBullets = this.currentBullets - this.getPrintedStat('bullets') + expDude.getPrintedStat('bullets');
+        expDude.currentInfluence = this.currentInfluence - this.getPrintedStat('influence') + expDude.getPrintedStat('influence');
+        expDude.currentControl = this.currentControl - this.getPrintedStat('control') + expDude.getPrintedStat('control');
+        expDude.currentUpkeep = this.currentUpkeep - this.getPrintedStat('upkeep') + expDude.getPrintedStat('upkeep');
+        expDude.currentProduction = this.currentProduction - this.getPrintedStat('production') + expDude.getPrintedStat('production');
+
+        if (this.keywords.data) {
+            this.keywords.getValues().forEach(keyword => {
+                for(let i = 1; i < this.keyword.getValue(keyword); i++) {
+                    expDude.keywords.add(keyword);
+
+                }
+            });
+        }
+        Object.keys(this.keywords.modifiers).forEach(keywordMod => 
+            expDude.keywords.modifiers[keywordMod].modifier = this.keywords.modifiers[keywordMod].modifier);
+
+        expDude.attachments = _([]);
+        this.attachments.each(attachment => {
+            expDude.controller.attach(attachment, expDude, 'upgrade');
+        });
+
+        this.controller.moveCard(this, 'discard pile', { raiseEvents: false });
     }
 
     callOut(card, canReject = true) {
