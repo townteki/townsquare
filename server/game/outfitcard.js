@@ -1,6 +1,6 @@
-const DrawCard = require('./drawcard.js');
+const LocationCard = require('./locationcard.js');
 
-class OutfitCard extends DrawCard {
+class OutfitCard extends LocationCard {
 
     get controller() {
         return this.owner;
@@ -10,7 +10,7 @@ class OutfitCard extends DrawCard {
         return true;
     }
 
-    isOutofTown() {
+    isOutOfTown() {
         return false;
     }
 

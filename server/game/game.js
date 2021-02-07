@@ -20,7 +20,7 @@ const IconPrompt = require('./gamesteps/iconprompt.js');
 const SelectCardPrompt = require('./gamesteps/selectcardprompt.js');
 const EventWindow = require('./gamesteps/eventwindow.js');
 const AbilityResolver = require('./gamesteps/abilityresolver.js');
-const ForcedTriggeredAbilityWindow = require('./gamesteps/ForcedTriggeredAbilityWindow.js');
+const TraitTriggeredAbilityWindow = require('./gamesteps/TraitTriggeredAbilityWindow.js');
 const TriggeredAbilityWindow = require('./gamesteps/TriggeredAbilityWindow.js');
 const InterruptWindow = require('./gamesteps/InterruptWindow');
 const KillCharacters = require('./gamesteps/killcharacters.js');
@@ -40,6 +40,7 @@ const Location = require('./gamelocation.js');
 const Shootout = require('./gamesteps/shootout.js');
 const PlayerOrderPrompt = require('./gamesteps/playerorderprompt.js');
 const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
+const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 
 class Game extends EventEmitter {
     constructor(details, options = {}) {
@@ -241,6 +242,15 @@ class Game extends EventEmitter {
                 return foundLocation;
             }
         }
+    }
+
+    // use card in condition
+    findLocations(condition) {
+        let foundLocations = this.game.filterCardsInPlay(card => condition(card));
+        if (condition(this.game.townsquare.getLocationCard())) {
+            foundLocations.concat(this.game.townsquare);
+        }
+        return foundLocations;
     }
 
     addEffect(source, properties) {
@@ -636,6 +646,10 @@ class Game extends EventEmitter {
         this.queueStep(new SelectCardPrompt(this, player, properties));
     }
 
+    promptForLocation(player, properties) {
+        this.queueStep(new SelectLocationPrompt(this, player, properties));
+    }
+
     promptForYesNo(player, properties) {
         this.queueStep(new ChooseYesNoPrompt(this, player, properties));
     }
@@ -831,7 +845,7 @@ class Game extends EventEmitter {
     }
 
     openAbilityWindow(properties) {
-        let windowClass = ['traitreaction', 'forcedinterrupt', 'whenrevealed'].includes(properties.abilityType) ? ForcedTriggeredAbilityWindow : TriggeredAbilityWindow;
+        let windowClass = properties.abilityType === 'traitreaction' ? TraitTriggeredAbilityWindow : TriggeredAbilityWindow;
         let window = new windowClass(this, { abilityType: properties.abilityType, event: properties.event });
         this.abilityWindowStack.push(window);
         this.queueStep(window);
@@ -1042,6 +1056,13 @@ class Game extends EventEmitter {
         card.controller.cardsInPlay.push(card);
 
         this.handleControlChange(card);
+    }
+
+    getShootoutLocationCard() {
+        if (!this.shootout) {
+            return;
+        }
+        return this.shootout.shootoutLocation.getLocationCard(this);
     }
 
     isParticipatingInShootout(card) {

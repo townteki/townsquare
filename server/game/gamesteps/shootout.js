@@ -215,11 +215,13 @@ class Shootout extends Phase {
     }
 
     removeFromPosse(dude) {
-        if (this.belongsToLeaderPlayer(dude) && this.leaderPosse) {
-            this.leaderPosse.removeFromPosse(dude);
-        } else if (this.belongsToOpposingPlayer(dude) && this.opposingPosse) {
-            this.opposingPosse.removeFromPosse(dude);
-        }   
+        this.game.raiseEvent('onDudeLeftPosse', { card: dude, shootout: this }, event => {
+            if (event.shootout.belongsToLeaderPlayer(event.card) && event.shootout.leaderPosse) {
+                event.shootout.leaderPosse.removeFromPosse(event.card);
+            } else if (event.shootout.belongsToOpposingPlayer(event.card) && event.shootout.opposingPosse) {
+                event.shootout.opposingPosse.removeFromPosse(event.card);
+            }   
+        });
     }
 
     gatherPosses() {
@@ -301,7 +303,7 @@ class Shootout extends Phase {
         this.loser = this.leaderPlayer;
         if (leaderRank === opposingRank) {
             let tiebreakResult = this.game.resolveTiebreaker(this.leaderPlayer, this.opposingPlayer);
-            this.leaderPlayer = this.opposingPlayer = 1;
+            this.leaderPlayer.casualties = this.opposingPlayer.casualties = 1;
             if (tiebreakResult.decision === 'exact tie') {
                 this.game.addMessage('Shootout ended in an exact tie, there is no winner or loser.');
                 this.shootoutLoseWinOrder = [ this.leaderPlayer.name, this.opposingPlayer.name ];

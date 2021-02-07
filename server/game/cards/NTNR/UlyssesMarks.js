@@ -4,6 +4,7 @@ const GameActions = require('../../GameActions/index.js');
 class UlyssesMarks extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
+            targetController: 'any',
             condition: () => this.location === 'play area' && this.getLocationCard().hasKeyword('Saloon'),
             match: card => card.uuid === this.gamelocation,
             effect: ability.effects.modifyControl(1)

@@ -1,6 +1,7 @@
 const _ = require('underscore');
 const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
+const DiscardPrompt = require('./sundown/discardprompt.js');
 const SundownPrompt = require('./sundown/sundownprompt.js');
 
 class SundownPhase extends Phase {
@@ -8,8 +9,9 @@ class SundownPhase extends Phase {
         super(game, 'sundown');
         this.initialise([
             new SimpleStep(game, () => this.checkWinCondition()),
-            new SimpleStep(game, () => this.unbootCards()),
-            new SimpleStep(game, () => this.sundownRedraw()),            
+            new DiscardPrompt(game),
+            new SimpleStep(game, () => this.sundownRedraw()),  
+            new SimpleStep(game, () => this.unbootCards()),          
             new SimpleStep(game, () => this.roundEnded()),
             new SundownPrompt(game)
         ]);

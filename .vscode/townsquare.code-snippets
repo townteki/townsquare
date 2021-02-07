@@ -132,10 +132,13 @@
 		"prefix": "persistenteffect",
 		"body": [
 			"this.persistentEffect({",
-			"\tcondition: () => ${1:true},",
-			"\tmatch: ${2:this},",
+			"\ttargetController: '${1|any,current,opponent|}',",
+			"\t// Add always-on condition if effect is state dependent so it will be ",
+			"\t// rechecked after every event",
+			"\tcondition: () => ${2:true},",
+			"\tmatch: ${3:this},",
 			"\teffect: [",
-			"\t\tability.effects.${3:modifyBullets()}",
+			"\t\tability.effects.${4:modifyBullets()}",
 			"\t]",
 			"});"
 		],
@@ -153,6 +156,7 @@
 			"\ttarget: ${4:targetselect}",
 			"\thandler: context => {",
 			"\t\t$20",
+			"\t\tthis.game.addMessage('{0} uses {1} to $21.', context.player, this);",
 			"\t}",
 			"});"
 		],
@@ -171,6 +175,7 @@
 			"\ttarget: ${4:targetselect}",
 			"\thandler: context => {",
 			"\t\t$20",
+			"\t\tthis.game.addMessage('{0} uses {1} to $21.', context.player, this);",
 			"\t}",
 			"});"
 		],
@@ -189,6 +194,7 @@
 			"\ttarget: ${5:targetselect}",
 			"\thandler: context => {",
 			"\t\t$20",
+			"\t\tthis.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target);",
 			"\t},",
 			"\tonSuccess: (job) => {",
 			"\t\t$21",
@@ -252,7 +258,7 @@
 			"{",
 			"\tactivePromptTitle: '${8:Prompt}',",
 			"\tchoosingPlayer: ${9|'current','each','eachOpponent','thisIfLegal',(player)=>true|},",
-            "\tcardCondition: { location: '${10:play area}', controller: '${11|opponent,current,each|}', condition: card => ${12:true} },",
+            "\tcardCondition: { location: '${10:play area}', controller: '${11|opponent,current,any|}', condition: card => ${12:true} },",
 			"\tcardType: ['${13|location,dude,deed,goods,spell,action,outfit|}']",
 			"},"
 		],

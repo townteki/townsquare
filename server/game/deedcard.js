@@ -1,10 +1,9 @@
-const DrawCard = require('./drawcard.js');
+const LocationCard = require('./locationcard.js');
 
-class DeedCard extends DrawCard {
+class DeedCard extends LocationCard {
     constructor(owner, cardData) {
         super(owner, cardData);
         this.controlDeterminator = 'influence:deed';
-        this.gameLocationObject = null;
     }
 
     get controller() {
@@ -18,24 +17,25 @@ class DeedCard extends DrawCard {
         this.controllingPlayer = controller;
     }
 
-    leavesPlay() {
-        super.leavesPlay();
-        this.gameLocationObject = null;
-    }
-
     isPrivate() {
         return this.hasKeyword('Private');
     }
 
-    isOutofTown() {
+    isOutOfTown() {
         return this.hasKeyword('Out of Town');
     }
 
-    receiveProduction(player) {
-        if (player === this.owner) {
-            return this.production;
+    isSameStreet(card) {
+        if (this.isOutOfTown()) {
+            return false;
         }
-        return 0;
+        if (card.getType() === 'deed' && card.isOutOfTown()) {
+            return false;
+        }
+        if (card.getType() === 'outfit' && card.owner === this.owner) {
+            return true;
+        }
+        return this.owner.locations.some(location => location.uuid === card.uuid);
     }
 
 }

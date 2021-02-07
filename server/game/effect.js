@@ -39,6 +39,7 @@ class Effect {
         this.match = properties.match || (() => true);
         this.duration = properties.duration;
         this.until = properties.until || {};
+        this.phase = properties.phase;
         this.condition = properties.condition || (() => true);
         this.location = properties.location || 'play area';
         this.targetController = properties.targetController || 'current';

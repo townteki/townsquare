@@ -50,7 +50,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 if (arg === 'ace') {
                     numCoveredCasualties = card.coversCasualties('ace');
                     if (numCoveredCasualties > 0) {
-                        player.aceCard(card, true, () => true, { isCasualty: true });     
+                        player.aceCard(card, true, { isCasualty: true });    
                     }         
                 } else if (arg === 'discard') {
                     numCoveredCasualties = card.coversCasualties('discard');
@@ -58,7 +58,12 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                         player.discardCard(card, true, { isCasualty: true });
                     }
                 }
-                player.coverCasualties(numCoveredCasualties);
+
+                if (numCoveredCasualties > 0) {
+                    player.coverCasualties(numCoveredCasualties);
+                    this.game.addMessage('{0} {1} {2} to cover {3} casualties ({4} remaining).', 
+                        player, arg, card, numCoveredCasualties, player.casualties); 
+                }
                 return true;
             }
         });
@@ -78,7 +83,9 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 let numCoveredCasualties = card.coversCasualties('send');
                 if (numCoveredCasualties > 0) {
                     this.game.resolveGameAction(GameActions.sendHome({ card, options: { isCardEffect: false } }));
-                    player.coverCasualties(numCoveredCasualties);         
+                    player.coverCasualties(numCoveredCasualties);    
+                    this.game.addMessage('{0} sends {1} home to cover {2} casualties ({3} remaining).', 
+                        player, card, numCoveredCasualties, player.casualties);     
                 }
                 return true;
             }

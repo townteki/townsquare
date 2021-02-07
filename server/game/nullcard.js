@@ -15,6 +15,10 @@ class NullCard {
     getType() {
         return '';
     }
+
+    isLocationCard() {
+        return false;
+    }
 }
 
 module.exports = NullCard;

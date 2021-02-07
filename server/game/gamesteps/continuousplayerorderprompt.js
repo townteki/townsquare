@@ -59,7 +59,7 @@ class ContinuousPlayerOrderPrompt extends PlayerOrderPrompt {
         this.lazyFetchPlayers();
         
         if(this.passedPlayers.length > 0) {
-            this.players.push(this.passedPlayers[0]);
+            this.players.push(this.passedPlayers.shift());
         }
         
         this.players.push(this.players.shift());

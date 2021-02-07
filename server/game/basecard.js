@@ -40,8 +40,8 @@ class BaseCard {
         this.suit = cardData.suit;
         this.type = cardData.type;
         this.type_code = cardData.type_code;
-        this.currentBullets = this.cardData.bullets;
-        this.currentInfluence = this.cardData.influence;
+        this.currentBullets = cardData.bullets;
+        this.currentInfluence = cardData.influence;
         this.currentProduction = cardData.production;
         this.wealth = cardData.wealth;
 
@@ -489,6 +489,10 @@ class BaseCard {
         return this.name === card.name;
     }
 
+    isToken() {
+        return this.hasKeyword('Token');
+    }
+
     isUnique() {
         if(this.hasKeyword('Non-Unique') || this.hasKeyword('Token')) {
             return false;
@@ -665,12 +669,13 @@ class BaseCard {
         this.modifyToken(Tokens.ghostrock, amount);
     }
 
-    modifyValue(amount) {
+    modifyValue(amount, applying = true) {
         this.value += amount;
 
         let params = {
             card: this,
-            amount: amount
+            amount: amount,
+            applying: applying
         };
         this.game.raiseEvent('onCardValueChanged', params);
     }
@@ -697,22 +702,24 @@ class BaseCard {
         this.game.raiseEvent('onCardInfluenceChanged', params);
     }
 
-    modifyProduction(amount) {
-        this.production += amount;
+    modifyProduction(amount, applying = true) {
+        this.currentProduction += amount;
 
         let params = {
             card: this,
-            amount: amount
+            amount: amount,
+            applying: applying
         };
         this.game.raiseEvent('onCardProductionChanged', params);
     }
 
-    modifyUpkeep(amount) {
+    modifyUpkeep(amount, applying = true) {
         this.upkeep += amount;
 
         let params = {
             card: this,
-            amount: amount
+            amount: amount,
+            applying: applying
         };
         this.game.raiseEvent('onCardUpkeepChanged', params);
     }
@@ -797,6 +804,10 @@ class BaseCard {
         return location.getLocationCard(this.game);
     }
 
+    isLocationCard() {
+        return false;
+    }
+
     updateGameLocation(target) {
         if(this.getType() === 'dude') {
             this.gamelocation = target;
@@ -804,15 +815,6 @@ class BaseCard {
             this.gamelocation = this.uuid;
         }
     }    
-
-    // This will be overriden by card subclasses that modify adjacency.
-    // TODO M2 check if this can be done with persistent effects
-    modifiedAdjacentLocations() {
-        return {
-            additionalAdjacency: null,
-            removedAdjacency: null
-        }
-    }
 
     onClick(player) {
         var action = this.abilities.actions.find(action => action.isClickToActivate());

@@ -24,7 +24,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.waitForTargetResolution()),
             new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
-            new SimpleStep(game, () => this.raiseCardPlayedIfEvent()),
+            new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
             new SimpleStep(game, () => this.game.popAbilityContext())
         ]);
     }
@@ -193,21 +193,29 @@ class AbilityResolver extends BaseStep {
         }
     }
 
-    raiseCardPlayedIfEvent() {
+    raiseOnAbilityResolvedEvent() {
         // An event card is considered to be played even if it has been
         // cancelled. Raising the event here will allow forced reactions and
         // reactions to fire with the appropriate timing. There are no cards
         // with an interrupt to a card being played. If any are ever released,
         // then this event will need to wrap the execution of the entire
         // ability instead.
-        if(this.ability.isPlayableActionAbility()) {
+        if (this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
                 this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
             }
 
-            let event = new Event('onCardPlayed', { player: this.context.player, card: this.context.source, originalLocation: this.context.originalLocation });
+            let event = new Event('onCardPlayed', { 
+                player: this.context.player, 
+                card: this.context.source, 
+                originalLocation: this.context.originalLocation,
+                ability: this.ability 
+            });
 
             this.game.resolveEvent(event);
+        }
+        if (this.ability.isCardAbility()) {
+            this.game.raiseEvent('onCardAbilityResolved', { ability: this.ability, context: this.context });
         }
     }
 }
