@@ -12,7 +12,7 @@ class SpellCard extends DrawCard {
             } else if(card.hasKeyword('Shaman') && this.isSpirit()) {
                 return true;
             }
-        } else if((card.getType() === 'deed' || card.getType() === 'outfit') && this.isTotem()) {
+        } else if(card.isLocationCard() && this.isTotem()) {
             return true;
         }
     }

@@ -11,7 +11,7 @@ class MortimerParsons extends DudeCard {
                 if (this.influence > 0) {
                     this.untilEndOfRound(ability => ({
                         match: this,
-                        effect: ability.effects.modifyInfluence(-2)
+                        effect: ability.effects.setInfluence(0)
                     }));
                 }
                 this.game.shootout.runHome(this);

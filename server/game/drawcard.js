@@ -2,6 +2,7 @@ const _ = require('underscore');
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
 const StandardPlayActions = require('./PlayActions/StandardActions');
+const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty.js');
 
 const LocationsWithEventHandling = ['play area', 'legend'];
 
@@ -20,6 +21,7 @@ class DrawCard extends BaseCard {
         }       
         
         this.actionPlacementLocation = 'discard pile';
+        this.shootoutOptions = new ReferenceCountedSetProperty();
     }
 
     get gamelocation() {
@@ -67,6 +69,7 @@ class DrawCard extends BaseCard {
         clone.attachments = this.attachments.map(attachment => attachment.createSnapshot());
         clone.booted = this.booted;
         clone.parent = this.parent;
+        clone.shootoutOptions = this.shootoutOptions;
 
         return clone;
     }

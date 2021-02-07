@@ -3,6 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class BufordHurley extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
+            targetController: 'any',
             condition: () => this.location === 'play area' && this.getLocationCard().hasOneOfKeywords(['Saloon', 'Casino']),
             match: card => card.uuid === this.gamelocation,
             effect: ability.effects.modifyProduction(-1)

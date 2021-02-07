@@ -9,9 +9,6 @@ class GameLocation {
     constructor(locationCard, neighbourLocation, order) {
         //Passed in location for construction. Card uuid is main identifier.
         this.uuid = locationCard.uuid;
-        if (this.uuid !== TownSquareUUID) {
-            this.modifiedAdjacentLocations = locationCard.modifiedAdjacentLocations();
-        }
         this.adjacencyMap = new Map();
         /*Keeps track of location order on player street
           for flexbox order parameter info
@@ -21,12 +18,14 @@ class GameLocation {
         */
         this.order = order;
         if (neighbourLocation) {
-            this.attach(neighbourLocation.uuid);
-            neighbourLocation.attach(this.uuid);
+            this.addAdjacency(neighbourLocation, 'game');
         }
         if (order != null) {
-            this.attach(locationCard.game.townsquare.uuid, 'townsquare');
-            locationCard.game.townsquare.attach(this.uuid);
+            this.addAdjacency(locationCard.game.townsquare, 'game');
+        }
+        if (locationCard.defaultAdjacencyEffects) {
+            locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect => 
+                this.addAdjacency(adjacencyEffect.location, adjacencyEffect.source, adjacencyEffect.type));
         }
         this.occupants = [];
         locationCard.gameLocationObject = this;
@@ -80,13 +79,14 @@ class GameLocation {
     }
 
     isAdjacent(uuid) {
-        for(var key of this.adjacencyMap.keys()) {
-            if(uuid === key) {
-                return true;
-            }
+        let adjacency = this.adjacencyMap.get(uuid);
+        if (!adjacency) {
+            return false;
         }
 
-        return false;
+        if (adjacency[0].type === 'adjacent') {
+            return true;
+        }
     }
 
     isTownSquare() {
@@ -98,32 +98,33 @@ class GameLocation {
         return locationCard && locationCard.getType() === 'outfit' && locationCard.owner == player;
     }
 
-    attach(uuid, direction) {
-        this.adjacencyMap.set(uuid, direction);
+    addAdjacency(location, source, type = 'adjacent') {
+        this.attach(location.uuid, source, type);
+        location.attach(this.uuid, source, type);
     }
 
-    detach(uuid) {
-        this.adjacencyMap.delete(uuid);
+    removeAdjacency(location, source, type = 'adjacent') {
+        this.detach(location.uuid, source, type);
+        location.detach(this.uuid, source, type);
     }
 
-    adjacent() {
-        return this.adjacencyMap;
+    attach(uuid, source, type) {
+        let adjacency = this.adjacencyMap.get(uuid) || [];
+        adjacency.unshift({ source: source, type: type });
+        this.adjacencyMap.set(uuid, adjacency);
     }
 
-    left() {
-        for(var [key,value] of this.adjacencyMap.entries()) {
-            if(value === 'left') {
-                return key;
-            }
+    detach(uuid, source, type) {
+        let adjacency = this.adjacencyMap.get(uuid);
+        if (!adjacency) {
+            return;
         }
-    }
-
-    right() {
-        for(var [key,value] of this.adjacencyMap.entries()) {
-            if(value === 'right') {
-                return key;
-            }
-        }
+        adjacency = adjacency.filter(adjItem => adjItem.source !== source && adjItem.type != type);
+        if (adjacency.length === 0) {
+            this.adjacencyMap.delete(uuid);
+        } else {
+            this.adjacencyMap.set(uuid, adjacency);
+        }  
     }
 
     addDude(card) {
@@ -182,7 +183,8 @@ class TownSquare extends GameLocation {
         return Object.assign(new NullCard(), {
             title: 'Town Square', 
             uuid: this.uuid,
-            getType: () => 'townsquare'
+            getType: () => 'townsquare',
+            getLocation: () => this
         });
     }
 }

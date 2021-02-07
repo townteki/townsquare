@@ -18,7 +18,7 @@ const PlayerPromptState = require('./playerpromptstate.js');
 const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
 
-const { UUID, TownSquareUUID, StartingHandSize } = require('./Constants');
+const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
 const GhostRockSource = require('./GhostRockSource.js');
 
 class Player extends Spectator {
@@ -50,6 +50,7 @@ class Player extends Spectator {
         this.casualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
+        this.discardNumber = StartingDiscardNumber;
         this.costReducers = [];
         this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
@@ -63,6 +64,30 @@ class Player extends Spectator {
 
     createAdditionalPile(name, properties = {}) {
         this.additionalPiles[name] = _.extend({ cards: _([]) }, properties);
+    }
+
+    createCard(codeOrName) {
+        let card = Object.values(this.game.cardData).find(c => {
+            return c.title.toLowerCase() === codeOrName.toLowerCase() || c.code === codeOrName;
+        });
+
+        if(!card) {
+            return false;
+        }
+
+        let deck = new Deck();
+        return deck.createCard(this, card);        
+    }
+
+    placeToken(codeOrName, gamelocation) {
+        let token = this.createCard(codeOrName);
+        this.game.allCards.push(token);
+        token.facedown = false;
+        token.moveToLocation(gamelocation);
+        this.moveCard(token, 'play area');        
+        token.applyPersistentEffects();  
+        token.controller = this;
+        return token;
     }
 
     createDefaultPlayableLocations() {
@@ -81,6 +106,10 @@ class Player extends Spectator {
             return { name: 'test player', isCheatin: () => false };
         }
         return opponents[0];
+    }
+
+    getNumberOfDiscardsAtSundown() {
+        return this.discardNumber < 0 ? 0 : this.discardNumber;
     }
 
     isCardUuidInList(list, card) {
@@ -269,7 +298,7 @@ class Player extends Spectator {
         this.game.addMessage('{0} reveals {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }    
 
-    drawCardsToHand(numCards, target = 'hand') {
+    drawCardsToHand(numCards = 1, target = 'hand') {
         return this.game.resolveGameAction(GameActions.drawCards({ player: this, amount: numCards, target: target }));
     }
 
@@ -294,7 +323,7 @@ class Player extends Spectator {
     }
 
     shuffleDiscardToDrawDeck() {
-        if(this.discardPile.size() > 0) {
+        if(this.discardPile.length > 0) {
             this.discardPile.each(card => {
                 this.moveCard(card, 'draw deck');
             });
@@ -844,7 +873,7 @@ class Player extends Spectator {
         let production = producers.reduce((memo, card) => {
             if (card.controller === this) {
                 let partialProduction = card.production;
-                if (card.getType() === 'deed') {
+                if (card.isLocationCard()) {
                     partialProduction = card.receiveProduction(this);
                 }
                 return(memo += partialProduction);
@@ -883,6 +912,7 @@ class Player extends Spectator {
 
     resetForRound() {
         this.upkeepPaid = false;
+        this.sundownDiscardDone = false;
         this.passTurn = false;
         this.cardsInPlay.forEach(card => card.resetForRound());
     }
@@ -926,16 +956,14 @@ class Player extends Spectator {
         }
     }
 
-    leftmostDeed() {
+    leftmostLocation() {
         let sorted = _.sortBy(this.locations.filter(location => location.order != null), 'order');
-        let leftmost = sorted.shift();
-        return leftmost;
+        return sorted.shift();
     }
 
-    rightmostDeed() {
+    rightmostLocation() {
         let sorted = _.sortBy(this.locations.filter(location => location.order != null), 'order');
-        let rightmost = sorted.pop();
-        return rightmost;
+        return sorted.pop();
     }
 
     addDeedToStreet(card, target) {
@@ -952,13 +980,13 @@ class Player extends Spectator {
     }
 
     addDeedToLeft(card) {
-        let leftDeed = this.leftmostDeed();
+        let leftDeed = this.leftmostLocation();
         let newLocation = new Location.GameLocation(card, leftDeed, leftDeed.order - 1);        
         this.locations.push(newLocation);
     }
 
     addDeedToRight(card) {
-        let rightDeed = this.rightmostDeed();
+        let rightDeed = this.rightmostLocation();
         let newLocation = new Location.GameLocation(card, rightDeed, rightDeed.order + 1);
         this.locations.push(newLocation);
     }   
@@ -1116,6 +1144,9 @@ class Player extends Spectator {
         }
         let origin = this.game.findLocation(dude.gamelocation);
         let destination = this.game.findLocation(targetLocationUuid);
+        if (!origin || !destination) {
+            return;
+        }
         if (origin.uuid === destination.uuid) {
             if (options.needToBoot) {
                 this.bootCard(dude);
@@ -1148,6 +1179,14 @@ class Player extends Spectator {
     }
 
     moveCard(card, targetLocation, options = {}, callback) {
+        if (card.isToken()) {
+            if (card.location === 'out of game') {
+                return;
+            }
+            if (targetLocation !== 'play area') {
+                targetLocation = 'out of game';
+            }
+        }
         this.removeCardFromPile(card);
         let targetPile = this.getSourceList(targetLocation);
 

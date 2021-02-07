@@ -81,6 +81,51 @@ function dominanceOptionEffect(key) {
     };
 }
 
+function adjacency(type) {
+    return function(location, source) {
+        return {
+            apply: function(card) {
+                if (card.isLocationCard()) {
+                    card.addAdjacencyLocation(location, source, type);
+                }
+            },
+            unapply: function(card) {
+                card.removeAdjacencyLocation(location, source, type);
+            }
+        };
+    }
+}
+
+function conditionalAdjacency(type) {
+    return function (condition, source, type) {
+        return {
+            apply: function(card, context) {
+                if (!card.isLocationCard()) {
+                    return;
+                }
+                context.dynamicAdjacency = context.dynamicAdjacency || {};
+                context.dynamicAdjacency[card.uuid] = context.game.findLocations(card => condition(card)) || [];
+                card.addAdjacencyLocations(context.dynamicAdjacency[card.uuid], source, type);
+            },
+            reapply: function(card, context) {
+                let currentAdjacency = context.dynamicAdjacency[card.uuid];
+                let newAdjacency = context.game.findLocations(card => condition(card)) || [];
+                context.dynamicAdjacency[card.uuid] = newAdjacency;
+                let addAdjacencies = newAdjacency.filter(location => !currentAdjacency.includes(location));
+                let removeAdjacencies = currentAdjacency.filter(location => !newAdjacency.includes(location));
+                card.addAdjacencyLocations(addAdjacencies, source, type);
+                card.removeAdjacencyLocations(removeAdjacencies, source, type);
+            },
+            unapply: function(card, context) {
+                let removeAdjacencies = context.dynamicAdjacency[card.uuid];
+                card.removeAdjacencyLocations(removeAdjacencies, source, type);
+                delete context.dynamicAdjacencies[card.uuid];
+            },
+            isStateDependent: true
+        }
+    };
+}
+
 function dynamicCardModifier(propName) {
     return function(calculateOrValue) {
         const isStateDependent = (typeof calculateOrValue === 'function');
@@ -245,6 +290,19 @@ const Effects = {
             }
         };
     },
+    setInfluence: function(value) {
+        let changeAmount = 0;
+        return {
+            gameAction: 'setInfluence',
+            apply: function(card) {
+                changeAmount = value - card.influence;
+                card.modifyInfluence(changeAmount, true);
+            },
+            unapply: function(card) {
+                card.modifyInfluence(changeAmount * -1);
+            }
+        };
+    },
     modifyControl: function(value) {
         return {
             gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
@@ -253,6 +311,19 @@ const Effects = {
             },
             unapply: function(card) {
                 card.modifyControl(-value, false);
+            }
+        };
+    },
+    setControl: function(value) {
+        let changeAmount = 0;
+        return {
+            gameAction: 'setControl',
+            apply: function(card) {
+                changeAmount = value - card.control;
+                card.modifyControl(changeAmount, true);
+            },
+            unapply: function(card) {
+                card.modifyControl(changeAmount * -1);
             }
         };
     },
@@ -289,6 +360,10 @@ const Effects = {
             }
         };
     },
+    additionalDynamicAdjacency: conditionalAdjacency('adjacent'),
+    preventDynamicAdjacency: conditionalAdjacency('prevent'),
+    additionalAdjacency: adjacency('adjacent'),
+    preventAdjacency: adjacency('prevent'),
     setClaim: function(value) {
         return {
             apply: function(card) {
@@ -321,7 +396,7 @@ const Effects = {
             reapply: function(card, context) {
                 let currentBullets = context.dynamicBullets[card.uuid];
                 let newBullets = calculate(card, context) || 0;
-                context.dynamicBullets[card.uuid] = newStrength;
+                context.dynamicBullets[card.uuid] = newBullets;
                 let value = newBullets - currentBullets;
                 card.modifyBullets(value, true);
             },
@@ -331,6 +406,41 @@ const Effects = {
                 delete context.dynamicBullets[card.uuid];
             },
             isStateDependent: true
+        };
+    },
+    dynamicProduction: function(calculate, gameAction = 'increaseProduction') {
+        return {
+            gameAction: gameAction,
+            apply: function(card, context) {
+                context.dynamicProduction = context.dynamicProduction || {};
+                context.dynamicProduction[card.uuid] = calculate(card, context) || 0;
+                let value = context.dynamicProduction[card.uuid];
+                card.modifyProduction(value, true);
+            },
+            reapply: function(card, context) {
+                let currentProduction = context.dynamicProduction[card.uuid];
+                let newProduction = calculate(card, context) || 0;
+                context.dynamicProduction[card.uuid] = newProduction;
+                let value = newProduction - currentProduction;
+                card.modifyProduction(value, true);
+            },
+            unapply: function(card, context) {
+                let value = context.dynamicProduction[card.uuid];
+                card.modifyProduction(-value, false);
+                delete context.dynamicProduction[card.uuid];
+            },
+            isStateDependent: true
+        };
+    },
+    modifySundownDiscard: function(value) {
+        return {
+            targetType: 'player',
+            apply: function(player) {
+                player.discardNumber += value;
+            },
+            unapply: function(player) {
+                player.discardNumber -= value;
+            }
         };
     },
     dynamicDecreaseStrength: function(calculate) {

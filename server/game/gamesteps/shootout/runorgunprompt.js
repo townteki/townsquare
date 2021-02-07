@@ -18,6 +18,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
         this.game.promptForSelect(this.currentPlayer, {
             activePromptTitle: 'Select dudes to flee the shootout',
             multiSelect: true,
+            numCards: 0,
             additionalButtons: [
                 { text: 'All dudes run', arg: 'allrun' }
             ],
