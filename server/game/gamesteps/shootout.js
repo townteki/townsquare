@@ -195,11 +195,19 @@ class Shootout extends Phase {
     }
 
     getLeaderDrawCount() {
-        return { player: this.leaderPlayer, number: 5 + this.leaderPosse.getStudBonus() };
+        return { 
+            player: this.leaderPlayer, 
+            number: 5 + this.leaderPosse.getStudBonus(), 
+            redraw: this.leaderPosse.getDrawBonus() 
+        };
     }
 
     getOpposingDrawCount() {
-        return { player: this.opposingPlayer, number: 5 + this.opposingPosse.getStudBonus() };
+        return { 
+            player: this.opposingPlayer, 
+            number: 5 + this.opposingPosse.getStudBonus(), 
+            redraw: this.opposingPosse.getDrawBonus() 
+        };
     }
 
     sendHome(card, options) {
