@@ -49,7 +49,7 @@ class Effect {
         this.gameAction = this.effect.gameAction || 'genericEffect';
         this.targets = [];
         this.appliedTargets = new Set();
-        this.context = { game: game, source: source };
+        this.context = { game: game, source: source, ability: properties.ability };
         this.active = !source.facedown;
         this.isConditional = !!properties.condition || this.targetType === 'player' && typeof(properties.match) === 'function';
         this.isStateDependent = this.isConditional || this.effect.isStateDependent;
@@ -119,7 +119,7 @@ class Effect {
 
         let gameAction = typeof this.gameAction === 'function' ? this.gameAction(target, this.context) : this.gameAction;
 
-        return target.allowGameAction(gameAction, { source: this.source, resolutionStage: 'effect' });
+        return target.allowGameAction(gameAction, Object.assign(this.context, { resolutionStage: 'effect' }));
     }
 
     isValidTarget(target) {

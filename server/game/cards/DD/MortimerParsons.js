@@ -14,7 +14,7 @@ class MortimerParsons extends DudeCard {
                         effect: ability.effects.setInfluence(0)
                     }));
                 }
-                this.game.shootout.runHome(this);
+                this.game.shootout.sendHome(this);
                 if (this.game.shootout.checkEndCondition()) {
                     this.game.shootout.cancelStep();
                 }

@@ -6,29 +6,19 @@ class HunterProtections extends DeedCard {
         this.action({
             title: 'Hunter Protections',
             playType: ['noon'],
-            cost: ability.costs.bootSelf(),
-            target: {
-                activePromptTitle: 'Choose dude to protect',
-                cardCondition: { location: 'play area', condition: card => 
+            cost: [
+                ability.costs.bootSelf(),
+                ability.costs.boot(card =>
+                    card.getType() === 'dude' &&
                     card.control <= 0 && 
-                    !card.booted && 
                     card.getLocationCard() === this
-                },
-                cardType: ['dude']
-            },
+                    )
+            ],
             handler: context => {
-                this.game.resolveGameAction(GameActions.bootCard({ card: context.target })).
-                    thenExecute(event => {
-                        if (event.card.booted) {
-                            this.game.resolveGameAction(GameActions.addBounty({ card: event.card, amount: 2 }));
-                            event.card.modifyControl(1);
-                            this.game.addMessage('{0} uses {1} to protect {2} who boots, gts 2 bounty and 1 permanent control point.', context.player, this, context.target);
-                        } else {
-                            this.game.addMessage('{0} uses {1} to try to protect {2} but fails because they cannot boot.', context.player, this, context.target);
-                        }
-                    });
-
-                
+                this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot, amount: 2 }));
+                context.costs.boot.modifyControl(1);
+                this.game.addMessage('{0} uses {1} to protect {2} who boots, gets 2 bounty and 1 permanent control point.', 
+                    context.player, this, context.costs.boot);               
             }
         });
     }

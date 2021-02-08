@@ -16,6 +16,10 @@ class CardReaction extends PromptedTriggeredAbility {
         if (!super.meetsRequirements(context)) {
             return false;
         }
+    
+        if (this.game.shootout && this.game.shootout.headlineUsed && this.card.hasKeyword('headline')) {
+            return false;
+        }
 
         if(this.usage.isUsed()) {
             return false;
@@ -23,6 +27,11 @@ class CardReaction extends PromptedTriggeredAbility {
         
         return true;
     }
+
+    playTypePlayed() {
+        return 'react';
+    }
+
 }
 
 module.exports = CardReaction;

@@ -312,6 +312,13 @@ class DudeCard extends DrawCard {
         this.game.raiseEvent('onCardBountyChanged', { card: this, amount: amount * -1 });
     }
 
+    collectBounty(player) {
+        this.game.raiseEvent('onBountyCollected', { card: this, collector: player }, event => {
+            event.collector.modifyGhostRock(event.card.bounty);
+            event.card.game.addMessage('{0} collects {1} GR bounty for {2}.', event.collector, event.card.bounty, event.card);
+        });
+    }
+
     isWanted() {
         return this.tokens[Tokens.bounty] > 0;
     }

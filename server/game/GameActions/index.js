@@ -43,6 +43,15 @@ const GameActions = {
     aceCard: props => new AbilityAdapter(AceCard, props),
     addToHand: props => new AbilityAdapter(AddToHand, props),
     bootCard: props => new AbilityAdapter(BootCard, props),
+    /**
+     * Calls out a dude.
+     * 
+     * @param {*} props properties:
+     *  - `caller`: dude who is doing the Call out
+     *  - `callee`: dude who is being Called out
+     *  - `isCardEffect` (true): **true** if the call out comes from the effect of a card.\
+     *  - `canReject` (true): **true** if the callee can reject the call out.\
+     */
     callOut: props => new AbilityAdapter(CallOut, props),
     cancelEffects: props => new AbilityAdapter(CancelEffects, props),
     choose: props => new AbilityAdapter(

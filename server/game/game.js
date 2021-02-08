@@ -892,6 +892,19 @@ class Game extends EventEmitter {
         return this.abilityWindowStack.length !== 0;
     }
 
+    onceConditional(eventName, params, handler) {
+        let updatedParams = Object.assign({ condition: () => true, until: 'onRoundEnded'}, params);
+        let conditionalHandler = event => {
+            if (!updatedParams.condition(event)) {
+                this.onceConditional(eventName, updatedParams.condition, handler, updatedParams.until);
+                return;
+            }
+            handler(event);
+        }
+        this.once(eventName, conditionalHandler);
+        this.once(updatedParams.until, () => this.removeListener(eventName, conditionalHandler));
+    }
+
     raiseEvent(eventName, params, handler) {
         if(!handler) {
             handler = () => true;

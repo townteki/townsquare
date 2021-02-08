@@ -200,13 +200,22 @@ class BaseCard {
 
     applyAbilityEffect(ability, propertyFactory) {
         if (this.game.shootout) {
-            this.untilEndOfShootoutPhase(propertyFactory);
+            this.untilEndOfShootoutPhase(propertyFactory, ability);
         } else {
             var properties = propertyFactory(AbilityDsl);
             if (ability.playTypePlayed() === 'noon') {
-                this.game.addEffect(this, Object.assign({ duration: 'untilEndOfRound', location: 'any' }, properties));
+                this.game.addEffect(this, Object.assign({ 
+                    duration: 'untilEndOfRound', 
+                    location: 'any', 
+                    ability: ability 
+                }, properties));
             } else {
-                this.game.addEffect(this, Object.assign({ duration: 'untilEndOfPhase', location: 'any', phase: this.game.currentPhase }, properties));
+                this.game.addEffect(this, Object.assign({ 
+                    duration: 'untilEndOfPhase', 
+                    location: 'any', 
+                    phase: this.game.currentPhase, 
+                    ability: ability  
+                }, properties));
             }
         }
     }
@@ -215,43 +224,65 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * challenge.
      */
-    untilEndOfShootoutPhase(propertyFactory) {
+    untilEndOfShootoutPhase(propertyFactory, ability) {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfShootoutPhase', location: 'any' }, properties));
+        this.game.addEffect(this, Object.assign({ 
+            duration: 'untilEndOfShootoutPhase', 
+            location: 'any', 
+            ability: ability  
+        }, properties));
     }
 
     /**
      * Applies an immediate effect which lasts until the end of the phase.
      */
-    untilEndOfPhase(propertyFactory, phaseName = '') {
+    untilEndOfPhase(propertyFactory, phaseName = '', ability) {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfPhase', location: 'any', phase: phaseName }, properties));
+        this.game.addEffect(this, Object.assign({ 
+            duration: 'untilEndOfPhase', 
+            location: 'any', 
+            phase: phaseName, 
+            ability: ability   
+        }, properties));
     }
 
     /**
      * Applies an immediate effect which expires at the end of the phase. Per
      * game rules this duration is outside of the phase.
      */
-    atEndOfPhase(propertyFactory, phaseName = '') {
+    atEndOfPhase(propertyFactory, phaseName = '', ability) {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'atEndOfPhase', location: 'any', phase: phaseName }, properties));
+        this.game.addEffect(this, Object.assign({ 
+            duration: 'atEndOfPhase', 
+            location: 'any', 
+            phase: phaseName, 
+            ability: ability   
+        }, properties));
     }
 
     /**
      * Applies an immediate effect which lasts until the end of the round.
      */
-    untilEndOfRound(propertyFactory) {
+    untilEndOfRound(propertyFactory, ability) {
         var properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'untilEndOfRound', location: 'any' }, properties));
+        this.game.addEffect(this, Object.assign({ 
+            duration: 'untilEndOfRound', 
+            location: 'any', 
+            ability: ability   
+        }, properties));
     }
 
     /**
      * Applies a lasting effect which lasts until an event contained in the
      * `until` property for the effect has occurred.
      */
-    lastingEffect(propertyFactory) {
+    lastingEffect(propertyFactory, ability) {
         let properties = propertyFactory(AbilityDsl);
-        this.game.addEffect(this, Object.assign({ duration: 'custom', location: 'any' }, properties));
+        this.game.addEffect(this, Object.assign({ 
+            duration: 'custom', 
+            location: 'any', 
+            ability: ability   
+        }, properties));
     }
 
     doAction(player, arg) {
@@ -519,8 +550,8 @@ class BaseCard {
         return this.game.shootout && this.game.shootout.isInShootout(this);
     }
 
-    isOpposing(card) {
-        return this.isParticipating() && this.controller !== card.controller;
+    isOpposing(player) {
+        return this.isParticipating() && this.controller !== player;
     }
 
     isInLeaderPosse() {
@@ -575,7 +606,7 @@ class BaseCard {
 
     allowGameAction(actionType, context) {
         let currentAbilityContext = context || this.game.currentAbilityContext;
-        return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext));
+        return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller));
     }
 
     addAbilityRestriction(restriction) {

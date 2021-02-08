@@ -146,6 +146,10 @@ class CardAction extends BaseAbility {
             }
         }
 
+        if (this.card.hasKeyword('headline') && this.game.shootout.headlineUsed) {
+            return false;
+        }
+
         if(this.isCardAbility() && !context.player.canTrigger(this)) {
             return false;
         }
