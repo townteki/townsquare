@@ -58,9 +58,9 @@ const CostBuilders = {
         selectAny: 'Select any number of cards to lower bounty'
     }),
     boot: new CostBuilder(new BootCost(), {
-        select: 'Select card to kneel',
-        selectMultiple: number => `Select ${number} cards to kneel`,
-        selectAny: 'Select any number of cards to kneel'
+        select: 'Select card to boot',
+        selectMultiple: number => `Select ${number} cards to boot`,
+        selectAny: 'Select any number of cards to boot'
     }),
     placeInDeadPileFromHand: new CostBuilder(new PlaceInDeadPileFromHandCost(), {
         select: 'Select card to place into dead pile',

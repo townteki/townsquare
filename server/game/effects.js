@@ -9,18 +9,35 @@ const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const {Tokens} = require('./Constants');
 
-function cannotEffect(type) {
-    return function(predicate) {
-        let restriction = new CannotRestriction(type, predicate);
-        return {
-            apply: function(card) {
-                card.addAbilityRestriction(restriction);
-            },
-            unapply: function(card) {
-                card.removeAbilityRestriction(restriction);
-            }
-        };
+function cannotEffect(type, playType) {
+    return function(controller, predicate) {
+        return restrictionEffect(new CannotRestriction(type, playType, controller, predicate));
     };
+}
+
+// if specific game actions cannot be played on card (e.g. ace, discard, callout, target)
+function cannotEffectPlayType(playType) {
+    return function(controller, predicate) {
+        return restrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
+    };
+}
+
+// if specific ability play type cannot be played on card (e.g. shootout, resolution)
+function cannotEffectType(type) {
+    return function(controller, predicate) {
+        return restrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
+    };
+}
+
+function restrictionEffect(restriction) {
+    return {
+        apply: function(card) {
+            card.addAbilityRestriction(restriction);
+        },
+        unapply: function(card) {
+            card.removeAbilityRestriction(restriction);
+        }
+    }; 
 }
 
 function losesAspectEffect(aspect) {
@@ -860,19 +877,9 @@ const Effects = {
         let restriction = (card, playingType) => playingType === 'setup' && condition(card);
         return this.cannotPutIntoPlay(restriction);
     },
-    cannotBeBypassedByStealth: cannotEffect('bypassByStealth'),
-    cannotBeDiscarded: cannotEffect('discard'),
-    cannotBeKneeled: cannotEffect('kneel'),
-    cannotBeStood: cannotEffect('stand'),
-    cannotBeKilled: cannotEffect('kill'),
-    cannotBeSaved: cannotEffect('save'),
-    cannotBePutIntoShadows: cannotEffect('putIntoShadows'),
-    cannotBeRemovedFromGame: cannotEffect('removeFromGame'),
-    cannotBeReturnedToHand: cannotEffect('returnToHand'),
-    cannotBeSacrificed: cannotEffect('sacrifice'),
-    cannotIncreaseStrength: cannotEffect('increaseStrength'),
-    cannotDecreaseStrength: cannotEffect('decreaseStrength'),
-    cannotGainPower: cannotEffect('gainPower'),
+    cannotBeAffectedByShootout: cannotEffectPlayType('shootout', 'opponent'),
+    cannotBeTargetedByShootout: cannotEffect('target', 'shootout'),
+    cannotBeTargeted: cannotEffectType('target'),
     cannotGainGold: function() {
         return {
             targetType: 'player',
@@ -884,7 +891,6 @@ const Effects = {
             }
         };
     },
-    cannotTarget: cannotEffect('target'),
     setMaxGoldGain: function(max) {
         return {
             targetType: 'player',

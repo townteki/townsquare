@@ -21,9 +21,7 @@ class DiscardCard extends GameAction {
         return this.event('onCardDiscarded', params, event => {
             if (event.originalLocation === 'play area' && event.card.bounty) {
                 if ((event.isCardEffect && event.isFromOpponent) || event.isCasualty) {
-                    let opponent = event.card.controller.getOpponent();
-                    opponent.modifyGhostRock(event.card.bounty);
-                    event.card.game.addMessage('{0} collects {1} GR bounty for {2}.', opponent, event.card.bounty, event.card);
+                    event.card.collectBounty(event.card.controller.getOpponent());
                 }
             }
             event.cardStateWhenDiscarded = event.card.createSnapshot();

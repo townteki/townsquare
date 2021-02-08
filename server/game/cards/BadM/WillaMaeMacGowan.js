@@ -7,7 +7,7 @@ class WillaMaeMacGowan extends DudeCard {
             playType: 'resolution',
             cost: ability.costs.aceSelf(),
             handler: context => {
-                this.game.shootout.actOnPlayerPosse(context.player, card => this.game.shootout.runHome(card));
+                this.game.shootout.actOnPlayerPosse(context.player, card => this.game.shootout.sendHome(card));
                 this.game.addMessage('{0} uses {1} to send all other dudes in her posse home booted.', context.player, this);
             }
         });

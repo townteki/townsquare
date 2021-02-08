@@ -29,6 +29,7 @@ class Shootout extends Phase {
         }
 
         this.jobSuccessful = false;
+        this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
         this.initialise([
@@ -201,9 +202,9 @@ class Shootout extends Phase {
         return { player: this.opposingPlayer, number: 5 + this.opposingPosse.getStudBonus() };
     }
 
-    runHome(card) {
-        this.removeFromPosse(card);
-        this.game.resolveGameAction(GameActions.sendHome({ card: card, options: { isCardEffect: false } }));
+    sendHome(card, options) {
+        this.removeFromPosse(card);  
+        this.game.resolveGameAction(GameActions.sendHome({ card: card, options: options }));
     }
 
     addToPosse(dude) {
@@ -337,7 +338,7 @@ class Shootout extends Phase {
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
         } else {
             if (this.isJob()) {
-                this.actOnLeaderPosse(card => this.runHome(card)); 
+                this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false })); 
             }
         }
     }

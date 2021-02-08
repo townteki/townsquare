@@ -4,7 +4,7 @@ class VasilisTheBoar extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.isParticipating(),
-            match: card => card.getType() == 'dude' && card.isOpposing(this) && card.isWanted(),
+            match: card => card.getType() == 'dude' && card.isOpposing(this.controller) && card.isWanted(),
             effect: [
                 ability.effects.modifyValue(-2)
             ]

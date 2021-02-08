@@ -24,6 +24,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.waitForTargetResolution()),
             new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
+            new SimpleStep(game, () => this.postResolveAbilityUpdates()),
             new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
             new SimpleStep(game, () => this.game.popAbilityContext())
         ]);
@@ -193,6 +194,12 @@ class AbilityResolver extends BaseStep {
         }
     }
 
+    postResolveAbilityUpdates() {
+        if (this.context.source && this.context.source.hasKeyword('headline')) {
+            this.game.shootout.headlineUsed = true;
+        }
+    }
+
     raiseOnAbilityResolvedEvent() {
         // An event card is considered to be played even if it has been
         // cancelled. Raising the event here will allow forced reactions and
@@ -203,6 +210,7 @@ class AbilityResolver extends BaseStep {
         if (this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
                 this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
+                this.context.source.resetAbilities();
             }
 
             let event = new Event('onCardPlayed', { 

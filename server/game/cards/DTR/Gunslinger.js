@@ -4,11 +4,7 @@ class Gunslinger extends DudeCard {
 
     constructor(owner, cardData) {
         super(owner, cardData);
-        this.game.once('onDudeLeftPosse', event => {
-            if (event.card === this) {
-                this.removeFromGame()
-            }
-        });
+        this.game.onceConditional('onDudeLeftPosse', { condition: event => event.card === this }, () => this.removeFromGame());
         this.game.once('onShootoutPhaseFinished', () => {
             if (this.location === 'play area') {
                 this.removeFromGame();
