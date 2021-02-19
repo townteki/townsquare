@@ -129,7 +129,7 @@ class AbilityTarget {
                 return true;
             },
             onMenuCommand: () => {
-                result.resolve(context.game.townsquare.getLocationCard()); 
+                result.resolve(context.game.townsquare.locationCard); 
                 this.messages.outputSelected(context.game, context);
                 return true;               
             }

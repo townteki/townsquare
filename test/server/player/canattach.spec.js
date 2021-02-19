@@ -9,11 +9,11 @@ describe('Player', function() {
         this.player.addOutfitToTown.and.callFake(function() {});
         this.player.initialise();
 
-        this.cardSpy = jasmine.createSpyObj('card', ['allowAttachment, getLocation']);
+        this.cardSpy = jasmine.createSpyObj('card', ['allowAttachment, getGameLocation']);
         this.cardSpy.player = this.player;
         this.cardSpy.allowAttachment = jasmine.createSpy('allowAttachment');
         this.cardSpy.allowAttachment.and.returnValue(true);
-        this.cardSpy.getLocation = jasmine.createSpy('getLocation');
+        this.cardSpy.getGameLocation = jasmine.createSpy('getGameLocation');
         this.cardSpy.location = 'play area';
         this.attachmentSpy = jasmine.createSpyObj('goods', ['canAttach']);
         this.attachmentSpy.canAttach.and.returnValue(true);
@@ -38,7 +38,7 @@ describe('Player', function() {
 
         describe('when shoppin in uncontrolled location', function() {
             it('should return false', function() {
-                this.cardSpy.getLocation.and.callFake(function() {
+                this.cardSpy.getGameLocation.and.callFake(function() {
                     return { controller: this.player, determineController: () => 'other' };
                 });
                 expect(this.player.canAttach(this.attachmentSpy, this.cardSpy, 'shoppin')).toBe(false);
@@ -47,7 +47,7 @@ describe('Player', function() {
 
         describe('when shoppin in controlled location', function() {
             beforeEach(function() {
-                this.cardSpy.getLocation.and.callFake(function() {
+                this.cardSpy.getGameLocation.and.callFake(function() {
                     return { controller: this.player, determineController: () => this.player };
                 });
             });

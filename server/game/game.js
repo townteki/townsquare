@@ -83,7 +83,7 @@ class Game extends EventEmitter {
         this.skipPhase = {};
         this.cardVisibility = new CardVisibility(this);
 
-        this.townsquare = new Location.TownSquare();
+        this.townsquare = new Location.TownSquare(this.game);
 
         for(let player of Object.values(details.players || {})) {
             this.playersAndSpectators[player.user.username] = new Player(player.id, player.user, this.owner === player.user.username, this);
@@ -247,7 +247,7 @@ class Game extends EventEmitter {
     // use card in condition
     findLocations(condition) {
         let foundLocations = this.game.filterCardsInPlay(card => condition(card));
-        if (condition(this.game.townsquare.getLocationCard())) {
+        if (condition(this.game.townsquare.locationCard)) {
             foundLocations.concat(this.game.townsquare);
         }
         return foundLocations;
@@ -1078,7 +1078,7 @@ class Game extends EventEmitter {
         if (!this.shootout) {
             return;
         }
-        return this.shootout.shootoutLocation.getLocationCard(this);
+        return this.shootout.shootoutLocation.locationCard;
     }
 
     isParticipatingInShootout(card) {

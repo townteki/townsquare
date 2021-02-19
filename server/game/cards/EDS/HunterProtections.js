@@ -11,7 +11,7 @@ class HunterProtections extends DeedCard {
                 ability.costs.boot(card =>
                     card.getType() === 'dude' &&
                     card.control <= 0 && 
-                    card.getLocationCard() === this
+                    card.locationCard === this
                     )
             ],
             handler: context => {

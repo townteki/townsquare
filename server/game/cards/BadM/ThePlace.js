@@ -5,7 +5,7 @@ class ThePlace extends DeedCard {
         this.persistentEffect({
             targetController: 'any',
             condition: () => true,
-            match: card => card.getType() === 'deed' && !card.isSameStreet(this) && card.owner.leftmostLocation() === card.getLocation(),
+            match: card => card.getType() === 'deed' && !card.isSameStreet(this) && card.owner.leftmostLocation() === card.getGameLocation(),
             effect: ability.effects.modifyProduction(2)
         });
     }

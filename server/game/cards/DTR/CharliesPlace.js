@@ -8,7 +8,7 @@ class CharliesPlace extends DeedCard {
             cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Select dude to raise or lower bullets by 2',
-                cardCondition: { location: 'play area', controller: 'any', condition: card => card.getLocationCard() === this },
+                cardCondition: { location: 'play area', controller: 'any', condition: card => card.locationCard === this },
                 cardType: ['dude']
             },
             handler: context => {

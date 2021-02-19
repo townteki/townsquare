@@ -77,7 +77,7 @@ class DudeCard extends DrawCard {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && this.gamelocation &&
                     card.gamelocation === this.gamelocation &&
-                    !this.getLocation().isHome(card.controller) &&
+                    !this.getGameLocation().isHome(card.controller) &&
                     card.uuid !== this.uuid &&
                     card.controller !== this.controller,
                 autoSelect: false
@@ -138,7 +138,7 @@ class DudeCard extends DrawCard {
     }
 
     moveToLocation(destinationUuid) {
-        let origin = this.getLocation();
+        let origin = this.getGameLocation();
         if (origin) {
             origin.removeDude(this);
         }
@@ -253,7 +253,7 @@ class DudeCard extends DrawCard {
         if (!shootout) {
             return { canJoin: false };
         } 
-        if (this.getLocation().isAdjacent(shootout.mark.gamelocation) && (!this.booted || allowBooted)) {
+        if (this.getGameLocation().isAdjacent(shootout.mark.gamelocation) && (!this.booted || allowBooted)) {
             return { canJoin: true, needToBoot: true };
         }
 
@@ -261,7 +261,7 @@ class DudeCard extends DrawCard {
             if (this.gamelocation === shootout.leader.gamelocation) {
                 return { canJoin: true, needToBoot: true };
             } 
-            if (this.getLocation().isAdjacent(shootout.leader.gamelocation)) {
+            if (this.getGameLocation().isAdjacent(shootout.leader.gamelocation)) {
                 return { canJoin: true, needToBoot: true };
             }         
         }
@@ -336,7 +336,7 @@ class DudeCard extends DrawCard {
     }
 
     leavesPlay() {
-        let currentLocation = this.getLocation();
+        let currentLocation = this.getGameLocation();
         if (currentLocation) {
             currentLocation.removeDude(this);
         }
