@@ -4,11 +4,13 @@ describe('the Player', () => {
     var game = jasmine.createSpyObj('game', ['raiseEvent']);
 
     var player = new Player('1', {username: 'Player 1', settings: {}}, true, game);
+    player.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
+    player.addOutfitToTown.and.callFake(function() {});
     var drawDeck = [
-        { name: 'foo' },
-        { name: 'bar' },
-        { name: 'baz' },
-        { name: 'ball' }
+        { title: 'foo' },
+        { title: 'bar' },
+        { title: 'baz' },
+        { title: 'ball' }
     ];
 
     beforeEach(() => {
@@ -29,7 +31,7 @@ describe('the Player', () => {
 
             it('should filter the results using the predicate', () => {
                 var cards = player.searchDrawDeck((card) => {
-                    return card.name === 'bar';
+                    return card.title === 'bar';
                 });
 
                 expect(cards.length).toBe(1);
@@ -42,8 +44,8 @@ describe('the Player', () => {
                     var cards = player.searchDrawDeck(2);
 
                     expect(cards.length).toBe(2);
-                    expect(cards[0].name).toBe('foo');
-                    expect(cards[1].name).toBe('bar');
+                    expect(cards[0].title).toBe('foo');
+                    expect(cards[1].title).toBe('bar');
                 });
             });
 
@@ -52,8 +54,8 @@ describe('the Player', () => {
                     var cards = player.searchDrawDeck(-2);
 
                     expect(cards.length).toBe(2);
-                    expect(cards[0].name).toBe('baz');
-                    expect(cards[1].name).toBe('ball');
+                    expect(cards[0].title).toBe('baz');
+                    expect(cards[1].title).toBe('ball');
                 });
             });
         });
@@ -61,12 +63,12 @@ describe('the Player', () => {
         describe('when both a limit and a predicate are passed', () => {
             it('should limit and filter', () => {
                 var cards = player.searchDrawDeck(3, (card) => {
-                    return card.name[0] === 'b';
+                    return card.title[0] === 'b';
                 });
 
                 expect(cards.length).toBe(2);
-                expect(cards[0].name).toBe('bar');
-                expect(cards[1].name).toBe('baz');
+                expect(cards[0].title).toBe('bar');
+                expect(cards[1].title).toBe('baz');
             });
         });
     });

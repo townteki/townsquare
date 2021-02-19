@@ -41,15 +41,15 @@ describe('TriggeredAbilityWindow', function() {
         }
 
         this.context1 = { context: 1, player: this.player1Spy, event: this.eventSpy };
-        this.abilityCard1 = createCard({ uuid: '111', name: 'The Card', controller: this.player1Spy });
+        this.abilityCard1 = createCard({ uuid: '111', title: 'The Card', controller: this.player1Spy });
         this.ability1Spy = createAbility(this.abilityCard1, this.context1);
 
         this.context2 = { context: 2, player: this.player1Spy, event: this.eventSpy };
-        this.abilityCard2 = createCard({ uuid: '222', name: 'The Card 2', controller: this.player1Spy });
+        this.abilityCard2 = createCard({ uuid: '222', title: 'The Card 2', controller: this.player1Spy });
         this.ability2Spy = createAbility(this.abilityCard2, this.context2);
 
         this.context3 = { context: 3, player: this.player2Spy, event: this.eventSpy };
-        this.abilityCard3 = createCard({ uuid: '333', name: 'Their Card', controller: this.player2Spy });
+        this.abilityCard3 = createCard({ uuid: '333', title: 'Their Card', controller: this.player2Spy });
         this.ability3Spy = createAbility(this.abilityCard3, this.context3);
     });
 

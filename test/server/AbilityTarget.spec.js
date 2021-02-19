@@ -6,10 +6,10 @@ describe('AbilityTarget', function () {
         this.gameSpy.queueSimpleStep.and.callFake(func => func());
         this.card1 = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
         this.card1.allowGameAction.and.returnValue(true);
-        this.card1.getType.and.returnValue('character');
+        this.card1.getType.and.returnValue('dude');
         this.card2 = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
         this.card2.allowGameAction.and.returnValue(true);
-        this.card2.getType.and.returnValue('location');
+        this.card2.getType.and.returnValue('deed');
         this.gameSpy.allCards = [this.card1, this.card2];
         this.player = { player: 1 };
         this.source = { source: 1 };
@@ -24,6 +24,18 @@ describe('AbilityTarget', function () {
             cardCondition: this.cardCondition,
             messages: this.abilityMessagesSpy
         };
+        this.selectPromptProperties = {
+            activePromptTitle: undefined,
+            source: this.source,
+            target: 1,
+            onSelect: jasmine.any(Function),
+            onCancel: jasmine.any(Function),
+            selector: jasmine.any(Object),
+            context: this.context, 
+            autoSelect: undefined,
+            additionalButtons: [  ],
+            onMenuCommand: jasmine.any(Function)
+        };
     });
 
     describe('a normal target', function() {
@@ -32,19 +44,6 @@ describe('AbilityTarget', function () {
         });
 
         describe('canResolve()', function() {
-            describe('when there is a non-draw card', function() {
-                beforeEach(function() {
-                    this.card1.getType.and.returnValue('plot');
-
-                    this.target.canResolve(this.context);
-                });
-
-                it('should not call card condition on that card', function() {
-                    expect(this.cardCondition).not.toHaveBeenCalledWith(this.card1, this.context);
-                    expect(this.cardCondition).toHaveBeenCalledWith(this.card2, this.context);
-                });
-            });
-
             describe('when there is at least 1 matching card', function() {
                 beforeEach(function() {
                     this.cardCondition.and.callFake(card => card === this.card2);
@@ -75,14 +74,7 @@ describe('AbilityTarget', function () {
 
             it('should prompt the player to select the target', function() {
                 this.target.resolve(this.context);
-                expect(this.gameSpy.promptForSelect).toHaveBeenCalledWith(this.player, {
-                    source: this.source,
-                    target: 1,
-                    onSelect: jasmine.any(Function),
-                    onCancel: jasmine.any(Function),
-                    selector: jasmine.any(Object),
-                    context: this.context
-                });
+                expect(this.gameSpy.promptForSelect).toHaveBeenCalledWith(this.player, this.selectPromptProperties);
             });
 
             describe('the select prompt', function() {
@@ -310,22 +302,8 @@ describe('AbilityTarget', function () {
 
             it('should prompt each player to select the target', function() {
                 this.target.resolve(this.context);
-                expect(this.gameSpy.promptForSelect).toHaveBeenCalledWith(this.player, {
-                    source: this.source,
-                    target: 1,
-                    onSelect: jasmine.any(Function),
-                    onCancel: jasmine.any(Function),
-                    selector: jasmine.any(Object),
-                    context: this.context
-                });
-                expect(this.gameSpy.promptForSelect).toHaveBeenCalledWith(this.player2, {
-                    source: this.source,
-                    target: 1,
-                    onSelect: jasmine.any(Function),
-                    onCancel: jasmine.any(Function),
-                    selector: jasmine.any(Object),
-                    context: this.context
-                });
+                expect(this.gameSpy.promptForSelect).toHaveBeenCalledWith(this.player, this.selectPromptProperties);
+                expect(this.gameSpy.promptForSelect).toHaveBeenCalledWith(this.player2, this.selectPromptProperties);
             });
         });
     });

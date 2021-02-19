@@ -195,25 +195,12 @@ describe('BaseAbility', function () {
 
             this.card1 = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
             this.card1.allowGameAction.and.returnValue(true);
-            this.card1.getType.and.returnValue('character');
+            this.card1.getType.and.returnValue('dude');
             this.card2 = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
             this.card2.allowGameAction.and.returnValue(true);
-            this.card2.getType.and.returnValue('location');
+            this.card2.getType.and.returnValue('deed');
             this.gameSpy.allCards = [this.card1, this.card2];
             this.context = { game: this.gameSpy };
-        });
-
-        describe('when there is a non-draw card', function() {
-            beforeEach(function() {
-                this.card1.getType.and.returnValue('plot');
-
-                this.ability.canResolveTargets(this.context);
-            });
-
-            it('should not call card condition on that card', function() {
-                expect(this.cardCondition).not.toHaveBeenCalledWith(this.card1, this.context);
-                expect(this.cardCondition).toHaveBeenCalledWith(this.card2, this.context);
-            });
         });
 
         describe('when there is at least 1 matching card', function() {

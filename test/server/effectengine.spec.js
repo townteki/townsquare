@@ -7,16 +7,12 @@ describe('EffectEngine', function() {
         this.discardedCard = { location: 'discard pile' };
         this.drawCard = { location: 'draw deck' };
         this.deadCard = { location: 'dead pile' };
-        this.activePlot = { location: 'active plot' };
-        this.plotCard = { location: 'plot deck' };
-        this.revealedPlot = { location: 'revealed plot' };
-        this.agendaCard = { location: 'agenda' };
-        this.factionCard = { location: 'faction card' };
+        this.drawHandCard = { location: 'draw hand' };
 
         this.gameSpy = jasmine.createSpyObj('game', ['on', 'removeListener', 'getPlayers', 'queueSimpleStep']);
         this.gameSpy.getPlayers.and.returnValue([]);
         this.gameSpy.queueSimpleStep.and.callFake(func => func());
-        this.gameSpy.allCards = [this.handCard, this.playAreaCard, this.discardedCard, this.drawCard, this.deadCard, this.activePlot, this.plotCard, this.revealedPlot, this.agendaCard, this.factionCard];
+        this.gameSpy.allCards = [this.handCard, this.playAreaCard, this.discardedCard, this.drawCard, this.deadCard, this.drawHandCard];
 
         this.effectSpy = jasmine.createSpyObj('effect', ['addTargets', 'clearInvalidTargets', 'hasEnded', 'isInActiveLocation', 'reapply', 'removeTarget', 'cancel', 'setActive', 'updateAppliedTargets']);
         this.effectSpy.isInActiveLocation.and.returnValue(true);
@@ -59,18 +55,6 @@ describe('EffectEngine', function() {
         beforeEach(function() {
             this.player = {};
             this.gameSpy.getPlayers.and.returnValue([this.player]);
-        });
-
-        it('should not include cards in the revealed plots pile', function() {
-            expect(this.engine.getTargets()).not.toContain(this.revealedPlot);
-        });
-
-        it('should not include agenda cards', function() {
-            expect(this.engine.getTargets()).not.toContain(this.agendaCard);
-        });
-
-        it('should not include faction cards', function() {
-            expect(this.engine.getTargets()).not.toContain(this.factionCard);
         });
 
         it('should include player objects', function() {
@@ -162,7 +146,7 @@ describe('EffectEngine', function() {
 
         describe('when an effect has a non-persistent duration', function() {
             beforeEach(function() {
-                this.effectSpy.duration = 'untilEndOfChallenge';
+                this.effectSpy.duration = 'untilEndOfShootoutPhase';
             });
 
             describe('and the card being blanked is the source for an effect', function() {
@@ -189,15 +173,15 @@ describe('EffectEngine', function() {
         });
     });
 
-    describe('onChallengeFinished()', function() {
+    describe('onShootoutRoundFinished()', function() {
         beforeEach(function() {
             this.engine.effects = [this.effectSpy];
         });
 
-        describe('when an effect has untilEndOfChallenge duration', function() {
+        describe('when an effect has untilEndOfShootoutRound duration', function() {
             beforeEach(function() {
-                this.effectSpy.duration = 'untilEndOfChallenge';
-                this.engine.onChallengeFinished({ challenge: {} });
+                this.effectSpy.duration = 'untilEndOfShootoutRound';
+                this.engine.onShootoutRoundFinished({ phase: {} });
             });
 
             it('should cancel the effect', function() {
@@ -209,10 +193,46 @@ describe('EffectEngine', function() {
             });
         });
 
-        describe('when an effect has a non-untilEndOfChallenge duration', function() {
+        describe('when an effect has a non-untilEndOfShootoutRound duration', function() {
             beforeEach(function() {
                 this.effectSpy.duration = 'persistent';
-                this.engine.onChallengeFinished({ challenge: {} });
+                this.engine.onShootoutRoundFinished({ phase: {} });
+            });
+
+            it('should not cancel the effect', function() {
+                expect(this.effectSpy.cancel).not.toHaveBeenCalled();
+            });
+
+            it('should not remove the effect from the list', function() {
+                expect(this.engine.effects).toContain(this.effectSpy);
+            });
+        });
+    });
+
+    describe('onShootoutPhaseFinished()', function() {
+        beforeEach(function() {
+            this.engine.effects = [this.effectSpy];
+        });
+
+        describe('when an effect has untilEndOfShootoutPhase duration', function() {
+            beforeEach(function() {
+                this.effectSpy.duration = 'untilEndOfShootoutPhase';
+                this.engine.onShootoutPhaseFinished({ phase: {} });
+            });
+
+            it('should cancel the effect', function() {
+                expect(this.effectSpy.cancel).toHaveBeenCalled();
+            });
+
+            it('should remove the effect from the list', function() {
+                expect(this.engine.effects).not.toContain(this.effectSpy);
+            });
+        });
+
+        describe('when an effect has a non-untilEndOfShootoutPhase duration', function() {
+            beforeEach(function() {
+                this.effectSpy.duration = 'persistent';
+                this.engine.onShootoutPhaseFinished({ phase: {} });
             });
 
             it('should not cancel the effect', function() {
@@ -233,7 +253,7 @@ describe('EffectEngine', function() {
         describe('when an effect has untilEndOfPhase duration', function() {
             beforeEach(function() {
                 this.effectSpy.duration = 'untilEndOfPhase';
-                this.engine.onPhaseEnded({ phase: 'marshal' });
+                this.engine.onPhaseEnded({ phase: 'high noon' });
             });
 
             it('should cancel the effect', function() {
@@ -248,7 +268,7 @@ describe('EffectEngine', function() {
         describe('when an effect has a non-untilEndOfPhase duration', function() {
             beforeEach(function() {
                 this.effectSpy.duration = 'persistent';
-                this.engine.onPhaseEnded({ phase: 'marshal' });
+                this.engine.onPhaseEnded({ phase: 'high noon' });
             });
 
             it('should not cancel the effect', function() {

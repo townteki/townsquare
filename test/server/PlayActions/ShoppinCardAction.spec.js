@@ -1,32 +1,30 @@
-const MarshalCardAction = require('../../../server/game/PlayActions/MarshalCardAction');
+const ShoppinCardAction = require('../../../server/game/PlayActions/ShoppinCardAction');
 
-describe('MarshalCardAction', function () {
+describe('ShoppinCardAction', function () {
     beforeEach(function() {
         this.gameSpy = jasmine.createSpyObj('game', ['addMessage', 'on', 'raiseEvent', 'removeListener']);
         this.gameSpy.raiseEvent.and.callFake(function(name, params, handler) {
-            handler();
+            handler({ context: params.context, playingType: params.playingType, target: params.target });
         });
-        this.playerSpy = jasmine.createSpyObj('player', ['canDuplicate', 'canPutIntoPlay', 'isCardInPlayableLocation', 'putIntoPlay']);
+        this.playerSpy = jasmine.createSpyObj('player', ['canPutIntoPlay', 'isCardInPlayableLocation', 'putIntoPlay']);
         this.cardSpy = jasmine.createSpyObj('card', ['getType']);
         this.cardSpy.controller = this.playerSpy;
         this.cardSpy.owner = this.playerSpy;
         this.context = {
-            costs: {},
             game: this.gameSpy,
             player: this.playerSpy,
             source: this.cardSpy
         };
-        this.action = new MarshalCardAction();
+        this.action = new ShoppinCardAction();
     });
 
     describe('meetsRequirements()', function() {
         beforeEach(function() {
-            this.gameSpy.currentPhase = 'marshal';
-            this.playerSpy.allowMarshal = true;
-            this.playerSpy.canDuplicate.and.returnValue(false);
+            this.gameSpy.currentPhase = 'high noon';
             this.playerSpy.canPutIntoPlay.and.returnValue(true);
             this.playerSpy.isCardInPlayableLocation.and.returnValue(true);
-            this.cardSpy.getType.and.returnValue('character');
+            this.cardSpy.location = 'hand';
+            this.cardSpy.getType.and.returnValue('dude');
         });
 
         describe('when all conditions are met', function() {
@@ -35,9 +33,9 @@ describe('MarshalCardAction', function () {
             });
         });
 
-        describe('when the phase not marshal', function() {
+        describe('when the phase not high noon', function() {
             beforeEach(function() {
-                this.gameSpy.currentPhase = 'dominance';
+                this.gameSpy.currentPhase = 'gambling';
             });
 
             it('should return false', function() {
@@ -45,7 +43,7 @@ describe('MarshalCardAction', function () {
             });
         });
 
-        describe('when the card is not in a valid marshal location', function() {
+        describe('when the card is not in a valid location', function() {
             beforeEach(function() {
                 this.playerSpy.isCardInPlayableLocation.and.returnValue(false);
             });
@@ -55,9 +53,9 @@ describe('MarshalCardAction', function () {
             });
         });
 
-        describe('when the card is an event', function() {
+        describe('when the card is an action', function() {
             beforeEach(function() {
-                this.cardSpy.getType.and.returnValue('event');
+                this.cardSpy.getType.and.returnValue('action');
             });
 
             it('should return false', function() {
@@ -82,7 +80,11 @@ describe('MarshalCardAction', function () {
         });
 
         it('should put the card into play', function() {
-            expect(this.playerSpy.putIntoPlay).toHaveBeenCalledWith(this.cardSpy, 'marshal');
+            expect(this.playerSpy.putIntoPlay).toHaveBeenCalledWith(this.cardSpy, { 
+                    playingType: 'shoppin', 
+                    target: '', 
+                    context: this.context 
+            });
         });
     });
 });

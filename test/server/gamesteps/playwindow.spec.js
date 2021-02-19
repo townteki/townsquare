@@ -1,9 +1,9 @@
-const ActionWindow = require('../../../server/game/gamesteps/actionwindow.js');
+const PlayWindow = require('../../../server/game/gamesteps/playwindow.js');
 const Game = require('../../../server/game/game.js');
 const Player = require('../../../server/game/player.js');
 const Settings = require('../../../server/settings.js');
 
-describe('ActionWindow', function() {
+describe('PlayWindow', function() {
     beforeEach(function() {
         this.gameService = jasmine.createSpyObj('gameService', ['save']);
         this.game = new Game({ owner: {} }, { gameService: this.gameService });
@@ -13,19 +13,17 @@ describe('ActionWindow', function() {
         this.game.playersAndSpectators[this.player1.name] = this.player1;
         this.game.playersAndSpectators[this.player2.name] = this.player2;
 
-        this.player1.promptedActionWindows['test'] = true;
-
-        this.prompt = new ActionWindow(this.game, 'Test Window', 'test');
+        this.prompt = new PlayWindow(this.game, 'Test Window', 'test');
     });
 
     it('should prompt in first player order', function() {
         expect(this.prompt.currentPlayer).toBe(this.player2);
     });
 
-    describe('onMenuCommand()', function() {
+    describe('onDone()', function() {
         describe('when it is the current player', function() {
             beforeEach(function() {
-                this.prompt.onMenuCommand(this.player2);
+                this.prompt.onDone(this.player2);
             });
 
             it('should make the next player be the current player', function() {
@@ -35,7 +33,7 @@ describe('ActionWindow', function() {
 
         describe('when it is not the current player', function() {
             beforeEach(function() {
-                this.prompt.onMenuCommand(this.player1);
+                this.prompt.onDone(this.player1);
             });
 
             it('should not change the current player', function() {
@@ -44,11 +42,45 @@ describe('ActionWindow', function() {
         });
     });
 
+    describe('onPass()', function() {
+        describe('when it is the current player', function() {
+            beforeEach(function() {
+                this.prompt.onPass(this.player2);
+            });
+
+            it('should make the next player be the current player', function() {
+                expect(this.prompt.currentPlayer).toBe(this.player1);
+            });
+        });
+
+        describe('when next player does not pass', function() {
+            beforeEach(function() {
+                this.prompt.onPass(this.player2);
+                this.prompt.onDone(this.player1);
+            });
+
+            it('should change back to the next player', function() {
+                expect(this.prompt.currentPlayer).toBe(this.player2);
+            });
+        });
+
+        describe('when both players pass', function() {
+            beforeEach(function() {
+                this.prompt.onPass(this.player2);
+                this.prompt.onPass(this.player1);
+            });
+
+            it('should complete the play window', function() {
+                expect(this.prompt.isComplete()).toBe(true)
+            });
+        });
+    });
+
     describe('markActionAsTaken()', function() {
         describe('when a player takes an action', function() {
             beforeEach(function() {
                 // Complete the window for player 2
-                this.prompt.onMenuCommand(this.player2);
+                this.prompt.onPass(this.player2);
 
                 // Player 1 takes an action
                 this.prompt.markActionAsTaken(this.player1);
@@ -59,18 +91,11 @@ describe('ActionWindow', function() {
             });
 
             it('should re-prompt other players once the current player is done', function() {
-                this.prompt.onMenuCommand(this.player2);
+                this.prompt.onDone(this.player2);
                 expect(this.prompt.currentPlayer).toBe(this.player1);
                 expect(this.prompt.isComplete()).toBe(false);
             });
 
-            it('should require two consecutive passes before completing', function() {
-                // Complete without taking action
-                this.prompt.onMenuCommand(this.player2);
-                this.prompt.onMenuCommand(this.player1);
-
-                expect(this.prompt.isComplete()).toBe(true);
-            });
         });
 
         describe('when someone other than the current player takes an action', function() {
@@ -89,9 +114,9 @@ describe('ActionWindow', function() {
     });
 
     describe('continue()', function() {
-        describe('when not all players are done', function() {
+        describe('when not all players passed', function() {
             beforeEach(function() {
-                this.prompt.onMenuCommand(this.player2);
+                this.prompt.onPass(this.player2);
             });
 
             it('should return false', function() {
@@ -99,10 +124,20 @@ describe('ActionWindow', function() {
             });
         });
 
-        describe('when all players are done', function() {
+        describe('when not all players are done', function() {
             beforeEach(function() {
-                this.prompt.onMenuCommand(this.player2);
-                this.prompt.onMenuCommand(this.player1);
+                this.prompt.onDone(this.player2);
+            });
+
+            it('should return false', function() {
+                expect(this.prompt.continue()).toBe(false);
+            });
+        });
+
+        describe('when all players passed', function() {
+            beforeEach(function() {
+                this.prompt.onPass(this.player2);
+                this.prompt.onPass(this.player1);
             });
 
             it('should return true', function() {
@@ -110,32 +145,6 @@ describe('ActionWindow', function() {
             });
         });
 
-        describe('when only the second player has the window enabled', function() {
-            beforeEach(function() {
-                this.player1.promptedActionWindows['test'] = true;
-                this.player2.promptedActionWindows['test'] = false;
-            });
-
-            it('should prompt the first player even though the window is off', function() {
-                this.prompt.continue();
-
-                expect(this.prompt.currentPlayer).toBe(this.player2);
-            });
-
-            it('should not complete the prompt', function() {
-                expect(this.prompt.continue()).toBe(false);
-            });
-        });
-
-        describe('when both players have the window disabled', function() {
-            beforeEach(function() {
-                this.player1.promptedActionWindows['test'] = false;
-                this.player2.promptedActionWindows['test'] = false;
-            });
-
-            it('should complete the prompt', function() {
-                expect(this.prompt.continue()).toBe(true);
-            });
-        });
+        // TODO M2 check also playWindowOpened and events for opening and closing play windows
     });
 });

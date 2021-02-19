@@ -31,20 +31,20 @@ describe('PlainTextGameChatFormatter', function() {
         });
 
         it('works for embedded cards', function() {
-            let card = new BaseCard({}, { name: 'The Pounce That Was Promised' });
+            let card = new BaseCard({}, { title: 'The Gunslinger comes to town' });
             this.chat.addMessage('Player 1 plays {0} from their hand', card);
-            expect(this.formatter.format()).toMatch(/Player 1 plays The Pounce That Was Promised from their hand$/);
+            expect(this.formatter.format()).toMatch(/Player 1 plays The Gunslinger comes to town from their hand$/);
         });
 
         it('works for embedded players', function() {
             let player = new Spectator(1, { username: 'Player 1' });
-            this.chat.addMessage('{0} plays The Pounce That Was Promised from their hand', player);
-            expect(this.formatter.format()).toMatch(/Player 1 plays The Pounce That Was Promised from their hand$/);
+            this.chat.addMessage('{0} plays The Gunslinger comes to town from their hand', player);
+            expect(this.formatter.format()).toMatch(/Player 1 plays The Gunslinger comes to town from their hand$/);
         });
 
         it('works for embedded arrays', function() {
-            this.chat.addMessage('The character {0}', ['kneels', 'cries', 'dies']);
-            expect(this.formatter.format()).toMatch(/The character kneels, cries, and dies$/);
+            this.chat.addMessage('The dude {0}', ['boots', 'cries', 'dies']);
+            expect(this.formatter.format()).toMatch(/The dude boots, cries, and dies$/);
         });
     });
 });

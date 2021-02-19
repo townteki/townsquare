@@ -90,12 +90,6 @@ class Player extends Spectator {
         return token;
     }
 
-    createDefaultPlayableLocations() {
-        let playFromHand = ['marshal', 'marshalIntoShadows', 'play', 'ambush'].map(playingType => new PlayableLocation(playingType, card => card.controller === this && card.location === 'hand'));
-        let playFromShadows = ['outOfShadows', 'play'].map(playingType => new PlayableLocation(playingType, card => card.controller === this && card.location === 'shadows'));
-        return playFromHand.concat(playFromShadows);
-    }
-
     isSpectator() {
         return false;
     }
@@ -226,9 +220,9 @@ class Player extends Spectator {
     }
 
     isCardInPlayableLocation(card, playingType) {
-        return true;
-        // TODO M2 check if we need playable locations
-        //return this.playableLocations.some(location => location.playingType === playingType && location.contains(card));
+        let playableLocations = ['shoppin', 'play'].map(playingType => 
+            new PlayableLocation(playingType, card => card.controller === this && card.location === 'hand'));
+        return playableLocations.some(location => location.playingType === playingType && location.contains(card));
     }
 
 
@@ -652,7 +646,7 @@ class Player extends Spectator {
 
     entersPlay(card, params) {
         if(card.controller !== this) {
-            card.controller.allCards = _(card.controller.allCards.reject(c => c === card));
+            card.controller.allCards = card.controller.allCards.filter(c => c !== card);
             this.allCards.push(card);
         }                 
         card.controller = this;
@@ -1207,7 +1201,7 @@ class Player extends Spectator {
         if(card.location === 'play area') {
 
             if(card.owner !== this) {
-                card.owner.moveCard(card, targetLocation);
+                card.owner.moveCard(card, targetLocation, options, callback);
                 return;
             }
 
@@ -1373,6 +1367,10 @@ class Player extends Spectator {
         let isActivePlayer = activePlayer === this;
         let promptState = isActivePlayer ? this.promptState.getState() : {};
         let fullDiscardPile = this.discardPile.concat(this.beingPlayed);
+        let locationsState = this.locations.map(location => { return {
+            uuid: location.uuid,
+            order: location.order
+        }});
 
         let state = {
             legend: this.legend,
@@ -1388,7 +1386,7 @@ class Player extends Spectator {
             outfit: this.outfit.getSummary(activePlayer),
             firstPlayer: this.firstPlayer,
             handRank: this.handResult.rank,
-            locations: this.locations,
+            locations: locationsState,
             id: this.id,
             left: this.left,
             numDrawCards: this.drawDeck.length,

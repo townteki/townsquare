@@ -1,6 +1,6 @@
-const ForcedTriggeredAbilityWindow = require('../../../server/game/gamesteps/ForcedTriggeredAbilityWindow');
+const TraitTriggeredAbilityWindow = require('../../../server/game/gamesteps/TraitTriggeredAbilityWindow');
 
-describe('ForcedTriggeredAbilityWindow', function() {
+describe('TraitTriggeredAbilityWindow', function() {
     beforeEach(function() {
         this.player1Spy = jasmine.createSpyObj('player', ['isTimerEnabled']);
         this.player1Spy.name = 'player1';
@@ -15,7 +15,7 @@ describe('ForcedTriggeredAbilityWindow', function() {
         this.eventSpy.getConcurrentEvents.and.returnValue([this.eventSpy]);
         this.eventSpy.getPrimaryEvent.and.returnValue(this.eventSpy);
 
-        this.window = new ForcedTriggeredAbilityWindow(this.gameSpy, {
+        this.window = new TraitTriggeredAbilityWindow(this.gameSpy, {
             event: this.eventSpy,
             abilityType: 'forcedinterrupt'
         });
@@ -36,15 +36,15 @@ describe('ForcedTriggeredAbilityWindow', function() {
         }
 
         this.context1 = { context: 1, player: this.player1Spy, event: this.eventSpy };
-        this.abilityCard1 = createCard({ card: 1, name: 'The Card', controller: this.player1Spy });
+        this.abilityCard1 = createCard({ card: 1, title: 'The Card', controller: this.player1Spy });
         this.ability1Spy = createAbility(this.abilityCard1, this.context1);
 
         this.context2 = { context: 2, player: this.player1Spy, event: this.eventSpy };
-        this.abilityCard2 = createCard({ card: 2, name: 'The Card 2', controller: this.player1Spy });
+        this.abilityCard2 = createCard({ card: 2, title: 'The Card 2', controller: this.player1Spy });
         this.ability2Spy = createAbility(this.abilityCard2, this.context2);
 
         this.context3 = { context: 3, player: this.player2Spy, event: this.eventSpy };
-        this.abilityCard3 = createCard({ card: 3, name: 'Their Card', controller: this.player2Spy });
+        this.abilityCard3 = createCard({ card: 3, title: 'Their Card', controller: this.player2Spy });
         this.ability3Spy = createAbility(this.abilityCard3, this.context3);
 
         spyOn(this.window, 'gatherChoices');
@@ -104,14 +104,13 @@ describe('ForcedTriggeredAbilityWindow', function() {
                 this.result = this.window.continue();
             });
 
-            it('should prompt the first player', function() {
+            it('should prompt the first player for order of his traits', function() {
                 expect(this.gameSpy.promptWithMenu).toHaveBeenCalledWith(this.player1Spy, this.window, jasmine.objectContaining({
                     activePrompt: {
                         menuTitle: jasmine.any(String),
                         buttons: [
-                            jasmine.objectContaining({ text: 'player1 - The Card', arg: jasmine.any(String), method: 'chooseAbility' }),
-                            jasmine.objectContaining({ text: 'player1 - The Card 2', arg: jasmine.any(String), method: 'chooseAbility' }),
-                            jasmine.objectContaining({ text: 'player2 - Their Card', arg: jasmine.any(String), method: 'chooseAbility' })
+                            jasmine.objectContaining({ text: 'The Card', arg: jasmine.any(String), method: 'chooseAbility' }),
+                            jasmine.objectContaining({ text: 'The Card 2', arg: jasmine.any(String), method: 'chooseAbility' })
                         ]
                     }
                 }));

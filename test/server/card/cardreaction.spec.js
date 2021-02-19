@@ -4,9 +4,12 @@ const Event = require('../../../server/game/event.js');
 describe('CardReaction', function () {
     beforeEach(function () {
         this.gameSpy = jasmine.createSpyObj('game', ['on', 'popAbilityContext', 'pushAbilityContext', 'queueStep', 'removeListener', 'registerAbility', 'resolveGameAction']);
-        this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'getPrintedType', 'isAnyBlank']);
+        this.gameSpy.resolveGameAction.and.callFake((action, props) => { 
+            return { thenExecute: () => true }
+         });
+        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank']);
         this.cardSpy.location = 'play area';
-        this.limitSpy = jasmine.createSpyObj('limit', ['increment', 'isAtMax', 'registerEvents', 'unregisterEvents']);
+        this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
 
         this.properties = {
             when: {
@@ -29,20 +32,8 @@ describe('CardReaction', function () {
                 expect(this.action.location).toContain('play area');
             });
 
-            it('should default to agenda for cards with type agenda', function() {
-                this.cardSpy.getPrintedType.and.returnValue('agenda');
-                this.action = new CardReaction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.action.location).toContain('agenda');
-            });
-
-            it('should default to active plot for cards with type plot', function() {
-                this.cardSpy.getPrintedType.and.returnValue('plot');
-                this.action = new CardReaction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.action.location).toContain('active plot');
-            });
-
-            it('should default to hand for cards with type event', function() {
-                this.cardSpy.getPrintedType.and.returnValue('event');
+            it('should default to hand for cards with type action', function() {
+                this.cardSpy.getType.and.returnValue('action');
                 this.action = new CardReaction(this.gameSpy, this.cardSpy, this.properties);
                 expect(this.action.location).toContain('hand');
             });
@@ -116,6 +107,7 @@ describe('CardReaction', function () {
             this.event = new Event('onSomething', {});
             this.meetsRequirements = () => {
                 this.reaction = new CardReaction(this.gameSpy, this.cardSpy, this.properties);
+                this.reaction.usage = this.usageSpy;
                 this.context = this.reaction.createContext(this.event);
                 return this.reaction.meetsRequirements(this.context);
             };
@@ -176,14 +168,11 @@ describe('CardReaction', function () {
             });
         });
 
-        describe('when there is a limit', function() {
-            beforeEach(function() {
-                this.properties.limit = this.limitSpy;
-            });
+        describe('testing usage', function() {
 
-            describe('and the limit has been reached', function() {
+            describe('when card reaction was used', function() {
                 beforeEach(function() {
-                    this.limitSpy.isAtMax.and.returnValue(true);
+                    this.usageSpy.isUsed.and.returnValue(true);
                 });
 
                 it('should return false', function() {
@@ -191,9 +180,9 @@ describe('CardReaction', function () {
                 });
             });
 
-            describe('and the limit has not been reached', function() {
+            describe('when card reaction was not used', function() {
                 beforeEach(function() {
-                    this.limitSpy.isAtMax.and.returnValue(false);
+                    this.usageSpy.isUsed.and.returnValue(false);
                 });
 
                 it('should return true', function() {
@@ -257,6 +246,7 @@ describe('CardReaction', function () {
                 },
                 handler: () => true
             };
+            this.gameSpy.currentPlayWindow = { name: 'shootout plays' }
             this.reaction = this.createReaction();
             this.reaction.registerEvents();
         });
@@ -264,12 +254,14 @@ describe('CardReaction', function () {
         it('should register all when event handlers with the proper event type suffix', function() {
             expect(this.gameSpy.on).toHaveBeenCalledWith('onFoo:reaction', jasmine.any(Function));
             expect(this.gameSpy.on).toHaveBeenCalledWith('onBar:reaction', jasmine.any(Function));
+            // one more call for AbilityUsage registerEvents
+            expect(this.gameSpy.on).toHaveBeenCalledWith('onRoundEnded', jasmine.any(Function));
         });
 
         it('should not reregister events already registered', function() {
-            expect(this.gameSpy.on.calls.count()).toBe(2);
+            expect(this.gameSpy.on.calls.count()).toBe(3);
             this.reaction.registerEvents();
-            expect(this.gameSpy.on.calls.count()).toBe(2);
+            expect(this.gameSpy.on.calls.count()).toBe(3);
         });
     });
 
@@ -290,6 +282,8 @@ describe('CardReaction', function () {
             this.reaction.unregisterEvents();
             expect(this.gameSpy.removeListener).toHaveBeenCalledWith('onFoo:reaction', jasmine.any(Function));
             expect(this.gameSpy.removeListener).toHaveBeenCalledWith('onBar:reaction', jasmine.any(Function));
+            // one more call for AbilityUsage registerEvents
+            expect(this.gameSpy.on).toHaveBeenCalledWith('onRoundEnded', jasmine.any(Function));
         });
 
         it('should not remove listeners when they have not been registered', function() {
@@ -300,9 +294,9 @@ describe('CardReaction', function () {
         it('should not unregister events already unregistered', function() {
             this.reaction.registerEvents();
             this.reaction.unregisterEvents();
-            expect(this.gameSpy.removeListener.calls.count()).toBe(2);
+            expect(this.gameSpy.removeListener.calls.count()).toBe(3);
             this.reaction.unregisterEvents();
-            expect(this.gameSpy.removeListener.calls.count()).toBe(2);
+            expect(this.gameSpy.removeListener.calls.count()).toBe(3);
         });
     });
 });

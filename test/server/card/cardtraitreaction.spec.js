@@ -1,12 +1,15 @@
-const CardForcedReaction = require('../../../server/game/cardforcedreaction.js');
+const CardTraitReaction = require('../../../server/game/cardtraitreaction.js');
 const Event = require('../../../server/game/event.js');
 
 describe('CardForcedReaction', function () {
     beforeEach(function () {
         this.gameSpy = jasmine.createSpyObj('game', ['on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'registerAbility', 'resolveGameAction']);
-        this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'getType', 'isAnyBlank']);
+        this.gameSpy.resolveGameAction.and.callFake((action, props) => { 
+            return { thenExecute: () => true }
+         });
+        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank']);
         this.cardSpy.location = 'play area';
-        this.limitSpy = jasmine.createSpyObj('limit', ['increment', 'isAtMax', 'registerEvents', 'unregisterEvents']);
+        this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
 
         this.properties = {
             when: {
@@ -18,7 +21,7 @@ describe('CardForcedReaction', function () {
         this.properties.when.onSomething.and.returnValue(true);
 
         this.createReaction = () => {
-            return new CardForcedReaction(this.gameSpy, this.cardSpy, this.properties);
+            return new CardTraitReaction(this.gameSpy, this.cardSpy, this.properties);
         };
     });
 
@@ -26,7 +29,7 @@ describe('CardForcedReaction', function () {
         beforeEach(function() {
             this.executeEventHandler = (args = {}) => {
                 this.event = new Event('onSomething', args);
-                this.reaction = new CardForcedReaction(this.gameSpy, this.cardSpy, this.properties);
+                this.reaction = new CardTraitReaction(this.gameSpy, this.cardSpy, this.properties);
                 this.reaction.eventHandler(this.event);
             };
         });
@@ -63,7 +66,8 @@ describe('CardForcedReaction', function () {
         beforeEach(function() {
             this.meetsRequirements = () => {
                 this.event = new Event('onSomething', {});
-                this.reaction = new CardForcedReaction(this.gameSpy, this.cardSpy, this.properties);
+                this.reaction = new CardTraitReaction(this.gameSpy, this.cardSpy, this.properties);
+                this.reaction.usage = this.usageSpy;
                 this.context = this.reaction.createContext(this.event);
                 return this.reaction.meetsRequirements(this.context);
             };
@@ -114,14 +118,11 @@ describe('CardForcedReaction', function () {
             });
         });
 
-        describe('when there is a limit', function() {
-            beforeEach(function() {
-                this.properties.limit = this.limitSpy;
-            });
+        describe('test card trait reaction usage', function() {
 
-            describe('and the limit has been reached', function() {
+            describe('when card trait reaction was used', function() {
                 beforeEach(function() {
-                    this.limitSpy.isAtMax.and.returnValue(true);
+                    this.usageSpy.isUsed.and.returnValue(true);
                 });
 
                 it('should return false', function() {
@@ -129,9 +130,9 @@ describe('CardForcedReaction', function () {
                 });
             });
 
-            describe('and the limit has not been reached', function() {
+            describe('when card trait reaction was not used', function() {
                 beforeEach(function() {
-                    this.limitSpy.isAtMax.and.returnValue(false);
+                    this.usageSpy.isUsed.and.returnValue(false);
                 });
 
                 it('should return true', function() {
@@ -143,7 +144,7 @@ describe('CardForcedReaction', function () {
 
     describe('executeHandler', function() {
         beforeEach(function() {
-            this.reaction = new CardForcedReaction(this.gameSpy, this.cardSpy, this.properties);
+            this.reaction = new CardTraitReaction(this.gameSpy, this.cardSpy, this.properties);
             this.context = { context: 1, game: this.gameSpy };
         });
 
@@ -167,14 +168,16 @@ describe('CardForcedReaction', function () {
         });
 
         it('should register all when event handlers with the proper event type suffix', function() {
-            expect(this.gameSpy.on).toHaveBeenCalledWith('onFoo:forcedreaction', jasmine.any(Function));
-            expect(this.gameSpy.on).toHaveBeenCalledWith('onBar:forcedreaction', jasmine.any(Function));
+            expect(this.gameSpy.on).toHaveBeenCalledWith('onFoo:traitreaction', jasmine.any(Function));
+            expect(this.gameSpy.on).toHaveBeenCalledWith('onBar:traitreaction', jasmine.any(Function));
+            // one more call for AbilityUsage registerEvents
+            expect(this.gameSpy.on).toHaveBeenCalledWith('onRoundEnded', jasmine.any(Function));
         });
 
         it('should not reregister events already registered', function() {
-            expect(this.gameSpy.on.calls.count()).toBe(2);
+            expect(this.gameSpy.on.calls.count()).toBe(3);
             this.reaction.registerEvents();
-            expect(this.gameSpy.on.calls.count()).toBe(2);
+            expect(this.gameSpy.on.calls.count()).toBe(3);
         });
     });
 
@@ -193,8 +196,10 @@ describe('CardForcedReaction', function () {
         it('should unregister all previously registered when event handlers', function() {
             this.reaction.registerEvents();
             this.reaction.unregisterEvents();
-            expect(this.gameSpy.removeListener).toHaveBeenCalledWith('onFoo:forcedreaction', jasmine.any(Function));
-            expect(this.gameSpy.removeListener).toHaveBeenCalledWith('onBar:forcedreaction', jasmine.any(Function));
+            expect(this.gameSpy.removeListener).toHaveBeenCalledWith('onFoo:traitreaction', jasmine.any(Function));
+            expect(this.gameSpy.removeListener).toHaveBeenCalledWith('onBar:traitreaction', jasmine.any(Function));
+            // one more call for AbilityUsage registerEvents
+            expect(this.gameSpy.on).toHaveBeenCalledWith('onRoundEnded', jasmine.any(Function));
         });
 
         it('should not remove listeners when they have not been registered', function() {
@@ -205,9 +210,9 @@ describe('CardForcedReaction', function () {
         it('should not unregister events already unregistered', function() {
             this.reaction.registerEvents();
             this.reaction.unregisterEvents();
-            expect(this.gameSpy.removeListener.calls.count()).toBe(2);
+            expect(this.gameSpy.removeListener.calls.count()).toBe(3);
             this.reaction.unregisterEvents();
-            expect(this.gameSpy.removeListener.calls.count()).toBe(2);
+            expect(this.gameSpy.removeListener.calls.count()).toBe(3);
         });
     });
 });

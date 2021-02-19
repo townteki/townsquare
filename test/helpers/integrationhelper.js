@@ -7,10 +7,11 @@ const DeckBuilder = require('./DeckBuilder');
 const GameFlowWrapper = require('./gameflowwrapper.js');
 
 const ProxiedGameFlowWrapperMethods = [
-    'startGame', 'keepStartingHands', 'skipSetupPhase', 'selectFirstPlayer',
-    'completeMarshalPhase', 'completeChallengesPhase', 'completeDominancePhase',
-    'selectPlotOrder', 'completeSetup',
-    'skipActionWindow', 'unopposedChallenge'
+    'startGame', 'keepStartingPosse', 'skipGrifterPrompt', 'selectFirstPlayer',
+    'completeHighNoonPhase', 'doneHighNoonPhase', 'completeGamblingPhase',
+    'completeUpkeepPhase', 'completeShootoutPlaysStep', 'doneShootoutPlaysStep', 
+    'completeShootoutResolutionStep', 'doneShootoutResolutionStep', 'drawStartingPosse',
+    'skipToHighNoonPhase', 'removeFromPosse', 'discardDrawHand'
 ];
 
 const deckBuilder = new DeckBuilder();
@@ -105,7 +106,7 @@ var customMatchers = {
                     expected = expected.name;
                 }
 
-                let selectableCardNames = actual.player.getSelectableCards().map(card => card.name);
+                let selectableCardNames = actual.player.getSelectableCards().map(card => card.title);
                 let isPromptingAbility = actual.game.hasOpenInterruptOrReactionWindow();
                 let includesCard = selectableCardNames.some(cardName => util.equals(cardName, expected, customEqualityMatchers));
 
@@ -126,11 +127,11 @@ var customMatchers = {
             compare: function(actual, expected) {
                 let result = {};
                 if(typeof expected !== 'string') {
-                    expected = expected.name;
+                    expected = expected.title;
                 }
 
-                let selectableCardNames = actual.player.getSelectableCards().map(card => card.name);
-                let includesCard = selectableCardNames.some(cardName => util.equals(cardName, expected, customEqualityMatchers));
+                let selectableCardTitles = actual.player.getSelectableCards().map(card => card.title);
+                let includesCard = selectableCardTitles.some(cardTitle => util.equals(cardTitle, expected, customEqualityMatchers));
 
                 result.pass = includesCard;
 
@@ -170,8 +171,8 @@ global.integration = function(options, definitions) {
                 this[method] = (...args) => this.flow[method].apply(this.flow, args);
             }
 
-            this.buildDeck = function(faction, cards) {
-                return deckBuilder.buildDeck(faction, cards);
+            this.buildDeck = function(faction, cards, startingCards, addDefaultDeck) {
+                return deckBuilder.buildDeck(faction, cards, startingCards, addDefaultDeck);
             };
         });
 

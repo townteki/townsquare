@@ -7,6 +7,20 @@ const {matchCardByNameAndPack} = require('./cardutil.js');
 
 const PathToSubModulePacks = path.join(__dirname, '../../townsquare-json-data/packs');
 
+const DefaultDeck = [
+        'Jackson\'s Strike', 'Jackson\'s Strike', 
+        'Hustings', 'Hustings',
+        'Blake Ranch', 'Blake Ranch',
+        'Bunkhouse', 'Bunkhouse',
+        'Mustang', 'Mustang',
+        'Roan','Roan',
+        'Shotgun', 'Shotgun',
+        'Buffalo Rifle', 'Buffalo Rifle',
+        'Bad Company', 'Bad Company',
+        'Pistol Whip', 'Pistol Whip',
+        'Ambush', 'Ambush'
+    ];
+
 class DeckBuilder {
     constructor() {
         this.cardsByCode = this.loadCards(PathToSubModulePacks);
@@ -16,14 +30,12 @@ class DeckBuilder {
     loadCards(directory) {
         let cards = {};
 
-        let jsonPacks = fs.readdirSync(directory).filter(file => file.endsWith('.json'));
+        let jsonCards = fs.readdirSync(directory).find(file => file === 'dtr-cards.json');
 
-        for(let file of jsonPacks) {
-            let pack = require(path.join(directory, file));
+        let allcards = require(path.join(directory, jsonCards));
 
-            for(let card of pack.cards) {
-                card.packCode = pack.code;
-                card.releaseDate = pack.releaseDate;
+        for(let card of allcards) {
+            if (card.pack_code !== 'alt') {
                 cards[card.code] = card;
             }
         }
@@ -31,39 +43,39 @@ class DeckBuilder {
         return cards;
     }
 
-    buildDeck(faction, cardLabels) {
-        let allCards = this.createCardCounts(cardLabels);
-
-        let agendas = allCards.filter(cardCount => cardCount.card.type === 'agenda').map(cardCount => cardCount.card);
-        let agenda = agendas[0];
-        let bannerCards = [];
-
-        if(agendas.length > 1) {
-            // Assume multi-agenda decks are Alliance
-            agenda = agendas.find(card => card.name === 'Alliance');
-            bannerCards = agendas.filter(card => card.name !== 'Alliance');
+    buildDeck(outfitTitle, cardLabels, startingTitles, addDefaultDeck = true) {
+        if (addDefaultDeck) {
+            cardLabels = cardLabels.concat(DefaultDeck);
         }
+        let allCards = this.createCardCounts(cardLabels);
+        let outfit = this.getCard(outfitTitle);
+        let starting = 0;
+        allCards.forEach(cardCount => {
+            if (startingTitles.includes(cardCount.card.title)) {
+                cardCount.card.starting = true;
+                starting++;
+            }
+        });
 
         return {
-            faction: { value: faction },
-            agenda: agenda,
-            bannerCards: bannerCards,
-            drawCards: allCards.filter(cardCount => ['character', 'location', 'attachment', 'event'].includes(cardCount.card.type)),
-            plotCards: allCards.filter(cardCount => cardCount.card.type === 'plot')
+            outfit: outfit,
+            legend: null,
+            drawCards: allCards.filter(cardCount => ['dude', 'deed', 'goods', 'spell', 'action'].includes(cardCount.card.type_code)),
+            starting: starting
         };
     }
 
     createCardCounts(cardLabels) {
         let cardCounts = {};
         for(let label of cardLabels) {
-            let cardName = label;
+            let cardTitle = label;
             let count = 1;
             if(typeof label !== 'string') {
-                cardName = label.name;
+                cardTitle = label.name;
                 count = label.count;
             }
 
-            let cardData = this.getCard(cardName);
+            let cardData = this.getCard(cardTitle);
             if(cardCounts[cardData.code]) {
                 cardCounts[cardData.code].count += count;
             } else {
@@ -81,19 +93,19 @@ class DeckBuilder {
             return this.cardsByCode[codeOrLabelOrName];
         }
 
-        let cardsByName = this.cards.filter(matchCardByNameAndPack(codeOrLabelOrName));
+        let cardsByTitle = this.cards.filter(matchCardByNameAndPack(codeOrLabelOrName));
 
-        if(cardsByName.length === 0) {
+        if(cardsByTitle.length === 0) {
             throw new Error(`Unable to find any card matching ${codeOrLabelOrName}`);
         }
 
-        if(cardsByName.length > 1) {
-            cardsByName.sort((a, b) => a.releaseDate < b.releaseDate ? -1 : 1);
-            let matchingLabels = cardsByName.map(card => `${card.name} (${card.packCode})`).join('\n');
+        if(cardsByTitle.length > 1) {
+            cardsByTitle.sort((a, b) => a.releaseDate < b.releaseDate ? -1 : 1);
+            let matchingLabels = cardsByTitle.map(card => `${card.title} (${card.pack_code})`).join('\n');
             console.warn(`Multiple cards match the name ${codeOrLabelOrName}. Use one of these instead:\n${matchingLabels}`);
         }
 
-        return cardsByName[0];
+        return cardsByTitle[0];
     }
 }
 

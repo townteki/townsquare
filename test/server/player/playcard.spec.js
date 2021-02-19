@@ -6,13 +6,15 @@ describe('Player', function() {
     beforeEach(function() {
         this.gameSpy = jasmine.createSpyObj('game', ['addMessage', 'resolveAbility', 'queueStep', 'raiseEvent']);
         this.player = new Player('1', {username: 'Player 1', settings: {}}, true, this.gameSpy);
+        this.player.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
+        this.player.addOutfitToTown.and.callFake(function() {});
         this.player.initialise();
     });
 
     describe('playCard', function() {
         beforeEach(function() {
             this.playActionSpy = jasmine.createSpyObj('playAction', ['meetsRequirements', 'canPayCosts', 'canResolveTargets']);
-            this.cardSpy = jasmine.createSpyObj('card', ['getPlayActions']);
+            this.cardSpy = jasmine.createSpyObj('card', ['getPlayActions', 'getType']);
 
             this.player.hand.push(this.cardSpy);
             this.cardSpy.location = 'hand';

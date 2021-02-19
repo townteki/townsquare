@@ -11,12 +11,17 @@ describe('AbilityResolver', function() {
         this.game.reportError.and.callFake(error => {
             throw error;
         });
-        this.ability = jasmine.createSpyObj('ability', ['incrementLimit', 'isAction', 'isCardAbility', 'isForcedAbility', 'isPlayableEventAbility', 'needsChoosePlayer', 'outputMessage', 'resolveCosts', 'payCosts', 'resolveTargets', 'executeHandler']);
+        this.ability = jasmine.createSpyObj('ability', [
+            'incrementLimit', 'isAction', 'isCardAbility', 'isForcedAbility', 'isPlayableActionAbility', 'needsChoosePlayer', 'outputMessage', 
+            'resolveCosts', 'payCosts', 'resolveTargets', 'executeHandler', 'playTypePlayed'
+        ]);
         this.ability.isCardAbility.and.returnValue(true);
         this.ability.resolveCosts.and.returnValue([]);
         this.ability.resolveTargets.and.returnValue([]);
+        this.ability.playTypePlayed.and.returnValue('noon');
+        this.ability.options = { doNotMarkActionAsTaken: false };
         this.player = jasmine.createSpyObj('player', ['moveCard']);
-        this.source = jasmine.createSpyObj('source', ['createSnapshot', 'getType']);
+        this.source = jasmine.createSpyObj('source', ['createSnapshot', 'getType', 'hasKeyword', 'resetAbilities']);
         this.source.owner = this.player;
         let targets = jasmine.createSpyObj('targets', ['getTargets', 'hasTargets', 'setSelections', 'updateTargets']);
         targets.hasTargets.and.returnValue(true);
@@ -59,7 +64,7 @@ describe('AbilityResolver', function() {
         describe('when the ability is a card ability', function() {
             beforeEach(function() {
                 this.ability.resolveCosts.and.returnValue([{ resolved: true, value: true }, { resolved: true, value: true }]);
-                this.ability.isPlayableEventAbility.and.returnValue(true);
+                this.ability.isPlayableActionAbility.and.returnValue(true);
                 this.ability.isCardAbility.and.returnValue(true);
                 this.resolver.continue();
             });
@@ -72,7 +77,7 @@ describe('AbilityResolver', function() {
         describe('when the ability is not a card ability', function() {
             beforeEach(function() {
                 this.ability.resolveCosts.and.returnValue([{ resolved: true, value: true }, { resolved: true, value: true }]);
-                this.ability.isPlayableEventAbility.and.returnValue(true);
+                this.ability.isPlayableActionAbility.and.returnValue(true);
                 this.ability.isCardAbility.and.returnValue(false);
                 this.resolver.continue();
             });
@@ -82,17 +87,17 @@ describe('AbilityResolver', function() {
             });
         });
 
-        describe('when the ability is an event being played', function() {
+        describe('when the ability is an action being played', function() {
             beforeEach(function() {
-                this.source.eventPlacementLocation = 'event placement location';
+                this.source.actionPlacementLocation = 'action placement location';
                 this.source.location = 'being played';
                 this.ability.resolveCosts.and.returnValue([{ resolved: true, value: true }, { resolved: true, value: true }]);
-                this.ability.isPlayableEventAbility.and.returnValue(true);
+                this.ability.isPlayableActionAbility.and.returnValue(true);
             });
 
-            it('should move the card to the specified event location', function() {
+            it('should move the card to the specified action location', function() {
                 this.resolver.continue();
-                expect(this.player.moveCard).toHaveBeenCalledWith(this.source, 'event placement location');
+                expect(this.player.moveCard).toHaveBeenCalledWith(this.source, 'action placement location');
             });
 
             it('should raise the onCardPlayed event', function() {
@@ -100,9 +105,8 @@ describe('AbilityResolver', function() {
                 expect(this.game.resolveEvent).toHaveBeenCalledWith(jasmine.objectContaining({ name: 'onCardPlayed', card: this.source }));
             });
 
-            describe('and the event is no longer in the "being played" state', function() {
+            describe('and the action is no longer in the "being played" state', function() {
                 beforeEach(function() {
-                    // Example: Risen from the Sea attached to character after playing it
                     this.source.location = 'play area';
                     this.resolver.continue();
                 });

@@ -2,8 +2,14 @@ const CardAction = require('../../../server/game/cardaction.js');
 
 describe('CardAction', function () {
     beforeEach(function () {
-        this.gameSpy = jasmine.createSpyObj('game', ['on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'raiseEvent', 'resolveAbility', 'resolveGameAction']);
-        this.gameSpy.currentPhase = 'marshal';
+        this.gameSpy = jasmine.createSpyObj('game', [
+                'on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'raiseEvent', 'resolveAbility', 'resolveGameAction', 'isShootoutPlayWindow',
+                'getCurrentPlayWindowName'
+            ]);
+        this.gameSpy.resolveGameAction.and.callFake((action, props) => { 
+               return { thenExecute: () => true }
+            });
+        this.gameSpy.currentPhase = 'high noon';
 
         this.playerSpy = jasmine.createSpyObj('player', ['canTrigger']);
         this.playerSpy.canTrigger.and.returnValue(true);
@@ -11,10 +17,10 @@ describe('CardAction', function () {
         this.otherPlayerSpy = jasmine.createSpyObj('player', ['canTrigger']);
         this.otherPlayerSpy.canTrigger.and.returnValue(true);
 
-        this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'isAnyBlank']);
+        this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'isAnyBlank', 'getType', 'hasKeyword']);
         this.handlerSpy = jasmine.createSpy('handler');
 
-        this.limitSpy = jasmine.createSpyObj('limit', ['increment', 'isAtMax', 'registerEvents', 'unregisterEvents']);
+        this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
 
         this.gameSpy.raiseEvent.and.callFake((name, params, handler) => {
             if(handler) {
@@ -71,44 +77,32 @@ describe('CardAction', function () {
         describe('location', function() {
             it('should default to play area', function() {
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.action.location).toBe('play area');
+                expect(this.action.location[0]).toBe('play area');
             });
 
-            it('should default to agenda for cards with type agenda', function() {
-                this.cardSpy.getPrintedType.and.returnValue('agenda');
+            it('should default to hand for cards with type action', function() {
+                this.cardSpy.getType.and.returnValue('action');
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.action.location).toBe('agenda');
-            });
-
-            it('should default to active plot for cards with type plot', function() {
-                this.cardSpy.getPrintedType.and.returnValue('plot');
-                this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.action.location).toBe('active plot');
-            });
-
-            it('should default to hand for cards with type event', function() {
-                this.cardSpy.getPrintedType.and.returnValue('event');
-                this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.action.location).toBe('hand');
+                expect(this.action.location[0]).toBe('hand');
             });
 
             it('should use the location sent via properties', function() {
                 this.properties.location = 'foo';
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.action.location).toBe('foo');
+                expect(this.action.location[0]).toBe('foo');
             });
         });
 
         describe('cost', function() {
-            describe('when the card type is event', function() {
+            describe('when the card type is action', function() {
                 beforeEach(function() {
-                    this.cardSpy.getPrintedType.and.returnValue('event');
+                    this.cardSpy.getType.and.returnValue('action');
                     this.properties.cost = ['foo'];
                     this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
                 });
 
                 it('should add the play event costs', function() {
-                    expect(this.action.cost.length).toBe(4);
+                    expect(this.action.cost.length).toBe(3);
                 });
             });
         });
@@ -121,17 +115,17 @@ describe('CardAction', function () {
             this.cardSpy.location = 'play area';
         });
 
-        describe('when the action has limited uses', function() {
+        describe('test action usage', function() {
             beforeEach(function() {
-                this.properties.limit = this.limitSpy;
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
+                this.action.usage = this.usageSpy;
             });
 
             describe('and the use count has reached the limit', function() {
                 beforeEach(function() {
-                    this.limitSpy.isAtMax.and.returnValue(true);
+                    this.usageSpy.isUsed.and.returnValue(true);
 
-                    this.action.execute(this.player, 'arg');
+                    this.action.execute(this.player);
                 });
 
                 it('should not queue the ability resolver', function() {
@@ -141,7 +135,8 @@ describe('CardAction', function () {
 
             describe('and the use count is below the limit', function() {
                 beforeEach(function() {
-                    this.action.execute(this.player, 'arg');
+                    this.usageSpy.isUsed.and.returnValue(false);
+                    this.action.execute(this.player);
                 });
 
                 it('should queue the ability resolver', function() {
@@ -206,14 +201,15 @@ describe('CardAction', function () {
 
         describe('when only allowed in a certain phase', function() {
             beforeEach(function() {
-                this.properties.phase = 'challenge';
+                this.properties.playType = 'shootout';
+                this.gameSpy.currentPlayWindow = {};
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
             });
 
             describe('and it is not that phase', function() {
                 beforeEach(function() {
-                    this.gameSpy.currentPhase = 'dominance';
-                    this.action.execute(this.player, 'arg');
+                    this.gameSpy.getCurrentPlayWindowName.and.returnValue('high noon');
+                    this.action.execute(this.player);
                 });
 
                 it('should not queue the ability resolver', function() {
@@ -223,26 +219,13 @@ describe('CardAction', function () {
 
             describe('and it is the phase', function() {
                 beforeEach(function() {
-                    this.gameSpy.currentPhase = 'challenge';
-                    this.action.execute(this.player, 'arg');
+                    this.gameSpy.getCurrentPlayWindowName.and.returnValue('shootout plays');
+                    this.action.execute(this.player);
                 });
 
                 it('should queue the ability resolver', function() {
                     expect(this.gameSpy.resolveAbility).toHaveBeenCalled();
                 });
-            });
-        });
-
-        describe('when the current phase is setup', function() {
-            beforeEach(function() {
-                this.gameSpy.currentPhase = 'setup';
-                this.properties.phase = 'any';
-                this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                this.action.execute(this.player, 'arg');
-            });
-
-            it('should not queue the ability resolver', function() {
-                expect(this.gameSpy.resolveAbility).not.toHaveBeenCalled();
             });
         });
 
@@ -256,7 +239,7 @@ describe('CardAction', function () {
             describe('and the condition returns true', function() {
                 beforeEach(function() {
                     this.condition.and.returnValue(true);
-                    this.action.execute(this.player, 'arg');
+                    this.action.execute(this.player);
                 });
 
                 it('should queue the ability resolver', function() {
@@ -267,7 +250,7 @@ describe('CardAction', function () {
             describe('and the condition returns false', function() {
                 beforeEach(function() {
                     this.condition.and.returnValue(false);
-                    this.action.execute(this.player, 'arg');
+                    this.action.execute(this.player);
                 });
 
                 it('should not queue the ability resolver', function() {
@@ -279,7 +262,7 @@ describe('CardAction', function () {
         describe('when all conditions met', function() {
             beforeEach(function() {
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                this.action.execute(this.player, 'arg');
+                this.action.execute(this.player);
             });
 
             it('should queue the ability resolver', function() {
@@ -387,46 +370,49 @@ describe('CardAction', function () {
             });
 
             it('should not register an event', function() {
-                expect(this.limitSpy.registerEvents).not.toHaveBeenCalled();
+                expect(this.usageSpy.registerEvents).not.toHaveBeenCalled();
             });
         });
 
         describe('when there is a limit', function() {
             beforeEach(function() {
-                this.properties.limit = this.limitSpy;
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
+                if (this.action.usage) {
+                    this.action.usage = this.usageSpy;
+                }
                 this.action.registerEvents();
             });
 
             it('should register events for the limit', function() {
-                expect(this.limitSpy.registerEvents).toHaveBeenCalledWith(this.gameSpy);
+                expect(this.usageSpy.registerEvents).toHaveBeenCalledWith(this.gameSpy);
             });
         });
     });
 
     describe('unregisterEvents()', function() {
-        describe('when there is no limit', function() {
+        describe('when action source is not a card', function() {
             beforeEach(function() {
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-
+                this.action.abilitySource = 'other';
                 this.action.unregisterEvents();
             });
 
             it('should not unregister an event', function() {
-                expect(this.limitSpy.unregisterEvents).not.toHaveBeenCalled();
+                expect(this.usageSpy.unregisterEvents).not.toHaveBeenCalled();
             });
         });
 
-        describe('when there is a limit', function() {
+        describe('when action source is card', function() {
             beforeEach(function() {
-                this.properties.limit = this.limitSpy;
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-
+                if (this.action.usage) {
+                    this.action.usage = this.usageSpy;
+                }
                 this.action.unregisterEvents();
             });
 
             it('should unregister events for the limit', function() {
-                expect(this.limitSpy.unregisterEvents).toHaveBeenCalledWith(this.gameSpy);
+                expect(this.usageSpy.unregisterEvents).toHaveBeenCalledWith(this.gameSpy);
             });
         });
     });
@@ -469,6 +455,8 @@ describe('CardAction', function () {
         });
 
         it('should resolve the game action', function() {
+            //spyOn(this.gameSpy, 'resolveGameAction');
+
             expect(this.gameSpy.resolveGameAction).toHaveBeenCalledWith(jasmine.any(Object), this.context);
         });
     });

@@ -63,7 +63,7 @@ class DropCommand {
                 }))
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
-            this.game.killCharacter(this.card, { allowSave: false, force: true });
+            this.player.aceCard(this.card, { allowSave: false, force: true });
         } else if(this.targetLocation === 'discard pile' && DiscardCard.allow({ card: this.card, force: true })) {
             this.player.discardCard(this.card, false, { force: true });
         } else {

@@ -1,6 +1,6 @@
 const {Tokens} = require('../../../server/game/Constants');
 
-describe('effects', function() {
+xdescribe('effects', function() {
     integration(function() {
         describe('lasting effects', function() {
             describe('when a lasting effect applies to a group of cards', function() {

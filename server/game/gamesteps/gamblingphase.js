@@ -67,7 +67,14 @@ class GamblingPhase extends Phase {
             winner = this.findWinner();
         }
 
+        // TODO M2 need to resolve situation when there is exact tie and no winner
+        // for now it will just put some player as first player
+        if (!winner) {
+            winner = this.game.getPlayers()[0];
+        }
+
         let firstPlayer = winner;
+
 
         this.game.addMessage('{0} is the winner and receives {1} GR', winner.name, this.lowballPot);
 

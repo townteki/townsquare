@@ -23,7 +23,7 @@ class ShoppinCardAction extends BaseAbility {
         return (
             game.currentPhase === 'high noon' &&
             source.getType() !== 'action' &&
-            source.location === 'hand' &&
+            player.isCardInPlayableLocation(source, 'shoppin') &&
             player.canPutIntoPlay(source, 'shoppin')
         );
     }

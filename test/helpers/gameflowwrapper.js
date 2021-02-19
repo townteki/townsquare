@@ -6,18 +6,6 @@ const Game = require('../../server/game/game.js');
 const PlayerInteractionWrapper = require('./playerinteractionwrapper.js');
 const Settings = require('../../server/settings.js');
 
-const corePack = require('../../townsquare-json-data/packs/Core.json');
-const titleCardData = createTitleCardLookup(corePack.cards);
-
-function createTitleCardLookup(cards) {
-    return cards
-        .filter(card => card.type === 'title')
-        .reduce((cardIndex, card) => {
-            cardIndex[card.code] = card;
-            return cardIndex;
-        }, {});
-}
-
 class GameFlowWrapper {
     constructor(options) {
         let gameRouter = jasmine.createSpyObj('gameRouter', ['gameWon', 'handleError', 'playerLeft']);
@@ -29,11 +17,9 @@ class GameFlowWrapper {
             id: 12345,
             owner: { username: 'player1' },
             saveGameId: 12345,
-            isMelee: !!options.isMelee,
-            noTitleSetAside: true,
-            players: this.generatePlayerDetails(options.numOfPlayers || (options.isMelee ? 3 : 2))
+            players: this.generatePlayerDetails(options.numOfPlayers)
         };
-        this.game = new Game(details, { router: gameRouter, titleCardData: titleCardData });
+        this.game = new Game(details, { router: gameRouter });
         this.game.started = true;
 
         this.allPlayers = this.game.getPlayers().map(player => new PlayerInteractionWrapper(this.game, player));
@@ -41,6 +27,12 @@ class GameFlowWrapper {
             index[playerWrapper.player] = playerWrapper;
             return index;
         }, {});
+    }
+
+    setFirstPlayer(firstPlayerName) {
+        for(let playerWrapper of this.allPlayers) {
+            playerWrapper.player.firstPlayer = playerWrapper.player.name === firstPlayerName;
+        }
     }
 
     generatePlayerDetails(numOfPlayers) {
@@ -62,16 +54,15 @@ class GameFlowWrapper {
         this.game.initialise();
     }
 
-    keepStartingHands() {
+    keepStartingPosse() {
         for(let player of this.allPlayers) {
-            player.clickPrompt('Keep Hand');
+            player.clickPrompt('Done');
         }
     }
 
-    skipSetupPhase() {
-        this.keepStartingHands();
+    drawStartingPosse() {
         for(let player of this.allPlayers) {
-            player.clickPrompt('Done');
+            player.drawCardsToHand(player.startingPosse);
         }
     }
 
@@ -81,41 +72,94 @@ class GameFlowWrapper {
         }
     }
 
-    completeSetup() {
-        this.guardCurrentPhase('setup');
-        for(let player of this.allPlayers) {
-            player.clickPrompt('Done');
+    guardCurrentPlayWindow(playWindowName) {
+        if(this.game.currentPlayWindow.name !== playWindowName) {
+            throw new Error(`Expected to be in the ${playWindowName} play window but actually was ${this.game.currentPlayWindow.name}`);
         }
     }
 
-    completeMarshalPhase() {
-        this.guardCurrentPhase('marshal');
-        this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Done'));
+    skipGrifterPrompt() {
+        this.guardCurrentPhase('setup');
+        //TODO M2 this prompt is only for one player. Either make it for two, or better remove specific prompt for Grifter
+        // and make it React on the Game Start event
+        this.allPlayers[0].clickPrompt('Play Lowball');
     }
 
-    completeChallengesPhase() {
-        this.guardCurrentPhase('challenge');
-        // Each player clicks 'Done' when challenge initiation prompt shows up.
-        this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Done'));
+    completeSetupPhase() {
+        this.guardCurrentPhase('setup');
+        this.keepStartingPosse();
+        this.skipGrifterPrompt();
     }
 
-    completeDominancePhase() {
-        this.guardCurrentPhase('dominance');
-        this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Done'));
-    }
-
-    completeStandingPhase() {
-        this.guardCurrentPhase('standing');
-        this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Done'));
-    }
-
-    completeTaxationPhase() {
-        this.guardCurrentPhase('taxation');
-        this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Done'));
-    }
-
-    skipActionWindow() {
+    completeHighNoonPhase() {
+        this.guardCurrentPhase('high noon');
         this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Pass'));
+    }
+
+    doneHighNoonPhase(player) {
+        this.guardCurrentPhase('high noon');
+        player.clickPrompt('Done');
+    }
+
+    completeGamblingPhase() {
+        this.guardCurrentPhase('gambling');
+        this.allPlayers.forEach(player => player.clickPrompt('Ready'));
+        while (this.game.currentPlayWindow && this.game.currentPlayWindow.name === 'gambling') {
+            this.playerToPlayerWrapperIndex[this.game.currentPlayWindow.currentPlayer].clickPrompt('Pass');
+        }
+    }
+
+    completeUpkeepPhase() {
+        this.guardCurrentPhase('upkeep');
+        this.allPlayers.forEach(player => player.clickPrompt('Done'));
+    }
+
+    completeSundownPhase() {
+        this.guardCurrentPhase('sundown');
+        this.allPlayers.forEach(player => player.clickPrompt('Done'));
+    }
+
+    completeShootoutPlaysStep() {
+        this.guardCurrentPhase('shootout');
+        this.guardCurrentPlayWindow('shootout plays');
+        this.eachPlayerInFirstPlayerOrder(player => {
+            if (this.game.shootout) {
+                player.clickPrompt('Pass');
+            }
+        });
+    }
+
+    doneShootoutPlaysStep(player) {
+        this.guardCurrentPhase('shootout');
+        this.guardCurrentPlayWindow('shootout plays');
+        player.clickPrompt('Done');
+    }
+
+    completeShootoutResolutionStep() {
+        this.guardCurrentPhase('shootout');
+        this.guardCurrentPlayWindow('resolution');
+        this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Pass'));
+    }
+
+    doneShootoutResolutionStep(player) {
+        this.guardCurrentPhase('shootout');
+        this.guardCurrentPlayWindow('resolution');
+        player.clickPrompt('Done');
+    }
+
+    removeFromPosse(card) {
+        if (this.game.shootout) {
+            this.game.shootout.removeFromPosse(card);
+        }
+    }
+
+    skipToHighNoonPhase(skipSetup = true) {
+        if (skipSetup) {
+            this.completeSetupPhase();
+        }
+        this.completeGamblingPhase();
+        this.setFirstPlayer('player1');
+        this.completeUpkeepPhase();
     }
 
     getPromptedPlayer(title) {
@@ -133,26 +177,7 @@ class GameFlowWrapper {
         var promptedPlayer = this.getPromptedPlayer('Select first player');
         promptedPlayer.clickPrompt(player.name);
     }
-
-    selectPlotOrder(player) {
-        let promptedPlayer = this.getPromptedPlayer('Choose when revealed order');
-        let buttonText = player.name + ' - ' + player.activePlot.name;
-        promptedPlayer.clickPrompt(buttonText);
-    }
-
-    unopposedChallenge(player, type, participant) {
-        var opponent = this.allPlayers.find(p => p !== player);
-
-        player.clickPrompt(type);
-        player.clickCard(participant, 'play area');
-        player.clickPrompt('Done');
-
-        this.skipActionWindow();
-
-        opponent.clickPrompt('Done');
-
-        this.skipActionWindow();
-    }
+    
 }
 
 module.exports = GameFlowWrapper;

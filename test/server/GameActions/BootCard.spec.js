@@ -3,7 +3,7 @@ const BootCard = require('../../../server/game/GameActions/BootCard');
 describe('BootCard', function() {
     beforeEach(function() {
         this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction']);
-        this.cardSpy.kneeled = false;
+        this.cardSpy.booted = false;
         this.cardSpy.location = 'play area';
         this.props = { card: this.cardSpy };
     });
@@ -13,21 +13,15 @@ describe('BootCard', function() {
             this.cardSpy.allowGameAction.and.returnValue(true);
         });
 
-        for(let location of ['faction', 'play area']) {
-            describe(`when the card is in ${location}`, function() {
-                beforeEach(function() {
-                    this.cardSpy.location = location;
-                });
-
-                it('returns true', function() {
-                    expect(BootCard.allow(this.props)).toBe(true);
-                });
+        describe('when the card is in play area', function() {
+            it('returns true', function() {
+                expect(BootCard.allow(this.props)).toBe(true);
             });
-        }
+        });
 
-        describe('when the card is already kneeled', function() {
+        describe('when the card is already booted', function() {
             beforeEach(function() {
-                this.cardSpy.kneeled = true;
+                this.cardSpy.booted = true;
             });
 
             it('returns false', function() {
@@ -35,7 +29,7 @@ describe('BootCard', function() {
             });
         });
 
-        describe('when the card is not in a kneelable area', function() {
+        describe('when the card is not in a bootable area', function() {
             beforeEach(function() {
                 this.cardSpy.location = 'dead pile';
             });
@@ -52,7 +46,7 @@ describe('BootCard', function() {
         });
 
         it('creates a onCardKneeled event', function() {
-            expect(this.event.name).toBe('onCardKneeled');
+            expect(this.event.name).toBe('onCardBooted');
             expect(this.event.card).toBe(this.cardSpy);
         });
 
@@ -62,7 +56,7 @@ describe('BootCard', function() {
             });
 
             it('kneels the card', function() {
-                expect(this.cardSpy.kneeled).toBe(true);
+                expect(this.cardSpy.booted).toBe(true);
             });
         });
     });
