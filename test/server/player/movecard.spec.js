@@ -6,8 +6,10 @@ describe('Player', function() {
         beforeEach(function() {
             this.gameSpy = jasmine.createSpyObj('game', ['raiseEvent', 'on']);
             this.player = new Player('1', {username: 'Player 1', settings: {}}, true, this.gameSpy);
+            this.player.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
+            this.player.addOutfitToTown.and.callFake(function() {});
             this.player.initialise();
-            this.player.phase = 'marshal';
+            this.player.phase = 'high noon';
 
             this.gameSpy.raiseEvent.and.callFake((name, params, handler) => {
                 if(handler) {
@@ -15,7 +17,6 @@ describe('Player', function() {
                 }
             });
             this.card = new DrawCard(this.player, { code: '1', name: 'Test' });
-            spyOn(this.card, 'leavesPlay');
         });
 
         describe('when the card is not in a pile', function() {
@@ -52,7 +53,7 @@ describe('Player', function() {
             beforeEach(function() {
                 this.player.discardPile.push(this.card);
                 this.card.location = 'discard pile';
-
+                spyOn(this.card, 'leavesPlay');
                 this.player.moveCard(this.card, 'hand');
             });
 
@@ -80,6 +81,7 @@ describe('Player', function() {
             });
 
             it('should make the card leave play', function() {
+                spyOn(this.card, 'leavesPlay');
                 this.player.moveCard(this.card, 'dead pile');
                 expect(this.card.leavesPlay).toHaveBeenCalled();
             });
@@ -95,13 +97,13 @@ describe('Player', function() {
                     this.attachment.parent = this.card;
                     this.attachment.location = 'play area';
                     this.card.attachments.push(this.attachment);
-                    spyOn(this.player, 'removeAttachment');
+                    spyOn(this.card, 'removeAttachment');
 
                     this.player.moveCard(this.card, 'hand');
                 });
 
                 it('should remove the attachments', function() {
-                    expect(this.player.removeAttachment).toHaveBeenCalledWith(this.attachment, false);
+                    expect(this.card.removeAttachment).toHaveBeenCalledWith(this.attachment);
                 });
             });
 
@@ -126,20 +128,6 @@ describe('Player', function() {
                 });
             });
 
-            describe('when the card has duplicates', function() {
-                beforeEach(function() {
-                    this.dupe = new DrawCard(this.player, {});
-                    this.card.addDuplicate(this.dupe);
-
-                    spyOn(this.player, 'discardCards');
-
-                    this.player.moveCard(this.card, 'hand');
-                });
-
-                it('should discard the dupes', function() {
-                    expect(this.player.discardCards).toHaveBeenCalledWith([this.dupe], false);
-                });
-            });
         });
 
         describe('when the target location is the draw deck', function() {
@@ -163,13 +151,6 @@ describe('Player', function() {
                 this.player.moveCard(this.card, 'draw deck', { bottom: true });
                 expect(this.player.drawDeck.length).toBe(4);
                 expect(this.player.drawDeck.slice(-1)[0]).toBe(this.card);
-            });
-        });
-
-        describe('when the target location is the active plot', function() {
-            it('should set the card as the active plot', function() {
-                this.player.moveCard(this.card, 'active plot');
-                expect(this.player.activePlot).toBe(this.card);
             });
         });
 
@@ -205,17 +186,6 @@ describe('Player', function() {
                 });
             });
 
-            describe('from out-of-play to out-of-play', function() {
-                beforeEach(function() {
-                    this.card.location = 'discard pile';
-
-                    this.player.moveCard(this.card, 'hand', this.options, this.callback);
-                });
-
-                it('should use the owner\'s moveCard instead', function() {
-                    expect(this.opponent.moveCard).toHaveBeenCalledWith(this.card, 'hand', jasmine.objectContaining(this.options), this.callback);
-                });
-            });
         });
     });
 });

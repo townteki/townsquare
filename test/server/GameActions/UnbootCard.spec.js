@@ -3,7 +3,7 @@ const UnbootCard = require('../../../server/game/GameActions/UnbootCard');
 describe('UnbootCard', function() {
     beforeEach(function() {
         this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction']);
-        this.cardSpy.kneeled = true;
+        this.cardSpy.booted = true;
         this.cardSpy.location = 'play area';
         this.props = { card: this.cardSpy };
     });
@@ -13,21 +13,19 @@ describe('UnbootCard', function() {
             this.cardSpy.allowGameAction.and.returnValue(true);
         });
 
-        for(let location of ['faction', 'play area']) {
-            describe(`when the card is in ${location}`, function() {
-                beforeEach(function() {
-                    this.cardSpy.location = location;
-                });
-
-                it('returns true', function() {
-                    expect(UnbootCard.allow(this.props)).toBe(true);
-                });
-            });
-        }
-
-        describe('when the card is already standing', function() {
+        describe('when the card is in play area', function() {
             beforeEach(function() {
-                this.cardSpy.kneeled = false;
+                this.cardSpy.location = 'play area';
+            });
+
+            it('returns true', function() {
+                expect(UnbootCard.allow(this.props)).toBe(true);
+            });
+        });
+
+        describe('when the card is already unbooted', function() {
+            beforeEach(function() {
+                this.cardSpy.booted = false;
             });
 
             it('returns false', function() {
@@ -35,7 +33,7 @@ describe('UnbootCard', function() {
             });
         });
 
-        describe('when the card is not in a kneelable area', function() {
+        describe('when the card is not in a bootable area', function() {
             beforeEach(function() {
                 this.cardSpy.location = 'dead pile';
             });
@@ -52,7 +50,7 @@ describe('UnbootCard', function() {
         });
 
         it('creates a onCardStood event', function() {
-            expect(this.event.name).toBe('onCardStood');
+            expect(this.event.name).toBe('onCardUnbooted');
             expect(this.event.card).toBe(this.cardSpy);
         });
 
@@ -61,8 +59,8 @@ describe('UnbootCard', function() {
                 this.event.executeHandler();
             });
 
-            it('stands the card', function() {
-                expect(this.cardSpy.kneeled).toBe(false);
+            it('unboots the card', function() {
+                expect(this.cardSpy.booted).toBe(false);
             });
         });
     });

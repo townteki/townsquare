@@ -13,7 +13,7 @@ class TriggeredAbility extends BaseAbility {
         this.eventType = eventType;
         this.location = this.buildLocation(card, properties.location);
 
-        if(card.getPrintedType() === 'action' && !properties.ignoreEventCosts) {
+        if(card.getType() === 'action' && !properties.ignoreEventCosts) {
             this.cost = this.cost.concat(Costs.playAction());
         }
 
@@ -25,12 +25,10 @@ class TriggeredAbility extends BaseAbility {
 
     buildLocation(card, location) {
         const DefaultLocationForType = {
-            event: 'hand',
-            agenda: 'agenda',
-            plot: 'active plot'
+            action: 'hand'
         };
 
-        let defaultedLocation = location || DefaultLocationForType[card.getPrintedType()] || ['play area'];
+        let defaultedLocation = location || DefaultLocationForType[card.getType()] || ['play area'];
 
         if(!Array.isArray(defaultedLocation)) {
             return [defaultedLocation];
@@ -129,7 +127,7 @@ class TriggeredAbility extends BaseAbility {
     }
 
     isPlayableActionAbility() {
-        return this.card.getPrintedType() === 'event' && this.location.includes('hand');
+        return this.card.getType() === 'action' && this.location.includes('hand');
     }
 
     incrementLimit() {

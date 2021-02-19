@@ -42,10 +42,10 @@ class CardMatcher {
     /**
      * Creates a matcher function to determine whether an attachment can be
      * attached to a particular card based on the properties passed. It defaults
-     * to only allowing attachments on characters.
+     * to only allowing attachments on dudes.
      */
     static createAttachmentMatcher(properties) {
-        let defaultedProperties = Object.assign({ type: 'character' }, properties);
+        let defaultedProperties = Object.assign({ type: 'dude' }, properties);
         return function(card, context) {
             return (
                 CardMatcher.isMatch(card, defaultedProperties) &&

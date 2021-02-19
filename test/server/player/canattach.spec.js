@@ -3,13 +3,19 @@ const Player = require('../../../server/game/player.js');
 describe('Player', function() {
     beforeEach(function() {
         this.gameSpy = jasmine.createSpyObj('game', ['raiseEvent']);
+        this.gameSpy.townsquare = { uuid: '1' };
         this.player = new Player('1', { username: 'Player 1', settings: {} }, true, this.gameSpy);
+        this.player.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
+        this.player.addOutfitToTown.and.callFake(function() {});
         this.player.initialise();
 
-        this.cardSpy = jasmine.createSpyObj('card', ['allowAttachment']);
+        this.cardSpy = jasmine.createSpyObj('card', ['allowAttachment, getLocation']);
+        this.cardSpy.player = this.player;
+        this.cardSpy.allowAttachment = jasmine.createSpy('allowAttachment');
         this.cardSpy.allowAttachment.and.returnValue(true);
+        this.cardSpy.getLocation = jasmine.createSpy('getLocation');
         this.cardSpy.location = 'play area';
-        this.attachmentSpy = jasmine.createSpyObj('attachment', ['canAttach']);
+        this.attachmentSpy = jasmine.createSpyObj('goods', ['canAttach']);
         this.attachmentSpy.canAttach.and.returnValue(true);
     });
 
@@ -30,13 +36,29 @@ describe('Player', function() {
             });
         });
 
-        describe('when the card does not allow the attachment', function() {
+        describe('when shoppin in uncontrolled location', function() {
+            it('should return false', function() {
+                this.cardSpy.getLocation.and.callFake(function() {
+                    return { controller: this.player, determineController: () => 'other' };
+                });
+                expect(this.player.canAttach(this.attachmentSpy, this.cardSpy, 'shoppin')).toBe(false);
+            });
+        });
+
+        describe('when shoppin in controlled location', function() {
             beforeEach(function() {
-                this.cardSpy.allowAttachment.and.returnValue(false);
+                this.cardSpy.getLocation.and.callFake(function() {
+                    return { controller: this.player, determineController: () => this.player };
+                });
             });
 
-            it('should return false', function() {
-                expect(this.player.canAttach(this.attachmentSpy, this.cardSpy)).toBe(false);
+            it('should return false if parent booted', function() {
+                this.cardSpy.booted = true;
+                expect(this.player.canAttach(this.attachmentSpy, this.cardSpy, 'shoppin')).toBe(false);
+            });
+
+            it('should return true if parent unbooted', function() {
+                expect(this.player.canAttach(this.attachmentSpy, this.cardSpy, 'shoppin')).toBe(true);
             });
         });
 

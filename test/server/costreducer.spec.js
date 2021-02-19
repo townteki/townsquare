@@ -4,7 +4,7 @@ describe('CostReducer', function () {
     beforeEach(function () {
         this.gameSpy = jasmine.createSpyObj('game', ['on', 'removeListener']);
         this.source = {};
-        this.limitSpy = jasmine.createSpyObj('limit', ['increment', 'isAtMax', 'isRepeatable', 'registerEvents', 'unregisterEvents']);
+        this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'isRepeatable', 'registerEvents', 'unregisterEvents']);
         this.properties = {
             match: jasmine.createSpy('match')
         };
@@ -13,7 +13,6 @@ describe('CostReducer', function () {
     describe('constructor', function() {
         describe('defaults', function() {
             beforeEach(function() {
-                this.properties.limit = null;
                 this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
             });
 
@@ -26,20 +25,14 @@ describe('CostReducer', function () {
             });
         });
 
-        it('should register events for the limit if provided', function() {
-            this.properties.limit = this.limitSpy;
-            this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
-            expect(this.limitSpy.registerEvents).toHaveBeenCalledWith(this.gameSpy);
-        });
-
         describe('when playingTypes is not an array', function() {
             beforeEach(function() {
-                this.properties.playingTypes = 'marshal';
+                this.properties.playingTypes = 'shoppin';
                 this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
             });
 
             it('should wrap it in an array', function() {
-                expect(this.reducer.playingTypes).toEqual(['marshal']);
+                expect(this.reducer.playingTypes).toEqual(['shoppin']);
             });
         });
     });
@@ -49,20 +42,20 @@ describe('CostReducer', function () {
             this.card = {};
             this.properties.match.and.returnValue(true);
             this.properties.playingTypes = ['marshal', 'ambush'];
-            this.properties.limit = this.limitSpy;
-            this.limitSpy.isAtMax.and.returnValue(false);
+            this.usageSpy.isUsed.and.returnValue(false);
             this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
+            this.reducer.usage = this.usageSpy;
         });
 
-        describe('when below the limit, with correct play type, and the card matches', function() {
+        describe('when not used, with correct play type, and the card matches', function() {
             it('should return true', function() {
                 expect(this.reducer.canReduce('marshal', this.card)).toBe(true);
             });
         });
 
-        describe('when the limit has been reached', function() {
+        describe('when used', function() {
             beforeEach(function() {
-                this.limitSpy.isAtMax.and.returnValue(true);
+                this.usageSpy.isUsed.and.returnValue(true);
             });
 
             it('should return false', function() {
@@ -105,9 +98,9 @@ describe('CostReducer', function () {
             this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
         });
 
-        describe('when there is no limit', function() {
+        describe('when there is no usage', function() {
             beforeEach(function() {
-                this.reducer.limit = null;
+                this.reducer.usage = null;
             });
 
             it('should not crash', function() {
@@ -115,14 +108,14 @@ describe('CostReducer', function () {
             });
         });
 
-        describe('when there is a limit', function() {
+        describe('when there is a usage', function() {
             beforeEach(function() {
-                this.reducer.limit = this.limitSpy;
+                this.reducer.usage = this.usageSpy;
             });
 
-            it('should increment the limit', function() {
+            it('should increment the usage', function() {
                 this.reducer.markUsed();
-                expect(this.limitSpy.increment).toHaveBeenCalled();
+                expect(this.usageSpy.increment).toHaveBeenCalled();
             });
         });
     });
@@ -132,9 +125,9 @@ describe('CostReducer', function () {
             this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
         });
 
-        describe('when there is no limit', function() {
+        describe('when there is no usage', function() {
             beforeEach(function() {
-                this.reducer.limit = null;
+                this.reducer.usage = null;
             });
 
             it('should return false', function() {
@@ -142,39 +135,39 @@ describe('CostReducer', function () {
             });
         });
 
-        describe('when there is a limit', function() {
+        describe('when there is a usage', function() {
             beforeEach(function() {
-                this.reducer.limit = this.limitSpy;
+                this.reducer.usage = this.usageSpy;
             });
 
-            describe('and the limit is not repeatable', function() {
+            describe('and the usage is not repeatable', function() {
                 beforeEach(function() {
-                    this.limitSpy.isRepeatable.and.returnValue(false);
+                    this.usageSpy.isRepeatable.and.returnValue(false);
                 });
 
-                it('should return false when below the limit', function() {
-                    this.limitSpy.isAtMax.and.returnValue(false);
+                it('should return false when not used', function() {
+                    this.usageSpy.isUsed.and.returnValue(false);
                     expect(this.reducer.isExpired()).toBe(false);
                 });
 
-                it('should return true when the limit has been reached', function() {
-                    this.limitSpy.isAtMax.and.returnValue(true);
+                it('should return true when used', function() {
+                    this.usageSpy.isUsed.and.returnValue(true);
                     expect(this.reducer.isExpired()).toBe(true);
                 });
             });
 
-            describe('and the limit is repeatable', function() {
+            describe('and the usage is repeatable', function() {
                 beforeEach(function() {
-                    this.limitSpy.isRepeatable.and.returnValue(true);
+                    this.usageSpy.isRepeatable.and.returnValue(true);
                 });
 
-                it('should return false when below the limit', function() {
-                    this.limitSpy.isAtMax.and.returnValue(false);
+                it('should return false when not used', function() {
+                    this.usageSpy.isUsed.and.returnValue(false);
                     expect(this.reducer.isExpired()).toBe(false);
                 });
 
-                it('should return false even when the limit has been reached', function() {
-                    this.limitSpy.isAtMax.and.returnValue(true);
+                it('should return false even when used', function() {
+                    this.usageSpy.isUsed.and.returnValue(true);
                     expect(this.reducer.isExpired()).toBe(false);
                 });
             });
@@ -186,9 +179,9 @@ describe('CostReducer', function () {
             this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
         });
 
-        describe('when there is no limit', function() {
+        describe('when there is no usage', function() {
             beforeEach(function() {
-                this.reducer.limit = null;
+                this.reducer.usage = null;
             });
 
             it('should not crash', function() {
@@ -196,14 +189,14 @@ describe('CostReducer', function () {
             });
         });
 
-        describe('when there is a limit', function() {
+        describe('when there is a usage', function() {
             beforeEach(function() {
-                this.reducer.limit = this.limitSpy;
+                this.reducer.usage = this.usageSpy;
             });
 
-            it('should unregister events on the limit', function() {
+            it('should unregister events on the usage', function() {
                 this.reducer.unregisterEvents();
-                expect(this.limitSpy.unregisterEvents).toHaveBeenCalledWith(this.gameSpy);
+                expect(this.usageSpy.unregisterEvents).toHaveBeenCalledWith(this.gameSpy);
             });
         });
     });

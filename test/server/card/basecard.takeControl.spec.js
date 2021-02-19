@@ -1,8 +1,9 @@
 const BaseCard = require('../../../server/game/basecard');
 
-describe('BaseCard', function () {
+xdescribe('BaseCard', function () {
     describe('takeControl()', function() {
         beforeEach(function() {
+            this.game = jasmine.createSpyObj('game', ['takeControl', 'applyGameAction', 'raiseEvent']);
             this.owner = { owner: 1 };
             this.newController = { controller: 1 };
             this.source = { source: 1 };
@@ -12,7 +13,9 @@ describe('BaseCard', function () {
 
         describe('when taking sourced control', function() {
             beforeEach(function() {
-                this.card.takeControl(this.newController, this.source);
+                this.game.canPutIntoPlay = jasmine.createSpy('canPutIntoPlay');
+                this.game.canPutIntoPlay.and.returnValue(true);
+                this.game.takeControl(this.newController, this.source);
             });
 
             it('should update the controller', function() {

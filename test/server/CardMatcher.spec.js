@@ -2,35 +2,38 @@ const CardMatcher = require('../../server/game/CardMatcher.js');
 
 describe('CardMatcher', function() {
     beforeEach(function() {
-        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAttacking', 'isDefending', 'isParticipating', 'isUnique', 'isLimited', 'isLoyal']);
+        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isInLeaderPosse', 'isInOpposingPosse', 'isParticipating', 'isUnique', 'isWanted']);
     });
 
     describe('.isMatch', function() {
-        describe('attacking', function() {
-            it('returns true if the card is attacking', function() {
-                this.cardSpy.isAttacking.and.returnValue(true);
-                expect(CardMatcher.isMatch(this.cardSpy, { attacking: true })).toBe(true);
+        describe('in leader posse', function() {
+            it('returns true if the card is in leader posse', function() {
+                this.cardSpy.isInLeaderPosse.and.returnValue(true);
+                expect(CardMatcher.isMatch(this.cardSpy, { inLeaderPosse: true })).toBe(true);
             });
 
-            it('returns false if the card is not attacking', function() {
-                this.cardSpy.isAttacking.and.returnValue(false);
-                expect(CardMatcher.isMatch(this.cardSpy, { attacking: true })).toBe(false);
+            it('returns false if the card is not in leader posse', function() {
+                this.cardSpy.isInLeaderPosse.and.returnValue(false);
+                expect(CardMatcher.isMatch(this.cardSpy, { inLeaderPosse: true })).toBe(false);
             });
         });
 
-        describe('defending', function() {
-            it('returns true if the card is defending', function() {
-                this.cardSpy.isDefending.and.returnValue(true);
-                expect(CardMatcher.isMatch(this.cardSpy, { defending: true })).toBe(true);
+        describe('in opposing posse', function() {
+            it('returns true if the card is in opposing posse', function() {
+                this.cardSpy.isInOpposingPosse.and.returnValue(true);
+                expect(CardMatcher.isMatch(this.cardSpy, { inOpposingPosse: true })).toBe(true);
             });
 
-            it('returns false if the card is not defending', function() {
-                this.cardSpy.isDefending.and.returnValue(false);
-                expect(CardMatcher.isMatch(this.cardSpy, { defending: true })).toBe(false);
+            it('returns false if the card is not in opposing posse', function() {
+                this.cardSpy.isInOpposingPosse.and.returnValue(false);
+                expect(CardMatcher.isMatch(this.cardSpy, { inOpposingPosse: true })).toBe(false);
             });
         });
 
         describe('participating', function() {
+            beforeEach(function() {
+                this.cardSpy.game = { shootout: {}};
+            });
             it('returns true if the card is participating', function() {
                 this.cardSpy.isParticipating.and.returnValue(true);
                 expect(CardMatcher.isMatch(this.cardSpy, { participating: true })).toBe(true);
@@ -40,6 +43,33 @@ describe('CardMatcher', function() {
                 this.cardSpy.isParticipating.and.returnValue(false);
                 expect(CardMatcher.isMatch(this.cardSpy, { participating: true })).toBe(false);
             });
+
+            describe('shootout is null', function() {
+                it('returns false if the card is participating', function() {
+                    this.cardSpy.game = {};
+                    expect(CardMatcher.isMatch(this.cardSpy, { participating: true })).toBe(true);
+                });
+            });
+        });
+
+        describe('wanted', function() {
+            beforeEach(function() {
+                this.cardSpy.getType.and.returnValue('dude');
+            });
+            it('returns true if the card is wanted', function() {
+                this.cardSpy.isWanted.and.returnValue(true);
+                expect(CardMatcher.isMatch(this.cardSpy, { wanted: true })).toBe(true);
+            });
+
+            it('returns false if the card is not wanted', function() {
+                this.cardSpy.isWanted.and.returnValue(false);
+                expect(CardMatcher.isMatch(this.cardSpy, { wanted: true })).toBe(false);
+            });
+
+            it('returns false if the card is not dude', function() {
+                this.cardSpy.getType.and.returnValue('deed');
+                expect(CardMatcher.isMatch(this.cardSpy, { wanted: true })).toBe(false);
+            });
         });
     });
 
@@ -48,7 +78,7 @@ describe('CardMatcher', function() {
             let controller = { controller: 1 };
             this.context = { player: controller };
             this.cardSpy.controller = controller;
-            this.cardSpy.getType.and.returnValue('character');
+            this.cardSpy.getType.and.returnValue('dude');
         });
 
         describe('defaults', function() {
@@ -56,12 +86,12 @@ describe('CardMatcher', function() {
                 this.matcher = CardMatcher.createAttachmentMatcher({});
             });
 
-            it('should match characters', function() {
+            it('should match dudes', function() {
                 expect(this.matcher(this.cardSpy, this.context)).toBe(true);
             });
 
-            it('should not match non-characters', function() {
-                this.cardSpy.getType.and.returnValue('location');
+            it('should not match non-dudes', function() {
+                this.cardSpy.getType.and.returnValue('deed');
                 expect(this.matcher(this.cardSpy, this.context)).toBe(false);
             });
         });

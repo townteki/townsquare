@@ -3,7 +3,7 @@ const {Tokens} = require('../../../server/game/Constants');
 
 describe('DrawCard', function () {
     beforeEach(function () {
-        this.testCard = { code: '111', label: 'test 1(some pack)', name: 'test 1' };
+        this.testCard = { code: '111', title: 'test 1' };
         this.gameSpy = jasmine.createSpyObj('game', ['raiseEvent']);
         this.card = new DrawCard({ game: this.gameSpy }, this.testCard);
         spyOn(this.card.events, 'register');
@@ -19,8 +19,8 @@ describe('DrawCard', function () {
         describe('when the card has tokens on it', function() {
             beforeEach(function() {
                 this.card.location = 'play area';
-                this.card.power = 1;
-                this.card.modifyToken(Tokens.gold, 2);
+                this.card.modifyGhostRock(1);
+                this.card.modifyToken(Tokens.bounty, 2);
             });
 
             describe('when moving the card between areas', function() {
@@ -28,27 +28,27 @@ describe('DrawCard', function () {
                     this.card.moveTo('hand');
                 });
 
-                it('should remove any power on the card', function() {
-                    expect(this.card.power).toBe(0);
+                it('should remove any ghostrock on the card', function() {
+                    expect(this.card.ghostrock).toBe(0);
                 });
 
                 it('should remove any tokens on the card', function() {
-                    expect(this.card.tokens[Tokens.gold]).toBeUndefined();
+                    expect(this.card.tokens[Tokens.bounty]).toBeUndefined();
                 });
             });
 
             describe('when moving the card within the same parent', function() {
                 beforeEach(function() {
-                    this.card.parent = jasmine.createSpyObj('parent1', ['removeChildCard']);
+                    this.card.parent = jasmine.createSpyObj('parent1', ['removeChildCard', 'removeAttachment']);
                     this.card.moveTo('play area', jasmine.createSpyObj('parent2', ['removeChildCard']));
                 });
 
-                it('should not remove any power on the card', function() {
-                    expect(this.card.power).toBe(1);
+                it('should not remove any ghostrock on the card', function() {
+                    expect(this.card.ghostrock).toBe(1);
                 });
 
                 it('should not remove any tokens on the card', function() {
-                    expect(this.card.tokens[Tokens.gold]).toBe(2);
+                    expect(this.card.tokens[Tokens.bounty]).toBe(2);
                 });
             });
         });

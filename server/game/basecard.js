@@ -222,7 +222,20 @@ class BaseCard {
 
     /**
      * Applies an immediate effect which lasts until the end of the current
-     * challenge.
+     * shootout round.
+     */
+    untilEndOfShootoutRound(propertyFactory, ability) {
+        var properties = propertyFactory(AbilityDsl);
+        this.game.addEffect(this, Object.assign({ 
+            duration: 'untilEndOfShootoutRound', 
+            location: 'any', 
+            ability: ability  
+        }, properties));
+    }
+
+    /**
+     * Applies an immediate effect which lasts until the end of the current
+     * shootout phase.
      */
     untilEndOfShootoutPhase(propertyFactory, ability) {
         var properties = propertyFactory(AbilityDsl);
@@ -620,17 +633,7 @@ class BaseCard {
     }
 
     addKeyword(keyword) {
-        var lowerCaseKeyword = keyword.toLowerCase();
-
-        if(!lowerCaseKeyword || lowerCaseKeyword === '') {
-            return;
-        }
-
-        if(!this.keywords[lowerCaseKeyword]) {
-            this.keywords[lowerCaseKeyword] = { count: 1, modifier: 0 };
-        } else {
-            this.keywords[lowerCaseKeyword].count++;
-        }
+        this.keywords.addKeyword(keyword);
     }
 
     addFaction(faction) {
@@ -645,9 +648,7 @@ class BaseCard {
     }
 
     removeKeyword(keyword) {
-        var lowerCaseKeyword = keyword.toLowerCase();
-        this.keywords[lowerCaseKeyword].count = this.keywords[lowerCaseKeyword].count || 0;
-        this.keywords[lowerCaseKeyword].count--;
+        this.keywords.removeKeyword(keyword);
     }
 
     removeFaction(faction) {
@@ -918,7 +919,6 @@ class BaseCard {
             facedown: this.facedown,
             gamelocation: this.gamelocation,
             influence: this.influence,
-            keywords: this.keywords,
             location: this.location,
             menu: this.getMenu(activePlayer),
             new: this.new,

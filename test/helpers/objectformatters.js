@@ -14,7 +14,7 @@ function formatObject(...keys) {
     };
 }
 
-BaseCard.prototype.toString = formatObject('name', 'location');
+BaseCard.prototype.toString = formatObject('title', 'location');
 Player.prototype.toString = formatObject('name');
 
 Game.prototype.toString = function() {

@@ -8,31 +8,31 @@ describe('the DrawCard', function() {
         });
 
         it('should return false if no keyword has been added', function() {
-            expect(this.card.hasKeyword('stealth')).toBe(false);
+            expect(this.card.hasKeyword('private')).toBe(false);
         });
 
         it('should return true if a keyword has been added', function() {
-            this.card.addKeyword('stealth');
-            expect(this.card.hasKeyword('stealth')).toBe(true);
+            this.card.addKeyword('private');
+            expect(this.card.hasKeyword('private')).toBe(true);
         });
 
         it('should not be case sensitive', function() {
-            this.card.addKeyword('Intimidate');
-            expect(this.card.hasKeyword('InTiMiDaTe')).toBe(true);
+            this.card.addKeyword('Deputy');
+            expect(this.card.hasKeyword('DePuTy')).toBe(true);
         });
 
         it('should return true if a keyword has been added more than it has been removed', function() {
-            this.card.addKeyword('stealth');
-            this.card.addKeyword('stealth');
-            this.card.removeKeyword('stealth');
-            expect(this.card.hasKeyword('stealth')).toBe(true);
+            this.card.addKeyword('private');
+            this.card.addKeyword('private');
+            this.card.removeKeyword('private');
+            expect(this.card.hasKeyword('private')).toBe(true);
         });
 
         it('should return false if a keyword has been removed more than it has been added', function() {
-            this.card.removeKeyword('stealth');
-            this.card.removeKeyword('stealth');
-            this.card.addKeyword('stealth');
-            expect(this.card.hasKeyword('stealth')).toBe(false);
+            this.card.removeKeyword('private');
+            this.card.removeKeyword('private');
+            this.card.addKeyword('private');
+            expect(this.card.hasKeyword('private')).toBe(false);
         });
     });
 });

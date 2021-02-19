@@ -1,4 +1,5 @@
-describe('replacement effects', function() {
+// TODO M2 not sure if we need this (if there are replacement effects)
+xdescribe('replacement effects', function() {
     integration(function() {
         describe('when a replacement effect is applied', function() {
             beforeEach(function() {
