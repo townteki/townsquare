@@ -6,8 +6,12 @@ describe('the MenuPrompt', function() {
         var game = new jasmine.createSpyObj('game', ['raiseEvent']);
 
         this.player = new Player('1', { username: 'Player 1', settings: {} }, true, game);
+        this.player.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
+        this.player.addOutfitToTown.and.callFake(function() {});
         this.player.initialise();
         this.otherPlayer = new Player('2', { username: 'Player 2', settings: {} }, false, game);
+        this.otherPlayer.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
+        this.otherPlayer.addOutfitToTown.and.callFake(function() {});
         this.otherPlayer.initialise();
         game.playersAndSpectators = {};
         game.playersAndSpectators[this.player.name] = this.player;

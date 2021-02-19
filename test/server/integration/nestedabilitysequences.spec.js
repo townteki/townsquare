@@ -1,4 +1,5 @@
-describe('nested ability sequences', function() {
+// TODO M2 not sure if we need this
+xdescribe('nested ability sequences', function() {
     integration(function() {
         describe('abilities already in play', function() {
             beforeEach(function() {

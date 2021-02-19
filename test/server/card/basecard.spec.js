@@ -1,10 +1,11 @@
 const BaseCard = require('../../../server/game/basecard.js');
+const KeywordsProperty = require('../../../server/game/PropertyTypes/KeywordsProperty.js');
 
 describe('BaseCard', function () {
     beforeEach(function () {
-        this.testCard = { code: '111', label: 'test 1(some pack)', name: 'test 1', faction: 'neutral' };
-        this.limitedCard = { code: '1234', text: 'Limited.', faction: 'neutral' };
-        this.nonLimitedCard = { code: '2222', text: 'Stealth.', faction: 'neutral' };
+        this.testCard = { code: '111', title: 'test 1', gang_code: 'neutral' };
+        this.limitedCard = { code: '1234', text: 'Limited.', gang_code: 'neutral' };
+        this.nonLimitedCard = { code: '2222', text: 'Stealth.', gang_code: 'neutral' };
         this.game = jasmine.createSpyObj('game', ['isCardVisible', 'raiseEvent']);
         this.owner = jasmine.createSpyObj('owner', ['getCardSelectionState', 'isSpectator']);
         this.owner.getCardSelectionState.and.returnValue({});
@@ -19,51 +20,44 @@ describe('BaseCard', function () {
     });
 
     describe('.parseKeywords', function() {
-        it('parses keywords with a parenthesized value', function() {
-            const keywords = BaseCard.parseKeywords('Ambush (1). Bestow (2). Shadow (3).');
-            expect(keywords.length).toBe(3);
-            expect(keywords).toContain('ambush (1)');
-            expect(keywords).toContain('bestow (2)');
-            expect(keywords).toContain('shadow (3)');
+        it('parses keywords without numeric value', function() {
+            const keywords = new KeywordsProperty('Private • Ranch • Out of Town');
+            expect(keywords.size()).toBe(3);
+            expect(keywords.getValues()).toContain('private');
+            expect(keywords.getValues()).toContain('ranch');
+            expect(keywords.getValues()).toContain('out of town');
         });
 
-        it('parses non-value keywords', function() {
-            const keywords = BaseCard.parseKeywords('Stealth. Intimidate. Renown. Insight. Terminal. Limited. Pillage.');
+        it('parses keywords with numeric values', function() {
+            const keywords = new KeywordsProperty('Blessed 1 • Mad Scientist 0 • Difficulty 8');
 
-            expect(keywords.length).toBe(7);
-            expect(keywords).toContain('stealth');
-            expect(keywords).toContain('intimidate');
-            expect(keywords).toContain('renown');
-            expect(keywords).toContain('insight');
-            expect(keywords).toContain('terminal');
-            expect(keywords).toContain('limited');
-            expect(keywords).toContain('pillage');
+            expect(keywords.size()).toBe(3);
+            expect(keywords.getValues()).toContain('blessed');
+            expect(keywords.getValues()).toContain('mad scientist');
+            expect(keywords.getValues()).toContain('difficulty');
+            expect(keywords.modifiers['blessed'].printed).toBe(1);
+            expect(keywords.modifiers['mad scientist'].printed).toBe(0);
+            expect(keywords.modifiers['difficulty'].printed).toBe(8);
         });
 
-        it('parses no attachment keywords', function() {
-            const keywords = BaseCard.parseKeywords('No attachments. No attachments except <i>Weapon</i>.');
+        it('parses difficulty keywords', function() {
+            const keywords1 = new KeywordsProperty('Gadget 6');
+            const keywords2 = new KeywordsProperty('Miracle 7');
+            const keywords3 = new KeywordsProperty('Hex 9');
+            const keywords4 = new KeywordsProperty('Spirit 5');
 
-            expect(keywords.length).toBe(2);
-            expect(keywords).toContain('no attachments');
-            expect(keywords).toContain('no attachments except <i>weapon</i>');
-        });
-
-        it('parses keywords on multiple lines', function() {
-            const keywords = BaseCard.parseKeywords(`
-                Shadow (4).\n
-                No attachments except <i>Weapon</i>.\n
-                <b>Action:</b> Until the end of phase, cannot be bypassed by Stealth.
-            `);
-
-            expect(keywords.length).toBe(2);
-            expect(keywords).toContain('shadow (4)');
-            expect(keywords).toContain('no attachments except <i>weapon</i>');
-        });
-
-        it('does not parse keywords that are embedded in abilities', function() {
-            const keywords = BaseCard.parseKeywords('Cannot be bypassed by stealth.');
-
-            expect(keywords).toEqual([]);
+            expect(keywords1.size()).toBe(1);
+            expect(keywords2.size()).toBe(1);
+            expect(keywords3.size()).toBe(1);
+            expect(keywords4.size()).toBe(1);
+            expect(keywords1.getValues()).toContain('gadget');
+            expect(keywords2.getValues()).toContain('miracle');
+            expect(keywords3.getValues()).toContain('hex');
+            expect(keywords4.getValues()).toContain('spirit');
+            expect(keywords1.modifiers['difficulty'].printed).toBe(6);
+            expect(keywords2.modifiers['difficulty'].printed).toBe(7);
+            expect(keywords3.modifiers['difficulty'].printed).toBe(9);
+            expect(keywords4.modifiers['difficulty'].printed).toBe(5);
         });
     });
 
@@ -87,7 +81,7 @@ describe('BaseCard', function () {
 
             it('should call execute on the action with the appropriate index', function() {
                 this.card.doAction('player', 1);
-                expect(this.actionSpy2.execute).toHaveBeenCalledWith('player', 1);
+                expect(this.actionSpy2.execute).toHaveBeenCalledWith('player');
             });
 
             it('should handle out of bounds indices', function() {
@@ -108,7 +102,7 @@ describe('BaseCard', function () {
             describe('and card is faceup', function() {
                 it('should return card data', function() {
                     expect(this.summary.uuid).toEqual(this.card.uuid);
-                    expect(this.summary.name).toEqual(this.testCard.label);
+                    expect(this.summary.title).toEqual(this.testCard.title);
                     expect(this.summary.code).toEqual(this.testCard.code);
                 });
 
@@ -125,7 +119,7 @@ describe('BaseCard', function () {
 
                 it('should return card data', function() {
                     expect(this.summary.uuid).toEqual(this.card.uuid);
-                    expect(this.summary.name).toEqual(this.testCard.label);
+                    expect(this.summary.title).toEqual(this.testCard.title);
                     expect(this.summary.code).toEqual(this.testCard.code);
                 });
 
@@ -145,7 +139,7 @@ describe('BaseCard', function () {
 
             describe('and card is faceup', function() {
                 it('should return no card data', function () {
-                    expect(this.summary.name).toBeUndefined();
+                    expect(this.summary.title).toBeUndefined();
                     expect(this.summary.code).toBeUndefined();
                 });
 
@@ -165,7 +159,7 @@ describe('BaseCard', function () {
                 });
 
                 it('should return no card data', function() {
-                    expect(this.summary.name).toBeUndefined();
+                    expect(this.summary.title).toBeUndefined();
                     expect(this.summary.code).toBeUndefined();
                 });
 
@@ -183,7 +177,7 @@ describe('BaseCard', function () {
     describe('allowGameAction()', function() {
         describe('when there are no restrictions', function() {
             it('should return true', function() {
-                expect(this.card.allowGameAction('kill')).toBe(true);
+                expect(this.card.allowGameAction('ace')).toBe(true);
             });
         });
 
@@ -197,14 +191,14 @@ describe('BaseCard', function () {
             });
 
             it('should check each restriction', function() {
-                this.card.allowGameAction('kill');
-                expect(this.restrictionSpy1.isMatch).toHaveBeenCalledWith('kill', this.game.currentAbilityContext);
-                expect(this.restrictionSpy2.isMatch).toHaveBeenCalledWith('kill', this.game.currentAbilityContext);
+                this.card.allowGameAction('ace');
+                expect(this.restrictionSpy1.isMatch).toHaveBeenCalledWith('ace', this.game.currentAbilityContext, this.owner);
+                expect(this.restrictionSpy2.isMatch).toHaveBeenCalledWith('ace', this.game.currentAbilityContext, this.owner);
             });
 
             describe('and there are no matching restrictions', function() {
                 it('should return true', function() {
-                    expect(this.card.allowGameAction('kill')).toBe(true);
+                    expect(this.card.allowGameAction('ace')).toBe(true);
                 });
             });
 
@@ -214,74 +208,8 @@ describe('BaseCard', function () {
                 });
 
                 it('should return false', function() {
-                    expect(this.card.allowGameAction('kill')).toBe(false);
+                    expect(this.card.allowGameAction('ace')).toBe(false);
                 });
-            });
-        });
-    });
-
-    describe('isFaction()', function() {
-        beforeEach(function() {
-            this.card.factions.clear();
-            this.card.addFaction('stark');
-        });
-
-        it('should return true if it has that faction', function() {
-            expect(this.card.isFaction('stark')).toBe(true);
-        });
-
-        it('should return true regardless of case', function() {
-            expect(this.card.isFaction('StArK')).toBe(true);
-        });
-
-        it('should return false for unaffiliated factions', function() {
-            expect(this.card.isFaction('baratheon')).toBe(false);
-        });
-
-        describe('when the card is neutral', function() {
-            beforeEach(function() {
-                this.card.factions.clear();
-                this.card.addFaction('neutral');
-            });
-
-            it('should return true for neutral', function() {
-                expect(this.card.isFaction('neutral')).toBe(true);
-            });
-
-            it('should return false if it gains a faction affiliation (e.g. Ward)', function() {
-                this.card.addFaction('stark');
-                expect(this.card.isFaction('neutral')).toBe(false);
-            });
-        });
-
-        describe('when the card loses all factions', function() {
-            beforeEach(function() {
-                this.card.loseAspect('factions');
-            });
-
-            it('should return true for neutral', function() {
-                expect(this.card.isFaction('neutral')).toBe(true);
-            });
-        });
-
-        describe('when the card loses a specific faction', function() {
-            beforeEach(function() {
-                this.card.addFaction('lannister');
-                this.card.loseAspect('factions.stark');
-            });
-
-            it('should return false for the faction lost', function() {
-                expect(this.card.isFaction('stark')).toBe(false);
-            });
-
-            it('should not lose any other faction', function() {
-                expect(this.card.isFaction('lannister')).toBe(true);
-            });
-
-            it('should read as neutral if it has lost all its specific factions', function() {
-                this.card.loseAspect('factions.lannister');
-
-                expect(this.card.isFaction('neutral')).toBe(true);
             });
         });
     });

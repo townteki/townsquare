@@ -22,10 +22,6 @@ class PlayerInteractionWrapper {
         return this.player.firstPlayer;
     }
 
-    get activePlot() {
-        return this.player.activePlot;
-    }
-
     currentPrompt() {
         return this.player.currentPrompt();
     }
@@ -61,6 +57,14 @@ class PlayerInteractionWrapper {
         return cards;
     }
 
+    drawCardsToHand(num) {
+        for (let i = 0; i < num; i++) {
+            if (this.player.drawDeck.size > 0) {
+                this.dragCard(this.player.drawDeck[0], 'hand');
+            }  
+        }
+    }
+
     findCard(condition) {
         return this.filterCards(condition)[0];
     }
@@ -75,6 +79,11 @@ class PlayerInteractionWrapper {
         return cards;
     }
 
+    hasPromptButton(buttonText) {
+        let buttons = this.player.currentPrompt().buttons;
+        return buttons.find(button => button.text === buttonText);
+    }
+
     hasPrompt(title) {
         var currentPrompt = this.player.currentPrompt();
         return !!currentPrompt && currentPrompt.menuTitle.toLowerCase() === title.toLowerCase();
@@ -82,22 +91,7 @@ class PlayerInteractionWrapper {
 
     selectDeck(deck) {
         this.game.selectDeck(this.player.name, deck);
-    }
-
-    selectPlot(plot) {
-        if(typeof (plot) === 'string') {
-            plot = this.findCardByName(plot, 'plot deck');
-        }
-
-        this.player.selectedPlot = plot;
-        this.clickPrompt('Done');
-    }
-
-    selectTitle(title) {
-        if(!this.hasPrompt('Select a title')) {
-            throw new Error(`Couldn't select a title for ${this.name}. Current prompt is:\n\n${this.formatPrompt()}`);
-        }
-        this.clickPrompt(title);
+        this.startingPosse = deck.starting;
     }
 
     nameTrait(trait) {
@@ -163,31 +157,45 @@ class PlayerInteractionWrapper {
 
         let selectableCards = this.player.getSelectableCards();
         let card;
-        let cardName;
+        let cardTitle;
 
         if(typeof cardOrCardName === 'string') {
-            card = selectableCards.find(c => c.name === cardOrCardName);
-            cardName = cardOrCardName;
+            card = selectableCards.find(c => c.title === cardOrCardName);
+            cardTitle = cardOrCardName;
         } else {
             card = cardOrCardName;
-            cardName = cardOrCardName.name;
+            cardTitle = cardOrCardName.title;
         }
 
         if(!card || !selectableCards.includes(card)) {
-            throw new Error(`Couldn't trigger ability ${cardName} for ${this.name}. Current available abilities: ${selectableCards.map(c => c.name).join(', ')}`);
+            throw new Error(`Couldn't trigger ability ${cardTitle} for ${this.name}. Current available abilities: ${selectableCards.map(c => c.title).join(', ')}`);
         }
 
         if(card.location === 'draw deck') {
-            // Abilities on cards that are still in the draw deck, e.g. Missandei,
+            // Abilities on cards that are still in the draw deck,
             // are presented as buttons instead.
-            this.clickPrompt(`${card.name} (${card.location})`);
+            this.clickPrompt(`${card.title} (${card.location})`);
         } else {
             this.clickCard(card);
         }
     }
 
-    dragCard(card, targetLocation) {
-        this.game.drop(this.player.name, card.uuid, card.location, targetLocation);
+    
+    startPosse() {
+        this.player.hand.forEach(card => {
+            this.dragCard(card, 'play area', this.outfit.uuid)
+        });
+
+        this.player.posse = true;
+        this.player.readyToStart = true;
+    }
+
+    moveDude(dude, locationUuid) {
+        this.dragCard(dude, 'play area', locationUuid);
+    }
+
+    dragCard(card, targetLocation, gameLocation) {
+        this.game.drop(this.player.name, card.uuid, card.location, targetLocation, gameLocation);
         this.game.continue();
         this.checkUnserializableGameState();
     }
@@ -198,6 +206,7 @@ class PlayerInteractionWrapper {
         this.checkUnserializableGameState();
     }
 
+    // TODO M2 keep this, probably change later for hands discard
     discardToReserve() {
         let needsDiscard = this.player.hand.length - this.player.getTotalReserve();
         for(let i = 0; i < needsDiscard; ++i) {
@@ -206,16 +215,30 @@ class PlayerInteractionWrapper {
         this.clickPrompt('Done');
     }
 
+    prepareHand(cards) {
+        while (!this.hasPromptButton('Draw 5 Cards')) {
+            this.clickPrompt(' - Cards');
+        }
+        this.clickPrompt('Draw 5 Cards');
+        if (cards && cards.length === 5) {
+            this.discardDrawHand();
+            cards.forEach(card => this.dragCard(card, 'draw hand'));
+        }
+        if (this.hasPromptButton('Done')) {
+            this.clickPrompt('Done');
+        }
+    }
+
+    discardDrawHand() {
+        this.player.drawHand.forEach(card => this.dragCard(card, 'discard pile'));
+    }
+
     togglePromptedActionWindow(window, value) {
         this.player.promptedActionWindows[window] = value;
     }
 
     toggleKeywordSettings(setting, value) {
         this.player.keywordSettings[setting] = value;
-    }
-
-    toggleManualDupes(value) {
-        this.player.promptDupes = value;
     }
 
     reconnect() {

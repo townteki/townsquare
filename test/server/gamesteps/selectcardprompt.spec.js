@@ -3,7 +3,7 @@ const SelectCardPrompt = require('../../../server/game/gamesteps/selectcardpromp
 describe('the SelectCardPrompt', function() {
     function createCardSpy(properties = {}) {
         let card = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
-        card.getType.and.returnValue('character');
+        card.getType.and.returnValue('dude');
         card.allowGameAction.and.returnValue(true);
         Object.assign(card, properties);
         card.toString = function() {
@@ -15,6 +15,7 @@ describe('the SelectCardPrompt', function() {
     beforeEach(function() {
         this.game = jasmine.createSpyObj('game', ['getPlayers', 'getNumberOfPlayers']);
         this.game.getPlayers.and.returnValue([]);
+        this.game.allCards = ['card1', 'card2', 'card3'];
 
         this.player = jasmine.createSpyObj('player1', ['setPrompt', 'cancelPrompt', 'clearSelectableCards', 'clearSelectedCards', 'setSelectableCards', 'setSelectedCards']);
         this.player.cardsInPlay = [];
@@ -429,7 +430,7 @@ describe('the SelectCardPrompt', function() {
         describe('checkCardCondition()', function() {
             beforeEach(function() {
                 this.properties.cardCondition.and.returnValue(true);
-                this.card.getType.and.returnValue('character');
+                this.card.getType.and.returnValue('dude');
             });
 
             describe('when the card is not selected', function() {

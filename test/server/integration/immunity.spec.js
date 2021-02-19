@@ -1,4 +1,6 @@
-describe('immunity', function() {
+// TODO M2 there is not really an imunity in DTR, but there are various cannot affect effects
+// use this test for these effects once implemented
+xdescribe('immunity', function() {
     integration(function() {
         describe('when a card has immunity', function() {
             beforeEach(function() {

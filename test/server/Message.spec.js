@@ -16,13 +16,13 @@ describe('Message', function() {
 
         describe('when there are positional arguments', function() {
             it('returns the interpolated arguments', function() {
-                const message = new Message({ format: '{0} plays {1} to kill {2}', args: ['Player', 'Valar', 'everyone'] });
-                expect(message.flatten()).toEqual(['Player', ' plays ', 'Valar', ' to kill ', 'everyone']);
+                const message = new Message({ format: '{0} uses {1} to kill {2}', args: ['Player', 'Shotgun', 'Billy'] });
+                expect(message.flatten()).toEqual(['Player', ' uses ', 'Shotgun', ' to kill ', 'Billy']);
             });
 
             it('excludes out of index arguments', function() {
-                const message = new Message({ format: '{0} plays {1} to kill Walder', args: ['Player'] });
-                expect(message.flatten()).toEqual(['Player', ' plays ', ' to kill Walder']);
+                const message = new Message({ format: '{0} plays {1} to kill Billy', args: ['Player'] });
+                expect(message.flatten()).toEqual(['Player', ' plays ', ' to kill Billy']);
             });
         });
 
@@ -32,21 +32,21 @@ describe('Message', function() {
                     format: '{player} plays {card} to kill {target}',
                     args: {
                         player: 'Player',
-                        card: 'Valar',
-                        target: 'everyone'
+                        card: 'Shotgun',
+                        target: 'Billy'
                     }
                 });
-                expect(message.flatten()).toEqual(['Player', ' plays ', 'Valar', ' to kill ', 'everyone']);
+                expect(message.flatten()).toEqual(['Player', ' plays ', 'Shotgun', ' to kill ', 'Billy']);
             });
 
             it('excludes unknown arguments', function() {
                 const message = new Message({
-                    format: '{player} plays {card} to kill Walder',
+                    format: '{player} plays {card} to kill Billy',
                     args: {
                         player: 'Player'
                     }
                 });
-                expect(message.flatten()).toEqual(['Player', ' plays ', ' to kill Walder']);
+                expect(message.flatten()).toEqual(['Player', ' plays ', ' to kill Billy']);
             });
         });
 
@@ -55,7 +55,7 @@ describe('Message', function() {
                 describe('when there are no elements in the array', function() {
                     beforeEach(function() {
                         this.message = new Message({
-                            format: 'Arya kills {targets}',
+                            format: 'Gunslinger kills {targets}',
                             args: {
                                 targets: []
                             }
@@ -63,52 +63,52 @@ describe('Message', function() {
                     });
 
                     it('returns the empty string for the argument', function() {
-                        expect(this.message.flatten()).toEqual(['Arya kills ', '']);
+                        expect(this.message.flatten()).toEqual(['Gunslinger kills ', '']);
                     });
                 });
 
                 describe('when there is a single element in the array', function() {
                     beforeEach(function() {
                         this.message = new Message({
-                            format: 'Arya kills {targets}',
+                            format: 'Gunslinger kills {targets}',
                             args: {
-                                targets: ['Walder Frey']
+                                targets: ['Bounty Hunter']
                             }
                         });
                     });
 
                     it('returns the interpolated argument', function() {
-                        expect(this.message.flatten()).toEqual(['Arya kills ', 'Walder Frey']);
+                        expect(this.message.flatten()).toEqual(['Gunslinger kills ', 'Bounty Hunter']);
                     });
                 });
 
                 describe('when there are two elements in the array', function() {
                     beforeEach(function() {
                         this.message = new Message({
-                            format: 'Arya kills {targets}',
+                            format: 'Gunslinger kills {targets}',
                             args: {
-                                targets: ['Polliver', 'Walder Frey']
+                                targets: ['Sheriff', 'Bounty Hunter']
                             }
                         });
                     });
 
                     it('returns the interpolated arguments separated by an and', function() {
-                        expect(this.message.flatten()).toEqual(['Arya kills ', 'Polliver', ', and ', 'Walder Frey']);
+                        expect(this.message.flatten()).toEqual(['Gunslinger kills ', 'Sheriff', ', and ', 'Bounty Hunter']);
                     });
                 });
 
                 describe('when there are many elements in the array', function() {
                     beforeEach(function() {
                         this.message = new Message({
-                            format: 'Arya kills {targets}',
+                            format: 'Gunslinger kills {targets}',
                             args: {
-                                targets: ['Polliver', 'Walder Frey', 'House Frey', 'The Night King']
+                                targets: ['Sheriff', 'Bounty Hunter', 'Citizen', 'The Mayor']
                             }
                         });
                     });
 
                     it('returns the interpolated arguments separated by commas and an and', function() {
-                        expect(this.message.flatten()).toEqual(['Arya kills ', 'Polliver', ', ', 'Walder Frey', ', ', 'House Frey', ', and ', 'The Night King']);
+                        expect(this.message.flatten()).toEqual(['Gunslinger kills ', 'Sheriff', ', ', 'Bounty Hunter', ', ', 'Citizen', ', and ', 'The Mayor']);
                     });
                 });
             });
@@ -117,8 +117,8 @@ describe('Message', function() {
                 beforeEach(function() {
                     const card = new DrawCard({}, {
                         code: '12345',
-                        name: 'Ser Pounce',
-                        type: 'character'
+                        title: 'Funslinger Emtwo',
+                        type_code: 'dude'
                     });
                     this.message = new Message({
                         format: 'Player 1 plays {card}',
@@ -127,21 +127,21 @@ describe('Message', function() {
                 });
 
                 it('converts the card argument', function() {
-                    expect(this.message.flatten()).toEqual(['Player 1 plays ', { argType: 'card', code: '12345', label: 'Ser Pounce', type: 'character' }]);
+                    expect(this.message.flatten()).toEqual(['Player 1 plays ', { argType: 'card', code: '12345', label: 'Funslinger Emtwo', type: 'dude' }]);
                 });
             });
 
             describe('player objects', function() {
                 beforeEach(function() {
-                    const player = new Spectator('1234', { username: 'Arya' });
+                    const player = new Spectator('1234', { username: 'Abram' });
                     this.message = new Message({
-                        format: '{player} plays Ser Pounce',
+                        format: '{player} plays Funslinger Emtwo',
                         args: { player }
                     });
                 });
 
                 it('converts the player argument', function() {
-                    expect(this.message.flatten()).toEqual([{ argType: 'nonAvatarPlayer', name: 'Arya' }, ' plays Ser Pounce']);
+                    expect(this.message.flatten()).toEqual([{ argType: 'nonAvatarPlayer', name: 'Abram' }, ' plays Funslinger Emtwo']);
                 });
             });
 
@@ -157,14 +157,14 @@ describe('Message', function() {
                         format: '{player} plays {card} to {nestedMessage}',
                         args: {
                             player: 'Player',
-                            card: 'Valar',
+                            card: 'Shotgun',
                             nestedMessage: this.nestedMessage
                         }
                     });
                 });
 
                 it('interpolates and flattens the two messages', function() {
-                    expect(this.parentMessage.flatten()).toEqual(['Player', ' plays ', 'Valar', ' to ', 'draw ', 3, ' cards']);
+                    expect(this.parentMessage.flatten()).toEqual(['Player', ' plays ', 'Shotgun', ' to ', 'draw ', 3, ' cards']);
                 });
             });
         });

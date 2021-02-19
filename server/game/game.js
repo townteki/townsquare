@@ -491,6 +491,9 @@ class Game extends EventEmitter {
             }
             return isForLowball ? { winner: player1, loser: player2, decision: 'rank modifier' } : { winner: player2, loser: player1, decision: 'rank modifier' }
         }
+        if (!player1.getHandRank().tiebreaker) {
+            return { decision: 'exact tie' };
+        }
         for(let i = 0; i < player1.getHandRank().tiebreaker.length; i++) {
             if(player1.getHandRank().tiebreaker[i] > player2.getHandRank().tiebreaker[i]) {
                 return isForLowball ? { winner: player2, loser: player1, decision: 'tiebreaker' } : { winner: player1, loser: player2, decision: 'tiebreaker' }
@@ -1097,7 +1100,7 @@ class Game extends EventEmitter {
             // TODO M2 info that shootout is already happening
             return;
         }
-        this.currentPhase = this.shootout.name;
+        this.currentPhase = this.shootout.name.toLowerCase();
         this.queueStep(this.shootout);
     }
 

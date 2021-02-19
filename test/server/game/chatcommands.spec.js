@@ -43,14 +43,6 @@ describe('ChatCommands', function() {
             });
         });
 
-        describe('with a valid command', function() {
-            it('should return true', function() {
-                let result = this.chatCommands.executeCommand(this.playerSpy, '/pillage', ['/pillage']);
-
-                expect(result).toBe(true);
-            });
-        });
-
         describe('with a /draw command', function() {
             describe('with no arguments', function() {
                 it('should draw 1 card', function () {
@@ -115,16 +107,6 @@ describe('ChatCommands', function() {
                     this.chatCommands.executeCommand(this.playerSpy, '/discard', ['/discard', '3']);
 
                     expect(this.playerSpy.discardAtRandom).toHaveBeenCalledWith(3);
-                });
-            });
-        });
-
-        describe('with a /pillage command', function() {
-            describe('with no arguments', function() {
-                it('should discard 1 card', function () {
-                    this.chatCommands.executeCommand(this.playerSpy, '/pillage', ['/pillage']);
-
-                    expect(this.playerSpy.discardFromDraw).toHaveBeenCalledWith(1, jasmine.any(Function));
                 });
             });
         });

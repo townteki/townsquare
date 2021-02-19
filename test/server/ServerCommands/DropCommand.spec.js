@@ -1,10 +1,11 @@
+const ChooseYesNoPrompt = require('../../../server/game/gamesteps/ChooseYesNoPrompt');
 const DropCommand = require('../../../server/game/ServerCommands/DropCommand');
 
 describe('DropCommand', () => {
     describe('execute()', function() {
         beforeEach(function() {
-            this.gameSpy = jasmine.createSpyObj('game', ['addAlert', 'killCharacter']);
-            this.playerSpy = jasmine.createSpyObj('player', ['discardCard', 'moveCard', 'putIntoPlay']);
+            this.gameSpy = jasmine.createSpyObj('game', ['addAlert', 'queueStep']);
+            this.playerSpy = jasmine.createSpyObj('player', ['discardCard', 'moveCard', 'putIntoPlay', 'aceCard']);
 
             this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
             this.cardSpy.allowGameAction.and.returnValue(true);
@@ -13,13 +14,13 @@ describe('DropCommand', () => {
             this.cardSpy.location = 'hand';
 
             this.executeForLocation = (targetLocation) => {
-                let command = new DropCommand(this.gameSpy, this.playerSpy, this.cardSpy, targetLocation);
+                let command = new DropCommand(this.gameSpy, this.playerSpy, this.cardSpy, targetLocation, 'gamelocation');
                 command.execute();
             };
         });
 
         describe('when dragging a card to play area', function() {
-            for(let type of ['attachment', 'character', 'location']) {
+            for(let type of ['goods', 'dude', 'deed']) {
                 describe(`when the card is a ${type}`, function() {
                     beforeEach(function() {
                         this.cardSpy.getType.and.returnValue(type);
@@ -28,14 +29,14 @@ describe('DropCommand', () => {
                     });
 
                     it('should add the card to the play area', function() {
-                        expect(this.playerSpy.putIntoPlay).toHaveBeenCalledWith(this.cardSpy, 'play', jasmine.objectContaining({ force: true }));
+                        expect(this.gameSpy.queueStep).toHaveBeenCalledWith(jasmine.any(ChooseYesNoPrompt));
                     });
                 });
             }
 
             describe('when the card is in hand and an event', function() {
                 beforeEach(function() {
-                    this.cardSpy.getType.and.returnValue('event');
+                    this.cardSpy.getType.and.returnValue('action');
 
                     this.executeForLocation('play area');
                 });
@@ -47,7 +48,7 @@ describe('DropCommand', () => {
         });
 
         describe('when dragging a card to the dead pile', function() {
-            for(let type of ['attachment', 'event', 'location']) {
+            for(let type of ['goods', 'action', 'deed']) {
                 describe(`when the card is a ${type}`, function() {
                     beforeEach(function() {
                         this.cardSpy.getType.and.returnValue(type);
@@ -56,14 +57,14 @@ describe('DropCommand', () => {
                     });
 
                     it('should not move the card', function() {
-                        expect(this.playerSpy.moveCard).not.toHaveBeenCalled();
+                        expect(this.playerSpy.moveCard).toHaveBeenCalled();
                     });
                 });
             }
 
-            describe('when the card is a character', function() {
+            describe('when the card is a dude', function() {
                 beforeEach(function() {
-                    this.cardSpy.getType.and.returnValue('character');
+                    this.cardSpy.getType.and.returnValue('dude');
                 });
 
                 describe('and the character is not in play', function() {
@@ -77,8 +78,8 @@ describe('DropCommand', () => {
                         expect(this.playerSpy.moveCard).toHaveBeenCalledWith(this.cardSpy, 'dead pile');
                     });
 
-                    it('should not kill the card', function() {
-                        expect(this.gameSpy.killCharacter).not.toHaveBeenCalled();
+                    it('should not ace the card', function() {
+                        expect(this.playerSpy.aceCard).not.toHaveBeenCalled();
                     });
                 });
 
@@ -89,15 +90,15 @@ describe('DropCommand', () => {
                         this.executeForLocation('dead pile');
                     });
 
-                    it('should kill the character', function() {
-                        expect(this.gameSpy.killCharacter).toHaveBeenCalledWith(this.cardSpy, jasmine.objectContaining({ allowSave: false, force: true }));
+                    it('should ace the dude', function() {
+                        expect(this.playerSpy.aceCard).toHaveBeenCalledWith(this.cardSpy, jasmine.objectContaining({ allowSave: false, force: true }));
                     });
                 });
             });
         });
 
         describe('when dragging a card to the discard pile', function() {
-            for(let type of ['attachment', 'character', 'event', 'location']) {
+            for(let type of ['goods', 'dude', 'action', 'deed']) {
                 describe(`when the card is a ${type}`, function() {
                     beforeEach(function() {
                         this.cardSpy.getType.and.returnValue(type);
@@ -133,7 +134,7 @@ describe('DropCommand', () => {
         });
 
         describe('when dragging a card to the deck', function() {
-            for(let type of ['attachment', 'character', 'event', 'location']) {
+            for(let type of ['goods', 'dude', 'action', 'deed']) {
                 describe(`when the card is a ${type}`, function() {
                     beforeEach(function() {
                         this.cardSpy.getType.and.returnValue(type);

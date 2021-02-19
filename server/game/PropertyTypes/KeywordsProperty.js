@@ -26,13 +26,7 @@ class KeywordsProperty {
 
         var firstLine = keywords.split('\n')[0];
 
-        firstLine.split('\u2022').forEach(keyword => {
-            let results = /([a-z A-Z]+)(\d*)$/.exec(keyword.toLowerCase().trim());  
-            if (results) {
-                this.add(results[1].trim());
-                this.setPrintedValues(results);
-            }
-        });
+        firstLine.split('\u2022').forEach(keyword => this.addKeyword(keyword, true));
     }
 
     setPrintedValues(results) {
@@ -47,6 +41,23 @@ class KeywordsProperty {
             this.modifiers['difficulty'].printed = value;
         } else {
             this.modifiers[keywordName].printed = value;
+        }
+    }
+
+    addKeyword(keyword, isPrinted = false) {
+        let results = /([a-z A-Z]+)(\d*)$/.exec(keyword.toLowerCase().trim());  
+        if (results) {
+            this.add(results[1].trim());
+            if (isPrinted) {
+                this.setPrintedValues(results);
+            }
+        }
+    } 
+
+    removeKeyword(keyword) {
+        this.remove(keyword);
+        if (!this.contains(keyword) && this.modifiers[keyword]) {
+            this.modifiers[keyword].modifier = 0;
         }
     }
 
