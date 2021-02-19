@@ -128,7 +128,7 @@ class AbilityResolver extends BaseStep {
 
         if(this.playerResult.cancelled) {
             this.cancelled = true;
-            if (this.ability.abilitySourceType !== 'game') {
+            if(this.ability.abilitySourceType !== 'game') {
                 this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
             }
             return;
@@ -151,7 +151,7 @@ class AbilityResolver extends BaseStep {
         let cancelledTargeting = this.targetResults.some(result => result.cancelled);
         if(cancelledTargeting) {
             this.cancelled = true;
-            if (this.ability.abilitySourceType !== 'game') {
+            if(this.ability.abilitySourceType !== 'game') {
                 this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
             }
             return;
@@ -179,12 +179,11 @@ class AbilityResolver extends BaseStep {
         this.ability.outputMessage(this.context);
 
         // Check to make sure the ability is actually a card ability. For
-        // instance, marshaling does not count as initiating a card ability and
-        // thus is not subject to cancels such as Treachery.
+        // instance, shoppin does not count as initiating a card ability.
         if(this.ability.isCardAbility()) {
             let targets = this.context.targets.getTargets();
             this.game.raiseEvent('onCardAbilityInitiated', { player: this.context.player, source: this.context.source, ability: this.ability, targets: targets }, () => {
-                if (this.ability.playTypePlayed() === 'cheatin resolution') {           
+                if(this.ability.playTypePlayed() === 'cheatin resolution') {           
                     this.context.player.incrementCheatinResPlayed();
                 }
                 this.ability.executeHandler(this.context);
@@ -195,7 +194,7 @@ class AbilityResolver extends BaseStep {
     }
 
     postResolveAbilityUpdates() {
-        if (this.context.source && this.context.source.hasKeyword('headline')) {
+        if(this.context.source && this.context.source.hasKeyword('headline')) {
             this.game.shootout.headlineUsed = true;
         }
     }
@@ -207,7 +206,7 @@ class AbilityResolver extends BaseStep {
         // with an interrupt to a card being played. If any are ever released,
         // then this event will need to wrap the execution of the entire
         // ability instead.
-        if (this.ability.isPlayableActionAbility()) {
+        if(this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
                 this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
                 this.context.source.resetAbilities();
@@ -222,7 +221,7 @@ class AbilityResolver extends BaseStep {
 
             this.game.resolveEvent(event);
         }
-        if (this.ability.isCardAbility()) {
+        if(this.ability.isCardAbility()) {
             this.game.raiseEvent('onCardAbilityResolved', { ability: this.ability, context: this.context });
         }
     }

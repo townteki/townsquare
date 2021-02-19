@@ -9,8 +9,7 @@ const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper
 
 /**
  * Base class representing an ability that can be done by the player. This
- * includes card actions, reactions, interrupts, playing a card, marshaling a
- * card, or ambushing a card.
+ * includes card actions, reactions, interrupts, playing a card.
  *
  * Most of the methods take a context object. While the structure will vary from
  * inheriting classes, it is guaranteed to have at least the `game` object, the
@@ -42,7 +41,7 @@ class BaseAbility {
         this.options = {
             skipCost: () => false,
             callback: () => true
-        }
+        };
     }
 
     buildCost(cost) {
@@ -111,7 +110,7 @@ class BaseAbility {
      */
     canPayCosts(context) {
         return this.executeWithTemporaryContext(context, 'cost', () => this.cost.every(cost => {
-            if (this.options.skipCost && this.options.skipCost(cost)) {
+            if(this.options.skipCost && this.options.skipCost(cost)) {
                 return true;
             }
             return cost.canPay(context);
@@ -154,7 +153,7 @@ class BaseAbility {
      */
     resolveCosts(context) {
         return this.cost.map(cost => {
-            if (this.options.skipCost && this.options.skipCost(cost)) {
+            if(this.options.skipCost && this.options.skipCost(cost)) {
                 return { resolved: true, value: true };
             }
             if(cost.resolve) {
@@ -170,7 +169,7 @@ class BaseAbility {
      */
     payCosts(context) {
         for(let cost of this.cost) {
-            if (!this.options.skipCost || !this.options.skipCost(cost)) {
+            if(!this.options.skipCost || !this.options.skipCost(cost)) {
                 cost.pay(context);
             }
         }
@@ -267,7 +266,7 @@ class BaseAbility {
      */
     executeHandler(context) {
         context.game.resolveGameAction(this.gameAction, context).thenExecute(() => {
-            if (this.options.callback) {
+            if(this.options.callback) {
                 this.options.callback(this);
             }
             this.resetOptions();
@@ -296,7 +295,6 @@ class BaseAbility {
 
     playTypePlayed() {
     }
-
 }
 
 module.exports = BaseAbility;

@@ -96,7 +96,7 @@ class SelectCardPrompt extends UiPrompt {
         if(!this.isComplete()) {
             this.highlightSelectableCards();
             let possibleCards = this.choosingPlayer.getSelectableCards();
-            if (this.autoSelect && possibleCards && possibleCards.length == 1) {
+            if(this.autoSelect && possibleCards && possibleCards.length === 1) {
                 if(!this.selectCard(possibleCards[0])) {
                     return false;
                 }

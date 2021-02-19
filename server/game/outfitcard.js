@@ -1,7 +1,6 @@
 const LocationCard = require('./locationcard.js');
 
 class OutfitCard extends LocationCard {
-
     get controller() {
         return this.owner;
     }
@@ -13,7 +12,6 @@ class OutfitCard extends LocationCard {
     isOutOfTown() {
         return false;
     }
-
 }
 
 module.exports = OutfitCard;

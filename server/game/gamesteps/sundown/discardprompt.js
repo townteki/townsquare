@@ -49,7 +49,6 @@ class DiscardPrompt extends AllPlayerPrompt {
             this.selectedCards = this.selectedCards.filter(selectedCard => selectedCard !== card);
         }
         player.setSelectedCards(this.selectedCards);
-
     }
 
     highlightSelectableCards(player) {
@@ -59,21 +58,18 @@ class DiscardPrompt extends AllPlayerPrompt {
 
     onMenuCommand(player) {
         player.discardCards(this.selectedCards);
-        let selectedText = null;
-        if (this.selectedCards.length === 0) {
+        if(this.selectedCards.length === 0) {
             this.game.addMessage('{0} does not discard any card as part of Sundown.', player);
-        } else if (this.selectedCards.length === 1) {
-            selectedText = this.selectedCards[0]
+        } else if(this.selectedCards.length === 1) {
+            this.game.addMessage('{0} discards {1} as part of Sundown.', player, this.selectedCards);
         }
 
-        this.game.addMessage('{0} discards {1} as part of Sundown.', player)
         player.sundownDiscardDone = true;
         this.selectedCards = [];
         player.clearSelectedCards();
         player.clearSelectableCards();
         super.complete(player);
     }
-
 }
 
 module.exports = DiscardPrompt;

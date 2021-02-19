@@ -3,12 +3,12 @@ const CardAction = require('../../../server/game/cardaction.js');
 describe('CardAction', function () {
     beforeEach(function () {
         this.gameSpy = jasmine.createSpyObj('game', [
-                'on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'raiseEvent', 'resolveAbility', 'resolveGameAction', 'isShootoutPlayWindow',
-                'getCurrentPlayWindowName'
-            ]);
-        this.gameSpy.resolveGameAction.and.callFake((action, props) => { 
-               return { thenExecute: () => true }
-            });
+            'on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'raiseEvent', 'resolveAbility', 'resolveGameAction', 'isShootoutPlayWindow',
+            'getCurrentPlayWindowName'
+        ]);
+        this.gameSpy.resolveGameAction.and.callFake(() => { 
+            return { thenExecute: () => true };
+        });
         this.gameSpy.currentPhase = 'high noon';
 
         this.playerSpy = jasmine.createSpyObj('player', ['canTrigger']);
@@ -377,7 +377,7 @@ describe('CardAction', function () {
         describe('when there is a limit', function() {
             beforeEach(function() {
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                if (this.action.usage) {
+                if(this.action.usage) {
                     this.action.usage = this.usageSpy;
                 }
                 this.action.registerEvents();
@@ -405,7 +405,7 @@ describe('CardAction', function () {
         describe('when action source is card', function() {
             beforeEach(function() {
                 this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                if (this.action.usage) {
+                if(this.action.usage) {
                     this.action.usage = this.usageSpy;
                 }
                 this.action.unregisterEvents();

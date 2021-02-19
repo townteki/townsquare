@@ -7,7 +7,7 @@ class CircleMRanch extends DeedCard {
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             handler: context => {
-                if (context.player.hand.length <= 3) {
+                if(context.player.hand.length <= 3) {
                     context.player.drawCardsToHand(1);
                 }
                 this.game.addMessage('{0} uses {1} to draw a card.', context.player, this);

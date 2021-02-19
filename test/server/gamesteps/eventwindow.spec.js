@@ -44,8 +44,6 @@ describe('EventWindow', function() {
                 expect(this.eventSpy.cancel).not.toHaveBeenCalled();
             });
 
-
-
             describe('when the card cannot be saved with a dupe', function() {
                 beforeEach(function() {
                     this.eventWindow.continue();
@@ -55,7 +53,6 @@ describe('EventWindow', function() {
                     expect(this.concurrentEventSpy.cancel).not.toHaveBeenCalled();
                 });
             });
-
         });
 
         describe('when the event is cancelled', function() {

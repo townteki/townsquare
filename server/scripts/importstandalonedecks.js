@@ -9,7 +9,7 @@ const DeckService = require('../services/DeckService');
 
 class ImportStandaloneDecks {
     constructor() {
-        this.db = monk('mongodb://127.0.0.1:27017/throneteki');
+        this.db = monk('mongodb://127.0.0.1:27017/townsquare');
         this.cardService = new CardService(this.db);
         this.deckService = new DeckService(this.db);
     }
@@ -40,21 +40,18 @@ class ImportStandaloneDecks {
     }
 
     formatDeck(deck) {
-        let drawCards = deck.cards.filter(card => ['attachment', 'character', 'event', 'location'].includes(this.cards[card.code].type));
-        let plotCards = deck.cards.filter(card => this.cards[card.code].type === 'plot');
+        let drawCards = deck.cards.filter(card => ['goods', 'spell', 'dude', 'action', 'deed'].includes(this.cards[card.code].type));
+        let outfit = deck.cards.find(card => this.cards[card.code].type === 'outfit');
         let formattedDeck = {
             standaloneDeckId: deck.id,
-            bannerCards: [],
             name: deck.name,
-            faction: { value: deck.faction },
+            outfit: outfit,
             drawCards: drawCards.map(card => ({ count: card.count, card: { code: card.code }})),
-            plotCards: plotCards.map(card => ({ count: card.count, card: { code: card.code }})),
-            rookeryCards: [],
             lastUpdated: new Date(deck.releaseDate)
         };
 
-        if(deck.agenda) {
-            formattedDeck.agenda = { code: deck.agenda };
+        if(deck.legend) {
+            formattedDeck.legend = { code: deck.legend };
         }
 
         return formattedDeck;

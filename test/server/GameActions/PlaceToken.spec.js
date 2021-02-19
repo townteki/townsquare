@@ -13,17 +13,15 @@ describe('PlaceToken', function() {
             this.cardSpy.allowGameAction.and.returnValue(true);
         });
 
-        for(let location of ['active plot', 'agenda', 'play area', 'shadows', 'title']) {
-            describe(`when the card is in ${location}`, function() {
-                beforeEach(function() {
-                    this.cardSpy.location = location;
-                });
-
-                it('returns true', function() {
-                    expect(PlaceToken.allow(this.props)).toBe(true);
-                });
+        describe('when the card is in play area', function() {
+            beforeEach(function() {
+                this.cardSpy.location = 'play area';
             });
-        }
+
+            it('returns true', function() {
+                expect(PlaceToken.allow(this.props)).toBe(true);
+            });
+        });
 
         describe('when the card is out of play', function() {
             beforeEach(function() {

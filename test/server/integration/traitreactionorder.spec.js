@@ -4,12 +4,12 @@ describe('trait reaction order', function() {
             const deck1 = this.buildDeck('Law Dogs', [
                 'Law Dogs',
                 'Tommy Harden', 'Philip Swinford'
-                ], [ 'Tommy Harden' ]
+            ], ['Tommy Harden']
             );
             const deck2 = this.buildDeck('The Sloane Gang', [
-                    'The Sloane Gang',
-                    'Barton Everest'
-                ], [ 'Barton Everest' ]
+                'The Sloane Gang',
+                'Barton Everest'
+            ], ['Barton Everest']
             );
             this.player1.selectDeck(deck1);
             this.player2.selectDeck(deck2);
@@ -21,7 +21,7 @@ describe('trait reaction order', function() {
             // we do not want philip out before lowball as he could have his trait triggered
             [this.philip] = this.player1.filterCardsByName('Philip Swinford');
             this.player1.dragCard(this.philip, 'play area', 'townsquare');
-            if (this.player1.hasPrompt('Are you perfoming Shoppin\' play?')) {
+            if(this.player1.hasPrompt('Are you perfoming Shoppin\' play?')) {
                 this.player1.clickPrompt('No');
             }
 
@@ -56,7 +56,6 @@ describe('trait reaction order', function() {
 
             this.player2.prepareHand(this.drawHandCards2);
             this.player2.clickPrompt('Ready');
-
         });
 
         it('should prompt the first player', function() {

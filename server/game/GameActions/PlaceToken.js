@@ -6,7 +6,7 @@ class PlaceToken extends GameAction {
     }
 
     canChangeGameState({ card, amount = 1 }) {
-        return ['active plot', 'agenda', 'play area', 'shadows', 'title'].includes(card.location) && amount > 0;
+        return card.location === 'play area' && amount > 0;
     }
 
     createEvent({ card, token, amount = 1 }) {

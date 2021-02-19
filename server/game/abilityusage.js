@@ -1,5 +1,4 @@
 class AbilityUsage {
-
     static createDefault() {
         return new AbilityUsage({ limit: 0, repeatable: true });
     }
@@ -7,8 +6,8 @@ class AbilityUsage {
     constructor(properties, playType = []) {
         this.limit = properties.limit;
         this.repeatable = !!properties.repeatable;
-        if (!this.limit) {
-            if (this.repeatable) {
+        if(!this.limit) {
+            if(this.repeatable) {
                 this.limit = 0;
             } else {
                 this.limit = 1;
@@ -17,7 +16,7 @@ class AbilityUsage {
         this.useCount = 0;
         this.resetHandler = () => this.reset();
         var isShootoutType = ['shootout', 'shootout:join', 'resolution'].some(type => playType.includes(type));
-        if (isShootoutType && this.repeatable) {
+        if(isShootoutType && this.repeatable) {
             this.eventName = 'onShootoutPhaseFinished';
         } else {
             this.eventName = 'onRoundEnded';
@@ -29,7 +28,7 @@ class AbilityUsage {
     }
 
     isUsed() {
-        if (this.limit > 0) {
+        if(this.limit > 0) {
             return this.useCount >= this.limit;
         }
         return !this.isRepeatable();

@@ -7,9 +7,9 @@ const TriggeredAbility = require('./triggeredability.js');
  * when    - object whose keys are event names to listen to for the reaction and
  *           whose values are functions that return a boolean about whether to
  *           trigger the reaction when that event is fired. For example, to
- *           trigger only at the end of the challenge phase, you would do:
+ *           trigger only at the end of the shootout phase, you would do:
  *           when: {
- *               onPhaseEnded: event => event.phase === 'challenge'
+ *               onPhaseEnded: event => event.phase === 'shootout'
  *           }
  *           Multiple events may be specified for cards that have multiple
  *           possible triggers for the same reaction.

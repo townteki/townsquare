@@ -71,7 +71,7 @@ describe('PlayWindow', function() {
             });
 
             it('should complete the play window', function() {
-                expect(this.prompt.isComplete()).toBe(true)
+                expect(this.prompt.isComplete()).toBe(true);
             });
         });
     });
@@ -95,7 +95,6 @@ describe('PlayWindow', function() {
                 expect(this.prompt.currentPlayer).toBe(this.player1);
                 expect(this.prompt.isComplete()).toBe(false);
             });
-
         });
 
         describe('when someone other than the current player takes an action', function() {

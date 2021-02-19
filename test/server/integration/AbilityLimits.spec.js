@@ -3,9 +3,9 @@ describe('ability limits', function() {
         describe('when an ability has a limit', function() {
             beforeEach(function() {
                 const deck = this.buildDeck('Law Dogs', [
-                        'Law Dogs',
-                        'Jacqueline Isham', 'Jake Smiley'
-                    ], [ 'Jacqueline Isham', 'Jake Smiley' ]
+                    'Law Dogs',
+                    'Jacqueline Isham', 'Jake Smiley'
+                ], ['Jacqueline Isham', 'Jake Smiley']
                 );
                 this.player1.selectDeck(deck);
                 this.player2.selectDeck(deck);
@@ -38,7 +38,6 @@ describe('ability limits', function() {
 
                 this.player1.clickPrompt('Done');
                 this.player2.clickPrompt('Done');
-
             });
 
             it('should allow multiple reactions for repeat react', function() {
@@ -55,7 +54,6 @@ describe('ability limits', function() {
             });
 
             it('should not allow the ability to be triggered again', function() {
-
                 expect(this.player2).not.toAllowAbilityTrigger('some card');
             });
         });

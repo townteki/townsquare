@@ -1,4 +1,3 @@
-const { ShootoutStatuses } = require('../../Constants/index.js');
 const PlayerOrderPrompt = require('../playerorderprompt.js');
 
 class PickYerShooterPrompt extends PlayerOrderPrompt {
@@ -8,7 +7,7 @@ class PickYerShooterPrompt extends PlayerOrderPrompt {
     } 
 
     continue() {
-        if (!this.isComplete()) {
+        if(!this.isComplete()) {
             this.game.promptForSelect(this.currentPlayer, {
                 activePromptTitle: 'Select Yer Shooter',
                 autoSelect: true,
@@ -27,7 +26,6 @@ class PickYerShooterPrompt extends PlayerOrderPrompt {
 
         return this.isComplete();        
     }
-
 }
 
 module.exports = PickYerShooterPrompt;

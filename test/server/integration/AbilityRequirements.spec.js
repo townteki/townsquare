@@ -5,7 +5,7 @@ describe('ability requirements', function() {
                 const deck = this.buildDeck('Law Dogs', [
                     'Law Dogs',
                     'Jacqueline Isham', 'Jake Smiley'
-                ], [ 'Jacqueline Isham', 'Jake Smiley' ]
+                ], ['Jacqueline Isham', 'Jake Smiley']
                 );
                 this.player1.selectDeck(deck);
                 this.player2.selectDeck(deck);
@@ -26,7 +26,6 @@ describe('ability requirements', function() {
 
                 this.player2.clickPrompt('Done');
                 this.player1.clickPrompt('Done');
-
             });
 
             it('should not prompt for the ability', function() {

@@ -1,5 +1,3 @@
-const _ = require('underscore');
-
 const DrawCard = require('./drawcard.js');
 
 class GoodsCard extends DrawCard {
@@ -10,27 +8,27 @@ class GoodsCard extends DrawCard {
     }
 
     canAttach(player, card) {
-        if (!super.canAttach(player, card)) {
+        if(!super.canAttach(player, card)) {
             return false;
         }
 
         if(card.getType() === 'dude') {
-            if (this.hasKeyword('weapon') && !card.canAttachWeapon(this)) {
+            if(this.hasKeyword('weapon') && !card.canAttachWeapon(this)) {
                 return false;
             } 
-            if (this.hasKeyword('horse') && !card.canAttachHorse(this)) {
+            if(this.hasKeyword('horse') && !card.canAttachHorse(this)) {
                 return false;
             }
-            if (this.hasKeyword('attire') && !card.canAttachAttire(this)) {
+            if(this.hasKeyword('attire') && !card.canAttachAttire(this)) {
                 return false;
             }
 
             return true;
         }
 
-        if (card.getType() === 'deed') {
-            if (!this.hasKeyword('improvement')) {
-                return false
+        if(card.getType() === 'deed') {
+            if(!this.hasKeyword('improvement')) {
+                return false;
             }
             return true;
         }        
@@ -53,7 +51,6 @@ class GoodsCard extends DrawCard {
     reset() {
         this.traded = false;
     }
-
 }
 
 module.exports = GoodsCard;

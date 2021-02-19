@@ -19,8 +19,8 @@ class DiscardCard extends GameAction {
             isCasualty: options.isCasualty
         };
         return this.event('onCardDiscarded', params, event => {
-            if (event.originalLocation === 'play area' && event.card.bounty) {
-                if ((event.isCardEffect && event.isFromOpponent) || event.isCasualty) {
+            if(event.originalLocation === 'play area' && event.card.bounty) {
+                if((event.isCardEffect && event.isFromOpponent) || event.isCasualty) {
                     event.card.collectBounty(event.card.controller.getOpponent());
                 }
             }

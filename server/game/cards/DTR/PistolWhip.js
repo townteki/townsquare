@@ -1,5 +1,4 @@
 const ActionCard = require('../../actioncard.js');
-const GameActions = require('../../GameActions/index.js');
 
 class PistolWhip extends ActionCard {
     setupCardAbilities(ability) {
@@ -9,7 +8,7 @@ class PistolWhip extends ActionCard {
             cost: ability.costs.boot(card =>
                 card.getType() === 'dude' &&
                 card.isParticipating()
-                ),
+            ),
             target: {
                 activePromptTitle: 'Select dude to whip',
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },

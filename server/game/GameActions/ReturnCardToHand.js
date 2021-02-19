@@ -6,14 +6,13 @@ class ReturnCardToHand extends GameAction {
     }
 
     canChangeGameState({ card }) {
-        return ['dead pile', 'discard pile', 'play area', 'shadows', 'duplicate'].includes(card.location);
+        return ['dead pile', 'discard pile', 'play area'].includes(card.location);
     }
 
     createEvent({ card, allowSave = true }) {
         let params = {
             card: card,
-            allowSave: allowSave,
-            automaticSaveWithDupe: true
+            allowSave: allowSave
         };
         return this.event('onCardReturnedToHand', params, event => {
             event.cardStateWhenReturned = card.createSnapshot();

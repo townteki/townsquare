@@ -33,7 +33,7 @@ describe('AbilityTarget', function () {
             selector: jasmine.any(Object),
             context: this.context, 
             autoSelect: undefined,
-            additionalButtons: [  ],
+            additionalButtons: [],
             onMenuCommand: jasmine.any(Function)
         };
     });

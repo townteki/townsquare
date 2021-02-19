@@ -59,5 +59,4 @@ describe('DrawCard', function() {
             });
         });
     });
-
 });

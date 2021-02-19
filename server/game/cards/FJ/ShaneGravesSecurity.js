@@ -9,7 +9,7 @@ class ShaneGravesSecurity extends DeedCard {
             cost: ability.costs.bootSelf(),
             condition: () => this.game.shootout &&
                 this.game.getShootoutLocationCard().getType() === 'deed' &&
-                (this.game.getShootoutLocationCard() == this ||
+                (this.game.getShootoutLocationCard() === this ||
                 this.game.shootout.shootoutLocation.isAdjacent(this.uuid)),
             handler: context => {
                 // nedalo gunslingera ako moznost pre shootera .. PRECO??

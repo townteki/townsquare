@@ -14,7 +14,6 @@ class HighNoonPhase extends Phase {
     passToNextPlayer() {
         this.prompt.nextPlayer();
     }
-
 }
 
 module.exports = HighNoonPhase;

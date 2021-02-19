@@ -21,11 +21,11 @@ class SendHome extends GameAction {
 
     getDefaultOptions(options) {
         return {
-            isCardEffect: options.isCardEffect != null ? options.isCardEffect : true,
+            isCardEffect: options.isCardEffect !== null ? options.isCardEffect : true,
             moveType: 'toHome',
-            needToBoot: options.needToBoot != null ? options.needToBoot : true,
-            allowBooted: options.allowBooted != null ? options.allowBooted : true
-        }
+            needToBoot: options.needToBoot !== null ? options.needToBoot : true,
+            allowBooted: options.allowBooted !== null ? options.allowBooted : true
+        };
     }
 }
 

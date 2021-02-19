@@ -72,7 +72,7 @@ class AbilityTarget {
         }
 
         if(this.choosingPlayer === 'thisIfLegal') {
-            if (!context.player.isCheatin()) {
+            if(!context.player.isCheatin()) {
                 return [context.player];
             }
             return [context.player.getOpponent()];
@@ -92,8 +92,8 @@ class AbilityTarget {
             return;
         }
         let buttons = [];
-        if (this.cardType.includes('location') || this.cardType.includes('townsquare')) {
-            buttons = [ { text: 'Town Square' } ];
+        if(this.cardType.includes('location') || this.cardType.includes('townsquare')) {
+            buttons = [{ text: 'Town Square' }];
             this.activePromptTitle = this.activePromptTitle || 'Select target location for movement';
             // TODO M2 probably should add condition for location that will filter current location
             //this.cardCondition = 

@@ -1,4 +1,3 @@
-const AnyNumberCost = require('./costs/AnyNumberCost');
 const ChooseCost = require('./costs/choosecost.js');
 const CostBuilders = require('./costs/CostBuilders.js');
 const BootCost = require('./costs/BootCost.js');
@@ -6,7 +5,6 @@ const XValuePrompt = require('./costs/XValuePrompt.js');
 const SelfCost = require('./costs/SelfCost.js');
 const UnbootCost = require('./costs/UnbootCost.js');
 const MoveTokenFromSelfCost = require('./costs/MoveTokenFromSelfCost.js');
-const MovePowerFromFactionCost = require('./costs/MovePowerFromFactionCost');
 const DiscardFromDeckCost = require('./costs/DiscardFromDeckCost');
 const {Tokens} = require('./Constants');
 
@@ -33,10 +31,6 @@ const Costs = {
      */
     bootParent: () => CostBuilders.boot.parent(),
     /**
-     * Cost that will boot the player's faction card.
-     */
-    bootFactionCard: () => CostBuilders.boot.faction(),
-    /**
      * Cost that boots a specific card passed into the function
      */
     bootSpecific: cardFunc => CostBuilders.boot.specific(cardFunc),
@@ -56,20 +50,6 @@ const Costs = {
      */
     bootAny: (condition, zeroAllowed) => CostBuilders.boot.selectAny(condition, zeroAllowed),
     /**
-     * Cost that will sacrifice the card that initiated the ability.
-     */
-    sacrificeSelf: () => CostBuilders.sacrifice.self(),
-    /**
-     * Cost that requires sacrificing a card that matches the passed condition
-     * predicate function.
-     */
-    sacrifice: condition => CostBuilders.sacrifice.select(condition),
-    /**
-     * Cost that requires sacrificing any number of cards that match the
-     * passed condition predicate function.
-     */
-    sacrificeAny: (condition, zeroAllowed) => CostBuilders.sacrifice.selectAny(condition, zeroAllowed),
-    /**
      * Cost that will ace the card that initiated the ability.
      */
     aceSelf: () => CostBuilders.ace.self(),
@@ -86,10 +66,6 @@ const Costs = {
      * Cost that will put into play the card that initiated the ability.
      */
     putSelfIntoPlay: () => CostBuilders.putIntoPlay.self(),
-    /**
-     * Cost that will put into shadows the card that initiated the ability.
-     */
-    putSelfIntoShadows: () => CostBuilders.putIntoShadows.self(),
     /**
      * Cost that will remove from game the card that initiated the ability.
      */
@@ -131,10 +107,6 @@ const Costs = {
      */
     stand: condition => CostBuilders.stand.select(condition),
     /**
-     * Cost that will remove the parent card the current card is attached to from the challenge.
-     */
-    removeParentFromChallenge: () => CostBuilders.removeFromChallenge.parent(),
-    /**
      * Cost that will place the played event card in the player's discard pile.
      */
     expendAction: function() {
@@ -153,10 +125,6 @@ const Costs = {
         };
     },
     /**
-     * Cost that requires discarding a duplicate.
-     */
-    discardDuplicate: () => CostBuilders.discardDuplicate.self(),
-    /**
      * Cost that requires discarding from hand the card that initiated the ability.
      */
     discardSelfFromHand: () => CostBuilders.discardFromHand.self(),
@@ -170,11 +138,6 @@ const Costs = {
      * condition predicate function.
      */
     discardMultipleFromHand: (number, condition) => CostBuilders.discardFromHand.selectMultiple(number, condition),
-    /**
-     * Cost that requires discarding a card from shadows matching the passed
-     * condition predicate function.
-     */
-    discardFromShadows: condition => CostBuilders.discardFromShadows.select(condition),
     /**
      * Cost that requires discarding the top card from the draw deck.
      */
@@ -195,10 +158,6 @@ const Costs = {
      */
     discardGold: amount => CostBuilders.discardToken('gold', amount).self(),
     /**
-     * Cost that will discard a fixed amount of power from the current card.
-     */
-    discardPowerFromSelf: amount => CostBuilders.discardPower(amount).self(),
-    /**
      * Cost that will discard a fixed amount of a passed type token from the current card.
      */
     discardTokenFromSelf: (type, amount) => CostBuilders.discardToken(type, amount).self(),
@@ -207,34 +166,6 @@ const Costs = {
      * destination card matching the passed condition predicate function.
      */
     moveTokenFromSelf: (type, amount, condition) => new MoveTokenFromSelfCost(type, amount, condition),
-    /**
-     * Cost that will move a fixed amount of power from the player's faction card to a
-     * destination card matching the passed condition predicate function.
-     */
-    movePowerFromFaction: ({amount, condition}) => new MovePowerFromFactionCost({amount, condition }),
-    /**
-     * Cost that will discard faction power matching the passed amount.
-     */
-    discardFactionPower: amount => CostBuilders.discardPower(amount).faction(),
-    /**
-     * Cost that requires discarding a power from a card that matches the passed condition
-     * predicate function.
-     */
-    discardPower: (amount, condition) => CostBuilders.discardPower(amount).select(condition),
-    /**
-     * Cost that requires discarding any number of power from a single card that
-     * matches the passed condition predicate function.
-     */
-    discardAnyPower: (condition) => new AnyNumberCost({
-        cost: CostBuilders.discardPower('X').select(condition),
-        max: context => context.player.filterCardsInPlay(condition).reduce(function (maxPower, card) {
-            if(card.power > maxPower) {
-                return card.power;
-            }
-
-            return maxPower;
-        }, 0)
-    }),
     /**
      * Cost that will pay the exact printed gold cost for the card.
      */
@@ -256,14 +187,14 @@ const Costs = {
     payReduceableGRCost: function(playingType) {
         return {
             canPay: function(context) {
-                if (context.cardToUpgrade) {
+                if(context.cardToUpgrade) {
                     return true;
                 }
                 let reducedCost = context.player.getReducedCost(playingType, context.source);
                 return context.player.getSpendableGhostRock({ playingType: playingType }) >= reducedCost;
             },
             pay: function(context) {
-                if (context.cardToUpgrade) {
+                if(context.cardToUpgrade) {
                     return;
                 }
                 context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);

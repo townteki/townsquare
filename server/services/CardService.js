@@ -36,16 +36,6 @@ class CardService {
             });
     }
 
-    getTitleCards() {
-        return this.cards.find({ type: 'title' })
-            .then(cards => {
-                return cards.reduce((memo, card) => {
-                    memo[card.code] = card;
-                    return memo;
-                }, {});
-            });
-    }
-
     getAllPacks() {
         return this.packs.find({}).catch(err => {
             logger.info(err);
@@ -76,7 +66,6 @@ class CardService {
             {
                 name: `${activeVersion.issuer} FAQ v${activeVersion.version}`,
                 date: activeVersion.date,
-                restricted: activeVersion.joustCards,
                 banned: activeVersion.bannedCards
             }
         ];

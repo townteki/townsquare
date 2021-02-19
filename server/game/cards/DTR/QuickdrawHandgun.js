@@ -24,7 +24,6 @@ class QuickdrawHandgun extends GoodsCard {
             }
         });
     }
-  
 }
 
 QuickdrawHandgun.code = '01093';

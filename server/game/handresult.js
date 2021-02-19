@@ -20,7 +20,6 @@ class HandResult {
     getHandRank() {
         return this.handRank;
     }
-
 }
 
 class PokerHands {
@@ -29,7 +28,6 @@ class PokerHands {
         let jokers = 0;
 
         _.each(hand, (card) => {
-
             //console.log(card);
 
             if(card.type === 'joker') {
@@ -56,12 +54,12 @@ class PokerHands {
     }
 
     static isCheatin(matches) {
-        while (matches.length > 1) {
+        while(matches.length > 1) {
             let card = matches.pop();
             let cheatin = matches.some(matchCard => {
                 return matchCard.value === card.value && matchCard.suit === card.suit;
             });
-            if (cheatin) {
+            if(cheatin) {
                 return true;
             }
         }
@@ -69,15 +67,13 @@ class PokerHands {
     }
 }
 
-
 class DeadMansHand {
     constructor(hand, jokers) {
-
         let dmh = [{value: 1, suit: 'Spades'},
-                   {value: 1, suit: 'Clubs'},
-                   {value: 8, suit: 'Spades'},
-                   {value: 8, suit: 'Clubs'},
-                   {value: 11, suit: 'Diamonds'}];
+            {value: 1, suit: 'Clubs'},
+            {value: 8, suit: 'Spades'},
+            {value: 8, suit: 'Clubs'},
+            {value: 11, suit: 'Diamonds'}];
 
         this.matches = _.intersectionWith(dmh, hand, (left, right) => {
             return ((left.value === right.value) && (left.suit === right.suit));
@@ -94,7 +90,6 @@ class DeadMansHand {
 
 class FiveOfAKind {
     constructor(hand, jokers) {
-
         //Check for 5oaK, starting from the best (Ks)
         //down to the worst (As). Only return the best hand
         for(let i = 13; i > 0; i--) {
@@ -107,7 +102,7 @@ class FiveOfAKind {
                 this.rankName = 'Five of a Kind';
                 this.rankShortName = '5oaK';
                 this.tiebreaker = [i];
-                this.cheatin = jokers == 0;
+                this.cheatin = jokers === 0;
             }
         }
     }
@@ -115,14 +110,13 @@ class FiveOfAKind {
 
 class StraightFlush {
     constructor(hand, jokers) {
-
         Suits.forEach((suit) => {
             for(let i = 13; i > 0; i--) {
                 let straightFlush = [{value: i, suit: suit},
-                                     {value: i - 1, suit: suit},
-                                     {value: i - 2, suit: suit},
-                                     {value: i - 3, suit: suit},
-                                     {value: i - 4, suit: suit}];
+                    {value: i - 1, suit: suit},
+                    {value: i - 2, suit: suit},
+                    {value: i - 3, suit: suit},
+                    {value: i - 4, suit: suit}];
 
                 this.matches = _.intersectionWith(hand, straightFlush, (left, right) => {
                     return ((left.value === right.value) && (left.suit === right.suit));
@@ -161,10 +155,8 @@ class FourOfAKind {
     }
 }
 
-
 class FullHouse {
     constructor(hand, jokers) {
-
         let matches3, matches2;
 
         for(let i = 13; i > 0; i--) {
@@ -173,7 +165,6 @@ class FullHouse {
             });
 
             if(matches3.length + jokers >= 3) {
-
                 for(let j = 13; j > 0; j--) {
                     matches2 = _.filter(hand, (card) => {
                         if(j !== i) {
@@ -182,7 +173,6 @@ class FullHouse {
                     });
 
                     if(matches2.length + jokers >= 2) {
-
                         this.matches = matches3.concat(matches2);
 
                         if((this.matches.length + jokers) >= 5) {
@@ -202,7 +192,6 @@ class FullHouse {
 
 class Flush {
     constructor(hand, jokers) {
-
         Suits.forEach((suit) => {
             this.matches = _.filter(hand, (card) => {
                 return card.suit === suit;
@@ -216,7 +205,6 @@ class Flush {
                 this.cheatin = PokerHands.isCheatin(this.matches);
                 return;
             }
-
         });
     }
 }
@@ -225,10 +213,10 @@ class Straight {
     constructor(hand, jokers) {
         for(let i = 13; i > 0; i--) {
             let straight = [{value: i},
-                            {value: i - 1},
-                            {value: i - 2},
-                            {value: i - 3},
-                            {value: i - 4}];
+                {value: i - 1},
+                {value: i - 2},
+                {value: i - 3},
+                {value: i - 4}];
 
             this.matches = _.intersectionBy(hand, straight, 'value');
 
@@ -267,7 +255,6 @@ class ThreeOfAKind {
 
 class TwoPair {
     constructor(hand, jokers) {
-
         let matchesFirst, matchesSecond;
 
         for(let i = 13; i > 0; i--) {
@@ -276,7 +263,6 @@ class TwoPair {
             });
 
             if(matchesFirst.length + jokers >= 2) {
-
                 for(let j = 13; j > 0; j--) {
                     matchesSecond = _.filter(hand, (card) => {
                         if(j !== i) {
@@ -285,14 +271,13 @@ class TwoPair {
                     });
 
                     if(matchesSecond.length + jokers >= 2) {
-
                         this.matches = matchesFirst.concat(matchesSecond);
 
                         if((this.matches.length + jokers) >= 4) {
                             this.rank = 3;
                             this.rankName = 'Two Pair';            
                             this.rankShortName = '2P';
-                            this.tiebreaker = [i,j];
+                            this.tiebreaker = [i, j];
                             this.cheatin = PokerHands.isCheatin(this.matches);
                             break;
                         }

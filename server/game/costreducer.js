@@ -1,4 +1,4 @@
-const AbilityUsage = require("./abilityusage");
+const AbilityUsage = require('./abilityusage');
 
 class CostReducer {
     constructor(game, source, properties) {
@@ -22,10 +22,6 @@ class CostReducer {
     canReduce(playingType, card) {
         if(this.usage && this.usage.isUsed()) {
             return false;
-        }
-
-        if(playingType === 'play' && this.playingTypes.includes('outOfShadows') && card.location === 'shadows') {
-            return !!this.match(card);
         }
 
         return this.playingTypes.includes(playingType) && !!this.match(card);

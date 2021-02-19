@@ -10,7 +10,6 @@ const CardMatcher = require('./CardMatcher');
 const CardReaction = require('./cardreaction');
 const CustomPlayAction = require('./PlayActions/CustomPlayAction');
 const EventRegistrar = require('./eventregistrar');
-const GameActions = require('./GameActions');
 const KeywordsProperty = require('./PropertyTypes/KeywordsProperty');
 const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty');
 const {Tokens} = require('./Constants');
@@ -64,7 +63,7 @@ class BaseCard {
     }
 
     get value() {
-        if (this.currentValue < 0) {
+        if(this.currentValue < 0) {
             return 0;
         }
         return this.currentValue;
@@ -75,7 +74,7 @@ class BaseCard {
     }
 
     get bullets() {
-        if (this.currentBullets < 0) {
+        if(this.currentBullets < 0) {
             return 0;
         }
         return this.currentBullets;
@@ -86,7 +85,7 @@ class BaseCard {
     }
 
     get influence() {
-        if (this.currentInfluence < 0) {
+        if(this.currentInfluence < 0) {
             return 0;
         }
         return this.currentInfluence;
@@ -97,7 +96,7 @@ class BaseCard {
     }
 
     get production() {
-        if (this.currentProduction < 0) {
+        if(this.currentProduction < 0) {
             return 0;
         }
         return this.currentProduction;
@@ -105,22 +104,6 @@ class BaseCard {
 
     set production(amount) {
         this.currentProduction = amount;
-    }
-
-    parseKeywords(keywords) {
-        let parsedKeywords = {};
-        if (keywords === '') {
-            return parsedKeywords;
-        }
-
-        var firstLine = keywords.split('\n')[0];
-
-        firstLine.split('\u2022').forEach(keyword => {
-
-            parsedKeywords[keyword.toLowerCase().trim()] = { count: 1, modifier: modifier };
-        });
-
-        return parsedKeywords;
     }
 
     registerEvents(events) {
@@ -168,7 +151,7 @@ class BaseCard {
 
     /**
      * Defines a special play action that can occur when the card is outside the
-     * play area (e.g. Lady-in-Waiting's dupe marshal ability)
+     * play area.
      */
     playAction(properties) {
         this.abilities.playActions.push(new CustomPlayAction(properties));
@@ -199,11 +182,11 @@ class BaseCard {
     }
 
     applyAbilityEffect(ability, propertyFactory) {
-        if (this.game.shootout) {
+        if(this.game.shootout) {
             this.untilEndOfShootoutPhase(propertyFactory, ability);
         } else {
             var properties = propertyFactory(AbilityDsl);
-            if (ability.playTypePlayed() === 'noon') {
+            if(ability.playTypePlayed() === 'noon') {
                 this.game.addEffect(this, Object.assign({ 
                     duration: 'untilEndOfRound', 
                     location: 'any', 
@@ -314,14 +297,14 @@ class BaseCard {
     }
 
     hasOneOfKeywords(keywords) {
-        if (!Array.isArray(keywords)) {
+        if(!Array.isArray(keywords)) {
             return this.hasKeyword(keywords);
         }
         return keywords.some(keyword => this.hasKeyword(keyword.toLowerCase()));
     }
 
     hasAllOfKeywords(keywords) {
-        if (!Array.isArray(keywords)) {
+        if(!Array.isArray(keywords)) {
             return this.hasKeyword(keywords);
         }
         return keywords.every(keyword => this.hasKeyword(keyword.toLowerCase()));
@@ -332,11 +315,11 @@ class BaseCard {
     }    
 
     createSnapshot(clone, cloneBaseAttributes = true) {
-        if (!clone) {
+        if(!clone) {
             clone = new BaseCard(this.owner, this.cardData);
         }
 
-        if (cloneBaseAttributes) {
+        if(cloneBaseAttributes) {
             clone = this.cloneBaseAttributes(clone);
         }
         clone.location = this.location;
@@ -348,13 +331,13 @@ class BaseCard {
         clone.tokens = Object.assign({}, this.tokens);
         clone.abilityRestrictions = this.abilityRestrictions;
         clone.events = this.events;
-        clone.eventsForRegistration = this.eventsForRegistration
+        clone.eventsForRegistration = this.eventsForRegistration;
 
         return clone;
     }
 
     cloneBaseAttributes(clone) {
-        if (!clone) {
+        if(!clone) {
             return;
         }
         clone.suit = this.suit;
@@ -390,45 +373,6 @@ class BaseCard {
         }
 
         return !this.isFullBlank() && this.traits.contains(trait);
-    }
-
-    isFaction(faction) {
-        let normalizedFaction = faction.toLowerCase();
-
-        if(this.losesAspects.contains('factions')) {
-            return normalizedFaction === 'neutral';
-        }
-
-        if(normalizedFaction === 'neutral') {
-            return ValidFactions.every(f => !this.factions.contains(f) || this.losesAspects.contains(`factions.${f}`));
-        }
-
-        return this.factions.contains(normalizedFaction) && !this.losesAspects.contains(`factions.${normalizedFaction}`);
-    }
-
-    isOutOfFaction() {
-        return !this.isFaction(this.controller.getFaction()) && !this.isFaction('neutral');
-    }
-
-    getFactions() {
-        let factions = ValidFactions.filter(faction => this.isFaction(faction));
-
-        if(factions.length === 0) {
-            factions.push('neutral');
-        }
-
-        return factions;
-    }
-
-    getFactionStatus() {
-        let gainedFactions = ValidFactions.filter(faction => faction !== this.cardData.faction && this.isFaction(faction));
-        let diff = gainedFactions.map(faction => ({ faction: faction, status: 'gained' }));
-
-        if(!this.isFaction(this.cardData.faction) && this.cardData.faction !== 'neutral') {
-            return diff.concat({ faction: this.cardData.faction, status: 'lost' });
-        }
-
-        return diff;
     }
 
     applyAnyLocationPersistentEffects() {
@@ -469,16 +413,16 @@ class BaseCard {
 
         let menu = [];
         let menuActionItems = this.getActionMenuItems(player);
-        if (menuActionItems.filter(menuItem => 
+        if(menuActionItems.filter(menuItem => 
             menuItem.action.allowPlayer(player) && !menuItem.action.isClickToActivate() && menuItem.action.allowMenu()).length === 0) {
             return;
         }
 
-        if (this.location === 'play area') {
-            menu = [ { command: 'click', text: 'Boot / Unboot' } ];
+        if(this.location === 'play area') {
+            menu = [{ command: 'click', text: 'Boot / Unboot' }];
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
-        if (menuCardActionItems.length > 0) {
+        if(menuCardActionItems.length > 0) {
             menu = menu.concat({ 
                 text: 'Use ability', 
                 method: 'useAbility', 
@@ -486,7 +430,7 @@ class BaseCard {
             });
         }
         let menuOtherActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType !== 'card');
-        if (menuOtherActionItems.length > 0) {
+        if(menuOtherActionItems.length > 0) {
             menu = menu.concat(menuOtherActionItems.map(menuItem => menuItem.item));
         }
         return menu;
@@ -494,23 +438,23 @@ class BaseCard {
 
     getActionMenuItems(player, options) {
         return this.abilities.actions.map((action, index) => { 
-            if (options) {
+            if(options) {
                 action.options = options;
             }
             return { 
                 action: action, 
                 item: action.getMenuItem(index, player)
-            } 
+            }; 
         });
     }
 
     useAbility(player, options = {}) {
         let menuActionItems = this.getActionMenuItems(player, options).filter(menuItem => menuItem.action.abilitySourceType === 'card');
-        if (menuActionItems.length === 0) {
+        if(menuActionItems.length === 0) {
             return;
         }
-        if (menuActionItems.length === 1) {
-            if (!menuActionItems[0].item.disabled) {
+        if(menuActionItems.length === 1) {
+            if(!menuActionItems[0].item.disabled) {
                 this.doAction(player, menuActionItems[0].item.arg);
             }
             return;
@@ -596,7 +540,7 @@ class BaseCard {
     }
 
     getPrintedStat(stat) {
-        switch (stat) {
+        switch(stat) {
             case 'suit': return this.cardData.suit;
             case 'value': return this.cardData.rank;
             case 'bullets': return this.cardData.bullets;
@@ -636,24 +580,8 @@ class BaseCard {
         this.keywords.addKeyword(keyword);
     }
 
-    addFaction(faction) {
-        if(!faction) {
-            return;
-        }
-
-        let lowerCaseFaction = faction.toLowerCase();
-        this.factions.add(lowerCaseFaction);
-
-        this.markAsDirty();
-    }
-
     removeKeyword(keyword) {
         this.keywords.removeKeyword(keyword);
-    }
-
-    removeFaction(faction) {
-        this.factions.remove(faction.toLowerCase());
-        this.markAsDirty();
     }
 
     clearNew() {
@@ -676,13 +604,13 @@ class BaseCard {
     }
 
     get gamelocation() {
-        if (this.location !== 'play area') {
+        if(this.location !== 'play area') {
             return '';
         }
-        if (this.getType() === 'dude') {
+        if(this.getType() === 'dude') {
             return this.gameLoc;
         }
-        if (this.getType() === 'deed' || this.getType() === 'outfit') {
+        if(this.getType() === 'deed' || this.getType() === 'outfit') {
             return this.uuid;
         }
 
@@ -811,7 +739,7 @@ class BaseCard {
     }
 
     getLocation() {
-        if (!this.gamelocation) {
+        if(!this.gamelocation) {
             return;
         }
         return this.game.findLocation(this.gamelocation);
@@ -820,7 +748,7 @@ class BaseCard {
     isInSameLocation(card) {
         let thisLocation = this.getLocation();
         let cardLocation = card.getLocation();
-        return thisLocation && cardLocation && thisLocation.uuid === cardLocation.uuid
+        return thisLocation && cardLocation && thisLocation.uuid === cardLocation.uuid;
     }
 
     isInTownSquare() {
@@ -830,7 +758,7 @@ class BaseCard {
 
     getLocationCard() {
         let location = this.getLocation();
-        if (!location) {
+        if(!location) {
             return new NullCard();
         }
         return location.getLocationCard(this.game);
@@ -862,24 +790,24 @@ class BaseCard {
     }
 
     isAttachment() {
-        if(_.intersection(['spell', 'goods'],[this.getType()]).length > 0) {
+        if(_.intersection(['spell', 'goods'], [this.getType()]).length > 0) {
             return true;
         }
     }
 
     coversCasualties(type = 'any') {
-        if (this.getType() === 'dude') {
+        if(this.getType() === 'dude') {
             let harrowCasualty = this.isHarrowed() ? 1 : 0;
-            if (type === 'ace' || type === 'any') {
+            if(type === 'ace' || type === 'any') {
                 return 2 + harrowCasualty;
             }
-            if (type === 'discard') {
+            if(type === 'discard') {
                 return 1 + harrowCasualty;
             }
             return harrowCasualty;
         }
-        if ((this.getType() === 'goods' || this.getType() === 'spell') && this.hasKeyword('sidekick')) {
-            if (type === 'ace') {
+        if((this.getType() === 'goods' || this.getType() === 'spell') && this.hasKeyword('sidekick')) {
+            if(type === 'ace') {
                 return 0;
             }
             return 1;

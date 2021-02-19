@@ -37,9 +37,7 @@ class SundownPhase extends Phase {
             this.game.recordWinner(potentialWinner[0], 'Control points greater than influence');
         }
         this.game.raiseEvent('onSundownAfterVictoryCheck');
-        
     }
-                 
 
     unbootCards() { 
         _.each(this.game.getPlayers(), player => {
@@ -61,7 +59,6 @@ class SundownPhase extends Phase {
 
         this.game.checkForTimeExpired();
     }
-
 }
 
 module.exports = SundownPhase;

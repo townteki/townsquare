@@ -9,7 +9,7 @@ class ShootoutPossePrompt extends UiPrompt {
     }  
 
     continue() {
-        if (!this.isComplete()) {
+        if(!this.isComplete()) {
             this.game.promptForSelect(this.player, {
                 activePromptTitle: 'Select dudes to join posse',
                 multiSelect: true,
@@ -26,11 +26,11 @@ class ShootoutPossePrompt extends UiPrompt {
                     dudeSelection.forEach(dude => 
                         this.game.resolveGameAction(GameActions.joinPosse({ card: dude, options: { isCardEffect: false, moveToPosse: false } }))
                     );
-                    if (this.shootout.leaderPlayer === player) {
+                    if(this.shootout.leaderPlayer === player) {
                         this.game.raiseEvent('onLeaderPosseFormed', { shootout: this.shootout });
                         this.game.addMessage('{0} with {1} as leader forms their posse including dudes: {2}.', player, this.shootout.leader, dudeSelection);
                     } else {
-                        if (!this.shootout.isJob()) {
+                        if(!this.shootout.isJob()) {
                             this.game.addMessage('{0} with {1} as mark forms their posse including dudes: {2}.', player, this.shootout.mark, dudeSelection);   
                         } else {
                             this.game.addMessage('{0} is opposing a job marking {1} and forms their posse including dudes: {2}.', player, this.shootout.mark, dudeSelection); 
@@ -51,13 +51,12 @@ class ShootoutPossePrompt extends UiPrompt {
 
     joinLeaderAndMark(player) {
         //Leader and mark (if not job because in job mark does not have to be in posse) join posses first.
-        if (this.shootout.leaderPlayer === player) {
+        if(this.shootout.leaderPlayer === player) {
             this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.leader, options: { isCardEffect: false, moveToPosse: false } }));
-        } else if (!this.shootout.isJob()) {
+        } else if(!this.shootout.isJob()) {
             this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.mark, options: { isCardEffect: false, moveToPosse: false } }));
         }
     }
-
 }
 
 module.exports = ShootoutPossePrompt;

@@ -16,7 +16,6 @@ class TriggeredAbility extends BaseAbility {
         if(card.getType() === 'action' && !properties.ignoreEventCosts) {
             this.cost = this.cost.concat(Costs.playAction());
         }
-
     }
 
     isTriggeredAbility() {
@@ -116,11 +115,8 @@ class TriggeredAbility extends BaseAbility {
         // game events in all open information locations plus while in hand.
         // The location property of the ability will prevent it from firing in
         // inappropriate locations when requirements are checked for the ability.
-        //
-        // Also apparently the draw deck because of Maester Gormon.
-        // Also also apparently under conclave due to Archmaester Marwyn.
         if(this.isPlayableActionAbility()) {
-            return ['conclave', 'discard pile', 'draw deck', 'hand', 'shadows', 'play area'].includes(location);
+            return ['discard pile', 'draw deck', 'hand', 'play area'].includes(location);
         }
 
         return this.location.includes(location);

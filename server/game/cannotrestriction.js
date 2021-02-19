@@ -23,16 +23,15 @@ class CannotRestriction {
     }
 
     matchesController(abilityPlayer, targetController) {
-        if (this.controller === 'any') {
+        if(this.controller === 'any') {
             return true;
         }
-        if (this.controller === 'current') {
+        if(this.controller === 'current') {
             return targetController === abilityPlayer;
         }
-        if (this.controller === 'opponent') {
+        if(this.controller === 'opponent') {
             return targetController !== abilityPlayer;
         }
-        
     }
 
     checkCondition(context) {

@@ -7,10 +7,10 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
     } 
 
     continue() {
-        if (this.isComplete()) {
+        if(this.isComplete()) {
             return true;
         }
-        if (this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        if(this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
             this.completePlayer();
             return this.continue();
         }
@@ -36,7 +36,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 this.completePlayer();
                 return true;
             },
-            onMenuCommand: (player, arg) => {
+            onMenuCommand: (player) => {
                 this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(card, { isCardEffect: false }));
                 this.shootout.recordJobStatus();
                 this.completePlayer();
@@ -46,7 +46,6 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
 
         return false;        
     }
-
 }
 
 module.exports = RunOrGunPrompt;

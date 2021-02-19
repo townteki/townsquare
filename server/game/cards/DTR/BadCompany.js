@@ -1,7 +1,7 @@
 const ActionCard = require('../../actioncard.js');
 
 class BadCompany extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Bad Company',
             playType: ['noon'],

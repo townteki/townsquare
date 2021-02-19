@@ -1,7 +1,7 @@
 const ActionCard = require('../../actioncard.js');
 
 class FasterOnTheDraw extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Faster on the Draw',
             playType: ['shootout'],
@@ -16,8 +16,8 @@ class FasterOnTheDraw extends ActionCard {
                     effect: ability.effects.modifyBullets(1)
                 }));
                 let deputyBonus = '';
-                if (context.target.hasKeyword('deputy')) {
-                    deputyBonus = ', makes him a stud'
+                if(context.target.hasKeyword('deputy')) {
+                    deputyBonus = ', makes him a stud';
                     this.applyAbilityEffect(context.ability, ability => ({
                         match: context.target,
                         effect: ability.effects.setAsStud()

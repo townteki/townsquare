@@ -21,7 +21,6 @@ const PutIntoPlay = require('./PutIntoPlay');
 const RemoveBounty = require('./RemoveBounty');
 const RemoveFromGame = require('./RemoveFromGame');
 const ReturnCardToHand = require('./ReturnCardToHand');
-const ReturnGoldToTreasury = require('./ReturnGoldToTreasury');
 const RevealCard = require('./RevealCard');
 const Search = require('./Search');
 const SendHome = require('./SendHome');
@@ -119,7 +118,6 @@ const GameActions = {
     removeBounty: props => new AbilityAdapter(RemoveBounty, props),
     removeFromGame: props => new AbilityAdapter(RemoveFromGame, props),
     returnCardToHand: props => new AbilityAdapter(ReturnCardToHand, props),
-    returnGoldToTreasury: props => new AbilityAdapter(ReturnGoldToTreasury, props),
     revealCard: props => new AbilityAdapter(RevealCard, props),
     search: props => new AbilityAdapter(
         new Search(props),

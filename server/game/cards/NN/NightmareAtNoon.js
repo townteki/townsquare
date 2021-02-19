@@ -1,7 +1,7 @@
 const ActionCard = require('../../actioncard.js');
 
 class NightmareAtNoon extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Nightmare At Noon',
             playType: ['shootout'],

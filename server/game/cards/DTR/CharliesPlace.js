@@ -39,7 +39,7 @@ class CharliesPlace extends DeedCard {
 
     applyBulletEffects(player, amount) {
         let text = 'raise';
-        if (amount < 0) {
+        if(amount < 0) {
             text = 'lower';
         }
         this.applyAbilityEffect(this.abilityContext.ability, ability => ({

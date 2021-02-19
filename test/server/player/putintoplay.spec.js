@@ -23,7 +23,7 @@ describe('Player', function() {
         this.cardSpy.getType.and.returnValue('dude');
         this.context = {
             costs: { ghostrock: 1 }
-        }
+        };
     });
 
     describe('putIntoPlay', function() {
@@ -76,7 +76,7 @@ describe('Player', function() {
             it('should raise the onCardEntersPlay event', function() {
                 expect(this.gameSpy.raiseEvent).toHaveBeenCalledWith('onCardEntersPlay', jasmine.objectContaining({ card: this.cardSpy, playingType: 'setup' }));
             });
-            });
+        });
 
         describe('when the card is not controlled by the player', function() {
             beforeEach(function() {

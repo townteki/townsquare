@@ -893,8 +893,8 @@ class Lobby {
                     id: player.id,
                     name: player.name,
                     owner: game.owner === player.name,
-                    faction: { cardData: { code: player.faction } },
-                    agenda: { cardData: { code: player.agenda } },
+                    outfit: { cardData: { code: player.outfit } },
+                    legend: { cardData: { code: player.legend } },
                     user: new User(player.user)
                 };
             }

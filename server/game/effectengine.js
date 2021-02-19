@@ -43,7 +43,7 @@ class EffectEngine {
     }
 
     getTargets() {
-        const validLocations = ['active plot', 'being played', 'dead pile', 'discard pile', 'draw deck', 'faction', 'hand', 'play area', 'duplicate', 'plot deck', 'shadows'];
+        const validLocations = ['being played', 'dead pile', 'discard pile', 'draw deck', 'hand', 'play area'];
         let validTargets = this.game.allCards.filter(card => validLocations.includes(card.location));
         return validTargets.concat(this.game.getPlayers()).concat([this.game]);
     }
@@ -152,7 +152,7 @@ class EffectEngine {
     }
 
     onPlayWindowClosed(event) {
-        if (event.playWindow.name === 'shootout resolution' || event.playWindow.name === 'gambling') {
+        if(event.playWindow.name === 'shootout resolution' || event.playWindow.name === 'gambling') {
             this.game.getPlayers().forEach(player => player.resetCheatinResInfo());
         }
     }

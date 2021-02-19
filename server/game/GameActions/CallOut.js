@@ -1,4 +1,3 @@
-const ShootoutStatuses = require('../Constants/ShootoutStatuses');
 const GameAction = require('./GameAction');
 
 class CallOut extends GameAction {
@@ -13,11 +12,10 @@ class CallOut extends GameAction {
     }
 
     createEvent({ caller, callee, isCardEffect = true, canReject = true }) {
-        return this.event('onCardCallOut', { caller: caller, callee: callee, canReject: canReject }, event => {
+        return this.event('onCardCallOut', { caller: caller, callee: callee, isCardEffect: isCardEffect, canReject: canReject }, event => {
             event.caller.callOut(event.callee, event.canReject);
         });
     }
-
 }
 
 module.exports = new CallOut();
