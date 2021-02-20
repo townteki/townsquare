@@ -34,10 +34,10 @@ class JoinPosse extends GameAction {
 
     getDefaultOptions(options) {
         return {
-            isCardEffect: options.isCardEffect !== null ? options.isCardEffect : true,
-            moveToPosse: options.moveToPosse !== null ? options.moveToPosse : true,
-            needToBoot: options.needToBoot !== null ? options.needToBoot : false,
-            allowBooted: options.allowBooted !== null ? options.allowBooted : true
+            isCardEffect: options.isCardEffect || options.isCardEffect === false ? options.isCardEffect : true,
+            moveToPosse: options.moveToPosse || options.moveToPosse === false ? options.moveToPosse : true,
+            needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : false,
+            allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true
         };
     }
 }

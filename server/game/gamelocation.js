@@ -20,7 +20,7 @@ class GameLocation {
         if(neighbourLocation) {
             this.addAdjacency(neighbourLocation, 'game');
         }
-        if(order !== null) {
+        if(order !== null && order !== undefined) {
             this.addAdjacency(locationCard.game.townsquare, 'game');
         }
         if(locationCard.defaultAdjacencyEffects) {

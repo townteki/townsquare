@@ -864,10 +864,10 @@ class Lobby {
     }
 
     onWorkerStarted(nodeName) {
-        Promise.all([this.cardService.getAllCards(), this.cardService.getTitleCards(), this.cardService.getAllPacks(), this.cardService.getRestrictedList()])
+        Promise.all([this.cardService.getAllCards(), this.cardService.getAllPacks(), this.cardService.getRestrictedList()])
             .then(results => {
-                let [cards, titles, packs, restrictedList] = results;
-                this.router.sendCommand(nodeName, 'CARDDATA', { titleCardData: titles, cardData: cards, packData: packs, restrictedListData: restrictedList });
+                let [cards, packs, restrictedList] = results;
+                this.router.sendCommand(nodeName, 'CARDDATA', { cardData: cards, packData: packs, restrictedListData: restrictedList });
             });
     }
 

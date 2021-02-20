@@ -855,7 +855,7 @@ class Player extends Spectator {
     }
 
     payUpkeep(upkeep = null) {
-        if(upkeep === null) {
+        if(upkeep === null || upkeep === undefined) {
             upkeep = this.determineUpkeep();
         }
         this.upkeepPaid = true;
@@ -913,12 +913,12 @@ class Player extends Spectator {
     }
 
     leftmostLocation() {
-        let sorted = _.sortBy(this.locations.filter(location => location.order !== null), 'order');
+        let sorted = _.sortBy(this.locations.filter(location => location.order !== null && location.order !== undefined), 'order');
         return sorted.shift();
     }
 
     rightmostLocation() {
-        let sorted = _.sortBy(this.locations.filter(location => location.order !== null), 'order');
+        let sorted = _.sortBy(this.locations.filter(location => location.order !== null && location.order !== undefined), 'order');
         return sorted.pop();
     }
 
@@ -1093,9 +1093,9 @@ class Player extends Spectator {
 
     moveDude(dude, targetLocationUuid, params = {}) {
         let options = {
-            isCardEffect: params.isCardEffect !== null ? params.isCardEffect : true,
+            isCardEffect: params.isCardEffect || params.isCardEffect === false ? params.isCardEffect : true,
             moveType: params.moveType || 'default',
-            needToBoot: params.needToBoot !== null ? params.needToBoot : null,
+            needToBoot: params.needToBoot || params.needToBoot === false ? params.needToBoot : null,
             allowBooted: !!params.allowBooted
         };
         let origin = this.game.findLocation(dude.gamelocation);

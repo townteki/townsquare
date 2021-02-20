@@ -28,7 +28,7 @@ class Shootout extends Phase {
             this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
         }
 
-        this.jobSuccessful = false;
+        this.jobSuccessful = null;
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
@@ -147,11 +147,7 @@ class Shootout extends Phase {
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.game.endShootout(isCancel);
         if(this.isJob()) {
-            if(this.jobSuccessful) {
-                this.options.jobAbility.setResult(true, this);
-            } else {
-                this.options.jobAbility.setResult(false, this);
-            }
+            this.options.jobAbility.setResult(this.jobSuccessful, this);
         }
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
         this.game.addAlert('phasestart', phaseName + ' ended!');        
@@ -229,7 +225,10 @@ class Shootout extends Phase {
                 event.shootout.leaderPosse.removeFromPosse(event.card);
             } else if(event.shootout.belongsToOpposingPlayer(event.card) && event.shootout.opposingPosse) {
                 event.shootout.opposingPosse.removeFromPosse(event.card);
-            }   
+            }
+            if(this.jobSuccessful === null) {
+                this.recordJobStatus();
+            }
         });
     }
 
