@@ -3,14 +3,14 @@ describe('Shotgun', function() {
         describe('ability', function() {
             beforeEach(function() {
                 const deck1 = this.buildDeck('Law Dogs', [
-                        'Law Dogs',
-                        'Tommy Harden', 'Jake Smiley', 'Jacqueline Isham'
-                    ], [ 'Tommy Harden', 'Jake Smiley', 'Jacqueline Isham' ]
+                    'Law Dogs',
+                    'Tommy Harden', 'Jake Smiley', 'Jacqueline Isham'
+                ], ['Tommy Harden', 'Jake Smiley', 'Jacqueline Isham']
                 );
                 const deck2 = this.buildDeck('The Sloane Gang', [
-                        'The Sloane Gang',
-                        'Allie Hensman', 'Barton Everest', 'Shotgun'
-                    ], [ 'Allie Hensman', 'Barton Everest' ]
+                    'The Sloane Gang',
+                    'Allie Hensman', 'Barton Everest', 'Shotgun'
+                ], ['Allie Hensman', 'Barton Everest']
                 );
                 this.player1.selectDeck(deck1);
                 this.player2.selectDeck(deck2);
@@ -45,7 +45,6 @@ describe('Shotgun', function() {
 
                 this.player1.clickPrompt('Pass');
                 this.player2.clickMenu(this.shotgun, 'Use ability');
-
             });
 
             describe('should', function() {
@@ -70,7 +69,6 @@ describe('Shotgun', function() {
                 it('dude with lower value', function() {
                     expect(this.jake.location).toBe('dead pile');
                 });
-
             });
         });
     });

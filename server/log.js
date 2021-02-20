@@ -2,7 +2,7 @@ const winston = require('winston');
 require('winston-daily-rotate-file');
 
 let rotate = new (winston.transports.DailyRotateFile)({
-    filename: __dirname + '/logs/throneteki',
+    filename: __dirname + '/logs/townsquare',
     datePattern: '-yyyy-MM-dd.log',
     timestamp: true,
     json: false,

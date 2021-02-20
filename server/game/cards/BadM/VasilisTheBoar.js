@@ -4,7 +4,7 @@ class VasilisTheBoar extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.isParticipating(),
-            match: card => card.getType() == 'dude' && card.isOpposing(this.controller) && card.isWanted(),
+            match: card => card.getType() === 'dude' && card.isOpposing(this.controller) && card.isWanted(),
             effect: [
                 ability.effects.modifyValue(-2)
             ]
@@ -14,7 +14,7 @@ class VasilisTheBoar extends DudeCard {
             playType: ['shootout'],
             target: {
                 activePromptTitle: 'Choose Vasilis\' weapon to use',
-                cardCondition: { location: 'play area', condition: card => true },
+                cardCondition: { location: 'play area' },
                 cardType: ['goods']
             },
             handler: context => {

@@ -17,16 +17,16 @@ class JoinPosse extends GameAction {
 
     createEvent({ card, options = {} }) {
         let params = this.getDefaultOptions(options);
-        if (card.game.shootout.isJob() && !params.needToBoot) {
+        if(card.game.shootout.isJob() && !params.needToBoot) {
             params.needToBoot = card.requirementsToJoinPosse(params.allowBooted).needToBoot;
         }
         let toLeaderPosse = card.controller === card.game.shootout.leaderPlayer;
         return this.event('onDudeJoinedPosse', { card, leaderPosse: toLeaderPosse, options: params }, event => {
             event.card.game.shootout.addToPosse(event.card);
-            if (event.card.game.shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot) {
+            if(event.card.game.shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot) {
                 event.card.controller.bootCard(event.card);
             }
-            if (event.options.moveToPosse) {
+            if(event.options.moveToPosse) {
                 event.card.moveToShootoutLocation(event.options.needToBoot, event.options.allowBooted);
             }
         });
@@ -34,11 +34,11 @@ class JoinPosse extends GameAction {
 
     getDefaultOptions(options) {
         return {
-            isCardEffect: options.isCardEffect != null ? options.isCardEffect : true,
-            moveToPosse: options.moveToPosse != null ? options.moveToPosse : true,
-            needToBoot: options.needToBoot != null ? options.needToBoot : false,
-            allowBooted: options.allowBooted != null ? options.allowBooted : true
-        }
+            isCardEffect: options.isCardEffect || options.isCardEffect === false ? options.isCardEffect : true,
+            moveToPosse: options.moveToPosse || options.moveToPosse === false ? options.moveToPosse : true,
+            needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : false,
+            allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true
+        };
     }
 }
 

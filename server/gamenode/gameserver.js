@@ -50,7 +50,7 @@ class GameServer {
         }
 
         server.listen(process.env.PORT || config.socketioPort);
-		logger.info('== DEBUG %s is listening on port %s', this.host, process.env.PORT || config.socketioPort);
+        logger.info('== DEBUG %s is listening on port %s', this.host, process.env.PORT || config.socketioPort);
 
         var options = {
             perMessageDeflate: false
@@ -65,11 +65,11 @@ class GameServer {
         this.io.use(this.handshake.bind(this));
 
         if(process.env.NODE_ENV === 'production') {
-            this.io.set('origins', 'http://www.throneteki.net:* https://www.throneteki.net:* http://www.theironthrone.net:* https://www.theironthrone.net:*');
+            this.io.set('origins', 'http://www.dtts.online:* https://www.dtts.online:* http://www.dtts.online:* https://www.dtts.online:*');
         }
 
         this.io.on('connection', this.onConnection.bind(this));
-		logger.info('== DEBUG options.path : %s', options.path);
+        logger.info('== DEBUG options.path : %s', options.path);
 
         setInterval(() => this.clearStaleAndFinishedGames(), 30 * 1000);
     }

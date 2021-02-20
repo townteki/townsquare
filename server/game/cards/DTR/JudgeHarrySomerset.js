@@ -13,8 +13,8 @@ class JudgeHarrySomerset extends DudeCard {
             },
             handler: () => true,
             onSuccess: (job) => {
-               job.mark.controller.aceCard(job.mark);
-               this.game.addMessage('{0} uses {1} to lead a job which hangs {2}.', this.controller, this, job.mark); 
+                job.mark.controller.aceCard(job.mark);
+                this.game.addMessage('{0} uses {1} to lead a job which hangs {2}.', this.controller, this, job.mark); 
             }
         });
     }

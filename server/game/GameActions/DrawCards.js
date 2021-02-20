@@ -36,7 +36,7 @@ class DrawCards extends GameAction {
         return this.event('onCardsDrawn', eventProps, event => {
             let remainder = 0;
             let cards = player.drawDeck.slice(0, event.amount);
-            if (event.amount < event.desiredAmount) {
+            if(event.amount < event.desiredAmount) {
                 remainder = event.desiredAmount - event.amount;
             }
 
@@ -49,7 +49,7 @@ class DrawCards extends GameAction {
                 );
             }
 
-            if (remainder > 0) {
+            if(remainder > 0) {
                 player.shuffleDiscardToDrawDeck();
                 let remainingCards = player.drawDeck.slice(0, remainder);
                 for(const card of remainingCards) {

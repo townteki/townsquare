@@ -1,7 +1,7 @@
 {
   "name": "townsquare",
   "version": "1.0.2",
-  "description": "A Game of Throne Second Edition Card Game Server",
+  "description": "Doomtown:Reloaded Card Game Server",
   "main": "index.js",
   "scripts": {
     "test": "npm run jasmine",
@@ -15,13 +15,12 @@
     "url": "git+https://github.com/mmeldo/townsquare.git"
   },
   "keywords": [
-    "got",
-    "game",
-    "of",
-    "thrones",
+    "dtr",
+    "doomtown",
+    "reloaded",
     "cardgame"
   ],
-  "author": "Stuart Walsh <stu@ipng.org.uk>",
+  "author": "M2",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mmeldo/townsquare/issues"
@@ -57,13 +56,13 @@
     "zeromq": "^5.1.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "cucumber": "^4.2.1",
-    "eslint": "^6.4.0",
-    "faker": "^4.1.0",
-    "jasmine": "^2.8.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.1.2",
+    "cucumber": "^4.2.1",
+    "eslint": "^6.8.0",
+    "faker": "^4.1.0",
+    "jasmine": "^2.8.0"
   }
 }

@@ -127,7 +127,6 @@ describe('Player', function() {
                     expect(this.card.attachments).not.toContain(this.attachment);
                 });
             });
-
         });
 
         describe('when the target location is the draw deck', function() {
@@ -185,7 +184,6 @@ describe('Player', function() {
                     expect(this.opponent.moveCard).toHaveBeenCalledWith(this.card, 'discard pile', jasmine.objectContaining(this.options), this.callback);
                 });
             });
-
         });
     });
 });

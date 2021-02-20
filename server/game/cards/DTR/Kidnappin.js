@@ -16,7 +16,7 @@ class Kidnappin extends ActionCard {
                 this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target);
             },
             onSuccess: (job) => {
-                if (this.game.discardFromPlay([ job.mark ])) {
+                if(this.game.discardFromPlay([job.mark])) {
                     this.game.addMessage('{0} was discarded as a result of the {1}.', job.mark, this);
                 }
             }

@@ -1,7 +1,6 @@
 const ContinuousPlayerOrderPrompt = require('./continuousplayerorderprompt.js');
 
 class PlayWindow extends ContinuousPlayerOrderPrompt {
-
     constructor(game, name, activePromptTitle, playerNameOrder = [], buttonFunctions = {}) {
         super(game, activePromptTitle, playerNameOrder, buttonFunctions);
         this.name = name;
@@ -9,7 +8,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     }
 
     skipCondition() {
-        if (this.game.shootout && this.game.shootout.checkEndCondition()) {
+        if(this.game.shootout && this.game.shootout.checkEndCondition()) {
             return true;
         }
         return false; 
@@ -19,7 +18,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         let result = super.continue();
 
         if(!this.isComplete()) {
-            if (!this.playWindowOpened || !this.game.currentPlayWindow) {
+            if(!this.playWindowOpened || !this.game.currentPlayWindow) {
                 this.game.currentPlayWindow = this;
                 this.playWindowOpened = true;
                 this.game.raiseEvent('onPlayWindowOpened', { playWindow: this });
@@ -35,7 +34,6 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     markActionAsTaken(player) {
         this.onDone(player);
     }
-
 }
 
 module.exports = PlayWindow;

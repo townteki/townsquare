@@ -184,7 +184,5 @@ describe('DrawCards', function() {
                 });
             });
         });
-
     });
-
 });

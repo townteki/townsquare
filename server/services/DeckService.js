@@ -33,12 +33,9 @@ class DeckService {
         let properties = {
             username: deck.username,
             name: deck.deckName,
-            plotCards: deck.plotCards,
-            bannerCards: deck.bannerCards,
+            outfit: deck.outfit,
+            legend: deck.legend,
             drawCards: deck.drawCards,
-            faction: deck.faction,
-            agenda: deck.agenda,
-            rookeryCards: deck.rookeryCards || [],
             lastUpdated: new Date()
         };
 
@@ -48,12 +45,9 @@ class DeckService {
     createStandalone(deck) {
         let properties = {
             name: deck.name,
-            plotCards: deck.plotCards,
-            bannerCards: deck.bannerCards,
+            outfit: deck.outfit,
+            legend: deck.legend,
             drawCards: deck.drawCards,
-            faction: deck.faction,
-            agenda: deck.agenda,
-            rookeryCards: deck.rookeryCards || [],
             lastUpdated: deck.lastUpdated,
             standaloneDeckId: deck.standaloneDeckId
         };
@@ -63,13 +57,11 @@ class DeckService {
 
     update(deck) {
         let properties = {
+            username: deck.username,
             name: deck.deckName,
-            plotCards: deck.plotCards,
+            outfit: deck.outfit,
+            legend: deck.legend,
             drawCards: deck.drawCards,
-            bannerCards: deck.bannerCards,
-            faction: deck.faction,
-            agenda: deck.agenda,
-            rookeryCards: deck.rookeryCards || [],
             lastUpdated: new Date()
         };
 

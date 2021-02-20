@@ -6,7 +6,7 @@ class RevealCard extends GameAction {
     }
 
     canChangeGameState({ card }) {
-        return ['draw deck', 'hand', 'plot deck', 'shadows'].includes(card.location);
+        return ['draw deck', 'hand'].includes(card.location);
     }
 
     createEvent({ card }) {

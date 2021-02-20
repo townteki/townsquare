@@ -81,9 +81,9 @@ describe('ShoppinCardAction', function () {
 
         it('should put the card into play', function() {
             expect(this.playerSpy.putIntoPlay).toHaveBeenCalledWith(this.cardSpy, { 
-                    playingType: 'shoppin', 
-                    target: '', 
-                    context: this.context 
+                playingType: 'shoppin', 
+                target: '', 
+                context: this.context 
             });
         });
     });

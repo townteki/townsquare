@@ -7,7 +7,7 @@ class AllieHensman extends DudeCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             handler: context => {
-                if (this.isInTownSquare()) {
+                if(this.isInTownSquare()) {
                     this.modifyControl(1);
                     this.game.addMessage('{0} uses {1} to gain permanent control point.', context.player, this);
                 } else {

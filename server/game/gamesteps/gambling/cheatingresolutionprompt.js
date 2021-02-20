@@ -28,7 +28,7 @@ class CheatingResolutionPrompt extends PlayerOrderPrompt {
         let completed = super.continue();
 
         if(!completed) {
-            if (!this.playWindowOpened || !this.game.currentPlayWindow) {
+            if(!this.playWindowOpened || !this.game.currentPlayWindow) {
                 this.game.currentPlayWindow = this;
                 this.playWindowOpened = true;
                 this.game.raiseEvent('onPlayWindowOpened', { playWindow: this });

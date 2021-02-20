@@ -10,7 +10,7 @@ class RemoveBounty extends GameAction {
     }
 
     createEvent({ card, options = { removeAll: false, amount: 1 } }) {
-        if (options.removeAll) {
+        if(options.removeAll) {
             options.amount = 999;
         }
         return this.event('onCardBountyRemoved', { card, bounty: options.amount }, event => {

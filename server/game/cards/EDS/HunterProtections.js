@@ -12,7 +12,7 @@ class HunterProtections extends DeedCard {
                     card.getType() === 'dude' &&
                     card.control <= 0 && 
                     card.getLocationCard() === this
-                    )
+                )
             ],
             handler: context => {
                 this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot, amount: 2 }));

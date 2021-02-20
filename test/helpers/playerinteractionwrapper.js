@@ -47,7 +47,11 @@ class PlayerInteractionWrapper {
 
     filterCardsByName(name, location = 'any') {
         let matchFunc = matchCardByNameAndPack(name);
-        let cards = this.game.allCards.filter(card => card.controller === this.player && matchFunc(card.cardData) && (location === 'any' || card.location === location));
+        let cards = this.game.allCards.filter(card => 
+            card.controller === this.player && 
+            matchFunc(card.cardData) && 
+            (location === 'any' || card.location === location)
+        );
 
         if(cards.length === 0) {
             var locationString = location === 'any' ? 'any location' : location;
@@ -58,8 +62,8 @@ class PlayerInteractionWrapper {
     }
 
     drawCardsToHand(num) {
-        for (let i = 0; i < num; i++) {
-            if (this.player.drawDeck.size > 0) {
+        for(let i = 0; i < num; i++) {
+            if(this.player.drawDeck.size > 0) {
                 this.dragCard(this.player.drawDeck[0], 'hand');
             }  
         }
@@ -179,11 +183,10 @@ class PlayerInteractionWrapper {
             this.clickCard(card);
         }
     }
-
     
     startPosse() {
         this.player.hand.forEach(card => {
-            this.dragCard(card, 'play area', this.outfit.uuid)
+            this.dragCard(card, 'play area', this.outfit.uuid);
         });
 
         this.player.posse = true;
@@ -195,7 +198,7 @@ class PlayerInteractionWrapper {
     }
 
     dragCard(card, targetLocation, gameLocation) {
-        this.game.drop(this.player.name, card.uuid, card.location, targetLocation, gameLocation);
+        this.game.drop(this.player.name, card.uuid, targetLocation, gameLocation);
         this.game.continue();
         this.checkUnserializableGameState();
     }
@@ -216,15 +219,15 @@ class PlayerInteractionWrapper {
     }
 
     prepareHand(cards) {
-        while (!this.hasPromptButton('Draw 5 Cards')) {
+        while(!this.hasPromptButton('Draw 5 Cards')) {
             this.clickPrompt(' - Cards');
         }
         this.clickPrompt('Draw 5 Cards');
-        if (cards && cards.length === 5) {
+        if(cards && cards.length === 5) {
             this.discardDrawHand();
             cards.forEach(card => this.dragCard(card, 'draw hand'));
         }
-        if (this.hasPromptButton('Done')) {
+        if(this.hasPromptButton('Done')) {
             this.clickPrompt('Done');
         }
     }

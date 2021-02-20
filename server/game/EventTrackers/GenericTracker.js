@@ -24,7 +24,7 @@ class GenericTracker {
     }
 
     trackEvent(event) {
-        if (this.eventCondition(event)) {
+        if(this.eventCondition(event)) {
             this.events.push(event);
         }
     }

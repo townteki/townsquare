@@ -19,7 +19,7 @@ class AttachmentPrompt extends UiPrompt {
                 (this.targetLocation === '' || this.targetLocation === card.gamelocation),
             onSelect: (player, card) => {
                 player.attach(this.attachmentCard, card, this.playingType);
-                if (this.playingType === 'shoppin') {
+                if(this.playingType === 'shoppin') {
                     this.game.addMessage('{0} does Shoppin\' to attach {1} to {2}, costing {3} GR', this.player, this.attachmentCard, card, this.context.costs.ghostrock);
                 } else {
                     this.game.addMessage('{0} brings into play {1} attaching it to {2}', this.player, this.attachmentCard, card);
@@ -27,12 +27,11 @@ class AttachmentPrompt extends UiPrompt {
                 this.onAttachCompleted(this.attachmentCard, this.params);
                 return true;
             },
-            onCancel: (player,card) => {
+            onCancel: () => {
                 // TODO M2 implement unpaying of costs in case this is cancelled
             }
         });
     }
-
 }
 
 module.exports = AttachmentPrompt;

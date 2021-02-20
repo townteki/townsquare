@@ -8,18 +8,18 @@ const {matchCardByNameAndPack} = require('./cardutil.js');
 const PathToSubModulePacks = path.join(__dirname, '../../townsquare-json-data/packs');
 
 const DefaultDeck = [
-        'Jackson\'s Strike', 'Jackson\'s Strike', 
-        'Hustings', 'Hustings',
-        'Blake Ranch', 'Blake Ranch',
-        'Bunkhouse', 'Bunkhouse',
-        'Mustang', 'Mustang',
-        'Roan','Roan',
-        'Shotgun', 'Shotgun',
-        'Buffalo Rifle', 'Buffalo Rifle',
-        'Bad Company', 'Bad Company',
-        'Pistol Whip', 'Pistol Whip',
-        'Ambush', 'Ambush'
-    ];
+    'Jackson\'s Strike', 'Jackson\'s Strike', 
+    'Hustings', 'Hustings',
+    'Blake Ranch', 'Blake Ranch',
+    'Bunkhouse', 'Bunkhouse',
+    'Mustang', 'Mustang',
+    'Roan', 'Roan',
+    'Shotgun', 'Shotgun',
+    'Buffalo Rifle', 'Buffalo Rifle',
+    'Bad Company', 'Bad Company',
+    'Pistol Whip', 'Pistol Whip',
+    'Ambush', 'Ambush'
+];
 
 class DeckBuilder {
     constructor() {
@@ -35,7 +35,7 @@ class DeckBuilder {
         let allcards = require(path.join(directory, jsonCards));
 
         for(let card of allcards) {
-            if (card.pack_code !== 'alt') {
+            if(card.pack_code !== 'alt') {
                 cards[card.code] = card;
             }
         }
@@ -44,14 +44,14 @@ class DeckBuilder {
     }
 
     buildDeck(outfitTitle, cardLabels, startingTitles, addDefaultDeck = true) {
-        if (addDefaultDeck) {
+        if(addDefaultDeck) {
             cardLabels = cardLabels.concat(DefaultDeck);
         }
         let allCards = this.createCardCounts(cardLabels);
         let outfit = this.getCard(outfitTitle);
         let starting = 0;
         allCards.forEach(cardCount => {
-            if (startingTitles.includes(cardCount.card.title)) {
+            if(startingTitles.includes(cardCount.card.title)) {
                 cardCount.card.starting = true;
                 starting++;
             }

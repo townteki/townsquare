@@ -22,13 +22,13 @@ class Shootout extends Phase {
         this.leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
         this.leaderPlayerName = this.leader.controller.name;
         this.leaderPosse = new ShootoutPosse(this, this.leaderPlayer, true);
-        if (!this.isJob()) {
+        if(!this.isJob()) {
             this.mark.shootoutStatus = ShootoutStatuses.MarkPosse;
             this.opposingPlayerName = this.mark.controller.name;
             this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
         }
 
-        this.jobSuccessful = false;
+        this.jobSuccessful = null;
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
@@ -46,7 +46,7 @@ class Shootout extends Phase {
     }
 
     initialiseOpposingPosse() {
-        if (!this.isJob()) {
+        if(!this.isJob()) {
             this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));
         } else {
             let opponent = this.leaderPlayer.getOpponent();
@@ -66,14 +66,14 @@ class Shootout extends Phase {
     }
 
     get leaderPlayer() {
-        if (!this.game || !this.leaderPlayerName) {
+        if(!this.game || !this.leaderPlayerName) {
             return null;
         }
         return this.game.getPlayerByName(this.leaderPlayerName);
     }
 
     get opposingPlayer() {
-        if (!this.game || !this.opposingPlayerName) {
+        if(!this.game || !this.opposingPlayerName) {
             return null;
         }
         return this.game.getPlayerByName(this.opposingPlayerName);
@@ -97,7 +97,7 @@ class Shootout extends Phase {
     }
 
     beginShootoutRound() {
-        if (this.checkEndCondition()) {
+        if(this.checkEndCondition()) {
             return;
         }
         this.game.raiseEvent('onShootoutSlinginLeadStarted');
@@ -114,8 +114,8 @@ class Shootout extends Phase {
 
         this.game.raiseEvent('onBeginShootoutRound');
         this.queueStep(new SimpleStep(this.game, () => {
-            if (!this.checkEndCondition()) {
-                if (this.remainingSteps.length !== 0) {
+            if(!this.checkEndCondition()) {
+                if(this.remainingSteps.length !== 0) {
                     let step = this.remainingSteps.shift();
                     this.queueStep(step);
                     return false;
@@ -146,12 +146,8 @@ class Shootout extends Phase {
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.game.endShootout(isCancel);
-        if (this.isJob()) {
-            if (this.jobSuccessful) {
-                this.options.jobAbility.setResult(true, this);
-            } else {
-                this.options.jobAbility.setResult(false, this);
-            }
+        if(this.isJob()) {
+            this.options.jobAbility.setResult(this.jobSuccessful, this);
         }
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
         this.game.addAlert('phasestart', phaseName + ' ended!');        
@@ -162,10 +158,10 @@ class Shootout extends Phase {
     }
 
     getPosseByPlayer(player) {
-        if (player === this.leaderPlayer) {
+        if(player === this.leaderPlayer) {
             return this.leaderPosse;
         }
-        if (player === this.opposingPlayer) {
+        if(player === this.opposingPlayer) {
             return this.opposingPosse;
         }
     }
@@ -216,25 +212,28 @@ class Shootout extends Phase {
     }
 
     addToPosse(dude) {
-        if (this.belongsToLeaderPlayer(dude)) {
+        if(this.belongsToLeaderPlayer(dude)) {
             this.leaderPosse.addToPosse(dude);
-        } else if (this.belongsToOpposingPlayer(dude)) {
+        } else if(this.belongsToOpposingPlayer(dude)) {
             this.opposingPosse.addToPosse(dude);
         }
     }
 
     removeFromPosse(dude) {
         this.game.raiseEvent('onDudeLeftPosse', { card: dude, shootout: this }, event => {
-            if (event.shootout.belongsToLeaderPlayer(event.card) && event.shootout.leaderPosse) {
+            if(event.shootout.belongsToLeaderPlayer(event.card) && event.shootout.leaderPosse) {
                 event.shootout.leaderPosse.removeFromPosse(event.card);
-            } else if (event.shootout.belongsToOpposingPlayer(event.card) && event.shootout.opposingPosse) {
+            } else if(event.shootout.belongsToOpposingPlayer(event.card) && event.shootout.opposingPosse) {
                 event.shootout.opposingPosse.removeFromPosse(event.card);
-            }   
+            }
+            if(this.jobSuccessful === null) {
+                this.recordJobStatus();
+            }
         });
     }
 
     gatherPosses() {
-        if (!this.checkEndCondition()) {
+        if(!this.checkEndCondition()) {
             this.actOnAllParticipants(dude => dude.moveToShootoutLocation());
         }
     }
@@ -248,31 +247,31 @@ class Shootout extends Phase {
     }
 
     pickShooter(dude) {
-        if (this.isInLeaderPosse(dude)) {
+        if(this.isInLeaderPosse(dude)) {
             this.leaderPosse.pickShooter(dude);
             return;
         }
-        if (this.isInOpposingPosse(dude)) {
+        if(this.isInOpposingPosse(dude)) {
             this.opposingPosse.pickShooter(dude);
         }
     }
 
     actOnLeaderPosse(action, exception) {
-        if (this.leaderPosse) {
+        if(this.leaderPosse) {
             this.leaderPosse.actOnPosse(action, exception);
         }
     }
 
     actOnOpposingPosse(action, exception) {
-        if (this.opposingPosse) {
+        if(this.opposingPosse) {
             this.opposingPosse.actOnPosse(action, exception);
         }
     }
 
     actOnPlayerPosse(player, action, exception) {
-        if (this.leaderPlayer === player) {
+        if(this.leaderPlayer === player) {
             this.actOnLeaderPosse(action, exception);
-        } else if (this.opposingPlayer === player) {
+        } else if(this.opposingPlayer === player) {
             this.actOnOpposingPosse(action, exception);
         }
     }
@@ -283,12 +282,12 @@ class Shootout extends Phase {
     }
 
     breakinAndEnterin() {
-        if (this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
+        if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
             return;
         }
         let locationCard = this.shootoutLocation.getLocationCard(this.game);
-        if (locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
-            if (locationCard.owner !== this.leaderPlayer) {
+        if(locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
+            if(locationCard.owner !== this.leaderPlayer) {
                 this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
             } else {
                 this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
@@ -297,7 +296,7 @@ class Shootout extends Phase {
     }
 
     draw() {
-        this.queueStep(new DrawHandPrompt(this.game, [ this.getLeaderDrawCount(), this.getOpposingDrawCount() ]));
+        this.queueStep(new DrawHandPrompt(this.game, [this.getLeaderDrawCount(), this.getOpposingDrawCount()]));
     }
 
     resolutionPlays() {
@@ -310,12 +309,12 @@ class Shootout extends Phase {
         let leaderRank = this.leaderPlayer.getTotalRank();
         this.winner = this.opposingPlayer;
         this.loser = this.leaderPlayer;
-        if (leaderRank === opposingRank) {
+        if(leaderRank === opposingRank) {
             let tiebreakResult = this.game.resolveTiebreaker(this.leaderPlayer, this.opposingPlayer);
             this.leaderPlayer.casualties = this.opposingPlayer.casualties = 1;
-            if (tiebreakResult.decision === 'exact tie') {
+            if(tiebreakResult.decision === 'exact tie') {
                 this.game.addMessage('Shootout ended in an exact tie, there is no winner or loser.');
-                this.shootoutLoseWinOrder = [ this.leaderPlayer.name, this.opposingPlayer.name ];
+                this.shootoutLoseWinOrder = [this.leaderPlayer.name, this.opposingPlayer.name];
                 this.winner = null;
                 this.loser = null;
                 return;
@@ -324,14 +323,14 @@ class Shootout extends Phase {
             this.loser = tiebreakResult.loser;
             this.game.addMessage('Shootout ended in a tie, but {0} wins on {1}.', this.winner, tiebreakResult.decision);
         } else {
-            if (leaderRank > opposingRank) {
+            if(leaderRank > opposingRank) {
                 this.winner = this.leaderPlayer;
                 this.loser = this.opposingPlayer;
             }
             this.loser.casualties = Math.abs(leaderRank - opposingRank);
             this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', this.winner, Math.abs(leaderRank - opposingRank));
         }
-        this.shootoutLoseWinOrder = [ this.loser.name, this.winner.name ];
+        this.shootoutLoseWinOrder = [this.loser.name, this.winner.name];
     }
 
     casualtiesAndRunOrGun() {
@@ -341,29 +340,27 @@ class Shootout extends Phase {
 
     chamberAnotherRound() {
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));
-        if (!this.checkEndCondition()) {
+        if(!this.checkEndCondition()) {
             this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
         } else {
-            if (this.isJob()) {
+            if(this.isJob()) {
                 this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false })); 
             }
         }
     }
 
     recordJobStatus() {
-        if (!this.isJob()) {
+        if(!this.isJob()) {
             return;
         }
-        if (!this.opposingPosse || this.opposingPosse.isEmpty()) {
+        if(!this.opposingPosse || this.opposingPosse.isEmpty()) {
             this.jobSuccessful = true;
         }
-        if (!this.leaderPosse || this.leaderPosse.isEmpty()) {
+        if(!this.leaderPosse || this.leaderPosse.isEmpty()) {
             this.jobSuccessful = false;
         }
-        
     }
-
 }
 
 module.exports = Shootout;

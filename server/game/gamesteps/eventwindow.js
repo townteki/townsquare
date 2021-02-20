@@ -12,7 +12,6 @@ class EventWindow extends BaseStep {
         this.pipeline.initialise([
             new InterruptWindow(game, event, postHandlerFunc),
             new SimpleStep(game, () => this.emitBaseEvent()),
-            new SimpleStep(game, () => this.openWhenRevealedWindow()),
             new SimpleStep(game, () => this.openAbilityWindow('traitreaction')),
             new SimpleStep(game, () => this.openAbilityWindow('reaction')),
             new SimpleStep(game, () => this.postHandlerFunc())
@@ -63,15 +62,6 @@ class EventWindow extends BaseStep {
         this.event.emitTo(this.game);
     }
 
-    openWhenRevealedWindow() {
-        if(this.event.cancelled) {
-            return;
-        }
-
-        if(this.event.getConcurrentEvents().some(event => event.name === 'onPlotRevealed')) {
-            this.openAbilityWindow('whenrevealed');
-        }
-    }
 }
 
 module.exports = EventWindow;

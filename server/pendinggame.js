@@ -49,8 +49,8 @@ class PendingGame {
     getSaveState() {
         var players = _.map(this.getPlayers(), player => {
             return {
-                legend: player.legend ? player.legend.cardData.name : undefined,
-                outfit: player.outfit.cardData.name,
+                legend: player.legend ? player.legend.cardData.title : undefined,
+                outfit: player.outfit.cardData.title,
                 name: player.name
             };
         });

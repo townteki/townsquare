@@ -6,7 +6,7 @@ const ShootoutStatuses = {
     MarkPosse: 'mark posse',
     LeaderShooter: 'leader shooter',
     MarkShooter: 'mark shooter' 
-   };
+};
 
-   module.exports = ShootoutStatuses;
+module.exports = ShootoutStatuses;
    

@@ -22,16 +22,16 @@ class LeMatRevolver extends GoodsCard {
             condition: () => this.parent.isStud(),
             handler: () => {
                 // if player does not have two pair, he cannot satisfy the condition of three pairs
-                if (this.controller.getHandRank().rank !== 3) {
+                if(this.controller.getHandRank().rank !== 3) {
                     this.game.addMessage('{0} uses {1} but does not have three pairs combining with the first card of discard pile.', 
                         this.controller, this);
                     return;    
                 }
                 let discardedCardValue = this.controller.discardPile[0].value;
                 let valueFound = false;
-                for (let drawHandCard of this.controller.drawHand) {
-                    if (drawHandCard.value === discardedCardValue) {
-                        if (!valueFound) {
+                for(let drawHandCard of this.controller.drawHand) {
+                    if(drawHandCard.value === discardedCardValue) {
+                        if(!valueFound) {
                             valueFound = true;
                         } else {
                             this.game.addMessage('{0} uses {1} but does not have three pairs combining with the first card of discard pile.', 

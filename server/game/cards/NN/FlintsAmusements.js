@@ -18,7 +18,7 @@ class FlintsAmusements extends DeedCard {
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             handler: context => {
-                if (this.tracker.eventHappened()) {
+                if(this.tracker.eventHappened()) {
                     context.player.drawCardsToHand();
                     this.game.addMessage('{0} uses {1} to draw a card because he played Cheatin\' Resolution this day.', context.player, this);
                 } else {

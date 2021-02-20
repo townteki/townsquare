@@ -32,8 +32,8 @@ class BaseCardSelector {
             this.cardType = [properties.cardType];
         }
 
-        if (this.cardType.length === 1 && this.cardType[0] === 'location') {
-            this.cardCondition = CardMatcher.createMatcher( { 
+        if(this.cardType.length === 1 && this.cardType[0] === 'location') {
+            this.cardCondition = CardMatcher.createMatcher({ 
                 location: 'play area', 
                 controller: properties.cardCondition.controller || 'any'
             });
@@ -41,7 +41,7 @@ class BaseCardSelector {
             this.cardCondition = CardMatcher.createMatcher(properties.cardCondition);
         }
 
-        if (this.cardType.includes('location')) {
+        if(this.cardType.includes('location')) {
             this.cardType = this.cardType.concat(['deed', 'outfit']);
         }
     }

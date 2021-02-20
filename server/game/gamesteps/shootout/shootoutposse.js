@@ -1,4 +1,4 @@
-const ShootoutStatuses = require("../../Constants/ShootoutStatuses");
+const ShootoutStatuses = require('../../Constants/ShootoutStatuses');
 
 class ShootoutPosse {
     constructor(shootout, player, isLeading) {
@@ -12,10 +12,10 @@ class ShootoutPosse {
     }
 
     isInPosse(card) {
-        if (card.getType() === 'dude') {
+        if(card.getType() === 'dude') {
             return this.posse.includes(card.uuid);
         }
-        if (card.getType() === 'goods' || card.getType() === 'spell') {
+        if(card.getType() === 'goods' || card.getType() === 'spell') {
             return this.posse.some(dudeUuid => {
                 let dude = this.player.findCardInPlayByUuid(dudeUuid);
                 return dude.hasAttachment(attachment => attachment.uuid === card.uuid);
@@ -30,7 +30,7 @@ class ShootoutPosse {
 
     addToPosse(dude) {
         this.posse.push(dude.uuid);
-        if (this.isLeading) {
+        if(this.isLeading) {
             dude.shootoutStatus = ShootoutStatuses.LeaderPosse;
         } else {
             dude.shootoutStatus = ShootoutStatuses.MarkPosse;
@@ -44,14 +44,14 @@ class ShootoutPosse {
 
     getStudBonus(onlyShooter = false) {
         let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
-        if (onlyShooter) {
+        if(onlyShooter) {
             return shooter.isStud() ? shooter.bullets : 0;
         }
 
         let bonus = this.studBonus;
         this.posse.forEach(dudeUuid => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            if (dude.isStud()) {
+            if(dude.isStud()) {
                 bonus += dude === shooter ? dude.bullets : 1;
             }   
         });
@@ -61,14 +61,14 @@ class ShootoutPosse {
 
     getDrawBonus(onlyShooter = false) {
         let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
-        if (onlyShooter) {
+        if(onlyShooter) {
             return shooter.isDraw() ? shooter.bullets : 0;
         }
 
         let bonus = this.drawBonus;
         this.posse.forEach(dudeUuid => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            if (dude.isDraw()) {
+            if(dude.isDraw()) {
                 bonus += dude === shooter ? dude.bullets : 1;
             }   
         });
@@ -78,7 +78,7 @@ class ShootoutPosse {
 
     pickShooter(shooter) {
         this.shooterUuid = shooter.uuid;
-        if (this.isLeading) {
+        if(this.isLeading) {
             shooter.shootoutStatus = ShootoutStatuses.LeaderShooter;
         } else {
             shooter.shootoutStatus = ShootoutStatuses.MarkShooter;

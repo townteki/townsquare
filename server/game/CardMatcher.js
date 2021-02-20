@@ -4,7 +4,6 @@ class CardMatcher {
     static isMatch(card, properties) {
         return (
             Matcher.containsValue(properties.type, card.getType()) &&
-            Matcher.anyValue(properties.faction, faction => card.isFaction(faction)) &&
             Matcher.containsValue(properties.booted, card.booted) &&
             Matcher.containsValue(properties.location, card.location) &&
             Matcher.containsValue(properties.name, card.name) &&
