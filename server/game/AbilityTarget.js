@@ -24,7 +24,7 @@ class AbilityTarget {
         this.selector = CardSelector.for(properties);
         this.messages = properties.messages;
         this.ifAble = !!properties.ifAble;
-        this.autoSelect = properties.autoSelect || properties.autoSelect === false ? properties.autoSelect : true;
+        this.autoSelect = properties.autoSelect || properties.autoSelect === false ? properties.autoSelect : false;
         this.activePromptTitle = properties.activePromptTitle;
         this.cardType = properties.cardType || [];
     }

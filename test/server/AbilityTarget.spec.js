@@ -32,7 +32,7 @@ describe('AbilityTarget', function () {
             onCancel: jasmine.any(Function),
             selector: jasmine.any(Object),
             context: this.context, 
-            autoSelect: undefined,
+            autoSelect: false,
             additionalButtons: [],
             onMenuCommand: jasmine.any(Function)
         };
