@@ -31,12 +31,18 @@ git submodule init
 git submodule update
 npm install
 mkdir server/logs
-node server/scripts/fetchdata.js
-node server/scripts/importstandalonedecks.js
-node server/scripts/fetchclient.js
 NODE_ENV=production PORT=4000 node .
 node server/gamenode
 ```
+
+Since there is no client to fetch, you will have to checkout the [Client Repository](https://github.com/townsquare/townsquare-client) and run.
+To import data and images, go to [townsquare Gdrive](https://drive.google.com/drive/folders/19m9CmWzd-zfUz7ujv8LXX96TmROKjjzM?usp=sharing) and download all json files plus cards.zip
+
+Use json files to import data to the MongoDB:
+ - create `townsquare` DB
+ - create collections `cards`, `packs` and `decks` under the townsquare DB
+ - import data to the three collections from their respective jsons (townsquare.cards.json goes to the cards collection and so on)
+Unzip the cards.zip image archive into the townsquare-client you checked out. It should go to the `assets\img` folder, so the path containing images should look like `townsquare-client\assets\img\cards` after unpacking.
 
 There are two exectuable components and you'll need to configure/run both to run a local server.  First is the lobby server and then there are game nodes.
 
@@ -55,8 +61,6 @@ Then for each game node (typically one per CPU/core):
 ```
 PORT={port} SERVER={node-name} node server/gamenode
 ```
-
-If you wish to make any changes to the client code, you will need to checkout the [Client Repository](https://github.com/townsquare/townsquare-client)
 
 ### Coding Guidelines
 
