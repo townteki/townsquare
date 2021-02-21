@@ -45,7 +45,7 @@ class DeckSearchPrompt extends BaseStep {
         return {
             additionalLocations: [],
             cardCondition: () => true,
-            cardType: ['attachment', 'character', 'event', 'location'],
+            cardType: ['goods', 'spell', 'dude', 'action', 'deed'],
             onSelect: () => true,
             onCancel: () => true
         };

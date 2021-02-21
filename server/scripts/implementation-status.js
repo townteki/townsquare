@@ -21,5 +21,5 @@ const implementedCards = require('../game/cards');
 
 for(let card of packData.cards) {
     let checkedState = implementedCards[card.code] ? 'x' : ' ';
-    console.log(`* [${checkedState}] ${card.code} - [${card.name}](https://thronesdb.com/card/${card.code})`);
+    console.log(`* [${checkedState}] ${card.code} - [${card.title}](https://thronesdb.com/card/${card.code})`);
 }

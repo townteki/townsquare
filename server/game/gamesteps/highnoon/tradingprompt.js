@@ -4,10 +4,10 @@ class TradingPrompt extends UiPrompt {
     constructor(game, player, attachments) {
         super(game);
         this.player = player;
-        if (Array.isArray(attachments)) {
+        if(Array.isArray(attachments)) {
             this.attachments = attachments;
         } else {
-            this.attachments = [ attachments ];
+            this.attachments = [attachments];
         }
         this.fromDudeCard = this.attachments[0].parent;
     }
@@ -15,16 +15,16 @@ class TradingPrompt extends UiPrompt {
     continue() {
         this.game.promptForSelect(this.player, {
             activePromptTitle: 'Select dude for trading',
-            cardCondition: card => card.gamelocation == this.fromDudeCard.gamelocation && card != this.fromDudeCard,
+            cardCondition: card => card.gamelocation === this.fromDudeCard.gamelocation && card !== this.fromDudeCard,
             onSelect: (player, toDudeCard) => {
                 let targetPlayer = toDudeCard.controller;
-                if (toDudeCard.hasAttachmentForTrading()) {
+                if(toDudeCard.hasAttachmentForTrading()) {
                     this.game.promptForSelect(targetPlayer, {
                         activePromptTitle: 'Select attachment(s) for swapping',
                         multiSelect: true,
                         numCards: 0,
                         cardCondition: swapCard => swapCard.getType() === 'goods' && 
-                            swapCard.parent == toDudeCard &&
+                            swapCard.parent === toDudeCard &&
                             !swapCard.wasTraded(),
                         onSelect: (tradingPlayer, swapCards) => {
                             swapCards.forEach(swapCard => toDudeCard.removeAttachment(swapCard));
@@ -40,17 +40,15 @@ class TradingPrompt extends UiPrompt {
             }
         });
         return true;
-
     }
 
     attachAttachments(attachments, fromDude, toDude, actionWord) {
         attachments.forEach(fromAttachment => {
-            if (this.player.attach(fromAttachment, toDude, 'trading')) {
+            if(this.player.attach(fromAttachment, toDude, 'trading')) {
                 this.game.addMessage('{0} {1} {2} from {3} to {4}', this.player, actionWord, fromAttachment, fromDude, toDude);
             }
         });
     }
-
 }
 
 module.exports = TradingPrompt;

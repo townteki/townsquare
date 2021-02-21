@@ -23,7 +23,7 @@ class LawDogs extends OutfitCard {
                     numCards: 0,
                     onSelect: (player, cards) => {
                         let totalInf = cards.reduce(((memo, card) => memo += card.influence), 0);
-                        if (totalInf <= context.target.influence) {
+                        if(totalInf <= context.target.influence) {
                             return false;
                         }
                         let action = GameActions.simultaneously(

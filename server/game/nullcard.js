@@ -1,5 +1,4 @@
 class NullCard {
-
     hasKeyword() {
         return false;
     }

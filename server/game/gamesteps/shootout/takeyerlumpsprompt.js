@@ -1,5 +1,3 @@
-const { times } = require('underscore');
-const GameActions = require('../../GameActions/index.js');
 const PlayerOrderPrompt = require('../playerorderprompt.js');
 
 /* TODO M2
@@ -14,10 +12,10 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     } 
 
     continue() {
-        if (this.isComplete()) {
+        if(this.isComplete()) {
             return true;
         }
-        if (this.currentPlayer.casualties == 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        if(this.currentPlayer.casualties === 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
             this.completePlayer();
             return this.continue();
         }
@@ -48,19 +46,19 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 card.coversCasualties() > 0,
             onSelect: (player, card) => {
                 let numCoveredCasualties = 0;
-                if (arg === 'ace') {
+                if(arg === 'ace') {
                     numCoveredCasualties = card.coversCasualties('ace');
-                    if (numCoveredCasualties > 0) {
+                    if(numCoveredCasualties > 0) {
                         player.aceCard(card, true, { isCasualty: true });    
                     }         
-                } else if (arg === 'discard') {
+                } else if(arg === 'discard') {
                     numCoveredCasualties = card.coversCasualties('discard');
-                    if (numCoveredCasualties > 0) {
+                    if(numCoveredCasualties > 0) {
                         player.discardCard(card, true, { isCasualty: true });
                     }
                 }
 
-                if (numCoveredCasualties > 0) {
+                if(numCoveredCasualties > 0) {
                     player.coverCasualties(numCoveredCasualties);
                     this.game.addMessage('{0} {1} {2} to cover {3} casualties ({4} remaining).', 
                         player, arg, card, numCoveredCasualties, player.casualties); 
@@ -82,7 +80,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 card.coversCasualties('send') > 0,
             onSelect: (player, card) => {
                 let numCoveredCasualties = card.coversCasualties('send');
-                if (numCoveredCasualties > 0) {
+                if(numCoveredCasualties > 0) {
                     this.shootout.sendHome(card, { isCardEffect: false });
                     player.coverCasualties(numCoveredCasualties);    
                     this.game.addMessage('{0} sends {1} home to cover {2} casualties ({3} remaining).', 
@@ -96,13 +94,12 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     }
 
     done() {
-        if (this.currentPlayer.casualties > 0) {
-            this.game.addAlert('danger', '{0} ends \`Take Yer Lumps\` step with {1} casualties remaining!', this.currentPlayer, this.currentPlayer.casualties);
+        if(this.currentPlayer.casualties > 0) {
+            this.game.addAlert('danger', '{0} ends `Take Yer Lumps` step with {1} casualties remaining!', this.currentPlayer, this.currentPlayer.casualties);
         }
         this.completePlayer();
         return true;
     }
-
 }
 
 module.exports = TakeYerLumpsPrompt;

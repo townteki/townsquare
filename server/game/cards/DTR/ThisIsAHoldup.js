@@ -9,12 +9,12 @@ class ThisIsAHoldup extends ActionCard {
             cost: ability.costs.boot(card =>
                 card.getType() === 'dude' &&
                 card.locationCard.owner !== card.controller 
-                ),
+            ),
             handler: context => {
                 let robbedLocation = context.costs.boot.locationCard;
                 let robbedPlayer = context.player.getOpponent();
                 let robbedAmount = robbedLocation.production;
-                if (robbedAmount > robbedPlayer.ghostrock) {
+                if(robbedAmount > robbedPlayer.ghostrock) {
                     robbedAmount = robbedPlayer.ghostrock;
                 }
                 context.player.modifyGhostRock(robbedAmount);

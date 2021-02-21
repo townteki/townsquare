@@ -14,7 +14,7 @@ class TheSloaneGang extends OutfitCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }));
-                if (!this.dudesOnAMission) {
+                if(!this.dudesOnAMission) {
                     this.dudesOnAMission = [context.target];
                     this.game.once('onSundownAfterVictoryCheck', () => {
                         this.dudesOnAMission.forEach(dude => this.checkMission(context.player, dude));
@@ -30,11 +30,11 @@ class TheSloaneGang extends OutfitCard {
     }
 
     checkMission(player, dude) {
-        if (dude.location !== 'play area') {
+        if(dude.location !== 'play area') {
             return;
         }
-        if (dude.getGameLocation().isTownSquare()) {
-            if (dude.control <= 0) {
+        if(dude.getGameLocation().isTownSquare()) {
+            if(dude.control <= 0) {
                 this.game.promptWithMenu(player, this, {
                     activePrompt: {
                         menuTitle: 'Choose one for ' + dude.title,

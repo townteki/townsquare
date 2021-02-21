@@ -23,7 +23,6 @@ xdescribe('take control of card other than deed', function() {
                 it('should put into owners boot hill', function() {
 
                 });
-
             });
         });
 

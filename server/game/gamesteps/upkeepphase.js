@@ -19,7 +19,6 @@ class UpkeepPhase extends Phase {
             this.game.addMessage('{0} has received production of {1} GR', player, production);
         });
     }
-
 }
 
 module.exports = UpkeepPhase;

@@ -6,7 +6,7 @@ class DrawHandPrompt extends UiPrompt {
         this.game = game;
         this.players = game.getPlayers();
         this.drawCounts = drawCounts;
-        if (this.drawCounts == null) {
+        if(!this.drawCounts) {
             this.drawCounts = this.players.map(player => {
                 return { player: player, number: 5, handDrawn: false, handRedrawn: false };
             });            
@@ -24,7 +24,7 @@ class DrawHandPrompt extends UiPrompt {
     }
 
     activePrompt(player) {
-        if (!this.getDrawCount(player).handDrawn) {
+        if(!this.getDrawCount(player).handDrawn) {
             let drawCount = this.getDrawCount(player);
             return {
                 menuTitle: 'Draw shootout hand',
@@ -34,7 +34,7 @@ class DrawHandPrompt extends UiPrompt {
                     { text: ' - Cards', arg: 'lessCards' }
                 ]
             };
-        } else if (!this.getDrawCount(player).handRedrawn) {
+        } else if(!this.getDrawCount(player).handRedrawn) {
             return {
                 menuTitle: 'Select up to ' + this.getDrawCount(player).redraw + ' cards to redraw',
                 buttons: [
@@ -42,14 +42,13 @@ class DrawHandPrompt extends UiPrompt {
                 ],
                 selectCard: true
             };
-        } else {
-            return {
-                menuTitle: 'Reveal draw hand?',
-                buttons: [
-                    { arg: 'revealdraw', text: 'Ready' }
-                ]
-            };
-        }
+        } 
+        return {
+            menuTitle: 'Reveal draw hand?',
+            buttons: [
+                { arg: 'revealdraw', text: 'Ready' }
+            ]
+        };
     }
 
     waitingPrompt() {
@@ -61,7 +60,7 @@ class DrawHandPrompt extends UiPrompt {
     }
 
     continue() {
-        if (this.game.currentPhase === 'gambling') {
+        if(this.game.currentPhase === 'gambling') {
             // in gambling phase hands are drawn in separate step before this prompt
             this.drawCounts.forEach(drawCount => {
                 drawCount.handDrawn = true;
@@ -93,7 +92,6 @@ class DrawHandPrompt extends UiPrompt {
             this.selectedCards = this.selectedCards.filter(selectedCard => selectedCard !== card);
         }
         player.setSelectedCards(this.selectedCards);
-
     }
 
     highlightSelectableCards(player) {
@@ -102,26 +100,26 @@ class DrawHandPrompt extends UiPrompt {
     }
 
     onMenuCommand(player, arg) {
-        if (arg === 'draw') {
+        if(arg === 'draw') {
             let drawCount = this.getDrawCount(player);
             player.drawCardsToHand(drawCount.number, 'draw hand');
             this.getDrawCount(player).handDrawn = true;
-            if (this.getDrawCount(player).redraw === 0) {
+            if(this.getDrawCount(player).redraw === 0) {
                 this.getDrawCount(player).handRedrawn = true;
             } else {
                 this.highlightSelectableCards(player);
             }
             return false;
         }
-        if (arg === 'moreCards') {
+        if(arg === 'moreCards') {
             this.updateDrawCount(player, 1);
             return false;
         }
-        if (arg === 'lessCards') {
+        if(arg === 'lessCards') {
             this.updateDrawCount(player, -1);
             return false;
         }
-        if (arg === 'redraw') {
+        if(arg === 'redraw') {
             let numberToRedraw = this.selectedCards.length;
             player.discardCards(this.selectedCards);
             player.drawCardsToHand(numberToRedraw, 'draw hand');
@@ -131,8 +129,8 @@ class DrawHandPrompt extends UiPrompt {
             player.clearSelectableCards();
             return false;
         }
-        if (arg === 'revealdraw') {
-            if (player.drawHand.length !== 5) {
+        if(arg === 'revealdraw') {
+            if(player.drawHand.length !== 5) {
                 player.drawHandSelected = false;
                 return false;
             }
@@ -142,7 +140,6 @@ class DrawHandPrompt extends UiPrompt {
         }
         return false;
     }
-
 }
 
 module.exports = DrawHandPrompt;

@@ -7,7 +7,7 @@ class DeedCard extends LocationCard {
     }
 
     get controller() {
-        if (this.location === 'play area' && this.gameLocationObject) {
+        if(this.location === 'play area' && this.gameLocationObject) {
             this.controller = this.gameLocationObject.determineController(this.game);
         }
         return this.controllingPlayer;
@@ -26,18 +26,17 @@ class DeedCard extends LocationCard {
     }
 
     isSameStreet(card) {
-        if (this.isOutOfTown()) {
+        if(this.isOutOfTown()) {
             return false;
         }
-        if (card.getType() === 'deed' && card.isOutOfTown()) {
+        if(card.getType() === 'deed' && card.isOutOfTown()) {
             return false;
         }
-        if (card.getType() === 'outfit' && card.owner === this.owner) {
+        if(card.getType() === 'outfit' && card.owner === this.owner) {
             return true;
         }
         return this.owner.locations.some(location => location.uuid === card.uuid);
     }
-
 }
 
 module.exports = DeedCard;

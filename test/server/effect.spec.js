@@ -40,8 +40,8 @@ describe('Effect', function() {
         this.effect = new Effect(this.gameSpy, this.sourceSpy, this.properties);
     });
 
-    it('defaults to targeting both play area and active plot', function() {
-        expect(this.effect.targetLocation).toEqual(['play area', 'active plot']);
+    it('defaults to targeting play area', function() {
+        expect(this.effect.targetLocation).toEqual(['play area']);
     });
 
     describe('addTargets()', function() {

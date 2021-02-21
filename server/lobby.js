@@ -3,7 +3,7 @@ const Socket = require('./socket.js');
 const jwt = require('jsonwebtoken');
 const _ = require('underscore');
 const moment = require('moment');
-const { validateDeck, formatDeckAsFullCards } = require('throneteki-deck-helper');
+const { validateDeck, formatDeckAsFullCards } = require('../townsquare-deck-helper');
 
 const logger = require('./log.js');
 const version = moment(require('../version.js'));
@@ -864,10 +864,10 @@ class Lobby {
     }
 
     onWorkerStarted(nodeName) {
-        Promise.all([this.cardService.getAllCards(), this.cardService.getTitleCards(), this.cardService.getAllPacks(), this.cardService.getRestrictedList()])
+        Promise.all([this.cardService.getAllCards(), this.cardService.getAllPacks(), this.cardService.getRestrictedList()])
             .then(results => {
-                let [cards, titles, packs, restrictedList] = results;
-                this.router.sendCommand(nodeName, 'CARDDATA', { titleCardData: titles, cardData: cards, packData: packs, restrictedListData: restrictedList });
+                let [cards, packs, restrictedList] = results;
+                this.router.sendCommand(nodeName, 'CARDDATA', { cardData: cards, packData: packs, restrictedListData: restrictedList });
             });
     }
 
@@ -893,8 +893,8 @@ class Lobby {
                     id: player.id,
                     name: player.name,
                     owner: game.owner === player.name,
-                    faction: { cardData: { code: player.faction } },
-                    agenda: { cardData: { code: player.agenda } },
+                    outfit: { cardData: { code: player.outfit } },
+                    legend: { cardData: { code: player.legend } },
                     user: new User(player.user)
                 };
             }

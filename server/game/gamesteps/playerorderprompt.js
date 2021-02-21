@@ -21,7 +21,7 @@ class PlayerOrderPrompt extends UiPrompt {
 
     lazyFetchPlayers() {
         if(!this.players) {
-            if (this.playerNameOrder.length === 0) {
+            if(this.playerNameOrder.length === 0) {
                 this.players = this.game.getPlayersInFirstPlayerOrder();
             } else {
                 this.players = this.playerNameOrder.map(playerName => this.game.getPlayerByName(playerName));

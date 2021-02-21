@@ -4,7 +4,7 @@ const EventToTitleFunc = {
     onPhaseEnded: event => `${event.phase} phase ending`,
     onPhaseStarted: event => `${event.phase} phase starting`,
     onDudeJoinedPosse: event => `${event.card.name} joining posse`,
-    onDrawHandsRevealed: () => `draw hands being revealed`,
+    onDrawHandsRevealed: () => 'draw hands being revealed',
     onTargetsChosen: () => 'targets being chosen'
 };
 

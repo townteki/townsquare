@@ -1,4 +1,3 @@
-const GameActions = require('../../GameActions/index.js');
 const DudeCard = require('../../dudecard.js');
 
 class JacquelineIsham extends DudeCard {

@@ -6,13 +6,13 @@ class WylieJenks extends DudeCard {
             condition: () => this.isParticipating(),
             match: this,
             effect: [
-                ability.effects.dynamicBullets(() => getWantedDudesInOpposingPosse())
+                ability.effects.dynamicBullets(() => this.getWantedDudesInOpposingPosse())
             ]
         });
     }
 
     getWantedDudesInOpposingPosse() {
-        if (!this.game.shootout || !this.game.shootout.opposingPosse) {
+        if(!this.game.shootout || !this.game.shootout.opposingPosse) {
             return 0;
         }
         let opposingWantedDudes = this.game.shootout.opposingPosse.getDudes(dude => dude.isWanted());

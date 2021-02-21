@@ -1,4 +1,3 @@
-const Costs = require('../../costs.js');
 const GoodsCard = require('../../goodscard.js');
 
 class WinchesterModel1873 extends GoodsCard {

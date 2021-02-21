@@ -25,7 +25,7 @@ class PutIntoPlay extends GameAction {
             target: params.target || '',
             playingType: params.playingType || 'play',
             context: params.context || {}
-        }
+        };
     }
 }
 

@@ -5,7 +5,7 @@ describe('attachments', function() {
                 const deck = this.buildDeck('Law Dogs', [
                     'Law Dogs',
                     'Tommy Harden', 'Jake Smiley', 'Pearl-Handled Revolver', 'Shotgun'
-                ], [ 'Tommy Harden', 'Jake Smiley' ]
+                ], ['Tommy Harden', 'Jake Smiley']
                 );
                 this.player1.selectDeck(deck);
                 this.startGame();
@@ -22,7 +22,6 @@ describe('attachments', function() {
                 this.player1.clickCard(this.tommy, 'play area');
                 this.player1.clickMenu(this.revolver, 'Shoppin\' play');
                 this.player1.clickCard(this.jake, 'play area');
-                
             });
 
             it('should apply the attachment effect', function() {
@@ -38,7 +37,7 @@ describe('attachments', function() {
                 const deck = this.buildDeck('Law Dogs', [
                     'Law Dogs',
                     'Tommy Harden', 'Jake Smiley', 'Pearl-Handled Revolver', 'Shotgun'
-                ], [ 'Tommy Harden', 'Jake Smiley' ]
+                ], ['Tommy Harden', 'Jake Smiley']
                 );
                 this.player1.selectDeck(deck);
                 this.startGame();
@@ -67,7 +66,7 @@ describe('attachments', function() {
                 const deck = this.buildDeck('Law Dogs', [
                     'Law Dogs',
                     'Tommy Harden', 'Jake Smiley', 'Shotgun'
-                ], [ 'Tommy Harden', 'Jake Smiley' ]
+                ], ['Tommy Harden', 'Jake Smiley']
                 );
                 this.player1.selectDeck(deck);
                 this.startGame();

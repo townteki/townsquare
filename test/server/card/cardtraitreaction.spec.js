@@ -4,9 +4,9 @@ const Event = require('../../../server/game/event.js');
 describe('CardForcedReaction', function () {
     beforeEach(function () {
         this.gameSpy = jasmine.createSpyObj('game', ['on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'registerAbility', 'resolveGameAction']);
-        this.gameSpy.resolveGameAction.and.callFake((action, props) => { 
-            return { thenExecute: () => true }
-         });
+        this.gameSpy.resolveGameAction.and.callFake(() => { 
+            return { thenExecute: () => true };
+        });
         this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank']);
         this.cardSpy.location = 'play area';
         this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
@@ -119,7 +119,6 @@ describe('CardForcedReaction', function () {
         });
 
         describe('test card trait reaction usage', function() {
-
             describe('when card trait reaction was used', function() {
                 beforeEach(function() {
                     this.usageSpy.isUsed.and.returnValue(true);

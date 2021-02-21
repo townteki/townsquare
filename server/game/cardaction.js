@@ -42,22 +42,22 @@ class CardAction extends BaseAbility {
         this.card = card;
         this.title = properties.title;
         this.playType = this.buildPlayType(properties);
-        if (this.isCardAbility()) {
+        if(this.isCardAbility()) {
             this.usage = new AbilityUsage(properties, this.playType);
         }
         this.anyPlayer = properties.anyPlayer || false;
         this.condition = properties.condition;
         this.clickToActivate = !!properties.clickToActivate;
-        if (properties.location) {
-            if (Array.isArray(properties.location)) {
+        if(properties.location) {
+            if(Array.isArray(properties.location)) {
                 this.location = properties.location;
             } else {
-                this.location = [ properties.location ];
+                this.location = [properties.location];
             }
         } else if(card.getType() === 'action') {
-            this.location = [ 'hand' ];
+            this.location = ['hand'];
         } else {
-            this.location = [ 'play area' ];
+            this.location = ['play area'];
         }
         this.events = new EventRegistrar(game, this);
         this.activationContexts = [];
@@ -76,7 +76,7 @@ class CardAction extends BaseAbility {
             return 'any';
         }
         let result = properties.playType;
-        if (!Array.isArray(properties.playType)) {
+        if(!Array.isArray(properties.playType)) {
             result = [properties.playType];
         }
         let errorType = result.find(type => !ActionPlayTypes.includes(type));
@@ -88,26 +88,26 @@ class CardAction extends BaseAbility {
     }
 
     playTypePlayed() {
-        if (this.playType.includes('noon') && this.game.getCurrentPlayWindowName() === 'high noon') {
+        if(this.playType.includes('noon') && this.game.getCurrentPlayWindowName() === 'high noon') {
             return 'noon';
         } 
-        if (this.playType.includes('shootout') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
+        if(this.playType.includes('shootout') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
             return 'shootout';
         } 
-        if (this.playType.includes('resolution') && this.game.getCurrentPlayWindowName() === 'shootout resolution') {
+        if(this.playType.includes('resolution') && this.game.getCurrentPlayWindowName() === 'shootout resolution') {
             return 'resolution';
         } 
-        if (this.playType.includes('cheatin resolution') && 
+        if(this.playType.includes('cheatin resolution') && 
             (this.game.getCurrentPlayWindowName() === 'shootout resolution' || this.game.getCurrentPlayWindowName() === 'gambling')) {
             return 'cheatin resolution';
         } 
     }
 
     defaultCondition() {
-        if (this.playType.includes('cheatin resolution')) {
+        if(this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
         }
-        if (this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') &&
+        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') &&
             this.card.getType() !== 'action' && this.card.getType() !== 'deed') {
             return this.game.shootout.isInShootout(this.card);
         }
@@ -141,12 +141,12 @@ class CardAction extends BaseAbility {
             if(!allowedTypes) {
                 return false;
             }
-            if (!this.playType.some(type => AllowedTypesForPhase[this.game.getCurrentPlayWindowName()].includes(type))) {
+            if(!this.playType.some(type => AllowedTypesForPhase[this.game.getCurrentPlayWindowName()].includes(type))) {
                 return false;
             }
         }
 
-        if (this.card.hasKeyword('headline') && this.game.shootout.headlineUsed) {
+        if(this.card.hasKeyword('headline') && this.game.shootout.headlineUsed) {
             return false;
         }
 

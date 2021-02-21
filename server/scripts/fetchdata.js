@@ -42,7 +42,7 @@ function createImageSource(options) {
 
 let options = commandLineArgs(optionsDefinition);
 
-let db = monk('mongodb://127.0.0.1:27017/throneteki');
+let db = monk('mongodb://127.0.0.1:27017/townsquare');
 let dataSource = createDataSource(options);
 let imageSource = createImageSource(options);
 let cardImport = new CardImport(db, dataSource, imageSource, options['image-dir']);

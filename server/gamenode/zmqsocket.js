@@ -13,7 +13,7 @@ class ZmqSocket extends EventEmitter {
         this.version = version;
         logger.info('== DEBUG address: %s | protocol: %s', listenAddress, protocol);
         this.socket = zmq.socket('dealer');
-		logger.info('== DEBUG process.env.SERVER: %s | config.nodeIdentity: %s | result: %s', process.env.SERVER, config.nodeIdentity, process.env.SERVER || config.nodeIdentity);
+        logger.info('== DEBUG process.env.SERVER: %s | config.nodeIdentity: %s | result: %s', process.env.SERVER, config.nodeIdentity, process.env.SERVER || config.nodeIdentity);
         this.socket.identity = process.env.SERVER || config.nodeIdentity;
         this.socket.monitor(500, 0);
 

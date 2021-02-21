@@ -1,5 +1,4 @@
 const CardMatcher = require('../CardMatcher');
-const FactionCardCost = require('./FactionCardCost.js');
 const ParentCost = require('./ParentCost.js');
 const SelectCardCost = require('./SelectCardCost.js');
 const SelfCost = require('./SelfCost.js');
@@ -9,13 +8,6 @@ class CostBuilder {
     constructor(action, titles = {}) {
         this.action = action;
         this.titles = titles;
-    }
-
-    /**
-     * Returns a cost that is applied to the player's faction card.
-     */
-    faction() {
-        return new FactionCardCost(this.action);
     }
 
     /**

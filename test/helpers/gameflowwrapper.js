@@ -104,7 +104,7 @@ class GameFlowWrapper {
     completeGamblingPhase() {
         this.guardCurrentPhase('gambling');
         this.allPlayers.forEach(player => player.clickPrompt('Ready'));
-        while (this.game.currentPlayWindow && this.game.currentPlayWindow.name === 'gambling') {
+        while(this.game.currentPlayWindow && this.game.currentPlayWindow.name === 'gambling') {
             this.playerToPlayerWrapperIndex[this.game.currentPlayWindow.currentPlayer].clickPrompt('Pass');
         }
     }
@@ -123,7 +123,7 @@ class GameFlowWrapper {
         this.guardCurrentPhase('shootout');
         this.guardCurrentPlayWindow('shootout plays');
         this.eachPlayerInFirstPlayerOrder(player => {
-            if (this.game.shootout) {
+            if(this.game.shootout) {
                 player.clickPrompt('Pass');
             }
         });
@@ -148,13 +148,13 @@ class GameFlowWrapper {
     }
 
     removeFromPosse(card) {
-        if (this.game.shootout) {
+        if(this.game.shootout) {
             this.game.shootout.removeFromPosse(card);
         }
     }
 
     skipToHighNoonPhase(skipSetup = true) {
-        if (skipSetup) {
+        if(skipSetup) {
             this.completeSetupPhase();
         }
         this.completeGamblingPhase();
@@ -177,7 +177,6 @@ class GameFlowWrapper {
         var promptedPlayer = this.getPromptedPlayer('Select first player');
         promptedPlayer.clickPrompt(player.name);
     }
-    
 }
 
 module.exports = GameFlowWrapper;

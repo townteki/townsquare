@@ -56,8 +56,8 @@ class PlayerPromptState {
         let selectable = this.selectableCards.includes(card);
         let index = this.selectedCards.indexOf(card);
         let result = {
-            // The `card.selected` property here is a hack for plot selection,
-            // which we do differently from normal card selection.
+            // TODO M2 The `card.selected` property was used only for throneteki plot selection
+            // Check if it can be removed.
             selected: card.selected || (index !== -1),
             selectable: selectable,
             unselectable: this.selectCard && !selectable

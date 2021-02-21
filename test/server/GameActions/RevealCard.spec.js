@@ -13,7 +13,7 @@ describe('RevealCard', function() {
             this.cardSpy.allowGameAction.and.returnValue(true);
         });
 
-        for(let location of ['draw deck', 'hand', 'plot deck', 'shadows']) {
+        for(let location of ['draw deck', 'hand']) {
             describe(`when the card is in ${location}`, function() {
                 beforeEach(function() {
                     this.cardSpy.location = location;

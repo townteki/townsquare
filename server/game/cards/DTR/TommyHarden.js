@@ -8,7 +8,7 @@ class TommyHarden extends DudeCard {
             },
             handler: () => {
                 let rankMod = 2;
-                if (this.controller.isCheatin()) {
+                if(this.controller.isCheatin()) {
                     rankMod = 1;
                 }
                 this.controller.modifyRank(rankMod);

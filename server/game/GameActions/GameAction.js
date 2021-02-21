@@ -3,7 +3,7 @@ const Event = require('../event');
 
 /**
  * A game action is anything that changes the state of the game, e.g. draw X
- * cards, kill this character, etc. This class acts as a base class for such
+ * cards, ace this card, etc. This class acts as a base class for such
  * actions. Inheritors should override the `canChangeGameState` and
  * `createEvent` methods as necessary, and then export a singleton object
  * instead of the class itself.

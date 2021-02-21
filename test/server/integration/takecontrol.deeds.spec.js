@@ -9,7 +9,6 @@ xdescribe('take control of deeds', function() {
             it('should do something', function() {
 
             });
-
         });
         // and various other combinations
     });

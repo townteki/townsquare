@@ -1,7 +1,7 @@
 const ActionCard = require('../../actioncard.js');
 
 class HidingInTheShadows extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Hiding in the Shadows',
             playType: ['noon'],

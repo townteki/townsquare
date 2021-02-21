@@ -1,5 +1,4 @@
 const CardService = require('../services/CardService');
-const Factions = require('../game/Factions');
 
 module.exports.init = function(server, options) {
     let cardService = new CardService(options.db);
@@ -22,10 +21,6 @@ module.exports.init = function(server, options) {
             .catch(err => {
                 return next(err);
             });
-    });
-
-    server.get('/api/factions', function(req, res) {
-        res.send({ success: true, factions: Factions });
     });
 
     server.get('/api/restricted-list', function(req, res, next) {

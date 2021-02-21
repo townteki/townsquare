@@ -26,7 +26,7 @@ class UpkeepPrompt extends AllPlayerPrompt {
     onMenuCommand(player) {
         let upkeep = player.determineUpkeep();
         let difference = upkeep - player.ghostrock;
-        if (difference > 0) {
+        if(difference > 0) {
             this.title = 'Discard Cards to pay Upkeep (' + difference + ' remaining)';
         } else {
             player.payUpkeep(upkeep);

@@ -50,7 +50,7 @@ class GameRouter extends EventEmitter {
 
     getNextAvailableGameNode() {
         if(Object.values(this.workers).length === 0) {
-			logger.info('== DEBUG No workers');
+            logger.info('== DEBUG No workers');
             return undefined;
         }
 
@@ -58,7 +58,7 @@ class GameRouter extends EventEmitter {
 
         for(const worker of Object.values(this.workers)) {
             if(worker.numGames >= worker.maxGames || worker.disabled || worker.disconnected) {
-				logger.info('== DEBUG worker: numgames: %s | maxgames: %s | disabled: %s | disconnected: %s', worker.numGames, worker.maxGames, worker.disabled, worker.disconnected);
+                logger.info('== DEBUG worker: numgames: %s | maxgames: %s | disabled: %s | disconnected: %s', worker.numGames, worker.maxGames, worker.disabled, worker.disconnected);
                 continue;
             }
 
@@ -163,7 +163,6 @@ class GameRouter extends EventEmitter {
 
         switch(message.command) {
             case 'HELLO':
-			    logger.info('== DEBUG HELLO received');
                 this.emit('onWorkerStarted', identityStr);
                 if(this.workers[identityStr]) {
                     logger.info(`Worker ${identityStr} was already known, presume reconnected`);

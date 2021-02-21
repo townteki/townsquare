@@ -36,7 +36,6 @@ class GamblingPhase extends Phase {
 
     findWinner() {
         return _.reduce(this.game.getPlayers(), (player, memo) => {
-
             let pRank = player.getTotalRank();
             let mRank = memo.getTotalRank();
 
@@ -44,21 +43,20 @@ class GamblingPhase extends Phase {
                 return player;
             } else if(pRank === mRank) {
                 let tiebreakResult = this.game.resolveTiebreaker(player, memo, true);
-                if (tiebreakResult === 'exact tie') {
+                if(tiebreakResult === 'exact tie') {
                     return null;
                 }
                 return tiebreakResult.winner;
             }
 
             return memo;
-            
         });
     }
 
     determineWinner() {
         let winner = this.findWinner();
 
-        if (!winner) {
+        if(!winner) {
             this.game.addAlert('info', 'There is winner of the lowball, players have to draw new hands.');
             this.game.discardDrawHands();
             this.game.drawHands();
@@ -69,12 +67,11 @@ class GamblingPhase extends Phase {
 
         // TODO M2 need to resolve situation when there is exact tie and no winner
         // for now it will just put some player as first player
-        if (!winner) {
+        if(!winner) {
             winner = this.game.getPlayers()[0];
         }
 
         let firstPlayer = winner;
-
 
         this.game.addMessage('{0} is the winner and receives {1} GR', winner.name, this.lowballPot);
 

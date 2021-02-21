@@ -49,5 +49,4 @@ describe('Player', function() {
             expect(this.attachmentOwner.discardPile).toContain(this.attachment);
         });
     });
-
 });

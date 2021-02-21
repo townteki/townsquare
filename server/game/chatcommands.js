@@ -151,10 +151,10 @@ class ChatCommands {
 
     shooter(player, args) {
         var type = args[1];
-        if (!type || type === 'stud') {
+        if(!type || type === 'stud') {
             type = 'Stud';
         }
-        if (type === 'draw') {
+        if(type === 'draw') {
             type = 'Draw';
         }
         this.game.promptForSelect(player, {
@@ -200,7 +200,7 @@ class ChatCommands {
     }
 
     joinPosse(player) {
-        if (!this.game.shootout) {
+        if(!this.game.shootout) {
             return;
         }
         this.game.promptForSelect(player, {
@@ -217,7 +217,7 @@ class ChatCommands {
     }
 
     removeFromPosse(player) {
-        if (!this.game.shootout) {
+        if(!this.game.shootout) {
             return;
         }
         this.game.promptForSelect(player, {
@@ -333,7 +333,7 @@ class ChatCommands {
 
     // TODO M2 not really working, should be updated
     cancelShootout(player) {
-        if (!this.game.shootout) {
+        if(!this.game.shootout) {
             return;
         }
         this.game.addAlert('danger', '{0} uses the /cancel-shootout to end the shootout.', player);

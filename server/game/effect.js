@@ -19,8 +19,7 @@ const {flatten} = require('../Array');
  * condition        - function that returns a boolean determining whether the
  *                    effect can be applied. Use with cards that have a
  *                    condition that must be met before applying a persistent
- *                    effect (e.g. "when there are more Summer plots revealed
- *                    than Winter plots").
+ *                    effect
  * targetController - string that determines which player's cards are targeted.
  *                    Can be 'current' (default), 'opponent' or 'any'.
  * targetLocation   - string that determines the location of cards that can be
@@ -70,7 +69,7 @@ class Effect {
             return targetLocation;
         }
 
-        return targetLocation || ['play area', 'active plot'];
+        return targetLocation || ['play area'];
     }
 
     buildEffect(effect) {

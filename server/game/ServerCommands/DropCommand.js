@@ -26,7 +26,7 @@ class DropCommand {
                     card: this.card, 
                     targetUuid: this.gameLocation, 
                     options: { isCardEffect: false } 
-                }))
+                }));
             }
             return;
         }
@@ -36,7 +36,7 @@ class DropCommand {
         }
 
         if(this.originalLocation !== 'play area' && this.targetLocation === 'play area') {
-            if (this.originalLocation === 'hand' && this.game.currentPhase !== 'setup') {
+            if(this.originalLocation === 'hand' && this.game.currentPhase !== 'setup') {
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
                     title: 'Are you perfoming Shoppin\' play?',
                     onYes: () => {
@@ -60,7 +60,7 @@ class DropCommand {
                     player: this.player,
                     card: this.card, 
                     params: { playingType: 'setup', target: this.gameLocation, force: true }
-                }))
+                }));
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
             this.player.aceCard(this.card, { allowSave: false, force: true });
@@ -70,16 +70,8 @@ class DropCommand {
             this.player.moveCard(this.card, this.targetLocation);
         }
 
-        if (this.game.currentPhase !== 'setup') {
+        if(this.game.currentPhase !== 'setup') {
             this.addGameMessage();
-        }
-    }
-
-    isValidLocation() {
-        if (this.card.getType() === 'dude') {
-
-        } else {
-            return this.originalLocation !== this.targetLocation;
         }
     }
 

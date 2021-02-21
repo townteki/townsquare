@@ -1,5 +1,4 @@
 const CardAction = require('./cardaction.js');
-const GameActions = require('./GameActions/index.js');
 
 class JobAction extends CardAction {
     constructor(game, card, properties) {
@@ -14,7 +13,7 @@ class JobAction extends CardAction {
 
     executeHandler(context) {
         let jobCard = context.ability.card;
-        if (jobCard.getType() === 'dude' || (jobCard.parent && jobCard.parent.getType() === 'dude')) {
+        if(jobCard.getType() === 'dude' || (jobCard.parent && jobCard.parent.getType() === 'dude')) {
             let leader = jobCard.getType() === 'dude' ? jobCard : jobCard.parent;
             this.startJob(leader, context.target, context);
         } else {
@@ -34,7 +33,7 @@ class JobAction extends CardAction {
     }
 
     startJob(leader, mark, context) {
-        if (this.bootLeader) {
+        if(this.bootLeader) {
             context.player.bootCard(leader);
         }
         super.executeHandler(context);
@@ -42,9 +41,9 @@ class JobAction extends CardAction {
     }
 
     setResult(isSuccessful, job) {
-        if (!this.statusRecorded) {
+        if(!this.statusRecorded) {
             this.statusRecorded = true;
-            if (isSuccessful) {
+            if(isSuccessful) {
                 this.game.addMessage('{0} job marking {1} was successful.', this.card, job.mark);
                 this.onSuccess(job);
             } else {

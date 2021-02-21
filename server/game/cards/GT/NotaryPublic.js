@@ -12,14 +12,14 @@ class NotaryPublic extends DeedCard {
                 choosingPlayer: 'current',
                 cardCondition: { location: 'play area', controller: 'any', condition: card => 
                     (card.owner === this.controller || card.controller === this.controller) &&
-                    card.hasOneOfKeywords([ 'Government', 'Public' ]) &&
+                    card.hasOneOfKeywords(['Government', 'Public']) &&
                     this.isSameStreet(card)
                 },
                 cardType: ['deed']
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }));
-                if (context.target.hasKeyword('Government')) {
+                if(context.target.hasKeyword('Government')) {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to increase bounty',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
@@ -32,7 +32,7 @@ class NotaryPublic extends DeedCard {
                         }
                     });
                 }
-                if (context.target.hasKeyword('Public')) {
+                if(context.target.hasKeyword('Public')) {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to move',
                         waitingPromptTitle: 'Waiting for opponent to select dude',

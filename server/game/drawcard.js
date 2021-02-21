@@ -27,7 +27,7 @@ class DrawCard extends BaseCard {
     get gamelocation() {
         let tempLocation = super.gamelocation;
 
-        if (this.getType() === 'goods' || this.getType() === 'spell' || this.getType() === 'action') {
+        if(this.getType() === 'goods' || this.getType() === 'spell' || this.getType() === 'action') {
             return this.parent ? this.parent.gamelocation : '';
         }
 
@@ -43,7 +43,7 @@ class DrawCard extends BaseCard {
     }
 
     set control(amount) {
-        if (amount < 0) {
+        if(amount < 0) {
             this.currentControl = 0;
         } else {
             this.currentControl = amount;
@@ -62,7 +62,7 @@ class DrawCard extends BaseCard {
     }
 
     createSnapshot(clone, cloneBaseAttributes = true) {
-        if (!clone) {
+        if(!clone) {
             clone = new DrawCard(this.owner, this.cardData);
         }
         clone = super.createSnapshot(clone, cloneBaseAttributes);
@@ -82,11 +82,11 @@ class DrawCard extends BaseCard {
         let discardItem = { method: 'discard', text: 'Discard' };
         let playItem = { method: 'playCard', text: 'Shoppin\' play' };
 
-        switch (this.location) {
+        switch(this.location) {
             case 'draw hand':
                 return menu.concat(discardItem);
             case 'hand':
-                if (this.getType() === 'action') {
+                if(this.getType() === 'action') {
                     return menu.concat(discardItem);
                 }
                 return menu.concat(discardItem).concat(playItem);
@@ -137,8 +137,8 @@ class DrawCard extends BaseCard {
 
         if(originalLocation !== targetLocation) {
             // Clear any tokens on the card unless it is transitioning position
-            // within the same area e.g. moving an attachment from one character
-            // to another, or a character transferring control between players.
+            // within the same area e.g. moving an attachment from one card
+            // to another, or a card transferring control between players.
             this.clearTokens();
         }
 
@@ -176,7 +176,6 @@ class DrawCard extends BaseCard {
         }
     }
 
-
     /**
      * Defines restrictions on what cards this attachment can be placed on.
      */
@@ -195,7 +194,7 @@ class DrawCard extends BaseCard {
      * attached to another card. By default the effect will target the parent
      * card, but you can provide a match function to narrow down whether the
      * effect is applied (for cases where the effect only applies to specific
-     * characters).
+     * cards).
      */
     whileAttached(properties) {
         this.persistentEffect({
@@ -218,17 +217,17 @@ class DrawCard extends BaseCard {
 
     /**
      * Checks whether the passed card meets the attachment restrictions (e.g.
-     * Opponent cards only, specific factions, etc) for this card.
+     * Opponent cards only, etc) for this card.
      */
     canAttach(player, card) {
-        if (!card) {
+        if(!card) {
             return false;
         }
 
-        if ((this.getType() !== 'goods') && (this.getType() !== 'spell')) {
+        if((this.getType() !== 'goods') && (this.getType() !== 'spell')) {
             return false;
         }
-        if (card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
+        if(card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
             return false;
         }    
         return true;
@@ -239,14 +238,14 @@ class DrawCard extends BaseCard {
     }
 
     hasAttachment(condition = () => true, forTrading = false) {
-        if (this.attachments.isEmpty()) {
+        if(this.attachments.isEmpty()) {
             return false;
         }
         let attsFitCondition = this.attachments.filter(attachment => condition(attachment));
-        if (attsFitCondition.length == 0) {
+        if(attsFitCondition.length === 0) {
             return false;
         }
-        if (!forTrading) {
+        if(!forTrading) {
             return true;
         }
 
@@ -256,8 +255,8 @@ class DrawCard extends BaseCard {
     
     getAttachmentsByKeywords(keywords) {
         return this.attachments.filter(attachment => {
-            for (let keyword of keywords) {
-                if (!attachment.hasKeyword(keyword)) {
+            for(let keyword of keywords) {
+                if(!attachment.hasKeyword(keyword)) {
                     return false;
                 }
             }
@@ -286,7 +285,7 @@ class DrawCard extends BaseCard {
         this.attachments.each(attachment => {
             attachment.controller.moveCard(attachment, 'discard pile', { raiseEvents: false });
         });
-        if (this.parent) {
+        if(this.parent) {
             this.parent.removeAttachment(this);
         }
         super.leavesPlay();

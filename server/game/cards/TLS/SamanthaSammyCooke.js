@@ -16,11 +16,11 @@ class SamanthaSammyCooke extends DudeCard {
                 cardType: ['goods']
             },
             handler: context => {
-                if (context.target.hasKeyword('Horse')) {
+                if(context.target.hasKeyword('Horse')) {
                     let pulledCard = context.player.pull();
-                    if (pulledCard.value > context.target.value) {
+                    if(pulledCard.value > context.target.value) {
                         this.game.addMessage('{0} uses {1} to successfuly catch {2} after pulling {3}.', context.player, this, context.target, pulledCard.value);
-                        if (context.player.attach(context.target, this, 'ability')) {                 
+                        if(context.player.attach(context.target, this, 'ability')) {                 
                             return;
                         }
                         this.game.addMessage('{0} cannot attach {1} to {2}, and is discarded.', context.player, context.target, this);
@@ -30,7 +30,7 @@ class SamanthaSammyCooke extends DudeCard {
                 } else {
                     this.game.addMessage('{0} uses {1} to discard {2}.', context.player, this, context.target);
                 }
-                this.game.resolveGameAction(GameActions.discardCard( {card: context.target }));
+                this.game.resolveGameAction(GameActions.discardCard({card: context.target }));
             }
         });
     }

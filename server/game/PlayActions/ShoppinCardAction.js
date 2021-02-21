@@ -38,7 +38,6 @@ class ShoppinCardAction extends BaseAbility {
             event.context.player.putIntoPlay(event.context.source, { playingType: event.playingType, target: event.target, context: context });          
         });
     }
-
 }
 
 module.exports = ShoppinCardAction;

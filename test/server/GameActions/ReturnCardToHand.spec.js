@@ -13,7 +13,7 @@ describe('ReturnCardToHand', function() {
             this.cardSpy.allowGameAction.and.returnValue(true);
         });
 
-        for(let location of ['dead pile', 'discard pile', 'play area', 'shadows', 'duplicate']) {
+        for(let location of ['dead pile', 'discard pile', 'play area']) {
             describe(`when the card is in ${location}`, function() {
                 beforeEach(function() {
                     this.cardSpy.location = location;

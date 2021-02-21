@@ -15,7 +15,7 @@ class TheOrphanage extends DeedCard {
                         ability.effects.modifyControl(-1)
                         
                     ]
-                    }), 'upkeep'
+                }), 'upkeep'
                 );
                 this.game.addMessage('{0} uses {1} to give -1 control point and +2 production to all deeds with 2 or more control points.',
                     context.player, this);

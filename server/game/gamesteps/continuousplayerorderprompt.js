@@ -13,7 +13,7 @@ class ContinuousPlayerOrderPrompt extends PlayerOrderPrompt {
     constructor(game, activePromptTitle, playerNameOrder = [], buttonFunctions = {}) {
         super(game, playerNameOrder);
         this.activePromptTitle = activePromptTitle;
-        if (buttonFunctions.onDone) {
+        if(buttonFunctions.onDone) {
             this.onDone = buttonFunctions.onDone;
         } else {
             this.onDone = (player) => {
@@ -21,9 +21,9 @@ class ContinuousPlayerOrderPrompt extends PlayerOrderPrompt {
                     return false;
                 }      
                 this.nextPlayer();
-            }
+            };
         }
-        if (buttonFunctions.onPass) {
+        if(buttonFunctions.onPass) {
             this.onPass = buttonFunctions.onPass;
         } else {
             this.onPass = (player) => {
@@ -31,7 +31,7 @@ class ContinuousPlayerOrderPrompt extends PlayerOrderPrompt {
                     return false;
                 }       
                 this.completePlayer();
-            }
+            };
         }
 
         this.buttons = [

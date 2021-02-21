@@ -11,7 +11,7 @@ class ChooseYesNoPrompt extends UiPrompt {
     }
 
     activeCondition(player) {
-        if (this.player === player) {
+        if(this.player === player) {
             return true;
         }
         return false;
@@ -29,16 +29,15 @@ class ChooseYesNoPrompt extends UiPrompt {
     }    
 
     onMenuCommand(player, arg) {
-        if (arg === 'yes') {
+        if(arg === 'yes') {
             this.onYes(player);
         }
-        if (arg === 'no') {
+        if(arg === 'no') {
             this.onNo(player);
         }        
         this.complete();
         return true;
     }
-
 }
 
 module.exports = ChooseYesNoPrompt;
