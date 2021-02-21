@@ -5,7 +5,7 @@ class LawrenceBlackwood extends DudeCard {
         this.action({
             title: 'Lawrence Blackwood',
             playType: 'noon',
-            condition: () => this.getLocationCard().owner !== this.controller,
+            condition: () => this.locationCard.owner !== this.controller,
             cost: ability.costs.bootSelf(),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({

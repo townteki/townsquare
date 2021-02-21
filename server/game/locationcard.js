@@ -9,7 +9,7 @@ class LocationCard extends DrawCard {
         this.defaultAdjacencyEffects = [];
     }
 
-    getLocation() {
+    getGameLocation() {
         return this.gameLocationObject;
     }
 
@@ -65,9 +65,9 @@ class LocationCard extends DrawCard {
         if(!this.gameLocationObject) {
             return [];
         }
-        let adjacentLocations = this.game.filterCardsInPlay(card => card.isLocationCard() && this.getLocation().isAdjacent(card.uuid)).
-            map(card => card.getLocation());
-        if(this.getLocation().isAdjacent(this.game.townsquare.uuid)) {
+        let adjacentLocations = this.game.filterCardsInPlay(card => card.isLocationCard() && this.getGameLocation().isAdjacent(card.uuid)).
+            map(card => card.getGameLocation());
+        if(this.getGameLocation().isAdjacent(this.game.townsquare.uuid)) {
             adjacentLocations.concat(this.game.townsquare);
         }
         return adjacentLocations;

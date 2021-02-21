@@ -285,7 +285,7 @@ class Shootout extends Phase {
         if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
             return;
         }
-        let locationCard = this.shootoutLocation.getLocationCard(this.game);
+        let locationCard = this.shootoutLocation.locationCard;
         if(locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
             if(locationCard.owner !== this.leaderPlayer) {
                 this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));

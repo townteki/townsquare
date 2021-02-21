@@ -404,7 +404,7 @@ class Player extends Spectator {
         //it as abstract adjacency direction.
         //this.game.townsquare.attach(this.outfit.uuid, this.name);
 
-        var outfit = new Location.GameLocation(this.outfit, null, 0);
+        var outfit = new Location.GameLocation(this.game, this.outfit, null, 0);
         this.locations.push(outfit);
         this.moveCard(this.outfit, 'play area');
     }    
@@ -615,7 +615,7 @@ class Player extends Spectator {
                     } else {
                         this.game.addMessage('{0} does Shoppin\' to hire {1}, costing {2} GR', this, card, updatedParams.context.costs.ghostrock);
                     }
-                } else {
+                } else if(this.game.currentPhase !== 'setup') {
                     this.game.addMessage('{0} brings into play dude {1}', this, card);
                 }
                 break;
@@ -623,7 +623,7 @@ class Player extends Spectator {
                 this.addDeedToStreet(card, updatedParams.target);
                 if(updatedParams.playingType === 'shoppin') {
                     this.game.addMessage('{0} does Shoppin\' to build {1} on his street, costing {2} GR', this, card, updatedParams.context.costs.ghostrock);
-                } else {
+                } else if(this.game.currentPhase !== 'setup') {
                     this.game.addMessage('{0} brings into play deed {1}', this, card);
                 }
                 this.entersPlay(card, updatedParams);
@@ -703,7 +703,7 @@ class Player extends Spectator {
             return false;
         }
 
-        if(playingType === 'shoppin' && (card.getLocation().determineController(this.game) !== this || card.booted)) {
+        if(playingType === 'shoppin' && (card.getGameLocation().determineController(this.game) !== this || card.booted)) {
             return false;
         }
 
@@ -924,7 +924,7 @@ class Player extends Spectator {
 
     addDeedToStreet(card, target) {
         if(card.hasKeyword('Out of Town')) {
-            this.locations.push(new Location.GameLocation(card, null, null));
+            this.locations.push(new Location.GameLocation(this.game, card, null, null));
         } else if(/left/.test(target)) {
             this.addDeedToLeft(card);
         } else if(/right/.test(target)) {
@@ -937,13 +937,13 @@ class Player extends Spectator {
 
     addDeedToLeft(card) {
         let leftDeed = this.leftmostLocation();
-        let newLocation = new Location.GameLocation(card, leftDeed, leftDeed.order - 1);        
+        let newLocation = new Location.GameLocation(this.game, card, leftDeed, leftDeed.order - 1);        
         this.locations.push(newLocation);
     }
 
     addDeedToRight(card) {
         let rightDeed = this.rightmostLocation();
-        let newLocation = new Location.GameLocation(card, rightDeed, rightDeed.order + 1);
+        let newLocation = new Location.GameLocation(this.game, card, rightDeed, rightDeed.order + 1);
         this.locations.push(newLocation);
     }   
     

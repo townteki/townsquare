@@ -6,9 +6,9 @@ const NullCard = require('./nullcard');
  * Base class representing a location on the game board.
  */
 class GameLocation {
-    constructor(locationCard, neighbourLocation, order) {
-        //Passed in location for construction. Card uuid is main identifier.
-        this.uuid = locationCard.uuid;
+    constructor(game, locationCard, neighbourLocation, order) {
+        this.game = game;
+        this.card = locationCard;
         this.adjacencyMap = new Map();
         /*Keeps track of location order on player street
           for flexbox order parameter info
@@ -21,7 +21,7 @@ class GameLocation {
             this.addAdjacency(neighbourLocation, 'game');
         }
         if(order !== null && order !== undefined) {
-            this.addAdjacency(locationCard.game.townsquare, 'game');
+            this.addAdjacency(this.game.townsquare, 'game');
         }
         if(locationCard.defaultAdjacencyEffects) {
             locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect => 
@@ -31,25 +31,32 @@ class GameLocation {
         locationCard.gameLocationObject = this;
     }
 
-    getLocationCard(game) {
-        return game.findCardInPlayByUuid(this.uuid);
+    get locationCard() {
+        return this.card;
     }
 
-    determineController(game) {
+    set locationCard(card) {
+        this.card = card;
+    }
+
+    get uuid() {
+        return this.locationCard.uuid;
+    }
+
+    determineController() {
         if(this.isTownSquare()) {
             // TODO M2 Harry Highbinder can control townsquare, needs to be implemented
             return;
         }
-        let locationCard = this.getLocationCard(game);
         let playersStats = new Map();
-        let originalController = locationCard.controllingPlayer;
-        let playerWithMost = locationCard.owner;
-        let currentController = locationCard.owner;
-        let defaultDeterminator = locationCard.controlDeterminator;
-        playersStats.set(locationCard.owner.name, 0);
-        playersStats.set(locationCard.controllingPlayer.name, 0);
+        let originalController = this.locationCard.controllingPlayer;
+        let playerWithMost = this.locationCard.owner;
+        let currentController = this.locationCard.owner;
+        let defaultDeterminator = this.locationCard.controlDeterminator;
+        playersStats.set(this.locationCard.owner.name, 0);
+        playersStats.set(this.locationCard.controllingPlayer.name, 0);
         this.occupants.forEach(dudeUuid => {
-            let dude = game.findCardInPlayByUuid(dudeUuid);
+            let dude = this.game.findCardInPlayByUuid(dudeUuid);
             let determinator = defaultDeterminator;
             if(dude.controlDeterminator !== 'influence:deed') {
                 determinator = dude.controlDeterminator;
@@ -64,15 +71,15 @@ class GameLocation {
                     playerWithMost = dude.controller;
                     currentController = dude.controller;
                 } else if(playersStats.get(dude.controller.name) === playersStats.get(playerWithMost.name)) {
-                    currentController = locationCard.owner;
+                    currentController = this.locationCard.owner;
                 }
             }
         });
         if(currentController !== originalController) {
-            if(currentController !== locationCard.owner) {
-                game.addAlert('info', '{0} broke into {1} and has taken control from the {2}.', currentController, locationCard, originalController);
+            if(currentController !== this.locationCard.owner) {
+                this.game.addAlert('info', '{0} broke into {1} and has taken control from the {2}.', currentController, this.locationCard, originalController);
             } else {
-                game.addAlert('info', '{0} has wrestled control of {1} back from {2}.', currentController, locationCard, originalController);
+                this.game.addAlert('info', '{0} has wrestled control of {1} back from {2}.', currentController, this.locationCard, originalController);
             }
         }
         return currentController;
@@ -94,18 +101,17 @@ class GameLocation {
     }
 
     isHome(player) {
-        let locationCard = this.getLocationCard(player.game);
-        return locationCard && locationCard.getType() === 'outfit' && locationCard.owner === player;
+        return this.locationCard && this.locationCard.getType() === 'outfit' && this.locationCard.owner === player;
     }
 
     addAdjacency(location, source, type = 'adjacent') {
         this.attach(location.uuid, source, type);
-        location.attach(this.uuid, source, type);
+        location.attach(this.locationCard.uuid, source, type);
     }
 
     removeAdjacency(location, source, type = 'adjacent') {
         this.detach(location.uuid, source, type);
-        location.detach(this.uuid, source, type);
+        location.detach(this.locationCard.uuid, source, type);
     }
 
     attach(uuid, source, type) {
@@ -131,7 +137,7 @@ class GameLocation {
         if(!card || card.getType() !== 'dude') {
             return;
         }
-        card.updateGameLocation(this.uuid);
+        card.updateGameLocation(this.locationCard.uuid);
         this.occupants.push(card.uuid);
     }
 
@@ -150,10 +156,15 @@ class GameLocation {
  * central game flex box
  */
 class TownSquare extends GameLocation {
-    constructor() {
+    constructor(game) {
         // TODO M2 probably will have to create town square card since it is possible to
         // attach to town square
-        super({ uuid: TownSquareUUID}, null, null);
+        super(game, Object.assign(new NullCard(), {
+            title: 'Town Square', 
+            uuid: TownSquareUUID,
+            getType: () => 'townsquare',
+            getLocation: () => this
+        }), null, null);
 
         this.key = 'townsquare';
     }
@@ -176,15 +187,6 @@ class TownSquare extends GameLocation {
                 return key;
             }
         }
-    }
-
-    getLocationCard() {
-        return Object.assign(new NullCard(), {
-            title: 'Town Square', 
-            uuid: this.uuid,
-            getType: () => 'townsquare',
-            getLocation: () => this
-        });
     }
 }
 

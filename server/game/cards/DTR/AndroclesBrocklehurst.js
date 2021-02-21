@@ -9,7 +9,7 @@ class AndroclesBrocklehurst extends DudeCard {
             target: {
                 activePromptTitle: 'Choose dude',
                 cardCondition: { location: 'play area', controller: 'opponent', condition: card => 
-                    card.getLocationCard().owner === this.controller && card.getLocationCard().controller !== this.controller
+                    card.locationCard.owner === this.controller && card.locationCard.controller !== this.controller
                 },
                 cardType: ['dude'],
                 source: this

@@ -106,6 +106,14 @@ class BaseCard {
         this.currentProduction = amount;
     }
 
+    get locationCard() {
+        let location = this.getGameLocation();
+        if(!location) {
+            return new NullCard();
+        }
+        return location.locationCard;
+    }
+
     registerEvents(events) {
         this.eventsForRegistration = events;
     }
@@ -738,7 +746,7 @@ class BaseCard {
         this.isDirty = false;
     }
 
-    getLocation() {
+    getGameLocation() {
         if(!this.gamelocation) {
             return;
         }
@@ -746,22 +754,14 @@ class BaseCard {
     }
 
     isInSameLocation(card) {
-        let thisLocation = this.getLocation();
-        let cardLocation = card.getLocation();
+        let thisLocation = this.getGameLocation();
+        let cardLocation = card.getGameLocation();
         return thisLocation && cardLocation && thisLocation.uuid === cardLocation.uuid;
     }
 
     isInTownSquare() {
-        let location = this.getLocation();
+        let location = this.getGameLocation();
         return location && location.isTownSquare();
-    }
-
-    getLocationCard() {
-        let location = this.getLocation();
-        if(!location) {
-            return new NullCard();
-        }
-        return location.getLocationCard(this.game);
     }
 
     isLocationCard() {

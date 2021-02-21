@@ -52,7 +52,7 @@ class SelectLocationPrompt extends SelectCardPrompt {
         }
 
         if(arg === 'townsquare') {
-            this.selectedCards.push(this.game.townsquare.getLocationCard());
+            this.selectedCards.push(this.game.townsquare.locationCard);
             this.fireOnSelect();
             return;
         }

@@ -8,7 +8,7 @@ class Hustings extends DeedCard {
             match: card => card.getType() === 'dude' && 
                 card.controller !== this.controller &&
                 !card.booted && 
-                card.getLocation().isHome(card.controller),
+                card.getGameLocation().isHome(card.controller),
             effect: [
                 ability.effects.modifyInfluence(-1)
             ]

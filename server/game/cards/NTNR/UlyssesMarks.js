@@ -5,7 +5,7 @@ class UlyssesMarks extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             targetController: 'any',
-            condition: () => this.location === 'play area' && this.getLocationCard().hasKeyword('Saloon'),
+            condition: () => this.location === 'play area' && this.locationCard.hasKeyword('Saloon'),
             match: card => card.uuid === this.gamelocation,
             effect: ability.effects.modifyControl(1)
         });
@@ -13,7 +13,7 @@ class UlyssesMarks extends DudeCard {
             title: 'Ulysses Marks',
             playType: 'noon',     
             handler: context => {
-                if(this.getLocationCard().hasKeyword('Saloon')) {
+                if(this.locationCard.hasKeyword('Saloon')) {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to kick out of the saloon',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
@@ -22,7 +22,7 @@ class UlyssesMarks extends DudeCard {
                         autoSelect: true,
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.moveDude({ card: card, targetUuid: this.game.townsquare.uuid, options: { needToBoot: true, allowBooted: true } }));
-                            this.game.addMessage('{0} uses {1} to kick {2} out of the {3}.', player, this, card, this.getLocationCard());
+                            this.game.addMessage('{0} uses {1} to kick {2} out of the {3}.', player, this, card, this.locationCard);
                             return true;
                         },
                         source: this
