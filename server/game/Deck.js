@@ -6,6 +6,7 @@ const GoodsCard = require('./goodscard');
 const SpellCard = require('./spellcard.js');
 const ActionCard = require('./actioncard.js');
 const OutfitCard = require('./outfitcard');
+const JokerCard = require('./jokercard');
 
 class Deck {
     constructor(data) {
@@ -37,7 +38,7 @@ class Deck {
     }
 
     isDrawCard(cardData) {
-        return ['goods', 'spell', 'dude', 'deed', 'action'].includes(cardData.type_code);
+        return ['goods', 'spell', 'dude', 'deed', 'action', 'joker'].includes(cardData.type_code);
     }
 
     prepare(player) {
@@ -106,6 +107,9 @@ class Deck {
         }
         if(cardData.type_code === 'action') {
             cardClass = ActionCard;
+        }
+        if(cardData.type_code === 'joker') {
+            cardClass = JokerCard;
         }
 
         cardClass = cards[cardData.code] || cardClass;

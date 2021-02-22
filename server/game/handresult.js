@@ -6,15 +6,30 @@ const Suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
  * Class to evaluate hand rank from a hand of cards.
  */
 class HandResult {
-    constructor(hand) {
+    constructor(hand, isGambling) {
         this.handRank = {rank : 0, rankName: ''};
         if(!hand || !_.isArray(hand)) {
             return;
         }
 
-        this.pokerHands = _.filter(new PokerHands(hand), (hr) => (hr.rank !== undefined));
-        let bestRank = _.orderBy(this.pokerHands, 'rank', 'desc');
+        this.pokerHands = new PokerHands(hand, isGambling);
+        this.possibleHands = _.filter(this.pokerHands.allHandRanks, (hr) => (hr.rank !== undefined));
+        let bestRank = _.orderBy(this.possibleHands, 'rank', 'desc');
         this.handRank = (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
+        if(this.handRank.tiebreakerHighCards) {
+            if(isGambling && this.pokerHands.jokers > 0) {
+                for(let i = 1; i <= 13; i++) {
+                    if(!hand.find(card => card.value === i)) {
+                        this.handRank.tiebreakerHighCards.push(i);
+                        this.pokerHands.jokers--;
+                        if(this.pokerHands.jokers === 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+            this.handRank.tiebreakerHighCards.sort((a, b) => b - a);
+        }
     }
 
     getHandRank() {
@@ -23,16 +38,13 @@ class HandResult {
 }
 
 class PokerHands {
-    constructor(hand) {
+    constructor(hand, isGambling) {
+        this.jokers = 0;
         let strippedHand = [];
-        let jokers = 0;
 
-        _.each(hand, (card) => {
-            //console.log(card);
-
-            if(card.type === 'joker') {
-                //console.log('joker found');
-                jokers++;
+        hand.forEach(card => {
+            if(card.getType() === 'joker') {
+                this.jokers++;
             }
 
             strippedHand.push({uuid: card.uuid, value: card.value, suit: card.suit, type: card.type});
@@ -40,17 +52,18 @@ class PokerHands {
 
         let orderedHand = _.orderBy(strippedHand, 'value', 'desc');
 
-        this.DeadMansHand = new DeadMansHand(orderedHand, jokers);
-        this.FiveOfAKind = new FiveOfAKind(orderedHand, jokers);
-        this.StraightFlush = new StraightFlush(orderedHand, jokers);
-        this.FourOfAKind = new FourOfAKind(orderedHand, jokers);
-        this.FullHouse = new FullHouse(orderedHand, jokers);
-        this.Flush = new Flush(orderedHand, jokers);
-        this.Straight = new Straight(orderedHand, jokers);
-        this.ThreeOfAKind = new ThreeOfAKind(orderedHand, jokers);
-        this.TwoPair = new TwoPair(orderedHand, jokers);
-        this.OnePair = new OnePair(orderedHand, jokers);
-        this.HighCards = new HighCard(orderedHand);
+        this.allHandRanks = [];
+        this.allHandRanks.push(new DeadMansHand(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new FiveOfAKind(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new StraightFlush(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new FourOfAKind(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new FullHouse(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new Flush(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new Straight(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new ThreeOfAKind(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new TwoPair(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new OnePair(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new HighCard(orderedHand));
     }
 
     static isCheatin(matches) {
@@ -148,6 +161,7 @@ class FourOfAKind {
                 this.rankName = 'Four of a Kind';
                 this.rankShortName = '4oaK';
                 this.tiebreaker = [i];
+                this.tiebreakerHighCards = hand.map(card => card.value).filter(value => value && value !== i);
                 this.cheatin = PokerHands.isCheatin(this.matches);
                 break;
             }
@@ -201,7 +215,7 @@ class Flush {
                 this.rank = 6;
                 this.rankName = 'Flush';
                 this.rankShortName = 'Fl';
-                this.tiebreaker = hand;
+                this.tiebreaker = hand.map(card => card.value);
                 this.cheatin = PokerHands.isCheatin(this.matches);
                 return;
             }
@@ -246,6 +260,7 @@ class ThreeOfAKind {
                 this.rankName = 'Three of a Kind';
                 this.rankShortName = '3oaK';
                 this.tiebreaker = [i];
+                this.tiebreakerHighCards = hand.map(card => card.value).filter(value => value && value !== i);
                 this.cheatin = PokerHands.isCheatin(this.matches);
                 break;
             }
@@ -278,6 +293,7 @@ class TwoPair {
                             this.rankName = 'Two Pair';            
                             this.rankShortName = '2P';
                             this.tiebreaker = [i, j];
+                            this.tiebreakerHighCards = hand.map(card => card.value).filter(value => value && value !== i && value !== j);
                             this.cheatin = PokerHands.isCheatin(this.matches);
                             break;
                         }
@@ -302,6 +318,7 @@ class OnePair {
                 this.rankName = 'One Pair';
                 this.rankShortName = '1P';
                 this.tiebreaker = [i];
+                this.tiebreakerHighCards = hand.map(card => card.value).filter(value => value && value !== i);
                 this.cheatin = PokerHands.isCheatin(this.matches);
                 break;
             }
@@ -317,7 +334,7 @@ class HighCard {
             this.rank = 1;
             this.rankName = 'High Card';
             this.rankShortName = 'Hi';
-            this.tiebreaker = hand;
+            this.tiebreaker = hand.filter(card => card.value).map(card => card.value);
             this.cheatin = false;
         }
     }

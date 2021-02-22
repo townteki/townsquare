@@ -35,7 +35,8 @@ class GamblingPhase extends Phase {
     }
 
     findWinner() {
-        return _.reduce(this.game.getPlayers(), (player, memo) => {
+        let onTiebreaker = false;
+        let winner = _.reduce(this.game.getPlayers(), (player, memo) => {
             let pRank = player.getTotalRank();
             let mRank = memo.getTotalRank();
 
@@ -46,11 +47,14 @@ class GamblingPhase extends Phase {
                 if(tiebreakResult === 'exact tie') {
                     return null;
                 }
+                onTiebreaker = true;
                 return tiebreakResult.winner;
             }
 
             return memo;
         });
+
+        return { player: winner, onTiebreaker: onTiebreaker };
     }
 
     determineWinner() {
@@ -68,18 +72,18 @@ class GamblingPhase extends Phase {
         // TODO M2 need to resolve situation when there is exact tie and no winner
         // for now it will just put some player as first player
         if(!winner) {
-            winner = this.game.getPlayers()[0];
+            winner = { player: this.game.getPlayers()[0] };
+            this.game.addAlert('danger', 'The result was exact tie. Setting {0} as winner', winner.player, this.lowballPot);
+        } else {
+            if(winner.onTiebreaker) {
+                this.game.addAlert('info', '{0} wins on tie breaker and receives {1} GR', winner.player, this.lowballPot);
+            } else {
+                this.game.addAlert('info', '{0} is the winner and receives {1} GR', winner.player, this.lowballPot);
+            }
         }
 
-        let firstPlayer = winner;
-
-        this.game.addMessage('{0} is the winner and receives {1} GR', winner.name, this.lowballPot);
-
-        _.each(this.game.getPlayers(), player => {
-            player.firstPlayer = firstPlayer === player;
-        });
-        
-        this.game.addGhostRock(winner, this.lowballPot);
+        this.game.getPlayers().forEach(player => player.firstPlayer = winner.player === player);   
+        this.game.addGhostRock(winner.player, this.lowballPot);
     }
 
     gainLowballPot() {
