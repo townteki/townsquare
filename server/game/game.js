@@ -498,6 +498,14 @@ class Game extends EventEmitter {
                 return isForLowball ? { winner: player1, loser: player2, decision: 'tiebreaker' } : { winner: player2, loser: player1, decision: 'tiebreaker' };
             }
         }
+        for(let i = 0; i < player1.getHandRank().tiebreakerHighCards.length; i++) {
+            if(player1.getHandRank().tiebreakerHighCards[i] > player2.getHandRank().tiebreakerHighCards[i]) {
+                return isForLowball ? { winner: player2, loser: player1, decision: 'tiebreaker' } : { winner: player1, loser: player2, decision: 'tiebreaker' };
+            }
+            if(player1.getHandRank().tiebreakerHighCards[i] < player2.getHandRank().tiebreakerHighCards[i]) {
+                return isForLowball ? { winner: player1, loser: player2, decision: 'tiebreaker' } : { winner: player2, loser: player1, decision: 'tiebreaker' };
+            }
+        }     
         return { decision: 'exact tie' };
     }
 

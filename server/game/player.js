@@ -266,6 +266,14 @@ class Player extends Spectator {
     }
 
     discardDrawHand() {
+        if(this.drawHandRevealed) {
+            this.drawHand.forEach(card => {
+                if(card.getType() === 'joker') {
+                    this.moveCard(card, 'dead pile');
+                    this.game.raiseEvent('onJokerAced', { card: card, type: 'draw hand' });
+                }
+            });
+        }
         this.discardCards(this.drawHand, () => {
             //callback(discarded);
         });
@@ -282,7 +290,7 @@ class Player extends Spectator {
 
     revealDrawHand() {
         if(this.drawHand.length > 1) {
-            this.handResult = new HandResult(this.drawHand);
+            this.handResult = new HandResult(this.drawHand, this.game.currentPhase === 'gambling');
         }  
 
         this.drawHandRevealed = true;
@@ -1004,13 +1012,18 @@ class Player extends Spectator {
         return event;
     }
 
+    // TODO M2 improve pull and make it an action
     pull() {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
         }
         let pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'discard pile', { isPull: true });
-        this.game.raiseEvent('onCardPulled', { card: pulledCard });
+        this.game.raiseEvent('onCardPulled', { card: pulledCard }, event => {
+            if(event.card.getType() === 'joker') {
+                this.aceCard(pulledCard);
+            }
+        });
         return pulledCard;
     }
 
