@@ -61,7 +61,6 @@ class EventWindow extends BaseStep {
 
         this.event.emitTo(this.game);
     }
-
 }
 
 module.exports = EventWindow;

@@ -1,5 +1,11 @@
 const CardMatcher = require('../CardMatcher');
 
+const AllowedSpecialTargets = [
+    'location',
+    'townsquare',
+    'currentHome'
+];
+
 /**
  * Base class that represents card selection requirements and the behaviours of
  * their associated prompts.
@@ -32,7 +38,7 @@ class BaseCardSelector {
             this.cardType = [properties.cardType];
         }
 
-        if(this.cardType.length === 1 && this.cardType[0] === 'location') {
+        if(this.isSpecialTarget()) {
             this.cardCondition = CardMatcher.createMatcher({ 
                 location: 'play area', 
                 controller: properties.cardCondition.controller || 'any'
@@ -63,6 +69,10 @@ class BaseCardSelector {
             this.cardCondition(card, context) &&
             this.isAllowedForGameAction(card, context)
         );
+    }
+
+    isSpecialTarget() {
+        return this.cardType.length === 1 && BaseCardSelector.isAllowedSpecialTarget(this.cardType[0]);
     }
 
     isAllowedForGameAction(card, context) {
@@ -98,7 +108,8 @@ class BaseCardSelector {
      * @returns {boolean}
      */
     hasEnoughTargets(context) {
-        return this.optional || context.game.allCards.some(card => this.canTarget(card, context));
+        return this.optional || this.isSpecialTarget() ||
+            context.game.allCards.some(card => this.canTarget(card, context));
     }
 
     /**
@@ -166,6 +177,10 @@ class BaseCardSelector {
         }
 
         return card.controller === selectedCards[0].controller;
+    }
+
+    static isAllowedSpecialTarget(target) {
+        return AllowedSpecialTargets.includes(target);
     }
 }
 

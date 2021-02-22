@@ -50,6 +50,16 @@ class GameFlowWrapper {
         }
     }
 
+    eachPlayerInShootoutLoseWinOrder(handler) {
+        this.guardCurrentPhase('shootout');
+        let players = this.game.shootout.shootoutLoseWinOrder.map(playerName => this.game.getPlayerByName(playerName));
+        let playersInOrder = players.map(player => this.playerToPlayerWrapperIndex[player]);
+
+        for(let player of playersInOrder) {
+            handler(player);
+        }
+    }
+
     startGame() {
         this.game.initialise();
     }
@@ -135,16 +145,33 @@ class GameFlowWrapper {
         player.clickPrompt('Done');
     }
 
+    completeShootoutDrawStep() {
+        this.guardCurrentPhase('shootout');
+        this.allPlayers.forEach(player => {
+            player.prepareHand();
+            player.clickPrompt('Ready');
+        });
+    }
+
     completeShootoutResolutionStep() {
         this.guardCurrentPhase('shootout');
-        this.guardCurrentPlayWindow('resolution');
+        this.guardCurrentPlayWindow('shootout resolution');
         this.eachPlayerInFirstPlayerOrder(player => player.clickPrompt('Pass'));
     }
 
     doneShootoutResolutionStep(player) {
         this.guardCurrentPhase('shootout');
-        this.guardCurrentPlayWindow('resolution');
+        this.guardCurrentPlayWindow('shootout resolution');
         player.clickPrompt('Done');
+    }
+
+    completeTakeYerLumpsStep() {
+        this.guardCurrentPhase('shootout');
+        this.eachPlayerInShootoutLoseWinOrder(player => {
+            if(player.hasPromptButton('Ace')) {
+                player.clickPrompt('Done');
+            }
+        });
     }
 
     removeFromPosse(card) {

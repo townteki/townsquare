@@ -163,7 +163,8 @@ class TownSquare extends GameLocation {
             title: 'Town Square', 
             uuid: TownSquareUUID,
             getType: () => 'townsquare',
-            getLocation: () => this
+            getLocation: () => this,
+            gamelocation: 'townsquare'
         }), null, null);
 
         this.key = 'townsquare';
