@@ -1,7 +1,8 @@
 const AbilityTargetMessages = require('./AbilityTargetMessages');
 const AbilityChoiceSelection = require('./AbilityChoiceSelection');
-const CardSelector = require('./CardSelector.js');
+const CardSelector = require('./CardSelector');
 const Messages = require('./Messages');
+const BaseCardSelector = require('./CardSelectors/BaseCardSelector');
 
 class AbilityTarget {
     static create(name, properties) {
@@ -84,6 +85,25 @@ class AbilityTarget {
     resolveAction(result, context) {
         context.choosingPlayer = result.choosingPlayer;
         context.currentTargetSelection = result;
+
+        if(BaseCardSelector.isAllowedSpecialTarget(this.cardType)) {
+            switch(this.cardType) {
+                case 'townsquare':
+                    result.resolve(context.game.townsquare.locationCard); 
+                    this.messages.outputSelected(context.game, context);
+                    return;
+                case 'currentHome':
+                    result.resolve(context.choosingPlayer.getOutfitCard()); 
+                    this.messages.outputSelected(context.game, context);
+                    return;
+                case 'location':
+                    break;
+                default:
+                    this.messages.outputUnable(context.game, context);
+                    result.reject();
+                    return;
+            }
+        }
 
         let unableToSelect = !this.selector.hasEnoughTargets(context) || this.selector.optional && result.hasNoChoices();
         if(this.ifAble && unableToSelect) {

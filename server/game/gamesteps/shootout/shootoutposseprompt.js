@@ -40,7 +40,11 @@ class ShootoutPossePrompt extends UiPrompt {
                     return true;
                 },
                 onCancel: (player) => {
-                    this.joinLeaderAndMark(player);
+                    if(this.shootout.isJob()) {
+                        this.shootout.recordJobStatus();
+                    } else {
+                        this.joinLeaderAndMark(player);
+                    }
                     this.complete();
                     return true;
                 }

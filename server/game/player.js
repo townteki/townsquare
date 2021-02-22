@@ -409,6 +409,10 @@ class Player extends Spectator {
         this.moveCard(this.outfit, 'play area');
     }    
 
+    getOutfitCard() {
+        return this.outfit.locationCard();
+    }
+
     initialise() {
         this.prepareDecks();
 

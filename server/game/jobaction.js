@@ -4,6 +4,9 @@ class JobAction extends CardAction {
     constructor(game, card, properties) {
         super(game, card, properties);
         this.onSuccess = properties.onSuccess;
+        if(!this.onSuccess) {
+            throw new Error('Job Actions must have a `onSuccess` property.');
+        }
         this.onFail = properties.onFail || (() => true);
         this.statusRecorded = false;
         this.leaderCondition = properties.leaderCondition || (() => true);

@@ -6,6 +6,7 @@ const AbilityMessage = require('./AbilityMessage');
 const AbilityTarget = require('./AbilityTarget.js');
 const ChooseGameAction = require('./GameActions/ChooseGameAction');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper');
+const BaseCardSelector = require('./CardSelectors/BaseCardSelector');
 
 /**
  * Base class representing an ability that can be done by the player. This
@@ -58,7 +59,11 @@ class BaseAbility {
 
     buildTargets(properties) {
         if(properties.target) {
-            return [AbilityTarget.create('target', properties.target)];
+            let target = properties.target;
+            if(typeof(target) === 'string' && BaseCardSelector.isAllowedSpecialTarget(target)) {
+                target = { cardType: target, autoSelect: true};
+            }
+            return [AbilityTarget.create('target', target)];
         }
 
         if(properties.targets) {

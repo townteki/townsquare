@@ -11,7 +11,8 @@ const ProxiedGameFlowWrapperMethods = [
     'completeHighNoonPhase', 'doneHighNoonPhase', 'completeGamblingPhase',
     'completeUpkeepPhase', 'completeShootoutPlaysStep', 'doneShootoutPlaysStep', 
     'completeShootoutResolutionStep', 'doneShootoutResolutionStep', 'drawStartingPosse',
-    'skipToHighNoonPhase', 'removeFromPosse', 'discardDrawHand'
+    'skipToHighNoonPhase', 'removeFromPosse', 'discardDrawHand', 'completeShootoutDrawStep',
+    'eachPlayerInShootoutLoseWinOrder', 'completeTakeYerLumpsStep'
 ];
 
 const deckBuilder = new DeckBuilder();
