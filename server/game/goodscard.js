@@ -4,7 +4,12 @@ class GoodsCard extends DrawCard {
     constructor(owner, cardData) {
         super(owner, cardData);
         this.traded = false;
+        this.canTrade = true;
         this.resetHandler = () => this.reset();
+    }
+
+    get difficulty() {
+        return this.keywords.getDifficulty();
     }
 
     canAttach(player, card) {
@@ -36,6 +41,10 @@ class GoodsCard extends DrawCard {
         return false;
     }
 
+    canBeTraded() {
+        return this.canTrade;
+    }
+
     wasTraded() {
         return this.traded;
     }
@@ -50,6 +59,26 @@ class GoodsCard extends DrawCard {
 
     reset() {
         this.traded = false;
+    }
+
+    isHex() {
+        return this.hasKeyword('Hex');
+    }
+
+    isMiracle() {
+        return this.hasKeyword('Miracle');
+    }
+
+    isSpirit() {
+        return this.hasKeyword('Spirit');
+    }
+
+    isTotem() {
+        return this.hasKeyword('Totem');
+    }
+
+    isGadget() {
+        return this.hasKeyword('Gadget');
     }
 }
 

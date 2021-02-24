@@ -15,6 +15,7 @@ const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSet
 const {Tokens} = require('./Constants');
 const JobAction = require('./jobaction');
 const NullCard = require('./nullcard');
+const SpellAction = require('./spellaction');
 
 class BaseCard {
     constructor(owner, cardData) {
@@ -129,6 +130,11 @@ class BaseCard {
     job(properties) {
         var job = new JobAction(this.game, this, properties);
         this.abilities.actions.push(job);
+    }
+
+    spell(properties) {
+        var spell = new SpellAction(this.game, this, properties);
+        this.abilities.actions.push(spell);
     }
 
     //Comprehensive Rules React Priorities

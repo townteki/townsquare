@@ -20,6 +20,7 @@ class DudeCard extends DrawCard {
         this.controlDeterminator = 'influence:deed';
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
+        this.spellFunc = spell => spell.parent === this;
         this.setupDudeCardAbilities();
     }
 
@@ -54,6 +55,25 @@ class DudeCard extends DrawCard {
                 return this.influence;
             case 'bullets':
                 return this.bullets;
+        }
+    }
+
+    getSkillRating(skillName) {
+        return this.keywords.getSkillRating(skillName);
+    }
+
+    getSkillRatingForCard(spellOrGadget) {
+        if(spellOrGadget.isMiracle()) {
+            return this.getSkillRating('blessed');
+        }
+        if(spellOrGadget.isHex()) {
+            return this.getSkillRating('huckster');
+        }
+        if(spellOrGadget.isSpirit() || spellOrGadget.isTotem()) {
+            return this.getSkillRating('shaman');
+        }
+        if(spellOrGadget.isGadget()) {
+            return this.getSkillRating('mad scientist');
         }
     }
 
@@ -332,6 +352,24 @@ class DudeCard extends DrawCard {
 
     isHarrowed() {
         return this.hasKeyword('harrowed');
+    }
+
+    isSkilled() {
+        return this.hasKeyword('mad scientist') || this.isSpellCaster();
+    }
+
+    isSpellCaster() {
+        return this.hasKeyword('blessed') || this.hasKeyword('huckster') || this.hasKeyword('shaman');
+    }
+
+    canCastSpell(spell) {
+        if(!this.isSpellCaster()) {
+            return false;
+        }
+        if(!this.controller.isValidSkillCombination(this, spell)) {
+            return false;
+        }
+        return this.spellFunc(spell);
     }
 
     leavesPlay() {

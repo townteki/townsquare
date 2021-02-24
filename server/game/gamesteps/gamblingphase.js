@@ -71,8 +71,8 @@ class GamblingPhase extends Phase {
 
         // TODO M2 need to resolve situation when there is exact tie and no winner
         // for now it will just put some player as first player
-        if(!winner) {
-            winner = { player: this.game.getPlayers()[0] };
+        if(!winner.player) {
+            winner.player = this.game.getPlayers()[0];
             this.game.addAlert('danger', 'The result was exact tie. Setting {0} as winner', winner.player, this.lowballPot);
         } else {
             if(winner.onTiebreaker) {
