@@ -30,7 +30,8 @@
 			"",
 			"$1.code = '${3:code}';",
 			"",
-			"module.exports = $1;"
+			"module.exports = $1;",
+			""
 		],
 		"description": "Template for new Dude card"
 	},
@@ -49,7 +50,8 @@
 			"",
 			"$1.code = '${3:code}';",
 			"",
-			"module.exports = $1;"
+			"module.exports = $1;",
+			""
 		],
 		"description": "Template for new Deed card"
 	},
@@ -68,9 +70,30 @@
 			"",
 			"$1.code = '${3:code}';",
 			"",
-			"module.exports = $1;"
+			"module.exports = $1;",
+			""
 		],
 		"description": "Template for new Goods card"
+	},
+
+	"Spell Template": {
+		"scope": "javascript,typescript",
+		"prefix": "spellcard",
+		"body": [
+			"const SpellCard = require('../../spellcard.js');",
+			"",
+			"class ${1:SpellName} extends SpellCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2:spellaction}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;",
+			""
+		],
+		"description": "Template for new Spell card"
 	},
 
 	"Action Template": {
@@ -87,7 +110,8 @@
 			"",
 			"$1.code = '${3:code}';",
 			"",
-			"module.exports = $1;"
+			"module.exports = $1;",
+			""
 		],
 		"description": "Template for new Action card"
 	},
@@ -205,6 +229,31 @@
 			"});"
 		],
 		"description": "Card job"
+	},
+
+	"Card Spell": {
+		"scope": "javascript,typescript",
+		"prefix": "spellaction",
+		"body": [
+			"this.spell({",
+			"\ttitle: '${1:Title}',",
+			"\tplayType: '${2:noon}',",     
+			"\tcost: ability.costs.${3:bootSelf()},",  
+			"\ttarget: ${5:targetselect}",
+			"\thandler: context => {",
+			"\t\t$20",
+			"\t\tthis.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target);",
+			"\t},",
+			"\tonSuccess: (card) => {",
+			"\t\t$21",
+			"\t},",
+			"\tonFail: (card) => {",
+			"\t\t$22",
+            "\t},",
+			"\tsource: this",
+			"});"
+		],
+		"description": "Spell action"
 	},
 
 	"Trait Reaction": {

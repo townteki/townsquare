@@ -16,9 +16,9 @@ const PlayActionPrompt = require('./gamesteps/playactionprompt.js');
 const PlayerPromptState = require('./playerpromptstate.js');
 const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
+const GhostRockSource = require('./GhostRockSource.js');
 
 const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
-const GhostRockSource = require('./GhostRockSource.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -1012,24 +1012,64 @@ class Player extends Spectator {
         return event;
     }
 
-    // TODO M2 improve pull and make it an action
-    pull() {
+    pull(properties) {
+        let props = { 
+            successCondition: properties.successCondition || (() => true), 
+            successHandler: properties.successHandler || (() => true), 
+            failHandler: properties.failHandler || (() => true),
+            pullBonus: properties.pullBonus || 0,
+            source: properties.source,
+            player: this
+        };
+        let handlePulledCard = function(player, card) {
+            if(card.getType() === 'joker') {
+                player.aceCard(card);
+            } else {
+                player.moveCard(card, 'discard pile', { isPull: true });
+            }
+        };
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
         }
         let pulledCard = this.drawDeck[0];
-        this.moveCard(pulledCard, 'discard pile', { isPull: true });
-        this.game.raiseEvent('onCardPulled', { card: pulledCard }, event => {
-            if(event.card.getType() === 'joker') {
-                this.aceCard(pulledCard);
-            }
-        });
-        return pulledCard;
+        this.removeCardFromPile(pulledCard);
+        this.game.raiseEvent('onCardPulled', { card: pulledCard });
+        let pulledValue = pulledCard.value;
+        if(pulledCard.getType() === 'joker') {
+            pulledValue = 13;
+            /* TODO M2 put here prompt to select value (kung fu wants low value)
+            this.game.promptWithMenu(this, pulledCard, {
+                activePrompt: {
+                    menuTitle: '',
+                    buttons: [
+                        { text: '1', method: 'selectJokerValue', arg: '1' }
+                    ]
+                },
+                source: pulledCard
+            });
+            */
+        }
+        if(props.successCondition(pulledValue + props.pullBonus)) {
+            this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue: pulledValue, pulledCard: pulledCard }), event => {
+                event.successHandler(pulledCard);
+                this.game.addMessage('{0} pulled {1} ({2}) as check for {3} and succeeded.', this, event.pulledValue, event.pulledCard, event.source);
+                handlePulledCard(event.player, event.pulledCard);
+            });
+        } else {
+            this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue: pulledValue, pulledCard: pulledCard }), event => {
+                event.failHandler(pulledCard);
+                this.game.addMessage('{0} pulled {1} ({2}) as check for {3] and failed.', this, event.pulledValue, event.pulledCard, event.source);
+                handlePulledCard(event.player, event.pulledCard);
+            });            
+        }
     }
 
-    pullForSkill(difficulty, skill) {
-        let pulledCard = this.pull();
-        return pulledCard.value + skill - difficulty;
+    pullForSkill(difficulty, skillRating, properties) {
+        let props = Object.assign(properties, { 
+            successCondition: pulledValue => pulledValue >= difficulty, 
+            pullBonus: skillRating 
+        });
+        this.pull(props);
     }
 
     returnCardToHand(card, allowSave = true) {
@@ -1338,6 +1378,21 @@ class Player extends Spectator {
 
     isTimerEnabled() {
         return !this.noTimer && this.user.settings.windowTimer !== 0;
+    }
+
+    isValidSkillCombination(skilledDude, spellOrGadget) {
+        if(skilledDude.hasKeyword('blessed')) {
+            return spellOrGadget.getType() === 'spell' && spellOrGadget.isMiracle();
+        }
+        if(skilledDude.hasKeyword('huckster')) {
+            return spellOrGadget.getType() === 'spell' && spellOrGadget.isHex();
+        }
+        if(skilledDude.hasKeyword('blessed')) {
+            return spellOrGadget.getType() === 'spell' && (spellOrGadget.isSpirit() || spellOrGadget.isTotem());
+        }
+        if(skilledDude.hasKeyword('mad scientist')) {
+            return spellOrGadget.hasKeyword('gadget');
+        }
     }
 
     getState(activePlayer) {

@@ -66,7 +66,7 @@ class CardAction extends BaseAbility {
             this.cost = this.cost.concat(Costs.playAction());
         }
 
-        if(!this.gameAction) {
+        if(!this.gameAction && card.getType() !== 'spell') {
             throw new Error('Actions must have a `gameAction` or `handler` property.');
         }
     }

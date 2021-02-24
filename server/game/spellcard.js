@@ -1,6 +1,11 @@
-const DrawCard = require('./drawcard.js');
+const GoodsCard = require('./goodscard.js');
 
-class SpellCard extends DrawCard {
+class SpellCard extends GoodsCard {
+    constructor(owner, cardData) {
+        super(owner, cardData);
+        this.canTrade = false;
+    }
+
     canAttach(player, card) {
         if(card.getType() === 'dude') {
             if(card.hasKeyword('Huckster') && this.isHex()) {
@@ -13,22 +18,6 @@ class SpellCard extends DrawCard {
         } else if(card.isLocationCard() && this.isTotem()) {
             return true;
         }
-    }
-
-    isHex() {
-        return this.hasKeyword('Hex');
-    }
-
-    isMiracle() {
-        return this.hasKeyword('Miracle');
-    }
-
-    isSpirit() {
-        return this.hasKeyword('Spirit');
-    }
-
-    isTotem() {
-        return this.hasKeyword('Totem');
     }
 }
 
