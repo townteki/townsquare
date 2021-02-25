@@ -13,7 +13,7 @@ class RaiseBountyCost {
         context.game.resolveGameAction(
             GameActions.simultaneously(
                 cards.map(card => GameActions.addBounty({ card }))
-            )
+            ), context
         );
     }
 }

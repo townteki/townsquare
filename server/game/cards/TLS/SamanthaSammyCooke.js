@@ -32,7 +32,7 @@ class SamanthaSammyCooke extends DudeCard {
                         source: this
                     });
                 } else {
-                    this.game.resolveGameAction(GameActions.discardCard({ card: context.target }));
+                    this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
                     this.game.addMessage('{0} uses {1} to discard {2}.', context.player, this, context.target);
                 }
             }

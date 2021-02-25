@@ -29,8 +29,8 @@ class LawDogs extends OutfitCard {
                         let action = GameActions.simultaneously(
                             cards.map(card => GameActions.bootCard({ card: card }))
                         );
-                        this.game.resolveGameAction(action).thenExecute(() => 
-                            this.game.resolveGameAction(GameActions.addBounty({ card: context.target })));
+                        this.game.resolveGameAction(action, context).thenExecute(() => 
+                            this.game.resolveGameAction(GameActions.addBounty({ card: context.target })), context);
                         this.game.addMessage('{0} uses {1} to raise bounty on {2}.', player, this, context.target);
                         return true;
                     }

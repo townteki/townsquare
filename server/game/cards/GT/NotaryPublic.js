@@ -18,7 +18,7 @@ class NotaryPublic extends DeedCard {
                 cardType: ['deed']
             },
             handler: context => {
-                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }));
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 if(context.target.hasKeyword('Government')) {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to increase bounty',
@@ -26,7 +26,7 @@ class NotaryPublic extends DeedCard {
                         cardCondition: { location: 'play area' },
                         cardType: 'dude',
                         onSelect: (player, card) => {
-                            this.game.resolveGameAction(GameActions.addBounty({ card: card }));
+                            this.game.resolveGameAction(GameActions.addBounty({ card: card }), context);
                             this.game.addMessage('{0} uses {1} to boot {2} and increase bounty on {3}.', player, this, context.target, card);
                             return true;
                         }
@@ -47,7 +47,7 @@ class NotaryPublic extends DeedCard {
                                         card: dude, 
                                         targetUuid: location.uuid, 
                                         needToBoot: false, 
-                                        allowBooted: true }));   
+                                        allowBooted: true }), context);   
                                     this.game.addMessage('{0} uses {1} to boot {2} and move {3} to {4}.', player, this, context.target, dude, location);                                 
                                     return true;
                                 }

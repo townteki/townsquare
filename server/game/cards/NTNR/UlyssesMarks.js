@@ -21,7 +21,11 @@ class UlyssesMarks extends DudeCard {
                         cardType: 'dude',
                         autoSelect: true,
                         onSelect: (player, card) => {
-                            this.game.resolveGameAction(GameActions.moveDude({ card: card, targetUuid: this.game.townsquare.uuid, options: { needToBoot: true, allowBooted: true } }));
+                            this.game.resolveGameAction(GameActions.moveDude({ 
+                                card: card, 
+                                targetUuid: this.game.townsquare.uuid, 
+                                options: { needToBoot: true, allowBooted: true } 
+                            }), context);
                             this.game.addMessage('{0} uses {1} to kick {2} out of the {3}.', player, this, card, this.locationCard);
                             return true;
                         },

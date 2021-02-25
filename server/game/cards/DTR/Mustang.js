@@ -9,7 +9,7 @@ class Mustang extends GoodsCard {
             cost: ability.costs.bootSelf(),  
             target: { cardType: 'location' },
             handler: context => {
-                this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.uuid, options: { removeAll: true } }));
+                this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.uuid, options: { removeAll: true } }), context);
                 this.game.addMessage('{0} uses {1} with his rider {2} to move to {3}.', context.player, this, this.parent, context.target.title);
             }
         });

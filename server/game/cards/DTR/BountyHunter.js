@@ -19,7 +19,7 @@ class BountyHunter extends ActionCard {
                     callee: context.target,
                     isCardEffect: true,
                     canReject: false
-                }));
+                }), context);
                 this.game.addMessage('{0} pays for a {1} to hunt {2}.', context.player, this, context.target);
             }
         });

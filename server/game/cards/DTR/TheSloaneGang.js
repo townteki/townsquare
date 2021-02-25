@@ -13,7 +13,7 @@ class TheSloaneGang extends OutfitCard {
                 cardType: 'dude'
             },
             handler: context => {
-                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }));
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 if(!this.dudesOnAMission) {
                     this.dudesOnAMission = [context.target];
                     this.game.once('onSundownAfterVictoryCheck', () => {
