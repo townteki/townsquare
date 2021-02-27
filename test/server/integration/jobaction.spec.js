@@ -63,6 +63,13 @@ describe('JobAction', function() {
                     it('should succeed the job', function() {
                         expect(this.jobAbility.setResult).toHaveBeenCalledWith(true, jasmine.any(Object));
                     });
+
+                    it('should send dudes home booted', function() {
+                        expect(this.tommy.booted).toBe(true);
+                        expect(this.tommy.gamelocation).toBe(this.player1.player.outfit.uuid);
+                        expect(this.jake.booted).toBe(true);
+                        expect(this.jake.gamelocation).toBe(this.player1.player.outfit.uuid);
+                    });
                 });
 
                 describe('when no opposing dudes are selected', function() {
@@ -74,6 +81,13 @@ describe('JobAction', function() {
                     it('should succeed the job', function() {
                         expect(this.jobAbility.setResult).toHaveBeenCalledWith(true, jasmine.any(Object));
                     });
+
+                    it('should send dudes home booted', function() {
+                        expect(this.tommy.booted).toBe(true);
+                        expect(this.tommy.gamelocation).toBe(this.player1.player.outfit.uuid);
+                        expect(this.jake.booted).toBe(true);
+                        expect(this.jake.gamelocation).toBe(this.player1.player.outfit.uuid);
+                    });
                 });
 
                 describe('opposed', function() {
@@ -83,10 +97,22 @@ describe('JobAction', function() {
                         this.player2.clickPrompt('Done');
                     });
 
-                    it('posse empty in shootout plays', function() {
-                        this.removeFromPosse(this.barton);
-                        this.player1.clickPrompt('Pass');
-                        expect(this.jobAbility.setResult).toHaveBeenCalledWith(true, jasmine.any(Object));
+                    describe('posse empty in shootout plays', function() {
+                        beforeEach(function() {
+                            this.removeFromPosse(this.barton);
+                            this.player1.clickPrompt('Pass');
+                        });
+
+                        it('should succeed the job', function() {
+                            expect(this.jobAbility.setResult).toHaveBeenCalledWith(true, jasmine.any(Object));
+                        });
+
+                        it('should send dudes home booted', function() {
+                            expect(this.tommy.booted).toBe(true);
+                            expect(this.tommy.gamelocation).toBe(this.player1.player.outfit.uuid);
+                            expect(this.jake.booted).toBe(true);
+                            expect(this.jake.gamelocation).toBe(this.player1.player.outfit.uuid);
+                        });
                     });
 
                     describe('posse running home', function() {
@@ -118,6 +144,10 @@ describe('JobAction', function() {
                                 }
                             });                           
                             expect(this.jobAbility.setResult).toHaveBeenCalledWith(true, jasmine.any(Object));
+                            expect(this.tommy.booted).toBe(true);
+                            expect(this.tommy.gamelocation).toBe(this.player1.player.outfit.uuid);
+                            expect(this.jake.booted).toBe(true);
+                            expect(this.jake.gamelocation).toBe(this.player1.player.outfit.uuid);
                         });
                     });
                 });

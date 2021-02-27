@@ -614,10 +614,21 @@ class Player extends Spectator {
 
         card.facedown = false;
         card.booted = params.playingType !== 'setup' && !!card.entersPlayBooted || !!updatedParams.booted;
+        let costText = '';
+        if(updatedParams.context.costs && updatedParams.context.costs.ghostrock !== undefined && updatedParams.context.costs.ghostrock !== null) {
+            costText = ', costing ' + updatedParams.context.costs.ghostrock + ' GR';
+        }
         switch(card.getType()) {
             case 'spell':
             case 'goods':
-                this.game.queueStep(new AttachmentPrompt(this.game, this, card, updatedParams, ((card, params) => this.entersPlay(card, params))));
+                this.game.queueStep(new AttachmentPrompt(this.game, this, card, updatedParams, ((card, target, params) => {
+                    if(params.playingType === 'shoppin') {
+                        this.game.addMessage('{0} does Shoppin\' to attach {1} to {2}{3}', this, card, target, costText);
+                    } else {
+                        this.game.addMessage('{0} brings into play {1} attaching it to {2}{3}', this, card, target, costText);
+                    }
+                    this.entersPlay(card, params);
+                })));
                 break;
             case 'dude':  
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
@@ -632,18 +643,18 @@ class Player extends Spectator {
                     if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                         this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
                     } else {
-                        this.game.addMessage('{0} does Shoppin\' to hire {1}, costing {2} GR', this, card, updatedParams.context.costs.ghostrock);
+                        this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
                     }
                 } else if(this.game.currentPhase !== 'setup') {
-                    this.game.addMessage('{0} brings into play dude {1}', this, card);
+                    this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
                 }
                 break;
             case 'deed':
                 this.addDeedToStreet(card, updatedParams.target);
                 if(updatedParams.playingType === 'shoppin') {
-                    this.game.addMessage('{0} does Shoppin\' to build {1} on his street, costing {2} GR', this, card, updatedParams.context.costs.ghostrock);
+                    this.game.addMessage('{0} does Shoppin\' to build {1} on his street{2}', this, card, costText);
                 } else if(this.game.currentPhase !== 'setup') {
-                    this.game.addMessage('{0} brings into play deed {1}', this, card);
+                    this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
                 }
                 this.entersPlay(card, updatedParams);
                 break;
@@ -716,12 +727,12 @@ class Player extends Spectator {
         let getPullProperties = scientist => {
             return {
                 successHandler: pulledCard => {
-                    successHandler(pulledCard);
                     this.game.addMessage('{0} successfuly invent {1} using the {2}', this, gadget, scientist);
+                    successHandler(pulledCard);
                 },
                 failHandler: () => {
-                    this.moveCard(gadget, 'discard pile');
                     this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);
+                    this.moveCard(gadget, 'discard pile');
                 },
                 source: gadget
             };
@@ -761,22 +772,24 @@ class Player extends Spectator {
         return true;
     }
 
-    attach(attachment, card, playingType) {
+    attach(attachment, card, playingType, attachCallback) {
         if(!card || !attachment || !this.canAttach(attachment, card)) {
             return false;
         }
 
-        if(attachment.isGadget() && playingType === 'shoppin' || playingType === 'ability') {
+        if(attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
             let scientist = playingType === 'shoppin' ? card : null;
-            if(!this.isGadgetInvented(attachment, scientist, () => this.performAttach(attachment, card, playingType))) {
+            if(!this.isGadgetInvented(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback))) {
                 return false;
             }
         } else {
-            this.performAttach(attachment, card, playingType);
+            this.performAttach(attachment, card, playingType, attachCallback);
         }
+
+        return true;
     }
 
-    performAttach(attachment, card, playingType) {
+    performAttach(attachment, card, playingType, attachCallback) {
         let originalLocation = attachment.location;
         let originalParent = attachment.parent;
 
@@ -794,6 +807,9 @@ class Player extends Spectator {
         }
         attachment.moveTo('play area', card);
         card.attachments.push(attachment);
+        if(attachCallback) {
+            attachCallback(attachment, card, playingType);
+        }
         if(playingType === 'trading') {
             attachment.traded = true;
         }
@@ -816,8 +832,6 @@ class Player extends Spectator {
 
             this.game.resolveEvent(event);
         }
-
-        return true;
     }
 
     setDrawDeckVisibility(value) {
@@ -1101,14 +1115,14 @@ class Player extends Spectator {
         }
         if(props.successCondition(pulledValue + props.pullBonus)) {
             this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue: pulledValue, pulledCard: pulledCard }), event => {
-                event.successHandler(pulledCard);
                 this.game.addMessage('{0} pulled {1} ({2}) as check for {3} and succeeded.', this, event.pulledValue, event.pulledCard, event.source);
+                event.successHandler(pulledCard);
                 handlePulledCard(event.player, event.pulledCard);
             });
         } else {
             this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue: pulledValue, pulledCard: pulledCard }), event => {
-                event.failHandler(pulledCard);
                 this.game.addMessage('{0} pulled {1} ({2}) as check for {3} and failed.', this, event.pulledValue, event.pulledCard, event.source);
+                event.failHandler(pulledCard);
                 handlePulledCard(event.player, event.pulledCard);
             });            
         }

@@ -2,9 +2,10 @@ const GameAction = require('./GameAction');
 const AbilityMessage = require('../AbilityMessage');
 const CardMatcher = require('../CardMatcher');
 const Shuffle = require('./Shuffle');
+const Event = require('../event');
 
 class Search extends GameAction {
-    constructor({ gameAction, location, match, message, cancelMessage, topCards, numToSelect, player, searchedPlayer, title }) {
+    constructor({ gameAction, location, match, message, cancelMessage, topCards, numToSelect, player, searchedPlayer, title, handler }) {
         super('search');
         this.gameAction = gameAction;
         this.match = match || {};
@@ -14,8 +15,12 @@ class Search extends GameAction {
         this.searchedPlayerFunc = searchedPlayer || this.playerFunc;
         this.title = title;
         this.location = location || ['draw deck'];
+        this.handler = handler;
+        if(this.handler && this.gameAction) {
+            throw new Error('Search cannot have both `gameAction` and `handler` property.');
+        }
         this.message = AbilityMessage.create(message);
-        this.cancelMessage = AbilityMessage.create(cancelMessage || '{player} uses {source} to search their deck but does not find a card');
+        this.cancelMessage = cancelMessage;
     }
 
     canChangeGameState({ context }) {
@@ -30,8 +35,9 @@ class Search extends GameAction {
             const revealFunc = this.createRevealDrawDeckCards({ choosingPlayer: event.player, searchedPlayer: event.searchedPlayer, numCards: this.topCards });
             const searchCondition = this.createSearchCondition(event.searchedPlayer);
             const modeProps = this.numToSelect ? { mode: 'upTo', numCards: this.numToSelect } : {};
-
-            context.game.cardVisibility.addRule(revealFunc);
+            if(this.location.includes('draw deck')) {
+                context.game.cardVisibility.addRule(revealFunc);
+            }
             context.game.promptForSelect(event.player, Object.assign(modeProps, {
                 activePromptTitle: this.title,
                 context: context,
@@ -39,24 +45,43 @@ class Search extends GameAction {
                 onSelect: (player, result) => {
                     context.searchTarget = result;
                     this.message.output(context.game, context);
-                    event.thenAttachEvent(this.gameAction.createEvent(context));
+                    if(this.gameAction) {
+                        event.thenAttachEvent(this.gameAction.createEvent(context));
+                    }
+                    if(this.handler) {
+                        let searchTargets = context.searchTarget;
+                        if(!Array.isArray(context.searchTarget)) {
+                            searchTargets = [context.searchTarget];
+                        }
+                        searchTargets.forEach(targetCard => {
+                            let thenEvent = new Event('onActionOnSearchedCard', { card: targetCard }, event => this.handler(event.card));
+                            event.thenAttachEvent(thenEvent);
+                        });
+                    }
                     return true;
                 },
                 onCancel: () => {
-                    this.cancelMessage.output(context.game, context);
+                    let pilesMessage = context.game.getArrayAsText(this.location);
+                    let formattedCancelMessage = AbilityMessage.create(this.cancelMessage || '{player} uses {source} to search their ' + pilesMessage + ' but does not find a card');
+                    formattedCancelMessage.output(context.game, context);
                     return true;
                 },
                 source: context.source
             }));
-            context.game.queueSimpleStep(() => {
-                context.game.cardVisibility.removeRule(revealFunc);
-                event.thenAttachEvent(Shuffle.createEvent({ player: event.searchedPlayer }));
-                context.game.addMessage('{0} shuffles their deck', event.searchedPlayer);
-            });
+            if(this.location.includes('draw deck')) {
+                context.game.queueSimpleStep(() => {
+                    context.game.cardVisibility.removeRule(revealFunc);
+                    event.thenAttachEvent(Shuffle.createEvent({ player: event.searchedPlayer }));
+                    context.game.addMessage('{0} shuffles their deck', event.searchedPlayer);
+                });
+            }
         });
     }
 
     createRevealDrawDeckCards({ choosingPlayer, searchedPlayer, numCards }) {
+        if(!this.location.includes('draw deck')) {
+            return () => true;
+        }
         const validLocations = this.location;
         return function(card, player) {
             if(player !== choosingPlayer) {
@@ -84,6 +109,10 @@ class Search extends GameAction {
 
             if(this.topCards && !topCards.includes(card)) {
                 return false;
+            }
+
+            if(!this.gameAction) {
+                return true;
             }
 
             const result = this.numToSelect ? [card] : card;

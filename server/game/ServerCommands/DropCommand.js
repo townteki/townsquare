@@ -1,9 +1,8 @@
 const PublicLocations = new Set(['dead pile', 'discard pile', 'out of game', 'play area']);
-const AbilityContext = require('../AbilityContext');
 const GameActions = require('../GameActions');
 const DiscardCard = require('../GameActions/DiscardCard');
 const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
-const ShoppinCardAction = require('../PlayActions/ShoppinCardAction');
+const StandardActions = require('../PlayActions/StandardActions');
 
 class DropCommand {
     constructor(game, player, card, targetLocation, gameLocation) {
@@ -40,14 +39,7 @@ class DropCommand {
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
                     title: 'Are you perfoming Shoppin\' play?',
                     onYes: () => {
-                        let shoppingAction = new ShoppinCardAction(this.gameLocation);
-                        let abilityContext = new AbilityContext({ 
-                            ability: shoppingAction,
-                            game: this.game, 
-                            source: this.card, 
-                            player: this.player
-                        });
-                        this.game.resolveAbility(shoppingAction, abilityContext);
+                        this.game.resolveStandardAbility(StandardActions.shoppin(this.gameLocation), this.player, this.card);
                     },
                     onNo: () => this.game.resolveGameAction(GameActions.putIntoPlay({ 
                         player: this.player,

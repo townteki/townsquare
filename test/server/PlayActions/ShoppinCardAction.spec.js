@@ -2,7 +2,7 @@ const ShoppinCardAction = require('../../../server/game/PlayActions/ShoppinCardA
 
 describe('ShoppinCardAction', function () {
     beforeEach(function() {
-        this.gameSpy = jasmine.createSpyObj('game', ['addMessage', 'on', 'raiseEvent', 'removeListener']);
+        this.gameSpy = jasmine.createSpyObj('game', ['addMessage', 'on', 'raiseEvent', 'removeListener', 'resolveGameAction']);
         this.gameSpy.raiseEvent.and.callFake(function(name, params, handler) {
             handler({ context: params.context, playingType: params.playingType, target: params.target });
         });
@@ -15,6 +15,10 @@ describe('ShoppinCardAction', function () {
             player: this.playerSpy,
             source: this.cardSpy
         };
+        //this.gameSpy.resolveGameAction = jasmine.createSpy('resolveGameAction');
+        this.gameSpy.resolveGameAction.and.callFake(() => { 
+            return { thenExecute: () => true };
+        });
         this.action = new ShoppinCardAction();
     });
 
@@ -80,11 +84,8 @@ describe('ShoppinCardAction', function () {
         });
 
         it('should put the card into play', function() {
-            expect(this.playerSpy.putIntoPlay).toHaveBeenCalledWith(this.cardSpy, { 
-                playingType: 'shoppin', 
-                target: '', 
-                context: this.context 
-            });
+            // TODO M2 should probably do a better test to see if GameActions.putIntoPlay was called
+            expect(this.gameSpy.resolveGameAction).toHaveBeenCalled();
         });
     });
 });
