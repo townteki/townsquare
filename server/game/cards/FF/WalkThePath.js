@@ -18,7 +18,7 @@ class WalkThePath extends SpellCard {
                     card: context.target, 
                     targetUuid: this.parent.gamelocation, 
                     options: { needToBoot: false, allowBooted: true }
-                })).thenExecute(() => {
+                }), context).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, context.target, this.parent.locationCard);
                 });
             },
@@ -36,9 +36,9 @@ class WalkThePath extends SpellCard {
                 cardType: ['dude']
             },
             onSuccess: (context) => {
-                this.game.resolveGameAction(GameActions.joinPosse({ card: context.target })).thenExecute(event => {
+                this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }), context).thenExecute(event => {
                     if(event.card.booted) {
-                        this.game.resolveGameAction(GameActions.unbootCard({ card: context.target })).thenExecute(event => {
+                        this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context).thenExecute(event => {
                             if(event.card.booted) {
                                 this.game.addMessage('{0} uses {1} to join {2} to posse.', context.player, this, context.target);
                             } else {

@@ -12,8 +12,12 @@ class GoodsCard extends DrawCard {
         return this.keywords.getDifficulty();
     }
 
-    canAttach(player, card) {
+    canAttach(player, card, playingType) {
         if(!super.canAttach(player, card)) {
+            return false;
+        }
+
+        if(this.isGadget() && playingType === 'shoppin' && !card.hasKeyword('mad scientist')) {
             return false;
         }
 

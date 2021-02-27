@@ -50,17 +50,21 @@ class Shootout extends Phase {
             this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));
         } else {
             let opponent = this.leaderPlayer.getOpponent();
-            this.opposingPlayerName = opponent.name;
-            this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
-                title: 'Do you want to oppose?',
-                onYes: () => {
-                    this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
-                    this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
-                },
-                onNo: () => {
-                    this.recordJobStatus();
-                }
-            }));
+            if(this.game.getNumberOfPlayers() < 2) {
+                this.recordJobStatus();
+            } else {
+                this.opposingPlayerName = opponent.name;
+                this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
+                    title: 'Do you want to oppose?',
+                    onYes: () => {
+                        this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
+                        this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
+                    },
+                    onNo: () => {
+                        this.recordJobStatus();
+                    }
+                }));
+            }
         }
         this.leaderOpponentOrder = [this.leader.controller.name, this.opposingPlayerName];
     }
@@ -142,7 +146,9 @@ class Shootout extends Phase {
         var attackingPlayer = this.leaderPlayer;
         var defendingPlayer = this.opposingPlayer;
         attackingPlayer.phase = this.highNoonPhase;
-        defendingPlayer.phase = this.highNoonPhase;
+        if(defendingPlayer) {
+            defendingPlayer.phase = this.highNoonPhase;
+        }
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.game.endShootout(isCancel);

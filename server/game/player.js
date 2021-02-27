@@ -418,7 +418,7 @@ class Player extends Spectator {
     }    
 
     getOutfitCard() {
-        return this.outfit.locationCard();
+        return this.outfit.locationCard;
     }
 
     initialise() {
@@ -553,6 +553,13 @@ class Player extends Spectator {
 
         if(!params.isEffectExpiration && !this.canPlay(card, params.playingType)) {
             return false;
+        }
+
+        if(card.hasKeyword('gadget') && params.playingType === 'shoppin') {
+            let availableScientist = this.cardsInPlay.find(card => card.getType() === 'dude' && card.hasKeyword('mad scientist') && !card.booted);
+            if(!availableScientist) {
+                return false;
+            }
         }
 
         if(params.context && params.context.cardToUpgrade) {
@@ -705,17 +712,49 @@ class Player extends Spectator {
         });
     }
 
+    isGadgetInvented(gadget, scientist, successHandler) {
+        let getPullProperties = scientist => {
+            return {
+                successHandler: pulledCard => {
+                    successHandler(pulledCard);
+                    this.game.addMessage('{0} successfuly invent {1} using the {2}', this, gadget, scientist);
+                },
+                failHandler: () => {
+                    this.moveCard(gadget, 'discard pile');
+                    this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);
+                },
+                source: gadget
+            };
+        };
+        if(!scientist) {
+            this.game.promptForSelect(this, {
+                activePromptTitle: 'Select a Mad Scientist to invent ' + gadget.title,
+                waitingPromptTitle: 'Waiting for opponent to select Mad Scientist',
+                cardCondition: card => card.hasKeyword('mad scientist') && !card.booted,
+                cardType: 'dude',
+                onSelect: (player, card) => {
+                    this.bootCard(card, 'inventing');
+                    this.pullForSkill(gadget.difficulty, card.getSkillRatingForCard(gadget), getPullProperties(card));
+                    return true;
+                }
+            });
+        } else {
+            this.bootCard(scientist, 'inventing');
+            this.pullForSkill(gadget.difficulty, scientist.getSkillRatingForCard(gadget), getPullProperties(scientist));
+        }
+    }
+
     canAttach(attachment, card, playingType) {
         if(!attachment || !card) {
             return false;
         }
 
         // TODO M2 check if can be attached by discarding som other attachment (e.g. Weapon)
-        if(card.location !== 'play area' || card === attachment || !attachment.canAttach(this, card)) {
+        if(card.location !== 'play area' || card === attachment || !attachment.canAttach(this, card, playingType)) {
             return false;
         }
 
-        if(playingType === 'shoppin' && (card.getGameLocation().determineController(this.game) !== this || card.booted)) {
+        if(playingType === 'shoppin' && (card.getGameLocation().determineController() !== this || card.booted)) {
             return false;
         }
 
@@ -727,6 +766,17 @@ class Player extends Spectator {
             return false;
         }
 
+        if(attachment.isGadget() && playingType === 'shoppin' || playingType === 'ability') {
+            let scientist = playingType === 'shoppin' ? card : null;
+            if(!this.isGadgetInvented(attachment, scientist, () => this.performAttach(attachment, card, playingType))) {
+                return false;
+            }
+        } else {
+            this.performAttach(attachment, card, playingType);
+        }
+    }
+
+    performAttach(attachment, card, playingType) {
         let originalLocation = attachment.location;
         let originalParent = attachment.parent;
 
@@ -1058,7 +1108,7 @@ class Player extends Spectator {
         } else {
             this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue: pulledValue, pulledCard: pulledCard }), event => {
                 event.failHandler(pulledCard);
-                this.game.addMessage('{0} pulled {1} ({2}) as check for {3] and failed.', this, event.pulledValue, event.pulledCard, event.source);
+                this.game.addMessage('{0} pulled {1} ({2}) as check for {3} and failed.', this, event.pulledValue, event.pulledCard, event.source);
                 handlePulledCard(event.player, event.pulledCard);
             });            
         }
@@ -1387,7 +1437,7 @@ class Player extends Spectator {
         if(skilledDude.hasKeyword('huckster')) {
             return spellOrGadget.getType() === 'spell' && spellOrGadget.isHex();
         }
-        if(skilledDude.hasKeyword('blessed')) {
+        if(skilledDude.hasKeyword('shaman')) {
             return spellOrGadget.getType() === 'spell' && (spellOrGadget.isSpirit() || spellOrGadget.isTotem());
         }
         if(skilledDude.hasKeyword('mad scientist')) {

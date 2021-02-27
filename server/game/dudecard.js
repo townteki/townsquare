@@ -104,7 +104,7 @@ class DudeCard extends DrawCard {
             },
             targetController: 'opponent',
             handler: context => {
-                this.game.resolveGameAction(GameActions.callOut({ caller: this, callee: context.target, isCardEffect: false }));
+                this.game.resolveGameAction(GameActions.callOut({ caller: this, callee: context.target, isCardEffect: false }), context);
             },
             player: this.controller
         });

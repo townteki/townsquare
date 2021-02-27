@@ -13,7 +13,7 @@ class BootCost {
         context.game.resolveGameAction(
             GameActions.simultaneously(
                 cards.map(card => GameActions.bootCard({ card }))
-            )
+            ), context
         );
     }
 }

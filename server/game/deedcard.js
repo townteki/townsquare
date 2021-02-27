@@ -8,7 +8,7 @@ class DeedCard extends LocationCard {
 
     get controller() {
         if(this.location === 'play area' && this.gameLocationObject) {
-            this.controller = this.gameLocationObject.determineController(this.game);
+            this.controller = this.gameLocationObject.determineController();
         }
         return this.controllingPlayer;
     }

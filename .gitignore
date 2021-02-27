@@ -4,6 +4,7 @@ public
 typings
 coverage
 *.log
+*.code-workspace
 nodeconfig.js
 server/events.txt
 server/logs/*.gz

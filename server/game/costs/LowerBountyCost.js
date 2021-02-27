@@ -13,7 +13,7 @@ class LowerBountyCost {
         context.game.resolveGameAction(
             GameActions.simultaneously(
                 cards.map(card => GameActions.removeBounty({ card }))
-            )
+            ), context
         );
     }
 }

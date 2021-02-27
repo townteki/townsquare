@@ -11,7 +11,7 @@ class TheStakesJustRose extends ActionCard {
                 cardType: 'dude'
             },
             handler: context => {
-                this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }));
+                this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }), context);
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: ability.effects.setAsStud()

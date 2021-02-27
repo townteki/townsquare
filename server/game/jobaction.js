@@ -36,6 +36,7 @@ class JobAction extends CardAction {
     }
 
     startJob(leader, mark, context) {
+        this.context = context;
         if(this.bootLeader) {
             context.player.bootCard(leader);
         }
@@ -48,10 +49,10 @@ class JobAction extends CardAction {
             this.statusRecorded = true;
             if(isSuccessful) {
                 this.game.addMessage('{0} job marking {1} was successful.', this.card, job.mark);
-                this.onSuccess(job);
+                this.onSuccess(job, this.context);
             } else {
                 this.game.addMessage('{0} job marking {1} has failed.', this.card, job.mark);
-                this.onFail(job);
+                this.onFail(job, this.context);
             }
         }
     }

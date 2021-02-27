@@ -13,7 +13,7 @@ class UnbootCost {
         context.game.resolveGameAction(
             GameActions.simultaneously(
                 cards.map(card => GameActions.unbootCard({ card }))
-            )
+            ), context
         );
     }
 }

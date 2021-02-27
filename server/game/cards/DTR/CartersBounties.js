@@ -14,7 +14,7 @@ class CartersBounties extends DeedCard {
                 cardType: ['dude']
             },
             handler: context => {
-                this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }));
+                this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }), context);
                 this.game.addMessage('{0} uses {1} to move {2} to posse.', context.player, this, context.target);
             }
         });
