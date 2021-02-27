@@ -37,6 +37,7 @@ const Location = require('./gamelocation.js');
 const Shootout = require('./gamesteps/shootout.js');
 const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
 const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
+const AbilityContext = require('./AbilityContext.js');
 
 class Game extends EventEmitter {
     constructor(details, options = {}) {
@@ -110,6 +111,32 @@ class Game extends EventEmitter {
 
     get messages() {
         return this.gameChat.messages;
+    }
+
+    getArrayAsText(array, key) {
+        if(array.length === 1) {
+            if(key) {
+                return array[0][key];
+            }
+            return array[0];      
+        }
+        let arrayText = '';
+        for(let i = 0; i < array.length; i++) {
+            let itemText = '';
+            if(key) {
+                itemText = array[i][key];
+            } else {
+                itemText = array[i];
+            }
+            if(i === array.length - 1) {
+                arrayText += ' and ' + itemText;
+            } else if(i === 0) {
+                arrayText += itemText;
+            } else {
+                arrayText += ' ,' + itemText;
+            }
+        }
+        return arrayText;
     }
 
     getPlainTextLog() {
@@ -840,6 +867,16 @@ class Game extends EventEmitter {
 
     resolveAbility(ability, context) {
         this.queueStep(new AbilityResolver(this, ability, context));
+    }
+
+    resolveStandardAbility(ability, player, source) {
+        let abilityContext = new AbilityContext({ 
+            ability: ability,
+            game: this, 
+            source: source, 
+            player: player
+        });        
+        this.queueStep(new AbilityResolver(this, ability, abilityContext));
     }
 
     openAbilityWindow(properties) {

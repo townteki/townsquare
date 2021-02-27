@@ -56,6 +56,10 @@ class JobAction extends CardAction {
             }
         }
     }
+
+    reset() {
+        this.statusRecorded = false;
+    }
 }
 
 module.exports = JobAction;

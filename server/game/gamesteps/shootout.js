@@ -51,7 +51,7 @@ class Shootout extends Phase {
         } else {
             let opponent = this.leaderPlayer.getOpponent();
             if(this.game.getNumberOfPlayers() < 2) {
-                this.recordJobStatus();
+                this.endJob();
             } else {
                 this.opposingPlayerName = opponent.name;
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
@@ -61,7 +61,7 @@ class Shootout extends Phase {
                         this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
                     },
                     onNo: () => {
-                        this.recordJobStatus();
+                        this.endJob();
                     }
                 }));
             }
@@ -154,9 +154,20 @@ class Shootout extends Phase {
         this.game.endShootout(isCancel);
         if(this.isJob()) {
             this.options.jobAbility.setResult(this.jobSuccessful, this);
+            this.options.jobAbility.reset();
         }
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
         this.game.addAlert('phasestart', phaseName + ' ended!');        
+    }
+
+    endJob(recordStatus = true) {
+        if(!this.isJob()) {
+            return;
+        }
+        if(recordStatus) {
+            this.recordJobStatus();
+        }
+        this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false }));
     }
 
     queueStep(step) {
@@ -350,9 +361,7 @@ class Shootout extends Phase {
             this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
         } else {
-            if(this.isJob()) {
-                this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false })); 
-            }
+            this.endJob(false);
         }
     }
 

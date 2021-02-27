@@ -1,7 +1,7 @@
 const _ = require('underscore');
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
-const StandardPlayActions = require('./PlayActions/StandardActions');
+const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty.js');
 
 const LocationsWithEventHandling = ['play area', 'legend'];
@@ -274,7 +274,7 @@ class DrawCard extends BaseCard {
     }
 
     getPlayActions() {
-        return StandardPlayActions
+        return [StandardActions.shoppin()]
             .concat(this.abilities.playActions)
             .concat(this.abilities.actions.filter(action => !action.allowMenu()));
     }

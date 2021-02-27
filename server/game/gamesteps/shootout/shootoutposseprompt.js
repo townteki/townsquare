@@ -40,8 +40,8 @@ class ShootoutPossePrompt extends UiPrompt {
                     return true;
                 },
                 onCancel: (player) => {
-                    if(this.shootout.isJob()) {
-                        this.shootout.recordJobStatus();
+                    if(this.shootout.isJob() && this.shootout.opposingPlayer === player) {
+                        this.shootout.endJob();
                     } else {
                         this.joinLeaderAndMark(player);
                     }

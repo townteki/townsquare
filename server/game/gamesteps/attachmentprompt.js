@@ -18,13 +18,8 @@ class AttachmentPrompt extends UiPrompt {
             cardCondition: card => this.player.canAttach(this.attachmentCard, card, this.playingType) &&
                 (this.targetLocation === '' || this.targetLocation === card.gamelocation),
             onSelect: (player, card) => {
-                player.attach(this.attachmentCard, card, this.playingType);
-                if(this.playingType === 'shoppin') {
-                    this.game.addMessage('{0} does Shoppin\' to attach {1} to {2}, costing {3} GR', this.player, this.attachmentCard, card, this.context.costs.ghostrock);
-                } else {
-                    this.game.addMessage('{0} brings into play {1} attaching it to {2}', this.player, this.attachmentCard, card);
-                }
-                this.onAttachCompleted(this.attachmentCard, this.params);
+                player.attach(this.attachmentCard, card, this.playingType, (attachment, target) => 
+                    this.onAttachCompleted(attachment, target, this.params));
                 return true;
             },
             onCancel: () => {
