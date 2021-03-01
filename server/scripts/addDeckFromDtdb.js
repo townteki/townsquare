@@ -1,26 +1,28 @@
-/*eslint no-console:0 */
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const { once } = require('events');
 const _ = require('underscore');
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://127.0.0.1:27017";
+var url = 'mongodb://127.0.0.1:27017';
 
 MongoClient.connect(url, async function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("townsquare");
-  var decks = await loadDeckFiles('c:\\Melo\\GitHub\\townsquare\\townsquare-json-data\\');
+    if(err) {
+        throw err;
+    }
+    var dbo = db.db('townsquare');
+    var decks = await loadDeckFiles('c:\\Melo\\GitHub\\townsquare\\townsquare-json-data\\');
 
-  _.each(decks, deck => {
-    dbo.collection("decks").insertOne(deck, function(err, res) {
-        if (err) throw err;
-        db.close();
-      });
-  });
+    _.each(decks, deck => {
+        dbo.collection('decks').insertOne(deck, function(err) {
+            if(err) {
+                throw err;
+            }
+            db.close();
+        });
+    });
 
-  console.log(decks.length + " document(s) inserted into townsquare.decks");
-
+    console.log(decks.length + ' document(s) inserted into townsquare.decks');
 });
 
 async function loadDeckFiles(directory) {
@@ -29,18 +31,17 @@ async function loadDeckFiles(directory) {
     for(let file of files) {
         let deck = await parseDeck(path.join(directory, 'decks', file));
         decks.push(deck);
-
     }
 
     return decks;
-};
+}
 
 async function parseDeck(path) {
     const fileStream = fs.createReadStream(path);
   
     const rl = readline.createInterface({
-      input: fileStream,
-      crlfDelay: Infinity
+        input: fileStream,
+        crlfDelay: Infinity
     });
     var name = '';
     var outfit = { type_code: 'outfit', type: 'Outfit', quantity: '1' };
@@ -65,8 +66,7 @@ async function parseDeck(path) {
                 }
             }
         }
-
-      });
+    });
 
     await once(rl, 'close');
 
@@ -80,5 +80,5 @@ async function parseDeck(path) {
         lastUpdated: '2021-03-01T08:00:00.000+00:00',
         standaloneDeckId: ''
     };
-  }
+}
 
