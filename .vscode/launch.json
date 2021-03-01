@@ -1,15 +1,15 @@
 {
     "version": "0.2.0",
     "configurations": [
-    {
-        "name": "Launch Program",
-        "program": "${workspaceFolder}/app.js",
-        "request": "launch",
-        "skipFiles": [
-            "<node_internals>/**"
-        ],
-        "type": "pwa-node"
-    },
+        {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/app.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
         {
             "name": "Launch (Lobby Server)",
             "type": "node",
@@ -85,6 +85,13 @@
                 "JASMINE_CONFIG_PATH": "./jasmine.json"
             },
             "cwd": "${workspaceRoot}"
-        }
+        },
+        {
+            "name": "Launch Decks Importer",
+            "program": "${workspaceFolder}/server/scripts/addDeckFromDtdb.js",
+            "request": "launch",
+            "stopOnEntry": true,
+            "type": "node"
+        },
     ]
 }
