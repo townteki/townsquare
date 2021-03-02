@@ -167,6 +167,11 @@ class Game extends EventEmitter {
     }
 
     getPlayersInFirstPlayerOrder() {
+        if(this.currentPhase === 'setup') {
+            let players = this.getPlayers();
+            let firstPlayer = players[Math.floor(Math.random() * players.length)];
+            return this.getPlayersInBoardOrder(player => player === firstPlayer);
+        }
         return this.getPlayersInBoardOrder(player => player.firstPlayer);
     }
 

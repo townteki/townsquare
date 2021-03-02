@@ -10,6 +10,9 @@ class CardReaction extends PromptedTriggeredAbility {
     executeHandler(context) {
         super.executeHandler(context);
         this.usage.increment();
+        if(this.card.hasKeyword('grifter')) {
+            this.card.controller.availableGrifterActions -= 1;
+        }
     }
 
     meetsRequirements(context) {
@@ -18,6 +21,10 @@ class CardReaction extends PromptedTriggeredAbility {
         }
     
         if(this.game.shootout && this.game.shootout.headlineUsed && this.card.hasKeyword('headline')) {
+            return false;
+        }
+
+        if(this.card.hasKeyword('grifter') && this.card.controller.availableGrifterActions === 0) {
             return false;
         }
 
