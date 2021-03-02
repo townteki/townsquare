@@ -4,7 +4,7 @@ const GameActions = require('../GameActions');
 const SingleCostReducer = require('../singlecostreducer');
 
 class PutIntoPlayCardAction extends BaseAbility {
-    constructor(properties = { playType: 'ability', sourceType: 'ability', target: '' }) {
+    constructor(properties = { playType: 'ability', sourceType: 'ability', target: '' }, callback) {
         super({
             abilitySourceType: properties.sourceType,
             cost: [
@@ -14,6 +14,7 @@ class PutIntoPlayCardAction extends BaseAbility {
         this.target = properties.target;
         this.playType = properties.playType;
         this.reduceAmount = properties.reduceAmount;
+        this.callback = callback;
     }
 
     isAction() {
@@ -51,6 +52,10 @@ class PutIntoPlayCardAction extends BaseAbility {
         })).thenExecute(event => {
             if(this.costReducer) { 
                 event.player.removeCostReducer(this.costReducer);     
+            }
+        }).thenExecute(event => {
+            if(this.callback) {
+                this.callback(event);
             }
         });
     }

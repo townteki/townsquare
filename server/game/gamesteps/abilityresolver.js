@@ -67,7 +67,7 @@ class AbilityResolver extends BaseStep {
     }
 
     createSnapshot() {
-        if(['goods', 'spell', 'dude', 'action', 'deed'].includes(this.context.source.getType())) {
+        if(this.context.source && ['goods', 'spell', 'dude', 'action', 'deed'].includes(this.context.source.getType())) {
             this.context.cardStateWhenInitiated = this.context.source.createSnapshot();
         }
     }

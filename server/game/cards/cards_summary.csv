@@ -1,9 +1,11 @@
 C - coded, T - test available, X - no code needed
-01001,The Fourth Ring
+
+*** 01-DTR *************************
+C 01001,The Fourth Ring
 C 01002,Law Dogs
-01003,Morgan Cattle Co.
+C 01003,Morgan Cattle Co.
 C 01004,The Sloane Gang
-01005,Micah Ryse
+C 01005,Micah Ryse
 01006,Mongwau the Mighty
 01007,Bobo
 01008,Arnold McCadish
@@ -43,7 +45,7 @@ X 01041,Pancho Castillo
 01042,Jonah Essex
 01043,Silas Aims
 01044,Sloane
-01045,Clementine Lepp
+C 01045,Clementine Lepp
 X 01046,Olivia Jenks
 C 01047,Ramiro Mendoza
 01048,Steele Archer
@@ -100,7 +102,7 @@ C 01093,Quickdraw Handgun
 01099,Auto Cattle-Feeder
 01100,Soul Blast
 01101,Ace in the Hole
-01102,Shadow Walk
+C 01102,Shadow Walk
 01103,Blood Curse
 01104,Raising Hell
 01105,Establishin' Who's in Charge
@@ -137,7 +139,7 @@ C 01135,A Coach Comes to Town
 01136,Hex Slingin'
 C 01137,This is a Holdup!
 01138,Clear Out!
-01139,Missed!
+C 01139,Missed!
 01140,Takin' Ya With Me
 01141,Good Stiff Drink
 01142,Point Blank
@@ -145,6 +147,8 @@ C 01137,This is a Holdup!
 X 01144,Joker (red)
 X 01145,Joker (black)
 C 01146,Gunslinger
+
+*** 02.1-NTNR ************************
 X 02001,Dulf Zug
 02002,Slade Lighbody
 02003,Rafi Hamid
@@ -166,6 +170,8 @@ X 02010,Roderick Byre
 02019,Back Ways
 02020,Hired Help
 02021,Too Much Attention
+
+*** 02.2-DD **************************
 03001,Leonardo "Leon" Cavallo
 03002,Richard Slavin
 C 03003,Mortimer Parsons
@@ -187,6 +193,8 @@ C 03011,Hustings
 03019,...It's who you know
 03020,Horse Wranglin'
 C 03021,It's Not What You Know...
+
+*** 02.3-EDS *************************
 04001,The Brute
 04002,Smiling Tom
 C 04003,Philip Swinford (Exp.1)
@@ -208,6 +216,8 @@ C 04014,The Evidence
 04019,Ridden Down
 04020,Tail Between Yer Legs
 04021,Election Day Slaughter
+
+*** 03-FF   ************************
 05001,Oddities of Nature
 05002,The Arsenal
 05003,Morgan Gadgetorium
@@ -249,6 +259,8 @@ C 05037,Faster on the Draw
 05039,Prayer
 05040,Meet The New Boss
 06001,Funtime Freddy
+
+*** 04.1-FJ   ************************
 06002,The Flying Popescus
 06003,Andrew Burton
 06004,Elmore Rhine
@@ -269,6 +281,8 @@ C 06015,Winchester Model 1873
 06019,Rope and Ride
 06020,Incubation
 06021,Flight of the Lepus
+
+*** 04.2-NTB  ************************
 07001,Avie Cline (Exp.1)
 07002,Judge Harry Somerset (Exp.1)
 07003,Ebenezer Springfield
@@ -290,6 +304,8 @@ C 07009,Jacqueline Isham
 07019,Cookin' Up Trouble
 07020,Ol' Fashioned Hangin'
 07021,No Turning Back
+
+*** 04.3-NN  ************************
 08001,Junior
 08002,The Fabulous Mister Miss
 08003,Sister Mary Gideon
@@ -311,6 +327,8 @@ C 08013,Dog's Duster
 08019,A Fight They'll Never Forget
 08020,Buried Treasure
 C 08021,Nightmare at Noon
+
+*** 05-IOUF ************************
 09001,The 108 Righteous Bandits
 09002,Eagle Wardens
 09003,Benjamin Washington
@@ -353,6 +371,8 @@ C 08021,Nightmare at Noon
 09040,Zhu's Reward
 09041,Ancestor Spirit
 09042,Nature Spirit
+
+*** 06-TLS ************************
 10001,The Sanatorium
 10002,Abram's Crusaders
 10003,Den of Thieves
@@ -394,6 +414,8 @@ C 10023,Cooke's Nightcap
 10039,Forced Quarantine
 10040,Devil's Joker (Red)
 10041,Devil's Joker (Black)
+
+*** 07.1-DDeeds ************************
 11001,108 Worldly Desires
 11002,Beyond the Veil
 11003,Morgan Stables
@@ -417,6 +439,8 @@ C 11014,Maza Gang Hideout
 11021,An Accidental Reunion
 11022,A Slight Modification
 11023,Rabbit Takes Revenge
+
+*** 07.2-FP   ************************
 12001,Shizeng Lu
 12002,Forster Cooke
 12003,Joseph Dusty Hill
@@ -438,6 +462,8 @@ C 11014,Maza Gang Hideout
 12019,Outgunned
 12020,Martyr's Cry
 12021,Deliberate Infection
+
+*** 07.3-BadM ************************
 13001,Sophie Lacoste
 13002,"Crazy" Mike Draksil
 13003,Horace Manse
@@ -459,6 +485,8 @@ C 13014,LeMat Revolver
 13019,Mugging
 13020,Signing Over the Stores
 13021,No Funny Stuff
+
+*** 08-GT   ************************
 14001,Carlton "Min" Rutherford
 14002,Lucretia Fanzini
 14003,Rhonda Sageblossom
@@ -500,6 +528,8 @@ C 14016,Notary Public
 14039,Foreboding Glance
 14040,Heretic Joker (Red)
 14041,Heretic Joker (Black)
+
+*** 09.1-TCR  ************************
 15001,Caitlin McCue
 15002,Bethany Shiile
 15003,Tyxarglenak (Exp.1)
@@ -521,6 +551,8 @@ C 15005,Maggie Harris
 15019,Putting The Pieces Together
 15020,Someone Else's Problem
 15021,Lost to the Plague
+
+*** 09.2-AGE  ************************
 16001,El Armadillo De Hierro
 16002,Jim Hexter
 16003,The Mixer
@@ -542,6 +574,8 @@ C 15005,Maggie Harris
 16019,Siege Of The Orphanage
 16020,Lighting The Fuse
 16021,One Fights As Many
+
+*** 09.3-TSs  ************************
 17001,Shi Long Peng
 17002,Seamus McCaffrey
 17003,Gene North Star
@@ -563,6 +597,8 @@ C 15005,Maggie Harris
 17019,Rite Of Profane Abstersion
 17020,Showboating
 17021,All Or Nothing
+
+*** 10-BMR  ************************
 18001,108 Drunken Masters
 18002,Gateway To Beyond
 18003,Full Moon Brotherhood
@@ -605,6 +641,8 @@ C 15005,Maggie Harris
 18040,The Law Goes Underground
 18041,"Thunder Boy" Nabbe
 18042,Dave "Slim" Gorman
+
+*** 11-TCaR ************************
 19001,Darius Hellstromme
 19002,Ezekiah Grimme
 19003,Jasper Stone
@@ -650,3 +688,8 @@ C 15005,Maggie Harris
 19043,Friends in High Places
 19044,Shan Fan Showdown!
 19045,The Winning Agenda
+
+*** 12-2T2D ************************
+*** 13-O4B  ************************
+*** 14-HCWM ************************
+*** 15-W2D  ************************

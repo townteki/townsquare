@@ -46,8 +46,8 @@ class NotaryPublic extends DeedCard {
                                     this.game.resolveGameAction(GameActions.moveDude({ 
                                         card: dude, 
                                         targetUuid: location.uuid, 
-                                        needToBoot: false, 
-                                        allowBooted: true }), context);   
+                                        options: { needToBoot: false, allowBooted: true }
+                                    }), context); 
                                     this.game.addMessage('{0} uses {1} to boot {2} and move {3} to {4}.', player, this, context.target, dude, location);                                 
                                     return true;
                                 }

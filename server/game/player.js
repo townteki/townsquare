@@ -341,6 +341,23 @@ class Player extends Spectator {
         }, options);
     }
 
+    discardFromHand(number = 1, callback = () => true, options = {}) {
+        this.game.promptForSelect(this, {
+            promptTitle: options.title,
+            numCards: number,
+            multiSelect: true,
+            activePromptTitle: 'Select a card to discard',
+            waitingPromptTitle: 'Waiting for opponent to discard a card',
+            cardCondition: card => card.location === 'hand' && card.controller === this,
+            onSelect: (p, cards) => {
+                this.discardCards(cards, false, discarded => {
+                    callback(discarded);
+                }, options);
+                return true;
+            }
+        }); 
+    }
+
     moveFromTopToBottomOfDrawDeck(number) {
         while(number > 0) {
             this.moveCard(this.drawDeck[0], 'draw deck', { bottom: true });
@@ -734,7 +751,8 @@ class Player extends Spectator {
                     this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);
                     this.moveCard(gadget, 'discard pile');
                 },
-                source: gadget
+                source: gadget,
+                pullingDude: scientist                
             };
         };
         if(!scientist) {
@@ -1081,6 +1099,7 @@ class Player extends Spectator {
             successCondition: properties.successCondition || (() => true), 
             successHandler: properties.successHandler || (() => true), 
             failHandler: properties.failHandler || (() => true),
+            pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
             source: properties.source,
             player: this

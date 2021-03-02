@@ -11,14 +11,14 @@ function cannotEffect(type, playType) {
     };
 }
 
-// if specific game actions cannot be played on card (e.g. ace, discard, callout, target)
+// if specific ability play type cannot be played on card (e.g. shootout, resolution)
 function cannotEffectPlayType(playType) {
     return function(controller, predicate) {
         return restrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
     };
 }
 
-// if specific ability play type cannot be played on card (e.g. shootout, resolution)
+// if specific game actions cannot be played on card (e.g. ace, discard, callout, target)
 function cannotEffectType(type) {
     return function(controller, predicate) {
         return restrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
@@ -602,6 +602,7 @@ const Effects = {
         configureText(definition);
         return definition;
     },
+    cannotBeCalledOut: cannotEffectType('callout'),
     cannotPlay: function(condition) {
         let restriction = (card, playingType) => card.getType() === 'event' && playingType === 'play' && condition(card);
         return this.cannotPutIntoPlay(restriction);
