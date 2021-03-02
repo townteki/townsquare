@@ -88,17 +88,9 @@ class GameFlowWrapper {
         }
     }
 
-    skipGrifterPrompt() {
-        this.guardCurrentPhase('setup');
-        //TODO M2 this prompt is only for one player. Either make it for two, or better remove specific prompt for Grifter
-        // and make it React on the Game Start event
-        this.allPlayers[0].clickPrompt('Play Lowball');
-    }
-
     completeSetupPhase() {
         this.guardCurrentPhase('setup');
         this.keepStartingPosse();
-        this.skipGrifterPrompt();
     }
 
     completeHighNoonPhase() {

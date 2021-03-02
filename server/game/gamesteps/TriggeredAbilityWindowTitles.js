@@ -18,6 +18,10 @@ const AbilityWindowTitles = {
         let abilityWord = AbilityTypeToWord[abilityType] || abilityType;
         let titleFunc = EventToTitleFunc[event.name];
 
+        if(event.name === 'onSetupFinished' && abilityType === 'reaction') {
+            return 'Choose Grifter to resolve';
+        }
+
         if(['traitreaction'].includes(abilityType)) {
             if(titleFunc) {
                 return `Choose ${abilityWord} order for ${titleFunc(event)}`;

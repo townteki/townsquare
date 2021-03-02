@@ -7,7 +7,7 @@ describe('CardForcedReaction', function () {
         this.gameSpy.resolveGameAction.and.callFake(() => { 
             return { thenExecute: () => true };
         });
-        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank']);
+        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank', 'hasKeyword']);
         this.cardSpy.location = 'play area';
         this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
 

@@ -55,6 +55,7 @@ class Player extends Spectator {
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;        
         this.shuffleArray = shuffle;
+        this.availableGrifterActions = 1;
         this.resetCheatinResInfo();
 
         this.createAdditionalPile('out of game');

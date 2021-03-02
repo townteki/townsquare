@@ -1,7 +1,6 @@
 const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const StartingPossePrompt = require('./setup/startingposseprompt.js');
-const GrifterPrompt = require('./setup/grifterprompt.js');
 
 class SetupPhase extends Phase {
     constructor(game) {
@@ -17,9 +16,7 @@ class SetupPhase extends Phase {
             new SimpleStep(game, () => this.startGame()),
             new SimpleStep(game, () => this.announceSetupCards()),
             new SimpleStep(game, () => game.raiseEvent('onSetupFinished')),
-            new SimpleStep(game, () => game.activatePersistentEffects()),
-            // TODO M2 Shootout testing - comment out GrifterPrompt
-            new GrifterPrompt(game)
+            new SimpleStep(game, () => game.activatePersistentEffects())
         ]);
     }
 
