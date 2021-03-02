@@ -100,7 +100,8 @@ class DudeCard extends DrawCard {
                     !this.getGameLocation().isHome(card.controller) &&
                     card.uuid !== this.uuid &&
                     card.controller !== this.controller,
-                autoSelect: false
+                autoSelect: false,
+                gameAction: 'callout'
             },
             targetController: 'opponent',
             handler: context => {
@@ -336,6 +337,13 @@ class DudeCard extends DrawCard {
             event.collector.modifyGhostRock(event.card.bounty);
             event.card.game.addMessage('{0} collects {1} GR bounty for {2}.', event.collector, event.card.bounty, event.card);
         });
+    }
+
+    isAtHome() {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        return this.getGameLocation().isHome(this.controller);
     }
 
     isWanted() {

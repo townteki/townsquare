@@ -13,16 +13,16 @@ StandardActions.shoppin = function(target) {
     return new ShoppinCardAction(target);
 };
 
-StandardActions.putIntoPlay = function(properties) {
-    return new PutIntoPlayCardAction(properties);
+StandardActions.putIntoPlay = function(properties, callback) {
+    return new PutIntoPlayCardAction(properties, callback);
 };
 
-StandardActions.putIntoPlayAtLocation = function(target) {
-    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { target: target }));
+StandardActions.putIntoPlayAtLocation = function(target, callback) {
+    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { target: target }), callback);
 };
 
-StandardActions.putIntoPlayWithReduction = function(reduceAmount) {
-    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { reduceAmount: reduceAmount }));
+StandardActions.putIntoPlayWithReduction = function(reduceAmount, callback) {
+    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { reduceAmount: reduceAmount }), callback);
 };
 
 module.exports = StandardActions;

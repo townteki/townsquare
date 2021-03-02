@@ -307,6 +307,10 @@ class DrawCard extends BaseCard {
         return this.allowGameAction('unboot');
     }
 
+    canBeCalledOut() {
+        return this.allowGameAction('callout');
+    }
+
     getSummary(activePlayer) {
         let baseSummary = super.getSummary(activePlayer);
 

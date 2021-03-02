@@ -62,7 +62,9 @@ class SpellAction extends CardAction {
             failHandler: pulledCard => {
                 context.pulledCard = pulledCard;
                 this.onFail(context);
-            }
+            },
+            pullingDude: context.caster,
+            source: this.card
         });
     }
 

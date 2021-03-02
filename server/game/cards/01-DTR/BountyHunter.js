@@ -14,13 +14,18 @@ class BountyHunter extends ActionCard {
             },
             handler: context => {
                 let gunslinger = context.player.placeToken('Gunslinger', context.target.gamelocation);
-                this.game.resolveGameAction(GameActions.callOut({ 
-                    caller: gunslinger,
-                    callee: context.target,
-                    isCardEffect: true,
-                    canReject: false
-                }), context);
-                this.game.addMessage('{0} pays for a {1} to hunt {2}.', context.player, this, context.target);
+                if(context.target.canBeCalledOut()) {
+                    this.game.resolveGameAction(GameActions.callOut({ 
+                        caller: gunslinger,
+                        callee: context.target,
+                        isCardEffect: true,
+                        canReject: false
+                    }), context);
+                    this.game.addMessage('{0} pays for a {1} to hunt {2}.', context.player, this, context.target);
+                } else {
+                    gunslinger.removeFromGame();
+                    this.game.addMessage('{0} pays for a {1} to hunt {2}, but they cannot be called out.', context.player, this, context.target);
+                }
             }
         });
     }

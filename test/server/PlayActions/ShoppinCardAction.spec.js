@@ -17,7 +17,9 @@ describe('ShoppinCardAction', function () {
         };
         //this.gameSpy.resolveGameAction = jasmine.createSpy('resolveGameAction');
         this.gameSpy.resolveGameAction.and.callFake(() => { 
-            return { thenExecute: () => true };
+            return { thenExecute: () => { 
+                return { thenExecute: () => true };
+            }};
         });
         this.action = new ShoppinCardAction();
     });
