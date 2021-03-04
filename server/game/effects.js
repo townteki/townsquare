@@ -449,6 +449,36 @@ const Effects = {
             }
         };
     },
+    addCardAction: function(ability) {
+        return {
+            apply: function(card) {
+                card.abilities.actions.push(ability);
+            },
+            unapply: function(card) {
+                card.abilities.actions = card.abilities.actions.filter(a => a !== ability);
+            }
+        };
+    },
+    addCardReaction: function(ability) {
+        return {
+            apply: function(card) {
+                card.abilities.reactions.push(ability);
+            },
+            unapply: function(card) {
+                card.abilities.reactions = card.abilities.reactions.filter(a => a !== ability);
+            }
+        };
+    },
+    addPersistentEffect: function(effect) {
+        return {
+            apply: function(card) {
+                card.abilities.persistentEffects.push(effect);
+            },
+            unapply: function(card) {
+                card.abilities.persistentEffects = card.abilities.persistentEffects.filter(e => e !== effect);
+            }
+        };
+    },
     blankExcludingTraits: {
         apply: function(card) {
             card.setBlank('excludingTraits');

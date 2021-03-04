@@ -299,21 +299,17 @@ class DudeCard extends DrawCard {
         return true;
     }
 
-    moveToShootoutLocation(needToBoot = true, allowBooted = false) {
+    moveToShootoutLocation(options = {}) {
         let shootout = this.game.shootout;
         if(this.gamelocation === shootout.mark.gamelocation) {
             return;
         }
         if(shootout.isJob()) {
             // if this shootout is a Job, all dudes that had to be booted should already be booted.
-            needToBoot = false;
+            options.needToBoot = false;
         }
-        let options = { 
-            isCardEffect: false, 
-            needToBoot: needToBoot, 
-            allowBooted: allowBooted 
-        };
-        this.game.raiseEvent('onDudeMoved', { card: this, targetUuid: shootout.mark.gamelocation, moveType: 'toPosse', options: options }, event => {
+        let updatedOptions = Object.assign({ isCardEffect: false, needToBoot: true, allowBooted: false }, options);
+        this.game.raiseEvent('onDudeMoved', { card: this, targetUuid: shootout.mark.gamelocation, moveType: 'toPosse', options: updatedOptions }, event => {
             event.card.controller.moveDude(event.card, event.targetUuid, event.options);
         });
     }
