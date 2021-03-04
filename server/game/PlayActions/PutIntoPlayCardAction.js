@@ -12,6 +12,7 @@ class PutIntoPlayCardAction extends BaseAbility {
             ]
         });
         this.target = properties.target;
+        this.targetParent = properties.targetParent;
         this.playType = properties.playType;
         this.reduceAmount = properties.reduceAmount;
         this.callback = callback;
@@ -48,6 +49,7 @@ class PutIntoPlayCardAction extends BaseAbility {
             params: { 
                 playingType: this.playType, 
                 target: this.target,
+                targetParent: this.targetParent,
                 context: context }
         })).thenExecute(event => {
             if(this.costReducer) { 

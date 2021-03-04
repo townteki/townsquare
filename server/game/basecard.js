@@ -698,6 +698,18 @@ class BaseCard {
         this.game.raiseEvent('onCardUpkeepChanged', params);
     }
 
+    modifySkillRating(skillName, amount, applying = true) {
+        this.keywords.modifySkillRating(skillName, amount); 
+
+        let params = {
+            card: this,
+            amount: amount,
+            type: skillName,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardSkillRatingChanged', params);
+    }
+
     addToken(type, number) {
         if(_.isUndefined(this.tokens[type])) {
             this.tokens[type] = 0;

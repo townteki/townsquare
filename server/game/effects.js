@@ -277,6 +277,17 @@ const Effects = {
             }
         };
     },
+    modifySkillRating: function(value, type) {
+        return {
+            gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
+            apply: function(card) {
+                card.modifySkillRating(type, value, true);
+            },
+            unapply: function(card) {
+                card.modifySkillRating(type, -value, false);
+            }
+        };
+    },
     additionalDynamicAdjacency: conditionalAdjacency(),
     preventDynamicAdjacency: conditionalAdjacency(),
     additionalAdjacency: adjacency('adjacent'),
