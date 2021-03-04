@@ -622,8 +622,17 @@ class Player extends Spectator {
             originalLocation: card.location,
             playingType: params.playingType || 'play',
             target: params.target || '',
+            targetParent: params.targetParent,
             context: params.context || {},
             booted: !!params.booted
+        };
+        let onAttachCompleted = (card, target, params) => {
+            if(params.playingType === 'shoppin') {
+                this.game.addMessage('{0} does Shoppin\' to attach {1} to {2}{3}', this, card, target, costText);
+            } else {
+                this.game.addMessage('{0} brings into play {1} attaching it to {2}{3}', this, card, target, costText);
+            }
+            this.entersPlay(card, params);
         };
 
         if(!updatedParams.force && !this.canPutIntoPlay(card, updatedParams)) {
@@ -639,14 +648,13 @@ class Player extends Spectator {
         switch(card.getType()) {
             case 'spell':
             case 'goods':
-                this.game.queueStep(new AttachmentPrompt(this.game, this, card, updatedParams, ((card, target, params) => {
-                    if(params.playingType === 'shoppin') {
-                        this.game.addMessage('{0} does Shoppin\' to attach {1} to {2}{3}', this, card, target, costText);
-                    } else {
-                        this.game.addMessage('{0} brings into play {1} attaching it to {2}{3}', this, card, target, costText);
-                    }
-                    this.entersPlay(card, params);
-                })));
+                if(updatedParams.targetParent && this.canAttach(card, updatedParams.targetParent, updatedParams.playingType)) {
+                    this.attach(card, updatedParams.targetParent, updatedParams.playingType, (attachment, target) => 
+                        onAttachCompleted(attachment, target, updatedParams));                    
+                } else {
+                    this.game.queueStep(new AttachmentPrompt(this.game, this, card, updatedParams, (attachment, target, params) => 
+                        onAttachCompleted(attachment, target, params)));
+                }
                 break;
             case 'dude':  
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {

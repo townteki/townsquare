@@ -10,11 +10,11 @@ C 01005,Micah Ryse
 01007,Bobo
 01008,Arnold McCadish
 01009,The Ghostly Gun
-01010,Avie Cline
-01011,Kevin Wainwright
-01012,Tyxarglenak
-01013,Jia Mein
-01014,Ivor Hawley
+X 01010,Avie Cline
+C 01011,Kevin Wainwright
+? 01012,Tyxarglenak
+C 01013,Jia Mein
+C 01014,Ivor Hawley
 01015,Lucinda "Lucy" Clover
 C 01016,Judge Harry Somerset
 C 01017,Philip Swinford
@@ -48,13 +48,13 @@ X 01041,Pancho Castillo
 C 01045,Clementine Lepp
 X 01046,Olivia Jenks
 C 01047,Ramiro Mendoza
-01048,Steele Archer
-01049,Travis Moone
+X 01048,Steele Archer
+C 01049,Travis Moone
 C 01050,Androcles Brocklehurst
 X 01051,Steven Wiles
 01052,Dr. Dawn Edwards
-01053,Clint Ramsey
-01054,Eve Henry
+X 01053,Clint Ramsey
+C 01054,Eve Henry
 01055,Bank of California
 01056,Pony Express
 01057,Gomorra Parish

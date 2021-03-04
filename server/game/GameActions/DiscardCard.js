@@ -14,6 +14,7 @@ class DiscardCard extends GameAction {
             card: card,
             allowSave: allowSave,
             originalLocation: card.location,
+            originalGameLocation: card.gamelocation,
             isCardEffect: options.isCardEffect,
             isFromOpponent: options.isFromOpponent,
             isCasualty: options.isCasualty
