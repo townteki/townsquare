@@ -14,7 +14,12 @@ class PutIntoPlay extends GameAction {
     createEvent({ player, card, params = {} }) {
         player = player || card.controller;
         return this.event('onCardPutIntoPlay', this.getDefaultParams(player, card, params), event => {
-            event.player.putIntoPlay(event.card, { playingType: event.playingType, target: event.target, context: event.context, force: event.force });
+            event.player.putIntoPlay(event.card, { 
+                playingType: event.playingType, 
+                target: event.target, 
+                targetParent: event.targetParent,
+                context: event.context, 
+                force: event.force });
         });
     }
 
@@ -23,6 +28,7 @@ class PutIntoPlay extends GameAction {
             player,
             card,
             target: params.target || '',
+            targetParent: params.targetParent,
             playingType: params.playingType || 'play',
             context: params.context || {}
         };

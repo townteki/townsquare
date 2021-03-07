@@ -11,7 +11,11 @@ class Search extends GameAction {
         this.match = match || {};
         this.topCards = topCards;
         this.numToSelect = numToSelect;
-        this.playerFunc = player || (context => context.player);
+        if(player) {
+            this.playerFunc = (() => player);
+        } else {
+            this.playerFunc = (context => context.player);
+        }
         this.searchedPlayerFunc = searchedPlayer || this.playerFunc;
         this.title = title;
         this.location = location || ['draw deck'];
