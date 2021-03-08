@@ -325,11 +325,12 @@ class Player extends Spectator {
 
     shuffleDiscardToDrawDeck() {
         if(this.discardPile.length > 0) {
-            this.discardPile.each(card => {
+            this.discardPile.forEach(card => {
                 this.moveCard(card, 'draw deck');
             });
 
             this.shuffleDrawDeck();
+            this.game.addAlert('info', '{0} shuffles their discard pile to make a draw deck', this);
         }
     }    
 
@@ -1249,12 +1250,16 @@ class Player extends Spectator {
         };
         let origin = this.game.findLocation(dude.gamelocation);
         let destination = this.game.findLocation(targetLocationUuid);
+        let moveMessage = '{0} moves {1} to {2} without booting';
         if(!origin || !destination) {
             return;
         }
         if(origin.uuid === destination.uuid) {
             if(options.needToBoot) {
                 this.bootCard(dude);
+                if(!options.isCardEffect) {
+                    this.game.addMessage('{0} boots {1} without moving', this, dude);
+                }
             }
             return;
         }
@@ -1278,9 +1283,13 @@ class Player extends Spectator {
 
         if(options.needToBoot) {
             this.bootCard(dude);
+            moveMessage = '{0} boots {1} to move them to {2}';
         }
 
         dude.moveToLocation(destination.uuid);
+        if(!options.isCardEffect) {
+            this.game.addMessage(moveMessage, this, dude, destination.locationCard);
+        }
     }
 
     moveCard(card, targetLocation, options = {}, callback) {

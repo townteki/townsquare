@@ -541,22 +541,6 @@ class Game extends EventEmitter {
         return { decision: 'exact tie' };
     }
 
-    checkPlayerElimination() {
-        if(this.currentPhase === 'setup') {
-            return;
-        }
-
-        let players = this.getPlayers();
-        let deckedPlayers = players.filter(player => player.drawDeck.length === 0 && !player.lost);
-
-        // TODO: When all remaining players are decked simultaneously, first
-        // player chooses the winner.
-        for(let player of deckedPlayers) {
-            this.addAlert('info', '{0} loses the game because their draw deck is empty', player);
-            player.lost = true;
-        }
-    }
-
     recordDraw(lastPlayer) {
         if(this.winner) {
             return;
@@ -1006,7 +990,6 @@ class Game extends EventEmitter {
         this.effectEngine.recalculateDirtyTargets();
         this.effectEngine.reapplyStateDependentEffects();
         this.attachmentValidityCheck.enforceValidity();
-        this.checkPlayerElimination();
     }
 
     isPhaseSkipped(name) {
