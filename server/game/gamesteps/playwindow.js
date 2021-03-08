@@ -34,6 +34,11 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     markActionAsTaken(player) {
         this.onDone(player);
     }
+
+    completePlayer() {
+        this.game.addMessage('{0} passes {1} action', this.currentPlayer, this.name);
+        super.completePlayer();
+    }
 }
 
 module.exports = PlayWindow;
