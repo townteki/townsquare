@@ -27,7 +27,7 @@ class JoinPosse extends GameAction {
                 event.card.controller.bootCard(event.card);
             }
             if(event.options.moveToPosse) {
-                event.card.moveToShootoutLocation(event.options.needToBoot, event.options.allowBooted);
+                event.card.moveToShootoutLocation(event.options);
             }
         });
     }

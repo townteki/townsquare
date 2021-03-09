@@ -32,6 +32,7 @@ class Shootout extends Phase {
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
+        this.moveOptions = {};
         this.initialise([
             new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
             new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
@@ -225,7 +226,7 @@ class Shootout extends Phase {
 
     sendHome(card, options) {
         this.removeFromPosse(card);  
-        this.game.resolveGameAction(GameActions.sendHome({ card: card, options: options }));
+        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: options }));
     }
 
     addToPosse(dude) {
@@ -251,7 +252,16 @@ class Shootout extends Phase {
 
     gatherPosses() {
         if(!this.checkEndCondition()) {
-            this.actOnAllParticipants(dude => dude.moveToShootoutLocation());
+            this.actOnAllParticipants(dude => {
+                let dudeMoveOptions = this.moveOptions[dude.uuid] || {
+                    moveToPosse: true,
+                    needToBoot: true,
+                    allowBooted: false
+                };
+                if(dudeMoveOptions.moveToPosse) {
+                    dude.moveToShootoutLocation(dudeMoveOptions);
+                }
+            });
         }
     }
 
@@ -363,6 +373,10 @@ class Shootout extends Phase {
         } else {
             this.endJob(false);
         }
+    }
+    
+    addMoveOptions(dude, options) {
+        this.moveOptions[dude.uuid] = options;
     }
 
     recordJobStatus() {

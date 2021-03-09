@@ -1,8 +1,8 @@
-const CardAction = require('./cardaction.js');
+const CardReaction = require('./cardreaction.js');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const Spell = require('./spell.js');
 
-class SpellAction extends CardAction {
+class SpellReaction extends CardReaction {
     constructor(game, card, properties) {
         super(game, card, properties);
         this.spell = new Spell(this, properties);
@@ -23,4 +23,4 @@ class SpellAction extends CardAction {
     }
 }
 
-module.exports = SpellAction;
+module.exports = SpellReaction;

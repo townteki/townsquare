@@ -290,14 +290,18 @@ class Player extends Spectator {
     }
 
     revealDrawHand() {
+        this.drawHandRevealed = true;
+        this.determineHandResult();
+    }
+
+    determineHandResult(handResultText = 'reveals') {
         if(this.drawHand.length > 1) {
             this.handResult = new HandResult(this.drawHand, this.game.currentPhase === 'gambling');
         }  
 
-        this.drawHandRevealed = true;
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
-        this.game.addMessage('{0} reveals {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
-    }    
+        this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
+    }
 
     drawCardsToHand(numCards = 1, target = 'hand') {
         return this.game.resolveGameAction(GameActions.drawCards({ player: this, amount: numCards, target: target }));
