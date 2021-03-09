@@ -1,13 +1,12 @@
-const CardTraitReaction = require('../../cardtraitreaction.js');
 const GoodsCard = require('../../goodscard.js');
 
 class BuffaloRifle extends GoodsCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.traitReaction({
             when: {
                 onDudeJoinedPosse: event => 
                     event.card === this.parent &&
-                    this.shootout.shootoutLocation.isAdjacent(this.getGameLocation())
+                    this.game.shootout.shootoutLocation.isAdjacent(this.gamelocation)
             },
             handler: context => {
                 context.game.promptForYesNo(context.player, {

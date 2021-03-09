@@ -226,7 +226,7 @@ class Shootout extends Phase {
 
     sendHome(card, options) {
         this.removeFromPosse(card);  
-        this.game.resolveGameAction(GameActions.sendHome({ card: card, options: options }));
+        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: options }));
     }
 
     addToPosse(dude) {

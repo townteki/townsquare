@@ -16,6 +16,7 @@ const {Tokens} = require('./Constants');
 const JobAction = require('./jobaction');
 const NullCard = require('./nullcard');
 const SpellAction = require('./spellaction');
+const SpellReaction = require('./spellreaction');
 
 class BaseCard {
     constructor(owner, cardData) {
@@ -132,7 +133,7 @@ class BaseCard {
         this.abilities.actions.push(job);
     }
 
-    spell(properties) {
+    spellAction(properties) {
         var spell = new SpellAction(this.game, this, properties);
         this.abilities.actions.push(spell);
     }
@@ -145,6 +146,11 @@ class BaseCard {
     //
     reaction(properties) {
         var reaction = new CardReaction(this.game, this, properties);
+        this.abilities.reactions.push(reaction);
+    }
+
+    spellReaction(properties) {
+        var reaction = new SpellReaction(this.game, this, properties);
         this.abilities.reactions.push(reaction);
     }
 

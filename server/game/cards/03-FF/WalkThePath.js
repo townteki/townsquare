@@ -3,7 +3,7 @@ const SpellCard = require('../../spellcard.js');
 
 class WalkThePath extends SpellCard {
     setupCardAbilities(ability) {
-        this.spell({
+        this.spellAction({
             title: 'Noon: Walk the Path',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
@@ -25,7 +25,7 @@ class WalkThePath extends SpellCard {
             source: this
         });
 
-        this.spell({
+        this.spellAction({
             title: 'Shootout: Walk the Path',
             playType: 'shootout:join',
             cost: ability.costs.bootSelf(),

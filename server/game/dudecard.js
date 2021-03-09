@@ -77,6 +77,10 @@ class DudeCard extends DrawCard {
         }
     }
 
+    getGrit() {
+        return this.value + this.bullets + this.influence;
+    }
+
     modifyUpkeep(amount, applying = true) {
         this.currentUpkeep += amount;
 

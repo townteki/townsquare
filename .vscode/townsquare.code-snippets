@@ -231,19 +231,16 @@
 		"description": "Card job"
 	},
 
-	"Card Spell": {
+	"Card Spell Action": {
 		"scope": "javascript,typescript",
 		"prefix": "spellaction",
 		"body": [
-			"this.spell({",
+			"this.spellAction({",
 			"\ttitle: '${1:Title}',",
 			"\tplayType: '${2:noon}',",     
 			"\tcost: ability.costs.${3:bootSelf()},",  
 			"\ttarget: ${5:targetselect}",
-			"\thandler: context => {",
-			"\t\t$20",
-			"\t\tthis.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target);",
-			"\t},",
+			"\tdifficulty: ${6:numberOrFunction}",
 			"\tonSuccess: (context) => {",
 			"\t\t$21",
 			"\t},",
@@ -254,6 +251,29 @@
 			"});"
 		],
 		"description": "Spell action"
+	},
+
+	"Card Spell Reaction": {
+		"scope": "javascript,typescript",
+		"prefix": "spellreaction",
+		"body": [
+			"this.spellReaction({",
+			"\twhen: {",
+			"\t\t${1:onEvent}: event => ${2:true}",
+			"\t},",
+			"\tcost: [ ability.costs.${3:bootSelf()} ],",
+			"\ttarget: ${4:targetselect}",
+			"\tdifficulty: ${6:numberOrFunction}",
+			"\tonSuccess: (context) => {",
+			"\t\t$21",
+			"\t},",
+			"\tonFail: (context) => {",
+			"\t\t$22",
+            "\t},",
+			"\tsource: this",
+			"});"
+		],
+		"description": "Spell reaction"
 	},
 
 	"Trait Reaction": {
