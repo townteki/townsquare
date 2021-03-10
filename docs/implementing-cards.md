@@ -3,6 +3,7 @@
 
 ### Getting started
 
+We recommend using VScode for implementing a card as there are many snippets that will help you.
 To implement a card, follow these steps:
 
 ##### 1. Create a file named after the card.
@@ -10,38 +11,43 @@ To implement a card, follow these steps:
 Cards are organized under the `/server/game/cards` directory by grouping them by "\<cycle number>-\<pack code>". Each word in the file name should be capitalized.
 
 ```
-/server/game/cards/01-Core/NobleLineage.js
-/server/game/cards/02.2-TRtW/UnswornApprentice.js
+/server/game/cards/01-DTR/SunInYerEyes.js
+/server/game/cards/02.2-DD/ItsNotWhatYouKnow.js
 ```
 
 #### 2. Create a class for the card and export it.
 
-Character, location, event and attachment cards should be derived from the `DrawCard` class.
+Each card type has its own class and snippet.
+_Dude_ - snippet: `dudecard`, class: `DudeCard`
+_Deed_ - snippet: `deedcard`, class: `DeedCard`
+_Goods_ - snippet: `goodscard`, class: `GoodsCard`
+_Spell_ - snippet: `spellcard`, class: `SpellCard`
+_Action_ - snippet: `actioncard`, class: `ActionCard`
+_Outfit_ - snippet: `outfitcard`, class: `OutfitCard`
 
-Plot cards should be derived from the `PlotCard` class.
+In case you are using snippet, just type the snippet prefix (e.g. `dudecard`) and VSCode should give you suggestion. If not, press Ctrl+space.
 
-Agenda cards should be derived from the `AgendaCard` class.
-
-The card class should have its `code` property set to the unique card identifier for that card. You can find these combining the 2-digit pack number (01) and 3-digit card number (036), or on [thronesdb.com](https://thronesdb.com/) by looking at the URL for the specific card.
+The card class should have its `code` property set to the unique card identifier for that card. You can find these in `/server/game/cards/cards_summary.csv`, or on [dtdb.co](https://dtdb.co/) by looking at the URL for the specific card. Or by combining the 2-digit pack number (01) and 3-digit card number (035).
 
 ```javascript
-const DrawCard = require('../../drawcard.js');
+const DudeCard = require('../../dudecard.js');
 
-class NobleLineage extends DrawCard {
+class AllieHensman extends DudeCard {
     // Card definition
 }
 
-NobleLineage.code = '01036';
+AllieHensman.code = '01035';
 
-module.exports = NobleLineage;
+module.exports = AllieHensman;
 ```
 
 #### 3. Override the `setupCardAbilities` method.
 
-Persistent effects, actions, and triggered abilities should be defined in the `setupCardAbilities` method. This method passes in an `ability` parameter that gives you access to effect implementations and ability limits. See below for more documentation.
+Persistent effects, actions, reactions, spells, jobs and trait reactions should be defined in the `setupCardAbilities` method. This method passes in an `ability` parameter that gives you access to effect implementations and costs. All this will be filled for you if you use snippet.
+See below for more documentation.
 
 ```javascript
-class NobleLineage extends DrawCard {
+class AllieHensman extends DudeCard {
     setupCardAbilities(ability) {
         // Declare persistent effects, reactions and interrupts here.
     }
@@ -50,58 +56,11 @@ class NobleLineage extends DrawCard {
 
 ### Keywords
 
-Keywords are automatically parsed from the card text. It isn't necessary to explicitly implement them unless they are provided by a conditional persistent effect (e.g. Ser Jaime Lannister's military-only renown).
-
-### Plot modifiers
-
-Cards with plot modifier icons need to be declared when setting up the card using the `plotModifiers` method. The method takes an object that can have three properties: `gold` to modify the plot's gold value, `initiative` to modify the plot's initiative value, and `reserve` to modify the plot's reserve value. While most cards only provide a single modifier, it's possible to declare multiple values when appropriate.
-
-```javascript
-// The Arbor provides +3 gold.
-this.plotModifiers({
-    gold: 3
-});
-
-// The God's Eye provides both +1 gold and +1 reserve
-this.plotModifiers({
-    reserve: 1,
-    gold: 1
-});
-```
+Keywords are automatically parsed from the card text. It isn't necessary to explicitly implement them unless they are provided by a conditional persistent effect.
 
 ### Attachment restrictions
 
-Attachments often have restrictions on what cards they can be used on. For example, Bodyguard can only be attached to a character with a **Lord** or **Lady** trait. These restrictions can be defined using the `attachmentRestriction` method and passing the appropriate target specification object. By default, it's assumed that the attachment target is a character. Some examples:
-
-```javascript
-// Bodyguard - has either a 'Lord' or 'Lady' trait.
-this.attachmentRestriction({ trait: ['Lord', 'Lady'] });
-// Attainted - opponent character only
-this.attachmentRestriction({ controller: 'opponent' });
-// Breaker of Chains - unique Targaryen characters
-this.attachmentRestriction({ faction: 'targaryen', unique: true });
-// Improved Foritifications - locations instead of characters
-this.attachmentRestriction({ type: 'location' });
-```
-
-If an attachment has two mutually exclusive restrictions, you can pass multiple objects into the method.
-
-```javascript
-// The Silver Steed
-this.attachmentRestriction(
-    // Has trait 'Dothraki'
-    { trait: 'Dothraki' },
-    // OR is named Daenerys Targaryen
-    { name: 'Daenerys Targaryen' }
-);
-```
-
-For more complicated restrictions or restrictions that can't be checked with the target specification object, you can pass a function into `attachmentRestriction` instead. **Note** - if you do this, you need to explicitly check card type:
-
-```javascript
-// Ward - character with cost 4 or less
-this.attachmentRestriction(card => card.getType() === 'character' && card.getPrintedCost() <= 4);
-```
+**Not yet implemented/updated.**
 
 ### Persistent effects
 
@@ -114,34 +73,49 @@ For a full list of properties that can be set when declaring an effect, look at 
 The effect declaration takes a `match` property. In most cases this will be a function that takes a `Card` object and should return `true` if the effect should be applied to that card.
 
 ```javascript
-// Each Drowned God character you control gets +1 STR.
+// While Vasilis is in a shootout, each wanted dude in the opposing posse has -2 value.
 this.persistentEffect({
-    match: card => card.getType() === 'character' && card.hasTrait('Drowned God'),
-    effect: ability.effects.modifyStrength(1)
+    match: card => card.getType() === 'dude' && card.isOpposing(this.controller) && card.isWanted(),
+    effect: ability.effects.modifyValue(-2)
 });
 ```
 
 In some cases, an effect should be applied to a specific card. While you could write a `match` function to match only that card, you can provide the `Card` object as a shorthand.
 
 ```javascript
-// While you control another Bloodrider character, Jhogo gains stealth.
+// While in a Saloon you own, Clementine gets +1 influence and cannot be called out.
 this.persistentEffect({
-    condition: () => this.getNumberOfBloodriders() >= 1,
+    condition: () => this.locationCard.hasKeyword('Saloon') && this.locationCard.owner === this.controller,
     match: this,
-    effect: ability.effects.addKeyword('stealth')
+    effect: [
+        ability.effects.modifyInfluence(1),
+        ability.effects.cannotBeCalledOut()
+    ]
+});
+```
+
+If you need the persistent effect to be rechecked after some specific events (e.g. deed was added to the street), you do not specify these events but you add always-on condition.
+
+```javascript
+// Increase the production of the leftmost deed in each other street by 2.
+this.persistentEffect({
+    targetController: 'any',
+    condition: () => true,
+    match: card => card.getType() === 'deed' && !card.isSameStreet(this) && card.owner.leftmostLocation() === card.getGameLocation(),
+    effect: ability.effects.modifyProduction(2)
 });
 ```
 
 #### Conditional effects
 
-Some effects have a 'when', 'while' or 'if' clause within their text. These cards can be implemented by passing a `condition` function into the persistent effect declaration. The effect will only be applied when the function returns `true`. If the function returns `false` later on, the effect will be automatically unapplied from the cards it matched.
+Some effects have a 'when', 'while', 'during' or 'if' clause within their text. These cards can be implemented by passing a `condition` function into the persistent effect declaration. The effect will only be applied when the function returns `true`. If the function returns `false` later on, the effect will be automatically unapplied from the cards it matched.
 
 ```javascript
-// While Arya Stark has a duplicate, she gains a military icon.
+// Jake has +2 influence during the Sundown phase.
 this.persistentEffect({
-    condition: () => this.dupes.length >= 1,
+    condition: () => this.game.currentPhase === 'sundown',
     match: this,
-    effect: ability.effects.addIcon('military')
+    effect: ability.effects.modifyInfluence(2)
 });
 ```
 
@@ -152,35 +126,42 @@ By default, an effect will only be applied to cards controlled by the current pl
 To target only opponent cards, set `targetController` to `'opponent'`:
 
 ```javascript
-// While Unsullied is attacking, each defending character gets -1 STR.
-this.persistentEffect({
-    condition: () => this.game.currentChallenge && this.game.currentChallenge.isAttacking(this),
-    match: (card) => this.game.currentChallenge && this.game.currentChallenge.isDefending(card),
-    targetController: 'opponent',
-    effect: ability.effects.modifyStrength(-1)
-});
+// No example implemented yet.
+
 ```
 
 To target all cards regardless of who controls them, set `targetController` to `'any'`:
 
 ```javascript
-// Treat each character as if its printed text box were blank (except for Traits).
+// While Buford is at a Saloon or Casino, reduce his upkeep and the production of the deed by 1.
 this.persistentEffect({
-    match: card => card.getType() === 'character',
     targetController: 'any',
-    effect: ability.effects.blankExcludingTraits
+    condition: () => this.location === 'play area' && this.locationCard.hasOneOfKeywords(['Saloon', 'Casino']),
+    match: card => card.uuid === this.gamelocation,
+    effect: ability.effects.modifyProduction(-1)
 });
 ```
 
-#### Dynamic strengths
+#### Dynamic effects
 
-A few cards provide strength bonuses based on game state. For example, Core Tywin's strength is based on the amount of gold the player currently has. A `dynamicStrength` effect exists that takes a function to determine what the strength bonus is currently.
+A few cards provide dynamic bonuses/penalties based on game state. For example, Maza Gang Hideout's productions is based on the number of adjacent locations. A `dynamicProduction` effect exists that takes a function to determine what the production bonus is currently.
 
 ```javascript
-// Tywin Lannister gets +1 STR for each gold in your gold pool.
+// This deed has +1 production for each adjacent location.
 this.persistentEffect({
     match: this,
-    effect: ability.effects.dynamicStrength(() => this.controller.gold)
+    effect: ability.effects.dynamicProduction(() => this.adjacentLocations().length)
+});
+```
+
+Similar effect is for dynamic bullets of Wylie Jenks.
+
+```javascript
+// Wylie has +1 bullet for each wanted dude in the opposing posse.
+this.persistentEffect({
+    condition: () => this.isParticipating(),
+    match: this,
+    effect: ability.effects.dynamicBullets(() => this.game.shootout.opposingPosse.getDudes(dude => dude.isWanted()).length)
 });
 ```
 
@@ -189,18 +170,18 @@ this.persistentEffect({
 A `whileAttached` method is provided to define persistent effects that are applied to the card an attachment is attached. These effects remain as long as the card is attached to its parent and the attachment has not been blanked.
 
 ```javascript
-// Attached character gains a power icon.
+// Attached dude becomes a stud.
 this.whileAttached({
-    effect: ability.effects.addIcon('power')
+    effect: ability.effects.setAsStud(this.uuid)
 });
 ```
 
-If the effect has an additional requirement, an optional `match` function can be passed in.
+If the effect has an additional requirement, an optional `match` or `condition` function can be passed in.
 ```javascript
-// If attached character is Joffrey Baratheon, he gains a military icon.
+// While they are not wanted, this dude gets +1 influence.
 this.whileAttached({
-    match: card => card.name === 'Joffrey Baratheon',
-    effect: ability.effects.addIcon('military')
+    condition: () => !this.parent.isWanted(),
+    effect: ability.effects.modifyInfluence(1)
 });
 ```
 
@@ -208,30 +189,24 @@ this.whileAttached({
 As a shorthand, it is possible to pass an array into the `effect` property to apply multiple effects that have the same conditions / matching functions.
 
 ```javascript
-// During a challenge in which you are the defending player, Bronn gains a military, an intrigue, and a power icon.
+// While he has a Hex, Ivor gets +1 bullets, +1 influence, and +1 Huckster skill.
 this.persistentEffect({
-    condition: () => this.game.currentChallenge && this.game.currentChallenge.defendingPlayer === this.controller,
+    condition: () => this.hasAttachment(attachment => attachment.getType() === 'spell' && attachment.isHex()),
     match: this,
     effect: [
-        ability.effects.addIcon('military'),
-        ability.effects.addIcon('intrigue'),
-        ability.effects.addIcon('power')
+        ability.effects.modifyBullets(1),
+        ability.effects.modifyInfluence(1),
+        ability.effects.modifySkillRating(1, 'huckster')
     ]
 });
 ```
 
 #### Applying effects to cards in hand
 
-By default, effects will only be applied to cards in the play area.  Certain cards effects refer to cards in your hand, such as reducing their cost or providing ambush to matching cards. In these cases, set the `targetLocation` property to `'hand'`.
+By default, effects will only be applied to cards in the play area.  Certain cards effects refer to cards in your hand, such as reducing their cost. In these cases, set the `targetLocation` property to `'hand'`.
 
 ```javascript
-// Each Direwolf card in your hand gains ambush (X). X is that card's printed cost.
-this.persistentEffect({
-    // Explicitly target the effect to cards in hand.
-    targetLocation: 'hand',
-    match: card => card.hasTrait('Direwolf'),
-    effect: ability.effects.gainAmbush()
-});
+// Not yet implemented.
 ```
 
 #### Player modifying effects
@@ -239,17 +214,17 @@ this.persistentEffect({
 Certain cards provide bonuses or restrictions on the player itself instead of on any specific cards. Such effects can be implemented setting the `targetType` to `'player'`.
 
 ```javascript
-mayInitiateAdditionalChallenge: function(challengeType) {
+effectName: function() {
     targetType: 'player',
     // ...
 }
 ```
 
 ```javascript
-// You may initiate an additional  challenge during the challenges phase.
+// Not yet implemented.
 this.persistentEffect({
     targetController: 'current',
-    effect: ability.effects.mayInitiateAdditionalChallenge('military')
+    effect: ability.effects.effectName()
 });
 ```
 
