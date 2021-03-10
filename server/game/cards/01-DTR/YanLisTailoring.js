@@ -7,7 +7,7 @@ class YanLisTailoring extends DeedCard {
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             target: {
-                activePromptTitle: 'Select dude ot raise influence',
+                activePromptTitle: 'Select dude to raise influence',
                 cardCondition: { location: 'play area' },
                 cardType: ['dude']
             },
