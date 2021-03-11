@@ -34,6 +34,7 @@ Contents:
 	- [Paying additional costs for reactions](#Paying-additional-costs-for-reactions)
 	- [Limiting the number of uses](#Limiting-the-number-of-uses)
  - [Game actions](#Game-actions)
+    - [Putting cards into play](#Putting-cards-into-play)
  	- [List of game actions](#List-of-game-actions)
  - [Events](#Events)
  	- [List of events](#List-of-events)
@@ -853,6 +854,57 @@ this.game.resolveGameAction(GameActions.moveDude({
 
 **Note**: Basic game actions such as booting, unbooting, discarding and acing cards can be done using the `player` functions. All these actions are marked properly in the list of the action games below.
 
+#### Putting cards into play
+
+Specific game action is putting a card into play paying some kind of costs or that has other conditions. In this case we cannot use `GameActions.putIntoPlay` game action as it does not have costs resolution and other processing. Instead, you will have to use `StandardActions.putIntoPlay` which will be passed to `game.resolveStandardAbility(action, player, source, callback)`. 
+
+Parameters for `resolveStandardAbility`:
+ - action - `StandardActions.putIntoPlay` action. Usually you will only have to call the function without parameters (use defaults), but in case you need something specific, parameters are:
+	- properties:
+		- sourceType (ability)
+		- playType (ability)
+		- target - target location uuid where the card should be placed
+		- targetParent - used if the card being put into play should be attached to target's parent (e.g. JiaMein)
+		- reduceAmount
+	- callback - function executed after card is put into play
+ - player - player putting card into play
+ - source - card being put into play
+ - callback - function that will be executed after the ability is resolved
+
+Example:
+
+```javascript
+//...
+handler: context => {
+    this.game.resolveStandardAbility(StandardActions.putIntoPlay({
+        playType: 'ability',
+        sourceType: 'ability',
+        targetParent: this
+    }), context.player, context.target);
+}
+//...               
+```
+
+There are predefined functions for vrious situations, for example if you want to put something into play with cost reduction:
+
+```javascript
+//...
+handler: card => {
+    this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(1), context.player, card);
+}
+//...               
+```
+
+Or if the card being put into play should go to Town Square:
+
+```javascript
+//...
+handler: card => {
+    this.game.resolveStandardAbility(StandardActions.putIntoPlayAtLocation(this.game.townsquare.uuid), context.player, card);
+}
+//...               
+```
+
 #### List of game actions
 
 **addBounty**
@@ -919,7 +971,7 @@ this.game.resolveGameAction(GameActions.moveDude({
 
 **placeToken**
 
-**putIntoPlay**
+**putIntoPlay** - use this game action only if you are putting card into play as is without any conditions or costs. Otherwise use [StandardActions.putIntoPlay](#Putting-cards-into-play).
 
 **removeBounty**
  - `card`: card from which the bounty will be removed
