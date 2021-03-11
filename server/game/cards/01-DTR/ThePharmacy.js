@@ -7,13 +7,13 @@ class ThePharmacy extends DeedCard {
             title: 'The Pharmacy',
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
-			target: {
+            target: {
                 activePromptTitle: 'Select dude to unboot',
                 cardCondition: { location: 'play area', booted: true },
                 cardType: ['dude']
             },
             handler: context => {
-				this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context);
+                this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context);
                 this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.target);
             }
         });
