@@ -2,40 +2,50 @@
 ## Implementing Cards
 
 Contents:
- - [Getting Started](#Getting started)
- - [Keywords]
- - [Persistent effects]
-	- [Matching conditions vs matching specific cards]
-	- [Conditional effects]
-	- [Targeting opponent or all matching cards]
-	- [Dynamic effects]
-	- [Attachment-based effects]
-	- [Applying multiple effects at once]
-	- [Applying effects to cards in hand]
-	- [Player modifying effects]
- - [Lasting effects]
- - [Actions]
- 	- [Regular action]
- 	- [Jobs]
- 	- [Spells]
- 	- [Ability messages](#Ability messages)
- 	- [Checking ability restrictions](#Checking ability restrictions)
- 	- [Paying additional costs for action](#Paying additional costs for action)
- 	- [Choosing / targeting cards](#Choosing / targeting cards)
- 	- [Non-targeting card choices](#Non-targeting card choices)
- 	- [Cancelling an action](#Cancelling an action)
- 	- [Limiting the number of uses](#Limiting the number of uses)
- 	- [Actions outside of play](#Actions outside of play)
- - [Triggered abilities](#Triggered abilities)
-	- [Declaring triggered abilities](#Declaring triggered abilities)
+ - [Getting Started](# Getting started)
+ - [Keywords](# Keywords)
+ - [Persistent effects](# Persistent effects)
+	- [Matching conditions vs matching specific cards](# Matching conditions vs matching specific cards)
+	- [Conditional effects](# Conditional effects)
+	- [Targeting opponent or all matching cards](# Targeting opponent or all matching cards)
+	- [Dynamic effects](# Dynamic effects)
+	- [Attachment-based effects](# Attachment-based effects)
+	- [Applying multiple effects at once](# Applying multiple effects at once)
+	- [Applying effects to cards in hand](# Applying effects to cards in hand)
+	- [Player modifying effects](# Player modifying effects)
+ - [Lasting effects](# Lasting effects)
+ - [Actions](# Actions)
+ 	- [Regular action](# Regular action)
+ 	- [Jobs](# Jobs)
+ 	- [Spells](# Spells)
+ 	- [Ability messages](# Ability messages)
+ 	- [Checking ability restrictions](# Checking ability restrictions)
+ 	- [Paying additional costs for action](# Paying additional costs for action)
+ 	- [Choosing / targeting cards](# Choosing / targeting cards)
+ 	- [Non-targeting card choices](# Non-targeting card choices)
+ 	- [Cancelling an action](# Cancelling an action)
+ 	- [Limiting the number of uses](# Limiting the number of uses)
+ 	- [Actions outside of play](# Actions outside of play)
+ - [Triggered abilities](# Triggered abilities)
+	- [Declaring triggered abilities](# Declaring triggered abilities)
+	- [React](# React)
+	- [Trait reactions](# Trait reactions)
+	- [Multiple choice reactions](# Multiple choice reactions)
+	- [Paying additional costs for reactions](# Paying additional costs for reactions)
+	- [Limiting the number of uses](# Limiting the number of uses)
+ - [Game actions](# Game actions)
+ 	- [List of game actions](# List of game actions)
+ - [Events](# Events)
+ 	- [List of events](# List of events)
+ - [Language](# Language)
 
 ### Getting started
 
 We recommend using VScode for implementing a card as there are many snippets that will help you.
 Whenever we refer to **action**, we mean also _spell_ and _job_ actions. 
 Whenever we mention **triggered abilities**, we mean _reaction_, _spell_reaction_, _traitReaction_ (in the future there can be some kind of interrupts also)
-Whenever you need to perform some basic game action, such as discard a card, boot a card, join posse, call out a dude or other refer to the [Game actions](#Game actions) section.
-Whenever you need to do something base on event, refer to the [Events](#Events) section for the event names. !!! M2 later will also add event parameters !!!
+Whenever you need to perform some basic game action, such as discard a card, boot a card, join posse, call out a dude or other refer to the [Game actions](# Game actions) section.
+Whenever you need to do something base on event, refer to the [Events](# Events) section for the event names. !!! M2 later will also add event parameters !!!
 To implement a card, follow these steps:
 
 #### 1. Create a file named after the card.
