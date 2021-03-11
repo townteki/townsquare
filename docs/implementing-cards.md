@@ -45,7 +45,9 @@ We recommend using VScode for implementing a card as there are many snippets tha
 Whenever we refer to **action**, we mean also _spell_ and _job_ actions. 
 Whenever we mention **triggered abilities**, we mean _reaction_, _spell_reaction_, _traitReaction_ (in the future there can be some kind of interrupts also)
 Whenever you need to perform some basic game action, such as discard a card, boot a card, join posse, call out a dude or other refer to the [Game actions](#Game-actions) section.
-Whenever you need to do something base on event, refer to the [Events](#Events) section for the event names. !!! M2 later will also add event parameters !!!
+Whenever you need to do something base on event, refer to the [Events](#Events) section for the event names. 
+> !!! M2 later will also add event parameters !!!
+
 To implement a card, follow these steps:
 
 #### 1. Create a file named after the card.
@@ -650,7 +652,8 @@ If an action is cancelled in this manner, it is not counted towards any 'limit X
 
 #### Limiting an action to a specific phase
 
-!!! M2 we will not probably need this
+> !!! M2 we will not probably need this
+
 You should not use this very often as the abilities phase limitation is determined automatically based on rules. That means play type `'shootout'`, `'shootout:join'` or `'resolution'` can only be played during shootout phase, `'noon'` only during high noon phase and `'cheatin resolution'` only during shootout or gambling.
 But if you need to limit to a specific phase in other cases, you can pass an optional `phase` property to the action to limit it to just that phase. Valid phases include `'gambling'`, `'upkeep'`, `'high noon'`, `'shootout'`, `'sundown'`. The default is `'any'` which allows the action to be triggered in any phase.
 
@@ -664,7 +667,8 @@ this.action({
 
 #### Limiting the number of uses
 
-!!! M2 not sure this is used in DTR
+> !!! M2 not sure this is used in DTR
+
 Some actions have text limiting the number of times they may be used in a given period. You can pass an optional `limit` property using one of the duration-specific ability limiters.
 
 ```javascript
@@ -677,7 +681,8 @@ this.action({
 
 #### Actions outside of play
 
-!!! M2 not sure this is used in DTR
+> !!! M2 not sure this is used in DTR
+
 Certain actions, such as those for Dolorous Edd, can only be activated while the character is in hand. Such actions should be defined by specifying the `location` property with the location from which the ability may be activated. The player can then activate the ability by simply clicking the card. If there is a conflict (e.g. both the ability and normal marshaling can occur), then the player will be prompted.
 
 ```javascript
@@ -695,7 +700,8 @@ For full documentation of properties, see `/server/game/promptedtriggeredability
 
 #### Declaring triggered abilities
 
-Each triggered ability has an associated triggering condition. This is done using the `when` property. This should be an object whose sub-property is the name of the event, and whose value is a function with the parameters of that event. When the function returns `true`, the ability will be executed. !!! M2 should also provide list of events
+Each triggered ability has an associated triggering condition. This is done using the `when` property. This should be an object whose sub-property is the name of the event, and whose value is a function with the parameters of that event. When the function returns `true`, the ability will be executed. 
+> !!! M2 should also provide list of events
 
 #### React
 
@@ -748,7 +754,9 @@ this.traitReaction({
 
 #### Multiple choice reactions
 
-A few cards provide reactions that have more than a yes or no choice. For example, !!! M2 not sure if there is any react ability that have choices !!!. In these cases, instead of sending a `handler` method, a `choices` object may be provided. Each property under the `choices` object will be used as the prompt button text, while the value will be the function to be executed if the player chooses that option. The option to decline / cancel the ability is provided automatically and does not need to be added to the `choices` object.
+> !!! M2 not sure if there is any react ability that have choices !!!
+
+A few cards provide reactions that have more than a yes or no choice. In these cases, instead of sending a `handler` method, a `choices` object may be provided. Each property under the `choices` object will be used as the prompt button text, while the value will be the function to be executed if the player chooses that option. The option to decline / cancel the ability is provided automatically and does not need to be added to the `choices` object.
 
 ```javascript
 this.reaction({
@@ -805,7 +813,8 @@ this.reaction({
 
 #### Limiting the number of uses
 
-!!! M2 there is no card implemented that would need this that is useing React!!!
+> !!! M2 there is no card implemented that would need this that is useing React !!!
+
 Some repeatable abilities have limiting number of times they may be used in a given period. You can pass an optional `limit` property.
 
 ```javascript
@@ -1002,7 +1011,7 @@ onPlayWindowClosed
 
 ### Language
 
-!!! M2 - not sure how to approach this. I do like a little bit of dramatization, not just plain messages !!!
+> !!! M2 - not sure how to approach this. I do like a little bit of dramatization, not just plain messages !!!
 
 #### Game messages should begin with the player doing the action
 
