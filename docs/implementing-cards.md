@@ -423,7 +423,7 @@ this.job({
 
 #### Spells
 
-Use the `spellAction` method when declaring. Provide it `difficulty` property to specify number or function representing the difficulty of the spell. If it is function, it takes context as parameter. To specify what should happen in case spell succeeds, provide it `onSuccess` property, or `onFail` property respectively if job fails.
+Use the `spellAction` method when declaring. Provide it `difficulty` property to specify number or function representing the difficulty of the spell. If it is function, it takes context as parameter. To specify what should happen in case spell succeeds, provide it `onSuccess` property, or `onFail` property respectively if spell fails.
 See `/server/game/spellaction.js` for full documentation. Most of the action propertie will be filled out for you if you use snippet `spellaction`.
 
 **Important**: Context includes also `pulledCard`, `difficulty` and `totalPulledValue` properties. `difficulty` will contain final difficulty (e.g. grit), 	`totalPulledValue` will contain value of pulled card with all bonuses.
