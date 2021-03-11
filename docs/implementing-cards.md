@@ -858,26 +858,36 @@ this.game.resolveGameAction(GameActions.moveDude({
 **addBounty**
  - `card`: card to which the bounty will be added
  - `amount` (1): amount of bounty to be added
+
 **aceCard** - can be called using `player.aceCard(card, allowSave = true, options)`. If you need to ace multiple cards, you can use `player.aceCards(card, allowSave = true, callback = () => true, options)`
  - `card`: card to be aced
  - `allowSave` (true): (to be added)
  - `source`: source location of the card to be aced
+
 **addToHand**
+
 **bootCard** - can be called using `player.bootCard(card, playType)`. Use playType parameter only if you are performing special kind of booting.
 **callOut**
  - `caller`: dude who is doing the Call out
  - `callee`: dude who is being Called out
  - `isCardEffect` (true): *true* if the call out comes from the effect of a card.
  - `canReject` (true): *true* if the callee can reject the call out.
+
 **cancelEffects**
+
 **choose**
+
 **discardCard** - can be called using `player.aceCard(card, allowSave = true, options)`. If you need to ace multiple cards, you can use `player.aceCards(card, allowSave = true, callback = () => true, options)`
  - `card`: card to be discarded
  - `allowSave` (true): (to be added)
  - `source`: source location of the card to be discarded
+
 **discardTopCards**
+
 **drawCards**
+
 **gainGhostRock**
+
 **joinPosse**
  - `card`: dude to join the posse
  - `options`: {
@@ -886,9 +896,13 @@ this.game.resolveGameAction(GameActions.moveDude({
      _needToBoot_ (false): *true* if dude has to boot to perform the move, *false* otherwise. This option has effect only if moveToPosse is true.
      _allowBooted_ (true): *true* if even the booted dude can join, *false* otherwise. This option has effect only if moveToPosse is true.
    }
+
 **lookAtDeck**
+
 **lookAtHand**
+
 **moveBounty**
+
 **moveDude**
  - `card`: dude to be moved
  - `targetUuid`: UUID of the location card (can be deed, townsquare or outfit)
@@ -900,18 +914,26 @@ this.game.resolveGameAction(GameActions.moveDude({
         - *null* if the booting will be decided based on the game rules
      _allowBooted_ (false): *true* if even the booted dude can be moved
    }
+
 **moveGhostRock**
+
 **placeToken**
+
 **putIntoPlay**
+
 **removeBounty**
  - `card`: card from which the bounty will be removed
  - `options`: {
      _removeAll_ (false): *true* if all bounty should be removed, *false* otherwise
      _amount_ (1): amount of the bounty to be removed
    }
+
 **removeFromGame**
+
 **returnCardToHand**
+
 **revealCard**
+
 **search** - searches specific location for a card(s).
  - `title`
  - `gameAction`
@@ -924,6 +946,7 @@ this.game.resolveGameAction(GameActions.moveDude({
  - `player`
  - `searchedPlay`
  - `handler`
+
 **sendHome**
  - `card`: dude to be sent home
  - `options`: {
@@ -931,10 +954,15 @@ this.game.resolveGameAction(GameActions.moveDude({
      _needToBoot_ (true): *true* if dude will be sent home booted, *false* otherwise
      _allowBooted_ (true): *true* if even the booted dude can be sent home, *false* otherwise
    }
+
 **shuffle**
+
 **shuffleIntoDeck**
+
 **simultaneously**
+
 **takeControl**
+
 **unbootCard** - can be called using `player.unbootCard(card)`
 
 #### Events
@@ -942,72 +970,72 @@ this.game.resolveGameAction(GameActions.moveDude({
 ##### List of events
 
 **Setup**
-onDecksPrepared
-onSetupFinished
+- onDecksPrepared
+- onSetupFinished
 
 **Gamblin'**
-onFirstPlayerDetermined
-onDrawHandsRevealed
+- onFirstPlayerDetermined
+- onDrawHandsRevealed
 
 **Shootout**
-onLeaderPosseFormed
-onShootoutSlinginLeadStarted
-onBeginShootoutRound
-onShootoutPhaseStarted
-onShootoutPhaseFinished
-onDudeLeftPosse
-onDrawHandsRevealed
+- onLeaderPosseFormed
+- onShootoutSlinginLeadStarted
+- onBeginShootoutRound
+- onShootoutPhaseStarted
+- onShootoutPhaseFinished
+- onDudeLeftPosse
+- onDrawHandsRevealed
 
 **Sundown**
-onSundownAfterVictoryCheck
+- onSundownAfterVictoryCheck
 
 **Card modification**
-onCardBlankToggled
-onCardValueChanged
-onCardBulletsChanged
-onCardInfluenceChanged
-onCardProductionChanged
-onCardUpkeepChanged
-onCardSkillRatingChanged
-onCardControlChanged
-onCardBountyChanged
-onStatChanged
+- onCardBlankToggled
+- onCardValueChanged
+- onCardBulletsChanged
+- onCardInfluenceChanged
+- onCardProductionChanged
+- onCardUpkeepChanged
+- onCardSkillRatingChanged
+- onCardControlChanged
+- onCardBountyChanged
+- onStatChanged
 
 **Phase/Turn timing events**
-onBeginRound
-onRoundEnded
-onPhaseStarted
-onPhaseEnded
-onAtEndOfPhase - AGOT thing, do we need it?
+- onBeginRound
+- onRoundEnded
+- onPhaseStarted
+- onPhaseEnded
+- onAtEndOfPhase - AGOT thing, do we need it?
 
 **Card changing location**
-onCardMoved
-onDudeMoved
-onCardEntersPlay
-onCardReturnedToDeck
-onCardLeftPlay
-onCardLeftHand
-onCardEntersHand
-onCardEntersDrawHand
-onCardPlaced - when card goes to boot hill or discard pile
+- onCardMoved
+- onDudeMoved
+- onCardEntersPlay
+- onCardReturnedToDeck
+- onCardLeftPlay
+- onCardLeftHand
+- onCardEntersHand
+- onCardEntersDrawHand
+- onCardPlaced - when card goes to boot hill or discard pile
 
 **Pulls**
-onCardPulled
-onPullSuccess
-onPullFail
+- onCardPulled
+- onPullSuccess
+- onPullFail
 
 **Others**
-onBountyCollected
-onGhostRockTransferred
-onBeforeDeckSearch
-onCardTakenControl
-onJokerAced
-onHandRankModified
-onTargetsChosen
-onCardAbilityInitiated
-onCardAbilityResolved
-onPlayWindowOpened
-onPlayWindowClosed
+- onBountyCollected
+- onGhostRockTransferred
+- onBeforeDeckSearch
+- onCardTakenControl
+- onJokerAced
+- onHandRankModified
+- onTargetsChosen
+- onCardAbilityInitiated
+- onCardAbilityResolved
+- onPlayWindowOpened
+- onPlayWindowClosed
 
 ### Language
 
