@@ -21,7 +21,7 @@ Contents:
  	- [Ability messages](#Ability-messages)
  	- [Checking ability restrictions](#Checking-ability-restrictions)
  	- [Paying additional costs for action](#Paying-additional-costs-for-action)
- 	- [Choosing/targeting cards](#Choosing/targeting-cards)
+ 	- [Choosing or targeting cards](#Choosing-or-targeting-cards)
  	- [Non-targeting card choices](#Non-targeting-card-choices)
  	- [Cancelling an action](#Cancelling-an-action)
  	- [Limiting the number of uses](#Limiting-the-number-of-uses)
@@ -547,7 +547,7 @@ this.action({
 });
 ```
 
-#### Choosing/targeting cards
+#### Choosing or targeting cards
 
 Cards that specify to 'choose' or otherwise target a specific card can be implemented by passing a `target` property, At minimum, the target property must have an `activePromptTitle` to be used as the prompt text, and a `cardCondition` function that returns `true` for valid targets. Any other properties that apply to `Game.promptForSelect` are valid.
 
