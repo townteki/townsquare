@@ -6,7 +6,10 @@ class TheOrphanage extends DeedCard {
             title: 'The Orphanage',
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
-            handler: context => {
+            message: context =>
+                this.game.addMessage('{0} uses {1} to give -1 control point and +2 production to all deeds with 2 or more control points.',
+                    context.player, this),
+            handler: () => {
                 this.untilEndOfPhase(ability => ({
                     condition: () => true,
                     match: card => card.getType() === 'deed' && card.control >= 2,
@@ -17,8 +20,6 @@ class TheOrphanage extends DeedCard {
                     ]
                 }), 'upkeep'
                 );
-                this.game.addMessage('{0} uses {1} to give -1 control point and +2 production to all deeds with 2 or more control points.',
-                    context.player, this);
             }
         });
     }

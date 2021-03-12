@@ -13,6 +13,7 @@ class BuffaloRifle extends GoodsCard {
                     title: 'Do you want to use ' + this.title + ' and snipe from distance?',
                     onYes: () => {
                         context.game.shootout.addMoveOptions(this.parent, { moveToPosse: false });
+                        this.game.addMessage('{0} uses {1} to join {2} to posse from adjacent location', context.player, this, this.parent);
                     }
                 });
             }

@@ -7,6 +7,8 @@ class LawrenceBlackwood extends DudeCard {
             playType: 'noon',
             condition: () => this.locationCard.owner !== this.controller,
             cost: ability.costs.bootSelf(),
+            message: context =>
+                this.game.addMessage('{0} uses {1} to gain control point unless he moves', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     until: {
@@ -17,7 +19,6 @@ class LawrenceBlackwood extends DudeCard {
                         ability.effects.modifyControl(1)
                     ]
                 }));
-                this.game.addMessage('{0} uses {1} to gain control point unless he moves.', context.player, this);
             }
         });
     }

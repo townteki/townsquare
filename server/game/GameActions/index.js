@@ -39,6 +39,14 @@ const GameActions = {
      *  - `amount` (1): amount of bounty to be added
      */
     addBounty: props => new AbilityAdapter(AddBounty, props),
+    /**
+     * Aces card.
+     * 
+     * @param {*} props properties:
+     *  - `card`: card to be aced
+     *  - `allowSave` (true): (to be added)
+     *  - `source`: source location of the card to be aced
+     */
     aceCard: props => new AbilityAdapter(AceCard, props),
     addToHand: props => new AbilityAdapter(AddToHand, props),
     bootCard: props => new AbilityAdapter(BootCard, props),
@@ -119,6 +127,22 @@ const GameActions = {
     removeFromGame: props => new AbilityAdapter(RemoveFromGame, props),
     returnCardToHand: props => new AbilityAdapter(ReturnCardToHand, props),
     revealCard: props => new AbilityAdapter(RevealCard, props),
+    /**
+     * Searches specific location for a card(s).
+     * 
+     * @param {*} props properties:
+     *  - title
+     *  - gameAction, 
+     *  - location, 
+     *  - match, 
+     *  - message, 
+     *  - cancelMessage, 
+     *  - topCards, 
+     *  - numToSelect, 
+     *  - player, 
+     *  - searchedPlayer
+     *  - handler
+     */
     search: props => new AbilityAdapter(
         new Search(props),
         context => ({ context })

@@ -48,7 +48,7 @@ class CharliesPlace extends DeedCard {
                 ability.effects.modifyBullets(amount)
             ]
         }));
-        this.game.addMessage('{0} uses {1} to {2} {3}\'s bullets by 2.', player, this, text, this.abilityContext.target);
+        this.game.addMessage('{0} uses {1} to {2} {3}\'s bullets by 2', player, this, text, this.abilityContext.target);
     }
 }
 

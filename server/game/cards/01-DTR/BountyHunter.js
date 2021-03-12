@@ -24,7 +24,7 @@ class BountyHunter extends ActionCard {
                     this.game.addMessage('{0} pays for a {1} to hunt {2}.', context.player, this, context.target);
                 } else {
                     gunslinger.removeFromGame();
-                    this.game.addMessage('{0} pays for a {1} to hunt {2}, but they cannot be called out.', context.player, this, context.target);
+                    this.game.addMessage('{0} pays for a {1} to hunt {2}, but they cannot be called out', context.player, this, context.target);
                 }
             }
         });

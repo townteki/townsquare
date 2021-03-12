@@ -12,10 +12,9 @@ class ShaneGravesSecurity extends DeedCard {
                 (this.game.getShootoutLocationCard() === this ||
                 this.game.shootout.shootoutLocation.isAdjacent(this.uuid)),
             handler: context => {
-                // nedalo gunslingera ako moznost pre shootera .. PRECO??
                 let token = context.player.placeToken('Gunslinger', this.game.shootout.shootoutLocation.uuid);
                 this.game.resolveGameAction(GameActions.joinPosse({ card: token, moveToPosse: false }), context);
-                this.game.addMessage('{0} uses {1} to call a {2} into the shootout.', context.player, this, token);
+                this.game.addMessage('{0} uses {1} to call a {2} into the shootout', context.player, this, token);
             }
         });
     }

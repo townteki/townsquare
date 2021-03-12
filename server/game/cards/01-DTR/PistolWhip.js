@@ -14,13 +14,14 @@ class PistolWhip extends ActionCard {
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude']
             },
+            message: context =>
+                this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.costs.boot,
                     effect: ability.effects.modifyBullets(-1)
                 }));
                 this.game.shootout.sendHome(context.target);
-                this.game.addMessage('{0} uses {1} to send {2} home booted.', context.player, this);
             }
         });
     }

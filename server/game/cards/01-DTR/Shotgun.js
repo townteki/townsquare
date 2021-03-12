@@ -15,9 +15,10 @@ class Shotgun extends GoodsCard {
                 },
                 cardType: 'dude'
             },
+            message: context =>
+                this.game.addMessage('{0} plays {1} to ace {2}', this.controller, this, context.target),
             handler: context => {
                 context.target.controller.aceCard(context.target);
-                this.game.addMessage('{0} plays {1} to ace {2}.', this.controller, this, context.target);
             }
         });
     }
