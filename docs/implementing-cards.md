@@ -113,6 +113,7 @@ Refer to following chapter based on the card ability or trait type:
  - [Persistent effects](#Persistent-effects) - cards with traits starting with 'While', or having effects 'during' something or traits that provide persistent effect not tied to a specific event.
 	Examples:
 	> While in a Saloon you own, Clementine gets +1 influence and cannot be called out.
+	
 	> Jake has +2 influence during the Sundown phase.
  - [Triggered abilities](#Triggered-abilities) - any abilities with effects that occur in response to an event.
 	- [React](#React) - cards with `React` abilities.
