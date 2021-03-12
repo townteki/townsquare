@@ -3,7 +3,11 @@
 
 Contents:
  - [Getting started](#Getting-started)
- - [Keywords](#Keywords)
+ - [General information](#Genaral-information)
+	- [Rank modifications](#Rank-modifications)
+	- [Using game locations](#Using-game-locations)
+	- [Resetting abilities](#Resetting-abilities)
+	- [Keywords](#Keywords)
  - [Persistent effects](#Persistent-effects)
 	- [Matching conditions vs matching specific cards](#Matching-conditions-vs-matching-specific-cards)
 	- [Conditional effects](#Conditional-effects)
@@ -18,7 +22,6 @@ Contents:
  	- [Regular action](#Regular-action)
  	- [Jobs](#Jobs)
  	- [Spells](#Spells)
- 	- [Ability messages](#Ability-messages)
  	- [Checking ability restrictions](#Checking-ability-restrictions)
  	- [Paying additional costs for action](#Paying-additional-costs-for-action)
  	- [Choosing or targeting cards](#Choosing-or-targeting-cards)
@@ -33,6 +36,7 @@ Contents:
 	- [Multiple choice reactions](#Multiple-choice-reactions)
 	- [Paying additional costs for reactions](#Paying-additional-costs-for-reactions)
 	- [Limiting the number of uses](#Limiting-the-number-of-uses)
+ - [Ability messages](#Ability-messages)
  - [Game actions](#Game-actions)
     - [Putting cards into play](#Putting-cards-into-play)
  	- [List of game actions](#List-of-game-actions)
@@ -94,12 +98,118 @@ See below for more documentation.
 ```javascript
 class AllieHensman extends DudeCard {
     setupCardAbilities(ability) {
-        // Declare persistent effects, reactions and interrupts here.
+        // Declare persistent effects, actions and reactions here.
     }
 }
 ```
 
-## Keywords
+### 4. Write the ability or trait script.
+
+Refer to following chapter based on the card ability or trait type:
+ - [Regular Action](#Regular-action) - cards with `Noon`, `Shootout`, `Resolution` and `Cheatin' Resolution` abilities. But not for `Noon Job` or spells.
+ - [Jobs](#Jobs) - cards with `Noon Job` ability.
+ - [Spells](#Spells) - cards with spell abilities (e.g `Noon Miracle 6`).
+ - [Attachment-based effects](#Attachment-based-effects) - All effects attachment puts on the parent (e.g bullet bonus, influence bonus etc)
+ - [Persistent effects](#Persistent-effects) - cards with traits starting with 'While', or having effects 'during' something or traits that provide persistent effect not tied to a specific event.
+	Examples:
+	> While in a Saloon you own, Clementine gets +1 influence and cannot be called out.
+	> Jake has +2 influence during the Sundown phase.
+ - [Triggered abilities](#Triggered-abilities) - any abilities with effects that occur in response to an event.
+	- [React](#React) - cards with `React` abilities.
+	- [Trait reactions](#Trait-reactions) - cards with traits that have effects that can occur in response to an event in the same way that Reacts do.
+			Example:
+			> If your opponent in Tommy's shootout reveals a cheatin' hand, raise your draw hand rank by 1 for this round.
+
+## General information
+
+Various information you will need when implementing cards.
+
+### Rank modifications
+
+In case you will need to perform any rank modifications. You will need these methods:
+
+- `player.modifyRank(number)` to modify player's hand rank. Use negative values to lower the hand rank.
+- `player.getTotalRank()` to get player's current modified hand rank.
+
+For example Barton Everest' trait to modify hand ranks:
+```javascript
+this.traitReaction({
+    when: {
+        onDrawHandsRevealed: event => event.shootout && this.isParticipating() && this.controller.isCheatin()
+    },
+    handler: context => {
+        context.player.modifyRank(1);
+        this.game.addMessage('{0}\'s rank is increased by 1 thanks to the {1}; Current rank is {2}', 
+            context.player, this, context.player.getTotalRank());
+    }
+});
+```
+
+### Using game locations
+
+Every time you will need to use game locations such as various deeds on your street, townsquare, outfit or others, use their `uuid` attribute. For example if I want to pass Town Square location to some function, I will use `game.townsquare.uuid`.
+
+**Important** To get uuid of the cuuret location of a card, you can either use attribute `gamelocation` or `getLocation().uuid`. Every type of card except action cards has a `gamlocation` attribute.
+
+For example to move a dude with Mustang to a target location:
+
+```javascript
+this.action({
+    title: 'Mustang',
+	// ...
+    handler: context => {
+        this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.uuid }), context);
+    }
+});
+```
+
+If you need to check id a card is in Town Square, you can use function `card.isInTownSquare()`:
+
+```javascript
+this.action({
+    title: 'Allie Hensman',
+	// ...
+    handler: context => {
+        if(this.isInTownSquare()) {
+            this.modifyControl(1);
+        }
+    }
+});
+```
+
+### Gaining or Losing Ghost Rock
+
+In case you will need to add or take (not pay) Ghost Rock from some player, you will need this method:
+
+`player.modifyGhostRock(number)` - use negative values to lose the Ghost Rock.
+
+For example Reserve's ability to gain 1 Ghost Rock:
+```javascript
+this.action({
+    title: 'Reserves',
+    playType: 'noon',      
+    handler: context => {
+        this.owner.modifyGhostRock(1);
+    }
+});
+```
+
+### Resetting abilities
+
+Some abilities let you use some different abilities once more. To be able to do that, you will have to reset abilities of that card using `card.resetAbilities()`.
+
+Example (no card implemented yet with abilities refresh):
+```javascript
+this.action({
+    title: 'Jon Longstride',
+	// ...
+    handler: context => {
+		// some code to get Jon's horse
+		horse.resetAbilities();
+    }
+```
+
+### Keywords
 
 Keywords are automatically parsed from the card text. It isn't necessary to explicitly implement them unless they are provided by a conditional persistent effect.
 
@@ -465,49 +575,6 @@ this.spellAction({
 });
 ```
 
-### Ability messages
-
-The `message` property can be used to add a message to the game log outside of the `handler` function. By separating the message from the handler that executes the ability, messages can be added to the game log prior to prompting to cancel abilities (e.g. Slight Modification, etc).
-
-The `message` property can be just a string if there are no additional arguments. `{player}` will be replaced with the player initiating the ability, `{source}` will be replaced with the card associated with the ability, and `{target}` will be replaced with the target for the ability (if any):
-
-```javascript
-this.action({
-    // ...
-    message: '{player} boots {source} to ace {target}',
-    handler: () => {
-        // ...
-    }
-});
-```
-
-When you have additional parameters needed for the message, the `message` property can be an object with a `format` sub-property for the message format, and an `args` sub-property for the additional arguments. The keys of the `args` sub-property correspond to the replacement name, and the values correspond to a function that takes the `context` object and returns the appropriate argument value:
-```javascript
-this.action({
-    // ...
-    message: {
-        format: '{player} uses {source} to put {target} into play from {targetOwner}\'s discard pile.',
-        args: {
-            targetOwner: context => context.target.owner
-        }
-    },
-    handler: () => {
-        // ...
-    }
-});
-```
-
-Finally, you can pass a function to the `message` property that will be executed:
-```javascript
-this.action({
-    // ...
-    message: context => this.game.addMessage('{0} uses {1} to ace {2}', context.player, this, context.target),
-    handler: () => {
-        // ...
-    }
-});
-```
-
 ### Checking ability restrictions
 
 Card abilities can only be triggered if they have the potential to modify game state (outside of paying costs). To ensure that the action's play restrictions are met, pass a `condition` function that returns `true` when the restrictions are met, and `false` otherwise. If the condition returns `false`, the action will not be executed and costs will not be paid.
@@ -832,7 +899,50 @@ this.reaction({
 });
 ```
 
-### Game actions
+## Ability messages
+
+The `message` property can be used to add a message to the game log outside of the `handler` function. By separating the message from the handler that executes the ability, messages can be added to the game log prior to prompting to cancel abilities (e.g. Slight Modification, etc).
+
+The `message` property can be just a string if there are no additional arguments. `{player}` will be replaced with the player initiating the ability, `{source}` will be replaced with the card associated with the ability, and `{target}` will be replaced with the target for the ability (if any):
+
+```javascript
+this.action({
+    // ...
+    message: '{player} boots {source} to ace {target}',
+    handler: () => {
+        // ...
+    }
+});
+```
+
+When you have additional parameters needed for the message, the `message` property can be an object with a `format` sub-property for the message format, and an `args` sub-property for the additional arguments. The keys of the `args` sub-property correspond to the replacement name, and the values correspond to a function that takes the `context` object and returns the appropriate argument value:
+```javascript
+this.action({
+    // ...
+    message: {
+        format: '{player} uses {source} to put {target} into play from {targetOwner}\'s discard pile.',
+        args: {
+            targetOwner: context => context.target.owner
+        }
+    },
+    handler: () => {
+        // ...
+    }
+});
+```
+
+Finally, you can pass a function to the `message` property that will be executed:
+```javascript
+this.action({
+    // ...
+    message: context => this.game.addMessage('{0} uses {1} to ace {2}', context.player, this, context.target),
+    handler: () => {
+        // ...
+    }
+});
+```
+
+## Game actions
 
 Do not confuse this with card actions, these are specific actions that can be performed as part of card abilities. For example Philip Swinford would discard a card and then draw a card. The game actions in the handler of his ability will look like this:
 
@@ -854,7 +964,7 @@ this.game.resolveGameAction(GameActions.moveDude({
 
 **Note**: Basic game actions such as booting, unbooting, discarding and acing cards can be done using the `player` functions. All these actions are marked properly in the list of the action games below.
 
-#### Putting cards into play
+### Putting cards into play
 
 Specific game action is putting a card into play paying some kind of costs or that has other conditions. In this case we cannot use `GameActions.putIntoPlay` game action as it does not have costs resolution and other processing. Instead, you will have to use `StandardActions.putIntoPlay` which will be passed to `game.resolveStandardAbility(action, player, source, callback)`. 
 
@@ -905,7 +1015,7 @@ handler: card => {
 //...               
 ```
 
-#### List of game actions
+### List of game actions
 
 **addBounty**
  - `card`: card to which the bounty will be added
@@ -1017,9 +1127,9 @@ handler: card => {
 
 **unbootCard** - can be called using `player.unbootCard(card)`
 
-### Events
+## Events
 
-#### List of events
+### List of events
 
 **Setup**
 - onDecksPrepared
