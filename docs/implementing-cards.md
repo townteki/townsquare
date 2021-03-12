@@ -119,6 +119,7 @@ Refer to following chapter based on the card ability or trait type:
 	- [React](#React) - cards with `React` abilities.
 	- [Trait reactions](#Trait-reactions) - cards with traits that have effects that can occur in response to an event in the same way that Reacts do.
 			Example:
+			
 			> If your opponent in Tommy's shootout reveals a cheatin' hand, raise your draw hand rank by 1 for this round.
 
 ## General information
