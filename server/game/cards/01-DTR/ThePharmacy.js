@@ -12,7 +12,8 @@ class ThePharmacy extends DeedCard {
                 cardCondition: { location: 'play area', booted: true },
                 cardType: ['dude']
             },
-            message: context => {this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.target);},
+            message: context => 
+                this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context);
             }
