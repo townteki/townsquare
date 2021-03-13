@@ -2,17 +2,18 @@ const DudeCard = require('../../dudecard.js');
 
 class JacquelineIsham extends DudeCard {
     setupCardAbilities() {
-        this.reaction({
+        this.traitReaction({
             when: {
                 onDudeJoinedPosse: event => !event.leaderPosse && event.card === this
             },
             repeatable: true,
-            handler: context => {
-                this.applyAbilityEffect(context.ability, ability => ({
+            message: context =>
+                context.game.addMessage('{0} uses {1} and makes her a stud.', this.controller, this),
+            handler: () => {
+                this.applyAbilityEffect(this.ability, ability => ({
                     match: this,
                     effect: ability.effects.setAsStud()
                 }));
-                this.game.addMessage('{0} uses {1} and makes her a stud.', this.controller, this);
             }
         });
     }
