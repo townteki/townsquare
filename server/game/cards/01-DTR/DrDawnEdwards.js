@@ -2,7 +2,7 @@ const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
 // For Dr. Dawn Edwards, we cannot use traitReaction because it is in effect only if card is in play. Since the triggering
-// event is on discarded, Eve at that time is not in play therefore her trigger will not work.
+// event is on discarded, Dr. Dawn Edwards at that time is not in play therefore her trigger will not work.
 // Instead we use one time conditional game wide event trigger for her that is put in place when she enters play and
 // removed once she leaves. `leavesPlay` function executes after the discard event so we are safe here.
 class DrDawnEdwards extends DudeCard {
