@@ -6,9 +6,8 @@ class JacquelineIsham extends DudeCard {
             when: {
                 onDudeJoinedPosse: event => !event.leaderPosse && event.card === this
             },
-            repeatable: true,
             message: context =>
-                context.game.addMessage('{0} uses {1} and makes her a stud.', this.controller, this),
+                context.game.addMessage('{1} joins the posse and becomes a stud.', this),
             handler: () => {
                 this.applyAbilityEffect(this.ability, ability => ({
                     match: this,
