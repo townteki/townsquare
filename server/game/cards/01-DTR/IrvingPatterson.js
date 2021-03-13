@@ -7,7 +7,7 @@ class IrvingPatterson extends DudeCard {
                 onDudeJoinedPosse: event => event.card === this
             },
             message: context =>
-                context.game.addMessage('{0} uses {1} to gain a ghost rock for joining the posse.', this.controller, this),
+                context.game.addMessage('{0} uses {1} to gain a ghost rock for joining the posse', this.controller, this),
             handler: context => {
                 context.player.modifyGhostRock(1);
             }
