@@ -112,15 +112,16 @@ Refer to following chapter based on the card ability or trait type:
  - [Attachment-based effects](#Attachment-based-effects) - All effects attachment puts on the parent (e.g bullet bonus, influence bonus etc)
  - [Persistent effects](#Persistent-effects) - cards with traits starting with 'While', or having effects 'during' something or traits that provide persistent effect not tied to a specific event.
 	Examples:
+	
 	> While in a Saloon you own, Clementine gets +1 influence and cannot be called out.
 	
 	> Jake has +2 influence during the Sundown phase.
  - [Triggered abilities](#Triggered-abilities) - any abilities with effects that occur in response to an event.
 	- [React](#React) - cards with `React` abilities.
 	- [Trait reactions](#Trait-reactions) - cards with traits that have effects that can occur in response to an event in the same way that Reacts do.
-			Example:
-			
-			> If your opponent in Tommy's shootout reveals a cheatin' hand, raise your draw hand rank by 1 for this round.
+	
+		Example:		
+		> If your opponent in Tommy's shootout reveals a cheatin' hand, raise your draw hand rank by 1 for this round.
 
 ## General information
 
@@ -151,7 +152,7 @@ this.traitReaction({
 
 Every time you will need to use game locations such as various deeds on your street, townsquare, outfit or others, use their `uuid` attribute. For example if I want to pass Town Square location to some function, I will use `game.townsquare.uuid`.
 
-**Important** To get uuid of the cuuret location of a card, you can either use attribute `gamelocation` or `getLocation().uuid`. Every type of card except action cards has a `gamlocation` attribute.
+**Important:** To get `uuid` of the current location of a card, you can either use attribute `gamelocation` or `getLocation().uuid`. Every type of card except action cards has a `gamelocation` attribute.
 
 For example to move a dude with Mustang to a target location:
 
@@ -165,7 +166,7 @@ this.action({
 });
 ```
 
-If you need to check id a card is in Town Square, you can use function `card.isInTownSquare()`:
+If you need to check that a card is in Town Square, you can use function `card.isInTownSquare()`:
 
 ```javascript
 this.action({
