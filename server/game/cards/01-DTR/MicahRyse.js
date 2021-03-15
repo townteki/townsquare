@@ -17,10 +17,9 @@ class MicahRyse extends DudeCard {
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: this, 
-                            targetUuid: location.uuid, 
-                            options: { needToBoot: false, allowBooted: true }
+                            targetUuid: location.uuid
                         }), context);   
-                        this.game.addMessage('{0} uses {1} to move him to {2}.', player, this, location);                                 
+                        this.game.addMessage('{0} uses {1} to move him to {2}', player, this, location);                                 
                         return true;
                     }
                 });                

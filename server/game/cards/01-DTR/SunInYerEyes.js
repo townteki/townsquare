@@ -10,6 +10,8 @@ class SunInYerEyes extends ActionCard {
                 cardCondition: { location: 'play area', participating: true, controller: 'opponent' },
                 cardType: 'dude'
             },
+            message: context =>
+                this.game.addMessage('{0} plays {1} on {2} to lower their bullets by 2 and make them a draw', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
@@ -18,7 +20,6 @@ class SunInYerEyes extends ActionCard {
                         ability.effects.modifyBullets(-2)
                     ]
                 }));
-                this.game.addMessage('{0} plays {1} on {2} to lower their bullets by 2 and make them a draw.', context.player, this, context.target);
             }
         });
     } 

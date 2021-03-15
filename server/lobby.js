@@ -3,7 +3,7 @@ const Socket = require('./socket.js');
 const jwt = require('jsonwebtoken');
 const _ = require('underscore');
 const moment = require('moment');
-const { validateDeck, formatDeckAsFullCards } = require('../townsquare-deck-helper');
+const { validateDeck, formatDeckAsFullCards } = require('townsquare-deck-helper');
 
 const logger = require('./log.js');
 const version = moment(require('../version.js'));

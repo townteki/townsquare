@@ -15,8 +15,7 @@ class ShadowWalk extends SpellCard {
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: this.parent, 
-                            targetUuid: location.uuid, 
-                            options: { needToBoot: false, allowBooted: true }
+                            targetUuid: location.uuid
                         }), context);   
                         this.game.addMessage('{0} uses {1} to move {2} to {3}.', player, this, this.parent, location);                                 
                         return true;

@@ -3,6 +3,7 @@ const AbilityUsage = require('./abilityusage.js');
 const BaseAbility = require('./baseability.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
+const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 
 const ActionPlayTypes = ['any', 'noon', 'shootout', 'shootout:join', 'resolution', 'cheatin resolution'];
 const AllowedTypesForPhase = {
@@ -29,14 +30,14 @@ const AllowedTypesForPhase = {
  *                any phase.
  * location     - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
- * limit        - the max number of uses for the repeatable reaction.
+ * limit        - the max number of uses for the repeatable action.
  * anyPlayer    - boolean indicating that the action may be executed by a player
  *                other than the card's controller. Defaults to false.
  * clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
  */
 class CardAction extends BaseAbility {
-    constructor(game, card, properties) {
+    constructor(game, card, properties, isJob = false) {
         super(properties);
         this.game = game;
         this.card = card;
@@ -66,8 +67,12 @@ class CardAction extends BaseAbility {
             this.cost = this.cost.concat(Costs.playAction());
         }
 
-        if(!this.gameAction && card.getType() !== 'spell') {
-            throw new Error('Actions must have a `gameAction` or `handler` property.');
+        if(!this.gameAction) {
+            if(card.getType() !== 'spell' && !isJob) {
+                throw new Error('Actions must have a `gameAction` or `handler` property.');
+            } else {
+                this.gameAction = new HandlerGameActionWrapper({ handler: () => true });
+            }
         }
     }
 

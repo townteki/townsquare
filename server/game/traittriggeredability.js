@@ -20,10 +20,10 @@ const TriggeredAbility = require('./triggeredability.js');
  * location - string or array of string  indicating the location the card should
  *            be in in order to activate the reaction. Defaults to 'play area'.
  */
-class ForcedTriggeredAbility extends TriggeredAbility {
+class TraitTriggeredAbility extends TriggeredAbility {
     isForcedAbility() {
         return true;
     }
 }
 
-module.exports = ForcedTriggeredAbility;
+module.exports = TraitTriggeredAbility;

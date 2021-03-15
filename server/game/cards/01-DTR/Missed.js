@@ -11,9 +11,10 @@ class Missed extends ActionCard {
                 cardCondition: { location: 'play area', controller: 'current', participating: true },
                 cardType: ['dude']
             },
+            message: context =>
+                this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }));
-                this.game.addMessage('{0} uses {1} to unboot {2}.', context.player, this, context.target);
             }
         });
     }
