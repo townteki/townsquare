@@ -20,7 +20,7 @@ class ChargingBear extends DudeCard {
                 }
             },
             message: context => {
-                this.game.addMessage('{0} uses {1} to ace {2}, send {3} home booted, and make {1} a stud!', context.player, this, context.targets.toAce, context.targets.toBootHome);
+                this.game.addMessage('{0} uses {1} to ace {2}, send {3} home booted, and make {1} a stud', context.player, this, context.targets.toAce, context.targets.toBootHome);
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.aceCard({ card: context.targets.toAce }), context);
