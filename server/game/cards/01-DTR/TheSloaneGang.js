@@ -12,6 +12,8 @@ class TheSloaneGang extends OutfitCard {
                 cardCondition: { location: 'play area', condition: card => card.getGameLocation().isTownSquare() },
                 cardType: 'dude'
             },
+            message: context =>
+                this.game.addMessage('{0} uses {1} to assign mission of holding Town Square to {2}', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 if(!this.dudesOnAMission) {
@@ -23,7 +25,6 @@ class TheSloaneGang extends OutfitCard {
                 } else {
                     this.dudesOnAMission.push(context.target);
                 }
-                this.game.addMessage('{0} uses {1} to assign mission of holding Town Square to {2}.', context.player, this, context.target);
             },
             source: this
         });

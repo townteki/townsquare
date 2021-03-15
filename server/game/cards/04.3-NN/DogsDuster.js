@@ -21,9 +21,10 @@ class DogsDuster extends GoodsCard {
                 cardCondition: { location: 'play area', wanted: true, controller: 'opponent' },
                 cardType: 'dude'
             },
+            message: context =>
+                this.game.addMessage('{0} uses {1}\'s {2} to call out {3}', context.player, this.parent, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.callOut({ caller: this.parent, callee: context.target }), context);
-                this.game.addMessage('{0} uses {1}\'s {2} to call out {3}.', context.player, this.parent, this, context.target);
             }
         });
     }

@@ -32,6 +32,10 @@ class DudeCard extends DrawCard {
         return tempBullets;
     }
 
+    set bullets(amount) {
+        super.bullets = amount;
+    }
+
     get shooter() {
         return this.studReferenceArray[0].shooter;
     }

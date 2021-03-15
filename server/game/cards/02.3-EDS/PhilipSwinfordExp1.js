@@ -19,7 +19,7 @@ class PhilipSwinfordExp1 extends DudeCard {
                                 cardCondition: card => card.location === 'hand' && card.controller === this.controller,
                                 onSelect: (p, card) => {
                                     this.game.resolveGameAction(GameActions.discardCard({ card: card }), context).thenExecute(() => {
-                                        this.game.addMessage('{0} draws a card and then discards {1} thanks to the {2}.', p, card, this);
+                                        this.game.addMessage('{0} draws a card and then discards {1} thanks to the {2}', p, card, this);
                                     });
                                     return true;
                                 }

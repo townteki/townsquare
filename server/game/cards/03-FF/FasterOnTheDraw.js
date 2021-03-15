@@ -33,7 +33,7 @@ class FasterOnTheDraw extends ActionCard {
                             match: card,
                             effect: ability.effects.modifyBullets(-2)
                         }));
-                        this.game.addMessage('{0} uses {1} to give {2} +1 bullets {3} and to give {4} -2 bullets.', 
+                        this.game.addMessage('{0} uses {1} to give {2} +1 bullets {3} and to give {4} -2 bullets', 
                             context.player, this, context.target, deputyBonus, card);                     
                         return true;
                     }

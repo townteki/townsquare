@@ -17,6 +17,8 @@ class VasilisTheBoar extends DudeCard {
                 cardCondition: { location: 'play area' },
                 cardType: ['goods']
             },
+            message: context =>
+                this.game.addMessage('{0} uses {1}`s {2}', context.player, this, context.target),
             handler: context => {
                 context.target.useAbility(context.player, { 
                     doNotMarkActionAsTaken: true,

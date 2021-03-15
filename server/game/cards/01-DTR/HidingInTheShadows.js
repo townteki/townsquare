@@ -10,6 +10,8 @@ class HidingInTheShadows extends ActionCard {
                 cardCondition: { location: 'play area' },
                 cardType: ['dude']
             },
+            message: context =>
+                this.game.addMessage('{0} uses {1} to hide {2}.', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
@@ -18,7 +20,6 @@ class HidingInTheShadows extends ActionCard {
                         ability.effects.cannotBeAffectedByShootout('opponent')
                     ]
                 }));                
-                this.game.addMessage('{0} uses {1} to hide {2}.', context.player, this, context.target);
             }
         });
     }

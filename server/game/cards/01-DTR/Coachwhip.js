@@ -20,7 +20,7 @@ class Coachwhip extends ActionCard {
                     context.target.controller.bootCard(context.target);
                 }
                 if(action) {
-                    this.game.addMessage('{0} plays {1} to {2} {3}.', this.controller, this, action, context.target);
+                    this.game.addMessage('{0} plays {1} to {2} {3}', this.controller, this, action, context.target);
                 }
             }
         });
