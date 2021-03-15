@@ -11,7 +11,7 @@ const NoImageSource = require('./fetchdata/NoImageSource.js');
 const optionsDefinition = [
     { name: 'card-source', type: String, defaultValue: 'json' },
     { name: 'card-dir', type: String, defaultValue: path.join(__dirname, '..', '..', 'townsquare-json-data') },
-    { name: 'image-source', type: String, defaultValue: 'none' },
+    { name: 'image-source', type: String, defaultValue: 'dtdb' },
     { name: 'image-dir', type: String, defaultValue: path.join(__dirname, '..', '..', 'public', 'img', 'cards') },
     { name: 'no-images', type: Boolean, defaultValue: false }
 ];
@@ -33,7 +33,7 @@ function createImageSource(options) {
     switch(options['image-source']) {
         case 'none':
             return new NoImageSource();
-        case 'cardgamedb':
+        case 'dtdb':
             return new DtDbImageSource();
     }
 

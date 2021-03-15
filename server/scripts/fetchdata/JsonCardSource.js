@@ -10,19 +10,17 @@ class JsonCardSource {
     }
 
     loadPackFiles(directory) {
-        let packs = [];
         let cards = [];
         let files = fs.readdirSync(path.join(directory, 'packs'));
         for(let file of files) {
             let pack = JSON.parse(fs.readFileSync(path.join(directory, 'packs', file)));
-            for(let card of pack.cards) {
-                card.packCode = pack.code;
+            if(pack.code === 'alt') {
+                continue;
             }
-
-            packs.push({ code: pack.code, name: pack.name, releaseDate: pack.releaseDate });
             cards = cards.concat(pack.cards);
         }
 
+        let packs = JSON.parse(fs.readFileSync(path.join(directory, 'dtr-packs.json')));
         return {
             cards: cards,
             packs: packs
