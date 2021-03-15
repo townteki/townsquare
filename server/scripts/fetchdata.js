@@ -4,7 +4,7 @@ const monk = require('monk');
 const path = require('path');
 
 const CardImport = require('./fetchdata/CardImport.js');
-const CardgameDbImageSource = require('./fetchdata/CardgameDbImageSource.js');
+const DtDbImageSource = require('./fetchdata/DtDbImageSource.js');
 const JsonCardSource = require('./fetchdata/JsonCardSource.js');
 const NoImageSource = require('./fetchdata/NoImageSource.js');
 
@@ -34,7 +34,7 @@ function createImageSource(options) {
         case 'none':
             return new NoImageSource();
         case 'cardgamedb':
-            return new CardgameDbImageSource();
+            return new DtDbImageSource();
     }
 
     throw new Error(`Unknown image source '${options['image-source']}'`);
