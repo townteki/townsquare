@@ -28,7 +28,7 @@ const TriggeredAbility = require('./triggeredability.js');
  * player   - optional function that returns which player to prompt for the
  *            ability. By default, the player that controls the card will be
  *            prompted. Used for reactions / interrupts that any player can
- *            trigger such as The Red Wedding.
+ *            trigger.
  * cannotBeCanceled - optional boolean that determines whether an ability can
  *                    be canceled using a cancel interrupt.
  */

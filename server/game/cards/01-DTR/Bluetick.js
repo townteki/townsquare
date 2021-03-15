@@ -12,9 +12,10 @@ class Bluetick extends GoodsCard {
                 cardCondition: { location: 'play area', wanted: true },
                 cardType: 'dude'
             },
+            message: context => 
+                this.game.addMessage('{0} uses {1} with his master {2} to chase {3} in {4}.', context.player, this, this.parent, context.target, context.target.locationCard),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.gamelocation, options: { removeAll: true } }), context);
-                this.game.addMessage('{0} uses {1} with his master {2} to chase {3} in {4}.', context.player, this, this.parent, context.target, context.target.locationCard);
             }
         });
     }

@@ -26,10 +26,9 @@ class MorganCattleCo extends OutfitCard {
                     if(context.target.location === 'play area') {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: bootedDude, 
-                            targetUuid: context.target.uuid, 
-                            options: { needToBoot: false, allowBooted: true }
+                            targetUuid: context.target.uuid
                         })).thenExecute(() => 
-                            this.game.addMessage('{0} uses {1} to put {2} into play and to move {3} there.', context.player, this, context.target, bootedDude));
+                            this.game.addMessage('{0} uses {1} to put {2} into play and to move {3} there', context.player, this, context.target, bootedDude));
                     }
                 }), context.player, context.target);
             }
