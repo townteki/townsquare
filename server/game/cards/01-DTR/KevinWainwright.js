@@ -11,17 +11,17 @@ class KevinWainwright extends DudeCard {
                 cardCondition: { location: 'play area', controller: 'current', condition: card => card.hasKeyword('huckster') },
                 cardType: ['dude']
             },
+            message: context => 
+                this.game.addMessage('{0} uses {1} to move him to {2}\'s location and make him a stud', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ 
                     card: this, 
-                    targetUuid: context.target.gamelocation,
-                    options: { needToBoot: false, allowBooted: true }
+                    targetUuid: context.target.gamelocation
                 }), context).thenExecute(() => {
                     this.applyAbilityEffect(context.ability, ability => ({
                         match: this,
                         effect: ability.effects.setAsStud()
                     }));
-                    this.game.addMessage('{0} uses {1} to move him to {2}\'s location and make him a stud.', context.player, this, context.target);
                 });
             }
         });

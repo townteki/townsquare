@@ -10,9 +10,8 @@ class MaggieHarris extends DudeCard {
             cost: ability.costs.bootSelf(),
             bootLeader: true,
             target: 'currentHome',
-            handler: context => {
-                this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target);
-            },
+            message: context =>
+                this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target),
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(
                     GameActions.search({

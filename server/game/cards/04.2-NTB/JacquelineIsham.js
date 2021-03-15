@@ -7,12 +7,13 @@ class JacquelineIsham extends DudeCard {
                 onDudeJoinedPosse: event => !event.leaderPosse && event.card === this
             },
             repeatable: true,
+            message: context =>
+                this.game.addMessage('{0} uses {1} and makes her a stud', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: ability.effects.setAsStud()
                 }));
-                this.game.addMessage('{0} uses {1} and makes her a stud.', this.controller, this);
             }
         });
     }

@@ -20,7 +20,7 @@ class ThisIsAHoldup extends ActionCard {
                 context.player.modifyGhostRock(robbedAmount);
                 robbedPlayer.modifyGhostRock(-robbedAmount);
                 this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot, amount: robbedAmount }), context);
-                this.game.addMessage('{0} uses {1} to take {2} GR from {3}.', context.player, this, robbedAmount, robbedPlayer);
+                this.game.addMessage('{0} uses {1} to take {2} GR from {3}', context.player, this, robbedAmount, robbedPlayer);
             }
         });
     }

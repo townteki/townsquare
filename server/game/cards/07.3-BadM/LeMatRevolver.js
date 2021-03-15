@@ -9,10 +9,11 @@ class LeMatRevolver extends GoodsCard {
             title: 'Cheatin\' Resolution',
             playType: 'cheatin resolution',
             cost: ability.costs.bootSelf(),
-            handler: () => {
-                this.controller.modifyRank(this.parent.bullets);
-                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}. Current hand rank is {3}', 
-                    this.controller, this, this.parent.bullets, this.controller.getTotalRank());
+            message: context =>
+                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
+                    context.player, this, this.parent.bullets, context.player.getTotalRank()),
+            handler: context => {
+                context.player.modifyRank(this.parent.bullets);
             }
         });
         this.action({
@@ -20,29 +21,29 @@ class LeMatRevolver extends GoodsCard {
             playType: 'resolution',
             cost: ability.costs.bootSelf(),
             condition: () => this.parent.isStud(),
-            handler: () => {
+            handler: context => {
                 // if player does not have two pair, he cannot satisfy the condition of three pairs
-                if(this.controller.getHandRank().rank !== 3) {
-                    this.game.addMessage('{0} uses {1} but does not have three pairs combining with the first card of discard pile.', 
-                        this.controller, this);
+                if(context.player.getHandRank().rank !== 3) {
+                    this.game.addMessage('{0} uses {1} but does not have three pairs combining with the first card of discard pile', 
+                        context.player, this);
                     return;    
                 }
-                let discardedCardValue = this.controller.discardPile[0].value;
+                let discardedCardValue = context.player.discardPile[0].value;
                 let valueFound = false;
-                for(let drawHandCard of this.controller.drawHand) {
+                for(let drawHandCard of context.player.drawHand) {
                     if(drawHandCard.value === discardedCardValue) {
                         if(!valueFound) {
                             valueFound = true;
                         } else {
-                            this.game.addMessage('{0} uses {1} but does not have three pairs combining with the first card of discard pile.', 
-                                this.controller, this);
+                            this.game.addMessage('{0} uses {1} but does not have three pairs combining with the first card of discard pile', 
+                                context.player, this);
                             return;                         
                         }
                     }
                 }
-                this.controller.modifyRank(this.parent.bullets);
-                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}. Current hand rank is {3}', 
-                    this.controller, this, this.parent.bullets, this.controller.getTotalRank());
+                context.player.modifyRank(this.parent.bullets);
+                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
+                    context.player, this, this.parent.bullets, context.player.getTotalRank());
             }
         });
     }
