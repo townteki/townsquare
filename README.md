@@ -14,14 +14,13 @@ This client is work in progress
 ## Contributing
 
 The code is written in node.js(server) and react.js(client).  
-You can check the current state of the project here(link to the wiki).
 
 If you want to contribute, there are few options for you:
-- implement cards - pick up any issue that is labeled `card-script`, see [Documentation for implementing cards](https://github.com/townsquare/townsquare/blob/master/docs/implementing-cards.md)
+- implement cards - pick up any issue that is labeled `card-script`, see [Documentation for implementing cards](https://github.com/mmeldo/townsquare/blob/master/docs/implementing-cards.md)
 - implement tests - pick up any issue that is labeled `tests` or if you see any area that is not tested
 - test current implementation - not yet available as the testing server is still not ready
-- implement game engine feature - if you want to contribute to the game engine, contact mmeldo@gmail.com
-- help with the client part - if you want to contribute to the client, contact mmeldo@gmail.com
+- implement game engine feature - if you want to contribute to the game engine, contact me (mmeldo@gmail.com)
+- help with the client part - if you want to contribute to the client, contact me (mmeldo@gmail.com)
 
 Feel free to make suggestions, raise pull requests or submit bug reports
 
