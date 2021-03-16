@@ -46,8 +46,6 @@ node server/scripts/importstandalonedecks.js
 
 If you want to also work on the client, checkout the [Client Repository](https://github.com/mmeldo/townsquare-client) and run.
 If you do not need the client source, you can download binaries from [townsquare GDrive](https://drive.google.com/file/d/1MdnDSUBYE1Rl0edYYlHaLC3BcSfwx6-7/view?usp=sharing) and unzip it to the `townsquare` repository.
-To 
-
 
 There are two exectuable components and you'll need to configure/run both to run a local server.  First is the lobby server and then there are game nodes.
 
