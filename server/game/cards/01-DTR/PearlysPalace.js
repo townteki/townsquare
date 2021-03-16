@@ -7,6 +7,8 @@ class PearlysPalace extends DeedCard {
                 onPlayWindowOpened: event => event.playWindow.name === 'shootout plays'
             },
             cost: ability.costs.bootSelf(),
+            message: context =>
+                this.game.addMessage('{0} uses {1} to make shootout play before any player', context.player, this),
             handler: (context) => {
                 this.game.promptWithMenu(context.player, this, {
                     activePrompt: {
@@ -18,7 +20,6 @@ class PearlysPalace extends DeedCard {
                     },
                     source: this
                 });
-                this.game.addMessage('{0} uses {1} to make shootout play before any player.', this.controller, this);
             }
         });
     }

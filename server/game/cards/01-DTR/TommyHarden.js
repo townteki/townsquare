@@ -6,14 +6,14 @@ class TommyHarden extends DudeCard {
             when: {
                 onDrawHandsRevealed: event => event.shootout && this.isParticipating() && this.controller.getOpponent().isCheatin()
             },
-            handler: () => {
+            handler: context => {
                 let rankMod = 2;
-                if(this.controller.isCheatin()) {
+                if(context.player.isCheatin()) {
                     rankMod = 1;
                 }
-                this.controller.modifyRank(rankMod);
-                this.game.addMessage('{0}\'s rank is increased by {1} thanks to the {2}. Current rank is {3}.', 
-                    this.controller, rankMod, this, this.controller.getTotalRank());
+                context.player.modifyRank(rankMod);
+                this.game.addMessage('{0}\'s rank is increased by {1} thanks to the {2}; Current rank is {3}', 
+                    context.player, rankMod, this, context.player.getTotalRank());
             }
         });
     }

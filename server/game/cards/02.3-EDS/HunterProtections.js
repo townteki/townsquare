@@ -14,11 +14,12 @@ class HunterProtections extends DeedCard {
                     card.locationCard === this
                 )
             ],
+            message: context =>
+                this.game.addMessage('{0} uses {1} to protect {2} who boots, gets 2 bounty and 1 permanent control point', 
+                    context.player, this, context.costs.boot),
             handler: context => {
                 this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot, amount: 2 }), context);
-                context.costs.boot.modifyControl(1);
-                this.game.addMessage('{0} uses {1} to protect {2} who boots, gets 2 bounty and 1 permanent control point.', 
-                    context.player, this, context.costs.boot);               
+                context.costs.boot.modifyControl(1);             
             }
         });
     }

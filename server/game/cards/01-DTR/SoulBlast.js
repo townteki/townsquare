@@ -4,7 +4,7 @@ const SpellCard = require('../../spellcard.js');
 class SoulBlast extends SpellCard {
     setupCardAbilities(ability) {
         this.spellAction({
-            title: 'Title',
+            title: 'Soul Blast',
             playType: 'shootout',
             cost: ability.costs.bootSelf(),
             target: {

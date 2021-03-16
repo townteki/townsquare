@@ -693,17 +693,6 @@ class BaseCard {
         this.game.raiseEvent('onCardProductionChanged', params);
     }
 
-    modifyUpkeep(amount, applying = true) {
-        this.upkeep += amount;
-
-        let params = {
-            card: this,
-            amount: amount,
-            applying: applying
-        };
-        this.game.raiseEvent('onCardUpkeepChanged', params);
-    }
-
     modifySkillRating(skillName, amount, applying = true) {
         this.keywords.modifySkillRating(skillName, amount); 
 
