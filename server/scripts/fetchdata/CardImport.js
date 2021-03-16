@@ -41,7 +41,7 @@ class CardImport {
         let i = 0;
 
         for(let card of cards) {
-            let imagePath = path.join(this.imageDir, card.code + '.png');
+            let imagePath = path.join(this.imageDir, card.code + '.jpg');
 
             if(!fs.existsSync(imagePath)) {
                 setTimeout(() => {
@@ -49,6 +49,8 @@ class CardImport {
                 }, i++ * 200);
             }
         }
+
+        console.log('Done downloading');
     }
 
     async importPacks() {
