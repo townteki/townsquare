@@ -11,4 +11,5 @@ server/logs/*.gz
 features/conf/*
 testoutput/*
 dist/*
+.vscode/tasks.json
 local.json5
