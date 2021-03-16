@@ -16,8 +16,8 @@ class Kidnappin extends ActionCard {
             handler: () => {
                 this.game.once('onLeaderPosseFormed', event => event.shootout.actOnLeaderPosse(dude => dude.increaseBounty()));
             },
-            onSuccess: (job) => {
-                if(this.game.discardFromPlay([job.mark])) {
+            onSuccess: (job, context) => {
+                if(this.game.discardFromPlay([job.mark], true, () => true, { isCardEffect: true }, context)) {
                     this.game.addMessage('{0} was discarded as a result of the {1}', job.mark, this);
                 }
             }
