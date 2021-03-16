@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const GoodsCard = require('../../goodscard.js');
 
 class Shotgun extends GoodsCard {
@@ -18,7 +19,7 @@ class Shotgun extends GoodsCard {
             message: context =>
                 this.game.addMessage('{0} plays {1} to ace {2}', this.controller, this, context.target),
             handler: context => {
-                context.target.controller.aceCard(context.target);
+                this.game.resolveGameAction(GameActions.aceCard({ card: context.target }), context);
             }
         });
     }

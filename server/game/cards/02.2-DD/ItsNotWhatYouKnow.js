@@ -7,11 +7,10 @@ class ItsNotWhatYouKnow extends ActionCard {
             playType: ['resolution'],
             choosePlayer: true,
             cost: ability.costs.payReduceableGRCost(2),
-            message: context =>
-                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 1 rank; Current rank is {3}', 
-                    context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank()),
             handler: context => {
                 context.chosenPlayer.modifyRank(-1);
+                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 1 rank; Current rank is {3}', 
+                    context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
             }
         });
         this.action({
@@ -19,11 +18,10 @@ class ItsNotWhatYouKnow extends ActionCard {
             playType: ['cheatin resolution'],
             choosePlayer: true,
             cost: ability.costs.payReduceableGRCost(2),
-            message: context =>
-                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 4 ranks; Current rank is {3}', 
-                    context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank()),
             handler: context => {
                 context.chosenPlayer.modifyRank(-4);
+                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 4 ranks; Current rank is {3}', 
+                    context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
             }
         });
     }

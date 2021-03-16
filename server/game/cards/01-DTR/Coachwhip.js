@@ -1,4 +1,5 @@
 const ActionCard = require('../../actioncard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class Coachwhip extends ActionCard {
     setupCardAbilities() {
@@ -14,13 +15,13 @@ class Coachwhip extends ActionCard {
                 let action = null;
                 if(this.game.shootout) {
                     action = 'ace';
-                    context.target.controller.aceCard(context.target);
+                    this.game.resolveGameAction(GameActions.aceCard({ card: context.target }), context);
                 } else if(this.game.currentPhase === 'gambling') {
                     action = 'boot';
-                    context.target.controller.bootCard(context.target);
+                    this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 }
                 if(action) {
-                    this.game.addMessage('{0} plays {1} to {2} {3}', this.controller, this, action, context.target);
+                    this.game.addMessage('{0} plays {1} to {2} {3}', context.player, this, action, context.target);
                 }
             }
         });
