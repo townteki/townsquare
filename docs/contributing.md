@@ -16,15 +16,19 @@ If you are contribute code, also please read [Coding Guidelines](#Coding-guideli
 ### Implementing cards
 Pick up a card to implement from the [list of card scripts](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Acard-script) and see [Documentation for implementing cards](https://github.com/townteki/townsquare/blob/master/docs/implementing-cards.md).
 Card script issues are divided into categories based on the difficulty:
+
 🟢[easy-script](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Aeasy-script)🟢 - relatively easy to implement. Good first card.
+
 🟠[medium-script](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Amedium-script)🟠 - no additional code needed, but card is more complicated.
+
 🔴[difficult-script](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Adifficult-script)🔴 - card is very complicated or additional code in the game engine is needed.
+
 🟤dependent🟤 - card script dependent on other game engine features that are not yet implemented. Do not pick.
 
 For the IDE setup and other development tips see [Development](#Development) section. 
 
 ### Implementing engine features
-If you want to contribute to the game engine, contact [me](mailto:mmeldo@gmail.com)
+If you want to contribute to the game engine, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general)
 For the IDE setup and other development tips see [Development](#Development) section. 
 
 ### Implement unit tests
@@ -32,11 +36,11 @@ Pick up any issue that is labeled `tests`: [Unit test issues](https://github.com
 For the IDE setup and other development tips see [Development](#Development) section. 
 
 ### Test and report bugs
-You will be testing the client on the [test server](https://doomtown.us). There is no test plan yet, so you will just play the game and test various game situations. To register on the server, contact [me](mailto:mmeldo@gmail.com).
+You will be testing the client on the [test server](https://doomtown.us). There is no test plan yet, so you will just play the game and test various game situations. To register on the server, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general).
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.
 
 ### UX and client contributions
-If you want to contribute to the client, contact [me](mailto:mmeldo@gmail.com).
+If you want to contribute to the client, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general).
 You will need to checkout also [townsquare-client](https://github.com/townteki/townsquare-client) and install it. On how to install the `townsquare-client` refer to its readme.
 For the server, IDE setup and other development tips see [Development](#Development) section. 
 
