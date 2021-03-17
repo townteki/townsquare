@@ -19,8 +19,7 @@ class RailroadStation extends DeedCard {
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 
-                            targetUuid: location.uuid, 
-                            options: { needToBoot: false, allowBooted: true }
+                            targetUuid: location.uuid
                         }), context);   
                         this.game.addMessage('{0} uses {1} to move {2} to {3}.', player, this, context.target, location);                                 
                         return true;
