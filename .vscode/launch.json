@@ -19,6 +19,7 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
+            "postDebugTask": "kill_lobby",
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
@@ -39,6 +40,7 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
+            "postDebugTask": "kill_gamenode",
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
@@ -87,8 +89,8 @@
             "cwd": "${workspaceRoot}"
         },
         {
-            "name": "Launch Decks Importer",
-            "program": "${workspaceFolder}/server/scripts/addDeckFromDtdb.js",
+            "name": "Launch Fetchdata",
+            "program": "${workspaceFolder}/server/scripts/fetchdata.js",
             "request": "launch",
             "stopOnEntry": true,
             "type": "node"

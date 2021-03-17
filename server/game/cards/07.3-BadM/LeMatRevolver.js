@@ -9,11 +9,10 @@ class LeMatRevolver extends GoodsCard {
             title: 'Cheatin\' Resolution',
             playType: 'cheatin resolution',
             cost: ability.costs.bootSelf(),
-            message: context =>
-                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
-                    context.player, this, this.parent.bullets, context.player.getTotalRank()),
             handler: context => {
                 context.player.modifyRank(this.parent.bullets);
+                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
+                    context.player, this, this.parent.bullets, context.player.getTotalRank());
             }
         });
         this.action({

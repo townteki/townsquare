@@ -1001,7 +1001,7 @@ class Game extends EventEmitter {
         this.vent('onCardSaved', { card: card });
     }
 
-    discardFromPlay(cards, allowSave = true, callback = () => true, options) {
+    discardFromPlay(cards, allowSave = true, callback = () => true, options, context) {
         let inPlayCards = cards.filter(card => card.location === 'play area');
         if(inPlayCards.length === 0) {
             return false;
@@ -1011,7 +1011,7 @@ class Game extends EventEmitter {
         // any abilities that respond to cards being discarded from play. This
         // should be a temporary workaround until better support is added for
         // simultaneous resolution of events.
-        inPlayCards[0].owner.discardCards(inPlayCards, allowSave, callback, options);
+        inPlayCards[0].owner.discardCards(inPlayCards, allowSave, callback, options, context);
         return true;
     }
 

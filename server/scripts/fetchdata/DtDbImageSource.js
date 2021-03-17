@@ -3,7 +3,7 @@ const fs = require('fs');
 const jimp = require('jimp');
 const request = require('request');
 
-class CardgameDbImageSource {
+class DtDbImageSource {
     constructor() {
         this.packs = this.loadPacks();
     }
@@ -14,20 +14,13 @@ class CardgameDbImageSource {
     }
 
     fetchImage(card, imagePath) {
-        let pack = this.packs.find(pack => pack.code === card.packCode);
-        if(!pack) {
-            console.log(`Could not find pack '${card.packCode}' for ${card.name}, submodule data may be out of date.`);
+        if(!card.imagesrc) {
+            console.log(`Could not fetch image for ${card.title} as there is no image srouce "imagesrc"`);
             return;
         }
 
-        if(!pack.cgdbId) {
-            console.log(`Could not fetch image for ${card.name} (${card.packCode}), as no images are hosted for ${pack.name}`);
-            return;
-        }
-
-        let cgdbId = pack.cgdbId.toString().padStart(2, '0');
-        let cardNumber = parseInt(card.code.substring(2), 10);
-        let url = `http://lcg-cdn.fantasyflightgames.com/got2nd/GT${cgdbId}_${cardNumber}.jpg`;
+        let imagesrc = card.imagesrc;
+        let url = `http://dtdb.co/${imagesrc}`;
 
         request({ url: url, encoding: null }, function(err, response, body) {
             if(err || response.statusCode !== 200) {
@@ -45,4 +38,4 @@ class CardgameDbImageSource {
     }
 }
 
-module.exports = CardgameDbImageSource;
+module.exports = DtDbImageSource;

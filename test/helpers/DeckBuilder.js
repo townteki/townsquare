@@ -30,13 +30,16 @@ class DeckBuilder {
     loadCards(directory) {
         let cards = {};
 
-        let jsonCards = fs.readdirSync(directory).find(file => file === 'dtr-cards.json');
+        let jsonPacks = fs.readdirSync(directory).filter(file => file.endsWith('.json'));
 
-        let allcards = require(path.join(directory, jsonCards));
+        for(let file of jsonPacks) {
+            let pack = require(path.join(directory, file));
 
-        for(let card of allcards) {
-            if(card.pack_code !== 'alt') {
-                cards[card.code] = card;
+            for(let card of pack.cards) {
+                card.pack_code = pack.code;
+                if(card.pack_code !== 'alt') {
+                    cards[card.code] = card;
+                }
             }
         }
 

@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class JudgeHarrySomerset extends DudeCard {
     setupCardAbilities(ability) {
@@ -13,8 +14,8 @@ class JudgeHarrySomerset extends DudeCard {
             },
             message: context => 
                 this.game.addMessage('{0} uses {1} to lead a job to hang {2}', context.player, this, context.target),
-            onSuccess: (job) => {
-                job.mark.controller.aceCard(job.mark);
+            onSuccess: (job, context) => {
+                this.game.resolveGameAction(GameActions.aceCard({ card: job.mark }), context);
             }
         });
     }
