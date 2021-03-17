@@ -107,6 +107,13 @@ module.exports.init = function(server, options) {
     }
 
     server.post('/api/account/register', wrapAsync(async (req, res, next) => {
+        // TODO M2 This is temporary code to disable registering for TEST server
+        if(process.env.TEST === 'true') {
+            let registerMessage = 'This is TEST server for the Doomtown: Reloaded and public registration is disabled. If you want to participate on the project, ' + 
+                'first see https://github.com/mmeldo/townsquare for contributing options.';
+            res.send({ success: false, message: registerMessage });
+            return next();            
+        }
         let message = validateUserName(req.body.username);
         if(message) {
             res.send({ success: false, message: message });
