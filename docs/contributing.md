@@ -5,33 +5,45 @@
 This page contains the information you need to get started with contributing.
 
 ## How Can I Contribute?
- * implement cards - pick up any issue that is labeled `card-script`, see [Documentation for implementing cards](https://github.com/townteki/townsquare/blob/master/docs/implementing-cards.md)
- * implement game engine feature - if you want to contribute to the game engine, contact me (mmeldo@gmail.com)
- * implement tests - pick up any issue that is labeled `tests` or if you see any area that is not tested
- * test and report bugs - not yet available as the testing server is still not ready
- * help with the client part - if you want to contribute to the client, contact me (mmeldo@gmail.com)
+ * [Implementing cards](#Implementing-cards) - implement specific card scripts 
+ * [Implementing engine features](#Implementing-engine-features) - implement or improve game engine features
+ * [Implement unit tests](#Implement-unit-tests) - imlement unit test to provide bigger cover
+ * [Test and report bugs](#Test-and-report-bugs) - play the game and test various parts and cards
+ * [UX and client contributions](#UX-and-client-contributions) - improve user experience and front-end
 
-## Implementing cards
+If you are contribute code, also please read [Coding Guidelines](#Coding-guidelines).
 
-[Card scripts](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Acard-script)
+### Implementing cards
+Pick up a card to implement from the [list of card scripts](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Acard-script) and see [Documentation for implementing cards](https://github.com/townteki/townsquare/blob/master/docs/implementing-cards.md).
+Card script issues are divided into categories based on the difficulty:
+🟢[easy-script](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Aeasy-script)🟢 - relatively easy to implement. Good first card.
+🟠[medium-script](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Amedium-script)🟠 - no additional code needed, but card is more complicated.
+🔴[difficult-script](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Adifficult-script)🔴 - card is very complicated or additional code in the game engine is needed.
+🟤dependent🟤 - card script dependent on other game engine features that are not yet implemented. Do not pick.
 
-🟢easy-script🟢
-🟠medium-script🟠
-🔴difficult-script🔴
-🟤dependent🟤
+For the IDE setup and other development tips see [Development](#Development) section. 
 
-## Implementing engine features
+### Implementing engine features
+If you want to contribute to the game engine, contact [me](mailto:mmeldo@gmail.com)
+For the IDE setup and other development tips see [Development](#Development) section. 
 
-## Implement unit tests
+### Implement unit tests
+Pick up any issue that is labeled `tests`: [Unit test issues](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Atests) or if you see any area that is not tested.
+For the IDE setup and other development tips see [Development](#Development) section. 
 
-## Test and report bugs
+### Test and report bugs
+You will be testing the client on the [test server](https://doomtown.us). There is no test plan yet, so you will just play the game and test various game situations. To register on the server, contact [me](mailto:mmeldo@gmail.com).
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.
 
-## UX and client contributions
+### UX and client contributions
+If you want to contribute to the client, contact [me](mailto:mmeldo@gmail.com).
+You will need to checkout also [townsquare-client](https://github.com/townteki/townsquare-client) and install it. On how to install the `townsquare-client` refer to its readme.
+For the server, IDE setup and other development tips see [Development](#Development) section. 
 
 ## Development
 
 The game uses [mongodb](https://www.mongodb.com/) as storage so you'll need that installed and running.
+To install the server, execute these commands: 
 
 ```
 git clone https://github.com/townsquare/townsquare.git
@@ -44,10 +56,11 @@ node server/scripts/fetchdata.js
 node server/scripts/importstandalonedecks.js
 ```
 
-If you want to also work on the client, checkout the [Client Repository](https://github.com/mmeldo/townsquare-client) and run.
+If you want to also work on the client, checkout the [Client Repository](https://github.com/townteki/townsquare-client) and run.
 If you do not need the client source, you can download binaries from [townsquare GDrive](https://drive.google.com/file/d/1MdnDSUBYE1Rl0edYYlHaLC3BcSfwx6-7/view?usp=sharing) and unzip it to the `townsquare` repository.
 
 There are two exectuable components and you'll need to configure/run both to run a local server.  First is the lobby server and then there are game nodes.
+To run the server, execute these commands:
 
 ```
 NODE_ENV=production PORT=4000 node .
@@ -58,7 +71,7 @@ For the lobby server, if you need to override any of the config settings, create
 
 This will get you up and running in development mode.
 
-### Coding Guidelines
+## Coding Guidelines
 
 If you are going to contribute code, try and follow the style of the existing code as much as possible and talk to me before engaging in any big refactors.  Also bear in mind there is an .eslintrc file in the project so try to follow those rules.  This linting will be enforced in the build checks and pull requests will not be merged if they fail checks.
 All JavaScript code included in Townsquare should pass (no errors, no warnings)
