@@ -11,12 +11,23 @@ This page contains the information you need to get started with contributing.
  * test and report bugs - not yet available as the testing server is still not ready
  * help with the client part - if you want to contribute to the client, contact me (mmeldo@gmail.com)
 
-Feel free to make suggestions, raise pull requests or submit bug reports
+## Implementing cards
 
-If you are going to contribute code, try and follow the style of the existing code as much as possible and talk to me before engaging in any big refactors.  Also bear in mind there is an .eslintrc file in the project so try to follow those rules.  This linting will be enforced in the build checks and pull requests will not be merged if they fail checks.
+[Card scripts](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Acard-script)
 
-## Issues
+🟢easy-script🟢
+🟠medium-script🟠
+🔴difficult-script🔴
+🟤dependent🟤
+
+## Implementing engine features
+
+## Implement unit tests
+
+## Test and report bugs
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.
+
+## UX and client contributions
 
 ## Development
 
@@ -49,6 +60,7 @@ This will get you up and running in development mode.
 
 ### Coding Guidelines
 
+If you are going to contribute code, try and follow the style of the existing code as much as possible and talk to me before engaging in any big refactors.  Also bear in mind there is an .eslintrc file in the project so try to follow those rules.  This linting will be enforced in the build checks and pull requests will not be merged if they fail checks.
 All JavaScript code included in Townsquare should pass (no errors, no warnings)
 linting by [ESLint](http://eslint.org/), according to the rules defined in
 `.eslintrc` at the root of this repo. To manually check that that is indeed the
