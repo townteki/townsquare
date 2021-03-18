@@ -367,15 +367,15 @@ class DudeCard extends DrawCard {
     }
 
     isSkilled() {
-        return this.hasKeyword('mad scientist') || this.isSpellCaster();
+        return this.hasKeyword('mad scientist') || this.isSpellcaster();
     }
 
-    isSpellCaster() {
+    isSpellcaster() {
         return this.hasKeyword('blessed') || this.hasKeyword('huckster') || this.hasKeyword('shaman');
     }
 
     canCastSpell(spell) {
-        if(!this.isSpellCaster()) {
+        if(!this.isSpellcaster()) {
             return false;
         }
         if(!this.controller.isValidSkillCombination(this, spell)) {

@@ -12,6 +12,7 @@ const AllowedTypesForPhase = {
     'shootout resolution': ['resolution', 'cheatin resolution'],
     'gambling': ['cheatin resolution']
 };
+const CardTypesForShootout = ['dude', 'goods', 'spell'];
 
 /**
  * Represents an action ability provided by card text.
@@ -112,8 +113,7 @@ class CardAction extends BaseAbility {
         if(this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
         }
-        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') &&
-            this.card.getType() !== 'action' && this.card.getType() !== 'deed') {
+        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') && CardTypesForShootout.includes(this.card.getType())) {
             return this.game.shootout.isInShootout(this.card);
         }
         return true;
