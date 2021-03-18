@@ -33,14 +33,22 @@ class Deck {
     }
 
     createLegendCard(player) {
-        let cardData = { type: 'legend' };
         if(this.data.legend) {
-            cardData = this.data.legend.cardData;
+            let cardData = {
+                code: this.data.legend.code,
+                type_code: 'legend',
+                gang_code: this.data.legend.gang_code,
+                title: this.data.legend.title,
+                keywords: this.data.legend.keywords,
+                wealth: this.data.legend.wealth,
+                production: this.data.legend.production
+            };
+            let cardClass = cards[cardData.code] || LegendCard;
+
+            return new cardClass(player, cardData);
         }
 
-        let cardClass = cards[cardData.code] || LegendCard;
-
-        return new cardClass(player, cardData);
+        return;
     }
 
     isDrawCard(cardData) {

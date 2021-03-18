@@ -1515,7 +1515,7 @@ class Player extends Spectator {
         });
 
         let state = {
-            legend: this.legend,
+            legend: this.legend ? this.legend.getSummary(activePlayer) : null,
             cardPiles: {
                 cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
                 deadPile: this.getSummaryForCardList(this.deadPile, activePlayer).reverse(),
