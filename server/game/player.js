@@ -450,6 +450,9 @@ class Player extends Spectator {
         this.addOutfitToTown();
 
         this.ghostrock = this.outfit.wealth || 0;
+        if(this.legend) {
+            this.ghostrock += this.legend.wealth;
+        }
         this.handResult = new HandResult();
     }
 
@@ -1514,7 +1517,7 @@ class Player extends Spectator {
         });
 
         let state = {
-            legend: this.legend,
+            legend: this.legend ? this.legend.getSummary(activePlayer) : null,
             cardPiles: {
                 cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
                 deadPile: this.getSummaryForCardList(this.deadPile, activePlayer).reverse(),
