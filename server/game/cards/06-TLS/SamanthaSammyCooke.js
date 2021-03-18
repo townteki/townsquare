@@ -20,20 +20,20 @@ class SamanthaSammyCooke extends DudeCard {
                     context.player.pull({
                         successCondition: pulledValue => pulledValue > context.target.value,
                         successHandler: () => {
-                            this.game.addMessage('{0} uses {1} to successfuly catch {2}.', context.player, this, context.target);
+                            this.game.addMessage('{0} uses {1} to successfuly catch {2}', context.player, this, context.target);
                             if(context.player.attach(context.target, this, 'ability')) {                 
                                 return;
                             }
-                            this.game.addMessage('{0} cannot attach {1} to {2}, and is discarded.', context.player, context.target, this);                            
+                            this.game.addMessage('{0} cannot attach {1} to {2}, and is discarded', context.player, context.target, this);                            
                         },
                         failHandler: () => {
-                            this.game.addMessage('{0} uses {1} who tries to catch {2}, but fails.', context.player, this, context.target);
+                            this.game.addMessage('{0} uses {1} who tries to catch {2}, but fails', context.player, this, context.target);
                         },
                         source: this
                     });
                 } else {
                     this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
-                    this.game.addMessage('{0} uses {1} to discard {2}.', context.player, this, context.target);
+                    this.game.addMessage('{0} uses {1} to discard {2}', context.player, this, context.target);
                 }
             }
         });

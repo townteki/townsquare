@@ -8,9 +8,10 @@ class FlintsAmusements extends DeedCard {
             when: {
                 onCardPlayed: event => event.ability.playTypePlayed() === 'resolution' || event.ability.playTypePlayed() === 'cheatin resolution'
             },
+            message: context =>
+                this.game.addMessage('{0} gains 1 GR thanks to the {1}', context.player, this),
             handler: () => {
                 this.controller.modifyGhostRock(1);
-                this.game.addMessage('{0} gains 1 GR thanks to the {1}.', this.controller, this);
             }
         });
         this.action({

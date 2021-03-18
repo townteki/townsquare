@@ -116,6 +116,26 @@
 		"description": "Template for new Action card"
 	},
 
+	"Outfit Template": {
+		"scope": "javascript,typescript",
+		"prefix": "outfitcard",
+		"body": [
+			"const OutfitCard = require('../../outfitcard.js');",
+			"",
+			"class ${1:OutfitName} extends OutfitCard {",
+			"\tsetupCardAbilities(ability) {",
+			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t}",
+			"}",
+			"",
+			"$1.code = '${3:code}';",
+			"",
+			"module.exports = $1;",
+			""
+		],
+		"description": "Template for new Outfit card"
+	},
+
 	"Prompt For Select": {
 		"scope": "javascript,typescript",
 		"prefix": "promptselect",
@@ -178,9 +198,9 @@
 			"\tplayType: ['${2|noon,shootout,shootout:join,resolution,cheatin resolution|}'],",     
 			"\tcost: ability.costs.${3:bootSelf()},",  
 			"\ttarget: ${4:targetselect}",
+			"\tmessage: context => this.game.addMessage('{0} uses {1} to $20.', context.player, this),",
 			"\thandler: context => {",
-			"\t\t$20",
-			"\t\tthis.game.addMessage('{0} uses {1} to $21.', context.player, this);",
+			"\t\t$21",
 			"\t}",
 			"});"
 		],
@@ -197,9 +217,9 @@
 			"\t},",
 			"\tcost: [ ability.costs.${3:bootSelf()} ],",
 			"\ttarget: ${4:targetselect}",
+			"\tmessage: context => this.game.addMessage('{0} uses {1} to $20.', context.player, this),",
 			"\thandler: context => {",
-			"\t\t$20",
-			"\t\tthis.game.addMessage('{0} uses {1} to $21.', context.player, this);",
+			"\t\t$21",
 			"\t}",
 			"});"
 		],
@@ -216,10 +236,7 @@
 			"\tcost: ability.costs.${3:bootSelf()},",  
 			"\tbootLeader: ${4:true},",  
 			"\ttarget: ${5:targetselect}",
-			"\thandler: context => {",
-			"\t\t$20",
-			"\t\tthis.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target);",
-			"\t},",
+			"\tmessage: context => this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target),",
 			"\tonSuccess: (job) => {",
 			"\t\t$21",
 			"\t},",

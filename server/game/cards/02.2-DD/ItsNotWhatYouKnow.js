@@ -9,7 +9,7 @@ class ItsNotWhatYouKnow extends ActionCard {
             cost: ability.costs.payReduceableGRCost(2),
             handler: context => {
                 context.chosenPlayer.modifyRank(-1);
-                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 1 rank. Current rank is {3}', 
+                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 1 rank; Current rank is {3}', 
                     context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
             }
         });
@@ -20,7 +20,7 @@ class ItsNotWhatYouKnow extends ActionCard {
             cost: ability.costs.payReduceableGRCost(2),
             handler: context => {
                 context.chosenPlayer.modifyRank(-4);
-                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 4 ranks. Current rank is {3}', 
+                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 4 ranks; Current rank is {3}', 
                     context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
             }
         });

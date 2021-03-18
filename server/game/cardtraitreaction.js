@@ -1,6 +1,6 @@
-const ForcedTriggeredAbility = require('./forcedtriggeredability.js');
+const TraitTriggeredAbility = require('./traittriggeredability.js');
 
-class CardTraitReaction extends ForcedTriggeredAbility {
+class CardTraitReaction extends TraitTriggeredAbility {
     constructor(game, card, properties) {
         super(game, card, 'traitreaction', properties);
     }

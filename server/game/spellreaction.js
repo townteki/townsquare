@@ -1,14 +1,10 @@
 const CardReaction = require('./cardreaction.js');
-const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const Spell = require('./spell.js');
 
 class SpellReaction extends CardReaction {
     constructor(game, card, properties) {
         super(game, card, properties);
         this.spell = new Spell(this, properties);
-        if(!this.gameAction) {
-            this.gameAction = new HandlerGameActionWrapper({ handler: () => true });
-        }
     }
 
     meetsRequirements(context) {

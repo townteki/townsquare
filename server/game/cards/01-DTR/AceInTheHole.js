@@ -7,13 +7,12 @@ class AceInTheHole extends SpellCard {
             when: {
                 onDrawHandsRevealed: event => event.shootout
             },
-            cost: [ability.costs.bootSelf()],
+            cost: [
+                ability.costs.bootSelf(),
+                ability.costs.bootParent()
+            ],
             difficulty: 6,
             onSuccess: context => {
-                if(this.parent.booted) {
-                    this.game.addMessage('{0} uses {1} but it does not have any effect because {2} is booted', context.player, this, this.parent);
-                    return;
-                }
                 if(context.player.hand.length <= 0) {
                     this.game.addMessage('{0} uses {1} but it does not have any effect because they have empty hand', context.player, this, this.parent);
                     return;

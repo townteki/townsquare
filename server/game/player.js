@@ -1068,16 +1068,17 @@ class Player extends Spectator {
         }
     }
 
-    aceCard(card, allowSave = true, options) {
-        this.aceCards([card], allowSave, () => true, options);
+    aceCard(card, allowSave = true, options, context) {
+        this.aceCards([card], allowSave, () => true, options, context);
     }
 
-    aceCards(cards, allowSave = true, callback = () => true, options) {
+    aceCards(cards, allowSave = true, callback = () => true, options, context) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.aceCard({
                 card,
                 allowSave,
-                options
+                options,
+                context
             }))
         );
         let event = this.game.resolveGameAction(action);
@@ -1089,17 +1090,18 @@ class Player extends Spectator {
         return event;
     }
 
-    discardCard(card, allowSave = true, options) {
-        this.discardCards([card], allowSave, () => true, options);
+    discardCard(card, allowSave = true, options, context) {
+        this.discardCards([card], allowSave, () => true, options, context);
     }
 
-    discardCards(cards, allowSave = true, callback = () => true, options) {
+    discardCards(cards, allowSave = true, callback = () => true, options, context) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.discardCard({
                 card,
                 allowSave,
                 originalLocation: cards[0].location,
-                options
+                options,
+                context
             }))
         );
         let event = this.game.resolveGameAction(action);
