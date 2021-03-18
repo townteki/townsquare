@@ -450,6 +450,9 @@ class Player extends Spectator {
         this.addOutfitToTown();
 
         this.ghostrock = this.outfit.wealth || 0;
+        if(this.legend) {
+            this.ghostrock += this.legend.wealth;
+        }
         this.handResult = new HandResult();
     }
 
