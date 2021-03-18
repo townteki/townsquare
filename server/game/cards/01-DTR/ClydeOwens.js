@@ -7,7 +7,7 @@ class ClydeOwens extends DudeCard {
             title: 'Clyde Owens',
             playType: 'noon',
             target: {
-                activePromptTitle: 'Select a dude to call out',
+                activePromptTitle: 'Select a dude to call out.',
                 cardCondition: {controller: 'opponent', condition: card => card.canBeCalledOut() && card.gamelocation === this.gamelocation },
                 cardType: ['dude']
             },
