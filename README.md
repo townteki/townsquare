@@ -13,7 +13,7 @@ This client is work in progress
 
 ## Contributing
 
-If you would like to contribute and help us to bring this client to life, please see [Contribution guide](https://github.com/townteki/townsquare/blob/contributing-guide/docs/contributing.md).
+If you would like to contribute and help us to bring this client to life, please see [Contribution guide](https://github.com/townteki/townsquare/blob/master/docs/contributing.md).
 
 ## Project status
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/townteki/townsquare/Node.js%20CI/master?style=plastic)
