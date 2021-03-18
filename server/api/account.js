@@ -107,6 +107,13 @@ module.exports.init = function(server, options) {
     }
 
     server.post('/api/account/register', wrapAsync(async (req, res, next) => {
+        // TODO M2 This is temporary code to disable registering for TEST server
+        if(process.env.TEST === 'true') {
+            let registerMessage = 'This is TEST server for the Doomtown Online and public registration is disabled. If you want to participate on the project, ' + 
+                'first see https://github.com/townteki/townsquare for contributing options.';
+            res.send({ success: false, message: registerMessage });
+            return next();            
+        }
         let message = validateUserName(req.body.username);
         if(message) {
             res.send({ success: false, message: message });
@@ -519,13 +526,13 @@ module.exports.init = function(server, options) {
         resetToken = hmac.update(`RESET ${user.username} ${formattedExpiration}`).digest('hex');
 
         await userService.setResetToken(user, resetToken, formattedExpiration);
-        let url = `https://theironthrone.net/reset-password?id=${user._id}&token=${resetToken}`;
-        let emailText = 'Hi,\n\nSomeone, hopefully you, has requested their password on The Iron Throne (https://theironthrone.net) to be reset.  If this was you, click this link ' + url + ' to complete the process.\n\n' +
+        let url = `https://dtts.online/reset-password?id=${user._id}&token=${resetToken}`;
+        let emailText = 'Hi,\n\nSomeone, hopefully you, has requested their password on The Doomtown Online (https://dtts.online) to be reset.  If this was you, click this link ' + url + ' to complete the process.\n\n' +
             'If you did not request this reset, do not worry, your account has not been affected and your password has not been changed, just ignore this email.\n' +
             'Kind regards,\n\n' +
-            'The Iron Throne team';
+            'The Doomtown Online team';
 
-        await sendEmail(user.email, 'The Iron Throne - Password reset', emailText);
+        await sendEmail(user.email, 'The Doomtown Online - Password reset', emailText);
     }));
 
     server.put('/api/account/:username', passport.authenticate('jwt', { session: false }), wrapAsync(async (req, res) => {
