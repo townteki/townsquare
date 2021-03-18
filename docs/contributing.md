@@ -39,7 +39,7 @@ For the IDE setup and other development tips see [Development](#Development) sec
 
 ### Test and report bugs
 You will be testing the client on the [test server](https://doomtown.us). There is no test plan yet, so you will just play the game and test various game situations. To register on the server, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general).
-If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.
+If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible. In case you do not have a github account and do not want to create one, please use [this report](https://gitreports.com/issue/mmeldo/townsquare-issues).
 
 ### UX and client contributions
 If you want to contribute to the client, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general).
