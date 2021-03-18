@@ -12,21 +12,12 @@ class ClydeOwens extends DudeCard {
                 cardType: ['dude']
             },
             handler: context => {
-                if(context.target.isWanted()) {
-                    this.game.resolveGameAction(GameActions.callOut({ 
-                        caller: this,
-                        callee: context.target,
-                        isCardEffect: true,
-                        canReject: false
-                    }), context);
-                } else {
-                    this.game.resolveGameAction(GameActions.callOut({ 
-                        caller: this,
-                        callee: context.target,
-                        isCardEffect: true,
-                        canReject: true
-                    }), context);
-                }
+                this.game.resolveGameAction(GameActions.callOut({ 
+                    caller: this,
+                    callee: context.target,
+                    isCardEffect: true,
+                    canReject: !context.target.isWanted()
+                }), context);
             }
         });
     }
