@@ -438,7 +438,11 @@ class Player extends Spectator {
         var outfit = new Location.GameLocation(this.game, this.outfit, null, 0);
         this.locations.push(outfit);
         this.moveCard(this.outfit, 'play area');
-    }    
+    }
+
+    attachLegendToOutfit() {
+        this.attach(this.legend, this.outfit, 'attachLegend');
+    }
 
     getOutfitCard() {
         return this.outfit.locationCard;
@@ -451,6 +455,7 @@ class Player extends Spectator {
 
         this.ghostrock = this.outfit.wealth || 0;
         if(this.legend) {
+            this.attachLegendToOutfit();
             this.ghostrock += this.legend.wealth;
         }
         this.handResult = new HandResult();
@@ -812,7 +817,7 @@ class Player extends Spectator {
             return false;
         }
 
-        if(attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
+        if(attachment.getType() !== 'legend' && attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
             let scientist = playingType === 'shoppin' ? card : null;
             if(!this.isGadgetInvented(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback))) {
                 return false;

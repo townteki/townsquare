@@ -9,8 +9,10 @@ class LegendCard extends DrawCard {
         return true;
     }
 
-    canAttach(targetCard) {
-        return targetCard.getType() === 'outfit' && this.owner === targetCard.owner;
+    canAttach(player, targetCard) {
+        return targetCard.getType() === 'outfit' && 
+            this.owner === player && 
+            !targetCard.hasAttachment(attachment => attachment.getType() === 'legend');
     }
 }
 
