@@ -17,7 +17,7 @@ If you are contribute code, also please read [Coding Guidelines](#Coding-guideli
 Pick up a card to implement from the [list of card scripts](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Acard-script) and see [Documentation for implementing cards](https://github.com/townteki/townsquare/blob/master/docs/implementing-cards.md).
 Card script issues are divided into categories based on the difficulty:
 
-🟣[good-first-issue](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue)🟣 - very easy to implement. Ideal first card for implementation. Please, assign one maximum two of these before moving on to other easy or medium cards.
+🟣[good first card](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+card")🟣 - very easy to implement. Ideal first card for implementation. Please, assign one maximum two of these before moving on to other easy or medium cards.
 
 🟢[easy-script](https://github.com/townteki/townsquare/issues?q=is%3Aissue+is%3Aopen+label%3Aeasy-script)🟢 - relatively easy to implement. Good first card.
 
