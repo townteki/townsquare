@@ -19,17 +19,18 @@ If you would like to contribute and help us to bring this client to life, please
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/townteki/townsquare/Node.js%20CI/master?style=plastic)
 ![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fimg.shields.io%2Fwebsite%2Fhttps%2Fdev.doomtown.us%2Fplay)
 
-Implementation:
+### Implementation:
 
-- [x] Base Game engine (phases, shootouts, game actions etc) 
-- [x] Spells
-- [x] Gadgets
+- [x] Base Game engine (phases, shootouts, play actions etc) 
+- [x] Spell casting
+- [x] Gadget inventing
 - [ ] Legends
 - [ ] Kung Fu
+- [ ] Deck Management
 
-![Cards implemented](https://progress-bar.dev/97/?scale=875&title=implemented%20&width=200&suffix=%20cards)
+ ![Cards implemented](https://progress-bar.dev/97/?scale=875&title=implemented%20&width=200&suffix=%20cards)
 
-Test coverage:
+### Test coverage:
 - [ ] Base Game engine (phases, shootouts, game actions etc) 
 - [ ] Spells
 - [ ] Gadgets
