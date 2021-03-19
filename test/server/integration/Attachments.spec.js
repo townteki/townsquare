@@ -2,11 +2,11 @@ describe('attachments', function() {
     integration(function() {
         describe('when an attachment is placed', function() {
             beforeEach(function() {
-                const deck = this.buildDeck('Law Dogs', [
-                    'Law Dogs',
-                    'Tommy Harden', 'Jake Smiley', 'Pearl-Handled Revolver', 'Shotgun'
-                ], ['Tommy Harden', 'Jake Smiley']
-                );
+                const deck = this.buildDeck({
+                    outfitTitle: 'Law Dogs',
+                    cardTitles: ['Law Dogs', 'Jake Smiley', 'Tommy Harden', 'Pearl-Handled Revolver', 'Shotgun'],
+                    startingTitles: ['Jake Smiley', 'Tommy Harden']
+                });
                 this.player1.selectDeck(deck);
                 this.startGame();
                 this.skipToHighNoonPhase();
@@ -34,11 +34,11 @@ describe('attachments', function() {
         // Shoppin or Tradin, they should discard down to 1 (there are exceptions of course)
         xdescribe('when an attachment becomes invalid', function() {
             beforeEach(function() {
-                const deck = this.buildDeck('Law Dogs', [
-                    'Law Dogs',
-                    'Tommy Harden', 'Jake Smiley', 'Pearl-Handled Revolver', 'Shotgun'
-                ], ['Tommy Harden', 'Jake Smiley']
-                );
+                const deck = this.buildDeck({
+                    outfitTitle: 'Law Dogs',
+                    cardTitles: ['Law Dogs', 'Jake Smiley', 'Tommy Harden', 'Pearl-Handled Revolver', 'Shotgun'],
+                    startingTitles: ['Jake Smiley', 'Tommy Harden']
+                });
                 this.player1.selectDeck(deck);
                 this.startGame();
                 this.skipToHighNoonPhase();
@@ -63,11 +63,11 @@ describe('attachments', function() {
 
         describe('when the card an attachment is placed on leaves play', function() {
             beforeEach(function() {
-                const deck = this.buildDeck('Law Dogs', [
-                    'Law Dogs',
-                    'Tommy Harden', 'Jake Smiley', 'Shotgun'
-                ], ['Tommy Harden', 'Jake Smiley']
-                );
+                const deck = this.buildDeck({
+                    outfitTitle: 'Law Dogs',
+                    cardTitles: ['Law Dogs', 'Jake Smiley', 'Tommy Harden', 'Shotgun'],
+                    startingTitles: ['Jake Smiley', 'Tommy Harden']
+                });
                 this.player1.selectDeck(deck);
                 this.startGame();
                 this.skipToHighNoonPhase();
