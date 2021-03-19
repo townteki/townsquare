@@ -11,6 +11,8 @@ class ClydeOwens extends DudeCard {
                 cardCondition: {controller: 'opponent', condition: card => card.canBeCalledOut() && card.gamelocation === this.gamelocation },
                 cardType: ['dude']
             },
+            message: context => this.game.addMessage('{0} uses {1} to call out {2}{3}',
+                context.player, this, context.target, context.target.isWanted() ? 'who cannot refuse' : ''),
             handler: context => {
                 this.game.resolveGameAction(GameActions.callOut({ 
                     caller: this,

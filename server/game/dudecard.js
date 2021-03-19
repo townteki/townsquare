@@ -206,7 +206,7 @@ class DudeCard extends DrawCard {
         this.controller.moveCard(this, 'discard pile', { raiseEvents: false });
     }
 
-    callOut(card, canReject = true) {
+    callOut(card, canReject = true, isCardEffect = true) {
         this.shootoutStatus = ShootoutStatuses.CallingOut;
         card.shootoutStatus = ShootoutStatuses.CalledOut;
         if(!card.booted && canReject) {
