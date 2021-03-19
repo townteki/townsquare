@@ -2,7 +2,7 @@
 
 ![Cards implemented](https://progress-bar.dev/97/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
-## 01-DTR 
+## `01-DTR` Base set
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -153,7 +153,7 @@
 |:heavy_check_mark:   | 01145| Joker (black)
 |:heavy_check_mark:   | 01146| Gunslinger
 
-## 02.1-NTNR
+## `02.1-NTNR` New Town New Rules
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -179,7 +179,7 @@
 |                     | 02020| Hired Help
 |                     | 02021| Too Much Attention
 
-## 02.2-DD
+## `02.2-DD` Double Dealin'
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -205,7 +205,7 @@
 |                     | 03020| Horse Wranglin'
 |:heavy_check_mark:   | 03021| It's Not What You Know...
 
-## 02.3-EDS
+## `02.3-EDS` Election Day Slaughter
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -231,7 +231,7 @@
 |                     | 04020| Tail Between Yer Legs
 |                     | 04021| Election Day Slaughter
 
-## 03-FF  
+## `03-FF` Faith and Fear
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -277,7 +277,7 @@
 |                     | 05040| Meet The New Boss
 |                     | 06001| Funtime Freddy
 
-## 04.1-FJ  
+## `04.1-FJ` Final Justice
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -302,7 +302,7 @@
 |                     | 06020| Incubation
 |                     | 06021| Flight of the Lepus
 
-## 04.2-NTB 
+## `04.2-NTB` No Turning Back
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -328,7 +328,7 @@
 |                     | 07020| Ol' Fashioned Hangin'
 |                     | 07021| No Turning Back
 
-## 04.3-NN 
+## `04.3-NN` Nightmare at Noon
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -354,7 +354,7 @@
 |                     | 08020| Buried Treasure
 |:heavy_check_mark:   | 08021| Nightmare at Noon
 
-## 05-IOUF
+## `05-IOUF` Immovable Object, Unstoppable Force
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -401,7 +401,7 @@
 |                     | 09041| Ancestor Spirit
 |                     | 09042| Nature Spirit
 
-## 06-TLS
+## `06-TLS` The Light Shineth
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -447,7 +447,7 @@
 |                     | 10040| Devil's Joker (Red)
 |                     | 10041| Devil's Joker (Black)
 
-## 07.1-DDeeds
+## `07.1-DDeeds` Dirty Deeds
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -475,7 +475,7 @@
 |                     | 11022| A Slight Modification
 |                     | 11023| Rabbit Takes Revenge
 
-## 07.2-FP  
+## `07.2-FP` Foul Play
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -501,7 +501,7 @@
 |                     | 12020| Martyr's Cry
 |                     | 12021| Deliberate Infection
 
-## 07.3-BadM
+## `07.3-BadM` Bad Medicine
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -527,7 +527,7 @@
 |                     | 13020| Signing Over the Stores
 |                     | 13021| No Funny Stuff
 
-## 08-GT  
+## `08-GT` Ghost Town
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -573,7 +573,7 @@
 |                     | 14040| Heretic Joker (Red)
 |                     | 14041| Heretic Joker (Black)
 
-## 09.1-TCR 
+## `09.1-TCR` The Curtain Rises
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -599,7 +599,7 @@
 |                     | 15020| Someone Else's Problem
 |                     | 15021| Lost to the Plague
 
-## 09.2-AGE 
+## `09.2-AGE` A Grand Entrance
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -625,7 +625,7 @@
 |                     | 16020| Lighting The Fuse
 |                     | 16021| One Fights As Many
 
-## 09.3-TSs 
+## `09.3-TSs` The Showstopper
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -651,7 +651,7 @@
 |                     | 17020| Showboating
 |                     | 17021| All Or Nothing
 
-## 10-BMR 
+## `10-BMR` Blood Moon Rising
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -698,7 +698,7 @@
 |                     | 18041| "Thunder Boy" Nabbe
 |                     | 18042| Dave "Slim" Gorman
 
-## 11-TCaR
+## `11-TCaR` There Comes a Reckoning
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -748,22 +748,22 @@
 |                     | 19044| Shan Fan Showdown!
 |                     | 19045| The Winning Agenda
 
-## 12-2T2D
+## `12-2T2D` Too Tough to Die
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 
-## 13-O4B 
+## `13-O4B` Out for Blood
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 
-## 14-HCWM
+## `14-HCWM` Hell's Comin' With Me
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 
-## 15-W2D 
+## `15-W2D` Welcome to Deadwood
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
