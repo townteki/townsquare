@@ -8,7 +8,8 @@ class CallOut extends GameAction {
     canChangeGameState({ caller, callee, isCardEffect = true }) {
         return ['outfit', 'play area'].includes(caller.location) && 
             ['outfit', 'play area'].includes(callee.location) && 
-            (isCardEffect || !caller.booted);
+            (isCardEffect || !caller.booted) &&
+            callee.canBeCalledOut();
     }
 
     createEvent({ caller, callee, isCardEffect = true, canReject = true }) {
