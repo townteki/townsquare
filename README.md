@@ -26,7 +26,8 @@ Implementation:
 - [x] Gadgets
 - [ ] Legends
 - [ ] Kung Fu
-- [ ] Card scripts
+
+![Cards implemented](https://progress-bar.dev/97/?scale=875&title=implemented%20&width=200&suffix=%20cards)
 
 Test coverage:
 - [ ] Base Game engine (phases, shootouts, game actions etc) 
