@@ -71,8 +71,10 @@ For the server, IDE setup and other development tips see [Development](#Developm
      - to compile native Node modules, you will also need the build tools: `npm install --global --production windows-build-tools`
 - [MongoDB](https://www.mongodb.com/) - used as storage so you'll need that installed and running
 
-**Recommended**
+**Recommended:**
 - [Visual Studio code](https://code.visualstudio.com/download) - we recommend to use VS code because there are already some snippets and launch scripts included
+
+**Installation:**
 
 To install the server, execute these commands: 
 
