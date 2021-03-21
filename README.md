@@ -15,6 +15,8 @@ This client is work in progress
 
 If you would like to contribute and help us to bring this client to life, please see [Contribution guide](https://github.com/townteki/townsquare/blob/master/docs/contributing.md).
 
+If you only need help with setting the development IDE, please see [Development](https://github.com/townteki/townsquare/blob/master/docs/contributing.md#Development).
+
 ## Project status
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/townteki/townsquare/Node.js%20CI/master?style=plastic)
 ![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fimg.shields.io%2Fwebsite%2Fhttps%2Fdev.doomtown.us%2Fplay)
@@ -28,7 +30,7 @@ If you would like to contribute and help us to bring this client to life, please
 - [ ] Kung Fu
 - [ ] Deck Management
 
- ![Cards implemented](https://progress-bar.dev/97/?scale=875&title=implemented%20&width=200&suffix=%20cards)
+See [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md) of implemented card scripts.
 
 ### Test coverage:
 - [ ] Base Game engine (phases, shootouts, game actions etc) 
