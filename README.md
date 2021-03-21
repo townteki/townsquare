@@ -7,7 +7,7 @@ Web based implementation of the Doomtown card game (Doomtown Online).
 Similarly as ringteki, this is based on the throneteki and uses large parts of the source. 
 Townsquare is a fork of the throneteki sourcecode. The code is written in node.js(server) and react.js(client).  
 
-![work-in-progress-wip](https://user-images.githubusercontent.com/10244559/111221193-752a4000-85da-11eb-9aff-0b6ae7ff7ca2.png)
+![work-in-progress-wip](https://user-images.githubusercontent.com/10244559/111921254-edd64400-8a93-11eb-8efe-ca8707217470.png)
 
 This client is work in progress
 
@@ -27,6 +27,7 @@ If you only need help with setting the development IDE, please see [Development]
 - [x] Spell casting
 - [x] Gadget inventing
 - [ ] Legends
+
 - [ ] Kung Fu
 - [ ] Deck Management
 
