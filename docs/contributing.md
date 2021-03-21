@@ -39,7 +39,18 @@ For the IDE setup and other development tips see [Development](#Development) sec
 
 ### Test and report bugs
 You will be testing the client on the [test server](https://doomtown.us). There is no test plan yet, so you will just play the game and test various game situations. To register on the server, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general).
-If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible. In case you do not have a github account and do not want to create one, please use [this report](https://gitreports.com/issue/mmeldo/townsquare-issues).
+If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible. In case you do not have a github account and do not want to create one, please use [this report](https://gitreports.com/issue/townteki/townsquare).
+
+**What should be impemented and can be tested:**
+ - Base game engine
+    * Setup
+    * Sequence o' Play - all phases
+    * Plays You Can Make at High Noon - Shoppin', Tradin', Movin', Callin' Out
+    * Shootout
+ - Spell casting
+ - Gadget inventing
+ - Chat commands - list of chatcommands can be found in the client `Help > How To Play > Manual Commands`
+ - Actin' play depends on implemented cards - see [here](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md)
 
 ### UX and client contributions
 If you want to contribute to the client, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general).
@@ -48,7 +59,21 @@ For the server, IDE setup and other development tips see [Development](#Developm
 
 ## Development
 
-The game uses [mongodb](https://www.mongodb.com/) as storage so you'll need that installed and running.
+**Requirements:**
+- [Node.js](https://nodejs.org/en/download/) - 
+  * Linux 
+     - Recommended 14.x, working also on 12.x and 10.x
+     - use Python 2.7
+  * Windows
+     - Recommended 10.x, that is the only version we made it to work so far
+     - use Python 2.7 (if you have more Python version, use `npm config set python <path/to/python27>`
+     - use Visual Studio 2015 build tools: `npm config set msvs_version 2015`
+     - to compile native Node modules, you will also need the build tools: `npm install --global --production windows-build-tools`
+- [MongoDB](https://www.mongodb.com/) - used as storage so you'll need that installed and running
+
+**Recommended**
+- [Visual Studio code](https://code.visualstudio.com/download) - we recommend to use VS code because there are already some snippets and launch scripts included
+
 To install the server, execute these commands: 
 
 ```
@@ -62,16 +87,40 @@ node server/scripts/fetchdata.js
 node server/scripts/importstandalonedecks.js
 ```
 
-If you want to also work on the client, checkout the [Client Repository](https://github.com/townteki/townsquare-client) and run.
-If you do not need the client source, you can download binaries from [townsquare GDrive](https://drive.google.com/file/d/1MdnDSUBYE1Rl0edYYlHaLC3BcSfwx6-7/view?usp=sharing) and unzip it to the `townsquare` repository.
+To install the client, you have 2 options:
+
+1. If you want to also work on the client, checkout the [Client Repository](https://github.com/townteki/townsquare-client) and run. You will need to manually copy the card images imported by `fetchdata.js` from `townsquare\public\img\cards` to `townsquare-client\assets\img\cards`.
+2. If you do not need the client source, you can download binaries from [townsquare GDrive](https://drive.google.com/file/d/1MdnDSUBYE1Rl0edYYlHaLC3BcSfwx6-7/view?usp=sharing) and unzip it to the `townsquare` repository.
 
 There are two exectuable components and you'll need to configure/run both to run a local server.  First is the lobby server and then there are game nodes.
+
 To run the server, execute these commands:
 
+**Option 1.**
+
+*Linux and Windows*
+```
+node .
+node server/gamenode
+```
+
+**Option 2.**
+
+*Linux*
 ```
 NODE_ENV=production PORT=4000 node .
 node server/gamenode
 ```
+
+*Windows*
+```
+set NODE_ENV=production
+set PORT=4000
+node .
+node server/gamenode
+```
+
+If you are working in Visual Studio Code, there are launch configurations for both _Lobby_ ang _Game Server_ in `.vscode/launch.json`.
 
 For the lobby server, if you need to override any of the config settings, create a file named config/local.json5
 
