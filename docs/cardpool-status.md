@@ -757,6 +757,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 21007| Doc Holliday
 
 ## `14-HCWM` Hell's Comin' With Me
 
