@@ -1,6 +1,8 @@
 const ActionCard = require('../../actioncard.js');
 const GameActions = require('../../GameActions/index.js');
 
+//var bulletcount;
+
 class PointBlank extends ActionCard {
     setupCardAbilities(ability) {
         this.action({
@@ -9,18 +11,16 @@ class PointBlank extends ActionCard {
             choosePlayer: false,
             cost: [
                 ability.costs.boot({
-                    location: 'play area',
                     controller: 'current',
-                    condition: card => card.isStud(),
-                    cardCondition: { /*location: 'play area',*/ participating: true },
-                    cardType: ['dude']
+                    cardCondition: { location: 'play area', participating: true, condition: card => {
+                        card.iStud() } },
+                    cardType: ['dude'],
                 })],
             target: {
                 choosingPlayer: 'opponent',
                 activePromptTitle: 'Select your dude to ace',
                 waitingPromptTitle: 'Waiting on opponent to select a dude',
-                condition: card => card.bullets < context.costs.boot.bullets,
-                cardCondition: { location: 'play area', participating: true },
+                cardCondition: { location: 'play area', condition: card => card.bullets < context.costs.bullets, participating: true },
                 cardType: ['dude']
             },
             message: context => {
