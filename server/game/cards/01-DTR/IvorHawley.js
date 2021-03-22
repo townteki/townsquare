@@ -8,7 +8,7 @@ class IvorHawley extends DudeCard {
             effect: [
                 ability.effects.modifyBullets(1),
                 ability.effects.modifyInfluence(1),
-                ability.effects.modifySkillRating(1, 'huckster')
+                ability.effects.modifySkillRating('huckster', 1)
             ]
         });
     }
