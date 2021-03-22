@@ -7,6 +7,7 @@ const SpellCard = require('./spellcard.js');
 const ActionCard = require('./actioncard.js');
 const OutfitCard = require('./outfitcard');
 const JokerCard = require('./jokercard');
+const LegendCard = require('./legendcard');
 
 class Deck {
     constructor(data) {
@@ -31,8 +32,21 @@ class Deck {
         return new cardClass(player, cardData);
     }
 
-    createLegendCard() {
-        // TODO M2 Legend card not created
+    createLegendCard(player) {
+        if(this.data.legend) {
+            let cardData = {
+                code: this.data.legend.code,
+                type_code: 'legend',
+                gang_code: this.data.legend.gang_code,
+                title: this.data.legend.title,
+                keywords: this.data.legend.keywords,
+                wealth: this.data.legend.wealth,
+                production: this.data.legend.production
+            };
+            let cardClass = cards[cardData.code] || LegendCard;
+
+            return new cardClass(player, cardData);
+        }
 
         return;
     }
