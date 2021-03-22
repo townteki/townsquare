@@ -17,7 +17,7 @@ class MorganResearchInstitute extends DeedCard {
                 let skills = this.abilityContext.target.getSkills();
                 if(skills.length > 1) {
                     let buttons = skills.map(skill => {
-                        return { text: skill, arg: skill, method: 'selectSkill' };
+                        return { text: skill.charAt(0).toUpperCase() + skill.slice(1), arg: skill, method: 'selectSkill' };
                     });
                     this.game.promptWithMenu(context.player, this, {
                         activePrompt: {
@@ -36,7 +36,7 @@ class MorganResearchInstitute extends DeedCard {
     selectSkill(player, skill) {
         this.game.promptWithMenu(player, this, {
             activePrompt: {
-                menuTitle: `Raise or lower ${skill} skill rating (by 2)?`,
+                menuTitle: `Raise or lower ${skill.charAt(0).toUpperCase() + skill.slice(1)} skill?`,
                 buttons: [
                     { text: 'Raise by 2', arg: skill, method: 'raise' },
                     { text: 'Lower by 2', arg: skill, method: 'lower' }
@@ -68,7 +68,12 @@ class MorganResearchInstitute extends DeedCard {
                 ability.effects.modifySkillRating(skill, amount, true)
             ]
         }));
-        this.game.addMessage('{0} uses {1} to {2} {3}\'s skill rating by 2 to current skill level of {4}', player, this, text, this.abilityContext.target, this.abilityContext.target.getSkillRating(skill, true));
+        this.game.addMessage('{0} uses {1} to {2} {3}\'s {4} skill rating by 2 to current skill level of {5}', 
+            player, 
+            this, 
+            text, 
+            this.abilityContext.target, skill.charAt(0).toUpperCase() + skill.slice(1), 
+            this.abilityContext.target.getSkillRating(skill, true));
     }
 }
 
