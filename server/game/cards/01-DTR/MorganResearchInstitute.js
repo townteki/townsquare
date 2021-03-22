@@ -29,7 +29,6 @@ class MorganResearchInstitute extends DeedCard {
                 } else {
                     this.selectSkill(context.player, skills[0]);
                 }
-
             }
         });
     }
