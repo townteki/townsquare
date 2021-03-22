@@ -2,7 +2,6 @@ const DeedCard = require('../../deedcard.js');
 
 class MorganResearchInstitute extends DeedCard {
     setupCardAbilities(ability) {
-        //let skill;
         this.action({
             title: 'Morgan Research Institute',
             playType: ['noon'],
@@ -17,10 +16,9 @@ class MorganResearchInstitute extends DeedCard {
                 // Handle case when dude has more then one skill
                 let skills = this.abilityContext.target.getSkills();
                 if(skills.length > 1) {
-                    let buttons = skills.map(choice => {
-                        return { text: choice, arg: choice, method: 'selectSkill' };
+                    let buttons = skills.map(skill => {
+                        return { text: skill, arg: skill, method: 'selectSkill' };
                     });
-
                     this.game.promptWithMenu(context.player, this, {
                         activePrompt: {
                             menuTitle: 'Select skill',
@@ -30,7 +28,6 @@ class MorganResearchInstitute extends DeedCard {
                     });
                 } else {
                     this.selectSkill(context.player, skills[0]);
-                    //this.skill = skills[0];
                 }
 
             }
@@ -38,7 +35,6 @@ class MorganResearchInstitute extends DeedCard {
     }
 
     selectSkill(player, skill) {
-        //this.skill = skill;
         this.game.promptWithMenu(player, this, {
             activePrompt: {
                 menuTitle: `Raise or lower ${skill} skill rating (by 2)?`,
@@ -67,8 +63,6 @@ class MorganResearchInstitute extends DeedCard {
         if(amount < 0) {
             text = 'lower';
         }
-        //let skill = this.abilityContext.target.getSkills()[0];
-        console.log(skill);
         this.applyAbilityEffect(this.abilityContext.ability, ability => ({
             match: this.abilityContext.target,
             effect: [
