@@ -79,6 +79,10 @@ class AbilityTarget {
             return [context.player.getOpponent()];
         }
 
+        if(this.choosingPlayer === 'opponent') {
+            return [context.player.getOpponent()];
+        }
+
         return [context.player];
     }
 
