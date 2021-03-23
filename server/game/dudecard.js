@@ -62,10 +62,11 @@ class DudeCard extends DrawCard {
         }
     }
 
-    getSkills() {
+    getSkills(onlyCastingSkills = false) {
         let skills = [];
         for(let keyword of this.keywords.getValues()) {
-            if(keyword === 'huckster' || keyword === 'mad scientist' || keyword === 'shaman' || keyword === 'blessed') {
+            if(keyword === 'huckster' || keyword === 'shaman' || keyword === 'blessed' ||
+                (keyword === 'mad scientist' && !onlyCastingSkills)) {
                 skills.push(keyword);
             }        
         }

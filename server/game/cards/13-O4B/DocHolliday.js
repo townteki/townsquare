@@ -27,18 +27,40 @@ class DocHolliday extends LegendCard {
                 }
             },
             handler: context => {
-                let bulletBonus = context.targets.spellcaster.getSkillRating('huckster');
-                this.applyAbilityEffect(context.ability, ability => ({
-                    match: context.targets.receiver,
-                    effect: [
-                        ability.effects.modifyBullets(bulletBonus),
-                        ability.effects.setMaxBullets(4)
-                    ]
-                }));
-                this.game.addMessage('{0} uses {1} to give {2} bonus {3} bullets and sets their maximum bullets to 4', 
-                    context.player, this, context.targets.receiver, bulletBonus);
+                this.abilityContext = context;
+                let skills = context.targets.spellcaster.getSkills(true);
+                if(skills.length === 1) {
+                    this.performDocMagic(context.player, skills[0]);
+                } else {
+                    let buttons = skills.map(skill => {
+                        let buttonText = skill.charAt(0).toUpperCase() + skill.slice(1) + ' ' + 
+                            context.targets.spellcaster.getSkillRating(skill);
+                        return { text: buttonText, arg: skill, method: 'performDocMagic' };
+                    });
+                    this.game.promptWithMenu(context.player, this, {
+                        activePrompt: {
+                            menuTitle: 'Select skill',
+                            buttons: buttons
+                        },
+                        source: this
+                    });
+                }
             }
         });
+    }
+
+    performDocMagic(player, skillName) {
+        let bulletBonus = this.abilityContext.targets.spellcaster.getSkillRating(skillName);
+        this.applyAbilityEffect(this.abilityContext.ability, ability => ({
+            match: this.abilityContext.targets.receiver,
+            effect: [
+                ability.effects.modifyBullets(bulletBonus),
+                ability.effects.setMaxBullets(4)
+            ]
+        }));
+        this.game.addMessage('{0} uses {1} to give {2} bonus {3} bullets and sets their maximum bullets to 4', 
+            player, this, this.abilityContext.targets.receiver, bulletBonus);
+        return true;
     }
 
     isSpellcasterInLeaderPosse() {
