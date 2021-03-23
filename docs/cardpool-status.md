@@ -1,6 +1,12 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/97/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/108/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+
+**Legend**
+
+:heavy_check_mark: - implemented cards using own script
+
+:white_check_mark: - cards that do not need own implementation
 
 ## `01-DTR` Base set
 
@@ -15,7 +21,7 @@
 |                     | 01007| Bobo
 |                     | 01008| Arnold McCadish
 |                     | 01009| The Ghostly Gun
-|:heavy_check_mark:   | 01010| Avie Cline
+|:white_check_mark:   | 01010| Avie Cline
 |:heavy_check_mark:   | 01011| Kevin Wainwright
 |                     | 01012| Tyxarglenak ?
 |:heavy_check_mark:   | 01013| Jia Mein
@@ -25,12 +31,12 @@
 |:heavy_check_mark:   | 01017| Philip Swinford
 |:heavy_check_mark:   | 01018| Tommy Harden
 |                     | 01019| Prescott Utter
-|                     | 01020| Andreas Andregg
+|:white_check_mark:   | 01020| Andreas Andregg
 |                     | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
 |                     | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
-|                     | 01025| Irving Patterson
+|:heavy_check_mark:   | 01025| Irving Patterson
 |                     | 01026| Prof. Eustace True
 |                     | 01027| Elander Boldman
 |                     | 01028| James Ghetty
@@ -46,19 +52,19 @@
 |                     | 01038| Marion Seville
 |                     | 01039| Sanford Taylor
 |:heavy_check_mark:   | 01040| Barton Everest
-|:heavy_check_mark:   | 01041| Pancho Castillo
+|:white_check_mark:   | 01041| Pancho Castillo
 |                     | 01042| Jonah Essex
 |                     | 01043| Silas Aims
 |                     | 01044| Sloane
 |:heavy_check_mark:   | 01045| Clementine Lepp
-|:heavy_check_mark:   | 01046| Olivia Jenks
+|:white_check_mark:   | 01046| Olivia Jenks
 |:heavy_check_mark:   | 01047| Ramiro Mendoza
-|:heavy_check_mark:   | 01048| Steele Archer
+|:white_check_mark:   | 01048| Steele Archer
 |:heavy_check_mark:   | 01049| Travis Moone
 |:heavy_check_mark:   | 01050| Androcles Brocklehurst
-|:heavy_check_mark:   | 01051| Steven Wiles
+|:white_check_mark:   | 01051| Steven Wiles
 |:heavy_check_mark:   | 01052| Dr. Dawn Edwards
-|:heavy_check_mark:   | 01053| Clint Ramsey
+|:white_check_mark:   | 01053| Clint Ramsey
 |:heavy_check_mark:   | 01054| Eve Henry
 |                     | 01055| Bank of California
 |                     | 01056| Pony Express
@@ -72,18 +78,18 @@
 |:heavy_check_mark:   | 01064| Pearly's Palace
 |:heavy_check_mark:   | 01065| Killer Bunnies Casino
 |                     | 01066| Stagecoach Office
-|:heavy_check_mark:   | 01067| Blake Ranch
+|:white_check_mark:   | 01067| Blake Ranch
 |:heavy_check_mark:   | 01068| Cattle Market
 |:heavy_check_mark:   | 01069| Circle M Ranch
-|:heavy_check_mark:   | 01070| Pat's Perch
+|:white_check_mark:   | 01070| Pat's Perch
 |                     | 01071| Bunkhouse
 |                     | 01072| Morgan Research Institute
 |:heavy_check_mark:   | 01073| Carter's Bounties
 |                     | 01074| The Union Casino
-|:heavy_check_mark:   | 01075| Jackson's Strike
+|:white_check_mark:   | 01075| Jackson's Strike
 |                     | 01076| Undertaker
-|                     | 01077| General Store
-|                     | 01078| The Pharmacy
+|:heavy_check_mark:   | 01077| General Store
+|:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
 |                     | 01080| Telegraph Office
 |                     | 01081| Pair of Six-Shooters
@@ -102,7 +108,7 @@
 |                     | 01094| Mechanical Horse
 |                     | 01095| Tin Star
 |                     | 01096| Doyle's Hoyle
-|                     | 01097| Buffalo Rifle
+|:heavy_check_mark:   | 01097| Buffalo Rifle
 |                     | 01098| Legendary Holster
 |                     | 01099| Auto Cattle-Feeder
 |:heavy_check_mark:   | 01100| Soul Blast
@@ -149,15 +155,15 @@
 |                     | 01141| Good Stiff Drink
 |                     | 01142| Point Blank
 |                     | 01143| A Secret Tunnel
-|:heavy_check_mark:   | 01144| Joker (red)
-|:heavy_check_mark:   | 01145| Joker (black)
+|:white_check_mark:   | 01144| Joker (red)
+|:white_check_mark:   | 01145| Joker (black)
 |:heavy_check_mark:   | 01146| Gunslinger
 
 ## `02.1-NTNR` New Town New Rules
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|:heavy_check_mark:   | 02001| Dulf Zug
+|:white_check_mark:   | 02001| Dulf Zug
 |                     | 02002| Slade Lighbody
 |                     | 02003| Rafi Hamid
 |:heavy_check_mark:   | 02004| Wylie Jenks
@@ -165,8 +171,8 @@
 |                     | 02006| Lillian Morgan
 |:heavy_check_mark:   | 02007| Ulysses Marks
 |                     | 02008| Alice Stowe
-|                     | 02009| Wilber Crowley
-|:heavy_check_mark:   | 02010| Roderick Byre
+|:white_check_mark:   | 02009| Wilber Crowley
+|:white_check_mark:   | 02010| Roderick Byre
 |                     | 02011| Town Council
 |                     | 02012| The R&D Ranch
 |                     | 02013| Telepathy Helmet
@@ -376,11 +382,11 @@
 |                     | 09016| Butch Deuces
 |                     | 09017| Mazatl
 |                     | 09018| Marcia Ridge
-|                     | 09019| Richard Faulkner
+|:white_check_mark:   | 09019| Richard Faulkner
 |                     | 09020| Lydia Bear-Hands
 |                     | 09021| Jackson Trouble
-|                     | 09022| Black Elk
-|                     | 09023| Bloody Teeth
+|:white_check_mark:   | 09022| Black Elk
+|:white_check_mark:   | 09023| Bloody Teeth
 |                     | 09024| Three-Eyed Hawk
 |                     | 09025| Sarah Meoquanee
 |                     | 09026| Smiling Frog
@@ -752,11 +758,13 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:white_check_mark:   | 20009| Matilda Loomis
 
 ## `13-O4B` Out for Blood
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:white_check_mark:   | 21027| Eli Leatherwood
 
 ## `14-HCWM` Hell's Comin' With Me
 

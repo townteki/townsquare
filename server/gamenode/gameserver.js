@@ -65,7 +65,8 @@ class GameServer {
         this.io.use(this.handshake.bind(this));
 
         if(process.env.NODE_ENV === 'production') {
-            this.io.set('origins', 'http://www.dtts.online:* https://www.dtts.online:* http://www.dtts.online:* https://www.dtts.online:*');
+            //this.io.set('origins', 'http://www.dtts.online:* https://www.dtts.online:* http://www.dtts.online:* https://www.dtts.online:*');
+            this.io.set('origins', '*:*');
         }
 
         this.io.on('connection', this.onConnection.bind(this));

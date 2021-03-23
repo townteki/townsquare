@@ -277,7 +277,7 @@ const Effects = {
             }
         };
     },
-    modifySkillRating: function(value, type) {
+    modifySkillRating: function(type, value) {
         return {
             gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
             apply: function(card) {
