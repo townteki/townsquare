@@ -136,14 +136,15 @@ const Effects = {
             }
         };
     },
-    setSetupGold: function(value) {
+    setMaxBullets: function(value) {
+        let previousMaxBullets = null;
         return {
-            targetType: 'player',
-            apply: function(player) {
-                player.setupGold = value;
+            apply: function(card) {
+                previousMaxBullets = card.maxBullets;
+                card.maxBullets = value;
             },
-            unapply: function(player) {
-                player.setupGold = 8;
+            unapply: function(card) {
+                card.maxBullets = previousMaxBullets;
             }
         };
     },
@@ -277,7 +278,7 @@ const Effects = {
             }
         };
     },
-    modifySkillRating: function(value, type) {
+    modifySkillRating: function(type, value) {
         return {
             gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
             apply: function(card) {
@@ -741,6 +742,17 @@ const Effects = {
             },
             unapply: function(player) {
                 player.maxLimited -= amount;
+            }
+        };
+    },
+    modifyPosseStudBonus: function(amount) {
+        return {
+            targetType: 'player',
+            apply: function(player) {
+                player.modifyPosseStudBonus(amount);
+            },
+            unapply: function(player) {
+                player.modifyPosseStudBonus(-amount);
             }
         };
     },
