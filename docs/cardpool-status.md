@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/111/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/112/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -153,7 +153,7 @@
 |:heavy_check_mark:   | 01139| Missed!
 |                     | 01140| Takin' Ya With Me
 |                     | 01141| Good Stiff Drink
-|                     | 01142| Point Blank
+|:heavy_check_mark:   | 01142| Point Blank
 |                     | 01143| A Secret Tunnel
 |:white_check_mark:   | 01144| Joker (red)
 |:white_check_mark:   | 01145| Joker (black)
