@@ -756,6 +756,17 @@ const Effects = {
             }
         };
     },
+    modifyLoserCasualties: function(amount) {
+        return {
+            targetType: 'shootout',
+            apply: function(shootout) {
+                shootout.loserCasualtiesMod += amount;
+            },
+            unapply: function(shootout) {
+                shootout.loserCasualtiesMod -= amount;
+            }
+        };
+    },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {

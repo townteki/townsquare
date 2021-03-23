@@ -837,7 +837,9 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        attachment.owner.removeCardFromPile(attachment);
+        if(playingType !== 'trading') {
+            attachment.owner.removeCardFromPile(attachment);
+        }
 
         if(originalParent) {
             originalParent.removeAttachment(attachment);
