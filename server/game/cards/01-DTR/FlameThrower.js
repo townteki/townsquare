@@ -16,6 +16,8 @@ class FlameThrower extends GoodsCard {
                 ability.costs.bootSelf(),
                 ability.costs.payXGhostRock(() => 1, () => 3)
             ],
+            message: context => this.game.addMessage('{0} uses {1} to boost its bullets by {2}', 
+                context.player, this, context.grCost),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
@@ -29,7 +31,6 @@ class FlameThrower extends GoodsCard {
                         ability.effects.modifyLoserCasualties(1)
                     ]
                 }));
-                this.game.addMessage('{0} uses {1} to boost its bullets by {2}', context.player, this, context.grCost);
             }
         });
     }
