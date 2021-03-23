@@ -1017,6 +1017,15 @@ class Player extends Spectator {
         this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
     }
 
+    modifyPosseStudBonus(amount) {
+        if(this.game.shootout) {
+            let playerPosse = this.game.shootout.getPosseByPlayer(this);
+            if(playerPosse) {
+                playerPosse.studBonus += amount;
+            }
+        }
+    }
+
     addCasualties(number) {
         this.casualties += number;
     }

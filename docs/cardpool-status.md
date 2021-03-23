@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/108/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/111/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -83,7 +83,7 @@
 |:heavy_check_mark:   | 01069| Circle M Ranch
 |:white_check_mark:   | 01070| Pat's Perch
 |                     | 01071| Bunkhouse
-|                     | 01072| Morgan Research Institute
+|:heavy_check_mark:   | 01072| Morgan Research Institute
 |:heavy_check_mark:   | 01073| Carter's Bounties
 |                     | 01074| The Union Casino
 |:white_check_mark:   | 01075| Jackson's Strike
@@ -116,7 +116,7 @@
 |:heavy_check_mark:   | 01102| Shadow Walk
 |:heavy_check_mark:   | 01103| Blood Curse
 |                     | 01104| Raising Hell
-|                     | 01105| Establishin' Who's in Charge
+|:heavy_check_mark:   | 01105| Establishin' Who's in Charge
 |                     | 01106| Hired Guns
 |                     | 01107| Lady Luck
 |                     | 01108| Bottom Dealin'
@@ -764,6 +764,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 21007| Doc Holliday
 |:white_check_mark:   | 21027| Eli Leatherwood
 
 ## `14-HCWM` Hell's Comin' With Me
