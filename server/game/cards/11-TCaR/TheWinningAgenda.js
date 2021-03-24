@@ -1,5 +1,4 @@
 const ActionCard = require('../../actioncard.js');
-//const GameActions = require('../../GameActions/index.js');
 
 class TheWinningAgenda extends ActionCard {
     setupCardAbilities() {
@@ -13,13 +12,18 @@ class TheWinningAgenda extends ActionCard {
                 cardType: 'dude'
             },
             handler: context => {
+                /* We have to cap the maximum number to 3 */
                 let discardAmount = context.target.influence;
                 if(discardAmount > 3) {
                     discardAmount = 3;
                 }
-                context.player.discardFromHand(discardAmount, () => true, { title: 'Discard Cards Test Message' });
-                context.player.drawCardsToHand(discardAmount).thenExecute(() => { this.game.addMessage('{0} uses {1} and {2}\'s influence to discard {3} cards and then draw {3} cards', 
-                    context.player, this, context.target, discardAmount)});
+                context.player.discardFromHand(discardAmount, () => true, { title: this.title, 
+                    activePromptTitle: 'Select ' + discardAmount + ' cards to discard', 
+                    waitingPromptTitle: 'Waiting for opponent to discard ' + discardAmount + ' cards' });
+                context.player.drawCardsToHand(discardAmount).thenExecute(() => { 
+                    this.game.addMessage('{0} uses {1} and {2}\'s influence to discard {3} cards and then draw {3} cards', 
+                        context.player, this, context.target, discardAmount);
+                });
             }
         });
         this.action({
@@ -31,12 +35,13 @@ class TheWinningAgenda extends ActionCard {
             },
             handler: context => {
                 let rankMod = context.target.influence;
+                /* We have to cap the maximum number to 3 */
                 if(rankMod > 3) {
                     rankMod = 3;
                 }
                 context.player.modifyRank(rankMod);
-                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current rank is {3}', 
-                    context.player, this, rankMod, context.player.getTotalRank());
+                this.game.addMessage('{0} uses {1} and {2}\'s influence to increase their hand rank by {3}; Current rank is {4}', 
+                    context.player, this, context.target, rankMod, context.player.getTotalRank());
             }
         });
     } 

@@ -352,8 +352,8 @@ class Player extends Spectator {
             promptTitle: options.title,
             numCards: number,
             multiSelect: true,
-            activePromptTitle: 'Select a card to discard',
-            waitingPromptTitle: 'Waiting for opponent to discard a card',
+            activePromptTitle: options.activePromptTitle || 'Select a card to discard',
+            waitingPromptTitle: options.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
             cardCondition: card => card.location === 'hand' && card.controller === this,
             onSelect: (p, cards) => {
                 this.discardCards(cards, false, discarded => {
