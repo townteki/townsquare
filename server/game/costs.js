@@ -209,36 +209,36 @@ const Costs = {
     payGhostRock: function(amount) {
         return {
             canPay: function(context) {
-                return context.player.getSpendableGhostRock({ player: context.player, playingType: 'ability' }) >= amount;
+                return context.player.getSpendableGhostRock({ player: context.player, playingType: 'ability', source: context.source }) >= amount;
             },
             pay: function(context) {
-                context.game.spendGhostRock({ amount: amount, player: context.player });
+                context.game.spendGhostRock({ amount: amount, player: context.player, source: context.source });
             }
         };
     },
     /**
      * Reducable cost where the player gets prompted to pay from a passed minimum up to the lesser of two values:
-     * the passed maximum and either the player's or his opponent's gold.
-     * Used by Ritual of R'hllor, Loot, The Things I Do For Love and Melee at Bitterbridge.
+     * the passed maximum and either the player's or his opponent's ghostrock.
+     * Used by Flame-Thrower.
      */
-    payXGold: function(minFunc, maxFunc, opponentFunc) {
+    payXGhostRock: function(minFunc, maxFunc, opponentFunc) {
         return {
             canPay: function(context) {
                 let reduction = context.player.getCostReduction('play', context.source);
                 let opponentObj = opponentFunc && opponentFunc(context);
 
                 if(!opponentObj) {
-                    return context.player.getSpendableGold() >= (minFunc(context) - reduction);
+                    return context.player.getSpendableGhostRock() >= (minFunc(context) - reduction);
                 }
-                return opponentObj.getSpendableGold() >= (minFunc(context) - reduction);
+                return opponentObj.getSpendableGhostRock() >= (minFunc(context) - reduction);
             },
             resolve: function(context, result = { resolved: false }) {
                 let reduction = context.player.getCostReduction('play', context.source);
                 let opponentObj = opponentFunc && opponentFunc(context);
-                let gold = opponentObj ? opponentObj.getSpendableGold({ playingType: 'play' }) : context.player.getSpendableGold({ playingType: 'play' });
-                let max = Math.min(maxFunc(context), gold + reduction);
+                let ghostrock = opponentObj ? opponentObj.getSpendableGhostRock({ playingType: 'play' }) : context.player.getSpendableGhostRock({ playingType: 'play' });
+                let max = Math.min(maxFunc(context), ghostrock + reduction);
 
-                context.game.queueStep(new XValuePrompt(minFunc(context), max, context, reduction));
+                context.game.queueStep(new XValuePrompt(minFunc(context), max, context, 'Select GR payment', reduction));
 
                 result.value = true;
                 result.resolved = true;
@@ -247,9 +247,9 @@ const Costs = {
             pay: function(context) {
                 let opponentObj = opponentFunc && opponentFunc(context);
                 if(!opponentObj) {
-                    context.game.spendGold({ player: context.player, amount: context.goldCost, playingType: 'play' });
+                    context.game.spendGhostRock({ player: context.player, amount: context.grCost, playingType: 'play' });
                 } else {
-                    context.game.spendGold({ player: opponentObj, amount: context.goldCost, playingType: 'play' });
+                    context.game.spendGhostRock({ player: opponentObj, amount: context.grCost, playingType: 'play' });
                 }
                 context.player.markUsedReducers('play', context.source);
             }
