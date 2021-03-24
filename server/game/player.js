@@ -687,7 +687,7 @@ class Player extends Spectator {
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                     updatedParams.context.cardToUpgrade.upgrade(card);
                 } else {
-                    let target = updatedParams.playingType === 'shoppin' && updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
+                    let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
                     card.moveToLocation(target);
                     this.moveCard(card, 'play area');  
                 }
