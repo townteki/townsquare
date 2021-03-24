@@ -4,7 +4,7 @@ const GoodsCard = require('../../goodscard.js');
 class Shotgun extends GoodsCard {
     setupCardAbilities(ability) {
         this.whileAttached({
-            effect: ability.effects.modifyBullets(1)
+            effect: ability.effects.modifyBullets(this.bullets)
         });
         this.action({
             title: 'Shotgun',

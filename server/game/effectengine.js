@@ -45,6 +45,9 @@ class EffectEngine {
     getTargets() {
         const validLocations = ['being played', 'dead pile', 'discard pile', 'draw deck', 'hand', 'play area'];
         let validTargets = this.game.allCards.filter(card => validLocations.includes(card.location));
+        if(this.game.shootout) {
+            validTargets = validTargets.concat([this.game.shootout]);
+        }
         return validTargets.concat(this.game.getPlayers()).concat([this.game]);
     }
 

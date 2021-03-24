@@ -51,6 +51,7 @@ class Player extends Spectator {
         this.handSize = StartingHandSize;
         this.discardNumber = StartingDiscardNumber;
         this.costReducers = [];
+        this.redrawBonus = 0;
         this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;        
@@ -348,20 +349,33 @@ class Player extends Spectator {
     }
 
     discardFromHand(number = 1, callback = () => true, options = {}) {
+        let defaultOptions = {
+            discardExactly: false
+        };
+        let updatedOptions = Object.assign(defaultOptions, options);
         this.game.promptForSelect(this, {
-            promptTitle: options.title,
+            promptTitle: updatedOptions.title,
             numCards: number,
             multiSelect: true,
-            activePromptTitle: 'Select a card to discard',
-            waitingPromptTitle: 'Waiting for opponent to discard a card',
+            activePromptTitle: updatedOptions.activePromptTitle || 'Select a card to discard',
+            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
             cardCondition: card => card.location === 'hand' && card.controller === this,
             onSelect: (p, cards) => {
+                if(updatedOptions.discardExactly && cards.length !== number) {
+                    return false;
+                }
                 this.discardCards(cards, false, discarded => {
                     callback(discarded);
-                }, options);
+                }, updatedOptions);
                 return true;
             }
         }); 
+    }
+
+    redrawFromHand(number = 1, callback = () => true, options = {}) {
+        this.discardFromHand(number, discardedCards => {
+            this.drawCardsToHand(discardedCards.length).thenExecute(event => callback(event));            
+        }, options);
     }
 
     moveFromTopToBottomOfDrawDeck(number) {
@@ -540,7 +554,7 @@ class Player extends Spectator {
         return card.isUnique() && this.deadPile.some(c => c.title === card.title);
     }
 
-    playCard(card) {
+    playCard(card, arg) {
         if(!card) {
             return false;
         }
@@ -553,7 +567,7 @@ class Player extends Spectator {
             source: card,
             cardToUpgrade: cardToUpgrade
         });
-        var playActions = card.getPlayActions().filter(action => action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
+        var playActions = card.getPlayActions(arg).filter(action => action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
 
         if(playActions.length === 0) {
             return false;
@@ -673,7 +687,7 @@ class Player extends Spectator {
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                     updatedParams.context.cardToUpgrade.upgrade(card);
                 } else {
-                    let target = updatedParams.playingType === 'shoppin' && updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
+                    let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
                     card.moveToLocation(target);
                     this.moveCard(card, 'play area');  
                 }
@@ -781,7 +795,9 @@ class Player extends Spectator {
             this.game.promptForSelect(this, {
                 activePromptTitle: 'Select a Mad Scientist to invent ' + gadget.title,
                 waitingPromptTitle: 'Waiting for opponent to select Mad Scientist',
-                cardCondition: card => card.hasKeyword('mad scientist') && !card.booted,
+                cardCondition: card => card.location === 'play area' && !card.booted && 
+                    card.hasKeyword('mad scientist') && 
+                    card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
                     this.bootCard(card, 'inventing');
@@ -837,7 +853,9 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        attachment.owner.removeCardFromPile(attachment);
+        if(playingType !== 'trading') {
+            attachment.owner.removeCardFromPile(attachment);
+        }
 
         if(originalParent) {
             originalParent.removeAttachment(attachment);
