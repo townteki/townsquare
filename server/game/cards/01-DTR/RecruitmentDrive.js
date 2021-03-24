@@ -20,10 +20,10 @@ class RecruitmentDrive extends ActionCard {
                             player: context.leader.owner,
                             numToSelect: 1,
                             cancelMessage:(context) =>
-                                this.game.addMessage('{0} searches their discard pile and found nothing', context.leader.owner, this),
+                                this.game.addMessage('{0} searches their discard pile and finds nothing', context.leader.owner, this),
                             handler: (card) => {
                                 this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(5), context.leader.owner, card);
-                                this.game.addMessage('{0} searches their discard pile and found {1}.', context.leader.owner, card);
+                                this.game.addMessage('{0} searches their discard pile and finds {1}.', context.leader.owner, card);
                             }
                         }), context
                 );                
