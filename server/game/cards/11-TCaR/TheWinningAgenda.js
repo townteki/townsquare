@@ -20,12 +20,14 @@ class TheWinningAgenda extends ActionCard {
                 if(discardAmount > 3) {
                     discardAmount = 3;
                 }
-                context.player.discardFromHand(discardAmount, () => true, { title: this.title, 
-                    activePromptTitle: 'Select ' + discardAmount + ' cards to discard', 
-                    waitingPromptTitle: 'Waiting for opponent to discard ' + discardAmount + ' cards' });
-                context.player.drawCardsToHand(discardAmount).thenExecute(() => { 
+                context.player.redrawFromHand(discardAmount, () => { 
                     this.game.addMessage('{0} uses {1} and {2}\'s influence to discard {3} cards and then draw {3} cards', 
                         context.player, this, context.target, discardAmount);
+                }, { 
+                    title: this.title, 
+                    activePromptTitle: 'Select exactly ' + discardAmount + ' cards to discard', 
+                    waitingPromptTitle: 'Waiting for opponent to discard ' + discardAmount + ' cards',
+                    discardExactly: true 
                 });
             }
         });

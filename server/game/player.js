@@ -348,20 +348,33 @@ class Player extends Spectator {
     }
 
     discardFromHand(number = 1, callback = () => true, options = {}) {
+        let defaultOptions = {
+            discardExactly: false
+        };
+        let updatedOptions = Object.assign(defaultOptions, options);
         this.game.promptForSelect(this, {
-            promptTitle: options.title,
+            promptTitle: updatedOptions.title,
             numCards: number,
             multiSelect: true,
-            activePromptTitle: options.activePromptTitle || 'Select a card to discard',
-            waitingPromptTitle: options.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
+            activePromptTitle: updatedOptions.activePromptTitle || 'Select a card to discard',
+            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
             cardCondition: card => card.location === 'hand' && card.controller === this,
             onSelect: (p, cards) => {
+                if(updatedOptions.discardExactly && cards.length !== number) {
+                    return false;
+                }
                 this.discardCards(cards, false, discarded => {
                     callback(discarded);
-                }, options);
+                }, updatedOptions);
                 return true;
             }
         }); 
+    }
+
+    redrawFromHand(number = 1, callback = () => true, options = {}) {
+        this.discardFromHand(number, discardedCards => {
+            this.drawCardsToHand(discardedCards.length).thenExecute(event => callback(event));            
+        }, options);
     }
 
     moveFromTopToBottomOfDrawDeck(number) {
