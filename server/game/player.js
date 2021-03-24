@@ -782,7 +782,9 @@ class Player extends Spectator {
             this.game.promptForSelect(this, {
                 activePromptTitle: 'Select a Mad Scientist to invent ' + gadget.title,
                 waitingPromptTitle: 'Waiting for opponent to select Mad Scientist',
-                cardCondition: card => card.location === 'play area' && card.hasKeyword('mad scientist') && !card.booted,
+                cardCondition: card => card.location === 'play area' && !card.booted && 
+                    card.hasKeyword('mad scientist') && 
+                    card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
                     this.bootCard(card, 'inventing');

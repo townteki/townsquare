@@ -773,6 +773,10 @@ class BaseCard {
         return this.game.findLocation(this.gamelocation);
     }
 
+    isInControlledLocation() {
+        return this.locationCard && this.locationCard.controller === this.controller;
+    }
+
     isInSameLocation(card) {
         let thisLocation = this.getGameLocation();
         let cardLocation = card.getGameLocation();
