@@ -18,7 +18,7 @@ class CustomPlayAction extends PlayTypeAbility {
     }
 
     isAction() {
-        return false;
+        return true;
     }
 
     isCardAbility() {
