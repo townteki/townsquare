@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/112/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/116/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -39,7 +39,7 @@
 |:heavy_check_mark:   | 01025| Irving Patterson
 |                     | 01026| Prof. Eustace True
 |                     | 01027| Elander Boldman
-|                     | 01028| James Ghetty
+|:heavy_check_mark:   | 01028| James Ghetty
 |                     | 01029| Jon Longstride
 |:heavy_check_mark:   | 01030| Lane Healey
 |                     | 01031| Jarrett Blake
@@ -100,9 +100,9 @@
 |:heavy_check_mark:   | 01086| Mustang
 |:heavy_check_mark:   | 01087| Pearl-Handled Revolver
 |                     | 01088| Roan
-|                     | 01089| Auto-Revolver
+|:heavy_check_mark:   | 01089| Auto-Revolver
 |:heavy_check_mark:   | 01090| Pinto
-|                     | 01091| Flame-Thrower
+|:heavy_check_mark:   | 01091| Flame-Thrower
 |                     | 01092| Force Field
 |:heavy_check_mark:   | 01093| Quickdraw Handgun
 |                     | 01094| Mechanical Horse
@@ -752,7 +752,7 @@
 |                     | 19042| You Had ONE Job!
 |                     | 19043| Friends in High Places
 |                     | 19044| Shan Fan Showdown!
-|                     | 19045| The Winning Agenda
+|:heavy_check_mark:   | 19045| The Winning Agenda
 
 ## `12-2T2D` Too Tough to Die
 

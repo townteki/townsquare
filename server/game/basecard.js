@@ -174,7 +174,7 @@ class BaseCard {
      * play area.
      */
     playAction(properties) {
-        this.abilities.playActions.push(new CustomPlayAction(properties));
+        this.abilities.playActions.push(new CustomPlayAction(this.game, properties));
     }
 
     /**
@@ -645,6 +645,13 @@ class BaseCard {
         return this.tokens[Tokens.ghostrock] || 0;
     }
 
+    set ghostrock(amount) {
+        this.tokens[Tokens.ghostrock] = amount;
+        if(this.tokens[Tokens.ghostrock] === 0) {
+            delete this.tokens[Tokens.ghostrock];
+        }
+    }
+
     modifyGhostRock(amount) {
         this.modifyToken(Tokens.ghostrock, amount);
     }
@@ -764,6 +771,10 @@ class BaseCard {
             return;
         }
         return this.game.findLocation(this.gamelocation);
+    }
+
+    isInControlledLocation() {
+        return this.locationCard && this.locationCard.controller === this.controller;
     }
 
     isInSameLocation(card) {
