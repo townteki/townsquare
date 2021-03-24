@@ -120,7 +120,7 @@ class DrawHandPrompt extends UiPrompt {
             return false;
         }
         if(arg === 'redraw') {
-            let numberToRedraw = this.selectedCards.length;
+            let numberToRedraw = this.selectedCards.length + player.redrawBonus;
             player.discardCards(this.selectedCards);
             player.drawCardsToHand(numberToRedraw, 'draw hand');
             this.getDrawCount(player).handRedrawn = true;

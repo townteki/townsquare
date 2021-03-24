@@ -6,9 +6,7 @@ class JamesGhetty extends DudeCard {
             condition: () => this.game.shootout,
             match: this,
             effect: ability.effects.canSpendGhostRock(spendParams =>
-                spendParams.activePlayer === this.controller &&
-                spendParams.context && spendParams.context.ability &&
-                (spendParams.context.ability.playType === 'shootout' || spendParams.context.ability.playType === 'shootout:join')
+                spendParams.activePlayer === this.controller && this.isShootoutAbility(spendParams)
             )
         });
         this.traitReaction({
@@ -20,6 +18,13 @@ class JamesGhetty extends DudeCard {
                 this.game.onceConditional('onShootoutPhaseFinished', {}, () => this.ghostrock = 0);
             }
         }); 
+    }
+
+    isShootoutAbility(spendParams) {
+        if(!spendParams.context || !spendParams.context.ability) {
+            return false;
+        }
+        return spendParams.context.ability.playTypePlayed() === 'shootout';
     }
 }
 

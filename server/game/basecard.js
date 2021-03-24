@@ -174,7 +174,7 @@ class BaseCard {
      * play area.
      */
     playAction(properties) {
-        this.abilities.playActions.push(new CustomPlayAction(properties));
+        this.abilities.playActions.push(new CustomPlayAction(this.game, properties));
     }
 
     /**

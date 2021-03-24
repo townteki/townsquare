@@ -1,12 +1,12 @@
-const BaseAbility = require('../baseability');
+const PlayTypeAbility = require('../playTypeAbility');
 
-class CustomPlayAction extends BaseAbility {
-    constructor(properties) {
+class CustomPlayAction extends PlayTypeAbility {
+    constructor(game, properties) {
         super(properties);
+        this.game = game;
         this.condition = properties.condition || (() => true);
         this.handler = properties.handler;
         this.title = properties.title;
-        this.playType = properties.playType;
     }
 
     meetsRequirements(context) {
@@ -17,8 +17,10 @@ class CustomPlayAction extends BaseAbility {
         this.handler(context);
     }
 
-    //This classification might need to be reviewed in the future, but with Lady-in-Waiting being the
-    //only card making use of this functionality currently, it fits.
+    isAction() {
+        return false;
+    }
+
     isCardAbility() {
         return false;
     }
