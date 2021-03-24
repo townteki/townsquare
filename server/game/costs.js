@@ -191,14 +191,19 @@ const Costs = {
                     return true;
                 }
                 let reducedCost = context.player.getReducedCost(playingType, context.source);
-                return context.player.getSpendableGhostRock({ playingType: playingType }) >= reducedCost;
+                return context.player.getSpendableGhostRock({ playingType: playingType, context: context }) >= reducedCost;
             },
             pay: function(context) {
                 if(context.cardToUpgrade) {
                     return;
                 }
                 context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
-                context.game.spendGhostRock({ amount: context.costs.ghostrock, player: context.player, playingType: playingType });
+                context.game.spendGhostRock({ 
+                    amount: context.costs.ghostrock, 
+                    player: context.player, 
+                    playingType: playingType, 
+                    context: context 
+                });
                 context.player.markUsedReducers(playingType, context.source);
             }
         };
@@ -209,10 +214,20 @@ const Costs = {
     payGhostRock: function(amount) {
         return {
             canPay: function(context) {
-                return context.player.getSpendableGhostRock({ player: context.player, playingType: 'ability', source: context.source }) >= amount;
+                return context.player.getSpendableGhostRock({ 
+                    player: context.player, 
+                    playingType: 'ability', 
+                    source: context.source,
+                    context: context
+                }) >= amount;
             },
             pay: function(context) {
-                context.game.spendGhostRock({ amount: amount, player: context.player, source: context.source });
+                context.game.spendGhostRock({ 
+                    amount: amount, 
+                    player: context.player, 
+                    source: context.source, 
+                    context: context 
+                });
             }
         };
     },
@@ -228,17 +243,18 @@ const Costs = {
                 let opponentObj = opponentFunc && opponentFunc(context);
 
                 if(!opponentObj) {
-                    return context.player.getSpendableGhostRock() >= (minFunc(context) - reduction);
+                    return context.player.getSpendableGhostRock({ playingType: 'play', context: context }) >= (minFunc(context) - reduction);
                 }
-                return opponentObj.getSpendableGhostRock() >= (minFunc(context) - reduction);
+                return opponentObj.getSpendableGhostRock({ playingType: 'play', context: context }) >= (minFunc(context) - reduction);
             },
             resolve: function(context, result = { resolved: false }) {
                 let reduction = context.player.getCostReduction('play', context.source);
                 let opponentObj = opponentFunc && opponentFunc(context);
-                let ghostrock = opponentObj ? opponentObj.getSpendableGhostRock({ playingType: 'play' }) : context.player.getSpendableGhostRock({ playingType: 'play' });
+                let player = opponentObj || context.player;
+                let ghostrock = player.getSpendableGhostRock({ playingType: 'play', context: context });
                 let max = Math.min(maxFunc(context), ghostrock + reduction);
 
-                context.game.queueStep(new XValuePrompt(minFunc(context), max, context, 'Select GR payment', reduction));
+                context.game.queueStep(new XValuePrompt(minFunc(context), max, context, reduction, 'Select GR payment'));
 
                 result.value = true;
                 result.resolved = true;
@@ -246,11 +262,13 @@ const Costs = {
             },
             pay: function(context) {
                 let opponentObj = opponentFunc && opponentFunc(context);
-                if(!opponentObj) {
-                    context.game.spendGhostRock({ player: context.player, amount: context.grCost, playingType: 'play' });
-                } else {
-                    context.game.spendGhostRock({ player: opponentObj, amount: context.grCost, playingType: 'play' });
-                }
+                let player = opponentObj || context.player;
+                context.game.spendGhostRock({ 
+                    player: player, 
+                    amount: context.grCost, 
+                    playingType: 'play', 
+                    context: context 
+                });
                 context.player.markUsedReducers('play', context.source);
             }
         };

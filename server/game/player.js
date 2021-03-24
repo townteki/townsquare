@@ -51,6 +51,7 @@ class Player extends Spectator {
         this.handSize = StartingHandSize;
         this.discardNumber = StartingDiscardNumber;
         this.costReducers = [];
+        this.redrawBonus = 0;
         this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;        
@@ -553,7 +554,7 @@ class Player extends Spectator {
         return card.isUnique() && this.deadPile.some(c => c.title === card.title);
     }
 
-    playCard(card) {
+    playCard(card, arg) {
         if(!card) {
             return false;
         }
@@ -566,7 +567,7 @@ class Player extends Spectator {
             source: card,
             cardToUpgrade: cardToUpgrade
         });
-        var playActions = card.getPlayActions().filter(action => action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
+        var playActions = card.getPlayActions(arg).filter(action => action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
 
         if(playActions.length === 0) {
             return false;
@@ -794,7 +795,9 @@ class Player extends Spectator {
             this.game.promptForSelect(this, {
                 activePromptTitle: 'Select a Mad Scientist to invent ' + gadget.title,
                 waitingPromptTitle: 'Waiting for opponent to select Mad Scientist',
-                cardCondition: card => card.hasKeyword('mad scientist') && !card.booted,
+                cardCondition: card => card.location === 'play area' && !card.booted && 
+                    card.hasKeyword('mad scientist') && 
+                    card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
                     this.bootCard(card, 'inventing');
