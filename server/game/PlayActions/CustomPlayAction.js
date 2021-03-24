@@ -6,6 +6,7 @@ class CustomPlayAction extends BaseAbility {
         this.condition = properties.condition || (() => true);
         this.handler = properties.handler;
         this.title = properties.title;
+        this.playType = properties.playType;
     }
 
     meetsRequirements(context) {

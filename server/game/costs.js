@@ -191,14 +191,14 @@ const Costs = {
                     return true;
                 }
                 let reducedCost = context.player.getReducedCost(playingType, context.source);
-                return context.player.getSpendableGhostRock({ playingType: playingType }) >= reducedCost;
+                return context.player.getSpendableGhostRock({ playingType: playingType, context: context }) >= reducedCost;
             },
             pay: function(context) {
                 if(context.cardToUpgrade) {
                     return;
                 }
                 context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
-                context.game.spendGhostRock({ amount: context.costs.ghostrock, player: context.player, playingType: playingType });
+                context.game.spendGhostRock({ amount: context.costs.ghostrock, player: context.player, playingType: playingType, context: context });
                 context.player.markUsedReducers(playingType, context.source);
             }
         };
