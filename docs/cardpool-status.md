@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/115/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/116/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -752,7 +752,7 @@
 |                     | 19042| You Had ONE Job!
 |                     | 19043| Friends in High Places
 |                     | 19044| Shan Fan Showdown!
-|                     | 19045| The Winning Agenda
+|:heavy_check_mark:   | 19045| The Winning Agenda
 
 ## `12-2T2D` Too Tough to Die
 
