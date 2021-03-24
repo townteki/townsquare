@@ -13,7 +13,7 @@ class GhostRockSource {
             return `${this.playerOrCard.name}'s stash`;
         }
 
-        return this.playerOrCard.name;
+        return this.playerOrCard.title;
     }
 
     allowSpendingFor(spendParams) {

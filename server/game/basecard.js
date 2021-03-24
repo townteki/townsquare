@@ -647,6 +647,9 @@ class BaseCard {
 
     set ghostrock(amount) {
         this.tokens[Tokens.ghostrock] = amount;
+        if(this.tokens[Tokens.ghostrock] === 0) {
+            delete this.tokens[Tokens.ghostrock];
+        }
     }
 
     modifyGhostRock(amount) {

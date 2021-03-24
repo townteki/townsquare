@@ -7,7 +7,7 @@ class AutoRevolver extends GoodsCard {
             effect: ability.effects.modifyBullets(this.bullets)
         });
         this.persistentEffect({
-            condition: () => this.parent.isParticipating(),
+            condition: () => this.parent && this.parent.isParticipating(),
             match: this.controller,
             effect: [
                 ability.effects.addRedrawBonus(1)
