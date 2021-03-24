@@ -837,7 +837,9 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        attachment.owner.removeCardFromPile(attachment);
+        if(playingType !== 'trading') {
+            attachment.owner.removeCardFromPile(attachment);
+        }
 
         if(originalParent) {
             originalParent.removeAttachment(attachment);
@@ -1015,6 +1017,15 @@ class Player extends Spectator {
     modifyRank(amount) {
         this.rankModifier += amount;
         this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+    }
+
+    modifyPosseStudBonus(amount) {
+        if(this.game.shootout) {
+            let playerPosse = this.game.shootout.getPosseByPlayer(this);
+            if(playerPosse) {
+                playerPosse.studBonus += amount;
+            }
+        }
     }
 
     addCasualties(number) {
