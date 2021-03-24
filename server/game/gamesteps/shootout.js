@@ -28,6 +28,7 @@ class Shootout extends Phase {
             this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
         }
 
+        this.loserCasualtiesMod = 0;
         this.jobSuccessful = null;
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
@@ -357,6 +358,7 @@ class Shootout extends Phase {
             this.loser.casualties = Math.abs(leaderRank - opposingRank);
             this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', this.winner, Math.abs(leaderRank - opposingRank));
         }
+        this.loser.casualties += this.loserCasualtiesMod;
         this.shootoutLoseWinOrder = [this.loser.name, this.winner.name];
     }
 
@@ -389,6 +391,10 @@ class Shootout extends Phase {
         if(!this.leaderPosse || this.leaderPosse.isEmpty()) {
             this.jobSuccessful = false;
         }
+    }
+
+    getGameElementType() {
+        return 'shootout';
     }
 }
 

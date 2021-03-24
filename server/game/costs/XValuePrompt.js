@@ -3,9 +3,9 @@ const range = require('lodash.range');
 const BaseStep = require('../gamesteps/basestep');
 
 class XValuePrompt extends BaseStep {
-    constructor(min, max, context, reduction = 0) {
+    constructor(min, max, context, reduction = 0, title = 'Select value of X') {
         super();
-
+        this.title = title;
         this.min = min;
         this.max = max;
         this.context = context;
@@ -26,7 +26,7 @@ class XValuePrompt extends BaseStep {
 
         this.context.game.promptWithMenu(this.context.player, this, {
             activePrompt: {
-                menuTitle: 'Select value of X',
+                menuTitle: this.title,
                 buttons: buttons
             },
             source: this.context.source
@@ -35,7 +35,7 @@ class XValuePrompt extends BaseStep {
 
     resolveCost(player, xValue) {
         this.context.xValue = xValue;
-        this.context.goldCost = Math.max(xValue - this.reduction, 0);
+        this.context.grCost = Math.max(xValue - this.reduction, 0);
 
         return true;
     }
