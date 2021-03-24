@@ -298,6 +298,10 @@ class DrawCard extends BaseCard {
         super.leavesPlay();
     }
 
+    isSelectedAsFirstCasualty() {
+        return this.shootoutOptions.contains('isSelectedAsFirstCasualty');
+    }
+
     canBeAced() {
         return this.allowGameAction('ace');
     }

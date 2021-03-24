@@ -778,6 +778,9 @@ const Effects = {
             }
         };
     },
+    selectAsFirstCasualty: function() {
+        return shootoutOptionEffect('isSelectedAsFirstCasualty')();
+    },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {

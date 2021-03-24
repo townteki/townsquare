@@ -93,6 +93,11 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         return true;
     }
 
+    findFirstCasualties(player) {
+        let posse = this.shootout.getPosseByPlayer(player);
+        return posse.getDudes(dude => dude.isSelectedAsFirstCasualty());
+    }
+
     done() {
         if(this.currentPlayer.casualties > 0) {
             this.game.addAlert('danger', '{0} ends `Take Yer Lumps` step with {1} casualties remaining!', this.currentPlayer, this.currentPlayer.casualties);
