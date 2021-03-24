@@ -756,6 +756,17 @@ const Effects = {
             }
         };
     },
+    addRedrawBonus: function(amount) {
+        return {
+            targetType: 'player',
+            apply: function(player) {
+                player.redrawBonus += amount;
+            },
+            unapply: function(player) {
+                player.redrawBonus -= amount;
+            }
+        };
+    },
     modifyLoserCasualties: function(amount) {
         return {
             targetType: 'shootout',
@@ -773,11 +784,11 @@ const Effects = {
                 let ghostrockSource = new GhostRockSource(card, allowSpendingFunc);
                 context.canSpendGhostRock = context.canSpendGhostRock || {};
                 context.canSpendGhostRock[card.uuid] = ghostrockSource;
-                card.controller.addGoldSource(ghostrockSource);
+                card.controller.addGhostRockSource(ghostrockSource);
             },
             unapply: function(card, context) {
                 let ghostrockSource = context.canSpendGhostRock[card.uuid];
-                card.controller.removeGoldSource(ghostrockSource);
+                card.controller.removeGhostRockSource(ghostrockSource);
                 delete context.canSpendGhostRock[card.uuid];
             }
         };
