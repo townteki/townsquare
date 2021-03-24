@@ -8,7 +8,10 @@ class TheWinningAgenda extends ActionCard {
             target : {
                 activePromptTitle: 'Select a dude',
                 waitingPromptTitle: 'Waiting for opponent to select a dude',
-                cardCondition: { location: 'play area', condition: card => card.influence <= this.controller.hand.length },
+                cardCondition: { 
+                    location: 'play area', 
+                    condition: card => this.controller.hand.length >= 3 || card.influence <= this.controller.hand.length 
+                },
                 cardType: 'dude'
             },
             handler: context => {
