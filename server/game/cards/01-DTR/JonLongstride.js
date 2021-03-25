@@ -8,11 +8,13 @@ class JonLongstride extends DudeCard {
             target: {
                 activePromptTitle: 'Choose horse',
                 cardCondition: { location: 'play area', condition: card => card.parent === this && card.hasKeyword('Horse') && card.booted },
-                cardType: ['goods']
+                cardType: ['goods'],
+                autoSelect: true
             },
             message: context =>
                 this.game.addMessage('{0} uses {1}\'s ability to unboot {1}\'s Horse', context.player, this),
             handler: (context) => {
+                context.target.resetAbilities();
                 this.controller.unbootCard(context.target);
             }
         });
