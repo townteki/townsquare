@@ -23,6 +23,9 @@ class PutIntoPlayCardAction extends BaseAbility {
     }
 
     meetsRequirements(context) {
+        if(!super.meetsRequirements(context)) {
+            return false;
+        }
         var { player, source } = context;
 
         return (

@@ -36,10 +36,15 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     }
 
     coverCasualty(player, arg) {
+        let firstCasualties = this.findFirstCasualties(player);
+        if(firstCasualties.length > 1) {
+            firstCasualties = [firstCasualties[0]];
+        } 
         let title = 'Select card to ' + arg + ' to cover casualties';
         this.game.promptForSelect(player, {
             activePromptTitle: title,
             numCards: 1,
+            mustSelect: firstCasualties,
             cardCondition: card => card.controller === player && 
                 card.location === 'play area' &&
                 this.shootout.isInShootout(card) &&

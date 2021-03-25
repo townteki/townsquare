@@ -11,7 +11,7 @@ class PinnedDown extends ActionCard {
                 cardCondition: { location: 'play area', controller: 'any', participating: true },
                 cardType: ['dude']
             },
-            message: context => this.game.addMessage('{0} uses {1} to suppress {2}', context.player, this),
+            message: context => this.game.addMessage('{0} uses {1} to suppress {2}', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,

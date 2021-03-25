@@ -197,6 +197,19 @@ const Effects = {
             }
         };
     },
+    setBullets: function(value) {
+        let changeAmount = 0;
+        return {
+            gameAction: 'setBullets',
+            apply: function(card) {
+                changeAmount = value - card.bullets;
+                card.modifyBullets(changeAmount, true);
+            },
+            unapply: function(card) {
+                card.modifyBullets(changeAmount * -1);
+            }
+        };
+    },
     modifyInfluence: function(value) {
         return {
             gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
@@ -480,12 +493,12 @@ const Effects = {
             }
         };
     },
-    blankExcludingTraits: {
+    blankExcludingKeywords: {
         apply: function(card) {
-            card.setBlank('excludingTraits');
+            card.setBlank('excludingKeywords');
         },
         unapply: function(card) {
-            card.clearBlank('excludingTraits');
+            card.clearBlank('excludingKeywords');
         }
     },
     fullBlank: {
@@ -712,7 +725,7 @@ const Effects = {
             }
         };
     },
-    cannotTriggerCardAbilities: function(restriction = () => true) {
+    cannotTriggerPlayerAbilities: function(restriction = () => true) {
         return {
             targetType: 'player',
             apply: function(player) {
@@ -720,6 +733,16 @@ const Effects = {
             },
             unapply: function(player) {
                 player.triggerRestrictions = player.triggerRestrictions.filter(r => r !== restriction);
+            }
+        };
+    },
+    cannotTriggerCardAbilities: function(abilityFunc = () => true) {
+        return {
+            apply: function(card) {
+                card.updateAbilitiesBlanking(abilityFunc, true);
+            },
+            unapply: function(card) {
+                card.updateAbilitiesBlanking(abilityFunc, false);
             }
         };
     },

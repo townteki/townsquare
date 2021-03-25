@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
@@ -10,7 +9,7 @@ class DrawCard extends BaseCard {
     constructor(owner, cardData) {
         super(owner, cardData);
 
-        this.attachments = _([]);
+        this.attachments = [];
 
         this.booted = false;
         this.minCost = 0;
@@ -92,7 +91,8 @@ class DrawCard extends BaseCard {
                     menu = menu.concat({ method: 'playCard', text: 'Shoppin\' play', arg: 'shoppin' });
                 }
                 if(this.abilities.playActions.length > 0) {
-                    menu = menu.concat({ method: 'playCard', text: 'Play action', arg: 'play' });
+                    let isEnabled = this.abilities.playActions.some(playAction => playAction.meetsRequirements(playAction.createContext(player)));
+                    menu = menu.concat({ method: 'playCard', text: 'Play action', arg: 'play', disabled: !isEnabled });
                 }
                 return menu.concat(discardItem);
             default:
@@ -211,9 +211,9 @@ class DrawCard extends BaseCard {
         });
     }
 
-    clearBlank() {
-        super.clearBlank();
-        this.attachments.each(attachment => {
+    clearBlank(type) {
+        super.clearBlank(type);
+        this.attachments.forEach(attachment => {
             if(!this.canAttach(this.controller, attachment)) {
                 this.controller.discardCard(attachment, false);
             }
@@ -243,7 +243,7 @@ class DrawCard extends BaseCard {
     }
 
     hasAttachment(condition = () => true, forTrading = false) {
-        if(this.attachments.isEmpty()) {
+        if(this.attachments.length === 0) {
             return false;
         }
         let attsFitCondition = this.attachments.filter(attachment => condition(attachment));
@@ -274,7 +274,7 @@ class DrawCard extends BaseCard {
             return;
         }
 
-        this.attachments = _(this.attachments.reject(a => a === attachment));
+        this.attachments = this.attachments.filter(a => a !== attachment);
         attachment.parent = undefined;
     }
 
@@ -289,7 +289,7 @@ class DrawCard extends BaseCard {
     leavesPlay() {
         this.booted = false;
         this.control = 0;
-        this.attachments.each(attachment => {
+        this.attachments.forEach(attachment => {
             attachment.controller.moveCard(attachment, 'discard pile', { raiseEvents: false });
         });
         if(this.parent) {
