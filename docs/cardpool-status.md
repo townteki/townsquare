@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/117/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/118/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -40,7 +40,7 @@
 |                     | 01026| Prof. Eustace True
 |                     | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
-|                     | 01029| Jon Longstride
+|:heavy_check_mark:   | 01029| Jon Longstride
 |:heavy_check_mark:   | 01030| Lane Healey
 |                     | 01031| Jarrett Blake
 |                     | 01032| Harold Aimslee
