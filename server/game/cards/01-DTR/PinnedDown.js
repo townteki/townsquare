@@ -19,7 +19,7 @@ class PinnedDown extends ActionCard {
                         ability.effects.selectAsFirstCasualty()
                     ]
                 }));
-                this.game.on('onShooterPicked', event => {
+                let eventHandler = event => {
                     if(event.card === context.target) {
                         this.applyAbilityEffect(context.ability, ability => ({
                             match: context.target,
@@ -28,7 +28,9 @@ class PinnedDown extends ActionCard {
                             ]
                         }));
                     }
-                });
+                };
+                this.game.on('onShooterPicked', eventHandler);
+                this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onShooterPicked', eventHandler));
             }
         });
     }
