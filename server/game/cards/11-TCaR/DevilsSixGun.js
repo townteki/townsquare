@@ -35,7 +35,7 @@ class DevilsSixGun extends GoodsCard {
                 );
                 this.game.promptForSelect(context.player, {
                     activePromptTitle: 'Select a card from your draw hand to discard',
-                    waitingPromptTitle: 'Waiting for ' + context.player + ' to discard a card from their draw hand',
+                    waitingPromptTitle: 'Waiting for opponent to discard a card from their draw hand',
                     cardCondition: { location: 'draw hand' },
                     onSelect: (player, cardToDiscard) => {
                         this.game.resolveGameAction(GameActions.discardCard({card: cardToDiscard}, context)).thenExecute(() => {
