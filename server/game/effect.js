@@ -81,7 +81,7 @@ class Effect {
     }
 
     isInActiveLocation() {
-        return ['any', this.source.location].includes(this.location);
+        return ['any', 'outfit', 'legend', this.source.location].includes(this.location);
     }
 
     hasEnded() {

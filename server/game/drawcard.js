@@ -80,7 +80,6 @@ class DrawCard extends BaseCard {
             menu = [];
         }
         let discardItem = { method: 'discard', text: 'Discard' };
-        let playItem = { method: 'playCard', text: 'Shoppin\' play' };
 
         switch(this.location) {
             case 'draw hand':
@@ -89,7 +88,13 @@ class DrawCard extends BaseCard {
                 if(this.getType() === 'action') {
                     return menu.concat(discardItem);
                 }
-                return menu.concat(discardItem).concat(playItem);
+                if(this.game.currentPhase === 'high noon') {
+                    menu = menu.concat({ method: 'playCard', text: 'Shoppin\' play', arg: 'shoppin' });
+                }
+                if(this.abilities.playActions.length > 0) {
+                    menu = menu.concat({ method: 'playCard', text: 'Play action', arg: 'play' });
+                }
+                return menu.concat(discardItem);
             default:
                 return menu;
         }
@@ -99,8 +104,8 @@ class DrawCard extends BaseCard {
         player.discardCard(this);
     }
 
-    playCard(player) {
-        player.playCard(this);
+    playCard(player, arg) {
+        player.playCard(this, arg);
     }
 
     hasPrintedCost() {
@@ -273,9 +278,11 @@ class DrawCard extends BaseCard {
         attachment.parent = undefined;
     }
 
-    getPlayActions() {
-        return [StandardActions.shoppin()]
-            .concat(this.abilities.playActions)
+    getPlayActions(type) {
+        if(type === 'shoppin') {
+            return [StandardActions.shoppin()];
+        }
+        return this.abilities.playActions
             .concat(this.abilities.actions.filter(action => !action.allowMenu()));
     }
 

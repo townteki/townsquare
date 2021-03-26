@@ -1,17 +1,17 @@
 const AbilityContext = require('./AbilityContext.js');
 const AbilityUsage = require('./abilityusage.js');
-const BaseAbility = require('./baseability.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
+const PlayTypeAbility = require('./playTypeAbility.js');
 
-const ActionPlayTypes = ['any', 'noon', 'shootout', 'shootout:join', 'resolution', 'cheatin resolution'];
 const AllowedTypesForPhase = {
     'high noon': ['noon'],
     'shootout plays': ['shootout', 'shootout:join'],
     'shootout resolution': ['resolution', 'cheatin resolution'],
     'gambling': ['cheatin resolution']
 };
+const CardTypesForShootout = ['dude', 'goods', 'spell'];
 
 /**
  * Represents an action ability provided by card text.
@@ -36,13 +36,12 @@ const AllowedTypesForPhase = {
  * clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
  */
-class CardAction extends BaseAbility {
+class CardAction extends PlayTypeAbility {
     constructor(game, card, properties, isJob = false) {
         super(properties);
         this.game = game;
         this.card = card;
         this.title = properties.title;
-        this.playType = this.buildPlayType(properties);
         if(this.isCardAbility()) {
             this.usage = new AbilityUsage(properties, this.playType);
         }
@@ -76,44 +75,11 @@ class CardAction extends BaseAbility {
         }
     }
 
-    buildPlayType(properties) {
-        if(!properties.playType) {
-            return 'any';
-        }
-        let result = properties.playType;
-        if(!Array.isArray(properties.playType)) {
-            result = [properties.playType];
-        }
-        let errorType = result.find(type => !ActionPlayTypes.includes(type));
-        if(errorType) {
-            throw new Error(`'${errorType}' is not a valid 'playType' property`);
-        }
-
-        return result;
-    }
-
-    playTypePlayed() {
-        if(this.playType.includes('noon') && this.game.getCurrentPlayWindowName() === 'high noon') {
-            return 'noon';
-        } 
-        if(this.playType.includes('shootout') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
-            return 'shootout';
-        } 
-        if(this.playType.includes('resolution') && this.game.getCurrentPlayWindowName() === 'shootout resolution') {
-            return 'resolution';
-        } 
-        if(this.playType.includes('cheatin resolution') && 
-            (this.game.getCurrentPlayWindowName() === 'shootout resolution' || this.game.getCurrentPlayWindowName() === 'gambling')) {
-            return 'cheatin resolution';
-        } 
-    }
-
     defaultCondition() {
         if(this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
         }
-        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') &&
-            this.card.getType() !== 'action' && this.card.getType() !== 'deed') {
+        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') && CardTypesForShootout.includes(this.card.getType())) {
             return this.game.shootout.isInShootout(this.card);
         }
         return true;

@@ -136,14 +136,15 @@ const Effects = {
             }
         };
     },
-    setSetupGold: function(value) {
+    setMaxBullets: function(value) {
+        let previousMaxBullets = null;
         return {
-            targetType: 'player',
-            apply: function(player) {
-                player.setupGold = value;
+            apply: function(card) {
+                previousMaxBullets = card.maxBullets;
+                card.maxBullets = value;
             },
-            unapply: function(player) {
-                player.setupGold = 8;
+            unapply: function(card) {
+                card.maxBullets = previousMaxBullets;
             }
         };
     },
@@ -277,7 +278,7 @@ const Effects = {
             }
         };
     },
-    modifySkillRating: function(value, type) {
+    modifySkillRating: function(type, value) {
         return {
             gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
             apply: function(card) {
@@ -744,17 +745,50 @@ const Effects = {
             }
         };
     },
+    modifyPosseStudBonus: function(amount) {
+        return {
+            targetType: 'player',
+            apply: function(player) {
+                player.modifyPosseStudBonus(amount);
+            },
+            unapply: function(player) {
+                player.modifyPosseStudBonus(-amount);
+            }
+        };
+    },
+    addRedrawBonus: function(amount) {
+        return {
+            targetType: 'player',
+            apply: function(player) {
+                player.redrawBonus += amount;
+            },
+            unapply: function(player) {
+                player.redrawBonus -= amount;
+            }
+        };
+    },
+    modifyLoserCasualties: function(amount) {
+        return {
+            targetType: 'shootout',
+            apply: function(shootout) {
+                shootout.loserCasualtiesMod += amount;
+            },
+            unapply: function(shootout) {
+                shootout.loserCasualtiesMod -= amount;
+            }
+        };
+    },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {
                 let ghostrockSource = new GhostRockSource(card, allowSpendingFunc);
                 context.canSpendGhostRock = context.canSpendGhostRock || {};
                 context.canSpendGhostRock[card.uuid] = ghostrockSource;
-                card.controller.addGoldSource(ghostrockSource);
+                card.controller.addGhostRockSource(ghostrockSource);
             },
             unapply: function(card, context) {
                 let ghostrockSource = context.canSpendGhostRock[card.uuid];
-                card.controller.removeGoldSource(ghostrockSource);
+                card.controller.removeGhostRockSource(ghostrockSource);
                 delete context.canSpendGhostRock[card.uuid];
             }
         };
