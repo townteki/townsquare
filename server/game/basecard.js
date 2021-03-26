@@ -174,7 +174,7 @@ class BaseCard {
      * play area.
      */
     playAction(properties) {
-        this.abilities.playActions.push(new CustomPlayAction(this.game, properties));
+        this.abilities.playActions.push(new CustomPlayAction(this.game, this, properties));
     }
 
     /**
@@ -199,6 +199,14 @@ class BaseCard {
     resetAbilities() {
         this.abilities.reactions.forEach(reaction => reaction.resetAbilityUsage());
         this.abilities.actions.forEach(action => action.resetAbilityUsage());
+    }
+
+    updateAbilitiesBlanking(condition = () => true, canBeUsed = true) {
+        this.abilities.actions.forEach(ability => {
+            if(condition(ability)) {
+                ability.canBeUsed = canBeUsed;
+            }
+        });
     }
 
     applyAbilityEffect(ability, propertyFactory) {
@@ -512,15 +520,15 @@ class BaseCard {
     }
 
     isAnyBlank() {
-        return this.isFullBlank() || this.isBlankExcludingTraits();
+        return this.isFullBlank() || this.isBlankExcludingKeywords();
     }
 
     isFullBlank() {
         return this.blanks.contains('full');
     }
 
-    isBlankExcludingTraits() {
-        return this.blanks.contains('excludingTraits');
+    isBlankExcludingKeywords() {
+        return this.blanks.contains('excludingKeywords');
     }
 
     isParticipating() {
