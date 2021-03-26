@@ -126,20 +126,7 @@ class Player extends Spectator {
     }
 
     removeCardByUuid(list, uuid) {
-        let result = [];
-        for(let card of list) {
-            if(card.uuid === uuid) {
-                continue;
-            }
-            result.push(card);
-        }
-
-        return result;
-        /* TODO M2 just keeping here for reference (list.reject not working)
-        return _(list.reject(card => {
-            return card.uuid === uuid;
-        }));
-        */
+        return list.filter(card => card.uuid !== uuid);
     }
 
     addLocation(location) {
@@ -1416,6 +1403,19 @@ class Player extends Spectator {
 
     bootCard(card, playType) {
         return this.game.resolveGameAction(GameActions.bootCard({ card, playType }));
+    }
+
+    bootCards(cards, playType, callback = () => true) {
+        let action = GameActions.simultaneously(
+            cards.map(card => GameActions.bootCard({ card, playType }))
+        );
+        let event = this.game.resolveGameAction(action);
+        event.thenExecute(() => {
+            let cards = event.childEvents.map(childEvent => childEvent.card);
+            callback(cards);
+        });
+
+        return event;
     }
 
     unbootCard(card, options = {}) {

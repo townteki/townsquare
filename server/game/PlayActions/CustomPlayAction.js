@@ -1,15 +1,17 @@
 const PlayTypeAbility = require('../playTypeAbility');
 
 class CustomPlayAction extends PlayTypeAbility {
-    constructor(game, properties) {
-        super(properties);
-        this.game = game;
+    constructor(game, card, properties) {
+        super(game, card, properties);
         this.condition = properties.condition || (() => true);
         this.handler = properties.handler;
         this.title = properties.title;
     }
 
     meetsRequirements(context) {
+        if(!super.meetsRequirements(context)) {
+            return false;
+        }
         return this.condition(context);
     }
 
