@@ -35,6 +35,7 @@ class BaseAbility {
         this.cannotBeCanceled = !!properties.cannotBeCanceled;
         this.abilitySourceType = properties.abilitySourceType || 'card';
         this.gameAction = this.buildGameAction(properties);
+        this.cannotBeUsed = false;
         this.resetOptions();
     }
 
@@ -105,7 +106,7 @@ class BaseAbility {
     }
 
     meetsRequirements() {
-        return true;
+        return !this.cannotBeUsed;
     }
 
     /**

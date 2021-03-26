@@ -6,12 +6,6 @@ const EventRegistrar = require('./eventregistrar.js');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const PlayTypeAbility = require('./playTypeAbility.js');
 
-const AllowedTypesForPhase = {
-    'high noon': ['noon'],
-    'shootout plays': ['shootout', 'shootout:join'],
-    'shootout resolution': ['resolution', 'cheatin resolution'],
-    'gambling': ['cheatin resolution']
-};
 const CardTypesForShootout = ['dude', 'goods', 'spell'];
 
 /**
@@ -39,9 +33,7 @@ const CardTypesForShootout = ['dude', 'goods', 'spell'];
  */
 class CardAction extends PlayTypeAbility {
     constructor(game, card, properties, isJob = false) {
-        super(properties);
-        this.game = game;
-        this.card = card;
+        super(game, card, properties);
         this.title = properties.title;
         if(this.isCardAbility()) {
             this.usage = new AbilityUsage(properties, this.playType);
@@ -100,24 +92,9 @@ class CardAction extends PlayTypeAbility {
         return this.card.controller === player || this.anyPlayer;
     }
 
-    createContext(player) {
-        return new AbilityContext({
-            ability: this,
-            game: this.game,
-            player: player,
-            source: this.card
-        });
-    }
-
     meetsRequirements(context) {
-        if(this.playType !== 'any' && this.game.currentPlayWindow) {
-            let allowedTypes = AllowedTypesForPhase[this.game.getCurrentPlayWindowName()];
-            if(!allowedTypes) {
-                return false;
-            }
-            if(!this.playType.some(type => AllowedTypesForPhase[this.game.getCurrentPlayWindowName()].includes(type))) {
-                return false;
-            }
+        if(!super.meetsRequirements(context)) {
+            return false;
         }
 
         if(this.card.hasKeyword('headline') && this.game.shootout.headlineUsed) {

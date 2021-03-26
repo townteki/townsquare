@@ -1,5 +1,3 @@
-const _ = require('underscore');
-
 const DrawCard = require('./drawcard.js');
 const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
 const GameActions = require('./GameActions');
@@ -209,8 +207,8 @@ class DudeCard extends DrawCard {
         Object.keys(this.keywords.modifiers).forEach(keywordMod => 
             expDude.keywords.modifiers[keywordMod].modifier = this.keywords.modifiers[keywordMod].modifier);
 
-        expDude.attachments = _([]);
-        this.attachments.each(attachment => {
+        expDude.attachments = [];
+        this.attachments.forEach(attachment => {
             expDude.controller.attach(attachment, expDude, 'upgrade');
         });
 
