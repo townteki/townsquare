@@ -69,6 +69,7 @@ class Game extends EventEmitter {
         this.gameType = details.gameType;
         this.abilityContextStack = [];
         this.abilityWindowStack = [];
+        this.beforeEventHandlers = {};
         this.password = details.password;
         this.cancelPromptUsed = false;
         this.shootout = null;
@@ -914,6 +915,15 @@ class Game extends EventEmitter {
 
     hasOpenInterruptOrReactionWindow() {
         return this.abilityWindowStack.length !== 0;
+    }
+
+    before(eventName, handler, useOnce = true, condition = () => true) {
+        let beforeHandler = { handler: handler, useOnce: useOnce, condition: condition };
+        if(!this.beforeEventHandlers[eventName]) {
+            this.beforeEventHandlers[eventName] = [beforeHandler];
+        } else {
+            this.beforeEventHandlers[eventName].push(beforeHandler);
+        }
     }
 
     onceConditional(eventName, params, handler) {

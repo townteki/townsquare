@@ -41,14 +41,11 @@ class DevilsSixGun extends GoodsCard {
                                     return true;
                                 }                   
                             });
-                            let eventHandler = event => {
-                                if(event.player.drawHand.find(card => jokerCard === card)) {
-                                    event.player.moveCard(jokerCard, 'draw deck');
-                                    event.player.shuffleDrawDeck();
-                                    this.game.addMessage('{0} shuffles Joker back to the draw deck thanks to {1}', event.player, this);
-                                }
-                            };
-                            this.game.once('onBeforeDrawHandDiscarded', eventHandler);
+                            this.game.before('onDrawHandDiscarded', event => {
+                                event.player.moveCard(jokerCard, 'draw deck');
+                                event.player.shuffleDrawDeck();
+                                this.game.addMessage('{0} shuffles {1} back to the draw deck thanks to {2}', event.player, jokerCard, this);
+                            }, true, event => event.player === context.player);
                         }
                     }), {
                         game: this.game,

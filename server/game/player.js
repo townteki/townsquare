@@ -255,7 +255,7 @@ class Player extends Spectator {
     }
 
     discardDrawHand() {
-        this.game.raiseEvent('onBeforeDrawHandDiscarded', { player: this }).thenExecute(() => {
+        this.game.raiseEvent('onDrawHandDiscarded', { player: this }, () => {
             if(this.drawHandRevealed) {
                 this.drawHand.forEach(card => {
                     if(card.getType() === 'joker') {
@@ -263,7 +263,8 @@ class Player extends Spectator {
                     }
                 });
             }
-            this.discardCards(this.drawHand, discardedCards => {
+            let handToDiscard = this.drawHand.filter(card => card.getType() !== 'joker');
+            this.discardCards(handToDiscard, discardedCards => {
                 this.game.raiseEvent('onAfterDrawHandDiscarded', { discardedCards: discardedCards });
             });
             
