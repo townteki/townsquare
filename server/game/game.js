@@ -936,6 +936,7 @@ class Game extends EventEmitter {
         let event = new Event(eventName, params, handler);
 
         this.queueStep(new EventWindow(this, event, () => this.postEventCalculations()));
+        return event;
     }
 
     /**
