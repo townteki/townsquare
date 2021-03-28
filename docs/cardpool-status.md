@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/117/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/121/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -40,9 +40,9 @@
 |                     | 01026| Prof. Eustace True
 |                     | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
-|                     | 01029| Jon Longstride
+|:heavy_check_mark:   | 01029| Jon Longstride
 |:heavy_check_mark:   | 01030| Lane Healey
-|                     | 01031| Jarrett Blake
+|:heavy_check_mark:   | 01031| Jarrett Blake
 |                     | 01032| Harold Aimslee
 |                     | 01033| Rémy LaPointe
 |                     | 01034| Max Baine
@@ -135,7 +135,7 @@
 |                     | 01121| Hot Lead Flyin'
 |                     | 01122| One Good Turn…
 |:heavy_check_mark:   | 01123| Kidnappin'
-|                     | 01124| Pinned Down
+|:heavy_check_mark:   | 01124| Pinned Down
 |                     | 01125| Run 'Em Down!
 |:heavy_check_mark:   | 01126| Bounty Hunter
 |:heavy_check_mark:   | 01127| Reserves
@@ -145,7 +145,7 @@
 |                     | 01131| Magical Distraction
 |                     | 01132| Extortion
 |:heavy_check_mark:   | 01133| Recruitment Drive
-|                     | 01134| Unprepared
+|:heavy_check_mark:   | 01134| Unprepared
 |:heavy_check_mark:   | 01135| A Coach Comes to Town
 |                     | 01136| Hex Slingin'
 |:heavy_check_mark:   | 01137| This is a Holdup!
