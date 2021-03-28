@@ -23,7 +23,8 @@ class Coachwhip extends ActionCard {
                 if(action) {
                     this.game.addMessage('{0} plays {1} to {2} {3}', context.player, this, action, context.target);
                 }
-            }
+            },
+            source: this
         });
     } 
 }

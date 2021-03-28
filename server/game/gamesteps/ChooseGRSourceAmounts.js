@@ -30,7 +30,7 @@ class ChooseGRSourceAmounts extends BaseStep {
                 });
                 this.game.promptWithMenu(this.player, this, {
                     activePrompt: {
-                        menuTitle: `Select amount from ${this.currentSource.name}`,
+                        menuTitle: `Select amount from ${this.currentSource.title}`,
                         buttons: buttons
                     }
                 });

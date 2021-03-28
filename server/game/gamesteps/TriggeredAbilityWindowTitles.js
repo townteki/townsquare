@@ -1,9 +1,9 @@
 const EventToTitleFunc = {
-    onCardAbilityInitiated: event => `the effects of ${event.source.name}`,
-    onCardEntersPlay: event => `${event.card.name} entering play`,
+    onCardAbilityInitiated: event => `the effects of ${event.source.title}`,
+    onCardEntersPlay: event => `${event.card.title} entering play`,
     onPhaseEnded: event => `${event.phase} phase ending`,
     onPhaseStarted: event => `${event.phase} phase starting`,
-    onDudeJoinedPosse: event => `${event.card.name} joining posse`,
+    onDudeJoinedPosse: event => `${event.card.title} joining posse`,
     onDrawHandsRevealed: () => 'draw hands being revealed',
     onTargetsChosen: () => 'targets being chosen'
 };

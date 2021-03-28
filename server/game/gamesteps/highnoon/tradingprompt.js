@@ -31,6 +31,9 @@ class TradingPrompt extends UiPrompt {
                             this.attachAttachments(this.attachments, this.fromDudeCard, toDudeCard, 'traded');
                             this.attachAttachments(swapCards, toDudeCard, this.fromDudeCard, 'swapped back');
                             return true;
+                        },
+                        onCancel: () => {
+                            this.attachAttachments(this.attachments, this.fromDudeCard, toDudeCard, 'traded');
                         }
                     });
                 } else {
