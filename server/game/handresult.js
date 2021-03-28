@@ -115,7 +115,7 @@ class FiveOfAKind {
                 this.rankName = 'Five of a Kind';
                 this.rankShortName = '5oaK';
                 this.tiebreaker = [i];
-                this.cheatin = jokers === 0;
+                this.cheatin = PokerHands.isCheatin(this.matches);
             }
         }
     }
