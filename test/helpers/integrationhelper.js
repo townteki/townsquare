@@ -172,8 +172,8 @@ global.integration = function(options, definitions) {
                 this[method] = (...args) => this.flow[method].apply(this.flow, args);
             }
 
-            this.buildDeck = function(faction, cards, startingCards, addDefaultDeck) {
-                return deckBuilder.buildDeck(faction, cards, startingCards, addDefaultDeck);
+            this.buildDeck = function(properties) {
+                return deckBuilder.buildDeck(properties);
             };
         });
 

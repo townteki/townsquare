@@ -1,16 +1,16 @@
 describe('trait reaction order', function() {
     integration({ numOfPlayers: 2 }, function() {
         beforeEach(function() {
-            const deck1 = this.buildDeck('Law Dogs', [
-                'Law Dogs',
-                'Tommy Harden', 'Philip Swinford'
-            ], ['Tommy Harden']
-            );
-            const deck2 = this.buildDeck('The Sloane Gang', [
-                'The Sloane Gang',
-                'Barton Everest'
-            ], ['Barton Everest']
-            );
+            const deck1 = this.buildDeck({
+                outfitTitle: 'Law Dogs',
+                cardTitles: ['Law Dogs', 'Philip Swinford', 'Tommy Harden'],
+                startingTitles: ['Tommy Harden']
+            });
+            const deck2 = this.buildDeck({
+                outfitTitle: 'The Sloane Gang',
+                cardTitles: ['The Sloane Gang', 'Barton Everest'],
+                startingTitles: ['Barton Everest']
+            });
             this.player1.selectDeck(deck1);
             this.player2.selectDeck(deck2);
             this.startGame();
