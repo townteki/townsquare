@@ -4,8 +4,8 @@ describe('Legend', function() {
             beforeEach(function() {
                 const deck1 = this.buildDeck({
                     outfitTitle: 'Law Dogs',
-                    cardTitles: ['Law Dogs', 'Tommy Harden'],
-                    startingTitles: ['Tommy Harden'],
+                    cardTitles: ['Law Dogs', 'Father Tolarios', 'Tommy Harden'],
+                    startingTitles: ['Father Tolarios', 'Tommy Harden'],
                     legendTitle: 'Doc Holliday'
                 });
                 const deck2 = this.buildDeck({
@@ -36,9 +36,11 @@ describe('Legend', function() {
                 beforeEach(function() {
                     this.skipToHighNoonPhase();
 
+                    [this.father] = this.player1.filterCardsByName('Father Tolarios', 'play area');
                     [this.tommy] = this.player1.filterCardsByName('Tommy Harden', 'play area');
                     [this.barton] = this.player2.filterCardsByName('Barton Everest', 'play area');
 
+                    this.player1.moveDude(this.father, 'townsquare');
                     this.player1.moveDude(this.tommy, 'townsquare');
                     this.player2.moveDude(this.barton, 'townsquare');
                 });
@@ -58,12 +60,19 @@ describe('Legend', function() {
                 describe('if legend condition is not met', function() {
                     beforeEach(function() {
                         this.player2.clickMenu(this.barton, 'Call Out');
-                        this.player2.clickCard(this.tommy, 'play area');
+                        this.player2.clickCard(this.father, 'play area');
                         this.player1.clickPrompt('Accept Callout');
+                        this.player2.clickPrompt('Done');
+                        this.player1.clickPrompt('Done');
                     });
 
                     it('should not apply effects', function() {
                         expect(this.game.shootout.leaderPosse.studBonus).toBe(0);
+                    });
+
+                    it('should have shootout ability enabled', function() {
+                        var items = this.player1.player.legend.getMenu(this.player1.player).filter(item => item.text === 'Use ability');
+                        expect(items[0].disabled).toBe(false);
                     });
                 });
             });
