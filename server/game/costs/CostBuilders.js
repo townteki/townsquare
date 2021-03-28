@@ -1,6 +1,7 @@
 const BootCost = require('./BootCost');
 const CostBuilder = require('./CostBuilder');
 const DiscardFromHandCost = require('./DiscardFromHandCost');
+const DiscardFromPlayCost = require('./DiscardFromPlayCost');
 const DiscardTokenCost = require('./DiscardTokenCost');
 const AceCost = require('./AceCost');
 const LowerBountyCost = require('./LowerBountyCost');
@@ -16,6 +17,9 @@ const CostBuilders = {
     discardFromHand: new CostBuilder(new DiscardFromHandCost(), {
         select: 'Select card to discard from hand',
         selectMultiple: number => `Select ${number} cards to discard from hand`
+    }),
+    discardFromPlay: new CostBuilder(new DiscardFromPlayCost(), {
+        select: 'Select card to discard'
     }),
     discardToken: function(token, amount = 1) {
         return new CostBuilder(new DiscardTokenCost(token, amount), {
