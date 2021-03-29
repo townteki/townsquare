@@ -23,7 +23,7 @@ class NotaryPublic extends DeedCard {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to increase bounty',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: { location: 'play area' },
+                        cardCondition: card => card.location === 'play area',
                         cardType: 'dude',
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.addBounty({ card: card }), context);
@@ -36,7 +36,7 @@ class NotaryPublic extends DeedCard {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to move',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: { location: 'play area', controller: 'current' },
+                        cardCondition: card => card.location === 'play area' && card.controller === context.player,
                         cardType: 'dude',
                         onSelect: (player, dude) => {
                             this.game.promptForLocation(player, {

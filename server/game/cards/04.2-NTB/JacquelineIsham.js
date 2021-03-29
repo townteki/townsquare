@@ -14,7 +14,8 @@ class JacquelineIsham extends DudeCard {
                     match: this,
                     effect: ability.effects.setAsStud()
                 }));
-            }
+            },
+            source: this
         });
     }
 }
