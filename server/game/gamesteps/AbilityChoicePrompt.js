@@ -16,7 +16,7 @@ class AbilityChoicePrompt extends BaseStep {
 
         this.game.promptWithMenu(this.context.player, this, {
             activePrompt: {
-                menuTitle: `Choose ability for ${this.context.source.name}`,
+                menuTitle: `Choose ability for ${this.context.source.title}`,
                 buttons: buttons
             },
             source: this.card
