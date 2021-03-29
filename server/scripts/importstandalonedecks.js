@@ -15,7 +15,7 @@ class ImportStandaloneDecks {
     async import() {
         try {
             for(let deck of this.loadDecks()) {
-                let existingDeck = await this.deckService.getByStandaloneId(deck.id);
+                let existingDeck = await this.deckService.getByStandaloneId(deck.standaloneDeckId);
                 if(!existingDeck) {
                     console.log('Importing Standalone deck', deck.name);
                     await this.deckService.createStandalone(deck);

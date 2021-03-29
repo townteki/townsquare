@@ -2,16 +2,16 @@ describe('JobAction', function() {
     integration({ numOfPlayers: 2 }, function() {
         describe('ability', function() {
             beforeEach(function() {
-                const deck1 = this.buildDeck('Law Dogs', [
-                    'Law Dogs',
-                    'Tommy Harden', 'Jake Smiley', 'Olivia Jenks', 'A Coach Comes to Town'
-                ], ['Tommy Harden', 'Jake Smiley', 'Olivia Jenks']
-                );
-                const deck2 = this.buildDeck('The Sloane Gang', [
-                    'The Sloane Gang',
-                    'Allie Hensman', 'Barton Everest', 'Maza Gang Hideout'
-                ], ['Allie Hensman', 'Barton Everest']
-                );
+                const deck1 = this.buildDeck({
+                    outfitTitle: 'Law Dogs',
+                    cardTitles: ['Law Dogs', 'Tommy Harden', 'Jake Smiley', 'Olivia Jenks', 'A Coach Comes to Town'],
+                    startingTitles: ['Tommy Harden', 'Jake Smiley', 'Olivia Jenks']
+                });
+                const deck2 = this.buildDeck({
+                    outfitTitle: 'The Sloane Gang',
+                    cardTitles: ['The Sloane Gang', 'Allie Hensman', 'Barton Everest', 'Maza Gang Hideout'], 
+                    startingTitles: ['Allie Hensman', 'Barton Everest']
+                });
                 this.player1.selectDeck(deck1);
                 this.player2.selectDeck(deck2);
                 this.startGame();

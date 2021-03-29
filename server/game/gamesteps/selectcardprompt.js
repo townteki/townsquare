@@ -55,7 +55,7 @@ class SelectCardPrompt extends UiPrompt {
         this.numPlayers = this.game.getNumberOfPlayers();
         this.choosingPlayer = choosingPlayer;
         if(properties.source && !properties.waitingPromptTitle) {
-            properties.waitingPromptTitle = 'Waiting for opponent to use ' + properties.source.name;
+            properties.waitingPromptTitle = 'Waiting for opponent to use ' + properties.source.title;
         }
 
         this.properties = properties;

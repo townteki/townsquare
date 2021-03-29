@@ -46,15 +46,17 @@ class DeckBuilder {
         return cards;
     }
 
-    buildDeck(outfitTitle, cardLabels, startingTitles, addDefaultDeck = true) {
-        if(addDefaultDeck) {
-            cardLabels = cardLabels.concat(DefaultDeck);
+    buildDeck(properties) {
+        let params = Object.assign({ addDefaultDeck: true }, properties);
+        if(params.addDefaultDeck) {
+            params.cardTitles = params.cardTitles.concat(DefaultDeck);
         }
-        let allCards = this.createCardCounts(cardLabels);
-        let outfit = this.getCard(outfitTitle);
+        let allCards = this.createCardCounts(params.cardTitles);
+        let outfit = this.getCard(params.outfitTitle);
+        let legend = params.legendTitle ? this.getCard(params.legendTitle) : null;
         let starting = 0;
         allCards.forEach(cardCount => {
-            if(startingTitles.includes(cardCount.card.title)) {
+            if(params.startingTitles.includes(cardCount.card.title)) {
                 cardCount.card.starting = true;
                 starting++;
             }
@@ -62,7 +64,7 @@ class DeckBuilder {
 
         return {
             outfit: outfit,
-            legend: null,
+            legend: legend,
             drawCards: allCards.filter(cardCount => ['dude', 'deed', 'goods', 'spell', 'action'].includes(cardCount.card.type_code)),
             starting: starting
         };
