@@ -152,6 +152,11 @@ const Costs = {
      */
     discardFromDeck: () => new DiscardFromDeckCost(),
     /**
+     * Cost that requires discarding a card from play matching the passed
+     * condition predicate function. 
+     */
+    discardFromPlay: condition => CostBuilders.discardFromPlay.select(condition),
+    /**
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
      */

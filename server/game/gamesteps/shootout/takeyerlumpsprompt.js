@@ -6,23 +6,27 @@ const PlayerOrderPrompt = require('../playerorderprompt.js');
     For now, each casualty will be taken right after the card is selected.
 */
 class TakeYerLumpsPrompt extends PlayerOrderPrompt {
-    constructor(game, playerNameOrder) {
+    constructor(game, playerNameOrder, numOfCasualties, source) {
         super(game, playerNameOrder);
         this.shootout = game.shootout;
+        this.numOfCasualties = numOfCasualties;
+        this.source = source;
+        this.casualtiesTaken = [];
     } 
 
     continue() {
         if(this.isComplete()) {
             return true;
         }
-        if(this.currentPlayer.casualties === 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        if(this.getCurrentCasualties() === 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
             this.completePlayer();
-            return this.continue();
+            return this.continue();            
         }
 
         this.game.promptWithMenu(this.currentPlayer, this, {
             activePrompt: {
-                menuTitle: 'Select Yer Lumps to Take (' + this.currentPlayer.casualties + ' remaining)',
+                promptTitle: this.source ? this.source.title : 'Take Yer Lumps',
+                menuTitle: 'Select casualty type (' + this.getCurrentCasualties() + ' remaining)',
                 buttons: [
                     { text: 'Ace', method: 'coverCasualty', arg: 'ace' },
                     { text: 'Discard', method: 'coverCasualty', arg: 'discard' },
@@ -33,6 +37,13 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         });
 
         return false;        
+    }
+
+    getCurrentCasualties() {
+        if(this.numOfCasualties !== null && this.numOfCasualties !== undefined) {
+            return this.numOfCasualties;
+        }
+        return this.currentPlayer.casualties;
     }
 
     coverCasualty(player, arg) {
@@ -51,6 +62,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 card.coversCasualties() > 0,
             onSelect: (player, card) => {
                 let numCoveredCasualties = 0;
+                this.casualtiesTaken.push(card);
                 if(arg === 'ace') {
                     numCoveredCasualties = card.coversCasualties('ace');
                     if(numCoveredCasualties > 0) {
@@ -64,7 +76,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 }
 
                 if(numCoveredCasualties > 0) {
-                    player.coverCasualties(numCoveredCasualties);
+                    this.modifyCasualties(player, card, numCoveredCasualties);
                     this.game.addMessage('{0} {1} {2} to cover {3} casualties ({4} remaining).', 
                         player, arg, card, numCoveredCasualties, player.casualties); 
                 }
@@ -87,7 +99,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 let numCoveredCasualties = card.coversCasualties('send');
                 if(numCoveredCasualties > 0) {
                     this.shootout.sendHome(card, { isCardEffect: false });
-                    player.coverCasualties(numCoveredCasualties);    
+                    this.modifyCasualties(player, card, numCoveredCasualties);    
                     this.game.addMessage('{0} sends {1} home to cover {2} casualties ({3} remaining).', 
                         player, card, numCoveredCasualties, player.casualties);     
                 }
@@ -96,6 +108,18 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         });
 
         return true;
+    }
+
+    modifyCasualties(player, card, numCoveredCasualties) {
+        if(this.numOfCasualties !== null && this.numOfCasualties !== undefined) {
+            this.numOfCasualties -= numCoveredCasualties;
+            if(this.numOfCasualties < 0) {
+                this.numOfCasualties = 0;
+            }
+        } else {
+            player.coverCasualties(numCoveredCasualties);
+        }
+        this.casualtiesTaken.push(card);
     }
 
     findFirstCasualties(player) {
@@ -109,6 +133,15 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         }
         this.completePlayer();
         return true;
+    }
+
+    completePlayer() {
+        this.game.raiseEvent('onTakenCasualties', { 
+            player: this.currentPlayer, 
+            shootout: this.shootout, 
+            casualtiesTaken: this.casualtiesTaken 
+        });
+        super.completePlayer();
     }
 }
 
