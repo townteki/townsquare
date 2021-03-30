@@ -255,22 +255,24 @@ class Player extends Spectator {
     }
 
     discardDrawHand() {
-        if(this.drawHandRevealed) {
-            this.drawHand.forEach(card => {
-                if(card.getType() === 'joker') {
-                    this.moveCard(card, 'dead pile');
-                    this.game.raiseEvent('onJokerAced', { card: card, type: 'draw hand' });
-                }
+        this.game.raiseEvent('onDrawHandDiscarded', { player: this }, () => {
+            if(this.drawHandRevealed) {
+                this.drawHand.forEach(card => {
+                    if(card.getType() === 'joker') {
+                        this.game.resolveGameAction(GameActions.aceCard({ card: card }));
+                    }
+                });
+            }
+            let handToDiscard = this.drawHand.filter(card => card.getType() !== 'joker');
+            this.discardCards(handToDiscard, discardedCards => {
+                this.game.raiseEvent('onAfterDrawHandDiscarded', { discardedCards: discardedCards });
             });
-        }
-        this.discardCards(this.drawHand, () => {
-            //callback(discarded);
+            
+            this.drawHand = [];
+            this.drawHandRevealed = false;
+            this.drawHandSelected = false;
+            this.handResult = new HandResult();
         });
-
-        this.drawHand = [];
-        this.drawHandRevealed = false;
-        this.drawHandSelected = false;
-        this.handResult = new HandResult();
     }
 
     resetPass() {

@@ -2,11 +2,11 @@ describe('ability limits', function() {
     integration({ numOfPlayers: 2 }, function() {
         describe('when an ability has a limit', function() {
             beforeEach(function() {
-                const deck = this.buildDeck('Law Dogs', [
-                    'Law Dogs',
-                    'Jacqueline Isham', 'Jake Smiley'
-                ], ['Jacqueline Isham', 'Jake Smiley']
-                );
+                const deck = this.buildDeck({
+                    outfitTitle: 'Law Dogs',
+                    cardTitles: ['Law Dogs', 'Jake Smiley', 'Jacqueline Isham'],
+                    startingTitles: ['Jake Smiley', 'Jacqueline Isham']
+                });
                 this.player1.selectDeck(deck);
                 this.player2.selectDeck(deck);
                 this.startGame();

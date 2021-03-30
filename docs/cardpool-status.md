@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/121/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/122/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -736,7 +736,7 @@
 |                     | 19026| Hellstromme Plant #9
 |                     | 19027| Bilton Collection Agency
 |                     | 19028| Decimator Array
-|                     | 19029| Devil's Six Gun
+|:heavy_check_mark:   | 19029| Devil's Six Gun
 |                     | 19030| Forsaken Hound
 |                     | 19031| The Bloody Star
 |                     | 19032| Cavalry Escort
