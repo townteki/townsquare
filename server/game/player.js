@@ -19,6 +19,7 @@ const RemoveFromGame = require('./GameActions/RemoveFromGame');
 const GhostRockSource = require('./GhostRockSource.js');
 
 const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
+const JokerPrompt = require('./gamesteps/jokerprompt.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -768,9 +769,9 @@ class Player extends Spectator {
     isGadgetInvented(gadget, scientist, successHandler) {
         let getPullProperties = scientist => {
             return {
-                successHandler: pulledCard => {
+                successHandler: context => {
                     this.game.addMessage('{0} successfuly invent {1} using the {2}', this, gadget, scientist);
-                    successHandler(pulledCard);
+                    successHandler(context);
                 },
                 failHandler: () => {
                     this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);
@@ -1134,7 +1135,37 @@ class Player extends Spectator {
         return event;
     }
 
-    pull(properties) {
+    handlePulledCard(card) {
+        if(card.getType() === 'joker') {
+            this.aceCard(card);
+        } else {
+            this.moveCard(card, 'discard pile', { isPull: true });
+        }
+    }
+
+    // If no callback is passed, pulled card is returned, but if it is joker the 
+    // value selection if needed has to be handled by the caller
+    pull(callback, addMessage = false) {
+        if(this.drawDeck.length === 0) {
+            this.shuffleDiscardToDrawDeck();
+        }
+        let pulledCard = this.drawDeck[0];
+        this.removeCardFromPile(pulledCard);
+        this.game.raiseEvent('onCardPulled', { card: pulledCard });
+        if(addMessage) {
+            this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.value, pulledCard.suit, pulledCard);
+        }
+        if(callback) {
+            if(pulledCard.getType() === 'joker') {
+                this.game.queueStep(new JokerPrompt(this.game, pulledCard, callback));
+            } else {
+                callback(pulledCard, pulledCard.value, pulledCard.suit);
+            }
+        }
+        return pulledCard;
+    }
+
+    handlePull(properties, context) {
         let props = { 
             successCondition: properties.successCondition || (() => true), 
             successHandler: properties.successHandler || (() => true), 
@@ -1144,55 +1175,47 @@ class Player extends Spectator {
             source: properties.source,
             player: this
         };
-        let handlePulledCard = function(player, card) {
-            if(card.getType() === 'joker') {
-                player.aceCard(card);
+        this.pull((pulledCard, pulledValue, pulledSuit) => {
+            if(props.successCondition(pulledValue + props.pullBonus)) {
+                this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
+                    this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.', 
+                        this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source);
+                    let isAbility = !!context;
+                    if(isAbility) {
+                        context.pull = { pulledValue, pulledSuit, pulledCard };
+                    } else {
+                        context = { player: this, source: event.source, pull: { pulledValue, pulledSuit, pulledCard }}; 
+                    }
+                    event.successHandler(context);
+                    if(!isAbility) {
+                        this.handlePulledCard(event.pulledCard);
+                    }
+                });
             } else {
-                player.moveCard(card, 'discard pile', { isPull: true });
+                this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
+                    this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.', 
+                        this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source);
+                    let isAbility = !!context;
+                    if(isAbility) {
+                        context.pull = { pulledValue, pulledSuit, pulledCard };
+                    } else {
+                        context = { player: this, source: event.source, pull: { pulledValue, pulledSuit, pulledCard }}; 
+                    }
+                    event.failHandler(context);
+                    if(!isAbility) {
+                        this.handlePulledCard(event.pulledCard);
+                    }
+                });            
             }
-        };
-        if(this.drawDeck.length === 0) {
-            this.shuffleDiscardToDrawDeck();
-        }
-        let pulledCard = this.drawDeck[0];
-        this.removeCardFromPile(pulledCard);
-        this.game.raiseEvent('onCardPulled', { card: pulledCard });
-        let pulledValue = pulledCard.value;
-        if(pulledCard.getType() === 'joker') {
-            pulledValue = 13;
-            /* TODO M2 put here prompt to select value (kung fu wants low value)
-            this.game.promptWithMenu(this, pulledCard, {
-                activePrompt: {
-                    menuTitle: '',
-                    buttons: [
-                        { text: '1', method: 'selectJokerValue', arg: '1' }
-                    ]
-                },
-                source: pulledCard
-            });
-            */
-        }
-        if(props.successCondition(pulledValue + props.pullBonus)) {
-            this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue: pulledValue, pulledCard: pulledCard }), event => {
-                this.game.addMessage('{0} pulled {1} ({2}) as check for {3} and succeeded.', this, event.pulledValue, event.pulledCard, event.source);
-                event.successHandler(pulledCard);
-                handlePulledCard(event.player, event.pulledCard);
-            });
-        } else {
-            this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue: pulledValue, pulledCard: pulledCard }), event => {
-                this.game.addMessage('{0} pulled {1} ({2}) as check for {3} and failed.', this, event.pulledValue, event.pulledCard, event.source);
-                event.failHandler(pulledCard);
-                handlePulledCard(event.player, event.pulledCard);
-            });            
-        }
+        });
     }
 
-    pullForSkill(difficulty, skillRating, properties) {
+    pullForSkill(difficulty, skillRating, properties, context) {
         let props = Object.assign(properties, { 
             successCondition: pulledValue => pulledValue >= difficulty, 
             pullBonus: skillRating 
         });
-        this.pull(props);
+        this.handlePull(props, context);
     }
 
     returnCardToHand(card, allowSave = true) {

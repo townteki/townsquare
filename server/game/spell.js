@@ -49,17 +49,11 @@ class Spell {
         context.difficulty = finalDifficulty;
         context.totalPullValue = context.caster.getSkillRatingForCard(this.ability.card);
         context.player.pullForSkill(finalDifficulty, context.totalPullValue, {
-            successHandler: pulledCard => {
-                context.pulledCard = pulledCard;
-                this.onSuccess(context);
-            },
-            failHandler: pulledCard => {
-                context.pulledCard = pulledCard;
-                this.onFail(context);
-            },
+            successHandler: context => this.onSuccess(context),
+            failHandler: context => this.onFail(context),
             pullingDude: context.caster,
             source: this.ability.card
-        });
+        }, context);
     }
 
     canBeCasted(player) {

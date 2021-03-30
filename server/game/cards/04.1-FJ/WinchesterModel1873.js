@@ -2,9 +2,6 @@ const GoodsCard = require('../../goodscard.js');
 
 class WinchesterModel1873 extends GoodsCard {
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.modifyBullets(this.bullets)
-        });
         this.action({
             title: 'Winchester Model 1873',
             playType: 'shootout',

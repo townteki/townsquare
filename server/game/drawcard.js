@@ -269,6 +269,14 @@ class DrawCard extends BaseCard {
         });
     }
 
+    hasAttachmentWithKeywords(keywords) {
+        let searchKeywords = keywords;
+        if(!Array.isArray(keywords)) {
+            searchKeywords = [keywords];
+        }
+        return this.getAttachmentsByKeywords(searchKeywords).length > 0;
+    }
+
     removeAttachment(attachment) {
         if(!attachment || !this.attachments.includes(attachment)) {
             return;

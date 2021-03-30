@@ -1,3 +1,4 @@
+const AbilityDsl = require('./abilitydsl.js');
 const DrawCard = require('./drawcard.js');
 
 class GoodsCard extends DrawCard {
@@ -6,6 +7,10 @@ class GoodsCard extends DrawCard {
         this.traded = false;
         this.canTrade = true;
         this.resetHandler = () => this.reset();
+        this.whileAttached({
+            condition: () => true,
+            effect: AbilityDsl.effects.dynamicBullets(() => this.bullets)
+        });
     }
 
     get difficulty() {
