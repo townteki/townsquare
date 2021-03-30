@@ -81,7 +81,7 @@ class Game extends EventEmitter {
         this.skipPhase = {};
         this.cardVisibility = new CardVisibility(this);
 
-        this.townsquare = new Location.TownSquare(this.game);
+        this.townsquare = new Location.TownSquare(this);
 
         for(let player of Object.values(details.players || {})) {
             this.playersAndSpectators[player.user.username] = new Player(player.id, player.user, this.owner === player.user.username, this);
