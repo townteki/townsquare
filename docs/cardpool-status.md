@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/122/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/125/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -82,7 +82,7 @@
 |:heavy_check_mark:   | 01068| Cattle Market
 |:heavy_check_mark:   | 01069| Circle M Ranch
 |:white_check_mark:   | 01070| Pat's Perch
-|                     | 01071| Bunkhouse
+|:heavy_check_mark:   | 01071| Bunkhouse
 |:heavy_check_mark:   | 01072| Morgan Research Institute
 |:heavy_check_mark:   | 01073| Carter's Bounties
 |                     | 01074| The Union Casino
@@ -147,11 +147,11 @@
 |:heavy_check_mark:   | 01133| Recruitment Drive
 |:heavy_check_mark:   | 01134| Unprepared
 |:heavy_check_mark:   | 01135| A Coach Comes to Town
-|                     | 01136| Hex Slingin'
+|:heavy_check_mark:   | 01136| Hex Slingin'
 |:heavy_check_mark:   | 01137| This is a Holdup!
 |                     | 01138| Clear Out!
 |:heavy_check_mark:   | 01139| Missed!
-|                     | 01140| Takin' Ya With Me
+|:heavy_check_mark:   | 01140| Takin' Ya With Me
 |                     | 01141| Good Stiff Drink
 |:heavy_check_mark:   | 01142| Point Blank
 |                     | 01143| A Secret Tunnel
