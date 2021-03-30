@@ -57,7 +57,7 @@ class ElanderBoldman extends DudeCard {
     }
 
     giveBullets(player, arg) {
-        let weapon = this.context.target.getAttachmentsByKeywords(['Gadget', 'Weapon']).filter(weapon => weapon.code === arg);
+        let weapon = this.context.target.getAttachmentsByKeywords(['Gadget', 'Weapon']).filter(weapon => weapon.uuid === arg);
         this.applyAbilityEffect(this.context.ability, ability => ({
             match: weapon,
             effect: [
