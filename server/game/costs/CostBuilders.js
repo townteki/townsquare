@@ -19,7 +19,8 @@ const CostBuilders = {
         selectMultiple: number => `Select ${number} cards to discard from hand`
     }),
     discardFromPlay: new CostBuilder(new DiscardFromPlayCost(), {
-        select: 'Select card to discard'
+        select: 'Select card to discard',
+        selectMultiple: number => `Select ${number} cards to discard from play`
     }),
     discardToken: function(token, amount = 1) {
         return new CostBuilder(new DiscardTokenCost(token, amount), {
