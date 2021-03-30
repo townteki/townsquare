@@ -221,6 +221,9 @@ class AbilityResolver extends BaseStep {
 
             this.game.resolveEvent(event);
         }
+        if(this.context.pull) {
+            this.context.player.handlePulledCard(this.context.pull.pulledCard);
+        }
         if(this.ability.isCardAbility()) {
             this.game.raiseEvent('onCardAbilityResolved', { ability: this.ability, context: this.context });
         }

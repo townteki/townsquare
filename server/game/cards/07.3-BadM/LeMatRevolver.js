@@ -2,9 +2,6 @@ const GoodsCard = require('../../goodscard.js');
 
 class LeMatRevolver extends GoodsCard {
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.modifyBullets(this.bullets)
-        });
         this.action({
             title: 'Cheatin\' Resolution',
             playType: 'cheatin resolution',

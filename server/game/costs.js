@@ -93,19 +93,18 @@ const Costs = {
      */
     revealCards: (number, condition) => CostBuilders.reveal.selectMultiple(number, condition),
     /**
-     * Cost that will stand the card that initiated the ability (e.g.,
-     * Barristan Selmy (TS)).
+     * Cost that will unboot the card that initiated the ability.
      */
-    standSelf: () => CostBuilders.stand.self(),
+    unbootSelf: () => CostBuilders.unboot.self(),
     /**
-     * Cost that will stand the parent card the current card is attached to.
+     * Cost that will unboot the parent card the current card is attached to.
      */
-    standParent: () => CostBuilders.stand.parent(),
+    unbootParent: () => CostBuilders.unboot.parent(),
     /**
-     * Cost that requires standing a card that matches the passed condition
+     * Cost that requires unbooting a card that matches the passed condition
      * predicate function.
      */
-    stand: condition => CostBuilders.stand.select(condition),
+    unboot: condition => CostBuilders.unboot.select(condition),
     /**
      * Cost that will place the played event card in the player's discard pile.
      */
@@ -118,9 +117,19 @@ const Costs = {
                 // Events become in a "state of being played" while they resolve
                 // and are not placed in discard until after resolution / cancel
                 // of their effects.
-                // Ruling: http://www.cardgamedb.com/forums/index.php?/topic/35981-the-annals-of-castle-black/
                 context.originalLocation = context.source.location;
                 context.source.controller.moveCard(context.source, 'being played');
+            }
+        };
+    },
+    pull: function() {
+        return {
+            canPay: function() {
+                return true;
+            },
+            pay: function(context) {
+                context.player.pull((pulledCard, pulledValue, pulledSuit) => 
+                    context.pull = { pulledCard, pulledValue, pulledSuit }, true);
             }
         };
     },
