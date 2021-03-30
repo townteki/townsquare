@@ -119,7 +119,7 @@ class TriggeredAbility extends BaseAbility {
         // The location property of the ability will prevent it from firing in
         // inappropriate locations when requirements are checked for the ability.
         if(this.isPlayableActionAbility()) {
-            return ['discard pile', 'draw deck', 'hand', 'play area'].includes(location);
+            return ['hand', 'play area'].includes(location);
         }
 
         return this.location.includes(location);
