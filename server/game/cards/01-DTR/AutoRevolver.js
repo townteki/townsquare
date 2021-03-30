@@ -3,9 +3,6 @@ const GoodsCard = require('../../goodscard.js');
 
 class AutoRevolver extends GoodsCard {
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.modifyBullets(this.bullets)
-        });
         this.persistentEffect({
             condition: () => this.parent && this.parent.isParticipating(),
             match: this.controller,
