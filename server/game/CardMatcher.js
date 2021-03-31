@@ -31,7 +31,7 @@ class CardMatcher {
 
         return function(card, context) {
             return (
-                CardMatcher.isMatch(card, propertiesOrFunc) &&
+                (card.getType() === 'townsquare' || CardMatcher.isMatch(card, propertiesOrFunc)) &&
                 Matcher.anyValue(propertiesOrFunc.controller, controller => card.controller === controller || CardMatcher.attachmentControllerMatches(controller, card, context)) &&
                 Matcher.anyValue(propertiesOrFunc.condition, condition => condition(card, context))
             );
