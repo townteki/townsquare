@@ -13,7 +13,7 @@ class AutoRevolver extends GoodsCard {
         this.playAction({
             title: 'Shootout play: Equip',
             condition: () => this.game.shootout,
-            cost: ability.costs.payReduceableGRCost(1),
+            cost: ability.costs.payReduceableGRCost(),
             playType: 'shootout',
             target: {
                 activePromptTitle: 'Select dude to be equipped',

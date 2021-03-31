@@ -6,7 +6,7 @@ class BountyHunter extends ActionCard {
         this.action({
             title: 'Bounty Hunter',
             playType: ['noon'],
-            cost: ability.costs.payReduceableGRCost(2),
+            cost: ability.costs.payReduceableGRCost(),
             target: {
                 activePromptTitle: 'Select wanted dude to hunt',
                 cardCondition: { location: 'play area', controller: 'opponent', wanted: true },

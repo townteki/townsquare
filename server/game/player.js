@@ -1144,7 +1144,8 @@ class Player extends Spectator {
     }
 
     // If no callback is passed, pulled card is returned, but if it is joker the 
-    // value selection if needed has to be handled by the caller
+    // value selection if needed has to be handled by the caller.
+    // The pulled card has to be taken care of manually afterwards.
     pull(callback, addMessage = false) {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
