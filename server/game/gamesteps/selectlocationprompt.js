@@ -33,7 +33,9 @@ const SelectCardPrompt = require('./selectcardprompt.js');
 class SelectLocationPrompt extends SelectCardPrompt {
     constructor(game, choosingPlayer, properties) {
         super(game, choosingPlayer, properties);
-        this.properties.additionalButtons.push({ text: 'Town Square', arg: 'townsquare' });
+        if(!properties.cardCondition || properties.cardCondition(this.game.townsquare.locationCard)) {
+            this.properties.additionalButtons.push({ text: 'Town Square', arg: 'townsquare' });
+        }
         this.activePromptTitle = this.properties.activePromptTitle || 'Select target location for movement';
     }
 
