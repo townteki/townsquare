@@ -79,7 +79,7 @@ For the server, IDE setup and other development tips see [Development](#Developm
 To install the server, execute these commands: 
 
 ```
-git clone https://github.com/townsquare/townsquare.git
+git clone https://github.com/townteki/townsquare.git
 cd townsquare
 git submodule init
 git submodule update
