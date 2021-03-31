@@ -4,7 +4,7 @@ class FriendsInHighPlaces extends ActionCard {
     setupCardAbilities() {
         this.reaction({
             when: {
-                callOut: event => 
+                onDudeCalledOut: event => 
                     event.callee.controller === this.controller &&
                     event.callee.influence > event.caller.influence &&
                     !event.callee.booted &&
@@ -14,7 +14,13 @@ class FriendsInHighPlaces extends ActionCard {
                 this.game.addMessage('{0} uses {1} to refuse the callout without moving home booted', context.player, this);
             },
             handler: context => {
-                context.event.callee.rejectCallout(stayPut = true);
+                this.lastingEffect(ability => ({
+                    until: {
+                        onCardCallOutFinished: () => true
+                    },
+                    match: context.event.callee,
+                    effect: ability.effects.canRefuseWithoutGoingHomeBooted()
+                }));
             }
         });
     }

@@ -310,6 +310,10 @@ class DrawCard extends BaseCard {
         return this.shootoutOptions.contains('isSelectedAsFirstCasualty');
     }
 
+    canRefuseWithoutGoingHomeBooted() {
+        return this.shootoutOptions.contains('canRefuseWithoutGoingHomeBooted');
+    }
+
     canBeAced() {
         return this.allowGameAction('ace');
     }

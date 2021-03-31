@@ -804,6 +804,9 @@ const Effects = {
     selectAsFirstCasualty: function() {
         return shootoutOptionEffect('isSelectedAsFirstCasualty')();
     },
+    canRefuseWithoutGoingHomeBooted: function() {
+        return shootoutOptionEffect('canRefuseWithoutGoingHomeBooted')();
+    },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {
