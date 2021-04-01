@@ -85,6 +85,10 @@ class GameLocation {
         return currentController;
     }
 
+    getDudes() {
+        return this.occupants.map(dudeUuid => this.game.findCardInPlayByUuid(dudeUuid));
+    }
+
     isAdjacent(uuid) {
         let adjacency = this.adjacencyMap.get(uuid);
         if(!adjacency) {
@@ -163,8 +167,9 @@ class TownSquare extends GameLocation {
             title: 'Town Square', 
             uuid: TownSquareUUID,
             getType: () => 'townsquare',
-            getLocation: () => this,
-            gamelocation: 'townsquare'
+            getGameLocation: () => this,
+            gamelocation: 'townsquare',
+            allowGameAction: () => true
         }), null, null);
 
         this.key = 'townsquare';

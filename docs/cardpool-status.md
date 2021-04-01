@@ -43,7 +43,7 @@
 |:heavy_check_mark:   | 01029| Jon Longstride
 |:heavy_check_mark:   | 01030| Lane Healey
 |:heavy_check_mark:   | 01031| Jarrett Blake
-|                     | 01032| Harold Aimslee
+|:heavy_check_mark:   | 01032| Harold Aimslee
 |                     | 01033| Rémy LaPointe
 |                     | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
@@ -136,7 +136,7 @@
 |                     | 01122| One Good Turn…
 |:heavy_check_mark:   | 01123| Kidnappin'
 |:heavy_check_mark:   | 01124| Pinned Down
-|                     | 01125| Run 'Em Down!
+|:heavy_check_mark:   | 01125| Run 'Em Down!
 |:heavy_check_mark:   | 01126| Bounty Hunter
 |:heavy_check_mark:   | 01127| Reserves
 |                     | 01128| Rumors
