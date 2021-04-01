@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/125/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/127/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -85,13 +85,13 @@
 |:heavy_check_mark:   | 01071| Bunkhouse
 |:heavy_check_mark:   | 01072| Morgan Research Institute
 |:heavy_check_mark:   | 01073| Carter's Bounties
-|                     | 01074| The Union Casino
+|:heavy_check_mark:   | 01074| The Union Casino
 |:white_check_mark:   | 01075| Jackson's Strike
 |                     | 01076| Undertaker
 |:heavy_check_mark:   | 01077| General Store
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
-|                     | 01080| Telegraph Office
+|:heavy_check_mark:   | 01080| Telegraph Office
 |                     | 01081| Pair of Six-Shooters
 |:heavy_check_mark:   | 01082| Bluetick
 |                     | 01083| Peacemaker
