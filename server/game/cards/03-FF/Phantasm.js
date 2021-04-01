@@ -21,13 +21,11 @@ class Phantasm extends SpellCard {
             },
             difficulty: 9,
             onSuccess: context => {
-                //let targetLocation = context.target.gamelocation;
-                this.game.promptForSelect(this.controller, {
+                this.game.promptForLocation(this.controller, {
                     promptTitle: this.title,
                     activePromptTitle: 'Select where the dude should move to',
                     waitingPromptTitle: 'Waiting for opponent to select location',
-                    cardCondition: card => card.gamelocation === card.getGameLocation().isAdjacent(context.target.gamelocation),
-                    cardType: ['deed'],
+                    cardCondition: card => card.location === 'play area' && card.getGameLocation().isAdjacent(context.target.uuid),
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 
