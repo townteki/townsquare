@@ -11,7 +11,8 @@ class ParalysisMark extends SpellCard {
                 activePromptTitle: 'Select a dude to paralyze',
                 waitingPromptTitle: 'Waiting for opponent to select a dude',
                 cardCondition: { condition: card => card.gamelocation === this.gamelocation },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'boot'
             },
             difficulty: context => context.target.value,
             onSuccess: (context) => {
