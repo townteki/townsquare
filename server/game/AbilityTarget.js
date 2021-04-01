@@ -116,11 +116,10 @@ class AbilityTarget {
             return;
         }
         let buttons = [];
-        if(this.cardType.includes('location') || this.cardType.includes('townsquare')) {
+        if((this.cardType.includes('location') || this.cardType.includes('townsquare')) && 
+            this.selector.canTarget(context.game.townsquare.locationCard)) {
             buttons = [{ text: 'Town Square' }];
             this.activePromptTitle = this.activePromptTitle || 'Select target location for movement';
-            // TODO M2 probably should add condition for location that will filter current location
-            //this.cardCondition = 
         }
 
         let otherProperties = Object.assign({}, this.properties);
