@@ -78,7 +78,19 @@ class BaseCardSelector {
     }
 
     isAllowedForGameAction(card, context) {
-        return !this.isCardEffect || card.allowGameAction('target', context) && card.allowGameAction(this.gameAction);
+        if(!this.isCardEffect) {
+            return true;
+        }
+        if(!card.allowGameAction('target', context)) {
+            return false;
+        }
+        if(typeof(this.gameAction) === 'function') {
+            return card.allowGameAction(this.gameAction(context), context);
+        }
+        if(!Array.isArray(this.gameAction)) {
+            return card.allowGameAction(this.gameAction, context);
+        }
+        return this.gameAction.every(gameAction => card.allowGameAction(gameAction, context));
     }
 
     /**

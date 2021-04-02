@@ -11,6 +11,12 @@ const GameActions = require('../GameActions/index.js');
 const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 const PlayWindow = require('./playwindow.js');
 
+const DefaultMoveOptions = {
+    moveToPosse: true,
+    needToBoot: true,
+    allowBooted: false
+};
+
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
     constructor(game, phase, leader, mark, options = { isJob: false }) {
@@ -254,11 +260,7 @@ class Shootout extends Phase {
     gatherPosses() {
         if(!this.checkEndCondition()) {
             this.actOnAllParticipants(dude => {
-                let dudeMoveOptions = this.moveOptions[dude.uuid] || {
-                    moveToPosse: true,
-                    needToBoot: true,
-                    allowBooted: false
-                };
+                let dudeMoveOptions = this.moveOptions[dude.uuid] || DefaultMoveOptions;
                 if(dudeMoveOptions.moveToPosse) {
                     dude.moveToShootoutLocation(dudeMoveOptions);
                 }
@@ -316,9 +318,9 @@ class Shootout extends Phase {
         let locationCard = this.shootoutLocation.locationCard;
         if(locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
             if(locationCard.owner !== this.leaderPlayer) {
-                this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
+                this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
             } else {
-                this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
+                this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
             }
         }
     }
@@ -378,7 +380,8 @@ class Shootout extends Phase {
     }
     
     addMoveOptions(dude, options) {
-        this.moveOptions[dude.uuid] = options;
+        let moveOptions = this.moveOptions[dude.uuid] || DefaultMoveOptions;
+        this.moveOptions[dude.uuid] = Object.assign(moveOptions, options);
     }
 
     recordJobStatus() {

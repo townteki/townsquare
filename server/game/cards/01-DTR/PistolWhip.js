@@ -12,7 +12,8 @@ class PistolWhip extends ActionCard {
             target: {
                 activePromptTitle: 'Select dude to whip',
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: ['sendHome', 'boot', 'removeFromPosse']
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this),

@@ -16,7 +16,7 @@ class PinnedDown extends ActionCard {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: [
-                        ability.effects.selectAsFirstCasualty()
+                        ability.effects.selectAsFirstCasualty(this)
                     ]
                 }));
                 let eventHandler = event => {
