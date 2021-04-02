@@ -1,25 +1,6 @@
 const ActionCard = require('../../actioncard.js');
 
 class FriendsInHighPlaces extends ActionCard {
-    countPosseInfluence(posse) {
-        let totalInfluence = 0;
-        posse.forEach(dudeUuid => {
-            let dude = this.game.findCardInPlayByUuid(dudeUuid);
-            let amount = dude.getStat('influence');
-            totalInfluence = totalInfluence + amount;
-            return totalInfluence;
-        });
-    }
-
-    getPosseInfluences(context) {
-        let playerPosseDudes = this.game.shootout.getPosseByPlayer(context.player).getDudes();
-        let opponentPosseDudes = this.game.shootout.getPosseByPlayer(context.player.getOpponent()).getDudes();
-        let playerPosseInfluence = this.countPosseInfluence(playerPosseDudes);
-        let opponentPosseInfluence = this.countPosseInfluence(opponentPosseDudes);
-        let greaterInfluence = playerPosseInfluence > opponentPosseInfluence;
-        return greaterInfluence;
-    }
-
     setupCardAbilities() {
         this.reaction({
             when: {
@@ -42,29 +23,38 @@ class FriendsInHighPlaces extends ActionCard {
                 }));
             }
         });
+        
         this.action({
             title: 'Shootout: Friends in High Places',
             playType: 'shootout',
-            //condition: context => this.getPosseInfluences(context),
+            condtion: () => this.getPosseInfluence(this.controller) > this.getPosseInfluence(this.controller.getOpponent()),
             handler: context => {
-                this.game.promptForSelect({
+                this.game.promptForSelect(context.player, {
                     activeTitlePrompt: 'Select a dude to make a stud',
                     waitingTitlePrompt: 'Waiting for opponent to select a dude',
-                    cardCondition: { location: 'play area', controller: this.controller, 
+                    cardCondition: { location: 'play area', controller: context.player, 
                         condition: card => card.isParticipating},
                     cardType: 'dude',
-                    onSelect: (dudeToStud) => {
+                    onSelect: (player, dudeToStud) => {
                         this.applyAbilityEffect(context.ability, ability => ({
                             match: dudeToStud,
-                            effect: [
-                                ability.effects.setAsStud()
-                            ]
+                            effect: ability.effects.setAsStud()
                         }));
                         this.game.addMessage('{0} uses {1} to make {2} a stud', context.player, this, dudeToStud);
                     }
                 });
             }
         });
+    }
+
+    getPosseInfluence(player) {
+        let playerPosseDudes = this.game.shootout.getPosseByPlayer(player).getDudes();
+        let totalInfluence = 0;
+        playerPosseDudes.forEach(dude => {
+            let amount = dude.influence;
+            totalInfluence += amount;
+        });
+        return totalInfluence;
     }
 }
 
