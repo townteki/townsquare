@@ -43,7 +43,8 @@ class BloodCurse extends SpellCard {
                     controller: 'opponent', 
                     participating: true
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'decreaseBullets'
             },
             difficulty: 9,
             onSuccess: (context) => {

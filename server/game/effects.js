@@ -7,31 +7,31 @@ const GhostRockSource = require('./GhostRockSource.js');
 
 function cannotEffect(type, playType) {
     return function(controller, predicate) {
-        return restrictionEffect(new CannotRestriction(type, playType, controller, predicate));
+        return cardRestrictionEffect(new CannotRestriction(type, playType, controller, predicate));
     };
 }
 
 // if specific ability play type cannot be played on card (e.g. shootout, resolution)
 function cannotEffectPlayType(playType) {
     return function(controller, predicate) {
-        return restrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
+        return cardRestrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
     };
 }
 
 // if specific game actions cannot be played on card (e.g. ace, discard, callout, target)
 function cannotEffectType(type) {
     return function(controller, predicate) {
-        return restrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
+        return cardRestrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
     };
 }
 
-function restrictionEffect(restriction) {
+function cardRestrictionEffect(restrictions) {
     return {
         apply: function(card) {
-            card.addAbilityRestriction(restriction);
+            card.addAbilityRestriction(restrictions);
         },
         unapply: function(card) {
-            card.removeAbilityRestriction(restriction);
+            card.removeAbilityRestriction(restrictions);
         }
     }; 
 }
@@ -49,14 +49,14 @@ function losesAspectEffect(aspect) {
     };
 }
 
-function shootoutOptionEffect(key) {
-    return function() {
+function optionEffect(key) {
+    return function(source, condition) {
         return {
             apply: function(card) {
-                card.shootoutOptions.add(key);
+                card.options.add(key, source, condition);
             },
             unapply: function(card) {
-                card.shootoutOptions.remove(key);
+                card.options.remove(key, source);
             }
         };
     };
@@ -110,6 +110,7 @@ function conditionalAdjacency() {
 const Effects = {
     setAsStud: function(sourceUuid) {
         return {
+            gameAction: 'setAsStud',
             apply: function(card) {
                 if(card.getType() === 'dude') {
                     card.addStudEffect(sourceUuid, 'Stud');
@@ -124,6 +125,7 @@ const Effects = {
     },
     setAsDraw: function(sourceUuid) {
         return {
+            gameAction: 'setAsDraw',
             apply: function(card) {
                 if(card.getType() === 'dude') {
                     card.addStudEffect(sourceUuid, 'Draw');
@@ -182,7 +184,7 @@ const Effects = {
             }
         };
     },
-    doesNotGetBountyOnJoin: shootoutOptionEffect('doesNotGetBountyOnJoin'),
+    doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin'),
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },
@@ -658,6 +660,13 @@ const Effects = {
         return definition;
     },
     cannotBeCalledOut: cannotEffectType('callout'),
+    cannotBeAced: cannotEffectType('ace'),
+    cannotBeDiscarded: cannotEffectType('discard'),
+    cannotBeBooted: cannotEffectType('boot'),
+    cannotIncreaseBullets: cannotEffectType('increaseBullets'),
+    cannotDecreaseBullets: cannotEffectType('decreaseBullets'),
+    cannotBeSetToDraw: cannotEffectType('setAsDraw'),
+    cannotDecreaseInfluence: cannotEffectType('decreaseInfluence'),
     cannotPlay: function(condition) {
         let restriction = (card, playingType) => card.getType() === 'event' && playingType === 'play' && condition(card);
         return this.cannotPutIntoPlay(restriction);
@@ -677,42 +686,10 @@ const Effects = {
         let restriction = (card, playingType) => playingType === 'setup' && condition(card);
         return this.cannotPutIntoPlay(restriction);
     },
-    cannotBeAffectedByShootout: cannotEffectPlayType('shootout', 'opponent'),
+    cannotBeAffected: cannotEffect(),
+    cannotBeAffectedByShootout: cannotEffectPlayType('shootout'),
     cannotBeTargetedByShootout: cannotEffect('target', 'shootout'),
     cannotBeTargeted: cannotEffectType('target'),
-    cannotGainGold: function() {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.maxGoldGain.setMax(0);
-            },
-            unapply: function(player) {
-                player.maxGoldGain.removeMax(0);
-            }
-        };
-    },
-    setMaxGoldGain: function(max) {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.maxGoldGain.setMax(max);
-            },
-            unapply: function(player) {
-                player.maxGoldGain.removeMax(max);
-            }
-        };
-    },
-    setMaxCardDraw: function(max) {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.maxCardDraw.setMax(max);
-            },
-            unapply: function(player) {
-                player.maxCardDraw.removeMax(max);
-            }
-        };
-    },
     cannotWinGame: function() {
         return {
             targetType: 'player',
@@ -802,7 +779,13 @@ const Effects = {
         };
     },
     selectAsFirstCasualty: function() {
-        return shootoutOptionEffect('isSelectedAsFirstCasualty')();
+        return optionEffect('isSelectedAsFirstCasualty')();
+    },
+    cannotBeChosenAsCasualty: function() {
+        return optionEffect('cannotBeChosenAsCasualty')();
+    },
+    cannotBeTraded: function() {
+        return optionEffect('cannotBeTraded')();
     },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {

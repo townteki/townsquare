@@ -594,13 +594,21 @@ class BaseCard {
         return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller));
     }
 
-    addAbilityRestriction(restriction) {
-        this.abilityRestrictions.push(restriction);
+    addAbilityRestriction(restrictions) {
+        let restrArray = restrictions;
+        if(!Array.isArray(restrictions)) {
+            restrArray = [restrictions];
+        }
+        restrArray.forEach(r => this.abilityRestrictions.push(r));
         this.markAsDirty();
     }
 
-    removeAbilityRestriction(restriction) {
-        this.abilityRestrictions = this.abilityRestrictions.filter(r => r !== restriction);
+    removeAbilityRestriction(restrictions) {
+        let restrArray = restrictions;
+        if(!Array.isArray(restrictions)) {
+            restrArray = [restrictions];
+        }
+        this.abilityRestrictions = this.abilityRestrictions.filter(r => !restrArray.includes(r));
         this.markAsDirty();
     }
 

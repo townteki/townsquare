@@ -11,7 +11,8 @@ class CartersBounties extends DeedCard {
             target: {
                 activePromptTitle: 'Select dude to join posse',
                 cardCondition: { location: 'play area', condition: card => !card.isParticipating() },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'joinPosse'
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to move {2} to posse.', context.player, this, context.target),
