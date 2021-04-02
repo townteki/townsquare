@@ -23,17 +23,17 @@ class FriendsInHighPlaces extends ActionCard {
                 }));
             }
         });
-        
+
         this.action({
             title: 'Shootout: Friends in High Places',
             playType: 'shootout',
-            condtion: () => this.getPosseInfluence(this.controller) > this.getPosseInfluence(this.controller.getOpponent()),
+            condition: () => this.getPosseInfluence(this.controller) > this.getPosseInfluence(this.controller.getOpponent()),
             handler: context => {
                 this.game.promptForSelect(context.player, {
                     activeTitlePrompt: 'Select a dude to make a stud',
                     waitingTitlePrompt: 'Waiting for opponent to select a dude',
                     cardCondition: { location: 'play area', controller: context.player, 
-                        condition: card => card.isParticipating},
+                        condition: card => card.isParticipating() && card.isDraw()},
                     cardType: 'dude',
                     onSelect: (player, dudeToStud) => {
                         this.applyAbilityEffect(context.ability, ability => ({
@@ -41,6 +41,7 @@ class FriendsInHighPlaces extends ActionCard {
                             effect: ability.effects.setAsStud()
                         }));
                         this.game.addMessage('{0} uses {1} to make {2} a stud', context.player, this, dudeToStud);
+                        return true;
                     }
                 });
             }
@@ -49,12 +50,7 @@ class FriendsInHighPlaces extends ActionCard {
 
     getPosseInfluence(player) {
         let playerPosseDudes = this.game.shootout.getPosseByPlayer(player).getDudes();
-        let totalInfluence = 0;
-        playerPosseDudes.forEach(dude => {
-            let amount = dude.influence;
-            totalInfluence += amount;
-        });
-        return totalInfluence;
+        return playerPosseDudes.map(dude => dude.influence).reduce((memo, influence) => memo + influence, 0);
     }
 }
 
