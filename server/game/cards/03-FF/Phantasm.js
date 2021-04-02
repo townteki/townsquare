@@ -21,7 +21,7 @@ class Phantasm extends SpellCard {
             },
             difficulty: 9,
             onSuccess: context => {
-                this.game.promptForSelect(this.controller, {
+                this.game.promptForLocation(this.controller, {
                     promptTitle: this.title,
                     activePromptTitle: 'Select where the dude should move to',
                     waitingPromptTitle: 'Waiting for opponent to select location',
