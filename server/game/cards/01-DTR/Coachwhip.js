@@ -9,7 +9,13 @@ class Coachwhip extends ActionCard {
             target: {
                 choosingPlayer: 'thisIfLegal',
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
-                cardType: 'dude'
+                cardType: 'dude',
+                gameAction: () => {
+                    if(this.game.shootout) {
+                        return 'ace';
+                    }
+                    return 'boot';
+                }
             },
             handler: context => {
                 let action = null;

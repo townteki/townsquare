@@ -15,6 +15,7 @@ class FlameThrower extends GoodsCard {
                 ability.costs.bootSelf(),
                 ability.costs.payXGhostRock(() => 1, () => 3)
             ],
+            actionContext: { card: this, gameAction: 'increaseBullets' },
             message: context => this.game.addMessage('{0} uses {1} to boost its bullets by {2}', 
                 context.player, this, context.grCost),
             handler: context => {

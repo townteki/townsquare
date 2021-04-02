@@ -11,6 +11,7 @@ class KevinWainwright extends DudeCard {
                 cardCondition: { location: 'play area', controller: 'current', condition: card => card.hasKeyword('huckster') },
                 cardType: ['dude']
             },
+            actionContext: { card: this, gameAction: 'moveDude' },
             message: context => 
                 this.game.addMessage('{0} uses {1} to move him to {2}\'s location and make him a stud', context.player, this, context.target),
             handler: context => {
