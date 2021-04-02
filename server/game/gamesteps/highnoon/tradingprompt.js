@@ -25,7 +25,8 @@ class TradingPrompt extends UiPrompt {
                         numCards: 0,
                         cardCondition: swapCard => swapCard.getType() === 'goods' && 
                             swapCard.parent === toDudeCard &&
-                            !swapCard.wasTraded(),
+                            !swapCard.wasTraded() &&
+                            !swapCard.cannotBeTraded(),
                         onSelect: (tradingPlayer, swapCards) => {
                             swapCards.forEach(swapCard => toDudeCard.removeAttachment(swapCard));
                             this.attachAttachments(this.attachments, this.fromDudeCard, toDudeCard, 'traded');

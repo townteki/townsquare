@@ -167,6 +167,7 @@ class TownSquare extends GameLocation {
             title: 'Town Square', 
             uuid: TownSquareUUID,
             getType: () => 'townsquare',
+            location: 'play area',
             getGameLocation: () => this,
             gamelocation: 'townsquare',
             allowGameAction: () => true

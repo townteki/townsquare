@@ -10,7 +10,8 @@ class RailroadStation extends DeedCard {
             target:{
                 activePromptTitle: 'Select dude to move from this location',
                 cardCondition: { location: 'play area', controller: 'current', condition: card => card.locationCard === this },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'moveDude'
             },
             handler: context => {
                 this.game.promptForLocation(context.player, {

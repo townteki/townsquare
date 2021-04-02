@@ -8,7 +8,13 @@ class MorganResearchInstitute extends DeedCard {
             cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Select skilled dude',
-                cardCondition: { location: 'play area', controller: 'any', condition: card => card.locationCard === this && card.isSkilled()}, 
+                cardCondition: { 
+                    location: 'play area', 
+                    controller: 'any', 
+                    condition: card => card.locationCard === this && 
+                        card.isSkilled() &&
+                        (card.allowGameAction('increaseSkill') || card.allowGameAction('decreaseSkill'))
+                }, 
                 cardType: ['dude']
             },
             handler: context => {
@@ -38,8 +44,18 @@ class MorganResearchInstitute extends DeedCard {
             activePrompt: {
                 menuTitle: `Raise or lower ${skill.charAt(0).toUpperCase() + skill.slice(1)} skill?`,
                 buttons: [
-                    { text: 'Raise by 2', arg: skill, method: 'raise' },
-                    { text: 'Lower by 2', arg: skill, method: 'lower' }
+                    { 
+                        text: 'Raise by 2', 
+                        arg: skill, 
+                        method: 'raise',
+                        disabled: !this.abilityContext.target.allowGameAction('increaseSkill')
+                    },
+                    { 
+                        text: 'Lower by 2', 
+                        arg: skill, 
+                        method: 'lower',
+                        disabled: !this.abilityContext.target.allowGameAction('decreaseSkill')
+                    }
                 ]
             },
             source: this
