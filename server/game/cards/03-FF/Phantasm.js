@@ -21,16 +21,22 @@ class Phantasm extends SpellCard {
             },
             difficulty: 9,
             onSuccess: context => {
-                this.game.promptForLocation(this.controller, {
+                this.game.promptForSelect(this.controller, {
                     promptTitle: this.title,
                     activePromptTitle: 'Select where the dude should move to',
                     waitingPromptTitle: 'Waiting for opponent to select location',
-                    cardCondition: card => card.location === 'play area' && card.getGameLocation().isAdjacent(context.target.uuid),
+                    cardCondition: {
+                        location: 'play area',
+                        condition: card => 
+                            card.getGameLocation().isAdjacent(context.target.gamelocation)
+                    },
+                    cardType: ['location', 'townsquare'],
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 
                             targetUuid: location.uuid
-                        }), context);   
+                        }), context);
+                        this.game.addMessage(this.game.townsquare.locationCard.getType())   
                         this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, context.target, location);
                         return true;
                     }
@@ -55,10 +61,17 @@ class Phantasm extends SpellCard {
                 cardType: ['dude']
             },
             difficulty: 12,
-            onSuccess: (context) => {
-                this.game.promptForLocation(context.player, {
+            onSuccess: context => {
+                this.game.promptForSelect(this.controller, {
+                    promptTitle: this.title,
                     activePromptTitle: 'Select where the dude should move to',
                     waitingPromptTitle: 'Waiting for opponent to select location',
+                    cardCondition: {
+                        location: 'play area',
+                        condition: card => 
+                            card.getGameLocation().isAdjacent(context.target.gamelocation) &&
+                                card.isLocationCard()
+                    },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 
