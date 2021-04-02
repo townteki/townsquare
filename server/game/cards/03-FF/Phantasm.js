@@ -8,7 +8,7 @@ class Phantasm extends SpellCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
-                activePromptTitle: 'Select dude to be moved',
+                activePromptTitle: 'Select unbooted dude to move',
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'opponent', 
@@ -17,7 +17,8 @@ class Phantasm extends SpellCard {
                         card.getGameLocation().isAdjacent(this.gamelocation) &&
                         !card.booted
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'moveDude'
             },
             difficulty: 9,
             onSuccess: context => {
@@ -36,7 +37,6 @@ class Phantasm extends SpellCard {
                             card: context.target, 
                             targetUuid: location.uuid
                         }), context);
-                        this.game.addMessage(this.game.townsquare.locationCard.getType())   
                         this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, context.target, location);
                         return true;
                     }
@@ -50,33 +50,34 @@ class Phantasm extends SpellCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
-                activePromptTitle: 'Select dude to be moved',
+                activePromptTitle: 'Select booted dude to move',
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'opponent', 
                     condition: card => 
-                        card.gamelocation === this.gamelocation &&
+                        card.gamelocation === this.parent.gamelocation &&
                         card.booted
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'moveDude'
             },
             difficulty: 12,
             onSuccess: context => {
-                this.game.promptForSelect(this.controller, {
+                this.game.promptForLocation(this.controller, {
                     promptTitle: this.title,
                     activePromptTitle: 'Select where the dude should move to',
                     waitingPromptTitle: 'Waiting for opponent to select location',
                     cardCondition: {
                         location: 'play area',
                         condition: card => 
-                            card.getGameLocation().isAdjacent(context.target.gamelocation) &&
-                                card.isLocationCard()
+                            card.getGameLocation().isAdjacent(context.target.gamelocation)
                     },
+                    cardType: ['location', 'townsquare'],
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 
                             targetUuid: location.uuid
-                        }), context);   
+                        }), context);
                         this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, context.target, location);
                         return true;
                     }
