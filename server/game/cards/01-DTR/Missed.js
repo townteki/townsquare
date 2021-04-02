@@ -9,7 +9,8 @@ class Missed extends ActionCard {
             target: {
                 activePromptTitle: 'Select your dude to unboot',
                 cardCondition: { location: 'play area', controller: 'current', participating: true },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'unboot'
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.target),

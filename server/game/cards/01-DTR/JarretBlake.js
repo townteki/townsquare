@@ -18,7 +18,7 @@ class JarretBlake extends DudeCard {
                 this.game.addMessage('{0} uses {1} to swap him with {2}', context.player, this, context.target),
             handler: context => {
                 this.game.shootout.removeFromPosse(context.target);
-                context.player.moveDude(context.target, this.gamelocation, { needToBoot: false, allowBooted: true });
+                this.game.resolveGameAction(GameActions.moveDude({ card: context.target, targetUuid: this.gamelocation }));
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this }), context);
             }
         });

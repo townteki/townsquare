@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/125/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/127/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -43,7 +43,7 @@
 |:heavy_check_mark:   | 01029| Jon Longstride
 |:heavy_check_mark:   | 01030| Lane Healey
 |:heavy_check_mark:   | 01031| Jarrett Blake
-|                     | 01032| Harold Aimslee
+|:heavy_check_mark:   | 01032| Harold Aimslee
 |                     | 01033| Rémy LaPointe
 |                     | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
@@ -85,13 +85,13 @@
 |:heavy_check_mark:   | 01071| Bunkhouse
 |:heavy_check_mark:   | 01072| Morgan Research Institute
 |:heavy_check_mark:   | 01073| Carter's Bounties
-|                     | 01074| The Union Casino
+|:heavy_check_mark:   | 01074| The Union Casino
 |:white_check_mark:   | 01075| Jackson's Strike
 |                     | 01076| Undertaker
 |:heavy_check_mark:   | 01077| General Store
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
-|                     | 01080| Telegraph Office
+|:heavy_check_mark:   | 01080| Telegraph Office
 |                     | 01081| Pair of Six-Shooters
 |:heavy_check_mark:   | 01082| Bluetick
 |                     | 01083| Peacemaker
@@ -136,7 +136,7 @@
 |                     | 01122| One Good Turn…
 |:heavy_check_mark:   | 01123| Kidnappin'
 |:heavy_check_mark:   | 01124| Pinned Down
-|                     | 01125| Run 'Em Down!
+|:heavy_check_mark:   | 01125| Run 'Em Down!
 |:heavy_check_mark:   | 01126| Bounty Hunter
 |:heavy_check_mark:   | 01127| Reserves
 |                     | 01128| Rumors

@@ -26,10 +26,10 @@ If you only need help with setting the development IDE, please see [Development]
 - [x] Base Game engine (phases, shootouts, play actions etc) 
 - [x] Spell casting
 - [x] Gadget inventing
-- [ ] Legends
+- [x] Legends
 
 - [ ] Kung Fu
-- [ ] Deck Management
+- [x] Deck Management
 
 See [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md) of implemented card scripts.
 

@@ -137,7 +137,8 @@ class DudeCard extends DrawCard {
                 numCards: 0,
                 cardCondition: card => card.getType() === 'goods' && 
                     card.parent === this &&
-                    !card.wasTraded()
+                    !card.wasTraded() &&
+                    !card.cannotBeTraded()
             },
             targetController: 'current',
             handler: context => {
@@ -248,6 +249,10 @@ class DudeCard extends DrawCard {
         this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false } }));
         this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama.', this.owner, this, targetDude);
         return true;
+    }
+
+    hasHorse() {
+        return this.hasAttachment(att => att.hasKeyword('Horse'));
     }
 
     canAttachWeapon() {

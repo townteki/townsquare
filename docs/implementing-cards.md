@@ -152,7 +152,7 @@ this.traitReaction({
 
 Every time you will need to use game locations such as various deeds on your street, townsquare, outfit or others, use their `uuid` attribute. For example if I want to pass Town Square location to some function, I will use `game.townsquare.uuid`.
 
-**Important:** To get `uuid` of the current location of a card, you can either use attribute `gamelocation` or `getLocation().uuid`. Every type of card except action cards has a `gamelocation` attribute.
+**Important:** To get `uuid` of the current location of a card, you can either use attribute `gamelocation` or `getGameLocation().uuid`. Every type of card except action cards has a `gamelocation` attribute.
 
 For example to move a dude with Mustang to a target location:
 

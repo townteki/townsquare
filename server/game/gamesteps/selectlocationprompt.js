@@ -33,7 +33,9 @@ const SelectCardPrompt = require('./selectcardprompt.js');
 class SelectLocationPrompt extends SelectCardPrompt {
     constructor(game, choosingPlayer, properties) {
         super(game, choosingPlayer, properties);
-        this.properties.additionalButtons.push({ text: 'Town Square', arg: 'townsquare' });
+        if(this.isTownsquareValid(properties.cardCondition)) {
+            this.properties.additionalButtons.push({ text: 'Town Square', arg: 'townsquare' });
+        }
         this.activePromptTitle = this.properties.activePromptTitle || 'Select target location for movement';
     }
 
@@ -41,8 +43,7 @@ class SelectLocationPrompt extends SelectCardPrompt {
         let cardPrompt = super.defaultProperties();
         return Object.assign({ 
             cardType: ['location'],
-            numCards: 1,
-            autoSelect: true
+            numCards: 1
         }, cardPrompt);
     }
 
@@ -58,6 +59,19 @@ class SelectLocationPrompt extends SelectCardPrompt {
         }
 
         super.onMenuCommand(player, arg);
+    }
+
+    isTownsquareValid(propertiesOrFunc) {
+        if(!propertiesOrFunc) {
+            return true;        
+        }
+        if(typeof(propertiesOrFunc) === 'function') {
+            return propertiesOrFunc(this.game.townsquare.locationCard);
+        }
+        if(propertiesOrFunc.condition) {
+            return propertiesOrFunc.condition(this.game.townsquare.locationCard);
+        }
+        return true;
     }
 }
 

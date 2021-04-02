@@ -5,6 +5,7 @@ const AllowedSpecialTargets = [
     'townsquare',
     'currentHome'
 ];
+const TownsquareTargets = ['townsquare', 'location'];
 
 /**
  * Base class that represents card selection requirements and the behaviours of
@@ -41,14 +42,15 @@ class BaseCardSelector {
         if(this.isSpecialTarget()) {
             this.cardCondition = CardMatcher.createMatcher({ 
                 location: 'play area', 
-                controller: properties.cardCondition.controller || 'any'
+                controller: properties.cardCondition.controller || 'any',
+                condition: properties.cardCondition.condition || (() => true)
             });
         } else {
             this.cardCondition = CardMatcher.createMatcher(properties.cardCondition);
         }
 
         if(this.cardType.includes('location')) {
-            this.cardType = this.cardType.concat(['deed', 'outfit']);
+            this.cardType = this.cardType.concat(['townsquare', 'deed', 'outfit']);
         }
     }
 
@@ -76,7 +78,19 @@ class BaseCardSelector {
     }
 
     isAllowedForGameAction(card, context) {
-        return !this.isCardEffect || card.allowGameAction('target', context) && card.allowGameAction(this.gameAction);
+        if(!this.isCardEffect) {
+            return true;
+        }
+        if(!card.allowGameAction('target', context)) {
+            return false;
+        }
+        if(typeof(this.gameAction) === 'function') {
+            return card.allowGameAction(this.gameAction(context), context);
+        }
+        if(!Array.isArray(this.gameAction)) {
+            return card.allowGameAction(this.gameAction, context);
+        }
+        return this.gameAction.every(gameAction => card.allowGameAction(gameAction, context));
     }
 
     /**
@@ -108,6 +122,10 @@ class BaseCardSelector {
      * @returns {boolean}
      */
     hasEnoughTargets(context) {
+        if(this.cardType.some(cardType => TownsquareTargets.includes(cardType)) && 
+            this.canTarget(context.game.townsquare.locationCard, context)) {
+            return true;
+        }
         return this.optional || this.isSpecialTarget() ||
             context.game.allCards.some(card => this.canTarget(card, context));
     }
