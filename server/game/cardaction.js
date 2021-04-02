@@ -42,6 +42,7 @@ class CardAction extends PlayTypeAbility {
         this.ifCondition = properties.ifCondition;
         this.ifFailMessage = properties.ifFailMessage;
         this.clickToActivate = !!properties.clickToActivate;
+        this.actionContext = properties.actionContext;
         if(properties.location) {
             if(Array.isArray(properties.location)) {
                 this.location = properties.location;
@@ -91,6 +92,22 @@ class CardAction extends PlayTypeAbility {
         return this.card.controller === player || this.anyPlayer;
     }
 
+    allowGameAction(context) {
+        if(!this.gameAction.allow(context)) {
+            return false;
+        }
+        if(!this.actionContext || !this.actionContext.card || !this.actionContext.gameAction) {
+            return true;
+        }
+        if(typeof(this.gameAction) === 'function') {
+            return this.actionContext.card.allowGameAction(this.gameAction(context), context);
+        }
+        if(!Array.isArray(this.actionContext.gameAction)) {
+            return this.actionContext.card.allowGameAction(this.actionContext.gameAction, context);
+        }
+        return this.actionContext.gameAction.every(gameAction => this.actionContext.card.allowGameAction(gameAction, context));
+    }
+
     meetsRequirements(context) {
         if(!super.meetsRequirements(context)) {
             return false;
@@ -132,7 +149,10 @@ class CardAction extends PlayTypeAbility {
             return false;
         }
 
-        return this.canResolvePlayer(context) && this.canPayCosts(context) && this.canResolveTargets(context) && this.gameAction.allow(context);
+        return this.canResolvePlayer(context) && 
+            this.canPayCosts(context) && 
+            this.canResolveTargets(context) && 
+            this.allowGameAction(context);
     }
 
     // Main execute function that excutes the ability. Once the targets are selected, the executeHandler is called.

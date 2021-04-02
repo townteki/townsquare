@@ -137,7 +137,8 @@ class DudeCard extends DrawCard {
                 numCards: 0,
                 cardCondition: card => card.getType() === 'goods' && 
                     card.parent === this &&
-                    !card.wasTraded()
+                    !card.wasTraded() &&
+                    !card.cannotBeTraded()
             },
             targetController: 'current',
             handler: context => {

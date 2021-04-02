@@ -318,9 +318,9 @@ class Shootout extends Phase {
         let locationCard = this.shootoutLocation.locationCard;
         if(locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
             if(locationCard.owner !== this.leaderPlayer) {
-                this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
+                this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
             } else {
-                this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.shootoutOptions.contains('doesNotGetBountyOnJoin'));
+                this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
             }
         }
     }

@@ -1,7 +1,7 @@
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
-const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty.js');
+const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
 const LocationsWithEventHandling = ['play area', 'legend'];
 
@@ -20,7 +20,7 @@ class DrawCard extends BaseCard {
         }       
         
         this.actionPlacementLocation = 'discard pile';
-        this.shootoutOptions = new ReferenceCountedSetProperty();
+        this.options = new ReferenceConditionalSetProperty();
     }
 
     get gamelocation() {
@@ -68,7 +68,7 @@ class DrawCard extends BaseCard {
         clone.attachments = this.attachments.map(attachment => attachment.createSnapshot());
         clone.booted = this.booted;
         clone.parent = this.parent;
-        clone.shootoutOptions = this.shootoutOptions;
+        clone.options = this.options;
 
         return clone;
     }
@@ -254,7 +254,7 @@ class DrawCard extends BaseCard {
             return true;
         }
 
-        let tradingAttachments = attsFitCondition.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded());
+        let tradingAttachments = attsFitCondition.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded() && !attachment.cannotBeTraded());
         return tradingAttachments.length > 0;
     }
     
@@ -307,7 +307,15 @@ class DrawCard extends BaseCard {
     }
 
     isSelectedAsFirstCasualty() {
-        return this.shootoutOptions.contains('isSelectedAsFirstCasualty');
+        return this.options.contains('isSelectedAsFirstCasualty', this);
+    }
+
+    cannotBeChosenAsCasualty() {
+        return this.options.contains('cannotBeChosenAsCasualty', this);
+    }
+
+    cannotBeTraded() {
+        return this.options.contains('cannotBeTraded', this);
     }
 
     canBeAced() {
