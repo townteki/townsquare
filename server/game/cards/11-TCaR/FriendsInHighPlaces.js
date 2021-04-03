@@ -53,7 +53,7 @@ class FriendsInHighPlaces extends ActionCard {
 
     getPosseInfluence(player) {
         let playerPosseDudes = this.game.shootout.getPosseByPlayer(player).getDudes();
-        return playerPosseDudes.map(dude => dude.influence).reduce((memo, influence) => memo + influence, 0);
+        return playerPosseDudes.reduce((memo, dude) => memo + dude.influence, 0);
     }
 }
 
