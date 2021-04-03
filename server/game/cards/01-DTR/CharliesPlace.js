@@ -8,7 +8,12 @@ class CharliesPlace extends DeedCard {
             cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Select dude to raise or lower bullets by 2',
-                cardCondition: { location: 'play area', controller: 'any', condition: card => card.locationCard === this },
+                cardCondition: { 
+                    location: 'play area', 
+                    controller: 'any', 
+                    condition: card => card.locationCard === this &&
+                        (card.allowGameAction('increaseBullets') || card.allowGameAction('decreaseBullets'))
+                },
                 cardType: ['dude']
             },
             handler: context => {
@@ -17,8 +22,16 @@ class CharliesPlace extends DeedCard {
                     activePrompt: {
                         menuTitle: 'Raise or lower bullets (by 2)?',
                         buttons: [
-                            { text: 'Raise by 2', method: 'raise' },
-                            { text: 'Lower by 2', method: 'lower' }
+                            { 
+                                text: 'Raise by 2', 
+                                method: 'raise',
+                                disabled: !this.abilityContext.target.allowGameAction('increaseBullets')
+                            },
+                            { 
+                                text: 'Lower by 2', 
+                                method: 'lower',
+                                disabled: !this.abilityContext.target.allowGameAction('decreaseBullets')
+                            }
                         ]
                     },
                     source: this

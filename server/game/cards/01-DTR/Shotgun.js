@@ -11,7 +11,8 @@ class Shotgun extends GoodsCard {
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true, 
                     condition: card => card.value <= this.parent.bullets
                 },
-                cardType: 'dude'
+                cardType: 'dude',
+                gameAction: 'ace'
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} to ace {2}', this.controller, this, context.target),

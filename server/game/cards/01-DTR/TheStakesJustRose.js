@@ -8,7 +8,8 @@ class TheStakesJustRose extends ActionCard {
             playType: 'shootout:join',
             target: {
                 cardCondition: { location: 'play area', participating: false, controller: 'current'},
-                cardType: 'dude'
+                cardType: 'dude',
+                gameAction: 'joinPosse'
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} to bring {2} into posse and make them a stud', context.player, this, context.target),

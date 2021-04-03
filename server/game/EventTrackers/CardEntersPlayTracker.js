@@ -1,12 +1,16 @@
 class CardEntersPlayTracker {
-    static forPhase(game) {
-        return new CardEntersPlayTracker(game, 'onPhaseEnded');
+    static forPhase(game, condition) {
+        return new CardEntersPlayTracker(game, 'onPhaseEnded', condition);
     }
 
-    constructor(game, endingEvent) {
+    constructor(game, endingEvent, condition = () => true) {
         this.events = [];
 
-        game.on('onCardEntersPlay', event => this.trackEvent(event));
+        game.on('onCardEntersPlay', event => {
+            if(condition(event)) {
+                this.trackEvent(event);
+            }
+        });
         game.on(endingEvent, () => this.clearEvents());
     }
 

@@ -9,7 +9,8 @@ class TheEvidence extends GoodsCard {
             target: {
                 activePromptTitle: 'Select dude to be exonerated',
                 cardCondition: { location: 'play area', wanted: true },
-                cardType: 'dude'
+                cardType: 'dude',
+                gameAction: 'removeBounty'
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} on {2} to reduce their bounty to 0', context.player, this, context.target),
@@ -25,7 +26,8 @@ class TheEvidence extends GoodsCard {
             target: {
                 activePromptTitle: 'Select dude to be suspected',
                 cardCondition: { location: 'play area' },
-                cardType: 'dude'
+                cardType: 'dude',
+                gameAction: 'addBounty'
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} on {2} to increase their bounty by 2', context.player, this, context.target),
