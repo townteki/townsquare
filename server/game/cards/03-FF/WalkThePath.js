@@ -11,7 +11,8 @@ class WalkThePath extends SpellCard {
             target: {
                 activePromptTitle: 'Select your dude to move',
                 cardCondition: { location: 'play area' },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'moveDude'
             },
             onSuccess: (context) => {
                 this.game.resolveGameAction(GameActions.moveDude({ 
@@ -32,7 +33,8 @@ class WalkThePath extends SpellCard {
             target: {
                 activePromptTitle: 'Select your dude to join',
                 cardCondition: { location: 'play area', participating: false },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'joinPosse'
             },
             onSuccess: (context) => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }), context).thenExecute(event => {

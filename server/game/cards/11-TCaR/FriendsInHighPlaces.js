@@ -33,8 +33,8 @@ class FriendsInHighPlaces extends ActionCard {
             },
             handler: context => {
                 this.game.promptForSelect(context.player, {
-                    activeTitlePrompt: 'Select a dude to make a stud',
-                    waitingTitlePrompt: 'Waiting for opponent to select a dude',
+                    activePromptTitle: 'Select a dude to make a stud',
+                    waitingPromptTitle: 'Waiting for opponent to select a dude',
                     cardCondition: { location: 'play area', controller: context.player, 
                         condition: card => card.isParticipating() && card.isDraw()},
                     cardType: 'dude',
@@ -53,7 +53,7 @@ class FriendsInHighPlaces extends ActionCard {
 
     getPosseInfluence(player) {
         let playerPosseDudes = this.game.shootout.getPosseByPlayer(player).getDudes();
-        return playerPosseDudes.map(dude => dude.influence).reduce((memo, influence) => memo + influence, 0);
+        return playerPosseDudes.reduce((memo, dude) => memo + dude.influence, 0);
     }
 }
 

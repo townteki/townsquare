@@ -10,7 +10,8 @@ class TheSloaneGang extends OutfitCard {
             target: {
                 activePromptTitle: 'Select dude in Town Square',
                 cardCondition: { location: 'play area', condition: card => card.getGameLocation().isTownSquare() },
-                cardType: 'dude'
+                cardType: 'dude',
+                gameAction: 'boot'
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to assign mission of holding Town Square to {2}', context.player, this, context.target),

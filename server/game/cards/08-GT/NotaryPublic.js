@@ -15,7 +15,8 @@ class NotaryPublic extends DeedCard {
                     card.hasOneOfKeywords(['Government', 'Public']) &&
                     this.isSameStreet(card)
                 },
-                cardType: ['deed']
+                cardType: ['deed'],
+                gameAction: 'boot'
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);

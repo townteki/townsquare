@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/128/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/132/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -44,7 +44,7 @@
 |:heavy_check_mark:   | 01030| Lane Healey
 |:heavy_check_mark:   | 01031| Jarrett Blake
 |:heavy_check_mark:   | 01032| Harold Aimslee
-|                     | 01033| Rémy LaPointe
+|:heavy_check_mark:   | 01033| Rémy LaPointe
 |                     | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
 |                     | 01036| Fred Aims
@@ -85,13 +85,13 @@
 |:heavy_check_mark:   | 01071| Bunkhouse
 |:heavy_check_mark:   | 01072| Morgan Research Institute
 |:heavy_check_mark:   | 01073| Carter's Bounties
-|                     | 01074| The Union Casino
+|:heavy_check_mark:   | 01074| The Union Casino
 |:white_check_mark:   | 01075| Jackson's Strike
 |                     | 01076| Undertaker
 |:heavy_check_mark:   | 01077| General Store
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
-|                     | 01080| Telegraph Office
+|:heavy_check_mark:   | 01080| Telegraph Office
 |                     | 01081| Pair of Six-Shooters
 |:heavy_check_mark:   | 01082| Bluetick
 |                     | 01083| Peacemaker
@@ -105,7 +105,7 @@
 |:heavy_check_mark:   | 01091| Flame-Thrower
 |                     | 01092| Force Field
 |:heavy_check_mark:   | 01093| Quickdraw Handgun
-|                     | 01094| Mechanical Horse
+|:heavy_check_mark:   | 01094| Mechanical Horse
 |                     | 01095| Tin Star
 |                     | 01096| Doyle's Hoyle
 |:heavy_check_mark:   | 01097| Buffalo Rifle
@@ -142,7 +142,7 @@
 |                     | 01128| Rumors
 |:heavy_check_mark:   | 01129| Cheatin' Varmint
 |                     | 01130| Fresh Horses
-|                     | 01131| Magical Distraction
+|:heavy_check_mark:   | 01131| Magical Distraction
 |                     | 01132| Extortion
 |:heavy_check_mark:   | 01133| Recruitment Drive
 |:heavy_check_mark:   | 01134| Unprepared
@@ -178,7 +178,7 @@
 |                     | 02013| Telepathy Helmet
 |                     | 02014| Faithful Hound
 |                     | 02015| Plasma Drill
-|                     | 02016| Paralysis Mark
+|:heavy_check_mark:   | 02016| Paralysis Mark
 |                     | 02017| Forget
 |                     | 02018| Make 'em Sweat
 |                     | 02019| Back Ways

@@ -11,12 +11,14 @@ class ChargingBear extends DudeCard {
                 toAce: {
                     activePromptTitle: 'Select token dude to ace',
                     cardCondition: { location: 'play area', condition: card => card.isToken() },
-                    cardType: ['dude']
+                    cardType: ['dude'],
+                    gameAction: 'ace'
                 },
                 toBootHome: {
                     activePromptTitle: 'Select an opposing dude to send home booted',
                     cardCondition: { location: 'play area', controller: 'opponent', participating: true },
-                    cardType: ['dude']
+                    cardType: ['dude'],
+                    gameAction: ['sendHome', 'boot', 'removeFromPosse']
                 }
             },
             message: context => {
