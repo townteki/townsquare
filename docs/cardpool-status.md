@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/131/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/132/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -750,7 +750,7 @@
 |                     | 19040| Grim Servant O' Death
 |                     | 19041| Behold White Bull
 |                     | 19042| You Had ONE Job!
-|                     | 19043| Friends in High Places
+|:heavy_check_mark:   | 19043| Friends in High Places
 |                     | 19044| Shan Fan Showdown!
 |:heavy_check_mark:   | 19045| The Winning Agenda
 
