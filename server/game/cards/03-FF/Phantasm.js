@@ -13,8 +13,8 @@ class Phantasm extends SpellCard {
                     location: 'play area', 
                     controller: 'opponent', 
                     condition: card => 
-                        card.gamelocation === this.gamelocation ||
-                        card.getGameLocation().isAdjacent(this.gamelocation) &&
+                        (card.gamelocation === this.gamelocation ||
+                        card.getGameLocation().isAdjacent(this.gamelocation)) &&
                         !card.booted
                 },
                 cardType: ['dude'],
