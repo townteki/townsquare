@@ -1,0 +1,26 @@
+#Test plan
+
+### Philosophy
+* It's cheaper to bake in quality early than trying to sprinkle it on top later.
+* Test at the lowest level that is responsible. Write unit tests over integration tests, integration tests over system level tests.
+* Automate what you can. We will probably end up with some manual test scripts, but they should be relatively small in number.
+* Flaky tests just make people distrust the tests. If you need help, get help to fix it.
+
+### What to test
+* Basic interactions of the game should be tested (callouts, playing action cards, etc.).
+* If a bug is reported, there should be a test checked in as part of the bug fix.
+* Complex card interactions (Grim Servant O' Death is a good example)
+* If in doubt, write a test. You'll never get yelled at for having one too many tests in your code. :)
+
+### What not to test
+* Not every card needs a test. This includes plain dudes without any card text, as well as relatively simple cards like Tusk.
+
+### How to test
+* Start by identifying the main "happy" path for the code you're writing.
+* Then identify any edge cases that are relevant for the you're writing.
+* Finally, start building up tests. Your tests should test functionality, not implementation (i.e. they should not need to be updated because of internal changes to what code you're writing)
+
+### Tools to use
+* Unit/Integration tests: Jasmine
+* System tests: TBD
+* Load/Stress tests: TBD
