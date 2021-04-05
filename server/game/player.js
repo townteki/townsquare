@@ -47,6 +47,7 @@ class Player extends Spectator {
         this.keywordSettings = user.settings.keywordSettings;
 
         this.rankModifier = 0;
+        this.casualtiesMod = 0;
         this.casualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;

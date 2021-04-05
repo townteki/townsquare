@@ -34,6 +34,7 @@ class Shootout extends Phase {
             this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
         }
 
+        this.winnerCasualtiesMod = 0;
         this.loserCasualtiesMod = 0;
         this.jobSuccessful = null;
         this.headlineUsed = false;
@@ -101,11 +102,13 @@ class Shootout extends Phase {
 
     resetForTheRound() {
         this.winner = null;
-        this.looser = null;
+        this.loser = null;
         this.leaderPlayer.rankModifier = 0;
         this.leaderPlayer.casualties = 0;
         this.opposingPlayer.rankModifier = 0;
         this.opposingPlayer.casualties = 0;
+        this.leaderPlayer.casualtiesMod = 0;
+        this.opposingPlayer.casualtiesMod = 0;
     }
 
     beginShootoutRound() {
@@ -341,7 +344,10 @@ class Shootout extends Phase {
         this.loser = this.leaderPlayer;
         if(leaderRank === opposingRank) {
             let tiebreakResult = this.game.resolveTiebreaker(this.leaderPlayer, this.opposingPlayer);
-            this.leaderPlayer.casualties = this.opposingPlayer.casualties = 1;
+            this.leaderPlayer.casualties += 1;
+            this.opposingPlayer.casualties += 1;
+            this.leaderPlayer.modifyCasualties(this.leaderPlayer.casualtiesMod);
+            this.opposingPlayer.modifyCasualties(this.opposingPlayer.casualtiesMod);
             if(tiebreakResult.decision === 'exact tie') {
                 this.game.addMessage('Shootout ended in an exact tie, there is no winner or loser.');
                 this.shootoutLoseWinOrder = [this.leaderPlayer.name, this.opposingPlayer.name];
@@ -361,6 +367,7 @@ class Shootout extends Phase {
             this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', this.winner, Math.abs(leaderRank - opposingRank));
         }
         this.loser.casualties += this.loserCasualtiesMod;
+        this.winner.casualties += this.winnerCasualtiesMod;
         this.shootoutLoseWinOrder = [this.loser.name, this.winner.name];
     }
 
