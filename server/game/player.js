@@ -294,8 +294,20 @@ class Player extends Spectator {
         this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }
 
-    drawCardsToHand(numCards = 1, target = 'hand') {
-        return this.game.resolveGameAction(GameActions.drawCards({ player: this, amount: numCards, target: target }));
+    drawCardsToHand(numCards = 1, context) {
+        return this.game.resolveGameAction(GameActions.drawCards({ 
+            player: this, 
+            amount: numCards, 
+            target: 'hand' 
+        }), this.createContext(context));
+    }
+
+    drawCardsToDrawHand(numCards = 1, context) {
+        return this.game.resolveGameAction(GameActions.drawCards({ 
+            player: this, 
+            amount: numCards, 
+            target: 'draw hand' 
+        }), this.createContext(context));
     }
 
     searchDrawDeck(limit, predicate = () => true) {
@@ -471,11 +483,11 @@ class Player extends Spectator {
         }
 
         this.shuffleDrawDeck();
-        this.drawCardsToHand(StartingHandSize, 'hand');
+        this.drawCardsToHand(StartingHandSize);
     }    
 
     sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length, 'hand');
+        this.drawCardsToHand(this.handSize - this.hand.length);
     }    
 
     createOutfitAndLegend() {
@@ -557,7 +569,8 @@ class Player extends Spectator {
             source: card,
             cardToUpgrade: cardToUpgrade
         });
-        var playActions = card.getPlayActions(arg).filter(action => action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
+        var playActions = card.getPlayActions(arg).filter(action => 
+            action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
 
         if(playActions.length === 0) {
             return false;
@@ -790,13 +803,13 @@ class Player extends Spectator {
                     card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
-                    this.bootCard(card, 'inventing');
+                    this.bootCard(card);
                     this.pullForSkill(gadget.difficulty, card.getSkillRatingForCard(gadget), getPullProperties(card));
                     return true;
                 }
             });
         } else {
-            this.bootCard(scientist, 'inventing');
+            this.bootCard(scientist);
             this.pullForSkill(gadget.difficulty, scientist.getSkillRatingForCard(gadget), getPullProperties(scientist));
         }
     }
@@ -1099,11 +1112,10 @@ class Player extends Spectator {
             cards.map(card => GameActions.aceCard({
                 card,
                 allowSave,
-                options,
-                context
+                options
             }))
         );
-        let event = this.game.resolveGameAction(action);
+        let event = this.game.resolveGameAction(action, this.createContext(context));
         event.thenExecute(() => {
             let cards = event.childEvents.map(childEvent => childEvent.card);
             callback(cards);
@@ -1122,11 +1134,10 @@ class Player extends Spectator {
                 card,
                 allowSave,
                 originalLocation: cards[0].location,
-                options,
-                context
+                options
             }))
         );
-        let event = this.game.resolveGameAction(action);
+        let event = this.game.resolveGameAction(action, this.createContext(context));
         event.thenExecute(() => {
             let cards = event.childEvents.map(childEvent => childEvent.card);
             callback(cards);
@@ -1219,8 +1230,8 @@ class Player extends Spectator {
         this.handlePull(props, context);
     }
 
-    returnCardToHand(card, allowSave = true) {
-        return this.game.resolveGameAction(GameActions.returnCardToHand({ card, allowSave }));
+    returnCardToHand(card, allowSave = true, context) {
+        return this.game.resolveGameAction(GameActions.returnCardToHand({ card, allowSave }), this.createContext(context));
     }
 
     removeCardFromGame(card, allowSave = true) {
@@ -1295,12 +1306,20 @@ class Player extends Spectator {
         return this.cardsInPlay.filter(card => card.getType() === 'dude' && card.gamelocation === locationUuid);
     }
 
+    createContext(context) {
+        return context || {
+            game: this.game,
+            player: this
+        };
+    }
+
     moveDude(dude, targetLocationUuid, params = {}) {
         let options = {
             isCardEffect: params.isCardEffect || params.isCardEffect === false ? params.isCardEffect : true,
             moveType: params.moveType || 'default',
             needToBoot: params.needToBoot || params.needToBoot === false ? params.needToBoot : null,
-            allowBooted: !!params.allowBooted
+            allowBooted: !!params.allowBooted,
+            context: params.context
         };
         let origin = this.game.findLocation(dude.gamelocation);
         let destination = this.game.findLocation(targetLocationUuid);
@@ -1427,25 +1446,19 @@ class Player extends Spectator {
         }
     }
 
-    bootCard(card, playType) {
-        return this.game.resolveGameAction(GameActions.bootCard({ card, playType }));
+    bootCard(card, context) {
+        return this.game.resolveGameAction(GameActions.bootCard({ card }), this.createContext(context));
     }
 
-    bootCards(cards, playType, callback = () => true) {
+    bootCards(cards, context) {
         let action = GameActions.simultaneously(
-            cards.map(card => GameActions.bootCard({ card, playType }))
+            cards.map(card => GameActions.bootCard({ card }))
         );
-        let event = this.game.resolveGameAction(action);
-        event.thenExecute(() => {
-            let cards = event.childEvents.map(childEvent => childEvent.card);
-            callback(cards);
-        });
-
-        return event;
+        return this.game.resolveGameAction(action, this.createContext(context));
     }
 
-    unbootCard(card, options = {}) {
-        return this.game.resolveGameAction(GameActions.unbootCard({ card, force: options.force }));
+    unbootCard(card, options = {}, context) {
+        return this.game.resolveGameAction(GameActions.unbootCard({ card, force: options.force }), context);
     }    
 
     placeCardInPile({ card, location, bottom = false }) {

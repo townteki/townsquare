@@ -7,9 +7,17 @@ class GoodsCard extends DrawCard {
         this.traded = false;
         this.canTrade = true;
         this.resetHandler = () => this.reset();
+
+        let effects = [];
+        if(this.bullets) {
+            effects.push(AbilityDsl.effects.dynamicBullets(() => this.bullets));
+        }
+        if(this.influence) {
+            effects.push(AbilityDsl.effects.dynamicInfluence(() => this.influence));
+        }
         this.whileAttached({
             condition: () => true,
-            effect: AbilityDsl.effects.dynamicBullets(() => this.bullets)
+            effect: effects
         });
     }
 

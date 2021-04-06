@@ -23,7 +23,7 @@ class Unprepared extends ActionCard {
                     ]
                 }));
                 if(context.target.attachments.length > 0) {
-                    context.player.bootCards(context.target.attachments);
+                    context.player.bootCards(context.target.attachments, context);
                     this.applyAbilityEffect(context.ability, ability => ({
                         match: context.target.attachments,
                         effect: [

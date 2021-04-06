@@ -2,6 +2,7 @@ const DrawCard = require('./drawcard.js');
 const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
 const GameActions = require('./GameActions');
 const {ShootoutStatuses, Tokens} = require('./Constants');
+const NullEvent = require('./NullEvent.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -225,11 +226,19 @@ class DudeCard extends DrawCard {
         this.controller.moveCard(this, 'discard pile', { raiseEvents: false });
     }
 
+    canRejectCallout(canReject) {
+        if(!canReject) {
+            return false;
+        }
+        const tempContext = { game: this.game, player: this.controller };
+        return this.canRefuseWithoutGoingHomeBooted() || (this.allowGameAction('boot', tempContext) && this.allowGameAction('moveDude', tempContext));
+    }
+
     callOut(card, canReject = true) {
         this.game.raiseEvent('onDudeCalledOut', { caller: this, callee: card, canReject: canReject });
         this.shootoutStatus = ShootoutStatuses.CallingOut;
         card.shootoutStatus = ShootoutStatuses.CalledOut;
-        if(!card.booted && canReject) {
+        if(!card.booted && card.canRejectCallout(canReject)) {
             this.game.promptWithMenu(card.controller, this, {
                 activePrompt: {
                     menuTitle: this.title + ' is calling out ' + card.title,
@@ -296,6 +305,26 @@ class DudeCard extends DrawCard {
         return true;
     }
 
+    canJoinWithoutMoving() {
+        return this.options.contains('canJoinWithoutMoving', this);
+    }
+
+    canJoinWithoutBooting() {
+        return this.options.contains('canJoinWithoutBooting', this);
+    }
+
+    canJoinWhileBooted() {
+        return this.options.contains('canJoinWhileBooted', this);
+    }
+
+    getMoveOptions() {
+        return {
+            moveToPosse: !this.canJoinWithoutMoving(),
+            needToBoot: !this.canJoinWithoutBooting(),
+            allowBooted: !this.canJoinWhileBooted()
+        };
+    }
+
     needToMoveToJoinPosse() {
         let shootout = this.game.shootout;
         if(!shootout) {
@@ -341,16 +370,19 @@ class DudeCard extends DrawCard {
     moveToShootoutLocation(options = {}) {
         let shootout = this.game.shootout;
         if(this.gamelocation === shootout.mark.gamelocation) {
-            return;
+            return true;
         }
         if(shootout.isJob()) {
             // if this shootout is a Job, all dudes that had to be booted should already be booted.
             options.needToBoot = false;
         }
-        let updatedOptions = Object.assign({ isCardEffect: false, needToBoot: true, allowBooted: false }, options);
-        this.game.raiseEvent('onDudeMoved', { card: this, targetUuid: shootout.mark.gamelocation, moveType: 'toPosse', options: updatedOptions }, event => {
-            event.card.controller.moveDude(event.card, event.targetUuid, event.options);
-        });
+        let updatedOptions = Object.assign({ isCardEffect: false, needToBoot: true, allowBooted: false, toPosse: true }, options);
+        let event = this.game.resolveGameAction(GameActions.moveDude({ 
+            card: this, 
+            targetUuid: shootout.mark.gamelocation,
+            options: updatedOptions
+        }), options.context);
+        return !(event instanceof NullEvent);
     }
     
     get bounty() {

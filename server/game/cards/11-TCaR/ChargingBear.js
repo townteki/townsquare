@@ -18,7 +18,7 @@ class ChargingBear extends DudeCard {
                     activePromptTitle: 'Select an opposing dude to send home booted',
                     cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                     cardType: ['dude'],
-                    gameAction: ['sendHome', 'boot', 'removeFromPosse']
+                    gameAction: ['sendHome']
                 }
             },
             message: context => {
@@ -26,7 +26,7 @@ class ChargingBear extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.aceCard({ card: context.targets.toAce }), context);
-                this.game.shootout.sendHome(context.targets.toBootHome);
+                this.game.shootout.sendHome(context.targets.toBootHome, context);
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: ability.effects.setAsStud()

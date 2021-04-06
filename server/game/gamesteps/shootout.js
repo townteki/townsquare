@@ -11,12 +11,6 @@ const GameActions = require('../GameActions/index.js');
 const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 const PlayWindow = require('./playwindow.js');
 
-const DefaultMoveOptions = {
-    moveToPosse: true,
-    needToBoot: true,
-    allowBooted: false
-};
-
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
     constructor(game, phase, leader, mark, options = { isJob: false }) {
@@ -39,7 +33,7 @@ class Shootout extends Phase {
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
-        this.moveOptions = {};
+        this.abilityRestrictions = [];									  
         this.initialise([
             new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
             new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
@@ -175,7 +169,7 @@ class Shootout extends Phase {
         if(recordStatus) {
             this.recordJobStatus();
         }
-        this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false }));
+        this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false, isAfterJob: true }));
     }
 
     queueStep(step) {
@@ -192,11 +186,11 @@ class Shootout extends Phase {
     }
 
     isInLeaderPosse(card) {
-        return this.leaderPosse.isInPosse(card);
+        return this.leaderPosse && this.leaderPosse.isInPosse(card);
     }
 
     isInOpposingPosse(card) {
-        return this.opposingPosse.isInPosse(card);
+        return this.opposingPosse && this.opposingPosse.isInPosse(card);
     }
 
     isInShootout(card) {
@@ -231,9 +225,9 @@ class Shootout extends Phase {
         };
     }
 
-    sendHome(card, options) {
-        this.removeFromPosse(card);  
-        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: options }));
+    sendHome(card, context, options = {}) {
+        let updatedOptions = Object.assign(options, { fromPosse: true });
+        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: updatedOptions }), context);
     }
 
     addToPosse(dude) {
@@ -260,11 +254,14 @@ class Shootout extends Phase {
     gatherPosses() {
         if(!this.checkEndCondition()) {
             this.actOnAllParticipants(dude => {
-                let dudeMoveOptions = this.moveOptions[dude.uuid] || DefaultMoveOptions;
+                let dudeMoveOptions = dude.getMoveOptions();
                 if(dudeMoveOptions.moveToPosse) {
-                    dude.moveToShootoutLocation(dudeMoveOptions);
+                    if(!dude.moveToShootoutLocation(dudeMoveOptions)) {
+                        this.removeFromPosse(dude);
+                    }
                 }
             });
+            this.game.raiseEvent('onShootoutPossesGathered');
         }
     }
 
@@ -379,11 +376,6 @@ class Shootout extends Phase {
         }
     }
     
-    addMoveOptions(dude, options) {
-        let moveOptions = this.moveOptions[dude.uuid] || DefaultMoveOptions;
-        this.moveOptions[dude.uuid] = Object.assign(moveOptions, options);
-    }
-
     recordJobStatus() {
         if(!this.isJob()) {
             return;
@@ -394,6 +386,27 @@ class Shootout extends Phase {
         if(!this.leaderPosse || this.leaderPosse.isEmpty()) {
             this.jobSuccessful = false;
         }
+    }
+	
+    allowGameAction(actionType, context) {
+        let currentAbilityContext = context || this.game.currentAbilityContext;
+        return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller));
+    }
+
+    addAbilityRestriction(restrictions) {
+        let restrArray = restrictions;
+        if(!Array.isArray(restrictions)) {
+            restrArray = [restrictions];
+        }
+        restrArray.forEach(r => this.abilityRestrictions.push(r));
+    }
+
+    removeAbilityRestriction(restrictions) {
+        let restrArray = restrictions;
+        if(!Array.isArray(restrictions)) {
+            restrArray = [restrictions];
+        }
+        this.abilityRestrictions = this.abilityRestrictions.filter(r => !restrArray.includes(r));	 
     }
 
     getGameElementType() {

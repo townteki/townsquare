@@ -24,7 +24,7 @@ class FlintsAmusements extends DeedCard {
             message: context =>
                 this.game.addMessage('{0} uses {1} to draw a card because he played Cheatin\' Resolution this day.', context.player, this),
             handler: context => {
-                context.player.drawCardsToHand();
+                context.player.drawCardsToHand(1, context);
             }
         });
     }

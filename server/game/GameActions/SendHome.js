@@ -5,16 +5,22 @@ class SendHome extends GameAction {
         super('sendHome');
     }
 
-    canChangeGameState({ card }) {
+    canChangeGameState({ card, options = {}, context }) {
         return (
             card.getType() === 'dude' &&
-            ['outfit', 'play area'].includes(card.location)
+            ['outfit', 'play area'].includes(card.location) &&
+            (options.isAfterJob || card.isAtHome() || (card.allowGameAction('moveDude', context))) &&
+            (options.isAfterJob || !options.needToBoot || card.allowGameAction('boot', context)) &&
+            (!options.fromPosse || card.allowGameAction('removeFromPosse', context))
         );
     }
 
     createEvent({ card, options = {} }) {
         let params = this.getDefaultOptions(options);
-        return this.event('onDudeMoved', { card, options: params }, event => {
+        return this.event('onDudeSentHome', { card, options: params }, event => {
+            if(options.fromPosse) {
+                event.card.game.shootout.removeFromPosse(card);
+            } 
             event.card.sendHome(event.options);
         });
     }
@@ -24,7 +30,8 @@ class SendHome extends GameAction {
             isCardEffect: options.isCardEffect || options.isCardEffect === false ? options.isCardEffect : true,
             moveType: 'toHome',
             needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : true,
-            allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true
+            allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true,
+            fromPosse: options.fromPosse || options.fromPosse === false ? options.fromPosse : true
         };
     }
 }

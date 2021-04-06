@@ -1030,17 +1030,8 @@ class Game extends EventEmitter {
         this.getPlayers().forEach(player => player.discardDrawHand());
     }
 
-    drawCardToHand(playerName, handType) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-        
-        player.drawCardsToHand(1, handType);
-    }
-
     drawHands(numberToDraw = 5) {
-        this.getPlayers().forEach(player => player.drawCardsToHand(numberToDraw, 'draw hand'));
+        this.getPlayers().forEach(player => player.drawCardsToDrawHand(numberToDraw));
     }
 
     revealHands() {

@@ -18,6 +18,7 @@ class DropCommand {
         if(this.card.controller !== this.player) {
             return;
         }
+        const defaultContext = { game: this.game, player: this.player };
 
         if(this.originalLocation === this.targetLocation) {
             if(this.card.getType() === 'dude' && this.targetLocation === 'play area') {
@@ -25,7 +26,7 @@ class DropCommand {
                     card: this.card, 
                     targetUuid: this.gameLocation, 
                     options: { isCardEffect: false } 
-                }));
+                }), defaultContext);
             }
             return;
         }
@@ -45,19 +46,19 @@ class DropCommand {
                         player: this.player,
                         card: this.card, 
                         params: { target: this.gameLocation }
-                    }))
+                    }), defaultContext)
                 }));
             } else {
                 this.game.resolveGameAction(GameActions.putIntoPlay({ 
                     player: this.player,
                     card: this.card, 
                     params: { playingType: 'setup', target: this.gameLocation, force: true }
-                }));
+                }), defaultContext);
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
-            this.player.aceCard(this.card, { allowSave: false, force: true });
+            this.player.aceCard(this.card, false, { force: true }, defaultContext);
         } else if(this.targetLocation === 'discard pile' && DiscardCard.allow({ card: this.card, force: true })) {
-            this.player.discardCard(this.card, false, { force: true });
+            this.player.discardCard(this.card, false, { force: true }, defaultContext);
         } else {
             this.player.moveCard(this.card, this.targetLocation);
         }

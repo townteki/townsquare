@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class JonLongstride extends DudeCard {
     setupCardAbilities() {
@@ -15,7 +16,7 @@ class JonLongstride extends DudeCard {
                 this.game.addMessage('{0} uses {1}\'s ability to unboot {1}\'s Horse', context.player, this),
             handler: (context) => {
                 context.target.resetAbilities();
-                this.controller.unbootCard(context.target);
+                this.game.resolveGameActions(GameActions.unbootCard({ card: context.target }), context);
             }
         });
     }

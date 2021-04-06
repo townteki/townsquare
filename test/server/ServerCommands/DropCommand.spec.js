@@ -91,7 +91,7 @@ describe('DropCommand', () => {
                     });
 
                     it('should ace the dude', function() {
-                        expect(this.playerSpy.aceCard).toHaveBeenCalledWith(this.cardSpy, jasmine.objectContaining({ allowSave: false, force: true }));
+                        expect(this.playerSpy.aceCard).toHaveBeenCalledWith(this.cardSpy, false, jasmine.objectContaining({ force: true }), jasmine.objectContaining({ game: this.gameSpy, player: this.playerSpy }));
                     });
                 });
             });
@@ -126,7 +126,7 @@ describe('DropCommand', () => {
                         });
 
                         it('should discard the card', function() {
-                            expect(this.playerSpy.discardCard).toHaveBeenCalledWith(this.cardSpy, false, jasmine.objectContaining({ force: true }));
+                            expect(this.playerSpy.discardCard).toHaveBeenCalledWith(this.cardSpy, false, jasmine.objectContaining({ force: true }), jasmine.objectContaining({ game: this.gameSpy, player: this.playerSpy }));
                         });
                     });
                 });

@@ -319,7 +319,7 @@ class DrawCard extends BaseCard {
     }
 
     canRefuseWithoutGoingHomeBooted() {
-        return this.shootoutOptions.contains('canRefuseWithoutGoingHomeBooted');
+        return this.options.contains('canRefuseWithoutGoingHomeBooted');
     }
 
     canBeAced() {

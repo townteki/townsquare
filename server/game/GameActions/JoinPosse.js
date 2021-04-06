@@ -15,19 +15,37 @@ class JoinPosse extends GameAction {
         );
     }
 
-    createEvent({ card, options = {} }) {
+    createEvent({ card, options = {}, context }) {
         let params = this.getDefaultOptions(options);
+        params.context = context;
         if(card.game.shootout.isJob() && !params.needToBoot) {
             params.needToBoot = card.requirementsToJoinPosse(params.allowBooted).needToBoot;
         }
         let toLeaderPosse = card.controller === card.game.shootout.leaderPlayer;
-        return this.event('onDudeJoinedPosse', { card, leaderPosse: toLeaderPosse, options: params }, event => {
-            event.card.game.shootout.addToPosse(event.card);
-            if(event.card.game.shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot) {
-                event.card.controller.bootCard(event.card);
+        card.game.raiseEvent('onDudeJoiningPosse', { card, leaderPosse: toLeaderPosse, options: params });
+
+        return this.event('_DO_NOT_USE_', { card, leaderPosse: toLeaderPosse, options: params }, event => {
+            let bootingReq = 'not-needed';
+            if(event.card.game.shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot && 
+                !event.card.canJoinWithoutBooting()) {
+                if(card.allowGameAction('boot', context)) {
+                    bootingReq = 'do-boot';
+                } else {
+                    bootingReq = 'not-met';
+                } 
             }
-            if(event.options.moveToPosse) {
-                event.card.moveToShootoutLocation(event.options);
+            if(bootingReq === 'not-needed' || bootingReq === 'do-boot') {
+                event.card.game.shootout.addToPosse(event.card);
+                if(bootingReq === 'do-boot') {
+                    event.card.controller.bootCard(event.card);
+                }
+                if(event.options.moveToPosse) {
+                    if(!event.card.moveToShootoutLocation(event.options)) {
+                        event.card.game.shootout.removeFromPosse(event.card);
+                        return;
+                    }
+                }
+                card.game.raiseEvent('onDudeJoinedPosse', { card: event.card, leaderPosse: event.leaderPosse, options: event.options });
             }
         });
     }

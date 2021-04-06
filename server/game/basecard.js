@@ -591,24 +591,20 @@ class BaseCard {
 
     allowGameAction(actionType, context) {
         let currentAbilityContext = context || this.game.currentAbilityContext;
-        return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller));
+        let callback = restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller);
+        if(this.game.shootout && this.game.shootout.abilityRestrictions.some(callback)) {
+            return false;
+        }
+        return !this.abilityRestrictions.some(callback);
     }
 
-    addAbilityRestriction(restrictions) {
-        let restrArray = restrictions;
-        if(!Array.isArray(restrictions)) {
-            restrArray = [restrictions];
-        }
-        restrArray.forEach(r => this.abilityRestrictions.push(r));
+    addAbilityRestriction(restriction) {
+        this.abilityRestrictions.push(restriction);
         this.markAsDirty();
     }
 
-    removeAbilityRestriction(restrictions) {
-        let restrArray = restrictions;
-        if(!Array.isArray(restrictions)) {
-            restrArray = [restrictions];
-        }
-        this.abilityRestrictions = this.abilityRestrictions.filter(r => !restrArray.includes(r));
+    removeAbilityRestriction(restriction) {
+        this.abilityRestrictions = this.abilityRestrictions.filter(r => r !== restriction);
         this.markAsDirty();
     }
 
