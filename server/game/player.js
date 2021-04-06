@@ -47,8 +47,7 @@ class Player extends Spectator {
         this.keywordSettings = user.settings.keywordSettings;
 
         this.rankModifier = 0;
-        this.casualtiesMod = 0;
-        this.casualties = 0;
+        this.currentCasualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
         this.discardNumber = StartingDiscardNumber;
@@ -63,6 +62,21 @@ class Player extends Spectator {
 
         this.createAdditionalPile('out of game');
         this.promptState = new PlayerPromptState();
+    }
+
+    get casualties() {
+        if(this.currentCasualties < 0) {
+            return 0;
+        }
+        return this.currentCasualties;
+    }
+
+    set casualties(value) {
+        this.currentCasualties = value;
+    }
+
+    modifyCasualties(amount) {
+        this.currentCasualties += amount;
     }
 
     createAdditionalPile(name, properties = {}) {
