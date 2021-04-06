@@ -43,17 +43,17 @@ class Confession extends SpellCard {
                     condition: card =>
                         (card.gamelocation === this.gamelocation || 
                         card.getGameLocation().isAdjacent(this.gamelocation)) &&
-                        card.isWanted();
+                        card.isWanted()
                 },
                 cardType: ['dude'],
                 gameAction: 'addBounty'
             },
             onSuccess: (context) => {
-                this.game.resolveGameAction(GameActions.bootCard({ card: this.parent }), context);
-                this.game.resolveGameAction(GameActions.addBounty({
-                    card: context.target, amount: this.parent.getSkillRating('blessed')
+                this.game.resolveGameAction(GameActions.removeounty({
+                    card: context.target, amount: 1
                 }));
-                this.game.addMessage('{0} uses {1} to boot {2} and add bounty to {3}', context.player, this, this.parent, context.target);
+                context.player.ModifyGhostRock(1);
+                this.game.addMessage('{0} uses {1} to take 1 bounty from {2} and add it to their stash', context.player, this, context.target);
             },
             source: this
         });
