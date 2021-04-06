@@ -34,7 +34,7 @@ class Confession extends SpellCard {
             title: 'Noon: Miracle 7',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
-            difficulty: 6,
+            difficulty: 7,
             target: {
                 activePromptTitle: 'Select a dude to take bounty from',
                 waitingPromptTitle: 'Waiting for opponent to select a dude',
