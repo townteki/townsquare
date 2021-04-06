@@ -45,8 +45,7 @@ const CostBuilders = {
     boot: new CostBuilder(new BootCost(), {
         select: 'Select card to boot',
         selectMultiple: number => `Select ${number} cards to boot`,
-        selectAny: 'Select any number of cards to boot',
-        leader: 'Select job leader to boot'
+        selectAny: 'Select any number of cards to boot'
     }),
     bootLeader: new CostBuilder(new BootCost(true), {
         select: 'Select job leader to boot'
