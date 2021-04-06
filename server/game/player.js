@@ -1341,7 +1341,7 @@ class Player extends Spectator {
         }
 
         dude.moveToLocation(destination.uuid);
-        if(!options.isCardEffect) {
+        if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
         }
     }
@@ -1369,7 +1369,8 @@ class Player extends Spectator {
 
         var params = {
             player: this,
-            card: card
+            card: card,
+            targetLocation
         };
 
         if(card.location === 'play area') {
