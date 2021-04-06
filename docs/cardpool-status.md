@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/131/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/132/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -395,7 +395,7 @@
 |                     | 09029| Nunchucks
 |                     | 09030| Idol of Tlazolteotl
 |                     | 09031| Spirit Guidance
-|                     | 09032| Spirit Dance
+|:heavy_check_mark:   | 09032| Spirit Dance
 |                     | 09033| Spirit Trail
 |                     | 09034| Many Speak as One
 |                     | 09035| The Pack Awakens
