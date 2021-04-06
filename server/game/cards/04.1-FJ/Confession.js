@@ -49,7 +49,7 @@ class Confession extends SpellCard {
                 gameAction: 'addBounty'
             },
             onSuccess: (context) => {
-                this.game.resolveGameAction(GameActions.removeounty({
+                this.game.resolveGameAction(GameActions.removeBounty({
                     card: context.target, amount: 1
                 }));
                 context.player.ModifyGhostRock(1);
