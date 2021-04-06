@@ -13,7 +13,7 @@ class CallOut extends GameAction {
     }
 
     createEvent({ caller, callee, isCardEffect = true, canReject = true }) {
-        return this.event('onCardCallOut', { caller: caller, callee: callee, isCardEffect: isCardEffect, canReject: canReject }, event => {
+        return this.event('onCardCallOutFinished', { caller: caller, callee: callee, isCardEffect: isCardEffect, canReject: canReject }, event => {
             event.caller.callOut(event.callee, event.canReject);
         });
     }

@@ -787,6 +787,9 @@ const Effects = {
     cannotBeTraded: function() {
         return optionEffect('cannotBeTraded')();
     },
+    canRefuseWithoutGoingHomeBooted: function() {
+        return optionEffect('canRefuseWithoutGoingHomeBooted')();
+    },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {

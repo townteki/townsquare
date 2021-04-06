@@ -15,6 +15,7 @@ class DudeCard extends DrawCard {
         this.currentUpkeep = this.cardData.upkeep;
 
         this.shootoutStatus = ShootoutStatuses.None;
+        this.acceptedCallout = false;
         this.controlDeterminator = 'influence:deed';
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
@@ -122,7 +123,15 @@ class DudeCard extends DrawCard {
             },
             targetController: 'opponent',
             handler: context => {
-                this.game.resolveGameAction(GameActions.callOut({ caller: this, callee: context.target, isCardEffect: false }), context);
+                this.game.resolveGameAction(GameActions.callOut({ 
+                    caller: this, 
+                    callee: context.target, 
+                    isCardEffect: false 
+                }), context).thenExecute(event => {
+                    if(this.acceptedCallout) {
+                        this.game.startShootout(event.caller, event.callee);
+                    }
+                });
             },
             player: this.controller
         });
@@ -217,6 +226,7 @@ class DudeCard extends DrawCard {
     }
 
     callOut(card, canReject = true) {
+        this.game.raiseEvent('onDudeCalledOut', { caller: this, callee: card, canReject: canReject });
         this.shootoutStatus = ShootoutStatuses.CallingOut;
         card.shootoutStatus = ShootoutStatuses.CalledOut;
         if(!card.booted && canReject) {
@@ -225,7 +235,7 @@ class DudeCard extends DrawCard {
                     menuTitle: this.title + ' is calling out ' + card.title,
                     buttons: [
                         { text: 'Accept Callout', method: 'acceptCallout', arg: card.uuid },
-                        { text: 'Run like hell', method: 'rejectCallout', arg: card.uuid }
+                        { text: 'Refuse Callout', method: 'rejectCallout', arg: card.uuid }
                     ]
                 },
                 waitingPromptTitle: 'Waiting for opponent to decide if he runs or fights'
@@ -237,8 +247,9 @@ class DudeCard extends DrawCard {
 
     acceptCallout(player, targetUuid) {
         let targetDude = player.findCardInPlayByUuid(targetUuid);
-        this.game.startShootout(this, targetDude);
-        this.game.addMessage('{0} uses {1} to call out {2} who accepts.', this.owner, this, targetDude);
+        this.acceptedCallout = true;
+        this.game.addMessage('{0} uses {1} to call out {2} who accepts', this.owner, this, targetDude);
+        this.game.raiseEvent('onDudeAcceptedCallOut', { caller: this, callee: targetDude });
         return true;
     }
 
@@ -246,8 +257,14 @@ class DudeCard extends DrawCard {
         let targetDude = player.findCardInPlayByUuid(targetUuid);
         this.shootoutStatus = ShootoutStatuses.None;
         targetDude.shootoutStatus = ShootoutStatuses.None;
-        this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false } }));
-        this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama.', this.owner, this, targetDude);
+        this.acceptedCallout = false;
+        if(!targetDude.canRefuseWithoutGoingHomeBooted()) {
+            this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false } }));
+            this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama', this.owner, this, targetDude);
+        } else {
+            this.game.addMessage('{0} uses {1} to call out {2} who refuses and stays put', this.owner, this, targetDude);
+        }
+        this.game.raiseEvent('onDudeRejectedCallOut', { caller: this, callee: targetDude });
         return true;
     }
 
