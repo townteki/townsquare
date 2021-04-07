@@ -19,6 +19,7 @@ class Shootout extends Phase {
         this.options = options;
         this.leader = leader;
         this.mark = mark;
+        this.gamelocation = mark.gamelocation;
         this.leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
         this.leaderPlayerName = this.leader.controller.name;
         this.leaderPosse = new ShootoutPosse(this, this.leaderPlayer, true);
@@ -86,7 +87,7 @@ class Shootout extends Phase {
     }
 
     get shootoutLocation() {
-        return this.game.findLocation(this.mark.gamelocation);
+        return this.game.findLocation(this.gamelocation);
     }   
 
     isJob() {

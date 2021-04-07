@@ -46,12 +46,12 @@ function cannotMove(viaCardEffects = false) {
                 ));
                 restrictions.push(new CannotRestriction('joinPosse', 'any', controller, context => 
                     (!viaCardEffects || (context.ability && context.ability.isCardAbility())) && 
-                    context.source && context.source.getType() === 'dude' && context.source.needToMoveToJoinPosse() &&
+                    card.getType() === 'dude' && card.needToMoveToJoinPosse() &&
                     predicate(context)
                 ));
                 restrictions.push(new CannotRestriction('sendHome', 'any', controller, context => 
                     (!viaCardEffects || (context.ability && context.ability.isCardAbility())) && 
-                    context.source && context.source.getType() === 'dude' && !context.source.isAtHome() &&
+                    card.getType() === 'dude' && !card.isAtHome() &&
                     predicate(context)
                 ));
                 restrictions.forEach(r => card.addAbilityRestriction(r));

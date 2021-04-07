@@ -330,7 +330,7 @@ class DudeCard extends DrawCard {
         if(!shootout) {
             return false;
         }
-        return this.gamelocation !== shootout.mark.gamelocation;
+        return this.gamelocation !== shootout.gamelocation;
     }
 
     requirementsToJoinPosse(allowBooted = false) {
@@ -341,7 +341,7 @@ class DudeCard extends DrawCard {
         if(!shootout) {
             return { canJoin: false };
         } 
-        if(this.getGameLocation().isAdjacent(shootout.mark.gamelocation) && (!this.booted || allowBooted)) {
+        if(this.getGameLocation().isAdjacent(shootout.gamelocation) && (!this.booted || allowBooted)) {
             return { canJoin: true, needToBoot: true };
         }
 
@@ -369,7 +369,7 @@ class DudeCard extends DrawCard {
 
     moveToShootoutLocation(options = {}) {
         let shootout = this.game.shootout;
-        if(this.gamelocation === shootout.mark.gamelocation) {
+        if(this.gamelocation === shootout.gamelocation) {
             return true;
         }
         if(shootout.isJob()) {
@@ -379,7 +379,7 @@ class DudeCard extends DrawCard {
         let updatedOptions = Object.assign({ isCardEffect: false, needToBoot: true, allowBooted: false, toPosse: true }, options);
         let event = this.game.resolveGameAction(GameActions.moveDude({ 
             card: this, 
-            targetUuid: shootout.mark.gamelocation,
+            targetUuid: shootout.gamelocation,
             options: updatedOptions
         }), options.context);
         return !(event instanceof NullEvent);

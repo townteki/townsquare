@@ -25,14 +25,15 @@ class SendHome extends GameAction {
         });
     }
 
-    getDefaultOptions(options) {
-        return {
+    getDefaultOptions(options = {}) {
+        const defaultOptions = {
             isCardEffect: options.isCardEffect || options.isCardEffect === false ? options.isCardEffect : true,
             moveType: 'toHome',
             needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : true,
             allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true,
             fromPosse: options.fromPosse || options.fromPosse === false ? options.fromPosse : true
         };
+        return Object.assign(options, defaultOptions);
     }
 }
 

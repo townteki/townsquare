@@ -50,13 +50,14 @@ class JoinPosse extends GameAction {
         });
     }
 
-    getDefaultOptions(options) {
-        return {
+    getDefaultOptions(options = {}) {
+        const defaultOptions = {
             isCardEffect: options.isCardEffect || options.isCardEffect === false ? options.isCardEffect : true,
             moveToPosse: options.moveToPosse || options.moveToPosse === false ? options.moveToPosse : true,
             needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : false,
             allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true
         };
+        return Object.assign(options, defaultOptions);
     }
 }
 
