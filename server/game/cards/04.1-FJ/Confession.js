@@ -8,6 +8,7 @@ class Confession extends SpellCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             difficulty: 6,
+            condition: () => !this.parent.booted,
             target: {
                 activePromptTitle: 'Select a dude to add bounty to',
                 waitingPromptTitle: 'Waiting for opponent to select a dude',
