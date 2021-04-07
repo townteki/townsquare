@@ -174,6 +174,15 @@ module.exports.init = function(server, options) {
 
         let requireActivation = configService.getValue('requireActivation');
 
+        let newUser = {
+            password: passwordHash,
+            registered: new Date(),
+            username: req.body.username,
+            email: req.body.email,
+            enableGravatar: req.body.enableGravatar,
+            verified: !requireActivation
+        };
+
         if(requireActivation) {
             let expiration = moment().add(7, 'days');
             let formattedExpiration = expiration.format('YYYYMMDD-HH:mm:ss');
@@ -198,16 +207,7 @@ module.exports.init = function(server, options) {
 
             return res.send({ success: false, message: 'An error occurred registering your account, please try again later.' });
         }
-
-        let newUser = {
-            password: passwordHash,
-            registered: new Date(),
-            username: req.body.username,
-            email: req.body.email,
-            enableGravatar: req.body.enableGravatar,
-            verified: !requireActivation,
-            registerIp: ip
-        };
+        newUser.registerIp = ip;
 
         user = await userService.addUser(newUser);
         if(requireActivation) {
