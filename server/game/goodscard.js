@@ -67,10 +67,12 @@ class GoodsCard extends DrawCard {
     }
 
     entersPlay() {
+        super.entersPlay();
         this.game.on('onRoundEnded', this.resetHandler);
     }
 
     leavesPlay() {
+        super.leavesPlay();
         this.game.removeListener('onRoundEnded', this.resetHandler);
     }
 

@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/133/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/139/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -87,7 +87,7 @@
 |:heavy_check_mark:   | 01073| Carter's Bounties
 |:heavy_check_mark:   | 01074| The Union Casino
 |:white_check_mark:   | 01075| Jackson's Strike
-|                     | 01076| Undertaker
+|:heavy_check_mark:   | 01076| Undertaker
 |:heavy_check_mark:   | 01077| General Store
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
@@ -395,17 +395,17 @@
 |                     | 09029| Nunchucks
 |                     | 09030| Idol of Tlazolteotl
 |                     | 09031| Spirit Guidance
-|                     | 09032| Spirit Dance
+|:heavy_check_mark:   | 09032| Spirit Dance
 |                     | 09033| Spirit Trail
-|                     | 09034| Many Speak as One
+|:heavy_check_mark:   | 09034| Many Speak as One
 |                     | 09035| The Pack Awakens
 |                     | 09036| Shifu Speaks
 |                     | 09037| Zhu's Ferocity
 |                     | 09038| Raking Dragons
 |                     | 09039| Rabbit's Lunar Leap
 |                     | 09040| Zhu's Reward
-|                     | 09041| Ancestor Spirit
-|                     | 09042| Nature Spirit
+|:heavy_check_mark:   | 09041| Ancestor Spirit
+|:heavy_check_mark:   | 09042| Nature Spirit
 
 ## `06-TLS` The Light Shineth
 
@@ -624,7 +624,7 @@
 |                     | 16013| Doomsday Supply
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
-|                     | 16016| Sun-Touched Raven
+|:heavy_check_mark:   | 16016| Sun-Touched Raven
 |                     | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
 |                     | 16019| Siege Of The Orphanage

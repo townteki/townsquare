@@ -96,7 +96,7 @@ class Shootout extends Phase {
 
     resetForTheRound() {
         this.winner = null;
-        this.looser = null;
+        this.loser = null;
         this.leaderPlayer.rankModifier = 0;
         this.leaderPlayer.casualties = 0;
         this.opposingPlayer.rankModifier = 0;
@@ -339,7 +339,8 @@ class Shootout extends Phase {
         this.loser = this.leaderPlayer;
         if(leaderRank === opposingRank) {
             let tiebreakResult = this.game.resolveTiebreaker(this.leaderPlayer, this.opposingPlayer);
-            this.leaderPlayer.casualties = this.opposingPlayer.casualties = 1;
+            this.leaderPlayer.modifyCasualties(1);
+            this.opposingPlayer.modifyCasualties(1);
             if(tiebreakResult.decision === 'exact tie') {
                 this.game.addMessage('Shootout ended in an exact tie, there is no winner or loser.');
                 this.shootoutLoseWinOrder = [this.leaderPlayer.name, this.opposingPlayer.name];
@@ -355,10 +356,10 @@ class Shootout extends Phase {
                 this.winner = this.leaderPlayer;
                 this.loser = this.opposingPlayer;
             }
-            this.loser.casualties = Math.abs(leaderRank - opposingRank);
+            this.loser.modifyCasualties(Math.abs(leaderRank - opposingRank));
             this.game.addMessage('{0} is the winner of this shootout by {1} ranks.', this.winner, Math.abs(leaderRank - opposingRank));
         }
-        this.loser.casualties += this.loserCasualtiesMod;
+        this.loser.modifyCasualties(this.loserCasualtiesMod);
         this.shootoutLoseWinOrder = [this.loser.name, this.winner.name];
     }
 
@@ -369,6 +370,7 @@ class Shootout extends Phase {
 
     chamberAnotherRound() {
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));
+        this.game.raiseEvent('onShootoutRoundFinished');
         if(!this.checkEndCondition()) {
             this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
