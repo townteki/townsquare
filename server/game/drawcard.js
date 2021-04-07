@@ -123,14 +123,6 @@ class DrawCard extends BaseCard {
     getMinCost() {
         return this.minCost;
     }
-
-    getInfluence() {
-        return this.influence || 0;
-    }  
-
-    getControl() {
-        return this.control || 0;
-    }
     
     moveTo(targetLocation, parent) {
         let originalLocation = this.location;

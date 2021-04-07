@@ -215,6 +215,11 @@ class Player extends Spectator {
     }
 
     modifyGhostRock(amount) {
+        // safety reset in case some bug will set ghostrock to null or NaN
+        if(!this.ghostrock) {
+            this.ghostrock = 0;
+        }
+
         this.ghostrock += amount;
 
         if(this.ghostrock < 0) {
@@ -981,10 +986,10 @@ class Player extends Spectator {
     }
 
     determineUpkeep() {
-        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && 
-            (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.getInfluence() > 0)));
+        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
+            (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.influence > 0)));
         let upkeep = upkeepCards.reduce((memo, card) => {
-            let additionalUpkeep = card.gang_code !== this.outfit.gang_code && card.gang_code !== 'neutral' ? card.getInfluence() : 0;
+            let additionalUpkeep = card.gang_code !== this.outfit.gang_code && card.gang_code !== 'neutral' ? card.influence : 0;
             return memo + card.upkeep + additionalUpkeep;
         }, 0);
 
@@ -1265,18 +1270,18 @@ class Player extends Spectator {
     }
 
     getTotalControl() {
-        let controlCards = this.game.findCardsInPlay(card => card.getControl() > 0 && card.controller === this);
+        let controlCards = this.game.findCardsInPlay(card => card.control > 0 && card.controller === this);
         let control = controlCards.reduce((memo, card) => {
-            return memo + card.getControl();
+            return memo + card.control;
         }, 0);
 
         return control;
     }   
     
     getTotalInfluence() {
-        let influenceCards = this.game.findCardsInPlay(card => card.getInfluence() > 0 && card.controller === this);
+        let influenceCards = this.game.findCardsInPlay(card => card.getType() === 'dude' && card.influence > 0 && card.controller === this);
         let influence = influenceCards.reduce((memo, card) => {
-            return memo + card.getInfluence();
+            return memo + card.influence;
         }, 0);
 
         return influence;
