@@ -22,11 +22,13 @@ class Confession extends SpellCard {
                 gameAction: 'addBounty'
             },
             onSuccess: (context) => {
-                this.game.resolveGameAction(GameActions.bootCard({ card: this.parent }), context);
-                this.game.resolveGameAction(GameActions.addBounty({
-                    card: context.target, amount: this.parent.getSkillRating('blessed')
-                }));
-                this.game.addMessage('{0} uses {1} to boot {2} and add bounty to {3}', context.player, this, this.parent, context.target);
+                this.game.resolveGameAction(GameActions.bootCard({ card: this.parent }), context).thenExecute(() => {
+                    this.game.resolveGameAction(GameActions.addBounty({
+                        card: context.target, amount: this.parent.getSkillRating('blessed')
+                    })).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} to boot {2} and add bounty to {3}', context.player, this, this.parent, context.target);
+                    });
+                });
             },
             source: this
         });
