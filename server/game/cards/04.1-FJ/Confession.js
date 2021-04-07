@@ -4,7 +4,7 @@ const SpellCard = require('../../spellcard.js');
 class Confession extends SpellCard {
     setupCardAbilities(ability) {
         this.spellAction({
-            title: 'Noon: Miracle 6',
+            title: 'Noon: Add Bounty to a Dude',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             difficulty: 6,
@@ -31,7 +31,7 @@ class Confession extends SpellCard {
         });
 
         this.spellAction({
-            title: 'Noon: Miracle 7',
+            title: 'Noon: Remove Bounty from a Dude and add to Stash',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             difficulty: 7,
@@ -46,13 +46,13 @@ class Confession extends SpellCard {
                         card.isWanted()
                 },
                 cardType: ['dude'],
-                gameAction: 'addBounty'
+                gameAction: 'removeBounty'
             },
             onSuccess: (context) => {
                 this.game.resolveGameAction(GameActions.removeBounty({
                     card: context.target, amount: 1
                 }));
-                context.player.ModifyGhostRock(1);
+                context.player.modifyGhostRock(1);
                 this.game.addMessage('{0} uses {1} to take 1 bounty from {2} and add it to their stash', context.player, this, context.target);
             },
             source: this
