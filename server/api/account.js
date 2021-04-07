@@ -31,7 +31,7 @@ function hashPassword(password, rounds) {
 function sendEmail(address, subject, email) {
     const message = {
         to: address,
-        from: 'The Iron Throne <noreply@theironthrone.net>',
+        from: 'Doomtown Online <noreply@doomtown.online>',
         subject: subject,
         text: email
     };
@@ -93,7 +93,7 @@ function writeFile(path, data, opts = 'utf8') {
     });
 }
 
-const DefaultEmailHash = crypto.createHash('md5').update('noreply@theironthrone.net').digest('hex');
+const DefaultEmailHash = crypto.createHash('md5').update('noreply@doomtown.online').digest('hex');
 
 module.exports.init = function(server, options) {
     userService = ServiceFactory.userService(options.db, configService);
@@ -526,8 +526,8 @@ module.exports.init = function(server, options) {
         resetToken = hmac.update(`RESET ${user.username} ${formattedExpiration}`).digest('hex');
 
         await userService.setResetToken(user, resetToken, formattedExpiration);
-        let url = `https://dtts.online/reset-password?id=${user._id}&token=${resetToken}`;
-        let emailText = 'Hi,\n\nSomeone, hopefully you, has requested their password on The Doomtown Online (https://dtts.online) to be reset.  If this was you, click this link ' + url + ' to complete the process.\n\n' +
+        let url = `https://doomtown.online/reset-password?id=${user._id}&token=${resetToken}`;
+        let emailText = 'Hi,\n\nSomeone, hopefully you, has requested their password on The Doomtown Online (https://doomtown.online) to be reset.  If this was you, click this link ' + url + ' to complete the process.\n\n' +
             'If you did not request this reset, do not worry, your account has not been affected and your password has not been changed, just ignore this email.\n' +
             'Kind regards,\n\n' +
             'The Doomtown Online team';
