@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/134/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/135/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -87,7 +87,7 @@
 |:heavy_check_mark:   | 01073| Carter's Bounties
 |:heavy_check_mark:   | 01074| The Union Casino
 |:white_check_mark:   | 01075| Jackson's Strike
-|                     | 01076| Undertaker
+|:heavy_check_mark:   | 01076| Undertaker
 |:heavy_check_mark:   | 01077| General Store
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
