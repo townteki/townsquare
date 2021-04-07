@@ -34,7 +34,6 @@ class Shootout extends Phase {
             this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
         }
 
-        this.winnerCasualtiesMod = 0;
         this.loserCasualtiesMod = 0;
         this.jobSuccessful = null;
         this.headlineUsed = false;
@@ -107,8 +106,6 @@ class Shootout extends Phase {
         this.leaderPlayer.casualties = 0;
         this.opposingPlayer.rankModifier = 0;
         this.opposingPlayer.casualties = 0;
-        this.leaderPlayer.casualtiesMod = 0;
-        this.opposingPlayer.casualtiesMod = 0;
     }
 
     beginShootoutRound() {
