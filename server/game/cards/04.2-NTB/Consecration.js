@@ -12,7 +12,6 @@ class Consecration extends SpellCard {
                 cardType: ['dude']
             },
             difficulty: 7,
-            actionContext: { card: this, gameAction: 'increaseBullets' || 'increaseInfluence' || 'setAsStud' },
             onSuccess: (context) => {
                 this.untilEndOfRound(ability => ({
                     match: context.target,
