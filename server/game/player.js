@@ -47,7 +47,7 @@ class Player extends Spectator {
         this.keywordSettings = user.settings.keywordSettings;
 
         this.rankModifier = 0;
-        this.casualties = 0;
+        this.currentCasualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
         this.discardNumber = StartingDiscardNumber;
@@ -62,6 +62,21 @@ class Player extends Spectator {
 
         this.createAdditionalPile('out of game');
         this.promptState = new PlayerPromptState();
+    }
+
+    get casualties() {
+        if(this.currentCasualties < 0) {
+            return 0;
+        }
+        return this.currentCasualties;
+    }
+
+    set casualties(value) {
+        this.currentCasualties = value;
+    }
+
+    modifyCasualties(amount) {
+        this.currentCasualties += amount;
     }
 
     createAdditionalPile(name, properties = {}) {
@@ -1341,7 +1356,7 @@ class Player extends Spectator {
         }
 
         dude.moveToLocation(destination.uuid);
-        if(!options.isCardEffect) {
+        if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
         }
     }
@@ -1369,7 +1384,8 @@ class Player extends Spectator {
 
         var params = {
             player: this,
-            card: card
+            card: card,
+            targetLocation
         };
 
         if(card.location === 'play area') {
