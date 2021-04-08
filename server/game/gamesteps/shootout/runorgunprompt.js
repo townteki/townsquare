@@ -27,7 +27,11 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 card.getType() === 'dude' &&
                 this.shootout.isInShootout(card),
             onSelect: (player, cards) => {
-                cards.forEach(card => this.shootout.sendHome(card, { isCardEffect: false }));
+                cards.forEach(card => this.shootout.sendHome(
+                    card, 
+                    { game: this.game, player: this.currentPlayer },
+                    { isCardEffect: false }
+                ));
                 this.completePlayer();
                 return true;
             },
@@ -36,7 +40,11 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 return true;
             },
             onMenuCommand: (player) => {
-                this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(card, { isCardEffect: false }));
+                this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(
+                    card, 
+                    { game: this.game, player: this.currentPlayer },
+                    { isCardEffect: false }
+                ));
                 this.completePlayer();
                 return true;
             }

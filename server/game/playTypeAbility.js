@@ -40,6 +40,9 @@ class PlayTypeAbility extends BaseAbility {
         if(this.playType.includes('shootout') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
             return 'shootout';
         } 
+        if(this.playType.includes('shootout:join') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
+            return 'shootout:join';
+        }																												  
         if(this.playType.includes('resolution') && this.game.getCurrentPlayWindowName() === 'shootout resolution') {
             return 'resolution';
         } 

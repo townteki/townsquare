@@ -14,7 +14,7 @@ class TravisMoone extends DudeCard {
                     context.player.moveCard(card, 'draw deck');
                 });       
                 context.player.shuffleDrawDeck();
-                context.player.drawCardsToHand(context.player.handSize, 'hand');
+                context.player.drawCardsToHand(context.player.handSize, context);
             }
         });
     }

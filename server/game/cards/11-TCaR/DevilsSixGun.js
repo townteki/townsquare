@@ -29,7 +29,7 @@ class DevilsSixGun extends GoodsCard {
                                 waitingPromptTitle: 'Waiting for opponent to discard a card from their draw hand',
                                 cardCondition: { location: 'draw hand' },
                                 onSelect: (player, cardToDiscard) => {
-                                    this.game.resolveGameAction(GameActions.discardCard({card: cardToDiscard}, context)).thenExecute(() => {
+                                    this.game.resolveGameAction(GameActions.discardCard({card: cardToDiscard}), context).thenExecute(() => {
                                         /* Reset hand rank modifiers since we're making a new hand to check */
                                         player.rankModifier = 0;
                                         player.determineHandResult();

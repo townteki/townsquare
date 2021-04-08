@@ -98,7 +98,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             onSelect: (player, card) => {
                 let numCoveredCasualties = card.coversCasualties('send');
                 if(numCoveredCasualties > 0) {
-                    this.shootout.sendHome(card, { isCardEffect: false });
+                    this.shootout.sendHome(card, { game: this.game, player: player }, { isCardEffect: false });
                     this.modifyCasualties(player, card, numCoveredCasualties);    
                     this.game.addMessage('{0} sends {1} home to cover {2} casualties ({3} remaining).', 
                         player, card, numCoveredCasualties, player.casualties);     

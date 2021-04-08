@@ -18,15 +18,22 @@ class MechanicalHorse extends GoodsCard {
         });
         this.reaction({
             when: {
-                onDudeJoinedPosse: event => 
+                onDudeJoiningPosse: event => 
                     event.card === this.parent && 
                     this.parent.requirementsToJoinPosse().needToBoot
             },
             cost: ability.costs.bootSelf(),
             message: context => 
                 this.game.addMessage('{0} uses {1} to prevent {2} from booting when joining posse', context.player, this, this.parent),
-            handler: context => {
-                context.game.shootout.addMoveOptions(this.parent, { needToBoot: false });
+            handler: () => {
+                this.lastingEffect(ability => ({
+                    until: {
+                        onShootoutPossesGathered: () => true,
+                        onShootoutPhaseFinished: () => true
+                    },
+                    match: this.parent,
+                    effect: ability.effects.canJoinWithoutBooting()
+                }));
             }
         });
     }

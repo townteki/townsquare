@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/141/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/144/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -195,7 +195,7 @@
 |                     | 03004| Gang Yi
 |                     | 03005| Tallulah "Lula" Morgan
 |                     | 03006| Dr. Emanuel Ashbel
-|                     | 03007| Angélica Espinosa
+|:heavy_check_mark:   | 03007| Angélica Espinosa
 |                     | 03008| José Morales
 |                     | 03009| Genesee "Gina" Tailfeathers
 |                     | 03010| Mario Crane
@@ -325,7 +325,7 @@
 |                     | 07011| Secured Stockyard
 |                     | 07012| La Quema
 |                     | 07013| Asyncoil Gun
-|                     | 07014| Scoop Hound
+|:heavy_check_mark:   | 07014| Scoop Hound
 |                     | 07015| Rapier
 |                     | 07016| Vitality Tonic
 |:heavy_check_mark:   | 07017| Consecration
@@ -525,7 +525,7 @@
 |:heavy_check_mark:   | 13012| The Place
 |                     | 13013| Hawley's Rose
 |:heavy_check_mark:   | 13014| LeMat Revolver
-|                     | 13015| Yagn's Mechanical Skeleton
+|:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
 |                     | 13017| Mother Bear's Rage
 |                     | 13018| Focusing Chi

@@ -102,7 +102,7 @@ class DrawHandPrompt extends UiPrompt {
     onMenuCommand(player, arg) {
         if(arg === 'draw') {
             let drawCount = this.getDrawCount(player);
-            player.drawCardsToHand(drawCount.number, 'draw hand');
+            player.drawCardsToDrawHand(drawCount.number);
             this.getDrawCount(player).handDrawn = true;
             if(this.getDrawCount(player).redraw === 0) {
                 this.getDrawCount(player).handRedrawn = true;
@@ -122,7 +122,7 @@ class DrawHandPrompt extends UiPrompt {
         if(arg === 'redraw') {
             let numberToRedraw = this.selectedCards.length + player.redrawBonus;
             player.discardCards(this.selectedCards);
-            player.drawCardsToHand(numberToRedraw, 'draw hand');
+            player.drawCardsToDrawHand(numberToRedraw);
             this.getDrawCount(player).handRedrawn = true;
             this.selectedCards = [];
             player.clearSelectedCards();

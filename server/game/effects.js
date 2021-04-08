@@ -5,24 +5,62 @@ const CannotRestriction = require('./cannotrestriction.js');
 const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 
-function cannotEffect(type, playType) {
+function cannotEffect(type, playType, targetType = '') {
     return function(controller, predicate) {
+        if(targetType === 'shootout') {
+            return shootoutRestrictionEffect(new CannotRestriction(type, playType, controller, predicate));
+        }
         return cardRestrictionEffect(new CannotRestriction(type, playType, controller, predicate));
     };
 }
 
 // if specific ability play type cannot be played on card (e.g. shootout, resolution)
-function cannotEffectPlayType(playType) {
+function cannotEffectPlayType(playType, targetType = '') {
     return function(controller, predicate) {
+        if(targetType === 'shootout') {
+            return shootoutRestrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
+        }
         return cardRestrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
     };
 }
 
 // if specific game actions cannot be played on card (e.g. ace, discard, callout, target)
-function cannotEffectType(type) {
+function cannotEffectType(type, targetType = '') {
     return function(controller, predicate) {
+        if(targetType === 'shootout') {
+            return shootoutRestrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
+        }
         return cardRestrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
     };
+}
+
+function cannotMove(viaCardEffects = false) {
+    return function(controller = 'any', predicate = () => true) {
+        let restrictions = [];
+        return {
+            apply: function(card) {
+                restrictions = [];
+                restrictions.push(new CannotRestriction('moveDude', 'any', controller, context => 
+                    (!viaCardEffects || (context.ability && context.ability.isCardAbility())) &&
+                    predicate(context)
+                ));
+                restrictions.push(new CannotRestriction('joinPosse', 'any', controller, context => 
+                    (!viaCardEffects || (context.ability && context.ability.isCardAbility())) && 
+                    card.getType() === 'dude' && card.needToMoveToJoinPosse() &&
+                    predicate(context)
+                ));
+                restrictions.push(new CannotRestriction('sendHome', 'any', controller, context => 
+                    (!viaCardEffects || (context.ability && context.ability.isCardAbility())) && 
+                    card.getType() === 'dude' && !card.isAtHome() &&
+                    predicate(context)
+                ));
+                restrictions.forEach(r => card.addAbilityRestriction(r));
+            },
+            unapply: function(card) {
+                restrictions.forEach(r => card.removeAbilityRestriction(r));
+            }
+        }; 
+    }; 
 }
 
 function cardRestrictionEffect(restrictions) {
@@ -32,6 +70,18 @@ function cardRestrictionEffect(restrictions) {
         },
         unapply: function(card) {
             card.removeAbilityRestriction(restrictions);
+        }
+    }; 
+}
+
+function shootoutRestrictionEffect(restrictions) {
+    return {
+        targetType: 'shootout',
+        apply: function(shootout) {
+            shootout.addAbilityRestriction(restrictions);
+        },
+        unapply: function(shootout) {
+            shootout.removeAbilityRestriction(restrictions);
         }
     }; 
 }
@@ -103,6 +153,39 @@ function conditionalAdjacency() {
                 delete context.dynamicAdjacencies[card.uuid];
             },
             isStateDependent: true
+        };
+    };
+}
+
+function dynamicStatModifier(propName) {
+    return function(calculateOrValue, gameAction) {
+        const isStateDependent = (typeof calculateOrValue === 'function');
+        const calculate = isStateDependent ? calculateOrValue : () => calculateOrValue;
+        const propNameCapital = propName[0].toUpperCase() + propName.slice(1);
+        const functionName = 'modify' + propNameCapital;
+        const dynamicPropName = 'dynamic' + propNameCapital;
+
+        return {
+            gameAction: gameAction || 'increase' + propNameCapital,
+            apply: function(card, context) {
+                context[dynamicPropName] = context[dynamicPropName] || {};
+                context[dynamicPropName][card.uuid] = calculate(card, context) || 0;
+                let value = context[dynamicPropName][card.uuid];
+                card[functionName](value, true);
+            },
+            reapply: function(card, context) {
+                let currentProperty = context[dynamicPropName][card.uuid];
+                let newProperty = calculate(card, context) || 0;
+                context[dynamicPropName][card.uuid] = newProperty;
+                let value = newProperty - currentProperty;
+                card[functionName](value, true);
+            },
+            unapply: function(card, context) {
+                let value = context[dynamicPropName][card.uuid];
+                card[functionName](-value, false);
+                delete context[dynamicPropName][card.uuid];
+            },
+            isStateDependent
         };
     };
 }
@@ -308,54 +391,9 @@ const Effects = {
     preventDynamicAdjacency: conditionalAdjacency(),
     additionalAdjacency: adjacency('adjacent'),
     preventAdjacency: adjacency('prevent'),
-    dynamicBullets: function(calculate, gameAction = 'increaseBullets') {
-        return {
-            gameAction: gameAction,
-            apply: function(card, context) {
-                context.dynamicBullets = context.dynamicBullets || {};
-                context.dynamicBullets[card.uuid] = calculate(card, context) || 0;
-                let value = context.dynamicBullets[card.uuid];
-                card.modifyBullets(value, true);
-            },
-            reapply: function(card, context) {
-                let currentBullets = context.dynamicBullets[card.uuid];
-                let newBullets = calculate(card, context) || 0;
-                context.dynamicBullets[card.uuid] = newBullets;
-                let value = newBullets - currentBullets;
-                card.modifyBullets(value, true);
-            },
-            unapply: function(card, context) {
-                let value = context.dynamicBullets[card.uuid];
-                card.modifyBullets(-value, false);
-                delete context.dynamicBullets[card.uuid];
-            },
-            isStateDependent: true
-        };
-    },
-    dynamicProduction: function(calculate, gameAction = 'increaseProduction') {
-        return {
-            gameAction: gameAction,
-            apply: function(card, context) {
-                context.dynamicProduction = context.dynamicProduction || {};
-                context.dynamicProduction[card.uuid] = calculate(card, context) || 0;
-                let value = context.dynamicProduction[card.uuid];
-                card.modifyProduction(value, true);
-            },
-            reapply: function(card, context) {
-                let currentProduction = context.dynamicProduction[card.uuid];
-                let newProduction = calculate(card, context) || 0;
-                context.dynamicProduction[card.uuid] = newProduction;
-                let value = newProduction - currentProduction;
-                card.modifyProduction(value, true);
-            },
-            unapply: function(card, context) {
-                let value = context.dynamicProduction[card.uuid];
-                card.modifyProduction(-value, false);
-                delete context.dynamicProduction[card.uuid];
-            },
-            isStateDependent: true
-        };
-    },
+    dynamicBullets: dynamicStatModifier('bullets'),
+    dynamicInfluence: dynamicStatModifier('influence'),
+    dynamicProduction: dynamicStatModifier('production'),
     modifySundownDiscard: function(value) {
         return {
             targetType: 'player',
@@ -575,7 +613,7 @@ const Effects = {
             unapply: function(card, context) {
                 if(card.location === 'play area' && context.returnToHandIfStillInPlay.includes(card)) {
                     context.returnToHandIfStillInPlay = context.returnToHandIfStillInPlay.filter(c => c !== card);
-                    card.controller.returnCardToHand(card, allowSave);
+                    card.controller.returnCardToHand(card, allowSave, context);
                     context.game.addMessage('{0} returns {1} to hand at the end of the {2} because of {3}', context.source.controller, card, duration, context.source);
                 }
             }
@@ -659,6 +697,10 @@ const Effects = {
         configureText(definition);
         return definition;
     },
+    cannotBeMoved: cannotMove(false),
+    cannotBeMovedViaCardEffects: cannotMove(true),
+    cannotBeSentHome: cannotEffectType('sendHome'),
+    cannotBeSentHomeByShootout: cannotEffect('sendHome', 'shootout'),
     cannotBeCalledOut: cannotEffectType('callout'),
     cannotBeAced: cannotEffectType('ace'),
     cannotBeDiscarded: cannotEffectType('discard'),
@@ -781,6 +823,7 @@ const Effects = {
     selectAsFirstCasualty: function() {
         return optionEffect('isSelectedAsFirstCasualty')();
     },
+    cannotBringDudesIntoPosseByShootout: cannotEffectPlayType('shootout:join', 'shootout'),
     cannotBeChosenAsCasualty: function() {
         return optionEffect('cannotBeChosenAsCasualty')();
     },
@@ -789,6 +832,15 @@ const Effects = {
     },
     canRefuseWithoutGoingHomeBooted: function() {
         return optionEffect('canRefuseWithoutGoingHomeBooted')();
+    },
+    canJoinWithoutBooting: function() {
+        return optionEffect('canJoinWithoutBooting')();
+    },
+    canJoinWithoutMoving: function() {
+        return optionEffect('canJoinWithoutMoving')();
+    },
+    canJoinWhileBooted: function() {
+        return optionEffect('canJoinWhileBooted')();
     },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {

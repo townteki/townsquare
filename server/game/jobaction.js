@@ -10,8 +10,6 @@ const CardAction = require('./cardaction.js');
  *                allowed, false otherwise. It should generally be used to check
  *                if the action can modify game state (step #1 in ability
  *                resolution in the rules).
- * bootLeader   - boolean indicating if leader should boot. It is not included
- *                among costs because leader select happens after costs are paid.
  * cost         - object or array of objects representing the cost required to
  *                be paid before the action will activate. See Costs.
  * phase        - string representing which phases the action may be executed.
@@ -37,7 +35,6 @@ class JobAction extends CardAction {
         this.onFail = properties.onFail || (() => true);
         this.statusRecorded = false;
         this.leaderCondition = properties.leaderCondition || (() => true);
-        this.bootLeader = properties.bootLeader;
         this.isJob = true;
     }
 
@@ -46,6 +43,8 @@ class JobAction extends CardAction {
         if(jobCard.getType() === 'dude' || (jobCard.parent && jobCard.parent.getType() === 'dude')) {
             let leader = jobCard.getType() === 'dude' ? jobCard : jobCard.parent;
             this.startJob(leader, context.target, context);
+        } else if(context.costs && context.costs.bootLeader) {
+            this.startJob(context.costs.bootLeader, context.target, context);
         } else {
             this.game.promptForSelect(context.player, {
                 activePromptTitle: 'Select job leader',
@@ -64,9 +63,6 @@ class JobAction extends CardAction {
 
     startJob(leader, mark, context) {
         this.context = context;
-        if(this.bootLeader) {
-            context.player.bootCard(leader);
-        }
         super.executeHandler(context);
         this.game.startShootout(leader, mark, context);
     }

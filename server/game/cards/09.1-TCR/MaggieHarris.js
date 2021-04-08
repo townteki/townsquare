@@ -8,7 +8,6 @@ class MaggieHarris extends DudeCard {
             title: 'Maggie Harris',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
-            bootLeader: true,
             target: 'currentHome',
             message: context =>
                 this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target),

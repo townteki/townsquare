@@ -12,7 +12,7 @@ class CircleMRanch extends DeedCard {
             message: context =>
                 this.game.addMessage('{0} uses {1} to draw a card', context.player, this),
             handler: context => {
-                context.player.drawCardsToHand(1);
+                context.player.drawCardsToHand(1, context);
             }
         });
     }

@@ -1,8 +1,8 @@
 const GameActions = require('../GameActions');
 
 class BootCost {
-    constructor() {
-        this.name = 'boot';
+    constructor(isBootLeader = false) {
+        this.name = isBootLeader ? 'bootLeader' : 'boot';
     }
 
     isEligible(card) {
