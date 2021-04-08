@@ -12,7 +12,7 @@ class Consecration extends SpellCard {
                 cardType: ['dude']
             },
             difficulty: 7,
-            actionContext: { card: this, gameAction: ['increaseBullets', 'increaseInfluence', 'setAsStud'] },
+            actionContext: { card: this, gameAction: 'increaseBullets' || 'increaseInfluence' || 'setAsStud' },
             onSuccess: (context) => {
                 this.untilEndOfRound(ability => ({
                     match: context.target,
@@ -22,7 +22,7 @@ class Consecration extends SpellCard {
                         ability.effects.setAsStud()
                     ]
                 }));
-                this.game.addMessage('{0} uses {1} to increase {3}\'s bullets and influence by 2 and make them a stud', context.player, this, context.target);
+                this.game.addMessage('{0} uses {1} to increase {2}\'s bullets and influence by 2 and make them a stud', context.player, this, context.target);
                 /* Check if this is a shootout and if so, reduce casualties */
                 if(this.game.shootout) {
                     context.player.modifyCasualties(-3);
