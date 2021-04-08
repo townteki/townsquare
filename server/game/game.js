@@ -640,6 +640,19 @@ class Game extends EventEmitter {
         player.selectDeck(deck);
     }
 
+    discardFromDrawHand(playerName) {
+        let player = this.getPlayerByName(playerName);
+        const cards = player.promptState.selectedCards;
+
+        if(!player || !cards || cards.length === 0) {
+            return;
+        }
+
+        player.discardCards(cards);
+        player.clearSelectedCards();
+        this.pipeline.clearSelectedCards(player);
+    }
+
     shuffleDeck(playerName) {
         var player = this.getPlayerByName(playerName);
         if(!player) {

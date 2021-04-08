@@ -94,6 +94,10 @@ class DrawHandPrompt extends UiPrompt {
         player.setSelectedCards(this.selectedCards);
     }
 
+    clearSelectedCards() {
+        this.selectedCards = [];
+    }
+
     highlightSelectableCards(player) {
         player.selectCard = true;
         player.setSelectableCards(player.drawHand);
