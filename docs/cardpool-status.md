@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/139/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/140/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -302,7 +302,7 @@
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |                     | 06016| Fancy New Hat
-|                     | 06017| Confession
+|:heavy_check_mark:   | 06017| Confession
 |                     | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
 |                     | 06020| Incubation
