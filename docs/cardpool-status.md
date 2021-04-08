@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/139/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/141/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -302,7 +302,7 @@
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |                     | 06016| Fancy New Hat
-|                     | 06017| Confession
+|:heavy_check_mark:   | 06017| Confession
 |                     | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
 |                     | 06020| Incubation
@@ -328,7 +328,7 @@
 |                     | 07014| Scoop Hound
 |                     | 07015| Rapier
 |                     | 07016| Vitality Tonic
-|                     | 07017| Consecration
+|:heavy_check_mark:   | 07017| Consecration
 |                     | 07018| Mark of Pestilence
 |                     | 07019| Cookin' Up Trouble
 |                     | 07020| Ol' Fashioned Hangin'
