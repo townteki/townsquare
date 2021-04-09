@@ -18,6 +18,9 @@ class BaseStep {
         return true;
     }
 
+    clearSelectedCards() {
+    }
+
     getDebugInfo() {
         return this.constructor.name;
     }

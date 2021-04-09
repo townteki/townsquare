@@ -82,7 +82,8 @@ class DrawHandPrompt extends UiPrompt {
             return false;
         }
 
-        if(this.selectedCards.length >= this.getDrawCount(player).redraw && !this.selectedCards.includes(card)) {
+        if(!this.getDrawCount(player).handRedrawn && this.selectedCards.length >= this.getDrawCount(player).redraw && 
+            !this.selectedCards.includes(card)) {
             return false;
         }
 
@@ -92,6 +93,10 @@ class DrawHandPrompt extends UiPrompt {
             this.selectedCards = this.selectedCards.filter(selectedCard => selectedCard !== card);
         }
         player.setSelectedCards(this.selectedCards);
+    }
+
+    clearSelectedCards() {
+        this.selectedCards = [];
     }
 
     highlightSelectableCards(player) {
