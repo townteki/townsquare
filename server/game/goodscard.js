@@ -58,6 +58,20 @@ class GoodsCard extends DrawCard {
         return false;
     }
 
+    meleeWeaponEffect(ability) {
+        this.persistentEffect({
+            condition: () => this.game.shootout && this.game.shootout.getParticipants().some(dude => {
+                if(dude.controller === this.controller) {
+                    return false;
+                }
+                let nonMeleeUnbootedWeapon = dude.attachments.filter(att => att.hasKeyword('weapon') && !att.hasKeyword('melee') && !att.booted);
+                return nonMeleeUnbootedWeapon && nonMeleeUnbootedWeapon.length > 0;
+            }),
+            match: this,
+            effect: ability.effects.setBullets(0)
+        });
+    }
+
     canBeTraded() {
         return this.canTrade;
     }
