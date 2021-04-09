@@ -649,6 +649,11 @@ class Game extends EventEmitter {
         }
 
         player.discardCards(cards);
+        this.clearDrawHandSelection(playerName);
+    }
+
+    clearDrawHandSelection(playerName) {
+        let player = this.getPlayerByName(playerName);
         player.clearSelectedCards();
         this.pipeline.clearSelectedCards(player);
     }
