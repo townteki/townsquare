@@ -247,6 +247,17 @@ const Effects = {
             }
         };
     }, 
+    setSuit: function(suit, sourceUuid) {
+        return {
+            gameAction: 'setSuit',
+            apply: function(card) {
+                card.addSuitEffect(sourceUuid, suit);
+            },
+            unapply: function(card) {
+                card.removeSuitEffect(sourceUuid, suit);
+            }
+        };
+    },
     entersPlayBooted: function() {
         return {
             apply: function(card) {
