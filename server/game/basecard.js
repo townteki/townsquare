@@ -38,7 +38,8 @@ class BaseCard {
 
         this.cost = cardData.cost;
         this.currentValue = cardData.rank;
-        this.suit = cardData.suit;
+        this.suitReferenceArray = [];
+        this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
         this.type = cardData.type;
         this.type_code = cardData.type_code;
         this.currentBullets = cardData.bullets;
@@ -73,6 +74,10 @@ class BaseCard {
 
     set value(amount) {
         this.currentValue = amount;
+    }
+
+    get suit() {
+        return this.suitReferenceArray[0].suit;
     }
 
     get bullets() {
@@ -114,6 +119,19 @@ class BaseCard {
             return new NullCard();
         }
         return location.locationCard;
+    }
+
+    addSuitEffect(source, suit = '') {
+        let newSuit = suit.toLowerCase();
+        if(!newSuit) {
+            return;
+        }
+        newSuit = newSuit[0].toUpperCase() + newSuit.slice(1);
+        this.suitReferenceArray.unshift({ source, suit: newSuit });
+    }
+
+    removeSuitEffect(source) {
+        this.suitReferenceArray = this.suitReferenceArray.filter(suitRef => suitRef.source !== source);
     }
 
     registerEvents(events) {
@@ -368,7 +386,7 @@ class BaseCard {
         if(!clone) {
             return;
         }
-        clone.suit = this.suit;
+        clone.suitReferenceArray = this.suitReferenceArray;
         clone.currentValue = this.currentValue;
         clone.currentProduction = this.currentProduction;
         clone.currentInfluence = this.currentInfluence;
@@ -428,6 +446,7 @@ class BaseCard {
         this.tokens = {};        
         this.clearNew();
         this.gamelocation = '';
+        this.removeSuitEffect('chatcommand');
     }
 
     clearTokens() {

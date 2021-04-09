@@ -16,6 +16,8 @@ class ChatCommands {
             '/cancel-prompt': this.cancelPrompt,
             '/cancel-shootout': this.cancelShootout,
             '/clear-shooter': this.clearShooter,
+            '/clear-suit': this.clearSuit,
+            '/clear-effects': this.clearEffects,
             '/control': this.control,
             '/discard': this.discard,
             '/disconnectme': this.disconnectMe,
@@ -31,8 +33,10 @@ class ChatCommands {
             '/reset-abilities': this.resetAbilities,
             '/reveal-hand': this.revealHand,
             '/shooter': this.shooter,
+            '/suit': this.suit,
             '/token': this.setToken,
-            '/unblank': this.unblank
+            '/unblank': this.unblank,
+            '/value': this.value
         };
     }
 
@@ -100,7 +104,7 @@ class ChatCommands {
             activePromptTitle: 'Select a card to set ' + type + ' for',
             waitingPromptTitle: 'Waiting for opponent to set ' + type,
             cardCondition: card => card.location === 'play area' && card.controller === player,
-            cardType: ['dude'],
+            cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
                 // TODO M2 so far we only use standard influence, no influence:deed
                 let influence = num - card.influence;
@@ -179,6 +183,34 @@ class ChatCommands {
             onSelect: (p, card) => {
                 card.removeStudEffect('chatcommand');
                 this.game.addAlert('danger', '{0} uses the /clear-shooter command to clear chatcommand shooter type for {1}', p, card);
+                return true;
+            }
+        });        
+    }
+
+    suit(player, args) {
+        var type = args[1];
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set suit for',
+            waitingPromptTitle: 'Waiting for opponent to set suit',
+            cardCondition: card => ['play area', 'draw hand'].includes(card.location) && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                card.addSuitEffect('chatcommand', type);
+                this.game.addAlert('danger', '{0} uses the /suit command to set the {1} to {2}', p, card, type);
+                return true;
+            }
+        });
+    }
+
+    clearSuit(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to clear chatcommand suit for',
+            waitingPromptTitle: 'Waiting for opponent to clear suit',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            onSelect: (p, card) => {
+                card.removeSuitEffect('chatcommand');
+                this.game.addAlert('danger', '{0} uses the /clear-suit command to clear chatcommand suit for {1}', p, card);
                 return true;
             }
         });        
@@ -395,6 +427,45 @@ class ChatCommands {
             onSelect: (p, card) => {
                 player.removeCardFromGame(card);
                 this.game.addAlert('danger', '{0} uses the /remove-from-game command to remove {1} from the game', player, card);
+                return true;
+            }
+        });
+    }
+
+    value(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        var type = this.getNumberOrDefault(args[2], 'value');
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set ' + type + ' for',
+            waitingPromptTitle: 'Waiting for opponent to set ' + type,
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                let value = num - card.value;
+                card.value += value;
+
+                if(card.value < 0) {
+                    card.value = 0;
+                }
+                this.game.addAlert('danger', '{0} uses the /value command to set the value of {1} to {2}', p, card, num);
+                return true;
+            }
+        });
+    }
+
+    clearEffects(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card',
+            waitingPromptTitle: 'Waiting for opponent to select a card',
+            cardCondition: card => card.location === 'play area' && card.controller === player && card.owner === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                this.game.effectEngine.effects.forEach(effect => {
+                    if(effect.source !== card) {
+                        effect.removeTarget(card);
+                    }
+                });
+                this.game.addAlert('danger', '{0} uses the /clear-effects command to remove effects from {1}', player, card);
                 return true;
             }
         });

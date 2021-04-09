@@ -458,6 +458,7 @@ class DudeCard extends DrawCard {
         if(this.game.shootout) {
             this.game.shootout.removeFromPosse(this);
         }
+        this.removeStudEffect('chatcommand');
     }
 
     getSummary(activePlayer) {
