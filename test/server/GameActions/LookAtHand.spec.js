@@ -4,7 +4,8 @@ describe('LookAtHand', function() {
     beforeEach(function() {
         this.playerSpy = { player: 1 };
         this.opponentSpy = { player: 2, name: 'opponent', hand: ['card1', 'card2'] };
-        this.gameSpy = jasmine.createSpyObj('game', ['promptForSelect']);
+        this.gameSpy = jasmine.createSpyObj('game', ['promptForSelect', 'queueSimpleStep']);
+        this.gameSpy.cardVisibility = jasmine.createSpyObj('cardVisibility', ['addRule', 'removeRule']);
         this.contextSpy = {
             game: this.gameSpy,
             source: 'SOURCE'
@@ -57,8 +58,7 @@ describe('LookAtHand', function() {
             it('uses the correct prompt properties', function() {
                 expect(this.gameSpy.promptForSelect).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({
                     activePromptTitle: 'Look at opponent\'s hand',
-                    source: 'SOURCE',
-                    revealTargets: true
+                    source: 'SOURCE'
                 }));
             });
         });
