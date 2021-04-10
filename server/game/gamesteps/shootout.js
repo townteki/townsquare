@@ -186,6 +186,11 @@ class Shootout extends Phase {
         }
     }
 
+    getParticipants() {
+        let dudes = this.opposingPosse ? this.opposingPosse.getDudes() : [];
+        return this.leaderPosse ? this.leaderPosse.getDudes().concat(dudes) : dudes;
+    }
+
     isInLeaderPosse(card) {
         return this.leaderPosse && this.leaderPosse.isInPosse(card);
     }

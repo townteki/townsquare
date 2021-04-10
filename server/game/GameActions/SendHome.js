@@ -15,13 +15,13 @@ class SendHome extends GameAction {
         );
     }
 
-    createEvent({ card, options = {} }) {
+    createEvent({ card, options = {}, context }) {
         let params = this.getDefaultOptions(options);
-        return this.event('onDudeSentHome', { card, options: params }, event => {
-            if(options.fromPosse) {
+        return this.event('onDudeSentHome', { card, options: params, context }, event => {
+            if(options.fromPosse && event.card.game.shootout) {
                 event.card.game.shootout.removeFromPosse(card);
             } 
-            event.card.sendHome(event.options);
+            event.card.sendHome(event.options, context);
         });
     }
 

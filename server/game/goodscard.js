@@ -2,23 +2,24 @@ const AbilityDsl = require('./abilitydsl.js');
 const DrawCard = require('./drawcard.js');
 
 class GoodsCard extends DrawCard {
-    constructor(owner, cardData) {
+    constructor(owner, cardData, useMeleeEffect) {
         super(owner, cardData);
         this.traded = false;
         this.canTrade = true;
         this.resetHandler = () => this.reset();
 
-        let effects = [];
         if(this.bullets) {
-            effects.push(AbilityDsl.effects.dynamicBullets(() => this.bullets));
+            this.whileAttached({
+                condition: () => !useMeleeEffect || !this.meleeWeaponCondition(),
+                effect: AbilityDsl.effects.dynamicBullets(() => this.bullets)
+            });
         }
         if(this.influence) {
-            effects.push(AbilityDsl.effects.dynamicInfluence(() => this.influence));
+            this.whileAttached({
+                condition: () => true,
+                effect: AbilityDsl.effects.dynamicInfluence(() => this.influence)
+            });
         }
-        this.whileAttached({
-            condition: () => true,
-            effect: effects
-        });
     }
 
     get difficulty() {
@@ -56,6 +57,16 @@ class GoodsCard extends DrawCard {
         }        
 
         return false;
+    }
+
+    meleeWeaponCondition() {
+        return this.game.shootout && this.game.shootout.getParticipants().some(dude => {
+            if(dude.controller === this.controller) {
+                return false;
+            }
+            let nonMeleeUnbootedWeapon = dude.attachments.filter(att => att.hasKeyword('weapon') && !att.hasKeyword('melee') && !att.booted);
+            return nonMeleeUnbootedWeapon && nonMeleeUnbootedWeapon.length > 0;
+        });
     }
 
     canBeTraded() {
