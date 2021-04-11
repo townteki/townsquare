@@ -810,6 +810,14 @@ class BaseCard {
         return this.game.findLocation(this.gamelocation);
     }
 
+    isAdjacent(locationUuid) {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        let gameLocationObject = this.getGameLocation();
+        return gameLocationObject && gameLocationObject.isAdjacent(locationUuid);
+    }
+
     isInControlledLocation() {
         return this.locationCard && this.locationCard.controller === this.controller;
     }

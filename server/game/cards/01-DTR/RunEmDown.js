@@ -25,7 +25,7 @@ class RunEmDown extends ActionCard {
                         this.game.promptForSelect(player, {
                             activePromptTitle: 'Select a dude to be runned down',
                             waitingPromptTitle: 'Waiting for opponent to select dude',
-                            cardCondition: card => card.location === 'play area' && card.getGameLocation().isAdjacent(context.target.uuid) && !card.hasHorse(),
+                            cardCondition: card => card.location === 'play area' && card.isAdjacent(context.target.uuid) && !card.hasHorse(),
                             cardType: 'dude',
                             onSelect: (player, runnedDude) => {
                                 let action = GameActions.simultaneously(

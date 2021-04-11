@@ -852,7 +852,7 @@ class Game extends EventEmitter {
             if(context.ability && context.ability.title !== 'Trade') {
                 this.currentPlayWindow.markActionAsTaken(context.player);
             }
-        } else if(this.currentPhase !== 'setup' || this.hasOpenReactionBeforeWindow()) {
+        } else if(this.currentPhase !== 'setup' || this.hasOpenReactionWindow()) {
             this.addAlert('danger', '{0} uses {1} outside of a play window', context.player, context.source);
         }
     }
@@ -931,7 +931,7 @@ class Game extends EventEmitter {
         }
     }
 
-    hasOpenReactionBeforeWindow() {
+    hasOpenReactionWindow() {
         return this.abilityWindowStack.length !== 0;
     }
 

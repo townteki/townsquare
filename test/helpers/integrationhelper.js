@@ -108,7 +108,7 @@ var customMatchers = {
                 }
 
                 let selectableCardNames = actual.player.getSelectableCards().map(card => card.title);
-                let isPromptingAbility = actual.game.hasOpenReactionBeforeWindow();
+                let isPromptingAbility = actual.game.hasOpenReactionWindow();
                 let includesCard = selectableCardNames.some(cardName => util.equals(cardName, expected, customEqualityMatchers));
 
                 result.pass = isPromptingAbility && includesCard;

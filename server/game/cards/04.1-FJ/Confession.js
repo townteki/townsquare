@@ -16,7 +16,7 @@ class Confession extends SpellCard {
                     location: 'play area', 
                     condition: card =>
                         card.gamelocation === this.gamelocation || 
-                        card.getGameLocation().isAdjacent(this.gamelocation)
+                        card.isAdjacent(this.gamelocation)
                 },
                 cardType: ['dude'],
                 gameAction: 'addBounty'
@@ -45,7 +45,7 @@ class Confession extends SpellCard {
                     location: 'play area', 
                     condition: card =>
                         (card.gamelocation === this.gamelocation || 
-                        card.getGameLocation().isAdjacent(this.gamelocation)) &&
+                        card.isAdjacent(this.gamelocation)) &&
                         card.isWanted()
                 },
                 cardType: ['dude'],

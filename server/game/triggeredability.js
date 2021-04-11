@@ -1,5 +1,6 @@
 const BaseAbility = require('./baseability.js');
 const Costs = require('./costs.js');
+const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const TriggeredAbilityContext = require('./TriggeredAbilityContext.js');
 
 class TriggeredAbility extends BaseAbility {
@@ -15,6 +16,14 @@ class TriggeredAbility extends BaseAbility {
 
         if(card.getType() === 'action' && !properties.ignoreEventCosts) {
             this.cost = this.cost.concat(Costs.playAction());
+        }
+
+        if(!this.gameAction) {
+            if(card.getType() !== 'spell') {
+                throw new Error('Reactions must have a `gameAction` or `handler` property.');
+            } else {
+                this.gameAction = new HandlerGameActionWrapper({ handler: () => true });
+            }
         }
     }
 

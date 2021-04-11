@@ -7,11 +7,13 @@ class LayOnHands extends SpellCard {
             usesInstead: true,
             when: {
                 onCardAced: event => event.card.getType() === 'dude' && 
+                    event.originalLocation === 'play area' &&
                     (event.card.gamelocation === this.gamelocation ||
-                    event.card.getGameLocation().isAdjacent(this.gamelocation)),
+                    event.card.isAdjacent(this.gamelocation)),
                 onCardDiscarded: event => event.card.getType() === 'dude' && 
+                    event.originalLocation === 'play area' &&
                     (event.card.gamelocation === this.gamelocation ||
-                    event.card.getGameLocation().isAdjacent(this.gamelocation)) &&
+                    event.card.isAdjacent(this.gamelocation)) &&
                     event.isCasualty
             },
             cost: ability.costs.bootSelf(),
@@ -24,7 +26,7 @@ class LayOnHands extends SpellCard {
                             match: context.event.card,
                             effect: ability.effects.doesNotUnbootAtSundown()
                         }));
-                        this.game.addMessage('{0} uses {1} to save {2} and send them home instead', context.player, this, context.event.card);
+                        this.game.addMessage('{0} uses {1} to save {2} and send them home booted instead', context.player, this, context.event.card);
                     });
                 });
             }
