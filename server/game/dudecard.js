@@ -182,8 +182,8 @@ class DudeCard extends DrawCard {
         this.studReferenceArray = this.studReferenceArray.filter(studRef => studRef.source !== source);
     }
 
-    sendHome(options = {}) {
-        this.owner.moveDude(this, this.owner.outfit.uuid, options);
+    sendHome(options = {}, context) {
+        this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.owner.outfit.uuid, options }), context);
     }
 
     moveToLocation(destinationUuid) {
