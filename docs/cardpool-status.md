@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/144/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/146/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -326,7 +326,7 @@
 |                     | 07012| La Quema
 |                     | 07013| Asyncoil Gun
 |:heavy_check_mark:   | 07014| Scoop Hound
-|                     | 07015| Rapier
+|:heavy_check_mark:   | 07015| Rapier
 |                     | 07016| Vitality Tonic
 |:heavy_check_mark:   | 07017| Consecration
 |                     | 07018| Mark of Pestilence
@@ -439,7 +439,7 @@
 |                     | 10026| Wendy's Teethkickers
 |                     | 10027| Rich Man's Guard Dog
 |                     | 10028| Fiery Rhetoric
-|                     | 10029| Strength of the Ancestors
+|:heavy_check_mark:   | 10029| Strength of the Ancestors
 |                     | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
 |                     | 10032| Red Horse's Tail
