@@ -10,7 +10,7 @@ const BaseCardSelector = require('./CardSelectors/BaseCardSelector');
 
 /**
  * Base class representing an ability that can be done by the player. This
- * includes card actions, reactions, interrupts, playing a card.
+ * includes card actions, reactions, playing a card.
  *
  * Most of the methods take a context object. While the structure will vary from
  * inheriting classes, it is guaranteed to have at least the `game` object, the

@@ -65,7 +65,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelinterrupt') {
+        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelreaction') {
             return;
         }
 
@@ -114,7 +114,7 @@ class TriggeredAbility extends BaseAbility {
     }
 
     isEventListeningLocation(location) {
-        // Reactions / interrupts for playable event cards need to listen for
+        // Reactions for playable event cards need to listen for
         // game events in all open information locations plus while in hand.
         // The location property of the ability will prevent it from firing in
         // inappropriate locations when requirements are checked for the ability.

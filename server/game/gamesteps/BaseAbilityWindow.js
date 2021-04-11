@@ -100,7 +100,7 @@ class BaseAbilityWindow extends BaseStep {
             return;
         }
 
-        this.game.openInterruptWindowForAttachedEvents(this.event);
+        this.game.openReactionBeforeWindowForAttachedEvents(this.event);
     }
 }
 

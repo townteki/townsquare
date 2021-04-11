@@ -155,7 +155,7 @@ class PlayerInteractionWrapper {
     }
 
     triggerAbility(cardOrCardName) {
-        if(!this.game.hasOpenInterruptOrReactionWindow()) {
+        if(!this.game.hasOpenReactionBeforeWindow()) {
             throw new Error(`Couldn't trigger ability for ${this.name}. Not in an ability window. Current prompt is:\n${this.formatPrompt()}`);
         }
 

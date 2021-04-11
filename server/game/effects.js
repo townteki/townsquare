@@ -279,6 +279,7 @@ const Effects = {
         };
     },
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin'),
+    doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown'),
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },
