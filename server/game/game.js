@@ -282,6 +282,14 @@ class Game extends EventEmitter {
         return foundLocations;
     }
 
+    getDudesAtLocation(locationUuid) {
+        let gameLocation = this.findLocation(locationUuid);
+        if(!gameLocation) {
+            return [];
+        }
+        return gameLocation.getDudes();
+    }
+
     addEffect(source, properties) {
         this.addSimultaneousEffects([{ source: source, properties: properties }]);
     }
