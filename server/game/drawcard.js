@@ -314,6 +314,10 @@ class DrawCard extends BaseCard {
         return this.options.contains('canRefuseWithoutGoingHomeBooted');
     }
 
+    canUseControllerAbilities(player) {
+        return this.options.contains('canUseControllerAbilities', player);
+    }
+
     canBeAced() {
         return this.allowGameAction('ace');
     }

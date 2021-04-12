@@ -465,7 +465,7 @@ class BaseCard {
             return;
         }
 
-        if(this.location === 'play area') {
+        if(this.location === 'play area' && player === this.controller) {
             menu = [{ command: 'click', text: 'Boot / Unboot' }];
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
