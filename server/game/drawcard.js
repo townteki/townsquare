@@ -37,6 +37,10 @@ class DrawCard extends BaseCard {
         super.gamelocation = gamelocation;
     }
 
+    get difficulty() {
+        return this.keywords.getDifficulty();
+    }
+
     get control() {
         return this.currentControl;
     }
@@ -296,6 +300,10 @@ class DrawCard extends BaseCard {
             this.parent.removeAttachment(this);
         }
         super.leavesPlay();
+    }
+
+    isGadget() {
+        return this.hasKeyword('Gadget');
     }
 
     isSelectedAsFirstCasualty() {
