@@ -186,7 +186,13 @@ class DudeCard extends DrawCard {
     }
 
     sendHome(options = {}, context) {
-        this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.owner.outfit.uuid, options }), context);
+        if(options.needToBoot) {
+            this.game.resolveGameAction(GameActions.bootCard({ card: this }), context);
+        }
+        this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.controller.outfit.uuid, options }), context);
+        if(options.fromPosse && this.game.shootout) {
+            this.game.shootout.removeFromPosse(this);
+        } 
     }
 
     moveToLocation(destinationUuid) {
@@ -345,7 +351,7 @@ class DudeCard extends DrawCard {
         if(!shootout) {
             return { canJoin: false };
         } 
-        if(this.getGameLocation().isAdjacent(shootout.gamelocation) && (!this.booted || allowBooted)) {
+        if(this.isAdjacent(shootout.gamelocation) && (!this.booted || allowBooted)) {
             return { canJoin: true, needToBoot: true };
         }
 
@@ -353,7 +359,7 @@ class DudeCard extends DrawCard {
             if(this.gamelocation === shootout.leader.gamelocation) {
                 return { canJoin: true, needToBoot: true };
             } 
-            if(this.getGameLocation().isAdjacent(shootout.leader.gamelocation)) {
+            if(this.isAdjacent(shootout.leader.gamelocation)) {
                 return { canJoin: true, needToBoot: true };
             }         
         }
