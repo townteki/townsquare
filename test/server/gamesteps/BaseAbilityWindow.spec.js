@@ -67,7 +67,7 @@ describe('BaseAbilityWindow', function() {
             this.card = { card: 1 };
             this.context = { context: 1, player: this.player };
             this.abilitySpy.card = this.card;
-            this.abilitySpy.createContext.and.returnValue(this.context);
+            this.abilitySpy.createContext.and.returnValue([this.context]);
             this.abilitySpy.canResolve.and.returnValue(true);
         });
 

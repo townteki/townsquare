@@ -406,6 +406,17 @@ const Effects = {
     dynamicBullets: dynamicStatModifier('bullets'),
     dynamicInfluence: dynamicStatModifier('influence'),
     dynamicProduction: dynamicStatModifier('production'),
+    modifyHandSize: function(value) {
+        return {
+            targetType: 'player',
+            apply: function(player) {
+                player.handSize += value;
+            },
+            unapply: function(player) {
+                player.handSize -= value;
+            }
+        };
+    },
     modifySundownDiscard: function(value) {
         return {
             targetType: 'player',
@@ -853,6 +864,9 @@ const Effects = {
     },
     canJoinWhileBooted: function() {
         return optionEffect('canJoinWhileBooted')();
+    },
+    canUseControllerAbilities: function() {
+        return optionEffect('canUseControllerAbilities')();
     },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {

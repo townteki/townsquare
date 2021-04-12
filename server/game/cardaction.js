@@ -37,7 +37,6 @@ class CardAction extends PlayTypeAbility {
         if(this.isCardAbility()) {
             this.usage = new AbilityUsage(properties, this.playType);
         }
-        this.anyPlayer = properties.anyPlayer || false;
         this.condition = properties.condition;
         this.ifCondition = properties.ifCondition;
         this.ifFailMessage = properties.ifFailMessage;
@@ -88,10 +87,6 @@ class CardAction extends PlayTypeAbility {
         return this.isLocationValid(this.card.location);
     }
 
-    allowPlayer(player) {
-        return this.card.controller === player || this.anyPlayer;
-    }
-
     allowGameAction(context) {
         if(!this.gameAction.allow(context)) {
             return false;
@@ -122,10 +117,6 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(!this.options.allowUsed && this.usage.isUsed()) {
-            return false;
-        }
-
-        if(!this.allowPlayer(context.player)) {
             return false;
         }
 

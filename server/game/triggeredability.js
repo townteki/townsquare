@@ -10,7 +10,7 @@ class TriggeredAbility extends BaseAbility {
         this.game = game;
         this.card = card;
         this.when = properties.when;
-        this.playerFunc = properties.player || (() => this.card.controller);
+        this.playerFunc = properties.player || (player => this.card.controller === player || this.card.canUseControllerAbilities(player));
         this.eventType = eventType;
         this.location = this.buildLocation(card, properties.location);
 
@@ -54,13 +54,16 @@ class TriggeredAbility extends BaseAbility {
     }
 
     createContext(event) {
-        return new TriggeredAbilityContext({
-            ability: this,
-            event: event,
-            game: this.game,
-            source: this.card,
-            player: this.playerFunc()
-        });
+        let players = this.game.getPlayers().filter(player => this.playerFunc(player));
+        let contexts = players.map(player => 
+            new TriggeredAbilityContext({
+                ability: this,
+                event: event,
+                game: this.game,
+                source: this.card,
+                player: player
+            }));
+        return contexts;
     }
 
     triggersFor(eventName) {

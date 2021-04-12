@@ -55,19 +55,21 @@ class BaseAbilityWindow extends BaseStep {
             return;
         }
 
-        let context = ability.createContext(event);
+        let contexts = ability.createContext(event);
 
-        if(!ability.canResolve(context)) {
+        let resolvedContexts = contexts.filter(context => ability.canResolve(context));
+        if(!resolvedContexts || resolvedContexts.length === 0) {
             return;
         }
 
-        this.abilityChoices.push({
-            id: uuid.v1(),
-            player: context.player,
-            ability: ability,
-            card: ability.card,
-            context: context
-        });
+        resolvedContexts.forEach(context =>
+            this.abilityChoices.push({
+                id: uuid.v1(),
+                player: context.player,
+                ability: ability,
+                card: ability.card,
+                context: context
+            }));
     }
 
     hasResolvedAbility(ability, event) {

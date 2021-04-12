@@ -17,7 +17,7 @@ describe('CardAction', function () {
         this.otherPlayerSpy = jasmine.createSpyObj('player', ['canTrigger']);
         this.otherPlayerSpy.canTrigger.and.returnValue(true);
 
-        this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'isAnyBlank', 'getType', 'hasKeyword']);
+        this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'isAnyBlank', 'getType', 'hasKeyword', 'canUseControllerAbilities']);
         this.handlerSpy = jasmine.createSpy('handler');
 
         this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);

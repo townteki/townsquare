@@ -38,7 +38,8 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
     }
 
     filterChoicelessPlayers(players) {
-        return players.filter(player => this.cancelTimer.isEnabled(player) || this.abilityChoices.some(abilityChoice => abilityChoice.player === player));
+        return players.filter(player => this.cancelTimer.isEnabled(player) || 
+            this.abilityChoices.some(abilityChoice => abilityChoice.player === player && !abilityChoice.ability.usage.isUsed()));
     }
 
     promptPlayer(player) {
