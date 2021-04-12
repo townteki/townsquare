@@ -21,7 +21,7 @@ const EventWindow = require('./gamesteps/eventwindow.js');
 const AbilityResolver = require('./gamesteps/abilityresolver.js');
 const TraitTriggeredAbilityWindow = require('./gamesteps/TraitTriggeredAbilityWindow.js');
 const TriggeredAbilityWindow = require('./gamesteps/TriggeredAbilityWindow.js');
-const InterruptWindow = require('./gamesteps/InterruptWindow');
+const ReactionBeforeWindow = require('./gamesteps/ReactionBeforeWindow');
 const Event = require('./event.js');
 const NullEvent = require('./NullEvent');
 const AtomicEvent = require('./AtomicEvent.js');
@@ -280,6 +280,14 @@ class Game extends EventEmitter {
             foundLocations.concat(this.game.townsquare);
         }
         return foundLocations;
+    }
+
+    getDudesAtLocation(locationUuid) {
+        let gameLocation = this.findLocation(locationUuid);
+        if(!gameLocation) {
+            return [];
+        }
+        return gameLocation.getDudes();
     }
 
     addEffect(source, properties) {
@@ -852,7 +860,7 @@ class Game extends EventEmitter {
             if(context.ability && context.ability.title !== 'Trade') {
                 this.currentPlayWindow.markActionAsTaken(context.player);
             }
-        } else if(this.currentPhase !== 'setup' || this.hasOpenInterruptOrReactionWindow()) {
+        } else if(this.currentPhase !== 'setup' || this.hasOpenReactionWindow()) {
             this.addAlert('danger', '{0} uses {1} outside of a play window', context.player, context.source);
         }
     }
@@ -895,7 +903,7 @@ class Game extends EventEmitter {
         this.queueSimpleStep(() => this.abilityWindowStack.pop());
     }
 
-    openInterruptWindowForAttachedEvents(event) {
+    openReactionBeforeWindowForAttachedEvents(event) {
         let attachedEvents = [];
         for(let concurrentEvent of event.getConcurrentEvents()) {
             attachedEvents = attachedEvents.concat(concurrentEvent.attachedEvents);
@@ -911,7 +919,7 @@ class Game extends EventEmitter {
             groupedEvent.addChildEvent(attachedEvent);
         }
 
-        this.queueStep(new InterruptWindow(this, groupedEvent, () => this.postEventCalculations()));
+        this.queueStep(new ReactionBeforeWindow(this, groupedEvent, () => this.postEventCalculations()));
     }
 
     registerAbility(ability, event) {
@@ -931,7 +939,7 @@ class Game extends EventEmitter {
         }
     }
 
-    hasOpenInterruptOrReactionWindow() {
+    hasOpenReactionWindow() {
         return this.abilityWindowStack.length !== 0;
     }
 

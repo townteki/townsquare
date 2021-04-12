@@ -29,10 +29,10 @@ const PromptedTriggeredAbility = require('./promptedtriggeredability.js');
  *            be in in order to activate the reaction. Defaults to 'play area'.
  * player   - optional function that returns which player to prompt for the
  *            ability. By default, the player that controls the card will be
- *            prompted. Used for reactions / interrupts that any player can
+ *            prompted. Used for reactions that any player can
  *            trigger.
  * cannotBeCanceled - optional boolean that determines whether an ability can
- *                    be canceled using a cancel interrupt.
+ *                    be canceled using a cancel reaction.
  */
 class CardReaction extends PromptedTriggeredAbility {
     constructor(game, card, properties) {
