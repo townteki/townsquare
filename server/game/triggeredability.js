@@ -1,5 +1,6 @@
 const BaseAbility = require('./baseability.js');
 const Costs = require('./costs.js');
+const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const TriggeredAbilityContext = require('./TriggeredAbilityContext.js');
 
 class TriggeredAbility extends BaseAbility {
@@ -15,6 +16,14 @@ class TriggeredAbility extends BaseAbility {
 
         if(card.getType() === 'action' && !properties.ignoreEventCosts) {
             this.cost = this.cost.concat(Costs.playAction());
+        }
+
+        if(!this.gameAction) {
+            if(card.getType() !== 'spell') {
+                throw new Error('Reactions must have a `gameAction` or `handler` property.');
+            } else {
+                this.gameAction = new HandlerGameActionWrapper({ handler: () => true });
+            }
         }
     }
 
@@ -68,7 +77,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelinterrupt') {
+        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelreaction') {
             return;
         }
 
@@ -117,7 +126,7 @@ class TriggeredAbility extends BaseAbility {
     }
 
     isEventListeningLocation(location) {
-        // Reactions / interrupts for playable event cards need to listen for
+        // Reactions for playable event cards need to listen for
         // game events in all open information locations plus while in hand.
         // The location property of the ability will prevent it from firing in
         // inappropriate locations when requirements are checked for the ability.

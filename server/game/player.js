@@ -709,6 +709,14 @@ class Player extends Spectator {
             case 'dude':  
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                     updatedParams.context.cardToUpgrade.upgrade(card);
+                } else if(card.isGadget()) {
+                    let gadgetInvented = this.isGadgetInvented(card, null, (context, scientist) => {
+                        card.moveToLocation(scientist.gamelocation);
+                        this.moveCard(card, 'play area');
+                    });
+                    if(!gadgetInvented) {
+                        return;
+                    }
                 } else {
                     let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
                     card.moveToLocation(target);
@@ -804,7 +812,7 @@ class Player extends Spectator {
             return {
                 successHandler: context => {
                     this.game.addMessage('{0} successfuly invent {1} using the {2}', this, gadget, scientist);
-                    successHandler(context);
+                    successHandler(context, scientist);
                 },
                 failHandler: () => {
                     this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);

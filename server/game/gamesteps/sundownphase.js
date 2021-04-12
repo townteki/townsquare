@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const DiscardPrompt = require('./sundown/discardprompt.js');
@@ -18,17 +17,16 @@ class SundownPhase extends Phase {
     }
 
     sundownRedraw() {
-        _.each(this.game.getPlayers(), player => {
+        this.game.getPlayers().forEach(player => {
             player.sundownRedraw();
         });
     }
 
     checkWinCondition() {
         let potentialWinner = [];
-        _.each(this.game.getPlayers(), player => {
-            let opponents = _.reject(this.game.getPlayers(), activePlayer => activePlayer === player);
-            if(opponents.length > 0 && _.every(opponents, opponent => opponent.getTotalInfluence() < player.getTotalControl())) {
-                //console.log("player control points" + player.getTotalControl());
+        this.game.getPlayers().forEach(player => {
+            let opponents = this.game.getPlayers().filter(activePlayer => activePlayer !== player);
+            if(opponents.length > 0 && opponents.every(opponent => opponent.getTotalInfluence() < player.getTotalControl())) {
                 potentialWinner.push(player);
             }
         });
@@ -40,9 +38,11 @@ class SundownPhase extends Phase {
     }
 
     unbootCards() { 
-        _.each(this.game.getPlayers(), player => {
-            _.each(player.cardsInPlay, card => {
-                player.unbootCard(card);
+        this.game.getPlayers().forEach(player => {
+            player.cardsInPlay.forEach(card => {
+                if(!card.options.contains('doesNotUnbootAtSundown')) {
+                    player.unbootCard(card);
+                }
             });
         });
     }

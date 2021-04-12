@@ -13,7 +13,7 @@ class BloodCurse extends SpellCard {
                     controller: 'any', 
                     condition: card => 
                         card.gamelocation === this.gamelocation ||
-                        card.getGameLocation().isAdjacent(this.gamelocation)
+                        card.isAdjacent(this.gamelocation)
                 },
                 cardType: ['dude']
             },
