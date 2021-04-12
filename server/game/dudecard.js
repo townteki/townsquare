@@ -78,6 +78,12 @@ class DudeCard extends DrawCard {
     }
 
     getSkillRatingForCard(spellOrGadget) {
+        if(spellOrGadget.isGadget()) {
+            return this.getSkillRating('mad scientist');
+        }
+        if(spellOrGadget.getType() !== 'goods' && spellOrGadget.getType() !== 'spell') {
+            return;
+        }
         if(spellOrGadget.isMiracle()) {
             return this.getSkillRating('blessed');
         }
@@ -86,9 +92,6 @@ class DudeCard extends DrawCard {
         }
         if(spellOrGadget.isSpirit() || spellOrGadget.isTotem()) {
             return this.getSkillRating('shaman');
-        }
-        if(spellOrGadget.isGadget()) {
-            return this.getSkillRating('mad scientist');
         }
     }
 

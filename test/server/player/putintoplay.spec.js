@@ -13,7 +13,7 @@ describe('Player', function() {
 
         this.cardSpy = jasmine.createSpyObj('card', [
             'getPrintedType', 'getCost', 'isUnique', 'applyPersistentEffects', 'moveTo', 'isToken', 'takeControl', 'getType', 'moveToLocation',
-            'entersPlay', 'hasKeyword'
+            'entersPlay', 'hasKeyword', 'isGadget'
         ]);
         this.cardSpy.controller = this.player;
         this.cardSpy.owner = this.player;
