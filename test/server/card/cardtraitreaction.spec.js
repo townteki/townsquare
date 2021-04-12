@@ -3,11 +3,13 @@ const Event = require('../../../server/game/event.js');
 
 describe('CardForcedReaction', function () {
     beforeEach(function () {
-        this.gameSpy = jasmine.createSpyObj('game', ['on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'registerAbility', 'resolveGameAction']);
+        this.gameSpy = jasmine.createSpyObj('game', ['on', 'popAbilityContext', 'pushAbilityContext', 'removeListener', 'registerAbility', 'resolveGameAction', 'getPlayers']);
         this.gameSpy.resolveGameAction.and.callFake(() => { 
             return { thenExecute: () => true };
         });
-        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank', 'hasKeyword']);
+        this.playerSpy = jasmine.createSpyObj('player', ['canUseControllerAbilities', 'canTrigger']);
+        this.gameSpy.getPlayers.and.returnValue([this.playerSpy]);
+        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank', 'hasKeyword', 'canUseControllerAbilities']);
         this.cardSpy.location = 'play area';
         this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
 
@@ -68,7 +70,9 @@ describe('CardForcedReaction', function () {
                 this.event = new Event('onSomething', {});
                 this.reaction = new CardTraitReaction(this.gameSpy, this.cardSpy, this.properties);
                 this.reaction.usage = this.usageSpy;
-                this.context = this.reaction.createContext(this.event);
+                this.reaction.playerFunc = () => true;
+                this.playerSpy.canTrigger.and.returnValue(true);
+                this.context = this.reaction.createContext(this.event)[0];
                 return this.reaction.meetsRequirements(this.context);
             };
         });

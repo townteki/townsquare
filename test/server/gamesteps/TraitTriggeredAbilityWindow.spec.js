@@ -29,7 +29,7 @@ describe('TraitTriggeredAbilityWindow', function() {
         function createAbility(card, context) {
             let ability = jasmine.createSpyObj('ability', ['createContext', 'getChoices', 'canResolve']);
             ability.card = card;
-            ability.createContext.and.returnValue(context);
+            ability.createContext.and.returnValue([context]);
             ability.getChoices.and.returnValue([{ choice: 'default' }]);
             ability.canResolve.and.returnValue(true);
             return ability;
