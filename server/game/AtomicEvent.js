@@ -24,10 +24,6 @@ class AtomicEvent {
         }
     }
 
-    allowAutomaticSave() {
-        return false;
-    }
-
     cancel() {
         this.cancelled = true;
 

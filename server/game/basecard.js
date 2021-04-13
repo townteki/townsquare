@@ -3,9 +3,8 @@ const _ = require('underscore');
 
 const AbilityDsl = require('./abilitydsl');
 const CardAction = require('./cardaction');
-const CardForcedInterrupt = require('./cardforcedinterrupt');
 const CardTraitReaction = require('./cardtraitreaction');
-const CardInterrupt = require('./cardinterrupt');
+const CardInsteadReaction = require('./cardinsteadreaction');
 const CardMatcher = require('./CardMatcher');
 const CardReaction = require('./cardreaction');
 const CustomPlayAction = require('./PlayActions/CustomPlayAction');
@@ -17,6 +16,8 @@ const JobAction = require('./jobaction');
 const NullCard = require('./nullcard');
 const SpellAction = require('./spellaction');
 const SpellReaction = require('./spellreaction');
+const SpellInsteadReaction = require('./spellinsteadreaction');
+const CardTraitInsteadReaction = require('./cardtraitinsteadreaction');
 
 class BaseCard {
     constructor(owner, cardData) {
@@ -163,27 +164,32 @@ class BaseCard {
     // 4) Other reacts
     //
     reaction(properties) {
-        var reaction = new CardReaction(this.game, this, properties);
+        var reaction;
+        if(properties.usesInstead || properties.canCancel) {
+            reaction = new CardInsteadReaction(this.game, this, properties);            
+        } else {
+            reaction = new CardReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
     spellReaction(properties) {
-        var reaction = new SpellReaction(this.game, this, properties);
+        var reaction;
+        if(properties.usesInstead || properties.canCancel) {
+            reaction = new SpellInsteadReaction(this.game, this, properties);            
+        } else {
+            reaction = new SpellReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
     traitReaction(properties) {
-        var reaction = new CardTraitReaction(this.game, this, properties);
-        this.abilities.reactions.push(reaction);
-    }
-
-    interrupt(properties) {
-        var reaction = new CardInterrupt(this.game, this, properties);
-        this.abilities.reactions.push(reaction);
-    }
-
-    forcedInterrupt(properties) {
-        var reaction = new CardForcedInterrupt(this.game, this, properties);
+        var reaction;
+        if(properties.usesInstead) {
+            reaction = new CardTraitInsteadReaction(this.game, this, properties);            
+        } else {
+            reaction = new CardTraitReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
@@ -465,7 +471,7 @@ class BaseCard {
             return;
         }
 
-        if(this.location === 'play area') {
+        if(this.location === 'play area' && player === this.controller) {
             menu = [{ command: 'click', text: 'Boot / Unboot' }];
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
@@ -805,6 +811,14 @@ class BaseCard {
             return;
         }
         return this.game.findLocation(this.gamelocation);
+    }
+
+    isAdjacent(locationUuid) {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        let gameLocationObject = this.getGameLocation();
+        return gameLocationObject && gameLocationObject.isAdjacent(locationUuid);
     }
 
     isInControlledLocation() {

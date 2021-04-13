@@ -16,7 +16,7 @@ class PistolWhip extends ActionCard {
                 gameAction: ['sendHome']
             },
             message: context =>
-                this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this),
+                this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.costs.boot,

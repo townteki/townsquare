@@ -15,7 +15,7 @@ class MicahRyse extends DudeCard {
                 this.game.promptForLocation(context.player, {
                     activePromptTitle: 'Select where Mycah should move to',
                     waitingPromptTitle: 'Waiting for opponent to select location for Mycah',
-                    cardCondition: { location: 'play area', condition: card => card.getGameLocation().isAdjacent(this.gamelocation)},
+                    cardCondition: { location: 'play area', condition: card => card.isAdjacent(this.gamelocation)},
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: this, 

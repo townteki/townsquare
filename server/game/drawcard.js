@@ -37,6 +37,10 @@ class DrawCard extends BaseCard {
         super.gamelocation = gamelocation;
     }
 
+    get difficulty() {
+        return this.keywords.getDifficulty();
+    }
+
     get control() {
         return this.currentControl;
     }
@@ -298,6 +302,10 @@ class DrawCard extends BaseCard {
         super.leavesPlay();
     }
 
+    isGadget() {
+        return this.hasKeyword('Gadget');
+    }
+
     isSelectedAsFirstCasualty() {
         return this.options.contains('isSelectedAsFirstCasualty', this);
     }
@@ -312,6 +320,10 @@ class DrawCard extends BaseCard {
 
     canRefuseWithoutGoingHomeBooted() {
         return this.options.contains('canRefuseWithoutGoingHomeBooted');
+    }
+
+    canUseControllerAbilities(player) {
+        return this.options.contains('canUseControllerAbilities', player);
     }
 
     canBeAced() {

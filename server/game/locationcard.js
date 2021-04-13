@@ -65,9 +65,9 @@ class LocationCard extends DrawCard {
         if(!this.gameLocationObject) {
             return [];
         }
-        let adjacentLocations = this.game.filterCardsInPlay(card => card.isLocationCard() && this.getGameLocation().isAdjacent(card.uuid)).
+        let adjacentLocations = this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).
             map(card => card.getGameLocation());
-        if(this.getGameLocation().isAdjacent(this.game.townsquare.uuid)) {
+        if(this.isAdjacent(this.game.townsquare.uuid)) {
             adjacentLocations.concat(this.game.townsquare);
         }
         return adjacentLocations;

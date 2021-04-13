@@ -14,7 +14,7 @@ class Phantasm extends SpellCard {
                     controller: 'opponent', 
                     condition: card => 
                         (card.gamelocation === this.gamelocation ||
-                        card.getGameLocation().isAdjacent(this.gamelocation)) &&
+                        card.isAdjacent(this.gamelocation)) &&
                         !card.booted
                 },
                 cardType: ['dude'],
@@ -29,7 +29,7 @@ class Phantasm extends SpellCard {
                     cardCondition: {
                         location: 'play area',
                         condition: card => 
-                            card.getGameLocation().isAdjacent(context.target.gamelocation)
+                            card.isAdjacent(context.target.gamelocation)
                     },
                     cardType: ['location', 'townsquare'],
                     onSelect: (player, location) => {
@@ -70,7 +70,7 @@ class Phantasm extends SpellCard {
                     cardCondition: {
                         location: 'play area',
                         condition: card => 
-                            card.getGameLocation().isAdjacent(context.target.gamelocation)
+                            card.isAdjacent(context.target.gamelocation)
                     },
                     cardType: ['location', 'townsquare'],
                     onSelect: (player, location) => {
