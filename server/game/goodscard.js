@@ -22,10 +22,6 @@ class GoodsCard extends DrawCard {
         }
     }
 
-    get difficulty() {
-        return this.keywords.getDifficulty();
-    }
-
     canAttach(player, card, playingType) {
         if(!super.canAttach(player, card)) {
             return false;
@@ -105,10 +101,6 @@ class GoodsCard extends DrawCard {
 
     isTotem() {
         return this.hasKeyword('Totem');
-    }
-
-    isGadget() {
-        return this.hasKeyword('Gadget');
     }
 }
 

@@ -3,11 +3,14 @@ const Event = require('../../../server/game/event.js');
 
 describe('CardReaction', function () {
     beforeEach(function () {
-        this.gameSpy = jasmine.createSpyObj('game', ['on', 'popAbilityContext', 'pushAbilityContext', 'queueStep', 'removeListener', 'registerAbility', 'resolveGameAction']);
+        this.gameSpy = jasmine.createSpyObj('game', 
+            ['on', 'getPlayers', 'popAbilityContext', 'pushAbilityContext', 'queueStep', 'removeListener', 'registerAbility', 'resolveGameAction']);
         this.gameSpy.resolveGameAction.and.callFake(() => { 
             return { thenExecute: () => true };
         });
-        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank', 'hasKeyword']);
+        this.playerSpy = jasmine.createSpyObj('player', ['canUseControllerAbilities', 'canTrigger']);
+        this.gameSpy.getPlayers.and.returnValue([this.playerSpy]);
+        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank', 'hasKeyword', 'canUseControllerAbilities']);
         this.cardSpy.location = 'play area';
         this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
 
@@ -53,14 +56,14 @@ describe('CardReaction', function () {
 
             it('should default to a function returning the source card\'s controller', function() {
                 this.reaction = new CardReaction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.reaction.playerFunc()).toBe(this.controller);
+                expect(this.reaction.playerFunc(this.controller)).toBe(true);
             });
 
             it('should allow a custom function to be specified', function() {
                 let foo = { foo: true };
-                this.properties.player = () => foo;
+                this.properties.player = player => player === foo;
                 this.reaction = new CardReaction(this.gameSpy, this.cardSpy, this.properties);
-                expect(this.reaction.playerFunc()).toBe(foo);
+                expect(this.reaction.playerFunc(foo)).toBe(true);
             });
         });
     });
@@ -108,7 +111,9 @@ describe('CardReaction', function () {
             this.meetsRequirements = () => {
                 this.reaction = new CardReaction(this.gameSpy, this.cardSpy, this.properties);
                 this.reaction.usage = this.usageSpy;
-                this.context = this.reaction.createContext(this.event);
+                this.reaction.playerFunc = () => true;
+                this.playerSpy.canTrigger.and.returnValue(true);
+                this.context = this.reaction.createContext(this.event)[0];
                 return this.reaction.meetsRequirements(this.context);
             };
         });

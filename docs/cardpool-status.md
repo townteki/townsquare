@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/146/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/149/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -269,7 +269,7 @@
 |                     | 05026| Bio-Charged Neutralizer
 |                     | 05027| Evanor
 |                     | 05028| Mirror, Mirror
-|                     | 05029| Lay On Hands
+|:heavy_check_mark:   | 05029| Lay On Hands
 |                     | 05030| Holy Roller
 |                     | 05031| The Lord Provides
 |:heavy_check_mark:   | 05032| Phantasm
@@ -368,7 +368,7 @@
 |                     | 09002| Eagle Wardens
 |                     | 09003| Benjamin Washington
 |                     | 09004| Daomei Wang
-|                     | 09005| Randall
+|:heavy_check_mark:   | 09005| Randall
 |                     | 09006| Xiaodan Li
 |                     | 09007| Longwei Fu
 |                     | 09008| Natalya
@@ -381,7 +381,7 @@
 |                     | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |                     | 09017| Mazatl
-|                     | 09018| Marcia Ridge
+|:heavy_check_mark:   | 09018| Marcia Ridge
 |:white_check_mark:   | 09019| Richard Faulkner
 |                     | 09020| Lydia Bear-Hands
 |                     | 09021| Jackson Trouble

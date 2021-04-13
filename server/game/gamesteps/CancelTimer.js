@@ -1,6 +1,5 @@
 const cancellableEvents = {
-    onCardAbilityInitiated: 'cancelinterrupt',
-    onClaimApplied: 'interrupt'
+    onCardAbilityInitiated: 'cancelreaction'
 };
 
 class CancelTimer {

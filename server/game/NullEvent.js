@@ -14,10 +14,6 @@ class NullEvent {
     emitTo() {
     }
 
-    allowAutomaticSave() {
-        return false;
-    }
-
     cancel() {
         this.cancelled = true;
     }

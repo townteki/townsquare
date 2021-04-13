@@ -1,10 +1,6 @@
 const Event = require('./event.js');
 
 class GroupedCardEvent extends Event {
-    allowAutomaticSave() {
-        return false;
-    }
-
     saveCard(card) {
         this.removeCard(card);
         card.markAsSaved();

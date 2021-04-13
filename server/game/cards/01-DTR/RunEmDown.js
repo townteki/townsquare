@@ -10,7 +10,7 @@ class RunEmDown extends ActionCard {
                 activePromptTitle: 'Choose location with mounted dudes',
                 cardCondition: { 
                     location: 'play area', 
-                    condition: card => card.getGameLocation().getDudes().some(occupant => occupant.hasHorse()) },
+                    condition: card => this.game.getDudesAtLocation(card.gamelocation).some(occupant => occupant.hasHorse()) },
                 cardType: ['location']
             },
             handler: context => {
@@ -25,7 +25,7 @@ class RunEmDown extends ActionCard {
                         this.game.promptForSelect(player, {
                             activePromptTitle: 'Select a dude to be runned down',
                             waitingPromptTitle: 'Waiting for opponent to select dude',
-                            cardCondition: card => card.location === 'play area' && card.getGameLocation().isAdjacent(context.target.uuid) && !card.hasHorse(),
+                            cardCondition: card => card.location === 'play area' && card.isAdjacent(context.target.uuid) && !card.hasHorse(),
                             cardType: 'dude',
                             onSelect: (player, runnedDude) => {
                                 let action = GameActions.simultaneously(
