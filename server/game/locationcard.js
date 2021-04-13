@@ -19,7 +19,7 @@ class LocationCard extends DrawCard {
     }
 
     receiveProduction(player) {
-        if(player === this.owner) {
+        if(player === this.owner || this.productionToBeReceivedBy === player) {
             return this.production;
         }
         return 0;

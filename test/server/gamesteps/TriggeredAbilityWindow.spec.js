@@ -18,7 +18,7 @@ describe('TriggeredAbilityWindow', function() {
 
         this.window = new TriggeredAbilityWindow(this.gameSpy, {
             event: this.eventSpy,
-            abilityType: 'insteadreaction'
+            abilityType: 'beforereaction'
         });
 
         spyOn(this.window, 'gatherChoices');

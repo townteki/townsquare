@@ -896,7 +896,7 @@ class Game extends EventEmitter {
     }
 
     openAbilityWindow(properties) {
-        let windowClass = properties.abilityType === 'traitreaction' ? TraitTriggeredAbilityWindow : TriggeredAbilityWindow;
+        let windowClass = ['traitreaction', 'traitbeforereaction'].includes(properties.abilityType) ? TraitTriggeredAbilityWindow : TriggeredAbilityWindow;
         let window = new windowClass(this, { abilityType: properties.abilityType, event: properties.event });
         this.abilityWindowStack.push(window);
         this.queueStep(window);

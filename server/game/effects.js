@@ -399,6 +399,18 @@ const Effects = {
             }
         };
     },
+    productionToBeReceivedBy: function(player) {
+        return {
+            apply: function(card) {
+                if(card.getType() === 'deed') {
+                    card.productionToBeReceivedBy = player;
+                }
+            },
+            unapply: function(card) {
+                card.productionToBeReceivedBy = null;
+            }
+        };
+    },
     additionalDynamicAdjacency: conditionalAdjacency(),
     preventDynamicAdjacency: conditionalAdjacency(),
     additionalAdjacency: adjacency('adjacent'),

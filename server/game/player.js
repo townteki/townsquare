@@ -993,7 +993,7 @@ class Player extends Spectator {
     receiveProduction() {
         let producers = this.game.findCardsInPlay(card => card.production > 0);
         let production = producers.reduce((memo, card) => {
-            if(card.controller === this) {
+            if(card.productionToBeReceivedBy === this || (!card.productionToBeReceivedBy && card.controller === this)) {
                 let partialProduction = card.production;
                 if(card.isLocationCard()) {
                     partialProduction = card.receiveProduction(this);
