@@ -45,13 +45,13 @@ class ShootoutPosse {
     getStudBonus(onlyShooter = false) {
         let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
         if(onlyShooter) {
-            return shooter.isStud() ? shooter.bullets : 0;
+            return shooter.isStud() && !shooter.doesNotProvideBulletRatings() ? shooter.bullets : 0;
         }
 
         let bonus = this.studBonus;
         this.posse.forEach(dudeUuid => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            if(dude.isStud()) {
+            if(dude.isStud() && !dude.doesNotProvideBulletRatings()) {
                 bonus += dude === shooter ? dude.bullets : 1;
             }   
         });
@@ -62,13 +62,13 @@ class ShootoutPosse {
     getDrawBonus(onlyShooter = false) {
         let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
         if(onlyShooter) {
-            return shooter.isDraw() ? shooter.bullets : 0;
+            return shooter.isDraw() && !shooter.doesNotProvideBulletRatings() ? shooter.bullets : 0;
         }
 
         let bonus = this.drawBonus;
         this.posse.forEach(dudeUuid => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            if(dude.isDraw()) {
+            if(dude.isDraw() && !shooter.doesNotProvideBulletRatings()) {
                 bonus += dude === shooter ? dude.bullets : 1;
             }   
         });
@@ -91,6 +91,10 @@ class ShootoutPosse {
     
     getDudes(condition = () => true) {
         return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(card => condition(card));
+    }
+
+    findInPosse(predicate = () => true) {
+        return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).find(card => predicate(card));
     }
 }
 
