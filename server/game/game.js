@@ -1029,6 +1029,13 @@ class Game extends EventEmitter {
         this.attachmentValidityCheck.enforceValidity();
     }
 
+    updateEffectsOnCard(card, predicate) {
+        let effects = this.effectEngine.getAllEffectsOnCard(card, predicate);
+        if(effects) {
+            effects.forEach(effect => effect.updateAppliedTarget(card));
+        }
+    }
+
     isPhaseSkipped(name) {
         return !!this.skipPhase[name];
     }
