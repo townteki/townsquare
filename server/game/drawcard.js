@@ -310,6 +310,10 @@ class DrawCard extends BaseCard {
         return this.options.contains('isSelectedAsFirstCasualty', this);
     }
 
+    calloutCannotBeRefused(opponentDude) {
+        return this.options.contains('calloutCannotBeRefused', opponentDude);
+    }
+
     cannotBeChosenAsCasualty() {
         return this.options.contains('cannotBeChosenAsCasualty', this);
     }

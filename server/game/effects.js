@@ -278,6 +278,7 @@ const Effects = {
             }
         };
     },
+    calloutCannotBeRefused: optionEffect('calloutCannotBeRefused'),
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin'),
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown'),
     restrictAttachmentsTo: function(trait) {
@@ -366,6 +367,19 @@ const Effects = {
             }
         };
     },
+    setValue: function(value) {
+        let changeAmount = 0;
+        return {
+            gameAction: card => card.value > value ? 'decreaseValue' : 'increaseValue',
+            apply: function(card) {
+                changeAmount = value - card.value;
+                card.modifyValue(changeAmount, true);
+            },
+            unapply: function(card) {
+                card.modifyValue(changeAmount * -1);
+            }
+        };
+    },
     modifyProduction: function(value) {
         return {
             gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
@@ -425,6 +439,18 @@ const Effects = {
             },
             unapply: function(player) {
                 player.discardNumber -= value;
+            }
+        };
+    },
+    modifyHandRandMod: function(value) {
+        return {
+            targetType: 'player',
+            gameAction: 'modifyHandRank',
+            apply: function(player) {
+                player.modifyRank(value);
+            },
+            unapply: function(player) {
+                player.modifyRank(-value);
             }
         };
     },
