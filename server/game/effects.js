@@ -236,14 +236,10 @@ const Effects = {
     determineControlByBullets: function() {
         return {
             apply: function(card) {
-                if(card.getType() === 'dude') {
-                    card.controlDeterminator = 'bullets';
-                }
+                card.controlDeterminator = 'bullets';
             },
             unapply: function(card) {
-                if(card.getType() === 'dude') {
-                    card.controlDeterminator = 'influence:deed';
-                }
+                card.controlDeterminator = 'influence:deed';
             }
         };
     }, 
@@ -858,6 +854,17 @@ const Effects = {
             },
             unapply: function(shootout) {
                 shootout.loserCasualtiesMod -= amount;
+            }
+        };
+    },
+    useInfluenceForShootout: function() {
+        return {
+            targetType: 'shootout',
+            apply: function(shootout) {
+                shootout.useInfluence = true;
+            },
+            unapply: function(shootout) {
+                shootout.useInfluence = false;
             }
         };
     },

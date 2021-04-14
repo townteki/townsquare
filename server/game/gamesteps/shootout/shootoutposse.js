@@ -44,15 +44,17 @@ class ShootoutPosse {
 
     getStudBonus(onlyShooter = false) {
         let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
+        let shooterRating = this.shootout.useInfluence ? shooter.influence : shooter.bullets;
         if(onlyShooter) {
-            return shooter.isStud() ? shooter.bullets : 0;
+            return shooter.isStud() ? shooterRating : 0;
         }
 
         let bonus = this.studBonus;
         this.posse.forEach(dudeUuid => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
+            let dudeRating = this.shootout.useInfluence ? dude.influence : dude.bullets;
             if(dude.isStud()) {
-                bonus += dude === shooter ? dude.bullets : 1;
+                bonus += dude === shooter ? dudeRating : 1;
             }   
         });
 
@@ -61,15 +63,17 @@ class ShootoutPosse {
 
     getDrawBonus(onlyShooter = false) {
         let shooter = this.player.findCardInPlayByUuid(this.shooterUuid);
+        let shooterRating = this.shootout.useInfluence ? shooter.influence : shooter.bullets;
         if(onlyShooter) {
-            return shooter.isDraw() ? shooter.bullets : 0;
+            return shooter.isDraw() ? shooterRating : 0;
         }
 
         let bonus = this.drawBonus;
         this.posse.forEach(dudeUuid => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
+            let dudeRating = this.shootout.useInfluence ? dude.influence : dude.bullets;
             if(dude.isDraw()) {
-                bonus += dude === shooter ? dude.bullets : 1;
+                bonus += dude === shooter ? dudeRating : 1;
             }   
         });
 
