@@ -297,7 +297,7 @@ const Effects = {
     setBullets: function(value) {
         let changeAmount = 0;
         return {
-            gameAction: 'setBullets',
+            gameAction: card => card.bullets > value ? 'decreaseBullets' : 'increaseBullets',
             apply: function(card) {
                 changeAmount = value - card.bullets;
                 card.modifyBullets(changeAmount, true);
@@ -321,7 +321,7 @@ const Effects = {
     setInfluence: function(value) {
         let changeAmount = 0;
         return {
-            gameAction: 'setInfluence',
+            gameAction: card => card.influence > value ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
                 changeAmount = value - card.influence;
                 card.modifyInfluence(changeAmount, true);
@@ -345,7 +345,7 @@ const Effects = {
     setControl: function(value) {
         let changeAmount = 0;
         return {
-            gameAction: 'setControl',
+            gameAction: card => card.control > value ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
                 changeAmount = value - card.control;
                 card.modifyControl(changeAmount, true);
@@ -799,6 +799,24 @@ const Effects = {
                 card.updateAbilitiesBlanking(abilityFunc, false);
             }
         };
+    },
+    ignoreBulletModifiers: function(controller = 'any', predicate = () => true) {
+        let restrictions = [];
+        return {
+            apply: function(card) {
+                restrictions = [];
+                restrictions.push(new CannotRestriction('increaseBullets', 'any', controller, context => predicate(context)));
+                restrictions.push(new CannotRestriction('decreaseBullets', 'any', controller, context => predicate(context)));
+                restrictions.push(new CannotRestriction('setAsStud', 'any', controller, context => predicate(context)));
+                restrictions.push(new CannotRestriction('setAsDraw', 'any', controller, context => predicate(context)));
+                restrictions.forEach(r => card.addAbilityRestriction(r));
+                card.game.updateEffectsOnCard(card, effect => effect.gameAction === 'increaseBullets' || effect.gameAction === 'decreaseBullets' ||
+                    effect.gameAction === 'setAsStud' || effect.gameAction === 'setAsDraw');
+            },
+            unapply: function(card) {
+                restrictions.forEach(r => card.removeAbilityRestriction(r));
+            }
+        }; 
     },
     modifyDrawPhaseCards: function(value) {
         return {

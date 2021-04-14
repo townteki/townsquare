@@ -610,6 +610,9 @@ class BaseCard {
 
     allowGameAction(actionType, context) {
         let currentAbilityContext = context || this.game.currentAbilityContext;
+        if(currentAbilityContext && !currentAbilityContext.card) {
+            currentAbilityContext.card = this;
+        }
         let callback = restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller);
         if(this.game.shootout && this.game.shootout.abilityRestrictions.some(callback)) {
             return false;

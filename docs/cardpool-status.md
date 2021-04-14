@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/149/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/151/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -258,7 +258,7 @@
 |                     | 05015| Maria Kingsford
 |                     | 05016| Makaio Kaleo, Esq.
 |                     | 05017| Sister Lois Otwell
-|                     | 05018| Félix Amador
+|:heavy_check_mark:   | 05018| Félix Amador
 |                     | 05019| Nicodemus Whateley
 |                     | 05020| Pettigrew's Pawnshop
 |                     | 05021| California Tax Office
@@ -611,7 +611,7 @@
 |--------|-----:|:------------------------:|
 |                     | 16001| El Armadillo De Hierro
 |                     | 16002| Jim Hexter
-|                     | 16003| The Mixer
+|:heavy_check_mark:   | 16003| The Mixer
 |                     | 16004| Hupirika Sue
 |                     | 16005| The Harvester
 |                     | 16006| Lucy Clover (Exp.1)
