@@ -497,15 +497,6 @@ class Player extends Spectator {
         this.handResult = new HandResult();
     }
 
-    startGame() {
-        if(!this.readyToStart) {
-            return;
-        }
-
-        this.shuffleDrawDeck();
-        this.drawCardsToHand(StartingHandSize);
-    }    
-
     sundownRedraw() {
         this.drawCardsToHand(this.handSize - this.hand.length);
     }    
@@ -624,7 +615,8 @@ class Player extends Spectator {
         }
 
         if(card.hasKeyword('gadget') && params.playingType === 'shoppin') {
-            let availableScientist = this.cardsInPlay.find(card => card.getType() === 'dude' && card.hasKeyword('mad scientist') && !card.booted);
+            let availableScientist = this.cardsInPlay.find(searchCard => 
+                searchCard.getType() === 'dude' && searchCard.canPerformSkillOn(card) && !searchCard.booted);
             if(!availableScientist) {
                 return false;
             }
@@ -709,28 +701,29 @@ class Player extends Spectator {
             case 'dude':  
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                     updatedParams.context.cardToUpgrade.upgrade(card);
-                } else if(card.isGadget()) {
-                    let gadgetInvented = this.isGadgetInvented(card, null, (context, scientist) => {
-                        card.moveToLocation(scientist.gamelocation);
-                        this.moveCard(card, 'play area');
-                    });
-                    if(!gadgetInvented) {
-                        return;
-                    }
                 } else {
-                    let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
-                    card.moveToLocation(target);
-                    this.moveCard(card, 'play area');  
-                }
-                this.entersPlay(card, updatedParams);
-                if(updatedParams.playingType === 'shoppin') {
-                    if(updatedParams.context && updatedParams.context.cardToUpgrade) {
-                        this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
+                    const putIntoPlayFunc = target => {
+                        card.moveToLocation(target);
+                        this.moveCard(card, 'play area');
+                        this.entersPlay(card, updatedParams);
+                        if(updatedParams.playingType === 'shoppin') {
+                            if(updatedParams.context && updatedParams.context.cardToUpgrade) {
+                                this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
+                            } else {
+                                this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
+                            }
+                        } else if(this.game.currentPhase !== 'setup') {
+                            this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
+                        }
+                    };
+                    if(card.isGadget() && this.game.currentPhase !== 'setup') {
+                        this.inventGadget(card, null, (context, scientist) => {
+                            putIntoPlayFunc(scientist.gamelocation);
+                        });
                     } else {
-                        this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
+                        let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
+                        putIntoPlayFunc(target);
                     }
-                } else if(this.game.currentPhase !== 'setup') {
-                    this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
                 }
                 break;
             case 'deed':
@@ -807,7 +800,7 @@ class Player extends Spectator {
         });
     }
 
-    isGadgetInvented(gadget, scientist, successHandler) {
+    inventGadget(gadget, scientist, successHandler = () => true) {
         let getPullProperties = scientist => {
             return {
                 successHandler: context => {
@@ -824,10 +817,10 @@ class Player extends Spectator {
         };
         if(!scientist) {
             this.game.promptForSelect(this, {
-                activePromptTitle: 'Select a Mad Scientist to invent ' + gadget.title,
-                waitingPromptTitle: 'Waiting for opponent to select Mad Scientist',
+                activePromptTitle: 'Select a dude to invent ' + gadget.title,
+                waitingPromptTitle: 'Waiting for opponent to select dude',
                 cardCondition: card => card.location === 'play area' && !card.booted && 
-                    card.hasKeyword('mad scientist') && 
+                    card.canPerformSkillOn(gadget) && 
                     card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
@@ -866,9 +859,7 @@ class Player extends Spectator {
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
             let scientist = playingType === 'shoppin' ? card : null;
-            if(!this.isGadgetInvented(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback))) {
-                return false;
-            }
+            this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
         } else {
             this.performAttach(attachment, card, playingType, attachCallback);
         }
@@ -1588,21 +1579,6 @@ class Player extends Spectator {
 
     isTimerEnabled() {
         return !this.noTimer && this.user.settings.windowTimer !== 0;
-    }
-
-    isValidSkillCombination(skilledDude, spellOrGadget) {
-        if(skilledDude.hasKeyword('blessed')) {
-            return spellOrGadget.getType() === 'spell' && spellOrGadget.isMiracle();
-        }
-        if(skilledDude.hasKeyword('huckster')) {
-            return spellOrGadget.getType() === 'spell' && spellOrGadget.isHex();
-        }
-        if(skilledDude.hasKeyword('shaman')) {
-            return spellOrGadget.getType() === 'spell' && (spellOrGadget.isSpirit() || spellOrGadget.isTotem());
-        }
-        if(skilledDude.hasKeyword('mad scientist')) {
-            return spellOrGadget.hasKeyword('gadget');
-        }
     }
 
     getState(activePlayer) {
