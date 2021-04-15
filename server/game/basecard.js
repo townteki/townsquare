@@ -253,11 +253,12 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * shootout round.
      */
-    untilEndOfShootoutRound(propertyFactory, ability) {
+    untilEndOfShootoutRound(propertyFactory, ability, targetLocation = 'play area') {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfShootoutRound', 
             location: 'any', 
+            targetLocation: targetLocation,
             ability: ability  
         }, properties));
     }

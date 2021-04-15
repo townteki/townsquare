@@ -236,8 +236,11 @@ class DudeCard extends DrawCard {
         this.controller.moveCard(this, 'discard pile', { raiseEvents: false });
     }
 
-    canRejectCallout(canReject) {
+    canRejectCallout(fromDude, canReject) {
         if(!canReject) {
+            return false;
+        }
+        if(fromDude.calloutCannotBeRefused(this)) {
             return false;
         }
         const tempContext = { game: this.game, player: this.controller };
@@ -248,7 +251,7 @@ class DudeCard extends DrawCard {
         this.game.raiseEvent('onDudeCalledOut', { caller: this, callee: card, canReject: canReject });
         this.shootoutStatus = ShootoutStatuses.CallingOut;
         card.shootoutStatus = ShootoutStatuses.CalledOut;
-        if(!card.booted && card.canRejectCallout(canReject)) {
+        if(!card.booted && card.canRejectCallout(this, canReject)) {
             this.game.promptWithMenu(card.controller, this, {
                 activePrompt: {
                     menuTitle: this.title + ' is calling out ' + card.title,

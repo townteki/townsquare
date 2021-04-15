@@ -9,31 +9,12 @@ class JokerPrompt extends BaseStep {
     }
 
     continue() {
-        let buttonsValue = [];
-        for(let i = 1; i <= 13; i++) {
-            buttonsValue.push({ text: i, method: 'selectJokerValue', arg: i });
-        }
-        this.game.promptWithMenu(this.jokerCard.owner, this, {
-            activePrompt: {
-                menuTitle: 'Select joker\'s value',
-                buttons: buttonsValue
-            },
-            source: this.jokerCard
-        });
+        this.game.promptForValue(this.jokerCard.owner, 'Select joker\'s value', 'selectJokerValue', this, this.jokerCard);
     }
 
     selectJokerValue(player, arg) {
         this.selectedValue = arg;
-        let buttonsSuit = ['Spades', 'Hearts', 'Clubs', 'Diamonds'].map(suit => {
-            return { text: suit, method: 'selectJokerSuit', arg: suit};
-        });
-        this.game.promptWithMenu(player, this, {
-            activePrompt: {
-                menuTitle: 'Select joker\'s suit',
-                buttons: buttonsSuit
-            },
-            source: this.jokerCard
-        });
+        this.game.promptForSuit(player, 'Select joker\'s suit', 'selectJokerSuit', this, this.jokerCard);
         return true;
     }
 

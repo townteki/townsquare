@@ -685,6 +685,50 @@ class Game extends EventEmitter {
         this.queueStep(new CardNamePrompt(this, properties));
     }
 
+    promptForSuit(player, title, method, context, source) {
+        let buttonsSuit = ['Spades', 'Hearts', 'Clubs', 'Diams'].map(suit => {
+            return { text: suit, method: method, arg: suit};
+        });
+        this.promptWithMenu(player, context, {
+            activePrompt: {
+                menuTitle: title,
+                buttons: buttonsSuit
+            },
+            source: source
+        });
+    }
+
+    promptForValue(player, title, method, context, source, condition) {
+        let buttonsValue = [];
+        for(let i = 1; i <= 13; i++) {
+            let text = i;
+            switch(i) {
+                case 1:
+                    text = 'A';                  
+                    break;
+                case 11:
+                    text = 'J';                  
+                    break;
+                case 12:
+                    text = 'Q';                  
+                    break;
+                case 13:
+                    text = 'K';                  
+                    break;
+                default:
+                    break;
+            }
+            buttonsValue.push({ text: text, method: method, arg: i, disabled: !condition(player, i) });
+        }
+        this.promptWithMenu(player, context, {
+            activePrompt: {
+                menuTitle: title,
+                buttons: buttonsValue
+            },
+            source: source
+        });
+    }   
+
     promptForSelect(player, properties) {
         this.queueStep(new SelectCardPrompt(this, player, properties));
     }
