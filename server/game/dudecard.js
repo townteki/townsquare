@@ -3,7 +3,6 @@ const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
 const GameActions = require('./GameActions');
 const {ShootoutStatuses, Tokens} = require('./Constants');
 const NullEvent = require('./NullEvent.js');
-const SpellCard = require('./spellcard.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -93,11 +92,6 @@ class DudeCard extends DrawCard {
         if(spellOrGadget.isSpirit() || spellOrGadget.isTotem()) {
             return this.getSkillRating('shaman');
         }
-    }
-
-    canPerformSkillOn(spellOrGadget) {
-        const skillRating = this.getSkillRatingForCard(spellOrGadget);
-        return skillRating !== null && skillRating !== undefined;
     }
 
     getGrit() {
@@ -449,10 +443,13 @@ class DudeCard extends DrawCard {
     }
 
     canCastSpell(spell) {
-        if(!(spell instanceof SpellCard)) {
+        if(!this.isSpellcaster()) {
             return false;
         }
-        return this.canPerformSkillOn(spell) && this.spellFunc(spell);
+        if(!this.controller.isValidSkillCombination(this, spell)) {
+            return false;
+        }
+        return this.spellFunc(spell);
     }
 
     leavesPlay() {

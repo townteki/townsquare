@@ -98,9 +98,6 @@ class KeywordsProperty {
     }
 
     getSkillRating(skillName, printed = false) {
-        if(!this.data.contains(skillName)) {
-            return;
-        }
         let skill = this.modifiers[skillName];
         if(!skill) {
             return;

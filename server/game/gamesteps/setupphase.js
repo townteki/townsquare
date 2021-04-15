@@ -57,9 +57,7 @@ class SetupPhase extends Phase {
     startGame() {
         for(const player of this.game.getPlayers()) {
             player.readyToStart = true;
-            this.queueStep(new SimpleStep(this.game, () => player.shuffleDrawDeck()));
-            this.queueStep(new SimpleStep(this.game, () => this.game.raiseEvent('onSetupDrawDeckShuffled', { player: player })));
-            this.queueStep(new SimpleStep(this.game, () => player.drawCardsToHand(player.handSize)));
+            player.startGame();
         }
     }
 
