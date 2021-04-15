@@ -4,7 +4,7 @@ const _ = require('underscore');
 const AbilityDsl = require('./abilitydsl');
 const CardAction = require('./cardaction');
 const CardTraitReaction = require('./cardtraitreaction');
-const CardInsteadReaction = require('./cardinsteadreaction');
+const CardBeforeReaction = require('./cardbeforereaction');
 const CardMatcher = require('./CardMatcher');
 const CardReaction = require('./cardreaction');
 const CustomPlayAction = require('./PlayActions/CustomPlayAction');
@@ -16,8 +16,8 @@ const JobAction = require('./jobaction');
 const NullCard = require('./nullcard');
 const SpellAction = require('./spellaction');
 const SpellReaction = require('./spellreaction');
-const SpellInsteadReaction = require('./spellinsteadreaction');
-const CardTraitInsteadReaction = require('./cardtraitinsteadreaction');
+const SpellBeforeReaction = require('./spellbeforereaction');
+const CardTraitBeforeReaction = require('./cardtraitbeforereaction');
 
 class BaseCard {
     constructor(owner, cardData) {
@@ -157,16 +157,10 @@ class BaseCard {
         this.abilities.actions.push(spell);
     }
 
-    //Comprehensive Rules React Priorities
-    // 1) Traits with "instead"
-    // 2) Reacts with "instead"
-    // 3) Other traits
-    // 4) Other reacts
-    //
     reaction(properties) {
         var reaction;
-        if(properties.usesInstead || properties.canCancel) {
-            reaction = new CardInsteadReaction(this.game, this, properties);            
+        if(properties.triggerBefore || properties.canCancel) {
+            reaction = new CardBeforeReaction(this.game, this, properties);            
         } else {
             reaction = new CardReaction(this.game, this, properties);
         }
@@ -175,8 +169,8 @@ class BaseCard {
 
     spellReaction(properties) {
         var reaction;
-        if(properties.usesInstead || properties.canCancel) {
-            reaction = new SpellInsteadReaction(this.game, this, properties);            
+        if(properties.triggerBefore || properties.canCancel) {
+            reaction = new SpellBeforeReaction(this.game, this, properties);            
         } else {
             reaction = new SpellReaction(this.game, this, properties);
         }
@@ -185,8 +179,8 @@ class BaseCard {
 
     traitReaction(properties) {
         var reaction;
-        if(properties.usesInstead) {
-            reaction = new CardTraitInsteadReaction(this.game, this, properties);            
+        if(properties.triggerBefore) {
+            reaction = new CardTraitBeforeReaction(this.game, this, properties);            
         } else {
             reaction = new CardTraitReaction(this.game, this, properties);
         }
@@ -617,6 +611,9 @@ class BaseCard {
 
     allowGameAction(actionType, context) {
         let currentAbilityContext = context || this.game.currentAbilityContext;
+        if(currentAbilityContext && !currentAbilityContext.card) {
+            currentAbilityContext.card = this;
+        }
         let callback = restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller);
         if(this.game.shootout && this.game.shootout.abilityRestrictions.some(callback)) {
             return false;

@@ -218,6 +218,14 @@ class EffectEngine {
 
         this.effects = remainingEffects;
     }
+
+    getAllEffectsOnCard(card, predicate = () => true) {
+        return this.effects.filter(effect => effect.hasTarget(card) && predicate(effect));
+    }
+
+    getAppliedEffectsOnCard(card, predicate = () => true) {
+        return this.effects.filter(effect => effect.isAppliedTo(card) && predicate(effect));
+    }
 }
 
 module.exports = EffectEngine;

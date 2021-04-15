@@ -248,6 +248,18 @@ class Effect {
         }
     }
 
+    updateAppliedTarget(target) {
+        if(!this.appliedTargets.has(target) && this.canApply(target)) {
+            this.effect.apply(target, this.context);
+            this.appliedTargets.add(target);
+            return;            
+        }
+        if(this.appliedTargets.has(target) && !this.canApply(target)) {
+            this.effect.unapply(target, this.context);
+            this.appliedTargets.delete(target);            
+        }
+    }
+
     reapply(newTargets) {
         if(!this.active) {
             return;

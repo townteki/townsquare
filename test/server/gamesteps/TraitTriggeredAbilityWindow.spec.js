@@ -17,7 +17,7 @@ describe('TraitTriggeredAbilityWindow', function() {
 
         this.window = new TraitTriggeredAbilityWindow(this.gameSpy, {
             event: this.eventSpy,
-            abilityType: 'traitinsteadreaction'
+            abilityType: 'traitbeforereaction'
         });
 
         function createCard(properties) {

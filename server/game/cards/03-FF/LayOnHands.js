@@ -4,7 +4,7 @@ const SpellCard = require('../../spellcard.js');
 class LayOnHands extends SpellCard {
     setupCardAbilities(ability) {
         this.spellReaction({
-            usesInstead: true,
+            triggerBefore: true,
             when: {
                 onCardAced: event => event.card.getType() === 'dude' && 
                     event.originalLocation === 'play area' &&

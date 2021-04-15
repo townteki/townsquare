@@ -2,6 +2,11 @@ const BaseStep = require('./basestep.js');
 const GamePipeline = require('../gamepipeline.js');
 const SimpleStep = require('./simplestep.js');
 
+//Comprehensive Rules React Priorities
+// 1) Traits with "instead"
+// 2) Reacts with "instead"
+// 3) Other traits
+// 4) Other reacts
 class ReactionBeforeWindow extends BaseStep {
     constructor(game, event, postHandlerFunc = () => true) {
         super(game);
@@ -11,8 +16,8 @@ class ReactionBeforeWindow extends BaseStep {
         this.pipeline.initialise([
             new SimpleStep(game, () => this.executeBeforeHandlers()),
             new SimpleStep(game, () => this.openAbilityWindow('cancelreaction')),
-            new SimpleStep(game, () => this.openAbilityWindow('traitinsteadreaction')),
-            new SimpleStep(game, () => this.openAbilityWindow('insteadreaction')),
+            new SimpleStep(game, () => this.openAbilityWindow('traitbeforereaction')), // Traits with "instead" go here
+            new SimpleStep(game, () => this.openAbilityWindow('beforereaction')), // Reacts with "instead" go here
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.openWindowForAttachedEvents()),
             new SimpleStep(game, () => this.executePostHandler())

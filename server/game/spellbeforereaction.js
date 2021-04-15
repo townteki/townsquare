@@ -1,9 +1,9 @@
 const PromptedTriggeredAbility = require('./promptedtriggeredability.js');
 const Spell = require('./spell.js');
 
-class SpellInsteadReaction extends PromptedTriggeredAbility {
+class SpellBeforeReaction extends PromptedTriggeredAbility {
     constructor(game, card, properties) {
-        super(game, card, properties.canCancel ? 'cancelreaction' : 'insteadreaction', properties);
+        super(game, card, properties.canCancel ? 'cancelreaction' : 'beforereaction', properties);
         this.spell = new Spell(this, properties);
     }
 
@@ -19,4 +19,4 @@ class SpellInsteadReaction extends PromptedTriggeredAbility {
     }
 }
 
-module.exports = SpellInsteadReaction;
+module.exports = SpellBeforeReaction;

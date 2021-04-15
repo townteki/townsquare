@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/149/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/157/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -106,7 +106,7 @@
 |                     | 01092| Force Field
 |:heavy_check_mark:   | 01093| Quickdraw Handgun
 |:heavy_check_mark:   | 01094| Mechanical Horse
-|                     | 01095| Tin Star
+|:heavy_check_mark:   | 01095| Tin Star
 |                     | 01096| Doyle's Hoyle
 |:heavy_check_mark:   | 01097| Buffalo Rifle
 |                     | 01098| Legendary Holster
@@ -258,7 +258,7 @@
 |                     | 05015| Maria Kingsford
 |                     | 05016| Makaio Kaleo, Esq.
 |                     | 05017| Sister Lois Otwell
-|                     | 05018| Félix Amador
+|:heavy_check_mark:   | 05018| Félix Amador
 |                     | 05019| Nicodemus Whateley
 |                     | 05020| Pettigrew's Pawnshop
 |                     | 05021| California Tax Office
@@ -270,7 +270,7 @@
 |                     | 05027| Evanor
 |                     | 05028| Mirror, Mirror
 |:heavy_check_mark:   | 05029| Lay On Hands
-|                     | 05030| Holy Roller
+|:heavy_check_mark:   | 05030| Holy Roller
 |                     | 05031| The Lord Provides
 |:heavy_check_mark:   | 05032| Phantasm
 |:heavy_check_mark:   | 05033| Walk the Path
@@ -371,7 +371,7 @@
 |:heavy_check_mark:   | 09005| Randall
 |                     | 09006| Xiaodan Li
 |                     | 09007| Longwei Fu
-|                     | 09008| Natalya
+|:heavy_check_mark:   | 09008| Natalya
 |                     | 09009| Xui Yin Chen
 |                     | 09010| Hamshanks
 |                     | 09011| Hiram Capatch
@@ -599,7 +599,7 @@
 |                     | 15014| Essence of Armitage
 |                     | 15015| Festering Grasp
 |                     | 15016| Silver Pheasant's Bounty
-|                     | 15017| Comin' Up Roses
+|:heavy_check_mark:   | 15017| Comin' Up Roses
 |                     | 15018| Run Rabbit Run
 |                     | 15019| Putting The Pieces Together
 |                     | 15020| Someone Else's Problem
@@ -611,7 +611,7 @@
 |--------|-----:|:------------------------:|
 |                     | 16001| El Armadillo De Hierro
 |                     | 16002| Jim Hexter
-|                     | 16003| The Mixer
+|:heavy_check_mark:   | 16003| The Mixer
 |                     | 16004| Hupirika Sue
 |                     | 16005| The Harvester
 |                     | 16006| Lucy Clover (Exp.1)
@@ -650,7 +650,7 @@
 |                     | 17013| Pedro
 |                     | 17014| Aetheric Shockwave Inducer
 |                     | 17015| The Gambler's Gun
-|                     | 17016| Get Behind Me, Satan!
+|:heavy_check_mark:   | 17016| Get Behind Me, Satan!
 |                     | 17017| Ghostly Communion
 |                     | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
@@ -669,7 +669,7 @@
 |                     | 18006| Protection Racket
 |                     | 18007| Zui Waidan
 |                     | 18008| Mr. Outang
-|                     | 18009| Stevie Lyndon
+|:heavy_check_mark:   | 18009| Stevie Lyndon
 |                     | 18010| Wei Xu
 |                     | 18011| Eva Bright Eyes
 |                     | 18012| Mick Aduladi

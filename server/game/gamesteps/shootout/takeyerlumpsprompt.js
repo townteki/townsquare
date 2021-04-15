@@ -59,6 +59,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             cardCondition: card => card.controller === player && 
                 card.location === 'play area' &&
                 this.shootout.isInShootout(card) &&
+                !card.cannotBeChosenAsCasualty() &&
                 card.coversCasualties() > 0,
             onSelect: (player, card) => {
                 let numCoveredCasualties = 0;
@@ -94,6 +95,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             cardCondition: card => card.controller === player && 
                 card.location === 'play area' &&
                 this.shootout.isInShootout(card) &&
+                !card.cannotBeChosenAsCasualty() &&
                 card.coversCasualties('send') > 0,
             onSelect: (player, card) => {
                 let numCoveredCasualties = card.coversCasualties('send');
