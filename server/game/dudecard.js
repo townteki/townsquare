@@ -8,11 +8,7 @@ class DudeCard extends DrawCard {
     constructor(owner, cardData) {
         super(owner, cardData);
 
-        this.maxWeapons = 1;
-        this.maxHorses = 1;
-        this.maxAttires = 1;
         this.maxBullets = null;
-
         this.currentUpkeep = this.cardData.upkeep;
 
         this.shootoutStatus = ShootoutStatuses.None;
@@ -167,9 +163,6 @@ class DudeCard extends DrawCard {
         }
         clone = super.createSnapshot(clone, cloneBaseAttributes);
 
-        clone.maxWeapons = this.maxWeapons;
-        clone.maxHorses = this.maxHorses;
-        clone.maxAttires = this.maxAttires;
         clone.currentUpkeep = this.currentUpkeep;
         clone.shootoutStatus = this.shootoutStatus;
         clone.studReferenceArray = this.studReferenceArray;
@@ -296,7 +289,7 @@ class DudeCard extends DrawCard {
 
     canAttachWeapon() {
         let weapons = this.getAttachmentsByKeywords(['weapon']);
-        if(weapons && weapons.length >= this.maxWeapons) {
+        if(weapons && weapons.length > 0) {
             return false;
         }
         return true;
@@ -304,7 +297,7 @@ class DudeCard extends DrawCard {
 
     canAttachHorse() {
         let horses = this.getAttachmentsByKeywords(['horse']);
-        if(horses && horses.length >= this.maxHorses) {
+        if(horses && horses.length > 0) {
             return false;
         }
         return true;
@@ -312,7 +305,7 @@ class DudeCard extends DrawCard {
 
     canAttachAttire() {
         let attires = this.getAttachmentsByKeywords(['attire']);
-        if(attires && attires.length >= this.maxAttires) {
+        if(attires && attires.length > 0) {
             return false;
         }
         return true;

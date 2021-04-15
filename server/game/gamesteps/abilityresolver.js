@@ -20,6 +20,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.context.resolutionStage = 'effect'),
             new SimpleStep(game, () => this.choosePlayer()),
             new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
+            new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
             new SimpleStep(game, () => this.markActionAsTaken()),
@@ -133,6 +134,14 @@ class AbilityResolver extends BaseStep {
             }
             return;
         }
+    }
+
+    raiseOnAbilityTargetsResolutionEvent() {
+        if(this.cancelled) {
+            return;
+        }
+
+        this.game.raiseEvent('onAbilityTargetsResolution', { player: this.context.player, source: this.context.source, ability: this.ability });
     }
 
     resolveTargets() {
