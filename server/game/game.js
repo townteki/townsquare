@@ -896,7 +896,7 @@ class Game extends EventEmitter {
     }
 
     openAbilityWindow(properties) {
-        let windowClass = properties.abilityType === 'traitreaction' ? TraitTriggeredAbilityWindow : TriggeredAbilityWindow;
+        let windowClass = ['traitreaction', 'traitbeforereaction'].includes(properties.abilityType) ? TraitTriggeredAbilityWindow : TriggeredAbilityWindow;
         let window = new windowClass(this, { abilityType: properties.abilityType, event: properties.event });
         this.abilityWindowStack.push(window);
         this.queueStep(window);
@@ -1027,6 +1027,13 @@ class Game extends EventEmitter {
         this.effectEngine.recalculateDirtyTargets();
         this.effectEngine.reapplyStateDependentEffects();
         this.attachmentValidityCheck.enforceValidity();
+    }
+
+    updateEffectsOnCard(card, predicate) {
+        let effects = this.effectEngine.getAllEffectsOnCard(card, predicate);
+        if(effects) {
+            effects.forEach(effect => effect.updateAppliedTarget(card));
+        }
     }
 
     isPhaseSkipped(name) {
