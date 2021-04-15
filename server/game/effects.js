@@ -4,6 +4,7 @@ const PlayableLocation = require('./playablelocation.js');
 const CannotRestriction = require('./cannotrestriction.js');
 const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
+const CardAction = require('./cardaction');
 
 function cannotEffect(type, playType, targetType = '') {
     return function(controller, predicate) {
@@ -36,28 +37,29 @@ function cannotEffectType(type, targetType = '') {
 
 function cannotMove(viaCardEffects = false) {
     return function(controller = 'any', predicate = () => true) {
-        let restrictions = [];
         return {
-            apply: function(card) {
-                restrictions = [];
-                restrictions.push(new CannotRestriction('moveDude', 'any', controller, context => 
+            apply: function(card, context) {
+                context.restrictions = context.restrictions || {};
+                context.restrictions[card.uuid] = [];
+                context.restrictions[card.uuid].push(new CannotRestriction('moveDude', 'any', controller, context => 
                     (!viaCardEffects || (context.ability && context.ability.isCardAbility())) &&
                     predicate(context)
                 ));
-                restrictions.push(new CannotRestriction('joinPosse', 'any', controller, context => 
+                context.restrictions[card.uuid].push(new CannotRestriction('joinPosse', 'any', controller, context => 
                     (!viaCardEffects || (context.ability && context.ability.isCardAbility())) && 
                     card.getType() === 'dude' && card.needToMoveToJoinPosse() &&
                     predicate(context)
                 ));
-                restrictions.push(new CannotRestriction('sendHome', 'any', controller, context => 
+                context.restrictions[card.uuid].push(new CannotRestriction('sendHome', 'any', controller, context => 
                     (!viaCardEffects || (context.ability && context.ability.isCardAbility())) && 
                     card.getType() === 'dude' && !card.isAtHome() &&
                     predicate(context)
                 ));
-                restrictions.forEach(r => card.addAbilityRestriction(r));
+                context.restrictions[card.uuid].forEach(r => card.addAbilityRestriction(r));
             },
-            unapply: function(card) {
-                restrictions.forEach(r => card.removeAbilityRestriction(r));
+            unapply: function(card, context) {
+                context.restrictions[card.uuid].forEach(r => card.removeAbilityRestriction(r));
+                delete context.restrictions[card.uuid];
             }
         }; 
     }; 
@@ -222,14 +224,15 @@ const Effects = {
         };
     },
     setMaxBullets: function(value) {
-        let previousMaxBullets = null;
         return {
-            apply: function(card) {
-                previousMaxBullets = card.maxBullets;
+            apply: function(card, context) {
+                context.setMaxBullets = context.setMaxBullets || {};
+                context.setMaxBullets[card.uuid] = card.maxBullets;
                 card.maxBullets = value;
             },
-            unapply: function(card) {
-                card.maxBullets = previousMaxBullets;
+            unapply: function(card, context) {
+                card.maxBullets = context.setMaxBullets[card.uuid];
+                delete context.setMaxBullets[card.uuid];
             }
         };
     },
@@ -297,15 +300,16 @@ const Effects = {
         };
     },
     setBullets: function(value) {
-        let changeAmount = 0;
         return {
             gameAction: card => card.bullets > value ? 'decreaseBullets' : 'increaseBullets',
-            apply: function(card) {
-                changeAmount = value - card.bullets;
-                card.modifyBullets(changeAmount, true);
+            apply: function(card, context) {
+                context.changeAmount = context.changeAmount || {};
+                context.changeAmount[card.uuid] = value - card.bullets;
+                card.modifyBullets(context.changeAmount[card.uuid], true);
             },
-            unapply: function(card) {
-                card.modifyBullets(changeAmount * -1);
+            unapply: function(card, context) {
+                card.modifyBullets(context.changeAmount[card.uuid] * -1);
+                delete context.changeAmount[card.uuid];
             }
         };
     },
@@ -321,15 +325,16 @@ const Effects = {
         };
     },
     setInfluence: function(value) {
-        let changeAmount = 0;
         return {
             gameAction: card => card.influence > value ? 'decreaseInfluence' : 'increaseInfluence',
-            apply: function(card) {
-                changeAmount = value - card.influence;
-                card.modifyInfluence(changeAmount, true);
+            apply: function(card, context) {
+                context.changeAmount = context.changeAmount || {};
+                context.changeAmount[card.uuid] = value - card.influence;
+                card.modifyInfluence(context.changeAmount[card.uuid], true);
             },
-            unapply: function(card) {
-                card.modifyInfluence(changeAmount * -1);
+            unapply: function(card, context) {
+                card.modifyInfluence(context.changeAmount[card.uuid] * -1);
+                delete context.changeAmount[card.uuid];
             }
         };
     },
@@ -345,15 +350,16 @@ const Effects = {
         };
     },
     setControl: function(value) {
-        let changeAmount = 0;
         return {
             gameAction: card => card.control > value ? 'decreaseControl' : 'increaseControl',
-            apply: function(card) {
-                changeAmount = value - card.control;
-                card.modifyControl(changeAmount, true);
+            apply: function(card, context) {
+                context.changeAmount = context.changeAmount || {};
+                context.changeAmount[card.uuid] = value - card.control;
+                card.modifyControl(context.changeAmount[card.uuid], true);
             },
-            unapply: function(card) {
-                card.modifyControl(changeAmount * -1);
+            unapply: function(card, context) {
+                card.modifyControl(context.changeAmount[card.uuid] * -1);
+                delete context.changeAmount[card.uuid];
             }
         };
     },
@@ -369,15 +375,16 @@ const Effects = {
         };
     },
     setValue: function(value) {
-        let changeAmount = 0;
         return {
             gameAction: card => card.value > value ? 'decreaseValue' : 'increaseValue',
-            apply: function(card) {
-                changeAmount = value - card.value;
-                card.modifyValue(changeAmount, true);
+            apply: function(card, context) {
+                context.changeAmount = context.changeAmount || {};
+                context.changeAmount[card.uuid] = value - card.value;
+                card.modifyValue(context.changeAmount[card.uuid], true);
             },
-            unapply: function(card) {
-                card.modifyValue(changeAmount * -1);
+            unapply: function(card, context) {
+                card.modifyValue(context.changeAmount[card.uuid] * -1);
+                delete context.changeAmount[card.uuid];
             }
         };
     },
@@ -565,33 +572,19 @@ const Effects = {
             }
         };
     },
-    addCardAction: function(ability) {
+    addCardAction: function(properties) {
         return {
-            apply: function(card) {
-                card.abilities.actions.push(ability);
+            apply: function(card, context) {
+                let action = new CardAction(context.game, card, properties);
+                context.cardActionIndex = context.cardActionIndex || {};
+                context.cardActionIndex[card.uuid] = card.abilities.actions.push(action) - 1;
+                action.registerEvents();
             },
-            unapply: function(card) {
-                card.abilities.actions = card.abilities.actions.filter(a => a !== ability);
-            }
-        };
-    },
-    addCardReaction: function(ability) {
-        return {
-            apply: function(card) {
-                card.abilities.reactions.push(ability);
-            },
-            unapply: function(card) {
-                card.abilities.reactions = card.abilities.reactions.filter(a => a !== ability);
-            }
-        };
-    },
-    addPersistentEffect: function(effect) {
-        return {
-            apply: function(card) {
-                card.abilities.persistentEffects.push(effect);
-            },
-            unapply: function(card) {
-                card.abilities.persistentEffects = card.abilities.persistentEffects.filter(e => e !== effect);
+            unapply: function(card, context) {
+                let action = card.abilities.actions[context.cardActionIndex[card.uuid]];
+                action.unregisterEvents();
+                card.abilities.actions.splice(context.cardActionIndex[card.uuid], 1);
+                delete context.cardActionIndex[card.uuid];
             }
         };
     },
@@ -828,20 +821,21 @@ const Effects = {
         };
     },
     ignoreBulletModifiers: function(controller = 'any', predicate = () => true) {
-        let restrictions = [];
         return {
-            apply: function(card) {
-                restrictions = [];
-                restrictions.push(new CannotRestriction('increaseBullets', 'any', controller, context => predicate(context)));
-                restrictions.push(new CannotRestriction('decreaseBullets', 'any', controller, context => predicate(context)));
-                restrictions.push(new CannotRestriction('setAsStud', 'any', controller, context => predicate(context)));
-                restrictions.push(new CannotRestriction('setAsDraw', 'any', controller, context => predicate(context)));
-                restrictions.forEach(r => card.addAbilityRestriction(r));
+            apply: function(card, context) {
+                context.restrictions = context.restrictions || {};
+                context.restrictions[card.uuid] = [];
+                context.restrictions[card.uuid].push(new CannotRestriction('increaseBullets', 'any', controller, context => predicate(context)));
+                context.restrictions[card.uuid].push(new CannotRestriction('decreaseBullets', 'any', controller, context => predicate(context)));
+                context.restrictions[card.uuid].push(new CannotRestriction('setAsStud', 'any', controller, context => predicate(context)));
+                context.restrictions[card.uuid].push(new CannotRestriction('setAsDraw', 'any', controller, context => predicate(context)));
+                context.restrictions[card.uuid].forEach(r => card.addAbilityRestriction(r));
                 card.game.updateEffectsOnCard(card, effect => effect.gameAction === 'increaseBullets' || effect.gameAction === 'decreaseBullets' ||
                     effect.gameAction === 'setAsStud' || effect.gameAction === 'setAsDraw');
             },
-            unapply: function(card) {
-                restrictions.forEach(r => card.removeAbilityRestriction(r));
+            unapply: function(card, context) {
+                context.restrictions[card.uuid].forEach(r => card.removeAbilityRestriction(r));
+                delete context.restrictions[card.uuid];
             }
         }; 
     },
