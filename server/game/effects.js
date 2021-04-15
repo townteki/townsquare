@@ -280,6 +280,7 @@ const Effects = {
     },
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin'),
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown'),
+    doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings'),
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },
