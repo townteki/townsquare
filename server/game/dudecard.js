@@ -17,7 +17,6 @@ class DudeCard extends DrawCard {
 
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
-        this.controlDeterminator = 'influence:deed';
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
         this.spellFunc = spell => spell.parent === this;
@@ -131,11 +130,7 @@ class DudeCard extends DrawCard {
                     caller: this, 
                     callee: context.target, 
                     isCardEffect: false 
-                }), context).thenExecute(event => {
-                    if(this.acceptedCallout) {
-                        this.game.startShootout(event.caller, event.callee);
-                    }
-                });
+                }), context);
             },
             player: this.controller
         });
