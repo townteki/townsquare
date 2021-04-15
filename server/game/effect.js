@@ -65,11 +65,14 @@ class Effect {
     }
 
     buildTargetLocation(targetLocation) {
+        if(!targetLocation) {
+            return ['play area'];
+        }
         if(Array.isArray(targetLocation)) {
             return targetLocation;
         }
 
-        return targetLocation || ['play area'];
+        return [targetLocation];
     }
 
     buildEffect(effect) {

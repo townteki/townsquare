@@ -307,8 +307,16 @@ class DrawCard extends BaseCard {
         return this.hasKeyword('Gadget');
     }
 
+    doesNotProvideBulletRatings() {
+        return this.options.contains('doesNotProvideBulletRatings');
+    }
+
     isSelectedAsFirstCasualty() {
         return this.options.contains('isSelectedAsFirstCasualty', this);
+    }
+
+    calloutCannotBeRefused(opponentDude) {
+        return this.options.contains('calloutCannotBeRefused', opponentDude);
     }
 
     cannotBeChosenAsCasualty() {

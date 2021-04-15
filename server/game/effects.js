@@ -274,8 +274,10 @@ const Effects = {
             }
         };
     },
+    calloutCannotBeRefused: optionEffect('calloutCannotBeRefused'),
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin'),
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown'),
+    doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings'),
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },
@@ -362,6 +364,19 @@ const Effects = {
             }
         };
     },
+    setValue: function(value) {
+        let changeAmount = 0;
+        return {
+            gameAction: card => card.value > value ? 'decreaseValue' : 'increaseValue',
+            apply: function(card) {
+                changeAmount = value - card.value;
+                card.modifyValue(changeAmount, true);
+            },
+            unapply: function(card) {
+                card.modifyValue(changeAmount * -1);
+            }
+        };
+    },
     modifyProduction: function(value) {
         return {
             gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
@@ -395,6 +410,18 @@ const Effects = {
             }
         };
     },
+    productionToBeReceivedBy: function(player) {
+        return {
+            apply: function(card) {
+                if(card.getType() === 'deed') {
+                    card.productionToBeReceivedBy = player;
+                }
+            },
+            unapply: function(card) {
+                card.productionToBeReceivedBy = null;
+            }
+        };
+    },
     additionalDynamicAdjacency: conditionalAdjacency(),
     preventDynamicAdjacency: conditionalAdjacency(),
     additionalAdjacency: adjacency('adjacent'),
@@ -421,6 +448,18 @@ const Effects = {
             },
             unapply: function(player) {
                 player.discardNumber -= value;
+            }
+        };
+    },
+    modifyHandRandMod: function(value) {
+        return {
+            targetType: 'player',
+            gameAction: 'modifyHandRank',
+            apply: function(player) {
+                player.modifyRank(value);
+            },
+            unapply: function(player) {
+                player.modifyRank(-value);
             }
         };
     },

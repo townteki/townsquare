@@ -107,7 +107,6 @@ class Shootout extends Phase {
         if(this.checkEndCondition()) {
             return;
         }
-        this.game.raiseEvent('onShootoutSlinginLeadStarted');
         this.remainingSteps = [
             new SimpleStep(this.game, () => this.resetForTheRound()),
             new SimpleStep(this.game, () => this.shootoutPlays()),
@@ -119,7 +118,7 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.casualtiesAndRunOrGun())
         ];
 
-        this.game.raiseEvent('onBeginShootoutRound');
+        this.game.raiseEvent('onShootoutRoundStarted');
         this.queueStep(new SimpleStep(this.game, () => {
             if(!this.checkEndCondition()) {
                 if(this.remainingSteps.length !== 0) {

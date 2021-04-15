@@ -11,7 +11,7 @@ describe('BaseAbilityWindow', function() {
 
         this.window = new BaseAbilityWindow(this.gameSpy, {
             event: this.eventSpy,
-            abilityType: 'insteadreaction'
+            abilityType: 'beforereaction'
         });
     });
 
@@ -29,7 +29,7 @@ describe('BaseAbilityWindow', function() {
         it('should emit the associated event to trigger associated abilities', function() {
             this.window.gatherChoices();
 
-            expect(this.eventSpy.emitTo).toHaveBeenCalledWith(this.gameSpy, 'insteadreaction');
+            expect(this.eventSpy.emitTo).toHaveBeenCalledWith(this.gameSpy, 'beforereaction');
         });
     });
 

@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const Suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
+const Suits = ['Clubs', 'Diams', 'Hearts', 'Spades'];
 
 /**
  * Class to evaluate hand rank from a hand of cards.
@@ -86,7 +86,7 @@ class DeadMansHand {
             {value: 1, suit: 'Clubs'},
             {value: 8, suit: 'Spades'},
             {value: 8, suit: 'Clubs'},
-            {value: 11, suit: 'Diamonds'}];
+            {value: 11, suit: 'Diams'}];
 
         this.matches = _.intersectionWith(dmh, hand, (left, right) => {
             return ((left.value === right.value) && (left.suit === right.suit));
