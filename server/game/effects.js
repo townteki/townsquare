@@ -932,6 +932,22 @@ const Effects = {
     canUseControllerAbilities: function() {
         return optionEffect('canUseControllerAbilities')();
     },
+    canPerformSkillUsing: function(skillname, condition) {
+        var getSkillRatingFunc;
+        return {
+            apply: function(card) {
+                getSkillRatingFunc = card.getSkillRatingForCard;
+                card.getSkillRatingForCard = spellOrGadget => {
+                    if(condition(spellOrGadget)) {
+                        return card.getSkillRating(skillname);
+                    }
+                };
+            },
+            unapply: function(card) {
+                card.getSkillRatingForCard = getSkillRatingFunc;
+            }
+        };
+    },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {
