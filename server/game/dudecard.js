@@ -198,6 +198,7 @@ class DudeCard extends DrawCard {
         let destination = this.game.findLocation(destinationUuid);
         if(destination && this.location !== 'out of game') {
             destination.addDude(this);
+            this.game.raiseEvent('onDudeEnteredLocation', { card: this, gameLocation: destination });
         }
     }
 

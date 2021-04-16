@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/157/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/164/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -73,7 +73,7 @@
 |                     | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
 |                     | 01061| B & B Attorneys
-|                     | 01062| Dead Dog Tavern
+|:heavy_check_mark:   | 01062| Dead Dog Tavern
 |:heavy_check_mark:   | 01063| Charlie's Place
 |:heavy_check_mark:   | 01064| Pearly's Palace
 |:heavy_check_mark:   | 01065| Killer Bunnies Casino
@@ -207,7 +207,7 @@
 |                     | 03016| Stone Idol
 |                     | 03017| Corporeal Twist
 |                     | 03018| Fetch
-|                     | 03019| ...It's who you know
+|:heavy_check_mark:   | 03019| ...It's who you know
 |                     | 03020| Horse Wranglin'
 |:heavy_check_mark:   | 03021| It's Not What You Know...
 
@@ -246,7 +246,7 @@
 |                     | 05003| Morgan Gadgetorium
 |                     | 05004| Desolation Row
 |                     | 05005| Pagliaccio
-|                     | 05006| Valeria Batten
+|:heavy_check_mark:   | 05006| Valeria Batten
 |                     | 05007| Micah Ryse (Exp.1)
 |                     | 05008| Rev. Perry Inbody
 |                     | 05009| Zoe Halbrook
@@ -259,7 +259,7 @@
 |                     | 05016| Makaio Kaleo, Esq.
 |                     | 05017| Sister Lois Otwell
 |:heavy_check_mark:   | 05018| Félix Amador
-|                     | 05019| Nicodemus Whateley
+|:heavy_check_mark:   | 05019| Nicodemus Whateley
 |                     | 05020| Pettigrew's Pawnshop
 |                     | 05021| California Tax Office
 |                     | 05022| St. Anthony's Chapel
@@ -560,7 +560,7 @@
 |                     | 14021| Silent Sigil
 |                     | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
-|                     | 14024| Tusk
+|:heavy_check_mark:   | 14024| Tusk
 |                     | 14025| Mountain Lion Friend
 |                     | 14026| Spirit Steed
 |                     | 14027| Crafty Hare
@@ -678,7 +678,7 @@
 |                     | 18015| Father Tolarios
 |                     | 18016| Hattie DeLorre
 |                     | 18017| Diego Linares
-|                     | 18018| Post-A-Tron
+|:heavy_check_mark:   | 18018| Post-A-Tron
 |                     | 18019| Jimmy "The Saint"
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
@@ -688,7 +688,7 @@
 |                     | 18025| Cliff's #4 Saloon
 |                     | 18026| Baijiu Jar
 |                     | 18027| Bowie Knife
-|                     | 18028| Hydro-Puncher
+|:heavy_check_mark:   | 18028| Hydro-Puncher
 |                     | 18029| Rancher's Lariat
 |                     | 18030| De Annulos Mysteriis
 |                     | 18031| Heartseeker
