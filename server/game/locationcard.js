@@ -73,6 +73,20 @@ class LocationCard extends DrawCard {
         return adjacentLocations;
     }
 
+    addKeyword(keyword) {
+        super.addKeyword(keyword);
+        if(keyword === 'rowdy') {
+            this.controlDeterminator = 'bullets';
+        }
+    }
+
+    removeKeyword(keyword) {
+        super.removeKeyword(keyword);
+        if(!this.hasKeyword('rowdy')) {
+            this.controlDeterminator = 'influence:deed';
+        }
+    }
+
     isLocationCard() {
         return true;
     }

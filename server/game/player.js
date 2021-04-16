@@ -805,7 +805,9 @@ class Player extends Spectator {
             return {
                 successHandler: context => {
                     this.game.addMessage('{0} successfuly invent {1} using the {2}', this, gadget, scientist);
-                    successHandler(context, scientist);
+                    this.game.raiseEvent('onGadgetInvented', { gadget, scientist, context }, event => {
+                        successHandler(event.context, event.scientist);
+                    });
                 },
                 failHandler: () => {
                     this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);
