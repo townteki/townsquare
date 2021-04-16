@@ -1,11 +1,6 @@
 const LocationCard = require('./locationcard.js');
 
 class DeedCard extends LocationCard {
-    constructor(owner, cardData) {
-        super(owner, cardData);
-        this.controlDeterminator = 'influence:deed';
-    }
-
     get controller() {
         if(this.location === 'play area' && this.gameLocationObject) {
             this.controller = this.gameLocationObject.determineController();

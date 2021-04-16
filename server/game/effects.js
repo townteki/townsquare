@@ -239,14 +239,10 @@ const Effects = {
     determineControlByBullets: function() {
         return {
             apply: function(card) {
-                if(card.getType() === 'dude') {
-                    card.controlDeterminator = 'bullets';
-                }
+                card.controlDeterminator = 'bullets';
             },
             unapply: function(card) {
-                if(card.getType() === 'dude') {
-                    card.controlDeterminator = 'influence:deed';
-                }
+                card.controlDeterminator = 'influence:deed';
             }
         };
     }, 
@@ -894,6 +890,17 @@ const Effects = {
             }
         };
     },
+    useInfluenceForShootout: function() {
+        return {
+            targetType: 'shootout',
+            apply: function(shootout) {
+                shootout.useInfluence = true;
+            },
+            unapply: function(shootout) {
+                shootout.useInfluence = false;
+            }
+        };
+    },
     selectAsFirstCasualty: function() {
         return optionEffect('isSelectedAsFirstCasualty')();
     },
@@ -919,6 +926,22 @@ const Effects = {
     canUseControllerAbilities: function() {
         return optionEffect('canUseControllerAbilities')();
     },
+    canPerformSkillUsing: function(skillname, condition) {
+        var getSkillRatingFunc;
+        return {
+            apply: function(card) {
+                getSkillRatingFunc = card.getSkillRatingForCard;
+                card.getSkillRatingForCard = spellOrGadget => {
+                    if(condition(spellOrGadget)) {
+                        return card.getSkillRating(skillname);
+                    }
+                };
+            },
+            unapply: function(card) {
+                card.getSkillRatingForCard = getSkillRatingFunc;
+            }
+        };
+    },
     canSpendGhostRock: function(allowSpendingFunc) {
         return {
             apply: function(card, context) {
@@ -931,6 +954,20 @@ const Effects = {
                 let ghostrockSource = context.canSpendGhostRock[card.uuid];
                 card.controller.removeGhostRockSource(ghostrockSource);
                 delete context.canSpendGhostRock[card.uuid];
+            }
+        };
+    },
+    canAttachWeapon: function(condition) {
+        var canAttachWeaponFunc;
+        return {
+            apply: function(card) {
+                canAttachWeaponFunc = card.canAttachWeapon;
+                card.canAttachWeapon = (weapon) => {
+                    return condition(weapon);
+                };
+            },
+            unapply: function(card) {
+                card.canAttachWeapon = canAttachWeaponFunc;
             }
         };
     },
