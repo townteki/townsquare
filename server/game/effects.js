@@ -963,6 +963,20 @@ const Effects = {
             }
         };
     },
+    canAttachWeapon: function(condition) {
+        var canAttachWeaponFunc;
+        return {
+            apply: function(card) {
+                canAttachWeaponFunc = card.canAttachWeapon;
+                card.canAttachWeapon = (weapon) => {
+                    return condition(weapon);
+                };
+            },
+            unapply: function(card) {
+                card.canAttachWeapon = canAttachWeaponFunc;
+            }
+        };
+    },
     setMinCost: function(value) {
         return {
             targetType: 'player',

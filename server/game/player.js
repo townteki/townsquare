@@ -900,15 +900,11 @@ class Player extends Spectator {
 
         if(playingType !== 'upgrade') {
             let event = new AtomicEvent();
-            if(card.location === 'hand') {
+            if(originalLocation === 'hand') {
                 event.addChildEvent(new Event('onCardLeftHand', { player: this, card: card }));
             }
 
             event.addChildEvent(new Event('onCardAttached', { attachment: attachment, target: card }));
-
-            if(originalLocation !== 'play area') {
-                event.addChildEvent(new Event('onCardEntersPlay', { card: attachment, playingType: playingType, originalLocation: originalLocation }));
-            }
 
             this.game.resolveEvent(event);
         }
