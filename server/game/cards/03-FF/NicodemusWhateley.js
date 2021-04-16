@@ -10,7 +10,7 @@ class NicodemusWhateley extends DudeCard {
                 playType: ['noon'],
                 cost: ability.costs.bootSelf(),
                 condition: context => context.source.influence >= 1,
-                message: context => this.game.addMessage('{0} uses {1} to give {2} a control point', context.player, this),
+                message: context => this.game.addMessage('{0} uses {1} to give {2} a control point', context.player, context.source, this),
                 handler: context => {
                     if(this.control < 3) {
                         this.modifyControl(1);
