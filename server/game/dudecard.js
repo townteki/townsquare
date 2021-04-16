@@ -3,6 +3,7 @@ const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
 const GameActions = require('./GameActions');
 const {ShootoutStatuses, Tokens} = require('./Constants');
 const NullEvent = require('./NullEvent.js');
+const SpellCard = require('./spellcard.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -13,7 +14,6 @@ class DudeCard extends DrawCard {
 
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
-        this.controlDeterminator = 'influence:deed';
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
         this.spellFunc = spell => spell.parent === this;
@@ -91,6 +91,11 @@ class DudeCard extends DrawCard {
         }
     }
 
+    canPerformSkillOn(spellOrGadget) {
+        const skillRating = this.getSkillRatingForCard(spellOrGadget);
+        return skillRating !== null && skillRating !== undefined;
+    }
+
     getGrit() {
         return this.value + this.bullets + this.influence;
     }
@@ -127,11 +132,7 @@ class DudeCard extends DrawCard {
                     caller: this, 
                     callee: context.target, 
                     isCardEffect: false 
-                }), context).thenExecute(event => {
-                    if(this.acceptedCallout) {
-                        this.game.startShootout(event.caller, event.callee);
-                    }
-                });
+                }), context);
             },
             player: this.controller
         });
@@ -444,13 +445,10 @@ class DudeCard extends DrawCard {
     }
 
     canCastSpell(spell) {
-        if(!this.isSpellcaster()) {
+        if(!(spell instanceof SpellCard)) {
             return false;
         }
-        if(!this.controller.isValidSkillCombination(this, spell)) {
-            return false;
-        }
-        return this.spellFunc(spell);
+        return this.canPerformSkillOn(spell) && this.spellFunc(spell);
     }
 
     leavesPlay() {
