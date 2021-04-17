@@ -215,7 +215,7 @@ class DudeCard extends DrawCard {
 
         if(this.keywords.data) {
             this.keywords.getValues().forEach(keyword => {
-                for(let i = 1; i < this.keyword.getValue(keyword); i++) {
+                for(let i = 1; i < this.keywords.getValue(keyword); i++) {
                     expDude.keywords.add(keyword);
                 }
             });
