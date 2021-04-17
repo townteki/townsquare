@@ -698,7 +698,7 @@ class Game extends EventEmitter {
         });
     }
 
-    promptForValue(player, title, method, context, source, condition) {
+    promptForValue(player, title, method, context, source, condition = () => true) {
         let buttonsValue = [];
         for(let i = 1; i <= 13; i++) {
             let text = i;
