@@ -477,7 +477,7 @@ class Game extends EventEmitter {
 
         if(from.getGameElementType() === 'player') {
             let activePlayer = transferParams.activePlayer || this.currentAbilityContext && this.currentAbilityContext.player;
-            appliedGR = Math.min(from.getSpendableGold({ player: from, activePlayer: activePlayer }), amount);
+            appliedGR = Math.min(from.getSpendableGhostRock({ player: from, activePlayer: activePlayer }), amount);
             this.spendGhostRock({ amount: appliedGR, player: from, activePlayer: activePlayer }, () => {
                 to.modifyGhostRock(appliedGR);
                 this.raiseEvent('onGhostRockTransferred', { source: from, target: to, amount: appliedGR });

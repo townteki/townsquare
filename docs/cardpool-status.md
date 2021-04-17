@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/164/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/173/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -26,7 +26,7 @@
 |                     | 01012| Tyxarglenak ?
 |:heavy_check_mark:   | 01013| Jia Mein
 |:heavy_check_mark:   | 01014| Ivor Hawley
-|                     | 01015| Lucinda "Lucy" Clover
+|:heavy_check_mark:   | 01015| Lucinda "Lucy" Clover
 |:heavy_check_mark:   | 01016| Judge Harry Somerset
 |:heavy_check_mark:   | 01017| Philip Swinford
 |:heavy_check_mark:   | 01018| Tommy Harden
@@ -247,7 +247,7 @@
 |                     | 05004| Desolation Row
 |                     | 05005| Pagliaccio
 |:heavy_check_mark:   | 05006| Valeria Batten
-|                     | 05007| Micah Ryse (Exp.1)
+|:heavy_check_mark:   | 05007| Micah Ryse (Exp.1)
 |                     | 05008| Rev. Perry Inbody
 |                     | 05009| Zoe Halbrook
 |                     | 05010| Abram Grothe (Exp.1)
@@ -463,8 +463,8 @@
 |                     | 11004| Xiang Fang
 |                     | 11005| He Fang
 |                     | 11006| Kabeda Hakurei
-|                     | 11007| Zachary Deloria
-|                     | 11008| Karl Odett
+|:heavy_check_mark:   | 11007| Zachary Deloria
+|:heavy_check_mark:   | 11008| Karl Odett
 |:heavy_check_mark:   | 11009| Erik Samson
 |                     | 11010| Dr. Brian Foxworth
 |:heavy_check_mark:   | 11011| Buford Hurley
@@ -488,7 +488,7 @@
 |                     | 12001| Shizeng Lu
 |                     | 12002| Forster Cooke
 |                     | 12003| Joseph Dusty Hill
-|                     | 12004| Mariel Lewis
+|:heavy_check_mark:   | 12004| Mariel Lewis
 |                     | 12005| The Tattooed Man
 |                     | 12006| Riorden O'Lithen
 |                     | 12007| "Lucky" Sky Borne
@@ -610,7 +610,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 16001| El Armadillo De Hierro
-|                     | 16002| Jim Hexter
+|:heavy_check_mark:   | 16002| Jim Hexter
 |:heavy_check_mark:   | 16003| The Mixer
 |                     | 16004| Hupirika Sue
 |                     | 16005| The Harvester
@@ -676,7 +676,7 @@
 |                     | 18013| Absalom Hotchkiss
 |                     | 18014| Christine Perfect
 |                     | 18015| Father Tolarios
-|                     | 18016| Hattie DeLorre
+|:heavy_check_mark:   | 18016| Hattie DeLorre
 |                     | 18017| Diego Linares
 |:heavy_check_mark:   | 18018| Post-A-Tron
 |                     | 18019| Jimmy "The Saint"
@@ -735,7 +735,7 @@
 |                     | 19025| The Oriental
 |                     | 19026| Hellstromme Plant #9
 |                     | 19027| Bilton Collection Agency
-|                     | 19028| Decimator Array
+|:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
 |                     | 19030| Forsaken Hound
 |                     | 19031| The Bloody Star
@@ -759,6 +759,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:white_check_mark:   | 20009| Matilda Loomis
+|:heavy_check_mark:   | 20026| Ike Clanton
 
 ## `13-O4B` Out for Blood
 
