@@ -14,7 +14,11 @@ class DrawCard extends BaseCard {
         this.booted = false;
         this.minCost = 0;
         this.currentControl = this.cardData.control;
-        this.controlDeterminator = 'influence:deed';
+        if(!this.hasKeyword('rowdy')) {
+            this.controlDeterminator = 'influence:deed';
+        } else {
+            this.controlDeterminator = 'bullets';
+        }
 
         if(cardData.starting) {
             this.starting = true;
