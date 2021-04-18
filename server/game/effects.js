@@ -470,19 +470,31 @@ const Effects = {
             }
         };
     },
-    dynamicDecreaseStrength: function(calculate) {
-        let negatedCalculate = (card, context) => -(calculate(card, context) || 0);
-        return Effects.dynamicStrength(negatedCalculate, 'decreaseBullets');
-    },
-    doesNotReturnUnspentGold: function() {
+    dynamicHandRankMod: function(calculateOrValue) {
+        const isStateDependent = (typeof calculateOrValue === 'function');
+        const calculate = isStateDependent ? calculateOrValue : () => calculateOrValue;
+
         return {
-            targetType: 'player',
-            apply: function(player) {
-                player.doesNotReturnUnspentGold = true;
+            gameAction: 'modifyHandRank',
+            apply: function(player, context) {
+                context.dynamicHandRank = context.dynamicHandRank || {};
+                context.dynamicHandRank[player.name] = calculate(player, context) || 0;
+                let value = context.dynamicHandRank[player.name];
+                player.modifyRank(value);
             },
-            unapply: function(player) {
-                player.doesNotReturnUnspentGold = false;
-            }
+            reapply: function(player, context) {
+                let currentProperty = context.dynamicHandRank[player.name];
+                let newProperty = calculate(player, context) || 0;
+                context.dynamicHandRank[player.name] = newProperty;
+                let value = newProperty - currentProperty;
+                player.modifyRank(value);
+            },
+            unapply: function(player, context) {
+                let value = context.dynamicHandRank[player.name];
+                player.modifyRank(-value);
+                delete context.dynamicHandRank[player.name];
+            },
+            isStateDependent
         };
     },
     addKeyword: function(keyword) {
