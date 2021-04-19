@@ -597,6 +597,16 @@ class Player extends Spectator {
         return true;
     }
 
+    isAllowed(card, triggerPlayer = 'controller') {
+        if(triggerPlayer === 'any') {
+            return true;
+        }
+        if(triggerPlayer === 'owner') {
+            return card.owner === this;
+        }
+        return card.controller === this || card.canUseControllerAbilities(this);
+    }
+
     canTrigger(card) {
         return !this.triggerRestrictions.some(restriction => restriction(card));
     }
@@ -615,7 +625,7 @@ class Player extends Spectator {
         }
 
         if(card.hasKeyword('gadget') && params.playingType === 'shoppin') {
-            let availableScientist = this.cardsInPlay.find(searchCard => 
+            let availableScientist = this.cardsInPlay.find(searchCard =>
                 searchCard.getType() === 'dude' && searchCard.canPerformSkillOn(card) && !searchCard.booted);
             if(!availableScientist) {
                 return false;
@@ -822,7 +832,7 @@ class Player extends Spectator {
                 activePromptTitle: 'Select a dude to invent ' + gadget.title,
                 waitingPromptTitle: 'Waiting for opponent to select dude',
                 cardCondition: card => card.location === 'play area' && !card.booted && 
-                    card.canPerformSkillOn(gadget) && 
+                    card.canPerformSkillOn(gadget) &&
                     card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {

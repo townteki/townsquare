@@ -458,7 +458,7 @@ const Effects = {
             }
         };
     },
-    modifyHandRandMod: function(value) {
+    modifyHandRankMod: function(value) {
         return {
             targetType: 'player',
             gameAction: 'modifyHandRank',

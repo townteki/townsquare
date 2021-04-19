@@ -474,6 +474,7 @@ class BaseCard {
             menu = menu.concat({ 
                 text: 'Use ability', 
                 method: 'useAbility', 
+                triggeringPlayer: 'any',
                 disabled: menuCardActionItems.every(menuItem => menuItem.item.disabled) 
             });
         }

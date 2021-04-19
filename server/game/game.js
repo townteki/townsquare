@@ -379,7 +379,7 @@ class Game extends EventEmitter {
             case 'hand':
             case 'draw hand':
             case 'play area':
-                if(card.controller !== player && !menuItem.anyPlayer && !card.canUseControllerAbilities(player)) {
+                if(!player.isAllowed(card, menuItem.triggeringPlayer)) {
                     return;
                 }
 

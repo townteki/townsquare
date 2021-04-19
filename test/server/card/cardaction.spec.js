@@ -11,11 +11,13 @@ describe('CardAction', function () {
         });
         this.gameSpy.currentPhase = 'high noon';
 
-        this.playerSpy = jasmine.createSpyObj('player', ['canTrigger']);
+        this.playerSpy = jasmine.createSpyObj('player', ['canTrigger', 'isAllowed']);
         this.playerSpy.canTrigger.and.returnValue(true);
+        this.playerSpy.isAllowed.and.returnValue(true);
 
-        this.otherPlayerSpy = jasmine.createSpyObj('player', ['canTrigger']);
+        this.otherPlayerSpy = jasmine.createSpyObj('player', ['canTrigger', 'isAllowed']);
         this.otherPlayerSpy.canTrigger.and.returnValue(true);
+        this.otherPlayerSpy.isAllowed.and.returnValue(true);
 
         this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'isAnyBlank', 'getType', 'hasKeyword', 'canUseControllerAbilities']);
         this.handlerSpy = jasmine.createSpy('handler');
@@ -150,26 +152,14 @@ describe('CardAction', function () {
                 this.otherPlayer = this.otherPlayerSpy;
             });
 
-            describe('and the anyPlayer property is not set', function() {
+            describe('and the triggeringPlayer property is not set', function() {
                 beforeEach(function() {
                     this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
                     this.action.execute(this.otherPlayer, 'arg');
                 });
 
-                it('should not queue the ability resolver', function() {
-                    expect(this.gameSpy.resolveAbility).not.toHaveBeenCalled();
-                });
-            });
-
-            describe('and the anyPlayer property is set', function() {
-                beforeEach(function() {
-                    this.properties.anyPlayer = true;
-                    this.action = new CardAction(this.gameSpy, this.cardSpy, this.properties);
-                    this.action.execute(this.otherPlayer, 'arg');
-                });
-
-                it('should queue the ability resolver', function() {
-                    expect(this.gameSpy.resolveAbility).toHaveBeenCalled();
+                it('should call player isAllowed function with \'controller\'', function() {
+                    expect(this.otherPlayer.isAllowed).toHaveBeenCalledWith(this.cardSpy, 'controller');
                 });
             });
         });
@@ -431,7 +421,7 @@ describe('CardAction', function () {
             // The client passes this back to the server and is checked before
             // executing menu items that are requested by a non-controlling
             // player (e.g. Bronn).
-            expect(this.menuItem['anyPlayer']).toBeDefined();
+            expect(this.menuItem['triggeringPlayer']).toBeDefined();
         });
 
         it('should include whether the menu item is disabled', function() {

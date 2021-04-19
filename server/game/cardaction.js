@@ -25,8 +25,8 @@ const CardTypesForShootout = ['dude', 'goods', 'spell'];
  * location     - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
  * limit        - the max number of uses for the repeatable action.
- * anyPlayer    - boolean indicating that the action may be executed by a player
- *                other than the card's controller. Defaults to false.
+ * triggeringPlayer - string indicating player that can execute the action.
+ *                Default is 'controller', other possible values are 'owner' or 'any'
  * clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
  */
@@ -177,7 +177,7 @@ class CardAction extends PlayTypeAbility {
             text: this.title, 
             method: 'doAction', 
             arg: arg, 
-            anyPlayer: !!this.anyPlayer, 
+            triggeringPlayer: this.triggeringPlayer, 
             disabled: !this.meetsRequirements(context) 
         };
     }

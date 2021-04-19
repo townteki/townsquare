@@ -69,7 +69,7 @@ class CominUpRoses extends ActionCard {
             this.applyAbilityEffect(this.cheatinResContext.ability, ability => ({
                 condition: () => [5, 6, 9].includes(player.getHandRank().rank) && !player.isCheatin(),
                 match: player,
-                effect: ability.effects.modifyHandRandMod(2)
+                effect: ability.effects.modifyHandRankMod(2)
             }));
             this.game.addMessage('{0}\'s new hand rank is {2}', player, this, player.getTotalRank());
             this.cheatinResContext = null;
