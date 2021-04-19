@@ -14,7 +14,7 @@ class PlayTypeAbility extends BaseAbility {
         super(properties);
         this.game = game;
         this.card = card;
-        this.anyPlayer = properties.anyPlayer || false;
+        this.triggeringPlayer = properties.triggeringPlayer || 'controller';
         this.playType = this.buildPlayType(properties);
     }
 
@@ -54,7 +54,7 @@ class PlayTypeAbility extends BaseAbility {
     }
 
     allowPlayer(player) {
-        return this.card.controller === player || this.anyPlayer || this.card.canUseControllerAbilities(player);
+        return player.isAllowed(this.card, this.triggeringPlayer);
     }
 
     meetsRequirements(context) {
