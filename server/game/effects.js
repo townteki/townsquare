@@ -6,7 +6,7 @@ const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
 
-function cannotEffect(type, playType, targetType = '') {
+function cannotEffect(type = 'any', playType = 'any', targetType = '') {
     return function(controller, predicate) {
         if(targetType === 'shootout') {
             return shootoutRestrictionEffect(new CannotRestriction(type, playType, controller, predicate));
