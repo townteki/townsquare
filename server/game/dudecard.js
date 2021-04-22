@@ -16,7 +16,12 @@ class DudeCard extends DrawCard {
         this.acceptedCallout = false;
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
-        this.spellFunc = spell => spell.parent === this;
+        this.spellFunc = spell => {
+            if(spell.isTotem()) {
+                return spell.gamelocation === this.gamelocation;
+            }
+            return spell.parent === this;
+        };
         this.setupDudeCardAbilities();
     }
 
