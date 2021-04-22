@@ -11,8 +11,11 @@ class DrawHandPrompt extends UiPrompt {
                 return { player: player, number: 5, handDrawn: false, handRedrawn: false };
             });            
         }
-        this.selectedCards = [];
-        this.players.forEach(player => this.updateDrawCount(player));
+        this.selectedCards = {};
+        this.players.forEach(player => {
+            this.selectedCards[player.name] = [];
+            this.updateDrawCount(player);
+        });
     }
 
     activeCondition(player) {
@@ -82,21 +85,21 @@ class DrawHandPrompt extends UiPrompt {
             return false;
         }
 
-        if(!this.getDrawCount(player).handRedrawn && this.selectedCards.length >= this.getDrawCount(player).redraw && 
-            !this.selectedCards.includes(card)) {
+        if(!this.getDrawCount(player).handRedrawn && this.selectedCards[player.name].length >= this.getDrawCount(player).redraw && 
+            !this.selectedCards[player.name].includes(card)) {
             return false;
         }
 
-        if(!this.selectedCards.includes(card)) {
-            this.selectedCards.push(card);
+        if(!this.selectedCards[player.name].includes(card)) {
+            this.selectedCards[player.name].push(card);
         } else {
-            this.selectedCards = this.selectedCards.filter(selectedCard => selectedCard !== card);
+            this.selectedCards[player.name] = this.selectedCards[player.name].filter(selectedCard => selectedCard !== card);
         }
-        player.setSelectedCards(this.selectedCards);
+        player.setSelectedCards(this.selectedCards[player.name]);
     }
 
-    clearSelectedCards() {
-        this.selectedCards = [];
+    clearSelectedCards(player) {
+        this.selectedCards[player.name] = [];
     }
 
     highlightSelectableCards(player) {
@@ -125,11 +128,11 @@ class DrawHandPrompt extends UiPrompt {
             return false;
         }
         if(arg === 'redraw') {
-            let numberToRedraw = this.selectedCards.length + player.redrawBonus;
-            player.discardCards(this.selectedCards);
+            let numberToRedraw = this.selectedCards[player.name].length + player.redrawBonus;
+            player.discardCards(this.selectedCards[player.name]);
             player.drawCardsToDrawHand(numberToRedraw);
             this.getDrawCount(player).handRedrawn = true;
-            this.selectedCards = [];
+            this.selectedCards[player.name] = [];
             player.clearSelectedCards();
             player.clearSelectableCards();
             return false;

@@ -1215,6 +1215,9 @@ class Player extends Spectator {
             player: this
         };
         this.pull((pulledCard, pulledValue, pulledSuit) => {
+            if(context) {
+                context.totalPullValue = pulledValue + props.pullBonus;
+            }
             if(props.successCondition(pulledValue + props.pullBonus)) {
                 this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
                     this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.', 
