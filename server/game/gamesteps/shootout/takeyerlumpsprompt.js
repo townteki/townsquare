@@ -59,6 +59,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             cardCondition: card => card.controller === player && 
                 card.location === 'play area' &&
                 this.shootout.isInShootout(card) &&
+                card.allowGameAction(arg, this.createContext(card, player)) &&
                 !card.cannotBeChosenAsCasualty() &&
                 card.coversCasualties() > 0,
             onSelect: (player, card) => {
@@ -67,12 +68,12 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                 if(arg === 'ace') {
                     numCoveredCasualties = card.coversCasualties('ace');
                     if(numCoveredCasualties > 0) {
-                        player.aceCard(card, true, { isCasualty: true });    
+                        player.aceCard(card, true, { isCasualty: true }, this.createContext(card, player));    
                     }         
                 } else if(arg === 'discard') {
                     numCoveredCasualties = card.coversCasualties('discard');
                     if(numCoveredCasualties > 0) {
-                        player.discardCard(card, true, { isCasualty: true });
+                        player.discardCard(card, true, { isCasualty: true }, this.createContext(card, player));
                     }
                 }
 
@@ -100,7 +101,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             onSelect: (player, card) => {
                 let numCoveredCasualties = card.coversCasualties('send');
                 if(numCoveredCasualties > 0) {
-                    this.shootout.sendHome(card, { game: this.game, player: player }, { isCardEffect: false });
+                    this.shootout.sendHome(card, this.createContext(card, player), { isCardEffect: false });
                     this.modifyCasualties(player, card, numCoveredCasualties);    
                     this.game.addMessage('{0} sends {1} home to cover {2} casualties ({3} remaining).', 
                         player, card, numCoveredCasualties, player.casualties);     
@@ -144,6 +145,17 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             casualtiesTaken: this.casualtiesTaken 
         });
         super.completePlayer();
+    }
+
+    createContext(card, player) {
+        return {
+            game: this.game,
+            shootout: this.shootout,
+            player: player,
+            source: this.source,
+            casualty: card,
+            isCasualty: true
+        };
     }
 }
 
