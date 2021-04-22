@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/173/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/181/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -176,7 +176,7 @@
 |                     | 02011| Town Council
 |                     | 02012| The R&D Ranch
 |                     | 02013| Telepathy Helmet
-|                     | 02014| Faithful Hound
+|:heavy_check_mark:   | 02014| Faithful Hound
 |                     | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
 |                     | 02017| Forget
@@ -266,7 +266,7 @@
 |                     | 05023| The Whateley Estate
 |                     | 05024| Outlaw Mask
 |                     | 05025| Clown Carriage
-|                     | 05026| Bio-Charged Neutralizer
+|:heavy_check_mark:   | 05026| Bio-Charged Neutralizer
 |                     | 05027| Evanor
 |                     | 05028| Mirror, Mirror
 |:heavy_check_mark:   | 05029| Lay On Hands
@@ -280,7 +280,7 @@
 |:heavy_check_mark:   | 05037| Faster on the Draw
 |                     | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
-|                     | 05040| Meet The New Boss
+|:heavy_check_mark:   | 05040| Meet The New Boss
 |                     | 06001| Funtime Freddy
 
 ## `04.1-FJ` Final Justice
@@ -303,7 +303,7 @@
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |                     | 06016| Fancy New Hat
 |:heavy_check_mark:   | 06017| Confession
-|                     | 06018| Shield of Faith
+|:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
 |                     | 06020| Incubation
 |                     | 06021| Flight of the Lepus
@@ -323,7 +323,7 @@
 |:heavy_check_mark:   | 07009| Jacqueline Isham
 |                     | 07010| Huntsmen's Society
 |                     | 07011| Secured Stockyard
-|                     | 07012| La Quema
+|:heavy_check_mark:   | 07012| La Quema
 |                     | 07013| Asyncoil Gun
 |:heavy_check_mark:   | 07014| Scoop Hound
 |:heavy_check_mark:   | 07015| Rapier
@@ -355,7 +355,7 @@
 |                     | 08015| Fate Dispenser
 |                     | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
-|                     | 08018| Sword of the Spirit
+|:heavy_check_mark:   | 08018| Sword of the Spirit
 |                     | 08019| A Fight They'll Never Forget
 |                     | 08020| Buried Treasure
 |:heavy_check_mark:   | 08021| Nightmare at Noon
@@ -443,7 +443,7 @@
 |                     | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
 |                     | 10032| Red Horse's Tail
-|                     | 10033| Fire of Nanahbozho
+|:heavy_check_mark:   | 10033| Fire of Nanahbozho
 |                     | 10034| Civil War
 |                     | 10035| Rabbit's Deception
 |                     | 10036| A Hero's Passing
@@ -472,7 +472,7 @@
 |                     | 11013| Rico Rodegain
 |:heavy_check_mark:   | 11014| Maza Gang Hideout
 |                     | 11015| Miasmatic Purifier
-|                     | 11016| Disgenuine Currency Press
+|:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
 |                     | 11018| Jael's Guile
 |                     | 11019| Personal Ornithopter
