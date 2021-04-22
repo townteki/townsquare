@@ -1,6 +1,6 @@
-const GoodsCard = require('./goodscard.js');
+const HeartsCard = require('./heartscard.js');
 
-class SpellCard extends GoodsCard {
+class SpellCard extends HeartsCard {
     constructor(owner, cardData) {
         super(owner, cardData);
         this.canTrade = false;
@@ -19,7 +19,8 @@ class SpellCard extends GoodsCard {
                 return true;
             }
         } else if(card.isLocationCard() && this.isTotem()) {
-            return true;
+            return card.controller === this.controller && 
+                card.getGameLocation().getDudes().find(dude => dude.hasKeyword('shaman') && !dude.booted);
         }
     }
 }

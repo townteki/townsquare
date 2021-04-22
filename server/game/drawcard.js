@@ -235,8 +235,12 @@ class DrawCard extends BaseCard {
         }
         if(card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
             return false;
-        }    
-        return true;
+        }   
+        
+        let context = { player: player };
+
+        return !this.attachmentRestrictions || 
+            this.attachmentRestrictions.some(restriction => restriction(card, context));
     }
 
     hasAttachmentForTrading(condition = () => true) {
