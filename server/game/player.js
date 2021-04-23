@@ -910,7 +910,7 @@ class Player extends Spectator {
             attachment.applyPersistentEffects();
         });
 
-        if(playingType !== 'upgrade') {
+        if(playingType !== 'upgrade' && playingType !== 'chatcommand') {
             let event = new AtomicEvent();
             if(originalLocation === 'hand') {
                 event.addChildEvent(new Event('onCardLeftHand', { player: this, card: card }));
