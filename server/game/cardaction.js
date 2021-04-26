@@ -117,6 +117,7 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(!this.options.allowUsed && this.usage.isUsed()) {
+            context.disableIcon = 'hourglass';
             return false;
         }
 
@@ -140,10 +141,26 @@ class CardAction extends PlayTypeAbility {
             return false;
         }
 
-        return this.canResolvePlayer(context) && 
-            this.canPayCosts(context) && 
-            this.canResolveTargets(context) && 
-            this.allowGameAction(context);
+        if(!this.canResolvePlayer(context)) {
+            return false;
+        }
+
+        if(!this.canPayCosts(context)) {
+            context.disableIcon = 'usd';
+            return false;
+        }
+
+        if(!this.canResolveTargets(context)) {
+            context.disableIcon = 'screenshot';
+            return false;
+        }
+
+        if(!this.allowGameAction(context)) {
+            context.disableIcon = 'ban-circle';
+            return false;
+        }
+
+        return true;
     }
 
     // Main execute function that excutes the ability. Once the targets are selected, the executeHandler is called.
@@ -173,12 +190,14 @@ class CardAction extends PlayTypeAbility {
 
     getMenuItem(arg, player) {
         let context = this.createContext(player);
+        let disabled = !this.meetsRequirements(context);
         return { 
             text: this.title, 
             method: 'doAction', 
             arg: arg, 
             triggeringPlayer: this.triggeringPlayer, 
-            disabled: !this.meetsRequirements(context) 
+            disabled: disabled,
+            menuIcon: context.disableIcon 
         };
     }
 

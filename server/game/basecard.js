@@ -471,11 +471,21 @@ class BaseCard {
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
         if(menuCardActionItems.length > 0) {
+            let menuIcon = 'flash';
+            const disabled = menuCardActionItems.every(menuItem => menuItem.item.disabled);
+            if(disabled) {
+                if(menuCardActionItems.length === 1) {
+                    menuIcon = menuCardActionItems[0].item.menuIcon;
+                } else {
+                    menuIcon = null;
+                }
+            }
             menu = menu.concat({ 
                 text: 'Use ability', 
                 method: 'useAbility', 
                 triggeringPlayer: 'any',
-                disabled: menuCardActionItems.every(menuItem => menuItem.item.disabled) 
+                disabled: disabled,
+                menuIcon: menuIcon
             });
         }
         let menuOtherActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType !== 'card');
