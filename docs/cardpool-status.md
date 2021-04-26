@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/182/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/186/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -200,7 +200,7 @@
 |                     | 03009| Genesee "Gina" Tailfeathers
 |                     | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
-|                     | 03012| Surveyor's Office
+|:heavy_check_mark:   | 03012| Surveyor's Office
 |                     | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |                     | 03015| Holy Wheel Gun
@@ -396,7 +396,7 @@
 |                     | 09030| Idol of Tlazolteotl
 |                     | 09031| Spirit Guidance
 |:heavy_check_mark:   | 09032| Spirit Dance
-|                     | 09033| Spirit Trail
+|:heavy_check_mark:   | 09033| Spirit Trail
 |:heavy_check_mark:   | 09034| Many Speak as One
 |                     | 09035| The Pack Awakens
 |                     | 09036| Shifu Speaks
@@ -529,7 +529,7 @@
 |                     | 13016| Fool's Gold
 |                     | 13017| Mother Bear's Rage
 |                     | 13018| Focusing Chi
-|                     | 13019| Mugging
+|:heavy_check_mark:   | 13019| Mugging
 |                     | 13020| Signing Over the Stores
 |                     | 13021| No Funny Stuff
 
@@ -620,7 +620,7 @@
 |                     | 16009| Denise Brancini
 |                     | 16010| Long Strides Ranch
 |                     | 16011| The Gomorra Gazette
-|                     | 16012| "Open Wound"
+|:heavy_check_mark:   | 16012| "Open Wound"
 |                     | 16013| Doomsday Supply
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
