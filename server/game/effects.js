@@ -129,8 +129,8 @@ function adjacency(type) {
     };
 }
 
-function conditionalAdjacency() {
-    return function (condition, source, type) {
+function conditionalAdjacency(type) {
+    return function (condition, source) {
         return {
             apply: function(card, context) {
                 if(!card.isLocationCard()) {
@@ -152,7 +152,7 @@ function conditionalAdjacency() {
             unapply: function(card, context) {
                 let removeAdjacencies = context.dynamicAdjacency[card.uuid];
                 card.removeAdjacencyLocations(removeAdjacencies, source, type);
-                delete context.dynamicAdjacencies[card.uuid];
+                delete context.dynamicAdjacency[card.uuid];
             },
             isStateDependent: true
         };
@@ -429,8 +429,8 @@ const Effects = {
             }
         };
     },
-    additionalDynamicAdjacency: conditionalAdjacency(),
-    preventDynamicAdjacency: conditionalAdjacency(),
+    additionalDynamicAdjacency: conditionalAdjacency('adjacent'),
+    preventDynamicAdjacency: conditionalAdjacency('prevent'),
     additionalAdjacency: adjacency('adjacent'),
     preventAdjacency: adjacency('prevent'),
     dynamicBullets: dynamicStatModifier('bullets'),
