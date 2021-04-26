@@ -275,11 +275,11 @@ class Game extends EventEmitter {
 
     // use card in condition
     findLocations(condition) {
-        let foundLocations = this.game.filterCardsInPlay(card => condition(card));
-        if(condition(this.game.townsquare.locationCard)) {
-            foundLocations.concat(this.game.townsquare);
+        let foundLocations = this.filterCardsInPlay(card => condition(card));
+        if(condition(this.townsquare.locationCard)) {
+            foundLocations.concat(this.townsquare);
         }
-        return foundLocations;
+        return foundLocations.map(locationCard => locationCard.getGameLocation());
     }
 
     getDudesAtLocation(locationUuid) {
