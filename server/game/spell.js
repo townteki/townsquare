@@ -25,7 +25,7 @@ class Spell {
             this.ability.game.promptForSelect(context.player, {
                 activePromptTitle: 'Select spell caster for ' + this.ability.card.title,
                 context: context,
-                cardCondition: card => possibleCasters.include(card),
+                cardCondition: card => possibleCasters.includes(card),
                 onSelect: (player, card) => {
                     context.caster = card;
                     this.castSpell(context, abilityHandler);

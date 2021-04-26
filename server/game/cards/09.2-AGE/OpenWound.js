@@ -16,32 +16,31 @@ class OpenWound extends DeedCard {
             playType: 'noon',
             cost: ability.costs.payGhostRock(1),
             repeatable: true,
+            target: {
+                activePromptTitle: 'Choose a dude',
+                cardCondition: { 
+                    location: 'play area', 
+                    controller: 'current', 
+                    condition: card => card.gamelocation === this.gamelocation 
+                },
+                cardType: ['dude'],
+                gameAction: 'moveDude'
+            },
             handler: context => {
-                this.game.promptForSelect(context.player, {
-                    activePromptTitle: 'Select a dude',
-                    waitingPromptTitle: 'Waiting for opponent to select dude',
-                    cardCondition: card => card.location === 'play area' && 
-                        card.controller === this.controller &&
-                        card.gamelocation === this.gamelocation,
-                    cardType: 'dude',
-                    onSelect: (player, dude) => {
-                        this.game.promptForLocation(player, {
-                            activePromptTitle: 'Choose destination for ' + dude.title,
-                            waitingPromptTitle: 'Waiting for opponent to choose destination',
-                            cardCondition: { location: 'play area', condition: card => card.isAdjacent(this.uuid) },
-                            onSelect: (player, location) => {
-                                this.game.resolveGameAction(GameActions.moveDude({ 
-                                    card: dude, 
-                                    targetUuid: location.uuid
-                                }), context);   
-                                this.game.addMessage('{0} uses {1} to move {2} to {3}', 
-                                    player, this, dude, location);                                 
-                                return true;
-                            }
-                        }); 
+                this.game.promptForLocation(context.player, {
+                    activePromptTitle: 'Choose destination for ' + context.target.title,
+                    waitingPromptTitle: 'Waiting for opponent to choose destination',
+                    cardCondition: { location: 'play area', condition: card => card.isAdjacent(this.uuid) },
+                    onSelect: (player, location) => {
+                        this.game.resolveGameAction(GameActions.moveDude({ 
+                            card: context.target, 
+                            targetUuid: location.uuid
+                        }), context);   
+                        this.game.addMessage('{0} uses {1} to move {2} to {3}', 
+                            player, this, context.target, location);                                 
                         return true;
                     }
-                });
+                }); 
             },
             source: this
         });

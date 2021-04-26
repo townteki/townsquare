@@ -23,6 +23,7 @@ class SpiritTrail extends SpellCard {
                         card.controller === this.controller &&
                         card.gamelocation === this.gamelocation,
                     cardType: 'dude',
+                    gameAction: 'moveDude',
                     onSelect: (player, dude) => {
                         this.game.promptForLocation(player, {
                             activePromptTitle: 'Choose destination for ' + dude.title,
