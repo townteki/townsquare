@@ -8,7 +8,11 @@ class SurveyorsOffice extends DeedCard {
             condition: () => true,
             match: this,
             effect: [
-                ability.effects.additionalDynamicAdjacency(card => card.location === 'play area' && card.isOutOfTown(), this.uuid)
+                ability.effects.additionalDynamicAdjacency(card => 
+                    card.location === 'play area' && 
+                    card.isLocationCard() && 
+                    card.isOutOfTown(), 
+                this.uuid)
             ]
         });
         this.action({
