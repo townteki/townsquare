@@ -65,11 +65,14 @@ class Effect {
     }
 
     buildTargetLocation(targetLocation) {
+        if(!targetLocation) {
+            return ['play area'];
+        }
         if(Array.isArray(targetLocation)) {
             return targetLocation;
         }
 
-        return targetLocation || ['play area'];
+        return [targetLocation];
     }
 
     buildEffect(effect) {
@@ -242,6 +245,18 @@ class Effect {
                 this.effect.unapply(target, this.context);
                 this.appliedTargets.delete(target);
             }
+        }
+    }
+
+    updateAppliedTarget(target) {
+        if(!this.appliedTargets.has(target) && this.canApply(target)) {
+            this.effect.apply(target, this.context);
+            this.appliedTargets.add(target);
+            return;            
+        }
+        if(this.appliedTargets.has(target) && !this.canApply(target)) {
+            this.effect.unapply(target, this.context);
+            this.appliedTargets.delete(target);            
         }
     }
 

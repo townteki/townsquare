@@ -21,7 +21,7 @@ const EventWindow = require('./gamesteps/eventwindow.js');
 const AbilityResolver = require('./gamesteps/abilityresolver.js');
 const TraitTriggeredAbilityWindow = require('./gamesteps/TraitTriggeredAbilityWindow.js');
 const TriggeredAbilityWindow = require('./gamesteps/TriggeredAbilityWindow.js');
-const InterruptWindow = require('./gamesteps/InterruptWindow');
+const ReactionBeforeWindow = require('./gamesteps/ReactionBeforeWindow');
 const Event = require('./event.js');
 const NullEvent = require('./NullEvent');
 const AtomicEvent = require('./AtomicEvent.js');
@@ -282,6 +282,14 @@ class Game extends EventEmitter {
         return foundLocations;
     }
 
+    getDudesAtLocation(locationUuid) {
+        let gameLocation = this.findLocation(locationUuid);
+        if(!gameLocation) {
+            return [];
+        }
+        return gameLocation.getDudes();
+    }
+
     addEffect(source, properties) {
         this.addSimultaneousEffects([{ source: source, properties: properties }]);
     }
@@ -371,7 +379,7 @@ class Game extends EventEmitter {
             case 'hand':
             case 'draw hand':
             case 'play area':
-                if(card.controller !== player && !menuItem.anyPlayer) {
+                if(!player.isAllowed(card, menuItem.triggeringPlayer)) {
                     return;
                 }
 
@@ -469,7 +477,7 @@ class Game extends EventEmitter {
 
         if(from.getGameElementType() === 'player') {
             let activePlayer = transferParams.activePlayer || this.currentAbilityContext && this.currentAbilityContext.player;
-            appliedGR = Math.min(from.getSpendableGold({ player: from, activePlayer: activePlayer }), amount);
+            appliedGR = Math.min(from.getSpendableGhostRock({ player: from, activePlayer: activePlayer }), amount);
             this.spendGhostRock({ amount: appliedGR, player: from, activePlayer: activePlayer }, () => {
                 to.modifyGhostRock(appliedGR);
                 this.raiseEvent('onGhostRockTransferred', { source: from, target: to, amount: appliedGR });
@@ -640,6 +648,24 @@ class Game extends EventEmitter {
         player.selectDeck(deck);
     }
 
+    discardFromDrawHand(playerName) {
+        let player = this.getPlayerByName(playerName);
+        const cards = player.promptState.selectedCards;
+
+        if(!player || !cards || cards.length === 0) {
+            return;
+        }
+
+        player.discardCards(cards);
+        this.clearDrawHandSelection(playerName);
+    }
+
+    clearDrawHandSelection(playerName) {
+        let player = this.getPlayerByName(playerName);
+        player.clearSelectedCards();
+        this.pipeline.clearSelectedCards(player);
+    }
+
     shuffleDeck(playerName) {
         var player = this.getPlayerByName(playerName);
         if(!player) {
@@ -658,6 +684,50 @@ class Game extends EventEmitter {
     promptForCardName(properties) {
         this.queueStep(new CardNamePrompt(this, properties));
     }
+
+    promptForSuit(player, title, method, context, source) {
+        let buttonsSuit = ['Spades', 'Hearts', 'Clubs', 'Diams'].map(suit => {
+            return { text: suit, method: method, arg: suit};
+        });
+        this.promptWithMenu(player, context, {
+            activePrompt: {
+                menuTitle: title,
+                buttons: buttonsSuit
+            },
+            source: source
+        });
+    }
+
+    promptForValue(player, title, method, context, source, condition = () => true) {
+        let buttonsValue = [];
+        for(let i = 1; i <= 13; i++) {
+            let text = i;
+            switch(i) {
+                case 1:
+                    text = 'A';                  
+                    break;
+                case 11:
+                    text = 'J';                  
+                    break;
+                case 12:
+                    text = 'Q';                  
+                    break;
+                case 13:
+                    text = 'K';                  
+                    break;
+                default:
+                    break;
+            }
+            buttonsValue.push({ text: text, method: method, arg: i, disabled: !condition(player, i) });
+        }
+        this.promptWithMenu(player, context, {
+            activePrompt: {
+                menuTitle: title,
+                buttons: buttonsValue
+            },
+            source: source
+        });
+    }   
 
     promptForSelect(player, properties) {
         this.queueStep(new SelectCardPrompt(this, player, properties));
@@ -834,7 +904,7 @@ class Game extends EventEmitter {
             if(context.ability && context.ability.title !== 'Trade') {
                 this.currentPlayWindow.markActionAsTaken(context.player);
             }
-        } else if(this.currentPhase !== 'setup' || this.hasOpenInterruptOrReactionWindow()) {
+        } else if(this.currentPhase !== 'setup' || this.hasOpenReactionWindow()) {
             this.addAlert('danger', '{0} uses {1} outside of a play window', context.player, context.source);
         }
     }
@@ -870,14 +940,14 @@ class Game extends EventEmitter {
     }
 
     openAbilityWindow(properties) {
-        let windowClass = properties.abilityType === 'traitreaction' ? TraitTriggeredAbilityWindow : TriggeredAbilityWindow;
+        let windowClass = ['traitreaction', 'traitbeforereaction'].includes(properties.abilityType) ? TraitTriggeredAbilityWindow : TriggeredAbilityWindow;
         let window = new windowClass(this, { abilityType: properties.abilityType, event: properties.event });
         this.abilityWindowStack.push(window);
         this.queueStep(window);
         this.queueSimpleStep(() => this.abilityWindowStack.pop());
     }
 
-    openInterruptWindowForAttachedEvents(event) {
+    openReactionBeforeWindowForAttachedEvents(event) {
         let attachedEvents = [];
         for(let concurrentEvent of event.getConcurrentEvents()) {
             attachedEvents = attachedEvents.concat(concurrentEvent.attachedEvents);
@@ -893,7 +963,7 @@ class Game extends EventEmitter {
             groupedEvent.addChildEvent(attachedEvent);
         }
 
-        this.queueStep(new InterruptWindow(this, groupedEvent, () => this.postEventCalculations()));
+        this.queueStep(new ReactionBeforeWindow(this, groupedEvent, () => this.postEventCalculations()));
     }
 
     registerAbility(ability, event) {
@@ -913,7 +983,7 @@ class Game extends EventEmitter {
         }
     }
 
-    hasOpenInterruptOrReactionWindow() {
+    hasOpenReactionWindow() {
         return this.abilityWindowStack.length !== 0;
     }
 
@@ -1003,6 +1073,13 @@ class Game extends EventEmitter {
         this.attachmentValidityCheck.enforceValidity();
     }
 
+    updateEffectsOnCard(card, predicate) {
+        let effects = this.effectEngine.getAllEffectsOnCard(card, predicate);
+        if(effects) {
+            effects.forEach(effect => effect.updateAppliedTarget(card));
+        }
+    }
+
     isPhaseSkipped(name) {
         return !!this.skipPhase[name];
     }
@@ -1030,17 +1107,8 @@ class Game extends EventEmitter {
         this.getPlayers().forEach(player => player.discardDrawHand());
     }
 
-    drawCardToHand(playerName, handType) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-        
-        player.drawCardsToHand(1, handType);
-    }
-
     drawHands(numberToDraw = 5) {
-        this.getPlayers().forEach(player => player.drawCardsToHand(numberToDraw, 'draw hand'));
+        this.getPlayers().forEach(player => player.drawCardsToDrawHand(numberToDraw));
     }
 
     revealHands() {

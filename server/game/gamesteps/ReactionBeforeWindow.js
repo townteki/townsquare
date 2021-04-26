@@ -2,7 +2,12 @@ const BaseStep = require('./basestep.js');
 const GamePipeline = require('../gamepipeline.js');
 const SimpleStep = require('./simplestep.js');
 
-class InterruptWindow extends BaseStep {
+//Comprehensive Rules React Priorities
+// 1) Traits with "instead"
+// 2) Reacts with "instead"
+// 3) Other traits
+// 4) Other reacts
+class ReactionBeforeWindow extends BaseStep {
     constructor(game, event, postHandlerFunc = () => true) {
         super(game);
 
@@ -10,10 +15,9 @@ class InterruptWindow extends BaseStep {
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
             new SimpleStep(game, () => this.executeBeforeHandlers()),
-            new SimpleStep(game, () => this.openAbilityWindow('cancelinterrupt')),
-            new SimpleStep(game, () => this.automaticSave()),
-            new SimpleStep(game, () => this.openAbilityWindow('forcedinterrupt')),
-            new SimpleStep(game, () => this.openAbilityWindow('interrupt')),
+            new SimpleStep(game, () => this.openAbilityWindow('cancelreaction')),
+            new SimpleStep(game, () => this.openAbilityWindow('traitbeforereaction')), // Traits with "instead" go here
+            new SimpleStep(game, () => this.openAbilityWindow('beforereaction')), // Reacts with "instead" go here
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.openWindowForAttachedEvents()),
             new SimpleStep(game, () => this.executePostHandler())
@@ -45,20 +49,6 @@ class InterruptWindow extends BaseStep {
         return this.pipeline.continue();
     }
 
-    automaticSave() {
-        if(this.event.cancelled) {
-            return;
-        }
-
-        /* TODO M2 here add saves if any
-        for(let event of this.event.getConcurrentEvents()) {
-            if(event.allowAutomaticSave()) {
-                event.cancel();
-            }
-        }
-        */
-    }
-
     openAbilityWindow(abilityType) {
         if(this.event.cancelled) {
             return;
@@ -83,7 +73,7 @@ class InterruptWindow extends BaseStep {
             return;
         }
 
-        this.game.openInterruptWindowForAttachedEvents(this.event);
+        this.game.openReactionBeforeWindowForAttachedEvents(this.event);
     }
 
     executePostHandler() {
@@ -111,4 +101,4 @@ class InterruptWindow extends BaseStep {
     }
 }
 
-module.exports = InterruptWindow;
+module.exports = ReactionBeforeWindow;

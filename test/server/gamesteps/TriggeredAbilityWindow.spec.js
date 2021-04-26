@@ -18,7 +18,7 @@ describe('TriggeredAbilityWindow', function() {
 
         this.window = new TriggeredAbilityWindow(this.gameSpy, {
             event: this.eventSpy,
-            abilityType: 'interrupt'
+            abilityType: 'beforereaction'
         });
 
         spyOn(this.window, 'gatherChoices');
@@ -32,11 +32,13 @@ describe('TriggeredAbilityWindow', function() {
         }
 
         function createAbility(card, context) {
-            let ability = jasmine.createSpyObj('ability', ['createContext', 'getTitle', 'hasMax', 'canResolve']);
+            let ability = jasmine.createSpyObj('ability', ['createContext', 'getTitle', 'hasMax', 'canResolve', 'isUsed']);
             ability.card = card;
-            ability.createContext.and.returnValue(context);
+            ability.createContext.and.returnValue([context]);
             ability.location = ['play area'];
             ability.canResolve.and.returnValue(true);
+            ability.usage = jasmine.createSpyObj('usage', ['isUsed']);
+            ability.usage.isUsed.and.returnValue(false);
             return ability;
         }
 

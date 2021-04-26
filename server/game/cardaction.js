@@ -25,8 +25,8 @@ const CardTypesForShootout = ['dude', 'goods', 'spell'];
  * location     - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
  * limit        - the max number of uses for the repeatable action.
- * anyPlayer    - boolean indicating that the action may be executed by a player
- *                other than the card's controller. Defaults to false.
+ * triggeringPlayer - string indicating player that can execute the action.
+ *                Default is 'controller', other possible values are 'owner' or 'any'
  * clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
  */
@@ -37,7 +37,6 @@ class CardAction extends PlayTypeAbility {
         if(this.isCardAbility()) {
             this.usage = new AbilityUsage(properties, this.playType);
         }
-        this.anyPlayer = properties.anyPlayer || false;
         this.condition = properties.condition;
         this.ifCondition = properties.ifCondition;
         this.ifFailMessage = properties.ifFailMessage;
@@ -88,10 +87,6 @@ class CardAction extends PlayTypeAbility {
         return this.isLocationValid(this.card.location);
     }
 
-    allowPlayer(player) {
-        return this.card.controller === player || this.anyPlayer;
-    }
-
     allowGameAction(context) {
         if(!this.gameAction.allow(context)) {
             return false;
@@ -122,10 +117,7 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(!this.options.allowUsed && this.usage.isUsed()) {
-            return false;
-        }
-
-        if(!this.allowPlayer(context.player)) {
+            context.disableIcon = 'hourglass';
             return false;
         }
 
@@ -149,10 +141,26 @@ class CardAction extends PlayTypeAbility {
             return false;
         }
 
-        return this.canResolvePlayer(context) && 
-            this.canPayCosts(context) && 
-            this.canResolveTargets(context) && 
-            this.allowGameAction(context);
+        if(!this.canResolvePlayer(context)) {
+            return false;
+        }
+
+        if(!this.canPayCosts(context)) {
+            context.disableIcon = 'usd';
+            return false;
+        }
+
+        if(!this.canResolveTargets(context)) {
+            context.disableIcon = 'screenshot';
+            return false;
+        }
+
+        if(!this.allowGameAction(context)) {
+            context.disableIcon = 'ban-circle';
+            return false;
+        }
+
+        return true;
     }
 
     // Main execute function that excutes the ability. Once the targets are selected, the executeHandler is called.
@@ -182,12 +190,14 @@ class CardAction extends PlayTypeAbility {
 
     getMenuItem(arg, player) {
         let context = this.createContext(player);
+        let disabled = !this.meetsRequirements(context);
         return { 
             text: this.title, 
             method: 'doAction', 
             arg: arg, 
-            anyPlayer: !!this.anyPlayer, 
-            disabled: !this.meetsRequirements(context) 
+            triggeringPlayer: this.triggeringPlayer, 
+            disabled: disabled,
+            menuIcon: context.disableIcon 
         };
     }
 

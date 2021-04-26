@@ -64,6 +64,13 @@ class GamePipeline {
         this.pipeline.shift();
     }
 
+    clearSelectedCards(player) {
+        if(this.pipeline.length > 0) {
+            var step = this.getCurrentStep();
+            step.clearSelectedCards(player);
+        }   
+    }
+
     handleCardClicked(player, card) {
         if(this.pipeline.length > 0) {
             var step = this.getCurrentStep();

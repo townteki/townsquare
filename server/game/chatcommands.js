@@ -9,13 +9,23 @@ class ChatCommands {
         this.commands = {
             '/ace': this.ace,
             '/add-keyword': this.addKeyword,
+            '/addkey': this.addKeyword,
             '/add-card': this.addCard,
+            '/attach': this.attach,
             '/bullets': this.bullets,
+            '/bul': this.bullets,
             '/blank': this.blank,
             '/bounty': this.bounty,
             '/cancel-prompt': this.cancelPrompt,
+            '/canpr': this.cancelPrompt,
             '/cancel-shootout': this.cancelShootout,
+            '/canshoot': this.cancelShootout,
             '/clear-shooter': this.clearShooter,
+            '/clshoot': this.clearShooter,
+            '/clear-suit': this.clearSuit,
+            '/clsuit': this.clearSuit,
+            '/clear-effects': this.clearEffects,
+            '/cleff': this.clearEffects,
             '/control': this.control,
             '/discard': this.discard,
             '/disconnectme': this.disconnectMe,
@@ -23,16 +33,22 @@ class ChatCommands {
             '/give-control': this.giveControl,
             '/inf': this.influence,
             '/join-posse': this.joinPosse,
-            '/move-bottom': this.moveBottom,
+            '/join': this.joinPosse,
+            '/move': this.move,
             '/rematch': this.rematch,
             '/remove-from-game': this.removeFromGame,
             '/remove-from-posse': this.removeFromPosse,
+            '/rmfp': this.removeFromPosse,
             '/remove-keyword': this.removeKeyword,
+            '/rmkey': this.removeKeyword,
             '/reset-abilities': this.resetAbilities,
+            '/resab': this.resetAbilities,
             '/reveal-hand': this.revealHand,
             '/shooter': this.shooter,
+            '/suit': this.suit,
             '/token': this.setToken,
-            '/unblank': this.unblank
+            '/unblank': this.unblank,
+            '/value': this.value
         };
     }
 
@@ -100,7 +116,7 @@ class ChatCommands {
             activePromptTitle: 'Select a card to set ' + type + ' for',
             waitingPromptTitle: 'Waiting for opponent to set ' + type,
             cardCondition: card => card.location === 'play area' && card.controller === player,
-            cardType: ['dude'],
+            cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
                 // TODO M2 so far we only use standard influence, no influence:deed
                 let influence = num - card.influence;
@@ -184,6 +200,34 @@ class ChatCommands {
         });        
     }
 
+    suit(player, args) {
+        var type = args[1];
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set suit for',
+            waitingPromptTitle: 'Waiting for opponent to set suit',
+            cardCondition: card => ['play area', 'draw hand'].includes(card.location) && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                card.addSuitEffect('chatcommand', type);
+                this.game.addAlert('danger', '{0} uses the /suit command to set the {1} to {2}', p, card, type);
+                return true;
+            }
+        });
+    }
+
+    clearSuit(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to clear chatcommand suit for',
+            waitingPromptTitle: 'Waiting for opponent to clear suit',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            onSelect: (p, card) => {
+                card.removeSuitEffect('chatcommand');
+                this.game.addAlert('danger', '{0} uses the /clear-suit command to clear chatcommand suit for {1}', p, card);
+                return true;
+            }
+        });        
+    }
+
     ace(player) {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
@@ -211,6 +255,31 @@ class ChatCommands {
             onSelect: (p, card) => {
                 this.game.shootout.addToPosse(card);
                 this.game.addAlert('danger', '{0} uses the /join-posse command to add {1} to posse', p, card);
+                return true;
+            }
+        });
+    }
+
+    move(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude to move',
+            waitingPromptTitle: 'Waiting for opponent to select dude to move',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                this.game.promptForLocation(p, {
+                    activePromptTitle: 'Select where to move ' + card.title,
+                    waitingPromptTitle: 'Waiting for opponent to select location',
+                    onSelect: (player, location) => {
+                        player.moveDude(card, location.uuid, {
+                            isCardEffect: false,
+                            needToBoot: false,
+                            allowBooted: true
+                        });    
+                        this.game.addAlert('danger', '{0} uses the /move command to move {1} to {2}', p, card, location);                            
+                        return true;
+                    }
+                });
                 return true;
             }
         });
@@ -331,13 +400,14 @@ class ChatCommands {
         this.game.cancelPromptUsed = true;
     }
 
-    // TODO M2 not really working, should be updated
     cancelShootout(player) {
         if(!this.game.shootout) {
             return;
         }
         this.game.addAlert('danger', '{0} uses the /cancel-shootout to end the shootout.', player);
-        this.game.shootout.endPhase(); 
+        if(this.game.shootout.leaderPosse) {
+            this.game.shootout.actOnLeaderPosse(dude => this.game.shootout.removeFromPosse(dude));
+        }
     }
 
     setToken(player, args) {
@@ -368,19 +438,6 @@ class ChatCommands {
         player.socket.disconnect();
     }
 
-    moveBottom(player) {
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card',
-            waitingPromptTitle: 'Waiting for opponent to move a card to the bottom of his deck',
-            cardCondition: card => card.controller === player && card.owner === player,
-            onSelect: (p, card) => {
-                player.moveCard(card, 'draw deck', { bottom: true });
-                this.game.addAlert('danger', '{0} uses the /move-bottom command to move {1} to the bottom of their deck', p, card);
-                return true;
-            }
-        });
-    }
-
     revealHand(player) {
         this.game.addAlert('danger',
             '{0} uses the /reveal-hand command to reveal their hand as: {1}', player, player.hand);
@@ -395,6 +452,45 @@ class ChatCommands {
             onSelect: (p, card) => {
                 player.removeCardFromGame(card);
                 this.game.addAlert('danger', '{0} uses the /remove-from-game command to remove {1} from the game', player, card);
+                return true;
+            }
+        });
+    }
+
+    value(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        var type = this.getNumberOrDefault(args[2], 'value');
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set ' + type + ' for',
+            waitingPromptTitle: 'Waiting for opponent to set ' + type,
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                let value = num - card.value;
+                card.value += value;
+
+                if(card.value < 0) {
+                    card.value = 0;
+                }
+                this.game.addAlert('danger', '{0} uses the /value command to set the value of {1} to {2}', p, card, num);
+                return true;
+            }
+        });
+    }
+
+    clearEffects(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card',
+            waitingPromptTitle: 'Waiting for opponent to select a card',
+            cardCondition: card => card.location === 'play area' && card.controller === player && card.owner === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                this.game.effectEngine.effects.forEach(effect => {
+                    if(effect.source !== card) {
+                        effect.removeTarget(card);
+                    }
+                });
+                this.game.addAlert('danger', '{0} uses the /clear-effects command to remove effects from {1}', player, card);
                 return true;
             }
         });
@@ -424,6 +520,30 @@ class ChatCommands {
         this.game.addAlert('danger', '{0} uses the /add-card command to add {1} to their deck', player, preparedCard);
 
         return true;
+    }
+
+    attach(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to attach/reattach',
+            waitingPromptTitle: 'Waiting for opponent to select card to attach/reattach',
+            cardCondition: card => ['play area', 'hand', 'draw deck', 'discard pile', 'dead pile'].includes(card.location) && card.controller === player,
+            cardType: ['goods', 'spell', 'action', 'dude'],
+            onSelect: (p, card) => {
+                const title = (card.parent ? 'reattach ' : 'attach ') + card.title;
+                this.game.promptForSelect(p, {
+                    activePromptTitle: 'Select where to ' + title,
+                    waitingPromptTitle: 'Waiting for opponent to select parent for attachment',
+                    cardCondition: card => card.location === 'play area' && card.controller === player,
+                    cardType: ['deed', 'dude'],
+                    onSelect: (player, target) => {
+                        player.performAttach(card, target, 'chatcommand');    
+                        this.game.addAlert('danger', '{0} uses the /attach command to attach {1} to {2}', player, card, target);                            
+                        return true;
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     getNumberOrDefault(string, defaultNumber) {

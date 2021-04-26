@@ -47,6 +47,9 @@ const CostBuilders = {
         selectMultiple: number => `Select ${number} cards to boot`,
         selectAny: 'Select any number of cards to boot'
     }),
+    bootLeader: new CostBuilder(new BootCost(true), {
+        select: 'Select job leader to boot'
+    }),
     placeInDeadPileFromHand: new CostBuilder(new PlaceInDeadPileFromHandCost(), {
         select: 'Select card to place into dead pile',
         selectMultiple: number => `Select ${number} cards to place into dead pile`

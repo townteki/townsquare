@@ -170,7 +170,10 @@ class TownSquare extends GameLocation {
             location: 'play area',
             getGameLocation: () => this,
             gamelocation: 'townsquare',
-            allowGameAction: () => true
+            allowGameAction: () => true,
+            isAdjacent: (targetUuid) => this.isAdjacent(targetUuid),
+            isOutOfTown: () => false,
+            hasKeyword: () => false
         }), null, null);
 
         this.key = 'townsquare';

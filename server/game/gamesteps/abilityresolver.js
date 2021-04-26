@@ -20,6 +20,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.context.resolutionStage = 'effect'),
             new SimpleStep(game, () => this.choosePlayer()),
             new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
+            new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
             new SimpleStep(game, () => this.markActionAsTaken()),
@@ -135,6 +136,14 @@ class AbilityResolver extends BaseStep {
         }
     }
 
+    raiseOnAbilityTargetsResolutionEvent() {
+        if(this.cancelled) {
+            return;
+        }
+
+        this.game.raiseEvent('onAbilityTargetsResolution', { player: this.context.player, source: this.context.source, ability: this.ability });
+    }
+
     resolveTargets() {
         if(this.cancelled) {
             return;
@@ -201,9 +210,9 @@ class AbilityResolver extends BaseStep {
 
     raiseOnAbilityResolvedEvent() {
         // An event card is considered to be played even if it has been
-        // cancelled. Raising the event here will allow forced reactions and
+        // cancelled. Raising the event here will allow trait reactions and
         // reactions to fire with the appropriate timing. There are no cards
-        // with an interrupt to a card being played. If any are ever released,
+        // with a reaction to a card being played. If any are ever released,
         // then this event will need to wrap the execution of the entire
         // ability instead.
         if(this.ability.isPlayableActionAbility()) {

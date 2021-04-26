@@ -14,6 +14,11 @@ class DrawCard extends BaseCard {
         this.booted = false;
         this.minCost = 0;
         this.currentControl = this.cardData.control;
+        if(!this.hasKeyword('rowdy')) {
+            this.controlDeterminator = 'influence:deed';
+        } else {
+            this.controlDeterminator = 'bullets';
+        }
 
         if(cardData.starting) {
             this.starting = true;
@@ -35,6 +40,10 @@ class DrawCard extends BaseCard {
 
     set gamelocation(gamelocation) {
         super.gamelocation = gamelocation;
+    }
+
+    get difficulty() {
+        return this.keywords.getDifficulty();
     }
 
     get control() {
@@ -122,14 +131,6 @@ class DrawCard extends BaseCard {
 
     getMinCost() {
         return this.minCost;
-    }
-
-    getInfluence() {
-        return this.influence || 0;
-    }  
-
-    getControl() {
-        return this.control || 0;
     }
     
     moveTo(targetLocation, parent) {
@@ -234,8 +235,12 @@ class DrawCard extends BaseCard {
         }
         if(card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
             return false;
-        }    
-        return true;
+        }   
+        
+        let context = { player: player };
+
+        return !this.attachmentRestrictions || 
+            this.attachmentRestrictions.some(restriction => restriction(card, context));
     }
 
     hasAttachmentForTrading(condition = () => true) {
@@ -306,8 +311,20 @@ class DrawCard extends BaseCard {
         super.leavesPlay();
     }
 
+    isGadget() {
+        return this.hasKeyword('Gadget');
+    }
+
+    doesNotProvideBulletRatings() {
+        return this.options.contains('doesNotProvideBulletRatings');
+    }
+
     isSelectedAsFirstCasualty() {
         return this.options.contains('isSelectedAsFirstCasualty', this);
+    }
+
+    calloutCannotBeRefused(opponentDude) {
+        return this.options.contains('calloutCannotBeRefused', opponentDude);
     }
 
     cannotBeChosenAsCasualty() {
@@ -319,7 +336,11 @@ class DrawCard extends BaseCard {
     }
 
     canRefuseWithoutGoingHomeBooted() {
-        return this.shootoutOptions.contains('canRefuseWithoutGoingHomeBooted');
+        return this.options.contains('canRefuseWithoutGoingHomeBooted');
+    }
+
+    canUseControllerAbilities(player) {
+        return this.options.contains('canUseControllerAbilities', player);
     }
 
     canBeAced() {

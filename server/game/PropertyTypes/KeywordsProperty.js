@@ -32,11 +32,13 @@ class KeywordsProperty {
     setPrintedValues(results) {
         let keywordName = results[1].toLowerCase().trim();
         this.printedData.push(keywordName);   
-        if(isNaN(results[2])) {
+        if(!results[2]) {
             return;
         }
         let value = parseInt(results[2]);
-
+        if(isNaN(results[2])) {
+            return;
+        }
         if(!this.modifiers[keywordName]) {
             this.modifiers['difficulty'].printed = value;
         } else {
@@ -98,6 +100,9 @@ class KeywordsProperty {
     }
 
     getSkillRating(skillName, printed = false) {
+        if(!this.data.contains(skillName)) {
+            return;
+        }
         let skill = this.modifiers[skillName];
         if(!skill) {
             return;

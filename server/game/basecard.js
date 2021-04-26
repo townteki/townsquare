@@ -3,9 +3,8 @@ const _ = require('underscore');
 
 const AbilityDsl = require('./abilitydsl');
 const CardAction = require('./cardaction');
-const CardForcedInterrupt = require('./cardforcedinterrupt');
 const CardTraitReaction = require('./cardtraitreaction');
-const CardInterrupt = require('./cardinterrupt');
+const CardBeforeReaction = require('./cardbeforereaction');
 const CardMatcher = require('./CardMatcher');
 const CardReaction = require('./cardreaction');
 const CustomPlayAction = require('./PlayActions/CustomPlayAction');
@@ -17,6 +16,8 @@ const JobAction = require('./jobaction');
 const NullCard = require('./nullcard');
 const SpellAction = require('./spellaction');
 const SpellReaction = require('./spellreaction');
+const SpellBeforeReaction = require('./spellbeforereaction');
+const CardTraitBeforeReaction = require('./cardtraitbeforereaction');
 
 class BaseCard {
     constructor(owner, cardData) {
@@ -38,7 +39,8 @@ class BaseCard {
 
         this.cost = cardData.cost;
         this.currentValue = cardData.rank;
-        this.suit = cardData.suit;
+        this.suitReferenceArray = [];
+        this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
         this.type = cardData.type;
         this.type_code = cardData.type_code;
         this.currentBullets = cardData.bullets;
@@ -73,6 +75,10 @@ class BaseCard {
 
     set value(amount) {
         this.currentValue = amount;
+    }
+
+    get suit() {
+        return this.suitReferenceArray[0].suit;
     }
 
     get bullets() {
@@ -116,6 +122,19 @@ class BaseCard {
         return location.locationCard;
     }
 
+    addSuitEffect(source, suit = '') {
+        let newSuit = suit.toLowerCase();
+        if(!newSuit) {
+            return;
+        }
+        newSuit = newSuit[0].toUpperCase() + newSuit.slice(1);
+        this.suitReferenceArray.unshift({ source, suit: newSuit });
+    }
+
+    removeSuitEffect(source) {
+        this.suitReferenceArray = this.suitReferenceArray.filter(suitRef => suitRef.source !== source);
+    }
+
     registerEvents(events) {
         this.eventsForRegistration = events;
     }
@@ -138,34 +157,33 @@ class BaseCard {
         this.abilities.actions.push(spell);
     }
 
-    //Comprehensive Rules React Priorities
-    // 1) Traits with "instead"
-    // 2) Reacts with "instead"
-    // 3) Other traits
-    // 4) Other reacts
-    //
     reaction(properties) {
-        var reaction = new CardReaction(this.game, this, properties);
+        var reaction;
+        if(properties.triggerBefore || properties.canCancel) {
+            reaction = new CardBeforeReaction(this.game, this, properties);            
+        } else {
+            reaction = new CardReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
     spellReaction(properties) {
-        var reaction = new SpellReaction(this.game, this, properties);
+        var reaction;
+        if(properties.triggerBefore || properties.canCancel) {
+            reaction = new SpellBeforeReaction(this.game, this, properties);            
+        } else {
+            reaction = new SpellReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
     traitReaction(properties) {
-        var reaction = new CardTraitReaction(this.game, this, properties);
-        this.abilities.reactions.push(reaction);
-    }
-
-    interrupt(properties) {
-        var reaction = new CardInterrupt(this.game, this, properties);
-        this.abilities.reactions.push(reaction);
-    }
-
-    forcedInterrupt(properties) {
-        var reaction = new CardForcedInterrupt(this.game, this, properties);
+        var reaction;
+        if(properties.triggerBefore) {
+            reaction = new CardTraitBeforeReaction(this.game, this, properties);            
+        } else {
+            reaction = new CardTraitReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
@@ -235,11 +253,12 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * shootout round.
      */
-    untilEndOfShootoutRound(propertyFactory, ability) {
+    untilEndOfShootoutRound(propertyFactory, ability, targetLocation = 'play area') {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfShootoutRound', 
             location: 'any', 
+            targetLocation: targetLocation,
             ability: ability  
         }, properties));
     }
@@ -368,7 +387,7 @@ class BaseCard {
         if(!clone) {
             return;
         }
-        clone.suit = this.suit;
+        clone.suitReferenceArray = this.suitReferenceArray;
         clone.currentValue = this.currentValue;
         clone.currentProduction = this.currentProduction;
         clone.currentInfluence = this.currentInfluence;
@@ -428,6 +447,7 @@ class BaseCard {
         this.tokens = {};        
         this.clearNew();
         this.gamelocation = '';
+        this.removeSuitEffect('chatcommand');
     }
 
     clearTokens() {
@@ -446,15 +466,26 @@ class BaseCard {
             return;
         }
 
-        if(this.location === 'play area') {
+        if(this.location === 'play area' && player === this.controller) {
             menu = [{ command: 'click', text: 'Boot / Unboot' }];
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
         if(menuCardActionItems.length > 0) {
+            let menuIcon = 'flash';
+            const disabled = menuCardActionItems.every(menuItem => menuItem.item.disabled);
+            if(disabled) {
+                if(menuCardActionItems.length === 1) {
+                    menuIcon = menuCardActionItems[0].item.menuIcon;
+                } else {
+                    menuIcon = null;
+                }
+            }
             menu = menu.concat({ 
                 text: 'Use ability', 
                 method: 'useAbility', 
-                disabled: menuCardActionItems.every(menuItem => menuItem.item.disabled) 
+                triggeringPlayer: 'any',
+                disabled: disabled,
+                menuIcon: menuIcon
             });
         }
         let menuOtherActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType !== 'card');
@@ -591,24 +622,23 @@ class BaseCard {
 
     allowGameAction(actionType, context) {
         let currentAbilityContext = context || this.game.currentAbilityContext;
-        return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller));
+        if(currentAbilityContext && !currentAbilityContext.card) {
+            currentAbilityContext.card = this;
+        }
+        let callback = restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller);
+        if(this.game.shootout && this.game.shootout.abilityRestrictions.some(callback)) {
+            return false;
+        }
+        return !this.abilityRestrictions.some(callback);
     }
 
-    addAbilityRestriction(restrictions) {
-        let restrArray = restrictions;
-        if(!Array.isArray(restrictions)) {
-            restrArray = [restrictions];
-        }
-        restrArray.forEach(r => this.abilityRestrictions.push(r));
+    addAbilityRestriction(restriction) {
+        this.abilityRestrictions.push(restriction);
         this.markAsDirty();
     }
 
-    removeAbilityRestriction(restrictions) {
-        let restrArray = restrictions;
-        if(!Array.isArray(restrictions)) {
-            restrArray = [restrictions];
-        }
-        this.abilityRestrictions = this.abilityRestrictions.filter(r => !restrArray.includes(r));
+    removeAbilityRestriction(restriction) {
+        this.abilityRestrictions = this.abilityRestrictions.filter(r => r !== restriction);
         this.markAsDirty();
     }
 
@@ -787,6 +817,14 @@ class BaseCard {
             return;
         }
         return this.game.findLocation(this.gamelocation);
+    }
+
+    isAdjacent(locationUuid) {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        let gameLocationObject = this.getGameLocation();
+        return gameLocationObject && gameLocationObject.isAdjacent(locationUuid);
     }
 
     isInControlledLocation() {

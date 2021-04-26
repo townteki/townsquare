@@ -11,12 +11,6 @@ const GameActions = require('../GameActions/index.js');
 const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 const PlayWindow = require('./playwindow.js');
 
-const DefaultMoveOptions = {
-    moveToPosse: true,
-    needToBoot: true,
-    allowBooted: false
-};
-
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
     constructor(game, phase, leader, mark, options = { isJob: false }) {
@@ -25,6 +19,7 @@ class Shootout extends Phase {
         this.options = options;
         this.leader = leader;
         this.mark = mark;
+        this.gamelocation = mark.gamelocation;
         this.leader.shootoutStatus = ShootoutStatuses.LeaderPosse;
         this.leaderPlayerName = this.leader.controller.name;
         this.leaderPosse = new ShootoutPosse(this, this.leaderPlayer, true);
@@ -39,7 +34,7 @@ class Shootout extends Phase {
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
-        this.moveOptions = {};
+        this.abilityRestrictions = [];									  
         this.initialise([
             new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
             new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
@@ -92,7 +87,7 @@ class Shootout extends Phase {
     }
 
     get shootoutLocation() {
-        return this.game.findLocation(this.mark.gamelocation);
+        return this.game.findLocation(this.gamelocation);
     }   
 
     isJob() {
@@ -112,7 +107,6 @@ class Shootout extends Phase {
         if(this.checkEndCondition()) {
             return;
         }
-        this.game.raiseEvent('onShootoutSlinginLeadStarted');
         this.remainingSteps = [
             new SimpleStep(this.game, () => this.resetForTheRound()),
             new SimpleStep(this.game, () => this.shootoutPlays()),
@@ -124,7 +118,7 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.casualtiesAndRunOrGun())
         ];
 
-        this.game.raiseEvent('onBeginShootoutRound');
+        this.game.raiseEvent('onShootoutRoundStarted');
         this.queueStep(new SimpleStep(this.game, () => {
             if(!this.checkEndCondition()) {
                 if(this.remainingSteps.length !== 0) {
@@ -175,7 +169,7 @@ class Shootout extends Phase {
         if(recordStatus) {
             this.recordJobStatus();
         }
-        this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false }));
+        this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false, isAfterJob: true }));
     }
 
     queueStep(step) {
@@ -191,12 +185,17 @@ class Shootout extends Phase {
         }
     }
 
+    getParticipants() {
+        let dudes = this.opposingPosse ? this.opposingPosse.getDudes() : [];
+        return this.leaderPosse ? this.leaderPosse.getDudes().concat(dudes) : dudes;
+    }
+
     isInLeaderPosse(card) {
-        return this.leaderPosse.isInPosse(card);
+        return this.leaderPosse && this.leaderPosse.isInPosse(card);
     }
 
     isInOpposingPosse(card) {
-        return this.opposingPosse.isInPosse(card);
+        return this.opposingPosse && this.opposingPosse.isInPosse(card);
     }
 
     isInShootout(card) {
@@ -231,9 +230,9 @@ class Shootout extends Phase {
         };
     }
 
-    sendHome(card, options) {
-        this.removeFromPosse(card);  
-        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: options }));
+    sendHome(card, context, options = {}) {
+        let updatedOptions = Object.assign(options, { fromPosse: true });
+        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: updatedOptions }), context);
     }
 
     addToPosse(dude) {
@@ -260,11 +259,14 @@ class Shootout extends Phase {
     gatherPosses() {
         if(!this.checkEndCondition()) {
             this.actOnAllParticipants(dude => {
-                let dudeMoveOptions = this.moveOptions[dude.uuid] || DefaultMoveOptions;
+                let dudeMoveOptions = dude.getMoveOptions();
                 if(dudeMoveOptions.moveToPosse) {
-                    dude.moveToShootoutLocation(dudeMoveOptions);
+                    if(!dude.moveToShootoutLocation(dudeMoveOptions)) {
+                        this.removeFromPosse(dude);
+                    }
                 }
             });
+            this.game.raiseEvent('onShootoutPossesGathered');
         }
     }
 
@@ -381,11 +383,6 @@ class Shootout extends Phase {
         }
     }
     
-    addMoveOptions(dude, options) {
-        let moveOptions = this.moveOptions[dude.uuid] || DefaultMoveOptions;
-        this.moveOptions[dude.uuid] = Object.assign(moveOptions, options);
-    }
-
     recordJobStatus() {
         if(!this.isJob()) {
             return;
@@ -396,6 +393,27 @@ class Shootout extends Phase {
         if(!this.leaderPosse || this.leaderPosse.isEmpty()) {
             this.jobSuccessful = false;
         }
+    }
+	
+    allowGameAction(actionType, context) {
+        let currentAbilityContext = context || this.game.currentAbilityContext;
+        return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller));
+    }
+
+    addAbilityRestriction(restrictions) {
+        let restrArray = restrictions;
+        if(!Array.isArray(restrictions)) {
+            restrArray = [restrictions];
+        }
+        restrArray.forEach(r => this.abilityRestrictions.push(r));
+    }
+
+    removeAbilityRestriction(restrictions) {
+        let restrArray = restrictions;
+        if(!Array.isArray(restrictions)) {
+            restrArray = [restrictions];
+        }
+        this.abilityRestrictions = this.abilityRestrictions.filter(r => !restrArray.includes(r));	 
     }
 
     getGameElementType() {

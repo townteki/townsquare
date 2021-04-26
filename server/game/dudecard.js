@@ -2,24 +2,26 @@ const DrawCard = require('./drawcard.js');
 const TradingPrompt = require('./gamesteps/highnoon/tradingprompt.js');
 const GameActions = require('./GameActions');
 const {ShootoutStatuses, Tokens} = require('./Constants');
+const NullEvent = require('./NullEvent.js');
+const SpellCard = require('./spellcard.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
         super(owner, cardData);
 
-        this.maxWeapons = 1;
-        this.maxHorses = 1;
-        this.maxAttires = 1;
         this.maxBullets = null;
-
         this.currentUpkeep = this.cardData.upkeep;
 
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
-        this.controlDeterminator = 'influence:deed';
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
-        this.spellFunc = spell => spell.parent === this;
+        this.spellFunc = spell => {
+            if(spell.isTotem()) {
+                return spell.gamelocation === this.gamelocation;
+            }
+            return spell.parent === this;
+        };
         this.setupDudeCardAbilities();
     }
 
@@ -77,6 +79,12 @@ class DudeCard extends DrawCard {
     }
 
     getSkillRatingForCard(spellOrGadget) {
+        if(spellOrGadget.isGadget()) {
+            return this.getSkillRating('mad scientist');
+        }
+        if(spellOrGadget.getType() !== 'goods' && spellOrGadget.getType() !== 'spell') {
+            return;
+        }
         if(spellOrGadget.isMiracle()) {
             return this.getSkillRating('blessed');
         }
@@ -86,9 +94,11 @@ class DudeCard extends DrawCard {
         if(spellOrGadget.isSpirit() || spellOrGadget.isTotem()) {
             return this.getSkillRating('shaman');
         }
-        if(spellOrGadget.isGadget()) {
-            return this.getSkillRating('mad scientist');
-        }
+    }
+
+    canPerformSkillOn(spellOrGadget) {
+        const skillRating = this.getSkillRatingForCard(spellOrGadget);
+        return skillRating !== null && skillRating !== undefined;
     }
 
     getGrit() {
@@ -127,11 +137,7 @@ class DudeCard extends DrawCard {
                     caller: this, 
                     callee: context.target, 
                     isCardEffect: false 
-                }), context).thenExecute(event => {
-                    if(this.acceptedCallout) {
-                        this.game.startShootout(event.caller, event.callee);
-                    }
-                });
+                }), context);
             },
             player: this.controller
         });
@@ -163,9 +169,6 @@ class DudeCard extends DrawCard {
         }
         clone = super.createSnapshot(clone, cloneBaseAttributes);
 
-        clone.maxWeapons = this.maxWeapons;
-        clone.maxHorses = this.maxHorses;
-        clone.maxAttires = this.maxAttires;
         clone.currentUpkeep = this.currentUpkeep;
         clone.shootoutStatus = this.shootoutStatus;
         clone.studReferenceArray = this.studReferenceArray;
@@ -181,8 +184,14 @@ class DudeCard extends DrawCard {
         this.studReferenceArray = this.studReferenceArray.filter(studRef => studRef.source !== source);
     }
 
-    sendHome(options = {}) {
-        this.owner.moveDude(this, this.owner.outfit.uuid, options);
+    sendHome(options = {}, context) {
+        if(options.needToBoot) {
+            this.game.resolveGameAction(GameActions.bootCard({ card: this }), context);
+        }
+        this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.controller.outfit.uuid, options }), context);
+        if(options.fromPosse && this.game.shootout) {
+            this.game.shootout.removeFromPosse(this);
+        } 
     }
 
     moveToLocation(destinationUuid) {
@@ -194,6 +203,7 @@ class DudeCard extends DrawCard {
         let destination = this.game.findLocation(destinationUuid);
         if(destination && this.location !== 'out of game') {
             destination.addDude(this);
+            this.game.raiseEvent('onDudeEnteredLocation', { card: this, gameLocation: destination });
         }
     }
 
@@ -210,7 +220,7 @@ class DudeCard extends DrawCard {
 
         if(this.keywords.data) {
             this.keywords.getValues().forEach(keyword => {
-                for(let i = 1; i < this.keyword.getValue(keyword); i++) {
+                for(let i = 1; i < this.keywords.getValue(keyword); i++) {
                     expDude.keywords.add(keyword);
                 }
             });
@@ -226,11 +236,22 @@ class DudeCard extends DrawCard {
         this.controller.moveCard(this, 'discard pile', { raiseEvents: false });
     }
 
+    canRejectCallout(fromDude, canReject) {
+        if(!canReject) {
+            return false;
+        }
+        if(fromDude.calloutCannotBeRefused(this)) {
+            return false;
+        }
+        const tempContext = { game: this.game, player: this.controller };
+        return this.canRefuseWithoutGoingHomeBooted() || (this.allowGameAction('boot', tempContext) && this.allowGameAction('moveDude', tempContext));
+    }
+
     callOut(card, canReject = true) {
         this.game.raiseEvent('onDudeCalledOut', { caller: this, callee: card, canReject: canReject });
         this.shootoutStatus = ShootoutStatuses.CallingOut;
         card.shootoutStatus = ShootoutStatuses.CalledOut;
-        if(!card.booted && canReject) {
+        if(!card.booted && card.canRejectCallout(this, canReject)) {
             this.game.promptWithMenu(card.controller, this, {
                 activePrompt: {
                     menuTitle: this.title + ' is calling out ' + card.title,
@@ -275,7 +296,7 @@ class DudeCard extends DrawCard {
 
     canAttachWeapon() {
         let weapons = this.getAttachmentsByKeywords(['weapon']);
-        if(weapons && weapons.length >= this.maxWeapons) {
+        if(weapons && weapons.length > 0) {
             return false;
         }
         return true;
@@ -283,7 +304,7 @@ class DudeCard extends DrawCard {
 
     canAttachHorse() {
         let horses = this.getAttachmentsByKeywords(['horse']);
-        if(horses && horses.length >= this.maxHorses) {
+        if(horses && horses.length > 0) {
             return false;
         }
         return true;
@@ -291,10 +312,30 @@ class DudeCard extends DrawCard {
 
     canAttachAttire() {
         let attires = this.getAttachmentsByKeywords(['attire']);
-        if(attires && attires.length >= this.maxAttires) {
+        if(attires && attires.length > 0) {
             return false;
         }
         return true;
+    }
+
+    canJoinWithoutMoving() {
+        return this.options.contains('canJoinWithoutMoving', this);
+    }
+
+    canJoinWithoutBooting() {
+        return this.options.contains('canJoinWithoutBooting', this);
+    }
+
+    canJoinWhileBooted() {
+        return this.options.contains('canJoinWhileBooted', this);
+    }
+
+    getMoveOptions() {
+        return {
+            moveToPosse: !this.canJoinWithoutMoving(),
+            needToBoot: !this.canJoinWithoutBooting(),
+            allowBooted: !this.canJoinWhileBooted()
+        };
     }
 
     needToMoveToJoinPosse() {
@@ -302,7 +343,7 @@ class DudeCard extends DrawCard {
         if(!shootout) {
             return false;
         }
-        return this.gamelocation !== shootout.mark.gamelocation;
+        return this.gamelocation !== shootout.gamelocation;
     }
 
     requirementsToJoinPosse(allowBooted = false) {
@@ -313,7 +354,7 @@ class DudeCard extends DrawCard {
         if(!shootout) {
             return { canJoin: false };
         } 
-        if(this.getGameLocation().isAdjacent(shootout.mark.gamelocation) && (!this.booted || allowBooted)) {
+        if(this.isAdjacent(shootout.gamelocation) && (!this.booted || allowBooted)) {
             return { canJoin: true, needToBoot: true };
         }
 
@@ -321,7 +362,7 @@ class DudeCard extends DrawCard {
             if(this.gamelocation === shootout.leader.gamelocation) {
                 return { canJoin: true, needToBoot: true };
             } 
-            if(this.getGameLocation().isAdjacent(shootout.leader.gamelocation)) {
+            if(this.isAdjacent(shootout.leader.gamelocation)) {
                 return { canJoin: true, needToBoot: true };
             }         
         }
@@ -341,17 +382,20 @@ class DudeCard extends DrawCard {
 
     moveToShootoutLocation(options = {}) {
         let shootout = this.game.shootout;
-        if(this.gamelocation === shootout.mark.gamelocation) {
-            return;
+        if(this.gamelocation === shootout.gamelocation) {
+            return true;
         }
         if(shootout.isJob()) {
             // if this shootout is a Job, all dudes that had to be booted should already be booted.
             options.needToBoot = false;
         }
-        let updatedOptions = Object.assign({ isCardEffect: false, needToBoot: true, allowBooted: false }, options);
-        this.game.raiseEvent('onDudeMoved', { card: this, targetUuid: shootout.mark.gamelocation, moveType: 'toPosse', options: updatedOptions }, event => {
-            event.card.controller.moveDude(event.card, event.targetUuid, event.options);
-        });
+        let updatedOptions = Object.assign({ isCardEffect: false, needToBoot: true, allowBooted: false, toPosse: true }, options);
+        let event = this.game.resolveGameAction(GameActions.moveDude({ 
+            card: this, 
+            targetUuid: shootout.gamelocation,
+            options: updatedOptions
+        }), options.context);
+        return !(event instanceof NullEvent);
     }
     
     get bounty() {
@@ -407,13 +451,10 @@ class DudeCard extends DrawCard {
     }
 
     canCastSpell(spell) {
-        if(!this.isSpellcaster()) {
+        if(!(spell instanceof SpellCard)) {
             return false;
         }
-        if(!this.controller.isValidSkillCombination(this, spell)) {
-            return false;
-        }
-        return this.spellFunc(spell);
+        return this.canPerformSkillOn(spell) && this.spellFunc(spell);
     }
 
     leavesPlay() {
@@ -426,6 +467,7 @@ class DudeCard extends DrawCard {
         if(this.game.shootout) {
             this.game.shootout.removeFromPosse(this);
         }
+        this.removeStudEffect('chatcommand');
     }
 
     getSummary(activePlayer) {

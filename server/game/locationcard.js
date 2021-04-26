@@ -19,7 +19,7 @@ class LocationCard extends DrawCard {
     }
 
     receiveProduction(player) {
-        if(player === this.owner) {
+        if(player === this.owner || this.productionToBeReceivedBy === player) {
             return this.production;
         }
         return 0;
@@ -65,12 +65,26 @@ class LocationCard extends DrawCard {
         if(!this.gameLocationObject) {
             return [];
         }
-        let adjacentLocations = this.game.filterCardsInPlay(card => card.isLocationCard() && this.getGameLocation().isAdjacent(card.uuid)).
+        let adjacentLocations = this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).
             map(card => card.getGameLocation());
-        if(this.getGameLocation().isAdjacent(this.game.townsquare.uuid)) {
+        if(this.isAdjacent(this.game.townsquare.uuid)) {
             adjacentLocations.concat(this.game.townsquare);
         }
         return adjacentLocations;
+    }
+
+    addKeyword(keyword) {
+        super.addKeyword(keyword);
+        if(keyword === 'rowdy') {
+            this.controlDeterminator = 'bullets';
+        }
+    }
+
+    removeKeyword(keyword) {
+        super.removeKeyword(keyword);
+        if(!this.hasKeyword('rowdy')) {
+            this.controlDeterminator = 'influence:deed';
+        }
     }
 
     isLocationCard() {

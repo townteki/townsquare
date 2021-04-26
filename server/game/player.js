@@ -230,6 +230,11 @@ class Player extends Spectator {
     }
 
     modifyGhostRock(amount) {
+        // safety reset in case some bug will set ghostrock to null or NaN
+        if(!this.ghostrock) {
+            this.ghostrock = 0;
+        }
+
         this.ghostrock += amount;
 
         if(this.ghostrock < 0) {
@@ -309,8 +314,20 @@ class Player extends Spectator {
         this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }
 
-    drawCardsToHand(numCards = 1, target = 'hand') {
-        return this.game.resolveGameAction(GameActions.drawCards({ player: this, amount: numCards, target: target }));
+    drawCardsToHand(numCards = 1, context) {
+        return this.game.resolveGameAction(GameActions.drawCards({ 
+            player: this, 
+            amount: numCards, 
+            target: 'hand' 
+        }), this.createContext(context));
+    }
+
+    drawCardsToDrawHand(numCards = 1, context) {
+        return this.game.resolveGameAction(GameActions.drawCards({ 
+            player: this, 
+            amount: numCards, 
+            target: 'draw hand' 
+        }), this.createContext(context));
     }
 
     searchDrawDeck(limit, predicate = () => true) {
@@ -480,17 +497,8 @@ class Player extends Spectator {
         this.handResult = new HandResult();
     }
 
-    startGame() {
-        if(!this.readyToStart) {
-            return;
-        }
-
-        this.shuffleDrawDeck();
-        this.drawCardsToHand(StartingHandSize, 'hand');
-    }    
-
     sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length, 'hand');
+        this.drawCardsToHand(this.handSize - this.hand.length);
     }    
 
     createOutfitAndLegend() {
@@ -572,7 +580,8 @@ class Player extends Spectator {
             source: card,
             cardToUpgrade: cardToUpgrade
         });
-        var playActions = card.getPlayActions(arg).filter(action => action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
+        var playActions = card.getPlayActions(arg).filter(action => 
+            action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
 
         if(playActions.length === 0) {
             return false;
@@ -586,6 +595,16 @@ class Player extends Spectator {
         }
 
         return true;
+    }
+
+    isAllowed(card, triggerPlayer = 'controller') {
+        if(triggerPlayer === 'any') {
+            return true;
+        }
+        if(triggerPlayer === 'owner') {
+            return card.owner === this;
+        }
+        return card.controller === this || card.canUseControllerAbilities(this);
     }
 
     canTrigger(card) {
@@ -606,7 +625,8 @@ class Player extends Spectator {
         }
 
         if(card.hasKeyword('gadget') && params.playingType === 'shoppin') {
-            let availableScientist = this.cardsInPlay.find(card => card.getType() === 'dude' && card.hasKeyword('mad scientist') && !card.booted);
+            let availableScientist = this.cardsInPlay.find(searchCard =>
+                searchCard.getType() === 'dude' && searchCard.canPerformSkillOn(card) && !searchCard.booted);
             if(!availableScientist) {
                 return false;
             }
@@ -692,19 +712,28 @@ class Player extends Spectator {
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                     updatedParams.context.cardToUpgrade.upgrade(card);
                 } else {
-                    let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
-                    card.moveToLocation(target);
-                    this.moveCard(card, 'play area');  
-                }
-                this.entersPlay(card, updatedParams);
-                if(updatedParams.playingType === 'shoppin') {
-                    if(updatedParams.context && updatedParams.context.cardToUpgrade) {
-                        this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
+                    const putIntoPlayFunc = target => {
+                        card.moveToLocation(target);
+                        this.moveCard(card, 'play area');
+                        this.entersPlay(card, updatedParams);
+                        if(updatedParams.playingType === 'shoppin') {
+                            if(updatedParams.context && updatedParams.context.cardToUpgrade) {
+                                this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
+                            } else {
+                                this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
+                            }
+                        } else if(this.game.currentPhase !== 'setup') {
+                            this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
+                        }
+                    };
+                    if(card.isGadget() && this.game.currentPhase !== 'setup') {
+                        this.inventGadget(card, null, (context, scientist) => {
+                            putIntoPlayFunc(scientist.gamelocation);
+                        });
                     } else {
-                        this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
+                        let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
+                        putIntoPlayFunc(target);
                     }
-                } else if(this.game.currentPhase !== 'setup') {
-                    this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
                 }
                 break;
             case 'deed':
@@ -781,12 +810,14 @@ class Player extends Spectator {
         });
     }
 
-    isGadgetInvented(gadget, scientist, successHandler) {
+    inventGadget(gadget, scientist, successHandler = () => true) {
         let getPullProperties = scientist => {
             return {
                 successHandler: context => {
                     this.game.addMessage('{0} successfuly invent {1} using the {2}', this, gadget, scientist);
-                    successHandler(context);
+                    this.game.raiseEvent('onGadgetInvented', { gadget, scientist, context }, event => {
+                        successHandler(event.context, event.scientist);
+                    });
                 },
                 failHandler: () => {
                     this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);
@@ -798,20 +829,20 @@ class Player extends Spectator {
         };
         if(!scientist) {
             this.game.promptForSelect(this, {
-                activePromptTitle: 'Select a Mad Scientist to invent ' + gadget.title,
-                waitingPromptTitle: 'Waiting for opponent to select Mad Scientist',
+                activePromptTitle: 'Select a dude to invent ' + gadget.title,
+                waitingPromptTitle: 'Waiting for opponent to select dude',
                 cardCondition: card => card.location === 'play area' && !card.booted && 
-                    card.hasKeyword('mad scientist') && 
+                    card.canPerformSkillOn(gadget) &&
                     card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
-                    this.bootCard(card, 'inventing');
+                    this.bootCard(card);
                     this.pullForSkill(gadget.difficulty, card.getSkillRatingForCard(gadget), getPullProperties(card));
                     return true;
                 }
             });
         } else {
-            this.bootCard(scientist, 'inventing');
+            this.bootCard(scientist);
             this.pullForSkill(gadget.difficulty, scientist.getSkillRatingForCard(gadget), getPullProperties(scientist));
         }
     }
@@ -840,9 +871,7 @@ class Player extends Spectator {
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
             let scientist = playingType === 'shoppin' ? card : null;
-            if(!this.isGadgetInvented(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback))) {
-                return false;
-            }
+            this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
         } else {
             this.performAttach(attachment, card, playingType, attachCallback);
         }
@@ -881,17 +910,13 @@ class Player extends Spectator {
             attachment.applyPersistentEffects();
         });
 
-        if(playingType !== 'upgrade') {
+        if(playingType !== 'upgrade' && playingType !== 'chatcommand') {
             let event = new AtomicEvent();
-            if(card.location === 'hand') {
+            if(originalLocation === 'hand') {
                 event.addChildEvent(new Event('onCardLeftHand', { player: this, card: card }));
             }
 
             event.addChildEvent(new Event('onCardAttached', { attachment: attachment, target: card }));
-
-            if(originalLocation !== 'play area') {
-                event.addChildEvent(new Event('onCardEntersPlay', { card: attachment, playingType: playingType, originalLocation: originalLocation }));
-            }
 
             this.game.resolveEvent(event);
         }
@@ -967,7 +992,7 @@ class Player extends Spectator {
     receiveProduction() {
         let producers = this.game.findCardsInPlay(card => card.production > 0);
         let production = producers.reduce((memo, card) => {
-            if(card.controller === this) {
+            if(card.productionToBeReceivedBy === this || (!card.productionToBeReceivedBy && card.controller === this)) {
                 let partialProduction = card.production;
                 if(card.isLocationCard()) {
                     partialProduction = card.receiveProduction(this);
@@ -983,10 +1008,10 @@ class Player extends Spectator {
     }
 
     determineUpkeep() {
-        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && 
-            (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.getInfluence() > 0)));
+        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
+            (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.influence > 0)));
         let upkeep = upkeepCards.reduce((memo, card) => {
-            let additionalUpkeep = card.gang_code !== this.outfit.gang_code && card.gang_code !== 'neutral' ? card.getInfluence() : 0;
+            let additionalUpkeep = card.gang_code !== this.outfit.gang_code && card.gang_code !== 'neutral' ? card.influence : 0;
             return memo + card.upkeep + additionalUpkeep;
         }, 0);
 
@@ -1114,11 +1139,10 @@ class Player extends Spectator {
             cards.map(card => GameActions.aceCard({
                 card,
                 allowSave,
-                options,
-                context
+                options
             }))
         );
-        let event = this.game.resolveGameAction(action);
+        let event = this.game.resolveGameAction(action, this.createContext(context));
         event.thenExecute(() => {
             let cards = event.childEvents.map(childEvent => childEvent.card);
             callback(cards);
@@ -1137,11 +1161,10 @@ class Player extends Spectator {
                 card,
                 allowSave,
                 originalLocation: cards[0].location,
-                options,
-                context
+                options
             }))
         );
-        let event = this.game.resolveGameAction(action);
+        let event = this.game.resolveGameAction(action, this.createContext(context));
         event.thenExecute(() => {
             let cards = event.childEvents.map(childEvent => childEvent.card);
             callback(cards);
@@ -1192,6 +1215,9 @@ class Player extends Spectator {
             player: this
         };
         this.pull((pulledCard, pulledValue, pulledSuit) => {
+            if(context) {
+                context.totalPullValue = pulledValue + props.pullBonus;
+            }
             if(props.successCondition(pulledValue + props.pullBonus)) {
                 this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
                     this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.', 
@@ -1234,8 +1260,8 @@ class Player extends Spectator {
         this.handlePull(props, context);
     }
 
-    returnCardToHand(card, allowSave = true) {
-        return this.game.resolveGameAction(GameActions.returnCardToHand({ card, allowSave }));
+    returnCardToHand(card, allowSave = true, context) {
+        return this.game.resolveGameAction(GameActions.returnCardToHand({ card, allowSave }), this.createContext(context));
     }
 
     removeCardFromGame(card, allowSave = true) {
@@ -1269,18 +1295,18 @@ class Player extends Spectator {
     }
 
     getTotalControl() {
-        let controlCards = this.game.findCardsInPlay(card => card.getControl() > 0 && card.controller === this);
+        let controlCards = this.game.findCardsInPlay(card => card.control > 0 && card.controller === this);
         let control = controlCards.reduce((memo, card) => {
-            return memo + card.getControl();
+            return memo + card.control;
         }, 0);
 
         return control;
     }   
     
     getTotalInfluence() {
-        let influenceCards = this.game.findCardsInPlay(card => card.getInfluence() > 0 && card.controller === this);
+        let influenceCards = this.game.findCardsInPlay(card => card.getType() === 'dude' && card.influence > 0 && card.controller === this);
         let influence = influenceCards.reduce((memo, card) => {
-            return memo + card.getInfluence();
+            return memo + card.influence;
         }, 0);
 
         return influence;
@@ -1310,12 +1336,20 @@ class Player extends Spectator {
         return this.cardsInPlay.filter(card => card.getType() === 'dude' && card.gamelocation === locationUuid);
     }
 
+    createContext(context) {
+        return context || {
+            game: this.game,
+            player: this
+        };
+    }
+
     moveDude(dude, targetLocationUuid, params = {}) {
         let options = {
             isCardEffect: params.isCardEffect || params.isCardEffect === false ? params.isCardEffect : true,
             moveType: params.moveType || 'default',
             needToBoot: params.needToBoot || params.needToBoot === false ? params.needToBoot : null,
-            allowBooted: !!params.allowBooted
+            allowBooted: !!params.allowBooted,
+            context: params.context
         };
         let origin = this.game.findLocation(dude.gamelocation);
         let destination = this.game.findLocation(targetLocationUuid);
@@ -1443,25 +1477,19 @@ class Player extends Spectator {
         }
     }
 
-    bootCard(card, playType) {
-        return this.game.resolveGameAction(GameActions.bootCard({ card, playType }));
+    bootCard(card, context) {
+        return this.game.resolveGameAction(GameActions.bootCard({ card }), this.createContext(context));
     }
 
-    bootCards(cards, playType, callback = () => true) {
+    bootCards(cards, context) {
         let action = GameActions.simultaneously(
-            cards.map(card => GameActions.bootCard({ card, playType }))
+            cards.map(card => GameActions.bootCard({ card }))
         );
-        let event = this.game.resolveGameAction(action);
-        event.thenExecute(() => {
-            let cards = event.childEvents.map(childEvent => childEvent.card);
-            callback(cards);
-        });
-
-        return event;
+        return this.game.resolveGameAction(action, this.createContext(context));
     }
 
-    unbootCard(card, options = {}) {
-        return this.game.resolveGameAction(GameActions.unbootCard({ card, force: options.force }));
+    unbootCard(card, options = {}, context) {
+        return this.game.resolveGameAction(GameActions.unbootCard({ card, force: options.force }), context);
     }    
 
     placeCardInPile({ card, location, bottom = false }) {
@@ -1562,21 +1590,6 @@ class Player extends Spectator {
 
     isTimerEnabled() {
         return !this.noTimer && this.user.settings.windowTimer !== 0;
-    }
-
-    isValidSkillCombination(skilledDude, spellOrGadget) {
-        if(skilledDude.hasKeyword('blessed')) {
-            return spellOrGadget.getType() === 'spell' && spellOrGadget.isMiracle();
-        }
-        if(skilledDude.hasKeyword('huckster')) {
-            return spellOrGadget.getType() === 'spell' && spellOrGadget.isHex();
-        }
-        if(skilledDude.hasKeyword('shaman')) {
-            return spellOrGadget.getType() === 'spell' && (spellOrGadget.isSpirit() || spellOrGadget.isTotem());
-        }
-        if(skilledDude.hasKeyword('mad scientist')) {
-            return spellOrGadget.hasKeyword('gadget');
-        }
     }
 
     getState(activePlayer) {

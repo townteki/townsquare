@@ -14,6 +14,7 @@ class PlayTypeAbility extends BaseAbility {
         super(properties);
         this.game = game;
         this.card = card;
+        this.triggeringPlayer = properties.triggeringPlayer || 'controller';
         this.playType = this.buildPlayType(properties);
     }
 
@@ -40,6 +41,9 @@ class PlayTypeAbility extends BaseAbility {
         if(this.playType.includes('shootout') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
             return 'shootout';
         } 
+        if(this.playType.includes('shootout:join') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
+            return 'shootout:join';
+        }																												  
         if(this.playType.includes('resolution') && this.game.getCurrentPlayWindowName() === 'shootout resolution') {
             return 'resolution';
         } 
@@ -49,8 +53,16 @@ class PlayTypeAbility extends BaseAbility {
         } 
     }
 
+    allowPlayer(player) {
+        return player.isAllowed(this.card, this.triggeringPlayer);
+    }
+
     meetsRequirements(context) {
         if(!super.meetsRequirements(context)) {
+            return false;
+        }
+
+        if(!this.allowPlayer(context.player)) {
             return false;
         }
 

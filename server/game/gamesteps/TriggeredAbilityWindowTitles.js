@@ -10,7 +10,8 @@ const EventToTitleFunc = {
 
 const AbilityTypeToWord = {
     reaction: 'reaction',
-    traitreaction: 'trait reaction'
+    traitreaction: 'trait reaction',
+    beforereaction: 'reaction'
 };
 
 const AbilityWindowTitles = {

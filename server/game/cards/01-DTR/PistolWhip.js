@@ -13,16 +13,16 @@ class PistolWhip extends ActionCard {
                 activePromptTitle: 'Select dude to whip',
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude'],
-                gameAction: ['sendHome', 'boot', 'removeFromPosse']
+                gameAction: ['sendHome']
             },
             message: context =>
-                this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this),
+                this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.costs.boot,
                     effect: ability.effects.modifyBullets(-1)
                 }));
-                this.game.shootout.sendHome(context.target);
+                this.game.shootout.sendHome(context.target, context);
             }
         });
     }

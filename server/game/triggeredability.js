@@ -1,5 +1,6 @@
 const BaseAbility = require('./baseability.js');
 const Costs = require('./costs.js');
+const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const TriggeredAbilityContext = require('./TriggeredAbilityContext.js');
 
 class TriggeredAbility extends BaseAbility {
@@ -9,12 +10,20 @@ class TriggeredAbility extends BaseAbility {
         this.game = game;
         this.card = card;
         this.when = properties.when;
-        this.playerFunc = properties.player || (() => this.card.controller);
+        this.playerFunc = properties.player || (player => this.card.controller === player || this.card.canUseControllerAbilities(player));
         this.eventType = eventType;
         this.location = this.buildLocation(card, properties.location);
 
         if(card.getType() === 'action' && !properties.ignoreEventCosts) {
             this.cost = this.cost.concat(Costs.playAction());
+        }
+
+        if(!this.gameAction) {
+            if(card.getType() !== 'spell') {
+                throw new Error('Reactions must have a `gameAction` or `handler` property.');
+            } else {
+                this.gameAction = new HandlerGameActionWrapper({ handler: () => true });
+            }
         }
     }
 
@@ -45,13 +54,16 @@ class TriggeredAbility extends BaseAbility {
     }
 
     createContext(event) {
-        return new TriggeredAbilityContext({
-            ability: this,
-            event: event,
-            game: this.game,
-            source: this.card,
-            player: this.playerFunc()
-        });
+        let players = this.game.getPlayers().filter(player => this.playerFunc(player));
+        let contexts = players.map(player => 
+            new TriggeredAbilityContext({
+                ability: this,
+                event: event,
+                game: this.game,
+                source: this.card,
+                player: player
+            }));
+        return contexts;
     }
 
     triggersFor(eventName) {
@@ -65,7 +77,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelinterrupt') {
+        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelreaction') {
             return;
         }
 
@@ -114,7 +126,7 @@ class TriggeredAbility extends BaseAbility {
     }
 
     isEventListeningLocation(location) {
-        // Reactions / interrupts for playable event cards need to listen for
+        // Reactions for playable event cards need to listen for
         // game events in all open information locations plus while in hand.
         // The location property of the ability will prevent it from firing in
         // inappropriate locations when requirements are checked for the ability.

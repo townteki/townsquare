@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/139/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/182/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -26,7 +26,7 @@
 |                     | 01012| Tyxarglenak ?
 |:heavy_check_mark:   | 01013| Jia Mein
 |:heavy_check_mark:   | 01014| Ivor Hawley
-|                     | 01015| Lucinda "Lucy" Clover
+|:heavy_check_mark:   | 01015| Lucinda "Lucy" Clover
 |:heavy_check_mark:   | 01016| Judge Harry Somerset
 |:heavy_check_mark:   | 01017| Philip Swinford
 |:heavy_check_mark:   | 01018| Tommy Harden
@@ -38,7 +38,7 @@
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
 |                     | 01026| Prof. Eustace True
-|                     | 01027| Elander Boldman
+|:heavy_check_mark:   | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
 |:heavy_check_mark:   | 01029| Jon Longstride
 |:heavy_check_mark:   | 01030| Lane Healey
@@ -73,7 +73,7 @@
 |                     | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
 |                     | 01061| B & B Attorneys
-|                     | 01062| Dead Dog Tavern
+|:heavy_check_mark:   | 01062| Dead Dog Tavern
 |:heavy_check_mark:   | 01063| Charlie's Place
 |:heavy_check_mark:   | 01064| Pearly's Palace
 |:heavy_check_mark:   | 01065| Killer Bunnies Casino
@@ -106,7 +106,7 @@
 |                     | 01092| Force Field
 |:heavy_check_mark:   | 01093| Quickdraw Handgun
 |:heavy_check_mark:   | 01094| Mechanical Horse
-|                     | 01095| Tin Star
+|:heavy_check_mark:   | 01095| Tin Star
 |                     | 01096| Doyle's Hoyle
 |:heavy_check_mark:   | 01097| Buffalo Rifle
 |                     | 01098| Legendary Holster
@@ -176,7 +176,7 @@
 |                     | 02011| Town Council
 |                     | 02012| The R&D Ranch
 |                     | 02013| Telepathy Helmet
-|                     | 02014| Faithful Hound
+|:heavy_check_mark:   | 02014| Faithful Hound
 |                     | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
 |                     | 02017| Forget
@@ -195,7 +195,7 @@
 |                     | 03004| Gang Yi
 |                     | 03005| Tallulah "Lula" Morgan
 |                     | 03006| Dr. Emanuel Ashbel
-|                     | 03007| Angélica Espinosa
+|:heavy_check_mark:   | 03007| Angélica Espinosa
 |                     | 03008| José Morales
 |                     | 03009| Genesee "Gina" Tailfeathers
 |                     | 03010| Mario Crane
@@ -207,7 +207,7 @@
 |                     | 03016| Stone Idol
 |                     | 03017| Corporeal Twist
 |                     | 03018| Fetch
-|                     | 03019| ...It's who you know
+|:heavy_check_mark:   | 03019| ...It's who you know
 |                     | 03020| Horse Wranglin'
 |:heavy_check_mark:   | 03021| It's Not What You Know...
 
@@ -246,8 +246,8 @@
 |                     | 05003| Morgan Gadgetorium
 |                     | 05004| Desolation Row
 |                     | 05005| Pagliaccio
-|                     | 05006| Valeria Batten
-|                     | 05007| Micah Ryse (Exp.1)
+|:heavy_check_mark:   | 05006| Valeria Batten
+|:heavy_check_mark:   | 05007| Micah Ryse (Exp.1)
 |                     | 05008| Rev. Perry Inbody
 |                     | 05009| Zoe Halbrook
 |                     | 05010| Abram Grothe (Exp.1)
@@ -258,19 +258,19 @@
 |                     | 05015| Maria Kingsford
 |                     | 05016| Makaio Kaleo, Esq.
 |                     | 05017| Sister Lois Otwell
-|                     | 05018| Félix Amador
-|                     | 05019| Nicodemus Whateley
+|:heavy_check_mark:   | 05018| Félix Amador
+|:heavy_check_mark:   | 05019| Nicodemus Whateley
 |                     | 05020| Pettigrew's Pawnshop
 |                     | 05021| California Tax Office
 |                     | 05022| St. Anthony's Chapel
 |                     | 05023| The Whateley Estate
 |                     | 05024| Outlaw Mask
 |                     | 05025| Clown Carriage
-|                     | 05026| Bio-Charged Neutralizer
+|:heavy_check_mark:   | 05026| Bio-Charged Neutralizer
 |                     | 05027| Evanor
 |                     | 05028| Mirror, Mirror
-|                     | 05029| Lay On Hands
-|                     | 05030| Holy Roller
+|:heavy_check_mark:   | 05029| Lay On Hands
+|:heavy_check_mark:   | 05030| Holy Roller
 |                     | 05031| The Lord Provides
 |:heavy_check_mark:   | 05032| Phantasm
 |:heavy_check_mark:   | 05033| Walk the Path
@@ -280,7 +280,7 @@
 |:heavy_check_mark:   | 05037| Faster on the Draw
 |                     | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
-|                     | 05040| Meet The New Boss
+|:heavy_check_mark:   | 05040| Meet The New Boss
 |                     | 06001| Funtime Freddy
 
 ## `04.1-FJ` Final Justice
@@ -302,8 +302,8 @@
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |                     | 06016| Fancy New Hat
-|                     | 06017| Confession
-|                     | 06018| Shield of Faith
+|:heavy_check_mark:   | 06017| Confession
+|:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
 |                     | 06020| Incubation
 |                     | 06021| Flight of the Lepus
@@ -323,12 +323,12 @@
 |:heavy_check_mark:   | 07009| Jacqueline Isham
 |                     | 07010| Huntsmen's Society
 |                     | 07011| Secured Stockyard
-|                     | 07012| La Quema
+|:heavy_check_mark:   | 07012| La Quema
 |                     | 07013| Asyncoil Gun
-|                     | 07014| Scoop Hound
-|                     | 07015| Rapier
+|:heavy_check_mark:   | 07014| Scoop Hound
+|:heavy_check_mark:   | 07015| Rapier
 |                     | 07016| Vitality Tonic
-|                     | 07017| Consecration
+|:heavy_check_mark:   | 07017| Consecration
 |                     | 07018| Mark of Pestilence
 |                     | 07019| Cookin' Up Trouble
 |                     | 07020| Ol' Fashioned Hangin'
@@ -355,7 +355,7 @@
 |                     | 08015| Fate Dispenser
 |                     | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
-|                     | 08018| Sword of the Spirit
+|:heavy_check_mark:   | 08018| Sword of the Spirit
 |                     | 08019| A Fight They'll Never Forget
 |                     | 08020| Buried Treasure
 |:heavy_check_mark:   | 08021| Nightmare at Noon
@@ -368,10 +368,10 @@
 |                     | 09002| Eagle Wardens
 |                     | 09003| Benjamin Washington
 |                     | 09004| Daomei Wang
-|                     | 09005| Randall
+|:heavy_check_mark:   | 09005| Randall
 |                     | 09006| Xiaodan Li
 |                     | 09007| Longwei Fu
-|                     | 09008| Natalya
+|:heavy_check_mark:   | 09008| Natalya
 |                     | 09009| Xui Yin Chen
 |                     | 09010| Hamshanks
 |                     | 09011| Hiram Capatch
@@ -381,7 +381,7 @@
 |                     | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |                     | 09017| Mazatl
-|                     | 09018| Marcia Ridge
+|:heavy_check_mark:   | 09018| Marcia Ridge
 |:white_check_mark:   | 09019| Richard Faulkner
 |                     | 09020| Lydia Bear-Hands
 |                     | 09021| Jackson Trouble
@@ -439,11 +439,11 @@
 |                     | 10026| Wendy's Teethkickers
 |                     | 10027| Rich Man's Guard Dog
 |                     | 10028| Fiery Rhetoric
-|                     | 10029| Strength of the Ancestors
+|:heavy_check_mark:   | 10029| Strength of the Ancestors
 |                     | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
 |                     | 10032| Red Horse's Tail
-|                     | 10033| Fire of Nanahbozho
+|:heavy_check_mark:   | 10033| Fire of Nanahbozho
 |                     | 10034| Civil War
 |                     | 10035| Rabbit's Deception
 |                     | 10036| A Hero's Passing
@@ -463,8 +463,8 @@
 |                     | 11004| Xiang Fang
 |                     | 11005| He Fang
 |                     | 11006| Kabeda Hakurei
-|                     | 11007| Zachary Deloria
-|                     | 11008| Karl Odett
+|:heavy_check_mark:   | 11007| Zachary Deloria
+|:heavy_check_mark:   | 11008| Karl Odett
 |:heavy_check_mark:   | 11009| Erik Samson
 |                     | 11010| Dr. Brian Foxworth
 |:heavy_check_mark:   | 11011| Buford Hurley
@@ -472,7 +472,7 @@
 |                     | 11013| Rico Rodegain
 |:heavy_check_mark:   | 11014| Maza Gang Hideout
 |                     | 11015| Miasmatic Purifier
-|                     | 11016| Disgenuine Currency Press
+|:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
 |                     | 11018| Jael's Guile
 |                     | 11019| Personal Ornithopter
@@ -488,7 +488,7 @@
 |                     | 12001| Shizeng Lu
 |                     | 12002| Forster Cooke
 |                     | 12003| Joseph Dusty Hill
-|                     | 12004| Mariel Lewis
+|:heavy_check_mark:   | 12004| Mariel Lewis
 |                     | 12005| The Tattooed Man
 |                     | 12006| Riorden O'Lithen
 |                     | 12007| "Lucky" Sky Borne
@@ -525,7 +525,7 @@
 |:heavy_check_mark:   | 13012| The Place
 |                     | 13013| Hawley's Rose
 |:heavy_check_mark:   | 13014| LeMat Revolver
-|                     | 13015| Yagn's Mechanical Skeleton
+|:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
 |                     | 13017| Mother Bear's Rage
 |                     | 13018| Focusing Chi
@@ -560,7 +560,7 @@
 |                     | 14021| Silent Sigil
 |                     | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
-|                     | 14024| Tusk
+|:heavy_check_mark:   | 14024| Tusk
 |                     | 14025| Mountain Lion Friend
 |                     | 14026| Spirit Steed
 |                     | 14027| Crafty Hare
@@ -599,7 +599,7 @@
 |                     | 15014| Essence of Armitage
 |                     | 15015| Festering Grasp
 |                     | 15016| Silver Pheasant's Bounty
-|                     | 15017| Comin' Up Roses
+|:heavy_check_mark:   | 15017| Comin' Up Roses
 |                     | 15018| Run Rabbit Run
 |                     | 15019| Putting The Pieces Together
 |                     | 15020| Someone Else's Problem
@@ -610,8 +610,8 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 16001| El Armadillo De Hierro
-|                     | 16002| Jim Hexter
-|                     | 16003| The Mixer
+|:heavy_check_mark:   | 16002| Jim Hexter
+|:heavy_check_mark:   | 16003| The Mixer
 |                     | 16004| Hupirika Sue
 |                     | 16005| The Harvester
 |                     | 16006| Lucy Clover (Exp.1)
@@ -650,7 +650,7 @@
 |                     | 17013| Pedro
 |                     | 17014| Aetheric Shockwave Inducer
 |                     | 17015| The Gambler's Gun
-|                     | 17016| Get Behind Me, Satan!
+|:heavy_check_mark:   | 17016| Get Behind Me, Satan!
 |                     | 17017| Ghostly Communion
 |                     | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
@@ -669,16 +669,16 @@
 |                     | 18006| Protection Racket
 |                     | 18007| Zui Waidan
 |                     | 18008| Mr. Outang
-|                     | 18009| Stevie Lyndon
+|:heavy_check_mark:   | 18009| Stevie Lyndon
 |                     | 18010| Wei Xu
 |                     | 18011| Eva Bright Eyes
 |                     | 18012| Mick Aduladi
 |                     | 18013| Absalom Hotchkiss
 |                     | 18014| Christine Perfect
 |                     | 18015| Father Tolarios
-|                     | 18016| Hattie DeLorre
+|:heavy_check_mark:   | 18016| Hattie DeLorre
 |                     | 18017| Diego Linares
-|                     | 18018| Post-A-Tron
+|:heavy_check_mark:   | 18018| Post-A-Tron
 |                     | 18019| Jimmy "The Saint"
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
@@ -688,7 +688,7 @@
 |                     | 18025| Cliff's #4 Saloon
 |                     | 18026| Baijiu Jar
 |                     | 18027| Bowie Knife
-|                     | 18028| Hydro-Puncher
+|:heavy_check_mark:   | 18028| Hydro-Puncher
 |                     | 18029| Rancher's Lariat
 |                     | 18030| De Annulos Mysteriis
 |                     | 18031| Heartseeker
@@ -735,7 +735,7 @@
 |                     | 19025| The Oriental
 |                     | 19026| Hellstromme Plant #9
 |                     | 19027| Bilton Collection Agency
-|                     | 19028| Decimator Array
+|:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
 |                     | 19030| Forsaken Hound
 |                     | 19031| The Bloody Star
@@ -759,6 +759,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:white_check_mark:   | 20009| Matilda Loomis
+|:heavy_check_mark:   | 20026| Ike Clanton
 
 ## `13-O4B` Out for Blood
 
