@@ -40,6 +40,18 @@ class LocationCard extends DrawCard {
         }
     }
 
+    removeAdjacencyLocation(location, source, type) {
+        if(!AllowedConditionTypes.includes(type)) {
+            return;
+        }
+        if(!this.gameLocationObject) {
+            this.defaultAdjacencyEffects = this.defaultAdjacencyEffects.filter(adjEffect => adjEffect.location === location &&
+                adjEffect.source === source && adjEffect.type === type);
+        } else {
+            this.gameLocationObject.removeAdjacency(location, source, type);
+        }
+    }
+
     addAdjacencyLocations(locations, source, type) {
         if(!AllowedConditionTypes.includes(type)) {
             return;
