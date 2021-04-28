@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/186/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/190/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -760,11 +760,15 @@
 |--------|-----:|:------------------------:|
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20026| Ike Clanton
+|:heavy_check_mark:   | 20029| Larry "Sevens" Swift
+|:heavy_check_mark:   | 20042| Stone's Colt Dragoons
+|:heavy_check_mark:   | 20056| Ricochet
 
 ## `13-O4B` Out for Blood
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 21001| House of Many Faiths
 |:heavy_check_mark:   | 21007| Doc Holliday
 |:white_check_mark:   | 21027| Eli Leatherwood
 
