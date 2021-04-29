@@ -1189,7 +1189,7 @@ class Player extends Spectator {
             this.shuffleDiscardToDrawDeck();
         }
         let pulledCard = this.drawDeck[0];
-        this.removeCardFromPile(pulledCard);
+        this.moveCard(pulledCard, 'being played');
         this.game.raiseEvent('onCardPulled', { card: pulledCard });
         if(addMessage) {
             this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.value, pulledCard.suit, pulledCard);
@@ -1611,7 +1611,8 @@ class Player extends Spectator {
                 discardPile: this.getSummaryForCardList(fullDiscardPile, activePlayer),
                 drawDeck: this.getSummaryForCardList(this.drawDeck, activePlayer),
                 hand: this.getSummaryForCardList(this.hand, activePlayer),
-                drawHand: this.getSummaryForCardList(this.drawHand, activePlayer)
+                drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
+                beingPlayed: this.getSummaryForCardList(this.beingPlayed, activePlayer)
             },
             disconnected: !!this.disconnectedAt,
             outfit: this.outfit.getSummary(activePlayer),
