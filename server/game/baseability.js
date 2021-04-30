@@ -36,6 +36,7 @@ class BaseAbility {
         this.abilitySourceType = properties.abilitySourceType || 'card';
         this.gameAction = this.buildGameAction(properties);
         this.cannotBeUsed = false;
+        this.printed = !!properties.printed;
         this.resetOptions();
     }
 

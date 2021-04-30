@@ -139,7 +139,8 @@ class DudeCard extends DrawCard {
                     isCardEffect: false 
                 }), context);
             },
-            player: this.controller
+            player: this.controller,
+            printed: false
         });
 
         this.action({
@@ -159,7 +160,8 @@ class DudeCard extends DrawCard {
             handler: context => {
                 this.game.queueStep(new TradingPrompt(this.game, context.player, context.target));
             },
-            player: this.controller
+            player: this.controller,
+            printed: false
         });        
     }
 
