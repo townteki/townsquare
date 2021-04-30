@@ -22,7 +22,8 @@ class Fetch extends SpellCard {
                             player.moveCard(card, 'hand');
                             this.game.addMessage('{0} places {1} back to their hand thanks to {2}', player, card, this);                          
                             return true;
-                        }
+                        },
+                        source: this
                     });
                 }, true, event => event.player === context.player);
             },
