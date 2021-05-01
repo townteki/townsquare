@@ -3,6 +3,7 @@ const ActionCard = require('../../actioncard.js');
 class FriendsInHighPlaces extends ActionCard {
     setupCardAbilities() {
         this.reaction({
+            title: 'React: Friends in High Places',
             when: {
                 onDudeCalledOut: event => 
                     event.callee.controller === this.controller &&

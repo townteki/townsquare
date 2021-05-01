@@ -143,21 +143,25 @@ class BaseCard {
     }
 
     action(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var action = new CardAction(this.game, this, properties);
         this.abilities.actions.push(action);
     }
 
     job(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var job = new JobAction(this.game, this, properties);
         this.abilities.actions.push(job);
     }
 
     spellAction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var spell = new SpellAction(this.game, this, properties);
         this.abilities.actions.push(spell);
     }
 
     reaction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
         if(properties.triggerBefore || properties.canCancel) {
             reaction = new CardBeforeReaction(this.game, this, properties);            
@@ -168,6 +172,7 @@ class BaseCard {
     }
 
     spellReaction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
         if(properties.triggerBefore || properties.canCancel) {
             reaction = new SpellBeforeReaction(this.game, this, properties);            
@@ -219,10 +224,10 @@ class BaseCard {
         this.abilities.actions.forEach(action => action.resetAbilityUsage());
     }
 
-    updateAbilitiesBlanking(condition = () => true, canBeUsed = true) {
-        this.abilities.actions.forEach(ability => {
+    updateAbilitiesBlanking(condition = () => true, cannotBeUsed = true) {
+        this.abilities.actions.concat(this.abilities.reactions).forEach(ability => {
             if(condition(ability)) {
-                ability.canBeUsed = canBeUsed;
+                ability.cannotBeUsed = cannotBeUsed;
             }
         });
     }

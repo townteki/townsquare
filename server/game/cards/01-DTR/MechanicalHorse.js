@@ -4,7 +4,7 @@ const GoodsCard = require('../../goodscard.js');
 class MechanicalHorse extends GoodsCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'Mechanical Horse',
+            title: 'Noon: Move dude',
             playType: ['noon'],
             cost: ability.costs.payGhostRock(2),
             repeatable: true,
@@ -17,6 +17,7 @@ class MechanicalHorse extends GoodsCard {
             }
         });
         this.reaction({
+            title: 'React: Prevent booting',
             when: {
                 onDudeJoiningPosse: event => 
                     event.card === this.parent && 
