@@ -4,6 +4,7 @@ const OutfitCard = require('../../outfitcard.js');
 class TheFourthRing extends OutfitCard {
     setupCardAbilities(ability) {
         this.reaction({
+            title: 'React: The Fourth Ring',
             when: {
                 onPullSuccess: event => 
                     event.pullingDude && 

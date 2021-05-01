@@ -3,6 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class TravisMoone extends DudeCard {
     setupCardAbilities(ability) {
         this.reaction({
+            title: 'React: Travis Moone',
             when: {
                 onSetupFinished: () => this.controller.availableGrifterActions > 0
             },
