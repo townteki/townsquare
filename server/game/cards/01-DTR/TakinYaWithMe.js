@@ -4,6 +4,7 @@ const TakeYerLumpsPrompt = require('../../gamesteps/shootout/takeyerlumpsprompt.
 class TakinYaWithMe extends ActionCard {
     setupCardAbilities() {
         this.reaction({
+            title: 'React: Takin\' Ya With Me',
             when: {
                 onTakenCasualties: event => event.shootout.loser === this.controller && 
                     event.player === this.controller &&
