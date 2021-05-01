@@ -452,6 +452,10 @@ class DudeCard extends DrawCard {
         return this.hasKeyword('blessed') || this.hasKeyword('huckster') || this.hasKeyword('shaman');
     }
 
+    isKungFu() {
+        return this.hasKeyword('kung fu');
+    }
+
     canCastSpell(spell) {
         if(!(spell instanceof SpellCard)) {
             return false;
