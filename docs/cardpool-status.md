@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/194/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/196/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -497,7 +497,7 @@
 |                     | 12010| Shelby Hunt
 |                     | 12011| The Joker's Smile
 |                     | 12012| Old Marge's Manor
-|                     | 12013| Xemo's Turban
+|:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
 |                     | 12015| Guide Horse
 |                     | 12016| Marty
@@ -593,7 +593,7 @@
 |                     | 15008| The Highbinder Hotel
 |                     | 15009| 2nd Bank Of Gomorra
 |                     | 15010| High Stakes Haven
-|                     | 15011| Culpability Scientizer
+|:heavy_check_mark:   | 15011| Culpability Scientizer
 |                     | 15012| Espuelas
 |                     | 15013| Rites of the Smoking Mirror
 |                     | 15014| Essence of Armitage
