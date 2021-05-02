@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/196/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/200/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -301,7 +301,7 @@
 |                     | 06013| Legal Instruments
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
-|                     | 06016| Fancy New Hat
+|:heavy_check_mark:   | 06016| Fancy New Hat
 |:heavy_check_mark:   | 06017| Confession
 |:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
@@ -353,7 +353,7 @@
 |:heavy_check_mark:   | 08013| Dog's Duster
 |                     | 08014| Stoker's Sabre
 |                     | 08015| Fate Dispenser
-|                     | 08016| Soul Cage
+|:heavy_check_mark:   | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
 |:heavy_check_mark:   | 08018| Sword of the Spirit
 |                     | 08019| A Fight They'll Never Forget
@@ -436,7 +436,7 @@
 |:heavy_check_mark:   | 10023| Cooke's Nightcap
 |                     | 10024| Mutant Cattle
 |                     | 10025| Monte Bank
-|                     | 10026| Wendy's Teethkickers
+|:heavy_check_mark:   | 10026| Wendy's Teethkickers
 |                     | 10027| Rich Man's Guard Dog
 |                     | 10028| Fiery Rhetoric
 |:heavy_check_mark:   | 10029| Strength of the Ancestors
@@ -523,7 +523,7 @@
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
 |:heavy_check_mark:   | 13011| The Orphanage
 |:heavy_check_mark:   | 13012| The Place
-|                     | 13013| Hawley's Rose
+|:heavy_check_mark:   | 13013| Hawley's Rose
 |:heavy_check_mark:   | 13014| LeMat Revolver
 |:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
