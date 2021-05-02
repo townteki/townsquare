@@ -19,6 +19,7 @@ class MoveDude extends GameAction {
 
     createEvent({ card, targetUuid, options = {}, context }) {
         let params = this.getDefaultOptions(options);
+        params.originalLocation = card.gamelocation;
         params.context = context;
         return this.event('onDudeMoved', { card, target: targetUuid, options: params }, event => {
             event.card.controller.moveDude(event.card, event.target, event.options);
