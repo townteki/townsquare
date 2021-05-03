@@ -15,7 +15,13 @@ class UpkeepPhase extends Phase {
     receiveProduction() {
         this.game.getPlayers().forEach(player => {
             let production = player.receiveProduction();
-            this.game.addMessage('{0} has received production of {1} GR', player, production);
+            let debtorText = '';
+            if(player.debtor) {
+                production--;
+                player.debtor = false;
+                debtorText = '(-1 borrowed GR)';
+            }
+            this.game.addMessage('{0} has received production of {1} GR{2}', player, production, debtorText);
         });
     }
 }

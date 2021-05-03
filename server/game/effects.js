@@ -278,16 +278,6 @@ const Effects = {
             }
         };
     },
-    entersPlayBooted: function() {
-        return {
-            apply: function(card) {
-                card.entersPlayBooted = true;
-            },
-            unapply: function(card) {
-                card.entersPlayBooted = false;
-            }
-        };
-    },
     setCardType: function(type) {
         return {
             apply: function(card) {

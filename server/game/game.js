@@ -422,21 +422,6 @@ class Game extends EventEmitter {
         command.execute();
     }
 
-    addGhostRock(player, ghostrock) {
-        if(ghostrock > 0 && player.cannotGainGhostRock) {
-            this.addMessage('{0} cannot gain ghost rock', player);
-            return;
-        }
-
-        player.ghostrock += ghostrock;
-
-        if(player.ghostrock < 0) {
-            player.ghostrock = 0;
-        }
-
-        this.raiseEvent('onStatChanged', { player: player, stat: 'ghostrock' });
-    }
-
     /**
      * Spends a specified amount of ghostrock for a player. "Spend" refers to any
      * usage of ghostrock that returns ghostrock to the bank as part of Shoppin', 
