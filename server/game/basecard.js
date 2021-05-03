@@ -910,7 +910,8 @@ class BaseCard {
         let selectionState = activePlayer.getCardSelectionState(this);
         if(!this.game.isCardVisible(this, activePlayer)) {
             return { facedown: true, uuid: this.uuid, tokens: this.tokens, ...selectionState };
-        }     
+        }
+        const effects = this.game.effectEngine.getAppliedEffectsOnCard(this).map(effect => effect.getSummary());
 
         let state = {
             printedStats: {
@@ -927,6 +928,7 @@ class BaseCard {
             code: this.cardData.code,
             cost: this.cardData.cost,
             controlled: this.owner !== this.controller,
+            effects: effects,
             facedown: this.facedown,
             gamelocation: this.gamelocation,
             influence: this.influence,
@@ -934,6 +936,7 @@ class BaseCard {
             menu: this.getMenu(activePlayer),
             new: this.new,
             production: this.production,
+            scripted: this.cardData.scripted,
             suit: this.suit,
             title: this.title,
             tokens: this.tokens,

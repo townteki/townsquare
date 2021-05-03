@@ -431,21 +431,12 @@ this.untilEndOfPhase(ability => ({
 }), 'upkeep'
 ```
 
-To apply an effect that will expire 'at the end of the phase', use `atEndOfPhase`:
+To apply an effect to last until the end of the round, use `untilEndOfRound`:
 ```javascript
 // Reduce Mortimers influence to 0 until after Sundown.
 this.untilEndOfRound(ability => ({
     match: this,
     effect: ability.effects.setInfluence(0)
-}));
-```
-
-To apply an effect to last until the end of the round, use `untilEndOfRound`:
-```javascript
-/// Until the end of the round, add the 'Winter' trait to the specified plot card.
-this.untilEndOfRound(ability => ({
-    match: plotCard,
-    effect: ability.effects.addTrait('Winter')
 }));
 ```
 

@@ -304,6 +304,14 @@ class Effect {
     get order() {
         return this.effect.order || 0;
     }
+
+    getSummary() {
+        return {
+            title: this.effect.title,
+            gameAction: this.effect.gameAction,
+            source: this.source.uuid
+        };
+    }
 }
 
 module.exports = Effect;
