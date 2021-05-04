@@ -984,7 +984,7 @@ const Effects = {
         return this.reduceFirstCardCostEachRound('play', amount, match);
     },
     increaseCost: function(properties) {
-        properties.amount = -properties.amount;
+        properties.isIncrease = true;
         return this.reduceCost(properties);
     },
     skipPhase: function(name) {
