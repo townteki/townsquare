@@ -160,9 +160,11 @@ class ChatCommands {
 
     handRank(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
-        player.modifyRank(num);
-        this.game.addAlert('danger', '{0} uses the /hand-rank command to modify their hand rank by {1}; Current hand rank is {2}', 
-            player, num, player.getTotalRank());
+        let totalRank = player.getHandRank().rank + player.rankModifier;
+        let change = num - totalRank;
+        player.modifyRank(change);
+        this.game.addAlert('danger', '{0} uses the /hand-rank command to set their hand rank to {1}', 
+            player, player.getTotalRank());
     }
 
     pull(player, args) {
@@ -231,13 +233,20 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude'],
             onSelect: (p, card) => {
-                card.keywords.modifySkillRating(skillName, num);
+                const currentRating = card.keywords.getSkillRating(skillName);
+                if(currentRating === null || currentRating === undefined) {
+                    this.game.addAlert('danger', '{0} uses the /skill-rating or /kung-fu, but {1} is missing {2}. First add it using /add-keyword', 
+                        p, card, skillName);     
+                    return true;               
+                }
+                let change = num - currentRating;
+                card.keywords.modifySkillRating(skillName, change);
                 if(skillName !== 'kung fu') {
-                    this.game.addAlert('danger', '{0} uses the /skill-rating command to modify {1} rating of {2} by {3}', 
-                        p, skillName, card, num);
+                    this.game.addAlert('danger', '{0} uses the /skill-rating command to set {1} rating of {2} to {3}', 
+                        p, skillName, card, card.keywords.getSkillRating(skillName));
                 } else {
-                    this.game.addAlert('danger', '{0} uses the /kung-fu command to modify {1} rating of {2} by {3}', 
-                        p, skillName, card, num);                    
+                    this.game.addAlert('danger', '{0} uses the /kung-fu command to set {1} rating of {2} to {3}', 
+                        p, skillName, card, card.keywords.getSkillRating(skillName));                    
                 }
                 return true;
             }
