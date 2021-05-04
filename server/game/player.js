@@ -314,11 +314,12 @@ class Player extends Spectator {
         this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }
 
-    drawCardsToHand(numCards = 1, context) {
+    drawCardsToHand(numCards = 1, context, reason) {
         return this.game.resolveGameAction(GameActions.drawCards({ 
             player: this, 
             amount: numCards, 
-            target: 'hand' 
+            target: 'hand',
+            reason
         }), this.createContext(context));
     }
 
@@ -498,7 +499,7 @@ class Player extends Spectator {
     }
 
     sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length);
+        this.drawCardsToHand(this.handSize - this.hand.length, null, 'sundown');
     }    
 
     createOutfitAndLegend() {

@@ -29,6 +29,8 @@ class HandResult {
                 }
             }
             this.handRank.tiebreakerHighCards.sort((a, b) => b - a);
+        } else {
+            this.handRank.tiebreakerHighCards = [];
         }
     }
 
