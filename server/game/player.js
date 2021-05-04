@@ -234,6 +234,10 @@ class Player extends Spectator {
         if(!this.ghostrock) {
             this.ghostrock = 0;
         }
+        if(amount > 0 && this.cannotGainGhostRock) {
+            this.addMessage('{0} cannot gain ghost rock', this);
+            return;
+        }
 
         this.ghostrock += amount;
 
@@ -241,6 +245,7 @@ class Player extends Spectator {
             amount += -this.ghostrock;
             this.ghostrock = 0;
         }
+        this.game.raiseEvent('onStatChanged', { player: this, stat: 'ghostrock', amount });
 
         return amount;
     }
@@ -314,11 +319,12 @@ class Player extends Spectator {
         this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }
 
-    drawCardsToHand(numCards = 1, context) {
+    drawCardsToHand(numCards = 1, context, reason) {
         return this.game.resolveGameAction(GameActions.drawCards({ 
             player: this, 
             amount: numCards, 
-            target: 'hand' 
+            target: 'hand',
+            reason
         }), this.createContext(context));
     }
 
@@ -370,7 +376,7 @@ class Player extends Spectator {
         }, options);
     }
 
-    discardFromHand(number = 1, callback = () => true, options = {}) {
+    discardFromHand(number = 1, callback = () => true, options = {}, context) {
         let defaultOptions = {
             discardExactly: false
         };
@@ -388,16 +394,16 @@ class Player extends Spectator {
                 }
                 this.discardCards(cards, false, discarded => {
                     callback(discarded);
-                }, updatedOptions);
+                }, updatedOptions, context);
                 return true;
             }
         }); 
     }
 
-    redrawFromHand(number = 1, callback = () => true, options = {}) {
+    redrawFromHand(number = 1, callback = () => true, options = {}, context) {
         this.discardFromHand(number, discardedCards => {
-            this.drawCardsToHand(discardedCards.length).thenExecute(event => callback(event));            
-        }, options);
+            this.drawCardsToHand(discardedCards.length, context).thenExecute(event => callback(event, discardedCards));            
+        }, options, context);
     }
 
     moveFromTopToBottomOfDrawDeck(number) {
@@ -498,7 +504,7 @@ class Player extends Spectator {
     }
 
     sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length);
+        this.drawCardsToHand(this.handSize - this.hand.length, null, 'sundown');
     }    
 
     createOutfitAndLegend() {

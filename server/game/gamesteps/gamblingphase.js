@@ -25,7 +25,11 @@ class GamblingPhase extends Phase {
 
     ante() {
         _.each(this.game.getPlayers(), player => {
-            this.game.addGhostRock(player, -1);
+            if(player.getSpendableGhostRock() <= 0) {
+                player.debtor = true;
+            } else {
+                player.modifyGhostRock(-1);
+            }
             this.lowballPot++;
         });
     }
@@ -61,7 +65,7 @@ class GamblingPhase extends Phase {
         let winner = this.findWinner();
 
         if(!winner) {
-            this.game.addAlert('info', 'There is winner of the lowball, players have to draw new hands.');
+            this.game.addAlert('info', 'There is no winner of the lowball, players have to draw new hands.');
             this.game.discardDrawHands();
             this.game.drawHands();
             this.game.revealHands();
@@ -73,17 +77,22 @@ class GamblingPhase extends Phase {
         // for now it will just put some player as first player
         if(!winner.player) {
             winner.player = this.game.getPlayers()[0];
-            this.game.addAlert('danger', 'The result was exact tie. Setting {0} as winner', winner.player, this.lowballPot);
+            this.game.addAlert('danger', 'The result was exact tie. Setting {0} as winner', winner.player);
+        }
+        let debtorText = '';
+        if(winner.player.debtor) {
+            this.lowballPot--;
+            winner.player.debtor = false;
+            debtorText = '(-1 borrowed GR)';
+        }
+        if(winner.onTiebreaker) {
+            this.game.addAlert('info', '{0} wins on tie breaker and receives {1} GR{2}', winner.player, this.lowballPot, debtorText);
         } else {
-            if(winner.onTiebreaker) {
-                this.game.addAlert('info', '{0} wins on tie breaker and receives {1} GR', winner.player, this.lowballPot);
-            } else {
-                this.game.addAlert('info', '{0} is the winner and receives {1} GR', winner.player, this.lowballPot);
-            }
+            this.game.addAlert('info', '{0} is the winner and receives {1} GR{2}', winner.player, this.lowballPot, debtorText);
         }
 
         this.game.getPlayers().forEach(player => player.firstPlayer = winner.player === player);   
-        this.game.addGhostRock(winner.player, this.lowballPot);
+        winner.player.modifyGhostRock(this.lowballPot);
     }
 
     gainLowballPot() {
