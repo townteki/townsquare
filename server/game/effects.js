@@ -707,8 +707,12 @@ const Effects = {
         cannotEffectType('increaseBullets', opponent => `Cannot have bullets increased${opponent ? ' by' + opponent : ''}`),
     cannotDecreaseBullets: 
         cannotEffectType('decreaseBullets', opponent => `Cannot have bullets decreased${opponent ? ' by' + opponent : ''}`),
+    cannotDecreaseBulletsByShootout: 
+        cannotEffect('decreaseBullets', 'shootout', opponent => `Cannot have bullets decreased by${opponent} shootout`),        
     cannotBeSetToDraw: 
         cannotEffectType('setAsDraw', opponent => `Cannot be set to draw${opponent ? ' by' + opponent : ''}`),
+    cannotBeSetToDrawByShootout: 
+        cannotEffect('setAsDraw', 'shootout', opponent => `Cannot be set to draw by${opponent} shootout`),        
     cannotDecreaseInfluence: 
         cannotEffectType('decreaseInfluence', opponent => `Cannot have influence decreased${opponent ? ' by' + opponent : ''}`),
     cannotPlay: function(condition) {
