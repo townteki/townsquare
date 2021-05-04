@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/200/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/204/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -261,7 +261,7 @@
 |:heavy_check_mark:   | 05018| Félix Amador
 |:heavy_check_mark:   | 05019| Nicodemus Whateley
 |                     | 05020| Pettigrew's Pawnshop
-|                     | 05021| California Tax Office
+|:heavy_check_mark:   | 05021| California Tax Office
 |                     | 05022| St. Anthony's Chapel
 |                     | 05023| The Whateley Estate
 |                     | 05024| Outlaw Mask
@@ -556,15 +556,15 @@
 |                     | 14017| Market Street
 |                     | 14018| Companhurst's
 |                     | 14019| Epidemic Laboratory
-|                     | 14020| Walters Creek Distillery
-|                     | 14021| Silent Sigil
+|:heavy_check_mark:   | 14020| Walters Creek Distillery
+|:heavy_check_mark:   | 14021| Silent Sigil
 |                     | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
 |:heavy_check_mark:   | 14024| Tusk
 |                     | 14025| Mountain Lion Friend
 |                     | 14026| Spirit Steed
 |                     | 14027| Crafty Hare
-|                     | 14028| Onward Christian Soldiers
+|:heavy_check_mark:   | 14028| Onward Christian Soldiers
 |                     | 14029| Turtle's Guard
 |                     | 14030| Sight Beyond Sight
 |                     | 14031| Requiem for a Good Boy
