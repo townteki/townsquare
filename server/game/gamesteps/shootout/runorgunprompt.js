@@ -10,7 +10,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
         if(this.isComplete()) {
             return true;
         }
-        if(this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        if(this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty() || this.currentPlayer.dudesCannotFlee()) {
             this.completePlayer();
             return this.continue();
         }

@@ -20,6 +20,7 @@ const GhostRockSource = require('./GhostRockSource.js');
 
 const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
+const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -62,6 +63,7 @@ class Player extends Spectator {
 
         this.createAdditionalPile('out of game');
         this.promptState = new PlayerPromptState();
+        this.options = new ReferenceConditionalSetProperty();
     }
 
     get casualties() {
@@ -1596,6 +1598,10 @@ class Player extends Spectator {
 
     isTimerEnabled() {
         return !this.noTimer && this.user.settings.windowTimer !== 0;
+    }
+
+    dudesCannotFlee() {
+        return this.options.contains('dudesCannotFlee'); 
     }
 
     getState(activePlayer) {
