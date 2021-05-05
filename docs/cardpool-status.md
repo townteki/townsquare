@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/204/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/208/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -92,9 +92,9 @@
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
 |:heavy_check_mark:   | 01080| Telegraph Office
-|                     | 01081| Pair of Six-Shooters
+|:heavy_check_mark:   | 01081| Pair of Six-Shooters
 |:heavy_check_mark:   | 01082| Bluetick
-|                     | 01083| Peacemaker
+|:heavy_check_mark:   | 01083| Peacemaker
 |:heavy_check_mark:   | 01084| Shotgun
 |                     | 01085| Whiskey Flask
 |:heavy_check_mark:   | 01086| Mustang
@@ -495,7 +495,7 @@
 |                     | 12008| Miranda Clarke
 |                     | 12009| Elliot Smithson
 |                     | 12010| Shelby Hunt
-|                     | 12011| The Joker's Smile
+|:heavy_check_mark:   | 12011| The Joker's Smile
 |                     | 12012| Old Marge's Manor
 |:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
@@ -683,7 +683,7 @@
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
 |                     | 18022| Nickel Night Inn
-|                     | 18023| Sherman Mortgage
+|:heavy_check_mark:   | 18023| Sherman Mortgage
 |                     | 18024| Gomorra Gaming Commission
 |                     | 18025| Cliff's #4 Saloon
 |                     | 18026| Baijiu Jar
