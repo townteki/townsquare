@@ -98,10 +98,11 @@ class Player extends Spectator {
         return deck.createCard(this, card);        
     }
 
-    placeToken(codeOrName, gamelocation) {
+    placeToken(codeOrName, gamelocation, properties = {}) {
         let token = this.createCard(codeOrName);
         this.game.allCards.push(token);
-        token.facedown = false;
+        token.facedown = !!properties.facedown;
+        token.booted = !!properties.booted;
         token.moveToLocation(gamelocation);
         this.moveCard(token, 'play area');        
         token.applyPersistentEffects();  

@@ -19,6 +19,7 @@ class ShootoutPossePrompt extends UiPrompt {
                     card.controller === this.player &&
                     (card !== this.shootout.mark || this.shootout.isJob()) &&
                     card !== this.shootout.leader &&
+                    !card.isParticipating() &&
                     card.requirementsToJoinPosse().canJoin,
                 onSelect: (player, dudeSelection) => {
                     this.joinLeaderAndMark(player);
