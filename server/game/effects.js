@@ -128,6 +128,21 @@ function optionEffect(key, title) {
     };
 }
 
+function playerOptionEffect(key, title) {
+    return function(source, condition) {
+        return {
+            title: title,
+            targetType: 'player',
+            apply: function(player) {
+                player.options.add(key, source, condition);
+            },
+            unapply: function(player) {
+                player.options.remove(key, source);
+            }
+        };
+    };
+}
+
 function adjacency(type) {
     return function(location, source) {
         return {
@@ -783,6 +798,9 @@ const Effects = {
                 delete context.restrictions[card.uuid];
             }
         }; 
+    },
+    dudesCannotFlee: function() {
+        return playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout')();
     },
     modifyPosseStudBonus: function(amount) {
         return {
