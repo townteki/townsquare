@@ -840,12 +840,16 @@ class Player extends Spectator {
             this.game.promptForSelect(this, {
                 activePromptTitle: 'Select a dude to invent ' + gadget.title,
                 waitingPromptTitle: 'Waiting for opponent to select dude',
-                cardCondition: card => card.location === 'play area' && !card.booted && 
+                cardCondition: card => card.location === 'play area' && 
+                    card.controller === this &&
+                    (!card.booted || gadget.canBeInventedWithoutBooting()) && 
                     card.canPerformSkillOn(gadget) &&
                     card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
-                    this.bootCard(card);
+                    if(!gadget.canBeInventedWithoutBooting()) {
+                        this.bootCard(card);
+                    }
                     this.pullForSkill(gadget.difficulty, card.getSkillRatingForCard(gadget), getPullProperties(card));
                     return true;
                 }
@@ -1221,7 +1225,8 @@ class Player extends Spectator {
             pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
             source: properties.source,
-            player: this
+            player: this,
+            context
         };
         this.pull((pulledCard, pulledValue, pulledSuit) => {
             if(context) {

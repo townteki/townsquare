@@ -1,3 +1,5 @@
+const uuid = require('uuid');
+
 const CardTextDefinition = require('./CardTextDefinition');
 const CostReducer = require('./costreducer.js');
 const PlayableLocation = require('./playablelocation.js');
@@ -224,34 +226,40 @@ function dynamicStatModifier(propName) {
 }
 
 const Effects = {
-    setAsStud: function(sourceUuid) {
+    setAsStud: function() {
         return {
             title: 'Stud bullet modifier',
             gameAction: 'setAsStud',
-            apply: function(card) {
+            apply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.addStudEffect(sourceUuid, 'Stud');
+                    if(!context.source) {
+                        context.source = { uuid: uuid.v1() };
+                    }
+                    card.addStudEffect(context.source.uuid, 'Stud');
                 }
             },
-            unapply: function(card) {
+            unapply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.removeStudEffect(sourceUuid);
+                    card.removeStudEffect(context.source.uuid);
                 }
             }
         };
     },
-    setAsDraw: function(sourceUuid) {
+    setAsDraw: function() {
         return {
             title: 'Draw bullet modifier',
             gameAction: 'setAsDraw',
-            apply: function(card) {
+            apply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.addStudEffect(sourceUuid, 'Draw');
+                    if(!context.source) {
+                        context.source = { uuid: uuid.v1() };
+                    }
+                    card.addStudEffect(context.source.uuid, 'Draw');
                 }
             },
-            unapply: function(card) {
+            unapply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.removeStudEffect(sourceUuid);
+                    card.removeStudEffect(context.source.uuid);
                 }
             }
         };
@@ -622,6 +630,21 @@ const Effects = {
             }
         };
     },
+    addSkillKfBonus: function(bonus, source) {
+        return {
+            title: 'Skill or KF bonus added',
+            apply: function(card) {
+                if(card.getType() === 'dude') {
+                    card.addSkillKfBonus(bonus, source);
+                }
+            },
+            unapply: function(card) {
+                if(card.getType() === 'dude') {
+                    card.removeSkillKfBonus(source);
+                }
+            }
+        };        
+    },
     blankExcludingKeywords: {
         title: 'Blank excluding Keywords',
         apply: function(card) {
@@ -860,6 +883,9 @@ const Effects = {
     cannotBeTraded: function() {
         return optionEffect('cannotBeTraded', 'Cannot be Traded')();
     },
+    cannotFlee: function() {
+        return optionEffect('cannotFlee', 'Cannot Flee')();
+    },
     canRefuseWithoutGoingHomeBooted: function() {
         return optionEffect('canRefuseWithoutGoingHomeBooted', 'Can Refuse without going Home')();
     },
@@ -871,6 +897,9 @@ const Effects = {
     },
     canJoinWhileBooted: function() {
         return optionEffect('canJoinWhileBooted', 'Can Join while Booted')();
+    },
+    canBeInventedWithoutBooting: function() {
+        return optionEffect('canBeInventedWithoutBooting', 'Can be Invented without Booting')();
     },
     canUseControllerAbilities: function() {
         return optionEffect('canUseControllerAbilities', 'Can use Controller Abilities')();

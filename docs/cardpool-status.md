@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/212/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/216/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -255,7 +255,7 @@
 |                     | 05012| Chuan "Jen" Qí
 |                     | 05013| Lane Healey (Exp.1)
 |                     | 05014| The Fixer
-|                     | 05015| Maria Kingsford
+|:heavy_check_mark:   | 05015| Maria Kingsford
 |                     | 05016| Makaio Kaleo, Esq.
 |                     | 05017| Sister Lois Otwell
 |:heavy_check_mark:   | 05018| Félix Amador
@@ -571,7 +571,7 @@
 |                     | 14032| Fool Me Once...
 |                     | 14033| Fiddle Game
 |                     | 14034| Pigging Out
-|                     | 14035| Technological Exhibition
+|:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
 |                     | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
@@ -627,7 +627,7 @@
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
 |                     | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
-|                     | 16019| Siege Of The Orphanage
+|:heavy_check_mark:   | 16019| Siege Of The Orphanage
 |                     | 16020| Lighting The Fuse
 |                     | 16021| One Fights As Many
 
@@ -702,7 +702,7 @@
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
 |                     | 18041| "Thunder Boy" Nabbe
-|                     | 18042| Dave "Slim" Gorman
+|:heavy_check_mark:   | 18042| Dave "Slim" Gorman
 
 ## `11-TCaR` There Comes a Reckoning
 
