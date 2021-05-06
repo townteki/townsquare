@@ -335,6 +335,10 @@ class DrawCard extends BaseCard {
         return this.options.contains('cannotBeTraded', this);
     }
 
+    cannotFlee() {
+        return this.options.contains('cannotFlee');
+    }
+
     canRefuseWithoutGoingHomeBooted() {
         return this.options.contains('canRefuseWithoutGoingHomeBooted');
     }
