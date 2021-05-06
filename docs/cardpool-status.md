@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/208/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/212/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -119,7 +119,7 @@
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
 |                     | 01106| Hired Guns
 |                     | 01107| Lady Luck
-|                     | 01108| Bottom Dealin'
+|:heavy_check_mark:   | 01108| Bottom Dealin'
 |                     | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
 |                     | 01111| Auction
@@ -235,7 +235,7 @@
 |                     | 04018| Summoning
 |                     | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
-|                     | 04021| Election Day Slaughter
+|:heavy_check_mark:   | 04021| Election Day Slaughter
 
 ## `03-FF` Faith and Fear
 
@@ -278,7 +278,7 @@
 |                     | 05035| Swinford Finds Trouble
 |                     | 05036| Under the Weather
 |:heavy_check_mark:   | 05037| Faster on the Draw
-|                     | 05038| This'll Hurt in the Mornin'
+|:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
 |:heavy_check_mark:   | 05040| Meet The New Boss
 |                     | 06001| Funtime Freddy
@@ -332,7 +332,7 @@
 |                     | 07018| Mark of Pestilence
 |                     | 07019| Cookin' Up Trouble
 |                     | 07020| Ol' Fashioned Hangin'
-|                     | 07021| No Turning Back
+|:heavy_check_mark:   | 07021| No Turning Back
 
 ## `04.3-NN` Nightmare at Noon
 

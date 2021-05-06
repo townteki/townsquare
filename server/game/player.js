@@ -309,12 +309,12 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult();
+        this.determineHandResult('reveals', this.game.currentPhase === 'gambling');
     }
 
-    determineHandResult(handResultText = 'reveals') {
+    determineHandResult(handResultText = 'reveals', doLowest = false) {
         if(this.drawHand.length > 1) {
-            this.handResult = new HandResult(this.drawHand, this.game.currentPhase === 'gambling');
+            this.handResult = new HandResult(this.drawHand, doLowest);
         }  
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
