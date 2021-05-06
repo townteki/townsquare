@@ -20,6 +20,7 @@ const GhostRockSource = require('./GhostRockSource.js');
 
 const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
+const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -62,6 +63,7 @@ class Player extends Spectator {
 
         this.createAdditionalPile('out of game');
         this.promptState = new PlayerPromptState();
+        this.options = new ReferenceConditionalSetProperty();
     }
 
     get casualties() {
@@ -307,12 +309,12 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult();
+        this.determineHandResult('reveals', this.game.currentPhase === 'gambling');
     }
 
-    determineHandResult(handResultText = 'reveals') {
+    determineHandResult(handResultText = 'reveals', doLowest = false) {
         if(this.drawHand.length > 1) {
-            this.handResult = new HandResult(this.drawHand, this.game.currentPhase === 'gambling');
+            this.handResult = new HandResult(this.drawHand, doLowest);
         }  
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
@@ -1596,6 +1598,10 @@ class Player extends Spectator {
 
     isTimerEnabled() {
         return !this.noTimer && this.user.settings.windowTimer !== 0;
+    }
+
+    dudesCannotFlee() {
+        return this.options.contains('dudesCannotFlee'); 
     }
 
     getState(activePlayer) {
