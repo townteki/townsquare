@@ -847,6 +847,11 @@ class BaseCard {
         return location && location.isTownSquare();
     }
 
+    isInOpponentsHome() {
+        let location = this.getGameLocation();
+        return location && location.isOpponentsHome(this.controller);
+    }
+
     isLocationCard() {
         return false;
     }
