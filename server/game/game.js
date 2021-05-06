@@ -914,13 +914,13 @@ class Game extends EventEmitter {
         this.queueStep(new AbilityResolver(this, ability, context));
     }
 
-    resolveStandardAbility(ability, player, source, callback) {
+    resolveStandardAbility(ability, player, source) {
         let abilityContext = new AbilityContext({ 
             ability: ability,
             game: this, 
             source: source, 
             player: player
-        }, callback);        
+        });        
         this.queueStep(new AbilityResolver(this, ability, abilityContext));
     }
 

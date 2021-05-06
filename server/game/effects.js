@@ -860,6 +860,9 @@ const Effects = {
     cannotBeTraded: function() {
         return optionEffect('cannotBeTraded', 'Cannot be Traded')();
     },
+    cannotFlee: function() {
+        return optionEffect('cannotFlee', 'Cannot Flee')();
+    },
     canRefuseWithoutGoingHomeBooted: function() {
         return optionEffect('canRefuseWithoutGoingHomeBooted', 'Can Refuse without going Home')();
     },
@@ -871,6 +874,9 @@ const Effects = {
     },
     canJoinWhileBooted: function() {
         return optionEffect('canJoinWhileBooted', 'Can Join while Booted')();
+    },
+    canBeInventedWithoutBooting: function() {
+        return optionEffect('canBeInventedWithoutBooting', 'Can be Invented without Booting')();
     },
     canUseControllerAbilities: function() {
         return optionEffect('canUseControllerAbilities', 'Can use Controller Abilities')();
