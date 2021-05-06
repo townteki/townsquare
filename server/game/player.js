@@ -1220,7 +1220,8 @@ class Player extends Spectator {
             pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
             source: properties.source,
-            player: this
+            player: this,
+            context
         };
         this.pull((pulledCard, pulledValue, pulledSuit) => {
             if(context) {
