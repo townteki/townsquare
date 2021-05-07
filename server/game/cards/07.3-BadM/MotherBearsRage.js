@@ -13,7 +13,7 @@ class MotherBearsRage extends SpellCard {
                 cardCondition: { condition: card => (card.gamelocation === this.gamelocation ||
                     card.isAdjacent(this.gamelocation) && !card.isInTownSquare())},
                 cardType: ['dude'],
-                gameAction: 'callOut'
+                gameAction: 'callout'
             },
             difficulty: 5,
             onSuccess: (context) => {
