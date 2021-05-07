@@ -31,7 +31,7 @@ class RedHorsesTail extends SpellCard {
                 activePromptTitle: 'Choose an opposing dude',
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude'],
-                gameAction: 'sendHome'
+                gameAction: ['sendHome', 'boot']
             },
             difficulty: context => context.target.getGrit(),
             onSuccess: (context) => {
