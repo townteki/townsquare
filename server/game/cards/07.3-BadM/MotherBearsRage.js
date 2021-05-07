@@ -4,7 +4,7 @@ const SpellCard = require('../../spellcard.js');
 class MotherBearsRage extends SpellCard {
     setupCardAbilities(ability) {
         this.spellAction({
-            title: 'Noon',
+            title: 'Noon: Call Out a Dude',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
