@@ -16,6 +16,7 @@ class AlexanderSequoia extends DudeCard {
                 this.game.addMessage('{0} uses {1}\'s ability but {1} does not unboot because he is not in town square', context.player, this);
             },
             cardCondition: this.booted,
+            actionContext: { card: this, gameAction: 'unboot' },
             handler: context => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: this }), context).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to unboot {1}', context.player, this);
