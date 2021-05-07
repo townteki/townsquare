@@ -73,12 +73,17 @@ class CardAction extends PlayTypeAbility {
         if(this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
         }
-        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') && CardTypesForShootout.includes(this.card.getType())) {
-            return this.game.shootout.isInShootout(this.card);
-        }
+        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join')) {
+            if(this.card.getType() === 'spell' && this.card.isTotem()) {
+                return this.game.shootout.shootoutLocation === this.card.getGameLocation();
+            }
+            if(CardTypesForShootout.includes(this.card.getType())) {
+                return this.game.shootout.isInShootout(this.card);
+            }
+        }        
         return true;
     }
-
+    
     isLocationValid(location) {
         return this.location.includes(location);
     }
