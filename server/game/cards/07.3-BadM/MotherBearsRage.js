@@ -10,8 +10,8 @@ class MotherBearsRage extends SpellCard {
             target: {
                 activePromptTitle: 'Select a dude to call out',
                 waitingPromptTitle: 'Waiting for opponent to select a dude',
-                cardCondition: { condition: card => (card.gamelocation === this.gamelocation ||
-                    card.isAdjacent(this.gamelocation) && !card.isInTownSquare())},
+                cardCondition: { controller: 'opponent', condition: card => (card.gamelocation === this.gamelocation ||
+                    card.isAdjacent(this.gamelocation) && card.locationCard.getType() === 'deed')},
                 cardType: ['dude'],
                 gameAction: 'callout'
             },
