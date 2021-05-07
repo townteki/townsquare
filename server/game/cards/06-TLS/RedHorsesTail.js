@@ -4,7 +4,7 @@ const SpellCard = require('../../spellcard.js');
 class RedHorsesTail extends SpellCard {
     setupCardAbilities(ability) {
         this.spellAction({
-            title: 'Noon',
+            title: 'Noon: Boot a Dude',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
@@ -24,7 +24,7 @@ class RedHorsesTail extends SpellCard {
         });
 
         this.spellAction({
-            title: 'Shootout',
+            title: 'Shootout: Send Dude Home Booted',
             playType: 'shootout',
             cost: ability.costs.bootSelf(),
             target: {
