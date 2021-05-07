@@ -6,7 +6,9 @@ class DrewBeauman extends DudeCard {
         this.traitReaction({
             when: {
                 onDrawHandsRevealed: () => this.controller.getOpponent().isCheatin() &&
-                    !this.controller.isCheatin()
+                    !this.controller.isCheatin() &&
+                    this.isInControlledLocation() &&
+                    this.controller.hand.find(card => card.hasKeyword('gadget'))
             },
             handler: context => {
                 this.game.promptForSelect(context.player, {
@@ -27,13 +29,17 @@ class DrewBeauman extends DudeCard {
                         }));  
                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                             playType: 'ability',
-                            sourceType: 'ability'
+                            sourceType: 'ability',
+                            scientist: this
                         }, () => {
                             this.game.addMessage('{0} invents {1} without booting thanks to {2}', player, card, this);
-                        }), player, this);
-                        this.game.queueSimpleStep(() => this.game.raiseEvent('onDrewBeaumanFinished'));                    
+                        }), player, card);                   
+                        this.game.queueSimpleStep(() => { 
+                            this.game.raiseEvent('onDrewBeaumanFinished'); 
+                        });                         
                         return true;
-                    }
+                    },
+                    source: this
                 });
             }
         });

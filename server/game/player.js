@@ -679,14 +679,14 @@ class Player extends Spectator {
     }
 
     putIntoPlay(card, params = {}) {
-        let updatedParams = {
+        const defaultParams = {
             originalLocation: card.location,
             playingType: params.playingType || 'play',
             target: params.target || '',
-            targetParent: params.targetParent,
             context: params.context || {},
             booted: !!params.booted
         };
+        const updatedParams = Object.assign(params, defaultParams);
         let onAttachCompleted = (card, target, params) => {
             if(params.playingType === 'shoppin') {
                 this.game.addMessage('{0} does Shoppin\' to attach {1} to {2}{3}', this, card, target, costText);
@@ -711,7 +711,7 @@ class Player extends Spectator {
             case 'goods':
                 if(updatedParams.targetParent && this.canAttach(card, updatedParams.targetParent, updatedParams.playingType)) {
                     this.attach(card, updatedParams.targetParent, updatedParams.playingType, (attachment, target) => 
-                        onAttachCompleted(attachment, target, updatedParams));                    
+                        onAttachCompleted(attachment, target, updatedParams), updatedParams.scientist);                    
                 } else {
                     this.game.queueStep(new AttachmentPrompt(this.game, this, card, updatedParams, (attachment, target, params) => 
                         onAttachCompleted(attachment, target, params)));
@@ -736,7 +736,7 @@ class Player extends Spectator {
                         }
                     };
                     if(card.isGadget() && this.game.currentPhase !== 'setup') {
-                        this.inventGadget(card, null, (context, scientist) => {
+                        this.inventGadget(card, updatedParams.scientist, (context, scientist) => {
                             putIntoPlayFunc(scientist.gamelocation);
                         });
                     } else {
@@ -855,7 +855,9 @@ class Player extends Spectator {
                 }
             });
         } else {
-            this.bootCard(scientist);
+            if(!gadget.canBeInventedWithoutBooting()) {
+                this.bootCard(scientist);
+            }
             this.pullForSkill(gadget.difficulty, scientist.getSkillRatingForCard(gadget), getPullProperties(scientist));
         }
     }
@@ -877,13 +879,13 @@ class Player extends Spectator {
         return true;
     }
 
-    attach(attachment, card, playingType, attachCallback) {
+    attach(attachment, card, playingType, attachCallback, defaultScientist) {
         if(!card || !attachment || !this.canAttach(attachment, card)) {
             return false;
         }
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
-            let scientist = playingType === 'shoppin' ? card : null;
+            let scientist = defaultScientist || (playingType === 'shoppin' ? card : null);
             this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
         } else {
             this.performAttach(attachment, card, playingType, attachCallback);
