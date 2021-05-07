@@ -9,7 +9,7 @@ class AlexanderSequoia extends DudeCard {
         });
         
         this.action({
-            title: 'Noon',
+            title: 'Noon: Unboot Alexander Sequoia',
             playType: 'noon',
             ifCondition: () => this.isInTownSquare(),
             ifFailMessage: context => {
