@@ -13,25 +13,18 @@ class PutIntoPlay extends GameAction {
 
     createEvent({ player, card, params = {} }) {
         player = player || card.controller;
-        return this.event('onCardPutIntoPlay', this.getDefaultParams(player, card, params), event => {
-            event.player.putIntoPlay(event.card, { 
-                playingType: event.playingType, 
-                target: event.target, 
-                targetParent: event.targetParent,
-                context: event.context, 
-                force: event.force });
+        return this.event('onCardPutIntoPlay', { player, card, options: this.getDefaultParams(params) }, event => {
+            event.player.putIntoPlay(event.card, event.options);
         });
     }
 
-    getDefaultParams(player, card, params) {
-        return {
-            player,
-            card,
+    getDefaultParams(params) {
+        const defaultParams = {
             target: params.target || '',
-            targetParent: params.targetParent,
-            playingType: params.playingType || 'play',
+            playingType: params.playType || 'play',
             context: params.context || {}
         };
+        return Object.assign(params, defaultParams);
     }
 }
 
