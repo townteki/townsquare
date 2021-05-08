@@ -17,6 +17,7 @@ class SendHome extends GameAction {
 
     createEvent({ card, options = {}, context }) {
         let params = this.getDefaultOptions(options);
+        params.originalLocation = card.gamelocation;
         return this.event('onDudeSentHome', { card, options: params, context }, event => {
             event.card.sendHome(event.options, context);
         });

@@ -48,7 +48,14 @@ class Effect {
         this.gameAction = this.effect.gameAction || 'genericEffect';
         this.targets = [];
         this.appliedTargets = new Set();
-        this.context = { game: game, source: source, ability: properties.ability };
+        this.context = { 
+            game: game, 
+            source: source, 
+            player: source.controller, 
+            ability: properties.ability,
+            // save the playTypePlayed to have info about what type of play (shootout, resolution etc.) created the effect
+            playTypePlayed: properties.ability ? properties.ability.playTypePlayed() : undefined
+        };
         this.active = !source.facedown;
         this.isConditional = !!properties.condition || this.targetType === 'player' && typeof(properties.match) === 'function';
         this.isStateDependent = this.isConditional || this.effect.isStateDependent;
@@ -303,6 +310,14 @@ class Effect {
 
     get order() {
         return this.effect.order || 0;
+    }
+
+    getSummary() {
+        return {
+            title: this.effect.title,
+            gameAction: this.effect.gameAction,
+            source: this.source.uuid
+        };
     }
 }
 

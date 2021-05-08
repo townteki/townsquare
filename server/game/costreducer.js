@@ -7,7 +7,8 @@ class CostReducer {
         this.uses = 0;
         this.usage = new AbilityUsage({ limit: properties.limit || 0, repeatable: true });
         this.match = properties.match || (() => true);
-        this.amount = properties.amount || 1;
+        this.amount = properties.amount === null || properties.amount === undefined ? 1 : properties.amount;
+        this.isIncrease = properties.isIncrease;
         this.playingTypes = this.buildPlayingTypes(properties);
         if(this.usage) {
             this.usage.registerEvents(game);
@@ -29,10 +30,10 @@ class CostReducer {
 
     getAmount(card) {
         if(typeof(this.amount) === 'function') {
-            return this.amount(card) || 0;
+            return ((this.isIncrease ? -1 : 1) * this.amount(card)) || 0;
         }
 
-        return this.amount;
+        return (this.isIncrease ? -1 : 1) * this.amount;
     }
 
     markUsed() {

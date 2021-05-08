@@ -28,7 +28,7 @@ class NotaryPublic extends DeedCard {
                         cardType: 'dude',
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.addBounty({ card: card }), context);
-                            this.game.addMessage('{0} uses {1} to boot {2} and increase bounty on {3}.', player, this, context.target, card);
+                            this.game.addMessage('{0} uses {1} to boot {2} and increase bounty on {3}', player, this, context.target, card);
                             return true;
                         }
                     });
@@ -48,7 +48,7 @@ class NotaryPublic extends DeedCard {
                                         card: dude, 
                                         targetUuid: location.uuid
                                     }), context); 
-                                    this.game.addMessage('{0} uses {1} to boot {2} and move {3} to {4}.', player, this, context.target, dude, location);                                 
+                                    this.game.addMessage('{0} uses {1} to boot {2} and move {3} to {4}', player, this, context.target, dude, location);                                 
                                     return true;
                                 }
                             });

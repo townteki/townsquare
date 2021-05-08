@@ -4,7 +4,7 @@ const GameActions = require('../../GameActions/index.js');
 class DevilsSixGun extends GoodsCard {
     setupCardAbilities(ability) {
         this.whileAttached({
-            effect: ability.effects.setAsStud(this.uuid)
+            effect: ability.effects.setAsStud()
         });
         this.action({
             title: 'Devil\'s Six Gun',

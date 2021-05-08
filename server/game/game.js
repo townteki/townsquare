@@ -275,11 +275,11 @@ class Game extends EventEmitter {
 
     // use card in condition
     findLocations(condition) {
-        let foundLocations = this.game.filterCardsInPlay(card => condition(card));
-        if(condition(this.game.townsquare.locationCard)) {
-            foundLocations.concat(this.game.townsquare);
+        let foundLocations = this.filterCardsInPlay(card => condition(card));
+        if(condition(this.townsquare.locationCard)) {
+            foundLocations.concat(this.townsquare);
         }
-        return foundLocations;
+        return foundLocations.map(locationCard => locationCard.getGameLocation());
     }
 
     getDudesAtLocation(locationUuid) {
@@ -420,21 +420,6 @@ class Game extends EventEmitter {
 
         let command = new DropCommand(this, player, card, target, gameLocation);
         command.execute();
-    }
-
-    addGhostRock(player, ghostrock) {
-        if(ghostrock > 0 && player.cannotGainGhostRock) {
-            this.addMessage('{0} cannot gain ghost rock', player);
-            return;
-        }
-
-        player.ghostrock += ghostrock;
-
-        if(player.ghostrock < 0) {
-            player.ghostrock = 0;
-        }
-
-        this.raiseEvent('onStatChanged', { player: player, stat: 'ghostrock' });
     }
 
     /**
@@ -929,13 +914,13 @@ class Game extends EventEmitter {
         this.queueStep(new AbilityResolver(this, ability, context));
     }
 
-    resolveStandardAbility(ability, player, source, callback) {
+    resolveStandardAbility(ability, player, source) {
         let abilityContext = new AbilityContext({ 
             ability: ability,
             game: this, 
             source: source, 
             player: player
-        }, callback);        
+        });        
         this.queueStep(new AbilityResolver(this, ability, abilityContext));
     }
 

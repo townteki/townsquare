@@ -20,6 +20,7 @@ const GhostRockSource = require('./GhostRockSource.js');
 
 const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
+const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -62,6 +63,7 @@ class Player extends Spectator {
 
         this.createAdditionalPile('out of game');
         this.promptState = new PlayerPromptState();
+        this.options = new ReferenceConditionalSetProperty();
     }
 
     get casualties() {
@@ -234,6 +236,10 @@ class Player extends Spectator {
         if(!this.ghostrock) {
             this.ghostrock = 0;
         }
+        if(amount > 0 && this.cannotGainGhostRock) {
+            this.addMessage('{0} cannot gain ghost rock', this);
+            return;
+        }
 
         this.ghostrock += amount;
 
@@ -241,6 +247,7 @@ class Player extends Spectator {
             amount += -this.ghostrock;
             this.ghostrock = 0;
         }
+        this.game.raiseEvent('onStatChanged', { player: this, stat: 'ghostrock', amount });
 
         return amount;
     }
@@ -302,23 +309,24 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult();
+        this.determineHandResult('reveals', this.game.currentPhase === 'gambling');
     }
 
-    determineHandResult(handResultText = 'reveals') {
+    determineHandResult(handResultText = 'reveals', doLowest = false) {
         if(this.drawHand.length > 1) {
-            this.handResult = new HandResult(this.drawHand, this.game.currentPhase === 'gambling');
+            this.handResult = new HandResult(this.drawHand, doLowest);
         }  
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
         this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
     }
 
-    drawCardsToHand(numCards = 1, context) {
+    drawCardsToHand(numCards = 1, context, reason) {
         return this.game.resolveGameAction(GameActions.drawCards({ 
             player: this, 
             amount: numCards, 
-            target: 'hand' 
+            target: 'hand',
+            reason
         }), this.createContext(context));
     }
 
@@ -370,7 +378,7 @@ class Player extends Spectator {
         }, options);
     }
 
-    discardFromHand(number = 1, callback = () => true, options = {}) {
+    discardFromHand(number = 1, callback = () => true, options = {}, context) {
         let defaultOptions = {
             discardExactly: false
         };
@@ -388,16 +396,16 @@ class Player extends Spectator {
                 }
                 this.discardCards(cards, false, discarded => {
                     callback(discarded);
-                }, updatedOptions);
+                }, updatedOptions, context);
                 return true;
             }
         }); 
     }
 
-    redrawFromHand(number = 1, callback = () => true, options = {}) {
+    redrawFromHand(number = 1, callback = () => true, options = {}, context) {
         this.discardFromHand(number, discardedCards => {
-            this.drawCardsToHand(discardedCards.length).thenExecute(event => callback(event));            
-        }, options);
+            this.drawCardsToHand(discardedCards.length, context).thenExecute(event => callback(event, discardedCards));            
+        }, options, context);
     }
 
     moveFromTopToBottomOfDrawDeck(number) {
@@ -498,7 +506,7 @@ class Player extends Spectator {
     }
 
     sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length);
+        this.drawCardsToHand(this.handSize - this.hand.length, null, 'sundown');
     }    
 
     createOutfitAndLegend() {
@@ -831,12 +839,16 @@ class Player extends Spectator {
             this.game.promptForSelect(this, {
                 activePromptTitle: 'Select a dude to invent ' + gadget.title,
                 waitingPromptTitle: 'Waiting for opponent to select dude',
-                cardCondition: card => card.location === 'play area' && !card.booted && 
+                cardCondition: card => card.location === 'play area' && 
+                    card.controller === this &&
+                    (!card.booted || gadget.canBeInventedWithoutBooting()) && 
                     card.canPerformSkillOn(gadget) &&
                     card.isInControlledLocation(),
                 cardType: 'dude',
                 onSelect: (player, card) => {
-                    this.bootCard(card);
+                    if(!gadget.canBeInventedWithoutBooting()) {
+                        this.bootCard(card);
+                    }
                     this.pullForSkill(gadget.difficulty, card.getSkillRatingForCard(gadget), getPullProperties(card));
                     return true;
                 }
@@ -1189,7 +1201,7 @@ class Player extends Spectator {
             this.shuffleDiscardToDrawDeck();
         }
         let pulledCard = this.drawDeck[0];
-        this.removeCardFromPile(pulledCard);
+        this.moveCard(pulledCard, 'being played');
         this.game.raiseEvent('onCardPulled', { card: pulledCard });
         if(addMessage) {
             this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.value, pulledCard.suit, pulledCard);
@@ -1212,7 +1224,8 @@ class Player extends Spectator {
             pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
             source: properties.source,
-            player: this
+            player: this,
+            context
         };
         this.pull((pulledCard, pulledValue, pulledSuit) => {
             if(context) {
@@ -1455,7 +1468,7 @@ class Player extends Spectator {
             card.moveTo(targetLocation);
         }
 
-        if((targetLocation === 'draw deck' || targetLocation === 'discard pile') && !options.bottom) {
+        if(['draw deck', 'discard pile', 'being played'].includes(targetLocation) && !options.bottom) {
             targetPile.unshift(card);
         } else {
             targetPile.push(card);
@@ -1592,6 +1605,10 @@ class Player extends Spectator {
         return !this.noTimer && this.user.settings.windowTimer !== 0;
     }
 
+    dudesCannotFlee() {
+        return this.options.contains('dudesCannotFlee'); 
+    }
+
     getState(activePlayer) {
         let isActivePlayer = activePlayer === this;
         let promptState = isActivePlayer ? this.promptState.getState() : {};
@@ -1611,7 +1628,8 @@ class Player extends Spectator {
                 discardPile: this.getSummaryForCardList(fullDiscardPile, activePlayer),
                 drawDeck: this.getSummaryForCardList(this.drawDeck, activePlayer),
                 hand: this.getSummaryForCardList(this.hand, activePlayer),
-                drawHand: this.getSummaryForCardList(this.drawHand, activePlayer)
+                drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
+                beingPlayed: this.getSummaryForCardList(this.beingPlayed, activePlayer)
             },
             disconnected: !!this.disconnectedAt,
             outfit: this.outfit.getSummary(activePlayer),

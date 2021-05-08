@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/182/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/216/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -92,9 +92,9 @@
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
 |:heavy_check_mark:   | 01080| Telegraph Office
-|                     | 01081| Pair of Six-Shooters
+|:heavy_check_mark:   | 01081| Pair of Six-Shooters
 |:heavy_check_mark:   | 01082| Bluetick
-|                     | 01083| Peacemaker
+|:heavy_check_mark:   | 01083| Peacemaker
 |:heavy_check_mark:   | 01084| Shotgun
 |                     | 01085| Whiskey Flask
 |:heavy_check_mark:   | 01086| Mustang
@@ -119,7 +119,7 @@
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
 |                     | 01106| Hired Guns
 |                     | 01107| Lady Luck
-|                     | 01108| Bottom Dealin'
+|:heavy_check_mark:   | 01108| Bottom Dealin'
 |                     | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
 |                     | 01111| Auction
@@ -179,7 +179,7 @@
 |:heavy_check_mark:   | 02014| Faithful Hound
 |                     | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
-|                     | 02017| Forget
+|:heavy_check_mark:   | 02017| Forget
 |                     | 02018| Make 'em Sweat
 |                     | 02019| Back Ways
 |                     | 02020| Hired Help
@@ -200,13 +200,13 @@
 |                     | 03009| Genesee "Gina" Tailfeathers
 |                     | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
-|                     | 03012| Surveyor's Office
+|:heavy_check_mark:   | 03012| Surveyor's Office
 |                     | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |                     | 03015| Holy Wheel Gun
 |                     | 03016| Stone Idol
-|                     | 03017| Corporeal Twist
-|                     | 03018| Fetch
+|:heavy_check_mark:   | 03017| Corporeal Twist
+|:heavy_check_mark:   | 03018| Fetch
 |:heavy_check_mark:   | 03019| ...It's who you know
 |                     | 03020| Horse Wranglin'
 |:heavy_check_mark:   | 03021| It's Not What You Know...
@@ -235,7 +235,7 @@
 |                     | 04018| Summoning
 |                     | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
-|                     | 04021| Election Day Slaughter
+|:heavy_check_mark:   | 04021| Election Day Slaughter
 
 ## `03-FF` Faith and Fear
 
@@ -255,13 +255,13 @@
 |                     | 05012| Chuan "Jen" Qí
 |                     | 05013| Lane Healey (Exp.1)
 |                     | 05014| The Fixer
-|                     | 05015| Maria Kingsford
+|:heavy_check_mark:   | 05015| Maria Kingsford
 |                     | 05016| Makaio Kaleo, Esq.
 |                     | 05017| Sister Lois Otwell
 |:heavy_check_mark:   | 05018| Félix Amador
 |:heavy_check_mark:   | 05019| Nicodemus Whateley
 |                     | 05020| Pettigrew's Pawnshop
-|                     | 05021| California Tax Office
+|:heavy_check_mark:   | 05021| California Tax Office
 |                     | 05022| St. Anthony's Chapel
 |                     | 05023| The Whateley Estate
 |                     | 05024| Outlaw Mask
@@ -278,7 +278,7 @@
 |                     | 05035| Swinford Finds Trouble
 |                     | 05036| Under the Weather
 |:heavy_check_mark:   | 05037| Faster on the Draw
-|                     | 05038| This'll Hurt in the Mornin'
+|:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
 |:heavy_check_mark:   | 05040| Meet The New Boss
 |                     | 06001| Funtime Freddy
@@ -301,7 +301,7 @@
 |                     | 06013| Legal Instruments
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
-|                     | 06016| Fancy New Hat
+|:heavy_check_mark:   | 06016| Fancy New Hat
 |:heavy_check_mark:   | 06017| Confession
 |:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
@@ -332,7 +332,7 @@
 |                     | 07018| Mark of Pestilence
 |                     | 07019| Cookin' Up Trouble
 |                     | 07020| Ol' Fashioned Hangin'
-|                     | 07021| No Turning Back
+|:heavy_check_mark:   | 07021| No Turning Back
 
 ## `04.3-NN` Nightmare at Noon
 
@@ -353,7 +353,7 @@
 |:heavy_check_mark:   | 08013| Dog's Duster
 |                     | 08014| Stoker's Sabre
 |                     | 08015| Fate Dispenser
-|                     | 08016| Soul Cage
+|:heavy_check_mark:   | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
 |:heavy_check_mark:   | 08018| Sword of the Spirit
 |                     | 08019| A Fight They'll Never Forget
@@ -396,7 +396,7 @@
 |                     | 09030| Idol of Tlazolteotl
 |                     | 09031| Spirit Guidance
 |:heavy_check_mark:   | 09032| Spirit Dance
-|                     | 09033| Spirit Trail
+|:heavy_check_mark:   | 09033| Spirit Trail
 |:heavy_check_mark:   | 09034| Many Speak as One
 |                     | 09035| The Pack Awakens
 |                     | 09036| Shifu Speaks
@@ -436,11 +436,11 @@
 |:heavy_check_mark:   | 10023| Cooke's Nightcap
 |                     | 10024| Mutant Cattle
 |                     | 10025| Monte Bank
-|                     | 10026| Wendy's Teethkickers
+|:heavy_check_mark:   | 10026| Wendy's Teethkickers
 |                     | 10027| Rich Man's Guard Dog
 |                     | 10028| Fiery Rhetoric
 |:heavy_check_mark:   | 10029| Strength of the Ancestors
-|                     | 10030| Phantom Fingers
+|:heavy_check_mark:   | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
 |                     | 10032| Red Horse's Tail
 |:heavy_check_mark:   | 10033| Fire of Nanahbozho
@@ -495,9 +495,9 @@
 |                     | 12008| Miranda Clarke
 |                     | 12009| Elliot Smithson
 |                     | 12010| Shelby Hunt
-|                     | 12011| The Joker's Smile
+|:heavy_check_mark:   | 12011| The Joker's Smile
 |                     | 12012| Old Marge's Manor
-|                     | 12013| Xemo's Turban
+|:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
 |                     | 12015| Guide Horse
 |                     | 12016| Marty
@@ -523,13 +523,13 @@
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
 |:heavy_check_mark:   | 13011| The Orphanage
 |:heavy_check_mark:   | 13012| The Place
-|                     | 13013| Hawley's Rose
+|:heavy_check_mark:   | 13013| Hawley's Rose
 |:heavy_check_mark:   | 13014| LeMat Revolver
 |:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
 |                     | 13017| Mother Bear's Rage
 |                     | 13018| Focusing Chi
-|                     | 13019| Mugging
+|:heavy_check_mark:   | 13019| Mugging
 |                     | 13020| Signing Over the Stores
 |                     | 13021| No Funny Stuff
 
@@ -556,22 +556,22 @@
 |                     | 14017| Market Street
 |                     | 14018| Companhurst's
 |                     | 14019| Epidemic Laboratory
-|                     | 14020| Walters Creek Distillery
-|                     | 14021| Silent Sigil
+|:heavy_check_mark:   | 14020| Walters Creek Distillery
+|:heavy_check_mark:   | 14021| Silent Sigil
 |                     | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
 |:heavy_check_mark:   | 14024| Tusk
 |                     | 14025| Mountain Lion Friend
 |                     | 14026| Spirit Steed
 |                     | 14027| Crafty Hare
-|                     | 14028| Onward Christian Soldiers
+|:heavy_check_mark:   | 14028| Onward Christian Soldiers
 |                     | 14029| Turtle's Guard
 |                     | 14030| Sight Beyond Sight
 |                     | 14031| Requiem for a Good Boy
 |                     | 14032| Fool Me Once...
 |                     | 14033| Fiddle Game
 |                     | 14034| Pigging Out
-|                     | 14035| Technological Exhibition
+|:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
 |                     | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
@@ -593,7 +593,7 @@
 |                     | 15008| The Highbinder Hotel
 |                     | 15009| 2nd Bank Of Gomorra
 |                     | 15010| High Stakes Haven
-|                     | 15011| Culpability Scientizer
+|:heavy_check_mark:   | 15011| Culpability Scientizer
 |                     | 15012| Espuelas
 |                     | 15013| Rites of the Smoking Mirror
 |                     | 15014| Essence of Armitage
@@ -620,14 +620,14 @@
 |                     | 16009| Denise Brancini
 |                     | 16010| Long Strides Ranch
 |                     | 16011| The Gomorra Gazette
-|                     | 16012| "Open Wound"
+|:heavy_check_mark:   | 16012| "Open Wound"
 |                     | 16013| Doomsday Supply
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
 |                     | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
-|                     | 16019| Siege Of The Orphanage
+|:heavy_check_mark:   | 16019| Siege Of The Orphanage
 |                     | 16020| Lighting The Fuse
 |                     | 16021| One Fights As Many
 
@@ -683,7 +683,7 @@
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
 |                     | 18022| Nickel Night Inn
-|                     | 18023| Sherman Mortgage
+|:heavy_check_mark:   | 18023| Sherman Mortgage
 |                     | 18024| Gomorra Gaming Commission
 |                     | 18025| Cliff's #4 Saloon
 |                     | 18026| Baijiu Jar
@@ -702,7 +702,7 @@
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
 |                     | 18041| "Thunder Boy" Nabbe
-|                     | 18042| Dave "Slim" Gorman
+|:heavy_check_mark:   | 18042| Dave "Slim" Gorman
 
 ## `11-TCaR` There Comes a Reckoning
 
@@ -760,11 +760,15 @@
 |--------|-----:|:------------------------:|
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20026| Ike Clanton
+|:heavy_check_mark:   | 20029| Larry "Sevens" Swift
+|:heavy_check_mark:   | 20042| Stone's Colt Dragoons
+|:heavy_check_mark:   | 20056| Ricochet
 
 ## `13-O4B` Out for Blood
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 21001| House of Many Faiths
 |:heavy_check_mark:   | 21007| Doc Holliday
 |:white_check_mark:   | 21027| Eli Leatherwood
 

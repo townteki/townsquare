@@ -31,10 +31,15 @@ class ChatCommands {
             '/disconnectme': this.disconnectMe,
             '/draw': this.draw,
             '/give-control': this.giveControl,
+            '/hand-rank': this.handRank,
+            '/hr': this.handRank,
             '/inf': this.influence,
-            '/join-posse': this.joinPosse,
             '/join': this.joinPosse,
+            '/join-posse': this.joinPosse,
+            '/join-without-move': this.joinPosseWoMove,
+            '/kung-fu': this.kungFuRating,
             '/move': this.move,
+            '/pull': this.pull,
             '/rematch': this.rematch,
             '/remove-from-game': this.removeFromGame,
             '/remove-from-posse': this.removeFromPosse,
@@ -44,6 +49,8 @@ class ChatCommands {
             '/reset-abilities': this.resetAbilities,
             '/resab': this.resetAbilities,
             '/reveal-hand': this.revealHand,
+            '/skill-rating': this.skillRating,
+            '/skill': this.skillRating,
             '/shooter': this.shooter,
             '/suit': this.suit,
             '/token': this.setToken,
@@ -111,7 +118,7 @@ class ChatCommands {
 
     influence(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
-        var type = this.getNumberOrDefault(args[2], 'influence');
+        var type = args[2] || 'influence';
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set ' + type + ' for',
             waitingPromptTitle: 'Waiting for opponent to set ' + type,
@@ -151,6 +158,52 @@ class ChatCommands {
         });
     }
 
+    handRank(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        let totalRank = player.getHandRank().rank + player.rankModifier;
+        let change = num - totalRank;
+        player.modifyRank(change);
+        this.game.addAlert('danger', '{0} uses the /hand-rank command to set their hand rank to {1}', 
+            player, player.getTotalRank());
+    }
+
+    pull(player, args) {
+        let condition = args[1] === 'kf' ? card => card.isKungFu() : card => card.isSkilled();
+        var num = this.getNumberOrDefault(args[1], 0);
+        if(!num && args[1] !== 'kf') {
+            player.handlePulledCard(player.pull(() => true, true));
+            return;
+        }
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude performing pull',
+            waitingPromptTitle: 'Waiting for opponent to select dude performing pull',
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                condition(card),
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                this.pullingDude = card;
+                this.pullDifficulty = num;
+                let skillsOrFu = args[1] !== 'kf' ? card.getSkills() : ['kung fu'];
+                if(skillsOrFu.length > 1) {
+                    let buttons = skillsOrFu.map(skill => {
+                        return { text: skill.charAt(0).toUpperCase() + skill.slice(1), arg: skill, method: 'selectSkillOrFu' };
+                    });
+                    this.game.promptWithMenu(p, this, {
+                        activePrompt: {
+                            menuTitle: 'Select skill',
+                            buttons: buttons
+                        },
+                        source: this
+                    });
+                } else {
+                    this.selectSkillOrFu(p, skillsOrFu[0]);
+                }
+                return true;
+            }
+        });
+    }
+
     resetAbilities(player) {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to reset ability for',
@@ -163,6 +216,46 @@ class ChatCommands {
                 return true;
             }
         });        
+    }
+
+    skillRating(player, args) {
+        var skillName = args[1];
+        if(!skillName) {
+            return;
+        }
+        if(skillName === 'mad') {
+            skillName = 'mad scientist';
+        }
+        var num = this.getNumberOrDefault(args[2], 1);
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to modify skill/kung fu rating for',
+            waitingPromptTitle: 'Waiting for opponent to select card',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                const currentRating = card.keywords.getSkillRating(skillName);
+                if(currentRating === null || currentRating === undefined) {
+                    this.game.addAlert('danger', '{0} uses the /skill-rating or /kung-fu, but {1} is missing {2}. First add it using /add-keyword', 
+                        p, card, skillName);     
+                    return true;               
+                }
+                let change = num - currentRating;
+                card.keywords.modifySkillRating(skillName, change);
+                if(skillName !== 'kung fu') {
+                    this.game.addAlert('danger', '{0} uses the /skill-rating command to set {1} rating of {2} to {3}', 
+                        p, skillName, card, card.keywords.getSkillRating(skillName));
+                } else {
+                    this.game.addAlert('danger', '{0} uses the /kung-fu command to set {1} rating of {2} to {3}', 
+                        p, skillName, card, card.keywords.getSkillRating(skillName));                    
+                }
+                return true;
+            }
+        });
+    }
+
+    kungFuRating(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        this.skillRating(player, [null, 'kung fu', num]);
     }
 
     shooter(player, args) {
@@ -243,7 +336,7 @@ class ChatCommands {
         });
     }
 
-    joinPosse(player) {
+    joinPosse(player, doMove = true) {
         if(!this.game.shootout) {
             return;
         }
@@ -254,10 +347,19 @@ class ChatCommands {
             cardType: ['dude'],
             onSelect: (p, card) => {
                 this.game.shootout.addToPosse(card);
-                this.game.addAlert('danger', '{0} uses the /join-posse command to add {1} to posse', p, card);
+                let actionText = 'add';
+                if(doMove) {
+                    card.moveToShootoutLocation({ needToBoot: false, allowBooted: true });
+                    actionText = 'move';
+                }
+                this.game.addAlert('danger', '{0} uses the /join-posse command to {1} {2} to posse', p, actionText, card);
                 return true;
             }
         });
+    }
+
+    joinPosseWoMove(player) {
+        this.joinPosse(player, false);
     }
 
     move(player) {
@@ -459,10 +561,9 @@ class ChatCommands {
 
     value(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
-        var type = this.getNumberOrDefault(args[2], 'value');
         this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card to set ' + type + ' for',
-            waitingPromptTitle: 'Waiting for opponent to set ' + type,
+            activePromptTitle: 'Select a card to set value for',
+            waitingPromptTitle: 'Waiting for opponent to set value',
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
             onSelect: (p, card) => {
@@ -576,6 +677,26 @@ class ChatCommands {
         }
 
         this.game.queueStep(new RematchPrompt(this.game, player));
+    }
+
+    selectSkillOrFu(player, skillOrFu) {
+        let pullBonus = this.pullingDude.getSkillRating(skillOrFu);
+        this.game.addAlert('warning', '{0} uses the /pull command to perform "{1}" pull with {2}', 
+            player, skillOrFu, this.pullingDude);
+        player.handlePull({
+            successCondition: pulledValue => {
+                if(skillOrFu === 'kung fu') {
+                    return pulledValue < this.pullingDude.value + pullBonus;
+                }
+                return pulledValue >= this.pullDifficulty;
+            }, 
+            pullingDude: this.pullingDude,
+            pullBonus: skillOrFu !== 'kung fu' ? pullBonus : 0,
+            source: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
+                `chatcommands with difficulty ${this.pullingDude.value + pullBonus}`,
+            player: player
+        });
+        return true;
     }
 }
 

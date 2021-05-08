@@ -38,6 +38,7 @@ class Shootout extends Phase {
         this.initialise([
             new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
             new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
+            new SimpleStep(this.game, () => this.game.raiseEvent('onPossesFormed', { shootout: this })),
             new SimpleStep(this.game, () => this.gatherPosses()),
             new SimpleStep(this.game, () => this.breakinAndEnterin()),
             new SimpleStep(this.game, () => this.beginShootoutRound())
@@ -368,6 +369,7 @@ class Shootout extends Phase {
     }
 
     casualtiesAndRunOrGun() {
+        this.game.raiseEvent('onShootoutCasualtiesStepStarted');
         this.queueStep(new TakeYerLumpsPrompt(this.game, this.shootoutLoseWinOrder));
         this.queueStep(new RunOrGunPrompt(this.game, this.shootoutLoseWinOrder));
     }

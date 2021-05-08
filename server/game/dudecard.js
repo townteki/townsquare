@@ -14,8 +14,9 @@ class DudeCard extends DrawCard {
 
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
+        this.skillKfBonuses = [];
         this.studReferenceArray = [];
-        this.studReferenceArray.unshift({ source: this.uuid, shooter: this.cardData.shooter});
+        this.studReferenceArray.unshift({ source: 'default', shooter: this.cardData.shooter});
         this.spellFunc = spell => {
             if(spell.isTotem()) {
                 return spell.gamelocation === this.gamelocation;
@@ -75,7 +76,17 @@ class DudeCard extends DrawCard {
     }
 
     getSkillRating(skillName) {
-        return this.keywords.getSkillRating(skillName);
+        const baseSkillRating = this.keywords.getSkillRating(skillName);
+        if(baseSkillRating === null || baseSkillRating === undefined) {
+            return;
+        }
+        const bonus = this.skillKfBonuses.reduce((aggregator, bonus) => {
+            if(typeof(bonus.bonus) === 'function') {
+                return aggregator + (bonus.bonus(skillName) || 0);
+            }
+            return aggregator + bonus.bonus;
+        }, 0);
+        return baseSkillRating + bonus;
     }
 
     getSkillRatingForCard(spellOrGadget) {
@@ -139,7 +150,8 @@ class DudeCard extends DrawCard {
                     isCardEffect: false 
                 }), context);
             },
-            player: this.controller
+            player: this.controller,
+            printed: false
         });
 
         this.action({
@@ -159,7 +171,8 @@ class DudeCard extends DrawCard {
             handler: context => {
                 this.game.queueStep(new TradingPrompt(this.game, context.player, context.target));
             },
-            player: this.controller
+            player: this.controller,
+            printed: false
         });        
     }
 
@@ -450,11 +463,23 @@ class DudeCard extends DrawCard {
         return this.hasKeyword('blessed') || this.hasKeyword('huckster') || this.hasKeyword('shaman');
     }
 
+    isKungFu() {
+        return this.hasKeyword('kung fu');
+    }
+
     canCastSpell(spell) {
         if(!(spell instanceof SpellCard)) {
             return false;
         }
         return this.canPerformSkillOn(spell) && this.spellFunc(spell);
+    }
+
+    addSkillKfBonus(bonus, source) {
+        this.skillKfBonuses.push({ bonus, source });
+    }
+
+    removeSkillKfBonus(source) {
+        this.skillKfBonuses = this.skillKfBonuses.filter(bonus => bonus.source !== source);
     }
 
     leavesPlay() {

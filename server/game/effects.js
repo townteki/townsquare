@@ -1,3 +1,5 @@
+const uuid = require('uuid');
+
 const CardTextDefinition = require('./CardTextDefinition');
 const CostReducer = require('./costreducer.js');
 const PlayableLocation = require('./playablelocation.js');
@@ -6,38 +8,49 @@ const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
 
-function cannotEffect(type = 'any', playType = 'any', targetType = '') {
+function cannotEffect(type = 'any', playType = 'any', titleFunc = () => '', targetType = '') {
     return function(controller, predicate) {
+        const title = titleFunc(controller === 'opponent' ? ' opponent' : '');
         if(targetType === 'shootout') {
-            return shootoutRestrictionEffect(new CannotRestriction(type, playType, controller, predicate));
+            return shootoutRestrictionEffect(new CannotRestriction(type, playType, controller, predicate), title);
         }
-        return cardRestrictionEffect(new CannotRestriction(type, playType, controller, predicate));
+        return cardRestrictionEffect(new CannotRestriction(type, playType, controller, predicate), title);
     };
 }
 
 // if specific ability play type cannot be played on card (e.g. shootout, resolution)
-function cannotEffectPlayType(playType, targetType = '') {
+function cannotEffectPlayType(playType, titleFunc, targetType = '') {
     return function(controller, predicate) {
+        const title = titleFunc(controller === 'opponent' ? ' opponent' : '');
         if(targetType === 'shootout') {
-            return shootoutRestrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
+            return shootoutRestrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller), title);
         }
-        return cardRestrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller));
+        return cardRestrictionEffect(CannotRestriction.forAnyType(playType, predicate, controller), title);
     };
 }
 
 // if specific game actions cannot be played on card (e.g. ace, discard, callout, target)
-function cannotEffectType(type, targetType = '') {
+function cannotEffectType(type, titleFunc, targetType = '') {
     return function(controller, predicate) {
+        const title = titleFunc(controller === 'opponent' ? ' opponent' : '');
         if(targetType === 'shootout') {
-            return shootoutRestrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
+            return shootoutRestrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller), title);
         }
-        return cardRestrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller));
+        return cardRestrictionEffect(CannotRestriction.forAnyPlayType(type, predicate, controller), title);
     };
 }
 
 function cannotMove(viaCardEffects = false) {
     return function(controller = 'any', predicate = () => true) {
+        let titleSuffix = '';
+        if(controller === 'opponent') {
+            titleSuffix = ' opponent';
+        }
+        if(viaCardEffects) {
+            titleSuffix += ' card effects';
+        }
         return {
+            title: `Cannot move ${titleSuffix !== '' ? 'by ' + titleSuffix : ''}`,
             apply: function(card, context) {
                 context.restrictions = context.restrictions || {};
                 context.restrictions[card.uuid] = [];
@@ -65,8 +78,9 @@ function cannotMove(viaCardEffects = false) {
     }; 
 }
 
-function cardRestrictionEffect(restrictions) {
+function cardRestrictionEffect(restrictions, title) {
     return {
+        title,
         apply: function(card) {
             card.addAbilityRestriction(restrictions);
         },
@@ -76,8 +90,9 @@ function cardRestrictionEffect(restrictions) {
     }; 
 }
 
-function shootoutRestrictionEffect(restrictions) {
+function shootoutRestrictionEffect(restrictions, title) {
     return {
+        title,
         targetType: 'shootout',
         apply: function(shootout) {
             shootout.addAbilityRestriction(restrictions);
@@ -101,14 +116,30 @@ function losesAspectEffect(aspect) {
     };
 }
 
-function optionEffect(key) {
+function optionEffect(key, title) {
     return function(source, condition) {
         return {
+            title: title,
             apply: function(card) {
                 card.options.add(key, source, condition);
             },
             unapply: function(card) {
                 card.options.remove(key, source);
+            }
+        };
+    };
+}
+
+function playerOptionEffect(key, title) {
+    return function(source, condition) {
+        return {
+            title: title,
+            targetType: 'player',
+            apply: function(player) {
+                player.options.add(key, source, condition);
+            },
+            unapply: function(player) {
+                player.options.remove(key, source);
             }
         };
     };
@@ -129,8 +160,8 @@ function adjacency(type) {
     };
 }
 
-function conditionalAdjacency() {
-    return function (condition, source, type) {
+function conditionalAdjacency(type) {
+    return function (condition, source) {
         return {
             apply: function(card, context) {
                 if(!card.isLocationCard()) {
@@ -152,7 +183,7 @@ function conditionalAdjacency() {
             unapply: function(card, context) {
                 let removeAdjacencies = context.dynamicAdjacency[card.uuid];
                 card.removeAdjacencyLocations(removeAdjacencies, source, type);
-                delete context.dynamicAdjacencies[card.uuid];
+                delete context.dynamicAdjacency[card.uuid];
             },
             isStateDependent: true
         };
@@ -168,11 +199,13 @@ function dynamicStatModifier(propName) {
         const dynamicPropName = 'dynamic' + propNameCapital;
 
         return {
+            title: `${propNameCapital} dynamically modified`,
             gameAction: gameAction || 'increase' + propNameCapital,
             apply: function(card, context) {
                 context[dynamicPropName] = context[dynamicPropName] || {};
                 context[dynamicPropName][card.uuid] = calculate(card, context) || 0;
                 let value = context[dynamicPropName][card.uuid];
+                this.title = `${propNameCapital} modified: ${value}`;
                 card[functionName](value, true);
             },
             reapply: function(card, context) {
@@ -193,38 +226,47 @@ function dynamicStatModifier(propName) {
 }
 
 const Effects = {
-    setAsStud: function(sourceUuid) {
+    setAsStud: function() {
         return {
+            title: 'Stud bullet modifier',
             gameAction: 'setAsStud',
-            apply: function(card) {
+            apply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.addStudEffect(sourceUuid, 'Stud');
+                    if(!context.source) {
+                        context.source = { uuid: uuid.v1() };
+                    }
+                    card.addStudEffect(context.source.uuid, 'Stud');
                 }
             },
-            unapply: function(card) {
+            unapply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.removeStudEffect(sourceUuid);
+                    card.removeStudEffect(context.source.uuid);
                 }
             }
         };
     },
-    setAsDraw: function(sourceUuid) {
+    setAsDraw: function() {
         return {
+            title: 'Draw bullet modifier',
             gameAction: 'setAsDraw',
-            apply: function(card) {
+            apply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.addStudEffect(sourceUuid, 'Draw');
+                    if(!context.source) {
+                        context.source = { uuid: uuid.v1() };
+                    }
+                    card.addStudEffect(context.source.uuid, 'Draw');
                 }
             },
-            unapply: function(card) {
+            unapply: function(card, context) {
                 if(card.getType() === 'dude') {
-                    card.removeStudEffect(sourceUuid);
+                    card.removeStudEffect(context.source.uuid);
                 }
             }
         };
     },
     setMaxBullets: function(value) {
         return {
+            title: `Set Max Bullets to ${value}`,
             apply: function(card, context) {
                 context.setMaxBullets = context.setMaxBullets || {};
                 context.setMaxBullets[card.uuid] = card.maxBullets;
@@ -238,6 +280,7 @@ const Effects = {
     },
     determineControlByBullets: function() {
         return {
+            title: 'Control Determinator: Bullets',
             apply: function(card) {
                 card.controlDeterminator = 'bullets';
             },
@@ -248,22 +291,13 @@ const Effects = {
     }, 
     setSuit: function(suit, sourceUuid) {
         return {
+            title: `Suit set to: ${suit}`,
             gameAction: 'setSuit',
             apply: function(card) {
                 card.addSuitEffect(sourceUuid, suit);
             },
             unapply: function(card) {
                 card.removeSuitEffect(sourceUuid, suit);
-            }
-        };
-    },
-    entersPlayBooted: function() {
-        return {
-            apply: function(card) {
-                card.entersPlayBooted = true;
-            },
-            unapply: function(card) {
-                card.entersPlayBooted = false;
             }
         };
     },
@@ -277,15 +311,16 @@ const Effects = {
             }
         };
     },
-    calloutCannotBeRefused: optionEffect('calloutCannotBeRefused'),
-    doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin'),
-    doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown'),
-    doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings'),
+    calloutCannotBeRefused: optionEffect('calloutCannotBeRefused', 'Callout cannot be Refused'),
+    doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin', 'Does not get Bounty on Join'),
+    doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown', 'Does not Unboot at Sundown'),
+    doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings', 'Does not provide Bullets'),
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },
     modifyBullets: function(value) {
         return {
+            title: `Bullets modified: ${value}`,
             gameAction: value < 0 ? 'decreaseBullets' : 'increaseBullets',
             apply: function(card) {
                 card.modifyBullets(value, true);
@@ -297,6 +332,7 @@ const Effects = {
     },
     setBullets: function(value) {
         return {
+            title: `Bullets set to: ${value}`,
             gameAction: card => card.bullets > value ? 'decreaseBullets' : 'increaseBullets',
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
@@ -311,6 +347,7 @@ const Effects = {
     },
     modifyInfluence: function(value) {
         return {
+            title: `Influence modified: ${value}`,
             gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
                 card.modifyInfluence(value, true);
@@ -322,6 +359,7 @@ const Effects = {
     },
     setInfluence: function(value) {
         return {
+            title: `Influence set to: ${value}`,
             gameAction: card => card.influence > value ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
@@ -336,6 +374,7 @@ const Effects = {
     },
     modifyControl: function(value) {
         return {
+            title: `Control modified: ${value}`,
             gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
                 card.modifyControl(value, true);
@@ -347,6 +386,7 @@ const Effects = {
     },
     setControl: function(value) {
         return {
+            title: `Control set to: ${value}`,
             gameAction: card => card.control > value ? 'decreaseControl' : 'increaseControl',
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
@@ -361,6 +401,7 @@ const Effects = {
     },
     modifyValue: function(value) {
         return {
+            title: `Value modified: ${value}`,
             gameAction: value < 0 ? 'decreaseValue' : 'increaseValue',
             apply: function(card) {
                 card.modifyValue(value, true);
@@ -372,6 +413,7 @@ const Effects = {
     },
     setValue: function(value) {
         return {
+            title: `Value set to: ${value}`,
             gameAction: card => card.value > value ? 'decreaseValue' : 'increaseValue',
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
@@ -386,6 +428,7 @@ const Effects = {
     },
     modifyProduction: function(value) {
         return {
+            title: `Production modified: ${value}`,
             gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
             apply: function(card) {
                 card.modifyProduction(value, true);
@@ -397,6 +440,7 @@ const Effects = {
     },
     modifyUpkeep: function(value) {
         return {
+            title: `Upkeep modified: ${value}`,
             gameAction: value < 0 ? 'decreaseUpkeep' : 'increaseUpkeep',
             apply: function(card) {
                 card.modifyUpkeep(value, true);
@@ -408,6 +452,7 @@ const Effects = {
     },
     modifySkillRating: function(type, value) {
         return {
+            title: `Skill Rating modified: ${value}`,
             gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
             apply: function(card) {
                 card.modifySkillRating(type, value, true);
@@ -419,6 +464,7 @@ const Effects = {
     },
     productionToBeReceivedBy: function(player) {
         return {
+            title: `Production to be received by: ${player.name}`,
             apply: function(card) {
                 if(card.getType() === 'deed') {
                     card.productionToBeReceivedBy = player;
@@ -429,8 +475,8 @@ const Effects = {
             }
         };
     },
-    additionalDynamicAdjacency: conditionalAdjacency(),
-    preventDynamicAdjacency: conditionalAdjacency(),
+    additionalDynamicAdjacency: conditionalAdjacency('adjacent'),
+    preventDynamicAdjacency: conditionalAdjacency('prevent'),
     additionalAdjacency: adjacency('adjacent'),
     preventAdjacency: adjacency('prevent'),
     dynamicBullets: dynamicStatModifier('bullets'),
@@ -438,6 +484,7 @@ const Effects = {
     dynamicProduction: dynamicStatModifier('production'),
     modifyHandSize: function(value) {
         return {
+            title: `Hand Size modified: ${value}`,
             targetType: 'player',
             apply: function(player) {
                 player.handSize += value;
@@ -449,6 +496,7 @@ const Effects = {
     },
     modifySundownDiscard: function(value) {
         return {
+            title: `Sundown Discard modified: ${value}`,
             targetType: 'player',
             apply: function(player) {
                 player.discardNumber += value;
@@ -460,6 +508,7 @@ const Effects = {
     },
     modifyHandRankMod: function(value) {
         return {
+            title: `Hand Rank modified: ${value}`,
             targetType: 'player',
             gameAction: 'modifyHandRank',
             apply: function(player) {
@@ -475,11 +524,13 @@ const Effects = {
         const calculate = isStateDependent ? calculateOrValue : () => calculateOrValue;
 
         return {
+            title: 'Hand Rank dynamically modified',
             gameAction: 'modifyHandRank',
             apply: function(player, context) {
                 context.dynamicHandRank = context.dynamicHandRank || {};
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
                 let value = context.dynamicHandRank[player.name];
+                this.title = `Hand Rank modified: ${value}`;
                 player.modifyRank(value);
             },
             reapply: function(player, context) {
@@ -499,6 +550,7 @@ const Effects = {
     },
     addKeyword: function(keyword) {
         return {
+            title: `Keyword added: ${keyword}`,
             apply: function(card) {
                 card.addKeyword(keyword);
             },
@@ -536,6 +588,7 @@ const Effects = {
     },
     removeKeyword: function(keyword) {
         return {
+            title: `Keyword removed: ${keyword}`,
             apply: function(card) {
                 card.removeKeyword(keyword);
             },
@@ -546,6 +599,7 @@ const Effects = {
     },
     addMultipleKeywords: function(keywords) {
         return {
+            title: `Keywords added: ${keywords}`,
             apply: function(card) {
                 for(let keyword of keywords) {
                     card.addKeyword(keyword);
@@ -559,29 +613,9 @@ const Effects = {
         };
     },
     losesAllKeywords: losesAspectEffect('keywords'),
-    losesAllTraits: losesAspectEffect('traits'),
-    addTrait: function(trait) {
-        return {
-            apply: function(card) {
-                card.addTrait(trait);
-            },
-            unapply: function(card) {
-                card.removeTrait(trait);
-            }
-        };
-    },
-    removeTrait: function(trait) {
-        return {
-            apply: function(card) {
-                card.removeTrait(trait);
-            },
-            unapply: function(card) {
-                card.addTrait(trait);
-            }
-        };
-    },
     addCardAction: function(properties) {
         return {
+            title: `Card Action added: ${properties.title}`,
             apply: function(card, context) {
                 let action = new CardAction(context.game, card, properties);
                 context.cardActionIndex = context.cardActionIndex || {};
@@ -596,7 +630,23 @@ const Effects = {
             }
         };
     },
+    addSkillKfBonus: function(bonus, source) {
+        return {
+            title: 'Skill or KF bonus added',
+            apply: function(card) {
+                if(card.getType() === 'dude') {
+                    card.addSkillKfBonus(bonus, source);
+                }
+            },
+            unapply: function(card) {
+                if(card.getType() === 'dude') {
+                    card.removeSkillKfBonus(source);
+                }
+            }
+        };        
+    },
     blankExcludingKeywords: {
+        title: 'Blank excluding Keywords',
         apply: function(card) {
             card.setBlank('excludingKeywords');
         },
@@ -605,6 +655,7 @@ const Effects = {
         }
     },
     fullBlank: {
+        title: 'Full Blank',
         apply: function(card) {
             card.setBlank('full');
         },
@@ -619,81 +670,6 @@ const Effects = {
             },
             unapply: function(card) {
                 card.actionPlacementLocation = 'discard pile';
-            }
-        };
-    },
-    discardIfStillInPlay: function(allowSave = false) {
-        return {
-            apply: function(card, context) {
-                context.discardIfStillInPlay = context.discardIfStillInPlay || [];
-                context.discardIfStillInPlay.push(card);
-            },
-            unapply: function(card, context) {
-                if(card.location === 'play area' && context.discardIfStillInPlay.includes(card)) {
-                    context.discardIfStillInPlay = context.discardIfStillInPlay.filter(c => c !== card);
-                    card.controller.discardCard(card, allowSave);
-                    context.game.addMessage('{0} discards {1} at the end of the phase because of {2}', context.source.controller, card, context.source);
-                }
-            }
-        };
-    },
-    moveToDeadPileIfStillInPlay: function() {
-        return {
-            apply: function(card, context) {
-                context.moveToDeadPileIfStillInPlay = context.moveToDeadPileIfStillInPlay || [];
-                context.moveToDeadPileIfStillInPlay.push(card);
-            },
-            unapply: function(card, context) {
-                if(card.location === 'play area' && context.moveToDeadPileIfStillInPlay.includes(card)) {
-                    context.moveToDeadPileIfStillInPlay = context.moveToDeadPileIfStillInPlay.filter(c => c !== card);
-                    card.owner.moveCard(card, 'dead pile');
-                    context.game.addMessage('{0} moves {1} to its owner\'s dead pile at the end of the phase because of {2}', context.source.controller, card, context.source);
-                }
-            }
-        };
-    },
-    moveToBottomOfDeckIfStillInPlay: function(allowSave = true) {
-        return {
-            apply: function(card, context) {
-                context.moveToBottomOfDeckIfStillInPlay = context.moveToBottomOfDeckIfStillInPlay || [];
-                context.moveToBottomOfDeckIfStillInPlay.push(card);
-            },
-            unapply: function(card, context) {
-                if(['play area'].includes(card.location) && context.moveToBottomOfDeckIfStillInPlay.includes(card)) {
-                    context.moveToBottomOfDeckIfStillInPlay = context.moveToBottomOfDeckIfStillInPlay.filter(c => c !== card);
-                    card.owner.moveCardToBottomOfDeck(card, allowSave);
-                    context.game.addMessage('{0} moves {1} to the bottom of its owner\'s deck at the end of the phase because of {2}', context.source.controller, card, context.source);
-                }
-            }
-        };
-    },
-    returnToHandIfStillInPlay: function(allowSave = false, duration = 'phase') {
-        return {
-            apply: function(card, context) {
-                context.returnToHandIfStillInPlay = context.returnToHandIfStillInPlay || [];
-                context.returnToHandIfStillInPlay.push(card);
-            },
-            unapply: function(card, context) {
-                if(card.location === 'play area' && context.returnToHandIfStillInPlay.includes(card)) {
-                    context.returnToHandIfStillInPlay = context.returnToHandIfStillInPlay.filter(c => c !== card);
-                    card.controller.returnCardToHand(card, allowSave, context);
-                    context.game.addMessage('{0} returns {1} to hand at the end of the {2} because of {3}', context.source.controller, card, duration, context.source);
-                }
-            }
-        };
-    },
-    shuffleIntoDeckIfStillInPlay: function(allowSave = true) {
-        return {
-            apply: function(card, context) {
-                context.shuffleIntoDeckIfStillInPlay = context.shuffleIntoDeckIfStillInPlay || [];
-                context.shuffleIntoDeckIfStillInPlay.push(card);
-            },
-            unapply: function(card, context) {
-                if(card.location === 'play area' && context.shuffleIntoDeckIfStillInPlay.includes(card)) {
-                    context.shuffleIntoDeckIfStillInPlay = context.shuffleIntoDeckIfStillInPlay.filter(c => c !== card);
-                    card.owner.shuffleCardIntoDeck(card, allowSave);
-                    context.game.addMessage('{0} shuffles {1} into their deck at the end of the phase because of {2}', card.owner, card, context.source);
-                }
             }
         };
     },
@@ -718,16 +694,6 @@ const Effects = {
             }
         };
     },
-    optionalStandDuringStanding: function() {
-        return {
-            apply: function(card) {
-                card.optionalStandDuringStanding = true;
-            },
-            unapply: function(card) {
-                card.optionalStandDuringStanding = false;
-            }
-        };
-    },
     immuneTo: function(cardCondition) {
         return {
             apply: function(card, context) {
@@ -745,6 +711,7 @@ const Effects = {
     },
     takeControl: function(newController) {
         return {
+            title: `Control taken by: ${newController.name}`,
             apply: function(card, context) {
                 let finalController = typeof newController === 'function' ? newController() : newController;
                 context.game.takeControl(finalController, card, context.source);
@@ -762,16 +729,30 @@ const Effects = {
     },
     cannotBeMoved: cannotMove(false),
     cannotBeMovedViaCardEffects: cannotMove(true),
-    cannotBeSentHome: cannotEffectType('sendHome'),
-    cannotBeSentHomeByShootout: cannotEffect('sendHome', 'shootout'),
-    cannotBeCalledOut: cannotEffectType('callout'),
-    cannotBeAced: cannotEffectType('ace'),
-    cannotBeDiscarded: cannotEffectType('discard'),
-    cannotBeBooted: cannotEffectType('boot'),
-    cannotIncreaseBullets: cannotEffectType('increaseBullets'),
-    cannotDecreaseBullets: cannotEffectType('decreaseBullets'),
-    cannotBeSetToDraw: cannotEffectType('setAsDraw'),
-    cannotDecreaseInfluence: cannotEffectType('decreaseInfluence'),
+    cannotBeSentHome: 
+        cannotEffectType('sendHome', opponent => `Cannot be sent home${opponent ? ' by' + opponent : ''}`),
+    cannotBeSentHomeByShootout: 
+        cannotEffect('sendHome', 'shootout', opponent => `Cannot be sent home by${opponent} shootout`),
+    cannotBeCalledOut: 
+        cannotEffectType('callout', opponent => `Cannot be called out${opponent ? ' by' + opponent : ''}`),
+    cannotBeAced: 
+        cannotEffectType('ace', opponent => `Cannot be aced${opponent ? ' by' + opponent : ''}`),
+    cannotBeDiscarded: 
+        cannotEffectType('discard', opponent => `Cannot be discarded${opponent ? ' by' + opponent : ''}`),
+    cannotBeBooted: 
+        cannotEffectType('boot', opponent => `Cannot be booted${opponent ? ' by' + opponent : ''}`),
+    cannotIncreaseBullets: 
+        cannotEffectType('increaseBullets', opponent => `Cannot have bullets increased${opponent ? ' by' + opponent : ''}`),
+    cannotDecreaseBullets: 
+        cannotEffectType('decreaseBullets', opponent => `Cannot have bullets decreased${opponent ? ' by' + opponent : ''}`),
+    cannotDecreaseBulletsByShootout: 
+        cannotEffect('decreaseBullets', 'shootout', opponent => `Cannot have bullets decreased by${opponent} shootout`),        
+    cannotBeSetToDraw: 
+        cannotEffectType('setAsDraw', opponent => `Cannot be set to draw${opponent ? ' by' + opponent : ''}`),
+    cannotBeSetToDrawByShootout: 
+        cannotEffect('setAsDraw', 'shootout', opponent => `Cannot be set to draw by${opponent} shootout`),        
+    cannotDecreaseInfluence: 
+        cannotEffectType('decreaseInfluence', opponent => `Cannot have influence decreased${opponent ? ' by' + opponent : ''}`),
     cannotPlay: function(condition) {
         let restriction = (card, playingType) => card.getType() === 'event' && playingType === 'play' && condition(card);
         return this.cannotPutIntoPlay(restriction);
@@ -791,22 +772,14 @@ const Effects = {
         let restriction = (card, playingType) => playingType === 'setup' && condition(card);
         return this.cannotPutIntoPlay(restriction);
     },
-    cannotBeAffected: cannotEffect(),
-    cannotBeAffectedByShootout: cannotEffectPlayType('shootout'),
-    cannotBeTargetedByShootout: cannotEffect('target', 'shootout'),
-    cannotBeTargeted: cannotEffectType('target'),
-    cannotWinGame: function() {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.cannotWinGame = true;
-            },
-            unapply: function(player, context) {
-                player.cannotWinGame = false;
-                context.game.checkWinCondition(player);
-            }
-        };
-    },
+    cannotBeAffected: 
+        cannotEffect('any', 'any', opponent => `Cannot be affected${opponent ? ' by' + opponent : ''}`),
+    cannotBeAffectedByShootout: 
+        cannotEffectPlayType('shootout', opponent => `Cannot be affected by${opponent} shootout`),
+    cannotBeTargetedByShootout: 
+        cannotEffect('target', 'shootout', opponent => `Cannot be targeted by${opponent} shootout`),
+    cannotBeTargeted: 
+        cannotEffectType('target', opponent => `Cannot be targeted${opponent ? ' by' + opponent : ''}`),
     cannotTriggerPlayerAbilities: function(restriction = () => true) {
         return {
             targetType: 'player',
@@ -820,6 +793,7 @@ const Effects = {
     },
     cannotTriggerCardAbilities: function(abilityFunc = () => true) {
         return {
+            title: 'Cannot trigger Card abilities',
             apply: function(card) {
                 card.updateAbilitiesBlanking(abilityFunc, true);
             },
@@ -830,6 +804,7 @@ const Effects = {
     },
     ignoreBulletModifiers: function(controller = 'any', predicate = () => true) {
         return {
+            title: `Ignores bullet modifiers${controller === 'opponent' ? ' by opponent' : ''}`,
             apply: function(card, context) {
                 context.restrictions = context.restrictions || {};
                 context.restrictions[card.uuid] = [];
@@ -847,30 +822,12 @@ const Effects = {
             }
         }; 
     },
-    modifyDrawPhaseCards: function(value) {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.drawPhaseCards += value;
-            },
-            unapply: function(player) {
-                player.drawPhaseCards -= value;
-            }
-        };
-    },
-    modifyMaxLimited: function(amount) {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.maxLimited += amount;
-            },
-            unapply: function(player) {
-                player.maxLimited -= amount;
-            }
-        };
+    dudesCannotFlee: function() {
+        return playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout')();
     },
     modifyPosseStudBonus: function(amount) {
         return {
+            title: `Stud Bonus modified: ${amount}`,
             targetType: 'player',
             apply: function(player) {
                 player.modifyPosseStudBonus(amount);
@@ -882,6 +839,7 @@ const Effects = {
     },
     addRedrawBonus: function(amount) {
         return {
+            title: `Redraw Bonus modified: ${amount}`,
             targetType: 'player',
             apply: function(player) {
                 player.redrawBonus += amount;
@@ -893,6 +851,7 @@ const Effects = {
     },
     modifyLoserCasualties: function(amount) {
         return {
+            title: `Loser Casualties modified: ${amount}`,
             targetType: 'shootout',
             apply: function(shootout) {
                 shootout.loserCasualtiesMod += amount;
@@ -904,6 +863,7 @@ const Effects = {
     },
     useInfluenceForShootout: function() {
         return {
+            title: 'Stud/Draw bonus determined by Influence',
             targetType: 'shootout',
             apply: function(shootout) {
                 shootout.useInfluence = true;
@@ -914,33 +874,40 @@ const Effects = {
         };
     },
     selectAsFirstCasualty: function() {
-        return optionEffect('isSelectedAsFirstCasualty')();
+        return optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty')();
     },
-    cannotBringDudesIntoPosseByShootout: cannotEffectPlayType('shootout:join', 'shootout'),
+    cannotBringDudesIntoPosseByShootout: cannotEffectPlayType('shootout:join', opponent => `Cannot bring dudes to posse by${opponent} shootout`, 'shootout'),
     cannotBeChosenAsCasualty: function() {
-        return optionEffect('cannotBeChosenAsCasualty')();
+        return optionEffect('cannotBeChosenAsCasualty', 'Cannot be chosen as Casualty')();
     },
     cannotBeTraded: function() {
-        return optionEffect('cannotBeTraded')();
+        return optionEffect('cannotBeTraded', 'Cannot be Traded')();
+    },
+    cannotFlee: function() {
+        return optionEffect('cannotFlee', 'Cannot Flee')();
     },
     canRefuseWithoutGoingHomeBooted: function() {
-        return optionEffect('canRefuseWithoutGoingHomeBooted')();
+        return optionEffect('canRefuseWithoutGoingHomeBooted', 'Can Refuse without going Home')();
     },
     canJoinWithoutBooting: function() {
-        return optionEffect('canJoinWithoutBooting')();
+        return optionEffect('canJoinWithoutBooting', 'Can Join without Booting')();
     },
     canJoinWithoutMoving: function() {
-        return optionEffect('canJoinWithoutMoving')();
+        return optionEffect('canJoinWithoutMoving', 'Can Join without Moving')();
     },
     canJoinWhileBooted: function() {
-        return optionEffect('canJoinWhileBooted')();
+        return optionEffect('canJoinWhileBooted', 'Can Join while Booted')();
+    },
+    canBeInventedWithoutBooting: function() {
+        return optionEffect('canBeInventedWithoutBooting', 'Can be Invented without Booting')();
     },
     canUseControllerAbilities: function() {
-        return optionEffect('canUseControllerAbilities')();
+        return optionEffect('canUseControllerAbilities', 'Can use Controller Abilities')();
     },
     canPerformSkillUsing: function(skillname, condition) {
         var getSkillRatingFunc;
         return {
+            title: `Can perform ${skillname} skills`,
             apply: function(card) {
                 getSkillRatingFunc = card.getSkillRatingForCard;
                 card.getSkillRatingForCard = spellOrGadget => {
@@ -983,17 +950,6 @@ const Effects = {
             }
         };
     },
-    setMinCost: function(value) {
-        return {
-            targetType: 'player',
-            apply: function(player, context) {
-                context.source.minCost = value;
-            },
-            unapply: function(player, context) {
-                context.source.minCost = 0;
-            }
-        };
-    },
     canPlay: function(predicate) {
         let playableLocation = new PlayableLocation('play', predicate);
         return {
@@ -1003,44 +959,6 @@ const Effects = {
             },
             unapply: function(player) {
                 player.playableLocations = player.playableLocations.filter(l => l !== playableLocation);
-            }
-        };
-    },
-    canPlayFromOwn: function(location) {
-        return {
-            targetType: 'player',
-            apply: function(player, context) {
-                let playableLocation = new PlayableLocation('play', card => card.controller === player && card.location === location);
-                context.canPlayFromOwn = context.canPlayFromOwn || {};
-                context.canPlayFromOwn[player.name] = playableLocation;
-                player.playableLocations.push(playableLocation);
-            },
-            unapply: function(player, context) {
-                player.playableLocations = player.playableLocations.filter(l => l !== context.canPlayFromOwn[player.name]);
-                delete context.canPlayFromOwn[player.name];
-            }
-        };
-    },
-    canSelectAsFirstPlayer: function(condition) {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.firstPlayerSelectCondition = condition;
-            },
-            unapply: function(player) {
-                player.firstPlayerSelectCondition = null;
-            }
-        };
-    },
-    cannotStandMoreThan: function(max, match) {
-        let restriction = { max: max, match: match };
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                player.standPhaseRestrictions.push(restriction);
-            },
-            unapply: function(player) {
-                player.standPhaseRestrictions = player.standPhaseRestrictions.filter(r => r !== restriction);
             }
         };
     },
@@ -1107,7 +1025,7 @@ const Effects = {
         return this.reduceFirstCardCostEachRound('play', amount, match);
     },
     increaseCost: function(properties) {
-        properties.amount = -properties.amount;
+        properties.isIncrease = true;
         return this.reduceCost(properties);
     },
     skipPhase: function(name) {
@@ -1156,25 +1074,6 @@ const Effects = {
                 context.game.cardVisibility.removeRule(revealFunc);
                 player.flags.remove('revealTopCard');
                 delete context.revealTopCard[player.name];
-            }
-        };
-    },
-    removeCardsFromHand: function() {
-        return {
-            targetType: 'player',
-            apply: function(player) {
-                for(let card of player.hand) {
-                    player.removeCardFromPile(card);
-                    card.facedown = true;
-                }
-            },
-            unapply: function(player, context) {
-                player.discardCards(player.hand);
-                for(let card of context.source.childCards.filter(card => card.controller === player && card.location === 'underneath')) {
-                    player.moveCard(card, 'hand');
-                }
-                context.game.addMessage('{0} discards their hand and returns each card under {1} to their hand',
-                    player, context.source);
             }
         };
     }

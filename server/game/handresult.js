@@ -6,18 +6,18 @@ const Suits = ['Clubs', 'Diams', 'Hearts', 'Spades'];
  * Class to evaluate hand rank from a hand of cards.
  */
 class HandResult {
-    constructor(hand, isGambling) {
+    constructor(hand, doLowest) {
         this.handRank = {rank : 0, rankName: ''};
         if(!hand || !_.isArray(hand)) {
             return;
         }
 
-        this.pokerHands = new PokerHands(hand, isGambling);
+        this.pokerHands = new PokerHands(hand, doLowest);
         this.possibleHands = _.filter(this.pokerHands.allHandRanks, (hr) => (hr.rank !== undefined));
         let bestRank = _.orderBy(this.possibleHands, 'rank', 'desc');
         this.handRank = (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
         if(this.handRank.tiebreakerHighCards) {
-            if(isGambling && this.pokerHands.jokers > 0) {
+            if(doLowest && this.pokerHands.jokers > 0) {
                 for(let i = 1; i <= 13; i++) {
                     if(!hand.find(card => card.value === i)) {
                         this.handRank.tiebreakerHighCards.push(i);
@@ -29,6 +29,8 @@ class HandResult {
                 }
             }
             this.handRank.tiebreakerHighCards.sort((a, b) => b - a);
+        } else {
+            this.handRank.tiebreakerHighCards = [];
         }
     }
 
@@ -38,7 +40,7 @@ class HandResult {
 }
 
 class PokerHands {
-    constructor(hand, isGambling) {
+    constructor(hand, doLowest) {
         this.jokers = 0;
         let strippedHand = [];
 
@@ -53,16 +55,16 @@ class PokerHands {
         let orderedHand = _.orderBy(strippedHand, 'value', 'desc');
 
         this.allHandRanks = [];
-        this.allHandRanks.push(new DeadMansHand(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new FiveOfAKind(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new StraightFlush(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new FourOfAKind(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new FullHouse(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new Flush(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new Straight(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new ThreeOfAKind(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new TwoPair(orderedHand, isGambling ? 0 : this.jokers));
-        this.allHandRanks.push(new OnePair(orderedHand, isGambling ? 0 : this.jokers));
+        this.allHandRanks.push(new DeadMansHand(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new FiveOfAKind(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new StraightFlush(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new FourOfAKind(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new FullHouse(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new Flush(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new Straight(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new ThreeOfAKind(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new TwoPair(orderedHand, doLowest ? 0 : this.jokers));
+        this.allHandRanks.push(new OnePair(orderedHand, doLowest ? 0 : this.jokers));
         this.allHandRanks.push(new HighCard(orderedHand));
     }
 

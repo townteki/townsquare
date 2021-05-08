@@ -126,6 +126,7 @@ class Deck {
             cardClass = JokerCard;
         }
 
+        cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
         cardClass = cards[cardData.code] || cardClass;
 
         return new cardClass(player, cardData);

@@ -71,7 +71,7 @@ class DropCommand {
     isValidDropCombination() {
         const DrawDeckCardTypes = ['goods', 'dude', 'action', 'deed', 'spell', 'joker'];
         const AllowedTypesForPile = {
-            'being played': ['action'],
+            'being played': DrawDeckCardTypes,
             'dead pile': DrawDeckCardTypes,
             'discard pile': DrawDeckCardTypes,
             'draw deck': DrawDeckCardTypes,
