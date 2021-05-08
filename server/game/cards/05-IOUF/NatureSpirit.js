@@ -9,6 +9,11 @@ class NatureSpirit extends DudeCard {
                 this.removeFromGame();
             }
         });
+        this.game.once('onCardCallOutFinished', () => {
+            if(this.location === 'play area') {
+                this.removeFromGame();
+            }
+        });
     }
 
     removeFromGame() {
