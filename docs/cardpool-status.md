@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/216/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/220/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -442,7 +442,7 @@
 |:heavy_check_mark:   | 10029| Strength of the Ancestors
 |:heavy_check_mark:   | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
-|                     | 10032| Red Horse's Tail
+|:heavy_check_mark:   | 10032| Red Horse's Tail
 |:heavy_check_mark:   | 10033| Fire of Nanahbozho
 |                     | 10034| Civil War
 |                     | 10035| Rabbit's Deception
@@ -475,7 +475,7 @@
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
 |                     | 11018| Jael's Guile
-|                     | 11019| Personal Ornithopter
+|:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
 |                     | 11022| A Slight Modification
@@ -527,7 +527,7 @@
 |:heavy_check_mark:   | 13014| LeMat Revolver
 |:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
-|                     | 13017| Mother Bear's Rage
+|:heavy_check_mark:   | 13017| Mother Bear's Rage
 |                     | 13018| Focusing Chi
 |:heavy_check_mark:   | 13019| Mugging
 |                     | 13020| Signing Over the Stores
@@ -759,6 +759,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:white_check_mark:   | 20009| Matilda Loomis
+|:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20026| Ike Clanton
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
