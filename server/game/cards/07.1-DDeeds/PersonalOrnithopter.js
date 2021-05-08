@@ -7,7 +7,7 @@ class PersonalOrnithopter extends GoodsCard {
             title: 'Repeat Shootout: Join Posse',
             playType: 'shootout:join',
             cost: ability.costs.payGhostRock(1),
-            condition: () => this.game.shootout,
+            condition: () => this.game.shootout && !this.parent.isParticipating(),
             actionContext: { card: this.parent, gameAction: 'joinPosse'},
             repeatable: true,
             message: context =>
