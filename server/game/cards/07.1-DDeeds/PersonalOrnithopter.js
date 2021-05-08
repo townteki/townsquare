@@ -21,6 +21,7 @@ class PersonalOrnithopter extends GoodsCard {
             title: 'Shootout: Flee',
             playType: 'shootout',
             cost: ability.costs.bootSelf(),
+            actionContext: { card: this.parent, gameAction: 'sendHome'},
             message: context => this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, this.parent),
             handler: context => {
                 this.game.shootout.sendHome(this.parent, context);
