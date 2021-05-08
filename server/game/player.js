@@ -436,6 +436,7 @@ class Player extends Spectator {
         });
     }  
 
+    // TODO M2 can be probably removed
     canDraw() {
         return (this.maxCardDraw.getMax() === undefined || this.drawnCards < this.maxCardDraw.getMax());
     }
@@ -808,9 +809,6 @@ class Player extends Spectator {
         }
 
         this.gainedGhostRock = 0;
-        this.drawnCards = 0;
-
-        this.limitedPlayed = 0;
     }
 
     hasUnmappedAttachments() {
@@ -1186,6 +1184,29 @@ class Player extends Spectator {
         });
 
         return event;
+    }
+
+    drawDeckAction(properties, cardCallback) {
+        let remainder = 0;
+        let cards = this.drawDeck.slice(0, properties.amount);
+        if(properties.amount < properties.desiredAmount) {
+            remainder = properties.desiredAmount - properties.amount;
+        }
+
+        for(const card of cards) {
+            cardCallback(card);
+        }
+
+        if(remainder > 0) {
+            this.shuffleDiscardToDrawDeck();
+            let remainingCards = this.drawDeck.slice(0, remainder);
+            for(const card of remainingCards) {
+                cardCallback(card);
+            }
+            cards = _.union(cards, remainingCards);      
+        }
+   
+        return cards;
     }
 
     handlePulledCard(card) {
