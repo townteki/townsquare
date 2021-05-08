@@ -4,8 +4,7 @@ const OutfitCard = require('../../outfitcard.js');
 class GraciousGifts extends OutfitCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.game.currentPhase === 'sundown', /*&& (this.owner.getSpendableGhostRock() < this.owner.opponent.getSpendableGhostRock())*/
-            match: this.owner,
+            condition: () => this.game.currentPhase === 'sundown' && (this.owner.getSpendableGhostRock() < this.owner.opponent.getSpendableGhostRock()),
             effect: ability.effects.modifySundownDiscard(1)
         });
 
