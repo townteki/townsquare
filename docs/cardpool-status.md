@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/220/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/224/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -218,7 +218,7 @@
 |                     | 04001| The Brute
 |                     | 04002| Smiling Tom
 |:heavy_check_mark:   | 04003| Philip Swinford (Exp.1)
-|                     | 04004| Drew Beauman
+|:heavy_check_mark:   | 04004| Drew Beauman
 |                     | 04005| Dr. Arden Gillman
 |                     | 04006| Arvid Mardh
 |                     | 04007| Allie Hensman (Exp.1)
@@ -313,7 +313,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 07001| Avie Cline (Exp.1)
-|                     | 07002| Judge Harry Somerset (Exp.1)
+|:heavy_check_mark:   | 07002| Judge Harry Somerset (Exp.1)
 |                     | 07003| Ebenezer Springfield
 |                     | 07004| Elander Boldman (Exp.1)
 |                     | 07005| Antheia Pansofia
@@ -518,7 +518,7 @@
 |                     | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
 |                     | 13007| Luke, the Errand Boy
-|                     | 13008| Arnold Stewart
+|:heavy_check_mark:   | 13008| Arnold Stewart
 |                     | 13009| Rick Henderson
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
 |:heavy_check_mark:   | 13011| The Orphanage
@@ -638,7 +638,7 @@
 |                     | 17001| Shi Long Peng
 |                     | 17002| Seamus McCaffrey
 |                     | 17003| Gene North Star
-|                     | 17004| Speaks-With-Earth
+|:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
 |                     | 17007| Nicholas Kramer
