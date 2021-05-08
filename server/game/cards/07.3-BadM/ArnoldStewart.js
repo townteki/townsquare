@@ -35,7 +35,7 @@ class ArnoldStewart extends DudeCard {
                                     this.game.promptForSelect(context.player, {
                                         activePromptTitle: 'Select a card',
                                         waitingPromptTitle: 'Waiting for opponent to select card',
-                                        cardCondition: card => discardedCards.includes(card),
+                                        cardCondition: card => discardedCards.includes(card) && card.hasKeyword('out of town'),
                                         cardType: 'deed',
                                         onSelect: (player, card) => {
                                             player.moveCard(card, 'hand');
