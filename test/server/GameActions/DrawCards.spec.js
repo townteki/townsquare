@@ -2,7 +2,7 @@ const DrawCards = require('../../../server/game/GameActions/DrawCards');
 
 describe('DrawCards', function() {
     beforeEach(function() {
-        this.playerSpy = jasmine.createSpyObj('player', ['canDraw', 'getNumCardsToDraw', 'placeCardInPile', 'shuffleDiscardToDrawDeck']);
+        this.playerSpy = jasmine.createSpyObj('player', ['canDraw', 'getNumCardsToDraw', 'placeCardInPile', 'shuffleDiscardToDrawDeck', 'drawDeckAction']);
         this.playerSpy.getNumCardsToDraw.and.returnValue(2);
         this.playerSpy.drawDeck = ['card1', 'card2'];
         this.playerSpy.drawnCards = 0;
@@ -50,15 +50,6 @@ describe('DrawCards', function() {
                 expect(this.event.desiredAmount).toBe(2);
             });
 
-            it('sets a length property for legacy purposes', function() {
-                // A lot of current implementations check the current return value
-                // (an array) for its length in order to print the number of cards
-                // actually drawn. To start returning an event object from
-                // Player#drawCardsToHand without changing all such implementations
-                // requires that this property exist.
-                expect(this.event.length).toBe(2);
-            });
-
             it('passes through reason and source', function() {
                 this.props.reason = 'reason';
                 this.props.source = 'source';
@@ -66,40 +57,6 @@ describe('DrawCards', function() {
 
                 expect(this.event.reason).toBe('reason');
                 expect(this.event.source).toBe('source');
-            });
-
-            describe('the event handler', function() {
-                beforeEach(function() {
-                    this.event.executeHandler();
-                    for(const attachedEvent of this.event.attachedEvents) {
-                        attachedEvent.executeHandler();
-                    }
-                });
-
-                it('attaches individual drawn event', function() {
-                    expect(this.event.attachedEvents[0]).toEqual(jasmine.objectContaining({
-                        name: 'onCardDrawn',
-                        card: 'card1'
-                    }));
-                    expect(this.event.attachedEvents[1]).toEqual(jasmine.objectContaining({
-                        name: 'onCardDrawn',
-                        card: 'card2'
-                    }));
-                });
-
-                it('moves the appropriate number of cards', function() {
-                    expect(this.playerSpy.placeCardInPile).toHaveBeenCalledTimes(2);
-                    expect(this.playerSpy.placeCardInPile).toHaveBeenCalledWith({ card: 'card1', location: 'hand' });
-                    expect(this.playerSpy.placeCardInPile).toHaveBeenCalledWith({ card: 'card2', location: 'hand' });
-                });
-
-                it('increments the number of drawn cards for the player', function() {
-                    expect(this.playerSpy.drawnCards).toBe(2);
-                });
-
-                it('adds the cards drawn to the event', function() {
-                    expect(this.event.cards).toEqual(['card1', 'card2']);
-                });
             });
         });
 
@@ -144,45 +101,7 @@ describe('DrawCards', function() {
     
                 expect(this.event.reason).toBe('reason');
                 expect(this.event.source).toBe('source');
-            });
-    
-            describe('the event handler', function() {
-                beforeEach(function() {
-                    this.event.executeHandler();
-                    for(const attachedEvent of this.event.attachedEvents) {
-                        attachedEvent.executeHandler();
-                    }
-                });
-    
-                it('attaches individual drawn event', function() {
-                    expect(this.event.attachedEvents[0]).toEqual(jasmine.objectContaining({
-                        name: 'onCardDrawn',
-                        card: 'card1'
-                    }));
-                    expect(this.event.attachedEvents[1]).toEqual(jasmine.objectContaining({
-                        name: 'onCardDrawn',
-                        card: 'card2'
-                    }));
-                });
-    
-                it('shuffles discard to draw deck', function() {
-                    expect(this.playerSpy.shuffleDiscardToDrawDeck).toHaveBeenCalledTimes(1);
-                });
-    
-                it('moves the appropriate number of cards', function() {
-                    expect(this.playerSpy.placeCardInPile).toHaveBeenCalledTimes(2);
-                    expect(this.playerSpy.placeCardInPile).toHaveBeenCalledWith({ card: 'card1', location: 'hand' });
-                    expect(this.playerSpy.placeCardInPile).toHaveBeenCalledWith({ card: 'card2', location: 'hand' });
-                });
-    
-                it('increments the number of drawn cards for the player', function() {
-                    expect(this.playerSpy.drawnCards).toBe(2);
-                });
-    
-                it('adds the cards drawn to the event', function() {
-                    expect(this.event.cards).toEqual(['card1', 'card2']);
-                });
-            });
+            });   
         });
     });
 });
