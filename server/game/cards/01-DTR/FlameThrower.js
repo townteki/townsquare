@@ -5,7 +5,7 @@ class FlameThrower extends GoodsCard {
         this.whileAttached({
             condition: () => true,
             effect: [
-                ability.effects.setAsStud(this.uuid)
+                ability.effects.setAsStud()
             ]
         });
         this.action({

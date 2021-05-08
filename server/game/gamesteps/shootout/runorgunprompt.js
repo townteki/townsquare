@@ -10,7 +10,9 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
         if(this.isComplete()) {
             return true;
         }
-        if(this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        const currentPlayerPosse = this.shootout.getPosseByPlayer(this.currentPlayer);
+        if(currentPlayerPosse.isEmpty() || this.currentPlayer.dudesCannotFlee() ||
+            currentPlayerPosse.getDudes().every(dude => dude.cannotFlee())) {
             this.completePlayer();
             return this.continue();
         }
@@ -25,6 +27,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             cardCondition: card => card.controller === this.currentPlayer &&
                 card.location === 'play area' &&
                 card.getType() === 'dude' &&
+                !card.cannotFlee() &&
                 this.shootout.isInShootout(card),
             onSelect: (player, cards) => {
                 cards.forEach(card => this.shootout.sendHome(

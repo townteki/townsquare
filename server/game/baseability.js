@@ -7,6 +7,7 @@ const AbilityTarget = require('./AbilityTarget.js');
 const ChooseGameAction = require('./GameActions/ChooseGameAction');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper');
 const BaseCardSelector = require('./CardSelectors/BaseCardSelector');
+/** @typedef {import('./AbilityContext')} AbilityContext */
 
 /**
  * Base class representing an ability that can be done by the player. This

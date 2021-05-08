@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/204/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/224/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -92,9 +92,9 @@
 |:heavy_check_mark:   | 01078| The Pharmacy
 |:heavy_check_mark:   | 01079| Railroad Station
 |:heavy_check_mark:   | 01080| Telegraph Office
-|                     | 01081| Pair of Six-Shooters
+|:heavy_check_mark:   | 01081| Pair of Six-Shooters
 |:heavy_check_mark:   | 01082| Bluetick
-|                     | 01083| Peacemaker
+|:heavy_check_mark:   | 01083| Peacemaker
 |:heavy_check_mark:   | 01084| Shotgun
 |                     | 01085| Whiskey Flask
 |:heavy_check_mark:   | 01086| Mustang
@@ -119,7 +119,7 @@
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
 |                     | 01106| Hired Guns
 |                     | 01107| Lady Luck
-|                     | 01108| Bottom Dealin'
+|:heavy_check_mark:   | 01108| Bottom Dealin'
 |                     | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
 |                     | 01111| Auction
@@ -218,7 +218,7 @@
 |                     | 04001| The Brute
 |                     | 04002| Smiling Tom
 |:heavy_check_mark:   | 04003| Philip Swinford (Exp.1)
-|                     | 04004| Drew Beauman
+|:heavy_check_mark:   | 04004| Drew Beauman
 |                     | 04005| Dr. Arden Gillman
 |                     | 04006| Arvid Mardh
 |                     | 04007| Allie Hensman (Exp.1)
@@ -235,7 +235,7 @@
 |                     | 04018| Summoning
 |                     | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
-|                     | 04021| Election Day Slaughter
+|:heavy_check_mark:   | 04021| Election Day Slaughter
 
 ## `03-FF` Faith and Fear
 
@@ -255,7 +255,7 @@
 |                     | 05012| Chuan "Jen" Qí
 |                     | 05013| Lane Healey (Exp.1)
 |                     | 05014| The Fixer
-|                     | 05015| Maria Kingsford
+|:heavy_check_mark:   | 05015| Maria Kingsford
 |                     | 05016| Makaio Kaleo, Esq.
 |                     | 05017| Sister Lois Otwell
 |:heavy_check_mark:   | 05018| Félix Amador
@@ -278,7 +278,7 @@
 |                     | 05035| Swinford Finds Trouble
 |                     | 05036| Under the Weather
 |:heavy_check_mark:   | 05037| Faster on the Draw
-|                     | 05038| This'll Hurt in the Mornin'
+|:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
 |:heavy_check_mark:   | 05040| Meet The New Boss
 |                     | 06001| Funtime Freddy
@@ -313,7 +313,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 07001| Avie Cline (Exp.1)
-|                     | 07002| Judge Harry Somerset (Exp.1)
+|:heavy_check_mark:   | 07002| Judge Harry Somerset (Exp.1)
 |                     | 07003| Ebenezer Springfield
 |                     | 07004| Elander Boldman (Exp.1)
 |                     | 07005| Antheia Pansofia
@@ -332,7 +332,7 @@
 |                     | 07018| Mark of Pestilence
 |                     | 07019| Cookin' Up Trouble
 |                     | 07020| Ol' Fashioned Hangin'
-|                     | 07021| No Turning Back
+|:heavy_check_mark:   | 07021| No Turning Back
 
 ## `04.3-NN` Nightmare at Noon
 
@@ -442,7 +442,7 @@
 |:heavy_check_mark:   | 10029| Strength of the Ancestors
 |:heavy_check_mark:   | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
-|                     | 10032| Red Horse's Tail
+|:heavy_check_mark:   | 10032| Red Horse's Tail
 |:heavy_check_mark:   | 10033| Fire of Nanahbozho
 |                     | 10034| Civil War
 |                     | 10035| Rabbit's Deception
@@ -475,7 +475,7 @@
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
 |                     | 11018| Jael's Guile
-|                     | 11019| Personal Ornithopter
+|:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
 |                     | 11022| A Slight Modification
@@ -495,7 +495,7 @@
 |                     | 12008| Miranda Clarke
 |                     | 12009| Elliot Smithson
 |                     | 12010| Shelby Hunt
-|                     | 12011| The Joker's Smile
+|:heavy_check_mark:   | 12011| The Joker's Smile
 |                     | 12012| Old Marge's Manor
 |:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
@@ -518,7 +518,7 @@
 |                     | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
 |                     | 13007| Luke, the Errand Boy
-|                     | 13008| Arnold Stewart
+|:heavy_check_mark:   | 13008| Arnold Stewart
 |                     | 13009| Rick Henderson
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
 |:heavy_check_mark:   | 13011| The Orphanage
@@ -527,7 +527,7 @@
 |:heavy_check_mark:   | 13014| LeMat Revolver
 |:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
-|                     | 13017| Mother Bear's Rage
+|:heavy_check_mark:   | 13017| Mother Bear's Rage
 |                     | 13018| Focusing Chi
 |:heavy_check_mark:   | 13019| Mugging
 |                     | 13020| Signing Over the Stores
@@ -571,7 +571,7 @@
 |                     | 14032| Fool Me Once...
 |                     | 14033| Fiddle Game
 |                     | 14034| Pigging Out
-|                     | 14035| Technological Exhibition
+|:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
 |                     | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
@@ -627,7 +627,7 @@
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
 |                     | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
-|                     | 16019| Siege Of The Orphanage
+|:heavy_check_mark:   | 16019| Siege Of The Orphanage
 |                     | 16020| Lighting The Fuse
 |                     | 16021| One Fights As Many
 
@@ -638,7 +638,7 @@
 |                     | 17001| Shi Long Peng
 |                     | 17002| Seamus McCaffrey
 |                     | 17003| Gene North Star
-|                     | 17004| Speaks-With-Earth
+|:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
 |                     | 17007| Nicholas Kramer
@@ -683,7 +683,7 @@
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
 |                     | 18022| Nickel Night Inn
-|                     | 18023| Sherman Mortgage
+|:heavy_check_mark:   | 18023| Sherman Mortgage
 |                     | 18024| Gomorra Gaming Commission
 |                     | 18025| Cliff's #4 Saloon
 |                     | 18026| Baijiu Jar
@@ -702,7 +702,7 @@
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
 |                     | 18041| "Thunder Boy" Nabbe
-|                     | 18042| Dave "Slim" Gorman
+|:heavy_check_mark:   | 18042| Dave "Slim" Gorman
 
 ## `11-TCaR` There Comes a Reckoning
 
@@ -759,6 +759,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:white_check_mark:   | 20009| Matilda Loomis
+|:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20026| Ike Clanton
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
