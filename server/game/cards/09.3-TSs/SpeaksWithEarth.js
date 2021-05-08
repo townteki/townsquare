@@ -12,6 +12,7 @@ class SpeaksWithEarth extends DudeCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to boot {2} that just moved to his location', context.player, this, context.event.card),
             handler: context => {
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.event.card }), context);
                 if(this.locationCard.hasAttachmentWithKeywords('totem')) {
                     context.game.promptForYesNo(context.player, {
                         title: `Do you want to unboot a Totem at ${this.locationCard.title} ?`,
