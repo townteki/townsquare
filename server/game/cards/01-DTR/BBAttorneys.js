@@ -8,7 +8,7 @@ class BBAttorneys extends DeedCard {
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             target: {
-                activePromptTitle: 'Select a wanted dude to raise or lower their bounty by one.',
+                activePromptTitle: 'Select a wanted dude',
                 cardCondition: { location: 'play area', wanted: true },
                 cardType: ['dude']
             },
@@ -18,12 +18,12 @@ class BBAttorneys extends DeedCard {
                     activePrompt: {
                         menuTitle: 'Raise or lower the bounty by one?',
                         buttons: [
-                            { 
-                                text: 'Raise by one', 
+                            {
+                                text: 'Raise by one',
                                 method: 'raise'
                             },
-                            { 
-                                text: 'Lower by one', 
+                            {
+                                text: 'Lower by one',
                                 method: 'lower'
                             }
                         ]
@@ -38,12 +38,12 @@ class BBAttorneys extends DeedCard {
         this.applyBountyEffect(player, 1);
         return true;
     }
-    
+
     lower(player) {
         this.applyBountyEffect(player, -1);
         return true;
     }
-    
+
     applyBountyEffect(player, amount) {
         let text = 'raise';
         if(amount < 0) {
@@ -52,7 +52,7 @@ class BBAttorneys extends DeedCard {
         } else {
             this.game.resolveGameAction(GameActions.addBounty({ card: this.abilityContext.target }), this.abilityContext);
         }
- 
+
         this.game.addMessage('{0} uses {1} to {2} {3}\'s bounty by one', player, this, text, this.abilityContext.target);
     }
 }
