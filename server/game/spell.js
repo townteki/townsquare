@@ -41,7 +41,7 @@ class Spell {
             this.ability.game.addMessage('{0} attempts to cast {1} on {2} (using skill rating {3})', 
                 context.player, this.ability.card, context.target, skillRating);
         } else {
-            this.ability.game.addMessage('{0} attempts to cast {1} (using skill rating {2})', context.player, this.ability.card, context.totalPullValue);
+            this.ability.game.addMessage('{0} attempts to cast {1} (using skill rating {2})', context.player, this.ability.card, skillRating);
         }
         abilityHandler(context);
         let finalDifficulty = this.difficulty;

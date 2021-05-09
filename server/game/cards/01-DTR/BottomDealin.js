@@ -12,8 +12,12 @@ class BottomDealin extends ActionCard {
                 const opponent = context.player.getOpponent();
                 opponent.discardDrawHand();
                 this.game.queueSimpleStep(() => {
-                    const top5Cards = context.player.drawDeck.slice(0, 5);
-                    top5Cards.forEach(card => opponent.moveCard(card, 'draw hand'));
+                    const actualAmount = context.player.getNumCardsToDraw(5);
+                    const props = {
+                        amount: actualAmount,
+                        desiredAmount: 5
+                    };                    
+                    context.player.drawDeckAction(props, card => opponent.moveCard(card, 'draw hand'));
                     opponent.drawHandRevealed = true;
                     opponent.drawHandSelected = true;
                     opponent.determineHandResult('\'s hand has been bottom dealt to', true);
