@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/216/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/226/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -72,7 +72,7 @@
 |                     | 01058| The Town Hall
 |                     | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
-|                     | 01061| B & B Attorneys
+|:heavy_check_mark:   | 01061| B & B Attorneys
 |:heavy_check_mark:   | 01062| Dead Dog Tavern
 |:heavy_check_mark:   | 01063| Charlie's Place
 |:heavy_check_mark:   | 01064| Pearly's Palace
@@ -218,7 +218,7 @@
 |                     | 04001| The Brute
 |                     | 04002| Smiling Tom
 |:heavy_check_mark:   | 04003| Philip Swinford (Exp.1)
-|                     | 04004| Drew Beauman
+|:heavy_check_mark:   | 04004| Drew Beauman
 |                     | 04005| Dr. Arden Gillman
 |                     | 04006| Arvid Mardh
 |                     | 04007| Allie Hensman (Exp.1)
@@ -313,7 +313,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 07001| Avie Cline (Exp.1)
-|                     | 07002| Judge Harry Somerset (Exp.1)
+|:heavy_check_mark:   | 07002| Judge Harry Somerset (Exp.1)
 |                     | 07003| Ebenezer Springfield
 |                     | 07004| Elander Boldman (Exp.1)
 |                     | 07005| Antheia Pansofia
@@ -377,7 +377,7 @@
 |                     | 09011| Hiram Capatch
 |                     | 09012| Yunxu Jiang
 |                     | 09013| Abuelita Espinoza
-|                     | 09014| Bai Yang Chen
+|:heavy_check_mark:   | 09014| Bai Yang Chen
 |                     | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |                     | 09017| Mazatl
@@ -442,7 +442,7 @@
 |:heavy_check_mark:   | 10029| Strength of the Ancestors
 |:heavy_check_mark:   | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
-|                     | 10032| Red Horse's Tail
+|:heavy_check_mark:   | 10032| Red Horse's Tail
 |:heavy_check_mark:   | 10033| Fire of Nanahbozho
 |                     | 10034| Civil War
 |                     | 10035| Rabbit's Deception
@@ -475,7 +475,7 @@
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
 |                     | 11018| Jael's Guile
-|                     | 11019| Personal Ornithopter
+|:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
 |                     | 11022| A Slight Modification
@@ -518,7 +518,7 @@
 |                     | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
 |                     | 13007| Luke, the Errand Boy
-|                     | 13008| Arnold Stewart
+|:heavy_check_mark:   | 13008| Arnold Stewart
 |                     | 13009| Rick Henderson
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
 |:heavy_check_mark:   | 13011| The Orphanage
@@ -527,7 +527,7 @@
 |:heavy_check_mark:   | 13014| LeMat Revolver
 |:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
-|                     | 13017| Mother Bear's Rage
+|:heavy_check_mark:   | 13017| Mother Bear's Rage
 |                     | 13018| Focusing Chi
 |:heavy_check_mark:   | 13019| Mugging
 |                     | 13020| Signing Over the Stores
@@ -638,7 +638,7 @@
 |                     | 17001| Shi Long Peng
 |                     | 17002| Seamus McCaffrey
 |                     | 17003| Gene North Star
-|                     | 17004| Speaks-With-Earth
+|:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
 |                     | 17007| Nicholas Kramer
@@ -759,6 +759,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:white_check_mark:   | 20009| Matilda Loomis
+|:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20026| Ike Clanton
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons

@@ -19,7 +19,7 @@ class AttachmentPrompt extends UiPrompt {
                 (this.targetLocation === '' || this.targetLocation === card.gamelocation),
             onSelect: (player, card) => {
                 player.attach(this.attachmentCard, card, this.playingType, (attachment, target) => 
-                    this.onAttachCompleted(attachment, target, this.params));
+                    this.onAttachCompleted(attachment, target, this.params), this.params.scientist);
                 return true;
             },
             onCancel: () => {

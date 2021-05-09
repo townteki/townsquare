@@ -11,8 +11,7 @@ class PutIntoPlayCardAction extends BaseAbility {
                 Costs.payReduceableGRCost(properties.playType)
             ]
         });
-        this.target = properties.target;
-        this.targetParent = properties.targetParent;
+        this.properties = properties;
         this.playType = properties.playType;
         this.reduceAmount = properties.reduceAmount;
         this.callback = callback;
@@ -49,11 +48,7 @@ class PutIntoPlayCardAction extends BaseAbility {
         game.resolveGameAction(GameActions.putIntoPlay({                        
             player: player,
             card: source, 
-            params: { 
-                playingType: this.playType, 
-                target: this.target,
-                targetParent: this.targetParent,
-                context: context }
+            params: Object.assign(this.properties, { context: context })
         })).thenExecute(event => {
             if(this.costReducer) { 
                 event.player.removeCostReducer(this.costReducer);     
