@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/227/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/228/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -758,6 +758,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 20001| 108 Gracious Gifts
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20026| Ike Clanton
