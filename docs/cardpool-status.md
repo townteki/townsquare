@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/226/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/228/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -18,7 +18,7 @@
 |:heavy_check_mark:   | 01004| The Sloane Gang
 |:heavy_check_mark:   | 01005| Micah Ryse
 |                     | 01006| Mongwau the Mighty
-|                     | 01007| Bobo
+|:heavy_check_mark:   | 01007| Bobo
 |                     | 01008| Arnold McCadish
 |                     | 01009| The Ghostly Gun
 |:white_check_mark:   | 01010| Avie Cline
@@ -758,6 +758,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 20001| 108 Gracious Gifts
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20026| Ike Clanton
