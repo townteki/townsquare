@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/228/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/230/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -474,7 +474,7 @@
 |                     | 11015| Miasmatic Purifier
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
-|                     | 11018| Jael's Guile
+|:heavy_check_mark:   | 11018| Jael's Guile
 |:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
@@ -496,7 +496,7 @@
 |                     | 12009| Elliot Smithson
 |                     | 12010| Shelby Hunt
 |:heavy_check_mark:   | 12011| The Joker's Smile
-|                     | 12012| Old Marge's Manor
+|:heavy_check_mark:   | 12012| Old Marge's Manor
 |:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
 |                     | 12015| Guide Horse
