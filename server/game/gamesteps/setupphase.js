@@ -42,7 +42,7 @@ class SetupPhase extends Phase {
         for(const card of this.game.allCards) {
             card.applyAnyLocationPersistentEffects();
 
-            if(card.getType() === 'legend') {
+            if(card.getType() === 'legend' || card.getType() === 'outfit') {
                 card.applyPersistentEffects();
             }
         }

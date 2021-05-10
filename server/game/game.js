@@ -290,6 +290,10 @@ class Game extends EventEmitter {
         return gameLocation.getDudes();
     }
 
+    getDudesInPlay() {
+        return this.filterCardsInPlay(card => card.getType() === 'dude');
+    }
+
     addEffect(source, properties) {
         this.addSimultaneousEffects([{ source: source, properties: properties }]);
     }

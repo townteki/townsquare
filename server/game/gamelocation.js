@@ -24,7 +24,7 @@ class GameLocation {
             this.addAdjacency(this.game.townsquare, 'game');
         }
         if(locationCard.defaultAdjacencyEffects) {
-            locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect => 
+            locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect =>
                 this.addAdjacency(adjacencyEffect.location, adjacencyEffect.source, adjacencyEffect.type));
         }
         this.occupants = [];
@@ -104,8 +104,16 @@ class GameLocation {
         return false;
     }
 
+    isOutfit() {
+        return this.locationCard && this.locationCard.getType() === 'outfit';
+    }
+
     isHome(player) {
-        return this.locationCard && this.locationCard.getType() === 'outfit' && this.locationCard.owner === player;
+        return this.isOutfit() && this.locationCard.owner === player;
+    }
+
+    isOpponentsHome(player) {
+        return this.isOutfit() && this.locationCard.owner !== player;
     }
 
     addAdjacency(location, source, type = 'adjacent') {
@@ -134,7 +142,7 @@ class GameLocation {
             this.adjacencyMap.delete(uuid);
         } else {
             this.adjacencyMap.set(uuid, adjacency);
-        }  
+        }
     }
 
     addDude(card) {
@@ -164,7 +172,7 @@ class TownSquare extends GameLocation {
         // TODO M2 probably will have to create town square card since it is possible to
         // attach to town square
         super(game, Object.assign(new NullCard(), {
-            title: 'Town Square', 
+            title: 'Town Square',
             uuid: TownSquareUUID,
             getType: () => 'townsquare',
             location: 'play area',
