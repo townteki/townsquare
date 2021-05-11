@@ -117,7 +117,7 @@
 |:heavy_check_mark:   | 01103| Blood Curse
 |                     | 01104| Raising Hell
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
-|                     | 01106| Hired Guns
+|:heavy_check_mark:   | 01106| Hired Guns
 |                     | 01107| Lady Luck
 |:heavy_check_mark:   | 01108| Bottom Dealin'
 |                     | 01109| Make the Smart Choice
