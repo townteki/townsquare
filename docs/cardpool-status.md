@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/230/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/234/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -34,7 +34,7 @@
 |:white_check_mark:   | 01020| Andreas Andregg
 |                     | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
-|                     | 01023| Abram Grothe
+|:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
 |                     | 01026| Prof. Eustace True
@@ -99,7 +99,7 @@
 |                     | 01085| Whiskey Flask
 |:heavy_check_mark:   | 01086| Mustang
 |:heavy_check_mark:   | 01087| Pearl-Handled Revolver
-|                     | 01088| Roan
+|:heavy_check_mark:   | 01088| Roan
 |:heavy_check_mark:   | 01089| Auto-Revolver
 |:heavy_check_mark:   | 01090| Pinto
 |:heavy_check_mark:   | 01091| Flame-Thrower
@@ -486,7 +486,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 12001| Shizeng Lu
-|                     | 12002| Forster Cooke
+|:heavy_check_mark:   | 12002| Forster Cooke
 |                     | 12003| Joseph Dusty Hill
 |:heavy_check_mark:   | 12004| Mariel Lewis
 |                     | 12005| The Tattooed Man
@@ -651,7 +651,7 @@
 |                     | 17014| Aetheric Shockwave Inducer
 |                     | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
-|                     | 17017| Ghostly Communion
+|:heavy_check_mark:   | 17017| Ghostly Communion
 |                     | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
 |                     | 17020| Showboating
