@@ -26,7 +26,7 @@ class AsakichiCooke extends DudeCard {
                             card: context.target, 
                             targetUuid: location.uuid
                         }), context);   
-                        this.game.addMessage('{0} uses {1} to discard a card from hand and move {2} to {3}.', player, this, context.target, location);                                 
+                        this.game.addMessage('{0} uses {1} to discard a card from hand and move {2} to {3}', player, this, context.target, location);                                 
                         return true;
                     }
                 });
