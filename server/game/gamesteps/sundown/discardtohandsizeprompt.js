@@ -21,10 +21,9 @@ class DiscardToHandSizePrompt extends BaseStep {
         let overHandsize = currentPlayer.hand.length - currentPlayer.handSize;
         let cardOrCards = overHandsize === 1 ? 'card' : 'cards';
         this.game.promptForSelect(currentPlayer, {
-            ordered: true,
             mode: 'exactly',
             numCards: overHandsize,
-            activePromptTitle: `Select ${overHandsize} ${cardOrCards} to discard down to hand size (top first)`,
+            activePromptTitle: `Select ${overHandsize} ${cardOrCards} to discard down to hand size`,
             waitingPromptTitle: 'Waiting for opponent to discard down to hand size',
             cardCondition: card => card.location === 'hand' && card.controller === currentPlayer,
             onSelect: (player, cards) => this.discardCards(player, cards),
