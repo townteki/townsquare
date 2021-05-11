@@ -7,16 +7,16 @@ class AsakichiCooke extends DudeCard {
             title: 'Move Your Dude',
             cost: ability.costs.discardFromHand(),
             target: {
-                activePromptTitle: 'Choose one of your other dudes at this location to move',
+                activePromptTitle: 'Choose your dude at this location',
                 waitingPromptTitle: 'Waiting for opponent to choose a dude',
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'current', 
                     condition: card => card.locationCard === this.locationCard && card !== this,
+                    gameAction: 'moveDude',
                     cardType: 'dude'
                 }
             },
-            actionContext: { card: this, gameAction: 'moveDude' },
             handler: context => {
                 this.game.promptForLocation(context.player, {
                     activePromptTitle: 'Select where to move your dude',
