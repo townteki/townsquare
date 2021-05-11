@@ -34,7 +34,7 @@
 |:white_check_mark:   | 01020| Andreas Andregg
 |                     | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
-|                     | 01023| Abram Grothe
+|:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
 |                     | 01026| Prof. Eustace True
