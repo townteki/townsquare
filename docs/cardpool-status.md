@@ -99,7 +99,7 @@
 |                     | 01085| Whiskey Flask
 |:heavy_check_mark:   | 01086| Mustang
 |:heavy_check_mark:   | 01087| Pearl-Handled Revolver
-|                     | 01088| Roan
+|:heavy_check_mark:   | 01088| Roan
 |:heavy_check_mark:   | 01089| Auto-Revolver
 |:heavy_check_mark:   | 01090| Pinto
 |:heavy_check_mark:   | 01091| Flame-Thrower
