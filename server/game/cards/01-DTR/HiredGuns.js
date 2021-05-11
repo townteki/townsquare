@@ -12,7 +12,7 @@ class HiredGuns extends ActionCard {
                 cardType: 'dude'
             },
             message: context =>
-                this.game.addMessage('{0} places {1} into their hand', context.player, context.target),
+                this.game.addMessage('{0} uses {1} to place {2} into their hand', context.player, this, context.target),
             handler: context => 
                 this.game.resolveGameAction(GameActions.addToHand({ card: context.target }), context)
         });
