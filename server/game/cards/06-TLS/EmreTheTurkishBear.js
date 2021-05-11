@@ -9,7 +9,7 @@ class EmreTheTurkishBear extends DudeCard {
                 onCardPulled: event => event.props.usedBy !== this.uuid &&
                     event.props.pullingDude && event.props.source &&
                     event.props.pullingDude.gamelocation === this.gamelocation &&
-                    event.props.source.hasKeyword('hex')
+                    event.props.source.hasKeyword('technique')
             },
             handler: context => {
                 const saveEventHandler = context.event.handler;
