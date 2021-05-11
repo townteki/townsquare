@@ -9,9 +9,7 @@ class DiscardToHandSizePrompt extends BaseStep {
     continue() {
         while(this.players.length) {
             let currentPlayer = this.players.shift();
-            if(! currentPlayer.isOverHandsizeLimit()) {
-                this.game.addMessage('{0} already meets their hand size limit', currentPlayer);
-            } else {
+            if(currentPlayer.isOverHandsizeLimit()) {
                 this.promptPlayerToDiscard(currentPlayer);
                 return false;
             }
