@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/234/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/239/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -414,7 +414,7 @@
 |                     | 10001| The Sanatorium
 |                     | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
-|                     | 10004| Asakichi Cooke
+|:heavy_check_mark:   | 10004| Asakichi Cooke
 |                     | 10005| Emre, The Turkish Bear
 |                     | 10006| Michael "The Badger" Dodge
 |                     | 10007| Jim Cheveyo
@@ -734,7 +734,7 @@
 |                     | 19024| Explorer's Lodge
 |                     | 19025| The Oriental
 |                     | 19026| Hellstromme Plant #9
-|                     | 19027| Bilton Collection Agency
+|:heavy_check_mark:   | 19027| Bilton Collection Agency
 |:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
 |                     | 19030| Forsaken Hound
