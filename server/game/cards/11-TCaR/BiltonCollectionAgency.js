@@ -12,7 +12,7 @@ class BiltonCollectionAgency extends DeedCard {
             target: {
                 activePromptTitle: 'Choose a deed you control but do not own',
                 waitingPromptTitle: 'Waiting for opponent to choose a deed',
-                cardCondition: {location: 'play area', controller: 'current', condition: card => card.owner !== this.controllingPlayer},
+                cardCondition: {location: 'play area', controller: 'current', condition: card => card.owner !== this.controller},
                 cardType: ['deed']
             },
             handler: context => {
