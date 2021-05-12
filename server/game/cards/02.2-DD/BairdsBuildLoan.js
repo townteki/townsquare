@@ -10,7 +10,7 @@ class BairdsBuildLoan extends DeedCard {
 
             target:{
                 activePromptTitle: 'Select a deed',
-                cardCondition: card => card.location === 'hand' && (this.controller.ghostrock >= card.cost - 2),
+                cardCondition: { location: 'hand', condition: card => card.owner === this.controller },
                 cardType: ['deed']
             },
             message: context => {
