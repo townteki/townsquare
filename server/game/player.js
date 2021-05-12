@@ -1229,12 +1229,12 @@ class Player extends Spectator {
         if(addMessage) {
             this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.value, pulledCard.suit, pulledCard);
         }
-        this.game.raiseEvent('onCardPulled', { card: pulledCard, props }, event => {
+        this.game.raiseEvent('onCardPulled', { card: pulledCard, value: pulledCard.value, suit: pulledCard.suit, props }, event => {
             if(callback) {
-                if(event.card.getType() === 'joker') {
+                if(event.card.getType() === 'joker' && (!event.value || !event.suit)) {
                     this.game.queueStep(new JokerPrompt(this.game, event.card, callback));
                 } else {
-                    callback(event.card, event.card.value, event.card.suit);
+                    callback(event.card, event.value, event.suit);
                 }
             }
         });

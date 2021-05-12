@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const JokerPrompt = require('../../gamesteps/jokerprompt.js');
 
 class EmreTheTurkishBear extends DudeCard {
     setupCardAbilities() {
@@ -20,7 +21,16 @@ class EmreTheTurkishBear extends DudeCard {
                     this.game.addMessage('{0} uses {1} to replace the pulled {2}of{3}({4} ) with a new pull and make him a stud', 
                         context.player, this, originalCard.value, originalCard.suit, originalCard);
                     originalCard.owner.handlePulledCard(originalCard);
-                    saveEventHandler(event);
+                    if(event.card.getType() === 'joker') {
+                        this.game.queueStep(new JokerPrompt(this.game, event.card, (pulledCard, chosenValue, chosenSuit) => {
+                            event.card = pulledCard;
+                            event.suit = chosenSuit;
+                            event.value = chosenValue;
+                            saveEventHandler(event);
+                        }));
+                    } else {
+                        saveEventHandler(event);
+                    }
                 });
                 this.untilEndOfRound(ability => ({
                     match: this,
