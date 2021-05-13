@@ -12,7 +12,8 @@ class Soothe extends SpellCard {
                 waitingPromptTitle: 'Waiting for opponent to select a dude',
                 cardCondition: { location: 'play area', condition: card => (card.gamelocation === this.gamelocation || 
                     card.isAdjacent(this.gamelocation)) && card.booted},
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: 'unboot'
             },
             difficulty: 10,
             onSuccess: (context) => {
