@@ -38,6 +38,7 @@ const Shootout = require('./gamesteps/shootout.js');
 const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
 const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 const AbilityContext = require('./AbilityContext.js');
+const ValuePrompt = require('./gamesteps/valueprompt.js');
 
 class Game extends EventEmitter {
     constructor(details, options = {}) {
@@ -688,34 +689,7 @@ class Game extends EventEmitter {
     }
 
     promptForValue(player, title, method, context, source, condition = () => true) {
-        let buttonsValue = [];
-        for(let i = 1; i <= 13; i++) {
-            let text = i;
-            switch(i) {
-                case 1:
-                    text = 'A';                  
-                    break;
-                case 11:
-                    text = 'J';                  
-                    break;
-                case 12:
-                    text = 'Q';                  
-                    break;
-                case 13:
-                    text = 'K';                  
-                    break;
-                default:
-                    break;
-            }
-            buttonsValue.push({ text: text, method: method, arg: i, disabled: !condition(player, i) });
-        }
-        this.promptWithMenu(player, context, {
-            activePrompt: {
-                menuTitle: title,
-                buttons: buttonsValue
-            },
-            source: source
-        });
+        this.queueStep(new ValuePrompt(this, player, title, method, context, source, condition));
     }   
 
     promptForSelect(player, properties) {
