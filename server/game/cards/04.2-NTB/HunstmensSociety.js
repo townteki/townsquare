@@ -6,7 +6,7 @@ class HunstmensSociety extends DeedCard {
             targetController: 'current',
             condition: () => true,
             match: card => card.getType() === 'dude' &&
-                (card.locationCard === this || card.isAdjacent(this.gamelocation)) &&
+                (card.gamelocation === this.gamelocation || card.isAdjacent(this.gamelocation)) &&
                 card.value >= 10,
             effect: ability.effects.modifyUpkeep(-1)
         });
