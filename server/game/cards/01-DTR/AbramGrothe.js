@@ -16,7 +16,7 @@ class AbramGrothe extends DudeCard {
             onSuccess: (job, context) => {
                 const dudes = this.game.getDudesAtLocation(job.mark.gamelocation).filter(dude => dude.isWanted() || dude.hasKeyword('abomination'));
                 if(dudes.length) {
-                    context.player.discardCards(dudes);
+                    context.player.discardCards(dudes, false, () => true, {}, context);
                 }
             }
         });
