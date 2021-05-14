@@ -7,7 +7,7 @@ class UpkeepPhase extends Phase {
         super(game, 'upkeep');
         this.initialise([
             new SimpleStep(game, () => this.receiveProduction()),
-            // TODO M2 Shootout testing - comment out UpkeepPrompt
+            new SimpleStep(game, () => game.raiseEvent('onProductionReceived')),
             new UpkeepPrompt(game)
         ]);
     }

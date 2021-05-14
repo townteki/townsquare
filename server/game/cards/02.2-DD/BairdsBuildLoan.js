@@ -1,19 +1,20 @@
 const DeedCard = require('../../deedcard.js');
 const StandardActions = require('../../PlayActions/StandardActions.js');
 
-class GeneralStore extends DeedCard {
+class BairdsBuildLoan extends DeedCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'General Store',
+            title: 'Play a Deed',
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
+
             target:{
-                activePromptTitle: 'Select a goods or spell to attach',
+                activePromptTitle: 'Select a deed',
                 cardCondition: { location: 'hand', condition: card => card.owner === this.controller },
-                cardType: ['goods', 'spell']
+                cardType: ['deed']
             },
             message: context => {
-                this.game.addMessage('{0} uses {1} to shop for {2}, reducing it\'s cost by 2', context.player, this, context.target);
+                this.game.addMessage('{0} uses {1} to build {2}, reducing it\'s cost by 2', context.player, this, context.target);
             },
             handler: context => {
                 this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(2), context.player, context.target);
@@ -22,6 +23,6 @@ class GeneralStore extends DeedCard {
     }
 }
 
-GeneralStore.code = '01077';
+BairdsBuildLoan.code = '03013';
 
-module.exports = GeneralStore;
+module.exports = BairdsBuildLoan;
