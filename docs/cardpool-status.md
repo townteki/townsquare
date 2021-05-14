@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/226/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/239/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -18,7 +18,7 @@
 |:heavy_check_mark:   | 01004| The Sloane Gang
 |:heavy_check_mark:   | 01005| Micah Ryse
 |                     | 01006| Mongwau the Mighty
-|                     | 01007| Bobo
+|:heavy_check_mark:   | 01007| Bobo
 |                     | 01008| Arnold McCadish
 |                     | 01009| The Ghostly Gun
 |:white_check_mark:   | 01010| Avie Cline
@@ -34,7 +34,7 @@
 |:white_check_mark:   | 01020| Andreas Andregg
 |                     | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
-|                     | 01023| Abram Grothe
+|:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
 |                     | 01026| Prof. Eustace True
@@ -99,7 +99,7 @@
 |                     | 01085| Whiskey Flask
 |:heavy_check_mark:   | 01086| Mustang
 |:heavy_check_mark:   | 01087| Pearl-Handled Revolver
-|                     | 01088| Roan
+|:heavy_check_mark:   | 01088| Roan
 |:heavy_check_mark:   | 01089| Auto-Revolver
 |:heavy_check_mark:   | 01090| Pinto
 |:heavy_check_mark:   | 01091| Flame-Thrower
@@ -117,7 +117,7 @@
 |:heavy_check_mark:   | 01103| Blood Curse
 |                     | 01104| Raising Hell
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
-|                     | 01106| Hired Guns
+|:heavy_check_mark:   | 01106| Hired Guns
 |                     | 01107| Lady Luck
 |:heavy_check_mark:   | 01108| Bottom Dealin'
 |                     | 01109| Make the Smart Choice
@@ -414,7 +414,7 @@
 |                     | 10001| The Sanatorium
 |                     | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
-|                     | 10004| Asakichi Cooke
+|:heavy_check_mark:   | 10004| Asakichi Cooke
 |                     | 10005| Emre, The Turkish Bear
 |                     | 10006| Michael "The Badger" Dodge
 |                     | 10007| Jim Cheveyo
@@ -474,7 +474,7 @@
 |                     | 11015| Miasmatic Purifier
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
-|                     | 11018| Jael's Guile
+|:heavy_check_mark:   | 11018| Jael's Guile
 |:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
@@ -486,7 +486,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 12001| Shizeng Lu
-|                     | 12002| Forster Cooke
+|:heavy_check_mark:   | 12002| Forster Cooke
 |                     | 12003| Joseph Dusty Hill
 |:heavy_check_mark:   | 12004| Mariel Lewis
 |                     | 12005| The Tattooed Man
@@ -496,7 +496,7 @@
 |                     | 12009| Elliot Smithson
 |                     | 12010| Shelby Hunt
 |:heavy_check_mark:   | 12011| The Joker's Smile
-|                     | 12012| Old Marge's Manor
+|:heavy_check_mark:   | 12012| Old Marge's Manor
 |:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
 |                     | 12015| Guide Horse
@@ -651,7 +651,7 @@
 |                     | 17014| Aetheric Shockwave Inducer
 |                     | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
-|                     | 17017| Ghostly Communion
+|:heavy_check_mark:   | 17017| Ghostly Communion
 |                     | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
 |                     | 17020| Showboating
@@ -734,7 +734,7 @@
 |                     | 19024| Explorer's Lodge
 |                     | 19025| The Oriental
 |                     | 19026| Hellstromme Plant #9
-|                     | 19027| Bilton Collection Agency
+|:heavy_check_mark:   | 19027| Bilton Collection Agency
 |:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
 |                     | 19030| Forsaken Hound
@@ -758,6 +758,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 20001| 108 Gracious Gifts
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20026| Ike Clanton
