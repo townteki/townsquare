@@ -1224,23 +1224,24 @@ class Player extends Spectator {
     // If no callback is passed, pulled card is returned, but if it is joker the
     // value selection if needed has to be handled by the caller.
     // The pulled card has to be taken care of manually afterwards.
-    pull(callback, addMessage = false) {
+    pull(callback, addMessage = false, props = {}) {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
         }
         let pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'being played');
-        this.game.raiseEvent('onCardPulled', { card: pulledCard });
         if(addMessage) {
             this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.value, pulledCard.suit, pulledCard);
         }
-        if(callback) {
-            if(pulledCard.getType() === 'joker') {
-                this.game.queueStep(new JokerPrompt(this.game, pulledCard, callback));
-            } else {
-                callback(pulledCard, pulledCard.value, pulledCard.suit);
+        this.game.raiseEvent('onCardPulled', { card: pulledCard, value: pulledCard.value, suit: pulledCard.suit, props }, event => {
+            if(callback) {
+                if(event.card.getType() === 'joker' && (!event.value || !event.suit)) {
+                    this.game.queueStep(new JokerPrompt(this.game, event.card, callback));
+                } else {
+                    callback(event.card, event.value, event.suit);
+                }
             }
-        }
+        });
         return pulledCard;
     }
 
@@ -1271,7 +1272,7 @@ class Player extends Spectator {
                     }
                     event.successHandler(context);
                     if(!isAbility) {
-                        this.handlePulledCard(event.pulledCard);
+                        event.pulledCard.owner.handlePulledCard(event.pulledCard);
                     }
                 });
             } else {
@@ -1286,11 +1287,11 @@ class Player extends Spectator {
                     }
                     event.failHandler(context);
                     if(!isAbility) {
-                        this.handlePulledCard(event.pulledCard);
+                        event.pulledCard.owner.handlePulledCard(event.pulledCard);
                     }
                 });
             }
-        });
+        }, false, props);
     }
 
     pullForSkill(difficulty, skillRating, properties, context) {
