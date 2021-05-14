@@ -17,7 +17,7 @@ class BiltonCollectionAgency extends DeedCard {
             },
             handler: context => {
                 this.controller.modifyGhostRock(context.target.production);
-                this.game.addMessage('{0} uses {1} to gain {2} ghost rock from {3}', this.controller, this, context.target.production, context.target);
+                this.game.addMessage('{0} uses {1} to gain {2} GR from {3}', this.controller, this, context.target.production, context.target);
             }
         });
     }

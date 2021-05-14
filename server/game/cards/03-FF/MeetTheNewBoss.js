@@ -11,7 +11,7 @@ class ActionName extends ActionCard {
                 job.leader.modifyControl(1);
                 job.leader.modifyInfluence(1);
                 context.source.actionPlacementLocation = 'dead pile';
-                this.game.addMessage('{0}\'s leader of the job {1} permanently gets +1 influence and 1 control point', 
+                this.game.addMessage('{0}\'s leader of the job {1} permanently gets +1 influence and 1 CP', 
                     context.player, job.leader);
             },
             onFail: (job, context) => {

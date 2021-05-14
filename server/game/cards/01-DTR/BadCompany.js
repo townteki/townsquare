@@ -12,7 +12,7 @@ class BadCompany extends ActionCard {
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to give {2} +3 bullets and make them a stud. ' +
-                    'If any player collects bounty on that dude this turn, they gain 4 extra ghost rock. ', context.player, this, context.target),
+                    'If any player collects bounty on that dude this turn, they gain 4 extra GR', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
@@ -24,7 +24,7 @@ class BadCompany extends ActionCard {
                 this.game.onceConditional('onBountyCollected', { condition: event => event.card === context.target }, 
                     event => {
                         event.collector.modifyGhostRock(4);
-                        this.game.addMessage('{0} collects 4 extra ghost rock for bounty on {1} who was a really {2}. ', context.player, context.target, this);
+                        this.game.addMessage('{0} collects 4 extra GR for bounty on {1} who was a really {2}', context.player, context.target, this);
                     }
                 );
             }

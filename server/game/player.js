@@ -238,7 +238,7 @@ class Player extends Spectator {
             this.ghostrock = 0;
         }
         if(amount > 0 && this.cannotGainGhostRock) {
-            this.addMessage('{0} cannot gain ghost rock', this);
+            this.addMessage('{0} cannot gain GR', this);
             return;
         }
 
