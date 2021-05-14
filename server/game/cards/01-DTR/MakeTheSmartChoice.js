@@ -13,14 +13,31 @@ class MakeTheSmartChoice extends ActionCard {
             },
             handler: context => {
                 // "Reduce a dude's bullets by their influence."
-                this.applyAbilityEffect(context.ability, ability => ({
-                    match: context.target,
-                    effect: ability.effects.modifyBullets(-1 * context.target.influence)
-                }));
+                const influence = context.target.influence;
+                if(influence) {
+                    this.applyAbilityEffect(context.ability, ability => ({
+                        match: context.target,
+                        effect: ability.effects.modifyBullets(-1 * influence)
+                    }));
+                    this.game.addMessage(
+                        '{0} uses {1} to reduce {2}\'s bullets by their influence ({3})',
+                        context.target.controller,
+                        this,
+                        context.target,
+                        influence
+                    );
+                }
                 // "The dude's controller may move them home booted."
                 context.game.promptForYesNo(context.target.controller, {
                     title: 'Send home booted?',
-                    onYes: () => this.game.shootout.sendHome(context.target, context)
+                    onYes: () => {
+                        this.game.shootout.sendHome(context.target, context)
+                            .thenExecute(() => this.game.addMessage(
+                                '{0} uses {1} to send {2} home booted', 
+                                context.target.controller, 
+                                this, context.target
+                            ));
+                    }
                 });
             }
         });
