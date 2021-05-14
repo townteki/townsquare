@@ -825,13 +825,16 @@ class Player extends Spectator {
         let getPullProperties = scientist => {
             return {
                 successHandler: context => {
-                    this.game.addMessage('{0} successfuly invent {1} using the {2}', this, gadget, scientist);
+                    this.game.addMessage('{0} successfuly invent {1} using the {2} ( skill rating {3})', 
+                        this, gadget, scientist, context.pull.pullBonus);
                     this.game.raiseEvent('onGadgetInvented', { gadget, scientist, context }, event => {
                         successHandler(event.context, event.scientist);
                     });
                 },
-                failHandler: () => {
-                    this.game.addMessage('{0} fails to invent {1} using the {2}', this, gadget, scientist);
+                failHandler: context => {
+                    this.game.raiseEvent('onGadgetInventFailed', { gadget, scientist, context });
+                    this.game.addMessage('{0} fails to invent {1} using the {2} ( skill rating {3})', 
+                        this, gadget, scientist, context.pull.pullBonus);
                     this.moveCard(gadget, 'discard pile');
                 },
                 source: gadget,
@@ -852,7 +855,10 @@ class Player extends Spectator {
                     if(!gadget.canBeInventedWithoutBooting()) {
                         this.bootCard(card);
                     }
-                    this.pullForSkill(gadget.difficulty, card.getSkillRatingForCard(gadget), getPullProperties(card));
+                    this.game.raiseEvent('onGadgetInventing', { gadget, scientist: card }, event => {
+                        this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
+                            getPullProperties(event.scientist));
+                    });
                     return true;
                 }
             });
@@ -860,7 +866,10 @@ class Player extends Spectator {
             if(!gadget.canBeInventedWithoutBooting()) {
                 this.bootCard(scientist);
             }
-            this.pullForSkill(gadget.difficulty, scientist.getSkillRatingForCard(gadget), getPullProperties(scientist));
+            this.game.raiseEvent('onGadgetInventing', { gadget, scientist }, event => {
+                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
+                    getPullProperties(event.scientist));                
+            });
         }
     }
 
@@ -1265,10 +1274,16 @@ class Player extends Spectator {
                     this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.',
                         this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source);
                     let isAbility = !!context;
+                    const pullInfo = { 
+                        pulledValue: event.pulledValue, 
+                        pulledSuit: event.pulledSuit, 
+                        pulledCard: event.pulledCard, 
+                        pullBonus: event.pullBonus 
+                    };
                     if(isAbility) {
-                        context.pull = { pulledValue, pulledSuit, pulledCard };
+                        context.pull = pullInfo;
                     } else {
-                        context = { player: this, source: event.source, pull: { pulledValue, pulledSuit, pulledCard }};
+                        context = { player: this, source: event.source, pull: pullInfo};
                     }
                     event.successHandler(context);
                     if(!isAbility) {
@@ -1280,10 +1295,16 @@ class Player extends Spectator {
                     this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.',
                         this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source);
                     let isAbility = !!context;
+                    const pullInfo = { 
+                        pulledValue: event.pulledValue, 
+                        pulledSuit: event.pulledSuit, 
+                        pulledCard: event.pulledCard, 
+                        pullBonus: event.pullBonus 
+                    };
                     if(isAbility) {
-                        context.pull = { pulledValue, pulledSuit, pulledCard };
+                        context.pull = pullInfo;
                     } else {
-                        context = { player: this, source: event.source, pull: { pulledValue, pulledSuit, pulledCard }};
+                        context = { player: this, source: event.source, pull: pullInfo};
                     }
                     event.failHandler(context);
                     if(!isAbility) {

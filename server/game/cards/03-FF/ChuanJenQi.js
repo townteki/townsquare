@@ -2,7 +2,16 @@ const DudeCard = require('../../dudecard.js');
 
 class ChuanJenQi extends DudeCard {
     setupCardAbilities(ability) {
-        persistenteffect
+        this.persistentEffect({
+            condition: () => this.hasAttachmentWithKeywords('horse'),
+            match: this,
+            effect: ability.effects.modifyInfluence(1)
+        });
+        this.persistentEffect({
+            condition: () => this.hasAttachmentWithKeywords('gadget'),
+            match: this,
+            effect: ability.effects.modifyBullets(2)
+        });
     }
 }
 
