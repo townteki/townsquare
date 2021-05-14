@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/239/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/243/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -201,7 +201,7 @@
 |                     | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
 |:heavy_check_mark:   | 03012| Surveyor's Office
-|                     | 03013| Baird's Build and Loan
+|:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |                     | 03015| Holy Wheel Gun
 |                     | 03016| Stone Idol
@@ -415,7 +415,7 @@
 |                     | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
-|                     | 10005| Emre, The Turkish Bear
+|:heavy_check_mark:   | 10005| Emre, The Turkish Bear
 |                     | 10006| Michael "The Badger" Dodge
 |                     | 10007| Jim Cheveyo
 |                     | 10008| Enapay
@@ -619,7 +619,7 @@
 |                     | 16008| Antoine Peterson
 |                     | 16009| Denise Brancini
 |                     | 16010| Long Strides Ranch
-|                     | 16011| The Gomorra Gazette
+|:heavy_check_mark:   | 16011| The Gomorra Gazette
 |:heavy_check_mark:   | 16012| "Open Wound"
 |                     | 16013| Doomsday Supply
 |                     | 16014| Bacillus Pasteuria
@@ -682,7 +682,7 @@
 |                     | 18019| Jimmy "The Saint"
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
-|                     | 18022| Nickel Night Inn
+|:heavy_check_mark:   | 18022| Nickel Night Inn
 |:heavy_check_mark:   | 18023| Sherman Mortgage
 |                     | 18024| Gomorra Gaming Commission
 |                     | 18025| Cliff's #4 Saloon
