@@ -21,10 +21,10 @@ class MakeEmSweat extends ActionCard {
                 }));
                 if(context.target.bullets <= 0 && !context.target.booted) {
                     this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
-                        this.game.addMessage('{0} uses {1} to boot {2} and reduce {3}\'s bullets by {4} and boot {3}', context.player, this, context.costs.boot, context.target, context.costs.boot.bullets);
+                        this.game.addMessage('{0} uses {1} and boots {2} to reduce {3}\'s bullets by {4} and boot {3}', context.player, this, context.costs.boot, context.target, context.costs.boot.bullets);
                     });
                 } else {
-                    this.game.addMessage('{0} uses {1} to boot {2} and reduce {3}\'s bullets by {4}', context.player, this, context.costs.boot, context.target, context.costs.boot.bullets);
+                    this.game.addMessage('{0} uses {1} and boots {2} to reduce {3}\'s bullets by {4}', context.player, this, context.costs.boot, context.target, context.costs.boot.bullets);
                 }
             }
         });
