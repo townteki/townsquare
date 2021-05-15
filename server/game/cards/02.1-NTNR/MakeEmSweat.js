@@ -4,6 +4,7 @@ const GameActions = require('../../GameActions/index.js');
 class MakeEmSweat extends ActionCard {
     setupCardAbilities(ability) {
         this.action({
+            title: 'Reduce a dude\'s bullets',
             playType: 'shootout',
             cost: ability.costs.boot(card =>
                 card.getType() === 'dude' &&
