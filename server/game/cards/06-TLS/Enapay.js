@@ -9,6 +9,7 @@ class Enapay extends DudeCard {
         });
 
         this.action({
+            title: 'Raise a dude\'s influence',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
