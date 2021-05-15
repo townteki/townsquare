@@ -3,7 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class AngelaPayne extends DudeCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'Gain 2 Ghost Rock'
+            title: 'Gain 2 Ghost Rock',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             ifCondition: () => this.locationCard.owner !== this.controller && this.locationCard.getType() === 'deed',
