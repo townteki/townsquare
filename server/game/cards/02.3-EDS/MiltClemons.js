@@ -8,7 +8,7 @@ class MiltClemons extends DudeCard {
             },
             handler: () => {
                 this.controller.modifyGhostRock(1);
-                this.game.addMessage('{0} gains 1 ghostrock from {1} gaining bounty', this.controller, this);
+                this.game.addMessage('{0} gains 1 GR from {1} gaining bounty', this.controller, this);
             }
         });
     }
