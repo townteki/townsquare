@@ -60,7 +60,7 @@ class TheUnionCasinoPrompt extends PlayerOrderPrompt {
                     player, this.casinoCard, this.context.target, this.bets[player.name]);
             } else if(this.bets[this.player.name] - 4 >= this.bets[player.name]) {
                 this.context.target.modifyControl(1);
-                this.game.addMessage('{0} does a counter bet of {1} GR. {2} paid at least 4 GR more thus {2} gets 1 control point',
+                this.game.addMessage('{0} does a counter bet of {1} GR. {2} paid at least 4 GR more thus {2} gets 1 CP',
                     player, this.casinoCard, this.context.target, this.bets[player.name]);
             } else {
                 this.game.addMessage('{0} uses {1} and chooses {2} to bet {3} GR. {2} did not pay at least 4 GR more thus betting fails',

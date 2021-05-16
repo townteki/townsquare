@@ -9,7 +9,7 @@ class CheatinVarmint extends ActionCard {
             cost: ability.costs.payGhostRock(5),
             handler: context => {
                 context.chosenPlayer.modifyRank(-2);
-                this.game.addMessage('{0} uses {1} and pays 5 ghost rock to lower {2}\'s draw hand by 2 ranks. Current rank is {3}', 
+                this.game.addMessage('{0} uses {1} and pays 5 GR to lower {2}\'s draw hand by 2 ranks. Current rank is {3}', 
                     context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
             }});
         this.action({

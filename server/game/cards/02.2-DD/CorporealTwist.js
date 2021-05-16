@@ -22,7 +22,7 @@ class CorporealTwist extends SpellCard {
                 }));
                 let eventHandler = () => {
                     this.parent.modifyControl(1);
-                    this.game.addMessage('{0} gains control point on {1} thanks to {2}',
+                    this.game.addMessage('{0} gains CP on {1} thanks to {2}',
                         this.controller, this.parent, this);
                 };
                 this.game.onceConditional('onCardDiscarded', { condition: event => event.card === context.target }, eventHandler);

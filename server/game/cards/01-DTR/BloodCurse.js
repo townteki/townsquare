@@ -19,7 +19,7 @@ class BloodCurse extends SpellCard {
             },
             difficulty: 9,
             message: context => 
-                this.game.addMessage('{0} cursed {1} using {2} who gets -1 influence and -1 bullets.', context.player, context.target, this),
+                this.game.addMessage('{0} cursed {1} using {2} who gets -1 influence and -1 bullets', context.player, context.target, this),
             onSuccess: (context) => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,

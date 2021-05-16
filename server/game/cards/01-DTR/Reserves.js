@@ -6,7 +6,7 @@ class Reserves extends ActionCard {
             title: 'Reserves',
             playType: 'noon',      
             message: context => 
-                this.game.addMessage('{0} uses {1} to gain a ghost rock', context.player, this),
+                this.game.addMessage('{0} uses {1} to gain a GR', context.player, this),
             handler: context => {
                 context.player.modifyGhostRock(1);
             }
