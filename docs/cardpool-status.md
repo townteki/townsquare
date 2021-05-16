@@ -120,7 +120,7 @@
 |:heavy_check_mark:   | 01106| Hired Guns
 |                     | 01107| Lady Luck
 |:heavy_check_mark:   | 01108| Bottom Dealin'
-|                     | 01109| Make the Smart Choice
+|:heavy_check_mark:   | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
 |                     | 01111| Auction
 |:heavy_check_mark:   | 01112| The Stakes Just Rose
