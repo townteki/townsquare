@@ -21,7 +21,7 @@ class MakeTheSmartChoice extends ActionCard {
                     }));
                     this.game.addMessage(
                         '{0} uses {1} to reduce {2}\'s bullets by their influence ({3})',
-                        context.target.controller,
+                        context.player,
                         this,
                         context.target,
                         influence
