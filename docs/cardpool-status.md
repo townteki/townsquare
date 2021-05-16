@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/239/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/255/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -120,7 +120,7 @@
 |:heavy_check_mark:   | 01106| Hired Guns
 |                     | 01107| Lady Luck
 |:heavy_check_mark:   | 01108| Bottom Dealin'
-|                     | 01109| Make the Smart Choice
+|:heavy_check_mark:   | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
 |                     | 01111| Auction
 |:heavy_check_mark:   | 01112| The Stakes Just Rose
@@ -180,7 +180,7 @@
 |                     | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
 |:heavy_check_mark:   | 02017| Forget
-|                     | 02018| Make 'em Sweat
+|:heavy_check_mark:   | 02018| Make 'em Sweat
 |                     | 02019| Back Ways
 |                     | 02020| Hired Help
 |                     | 02021| Too Much Attention
@@ -201,7 +201,7 @@
 |                     | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
 |:heavy_check_mark:   | 03012| Surveyor's Office
-|                     | 03013| Baird's Build and Loan
+|:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |                     | 03015| Holy Wheel Gun
 |                     | 03016| Stone Idol
@@ -222,11 +222,11 @@
 |                     | 04005| Dr. Arden Gillman
 |                     | 04006| Arvid Mardh
 |                     | 04007| Allie Hensman (Exp.1)
-|                     | 04008| Milt Clemons
+|:heavy_check_mark:   | 04008| Milt Clemons
 |:heavy_check_mark:   | 04009| Jake Smiley
 |                     | 04010| QUATERMAN
-|                     | 04011| Angela Payne
-|                     | 04012| The Mayor's Office
+|:heavy_check_mark:   | 04011| Angela Payne
+|:heavy_check_mark:   | 04012| The Mayor's Office
 |:heavy_check_mark:   | 04013| Hunter Protections
 |:heavy_check_mark:   | 04014| The Evidence
 |                     | 04015| Teleportation Device
@@ -252,7 +252,7 @@
 |                     | 05009| Zoe Halbrook
 |                     | 05010| Abram Grothe (Exp.1)
 |                     | 05011| William Specks
-|                     | 05012| Chuan "Jen" Qí
+|:heavy_check_mark:   | 05012| Chuan "Jen" Qí
 |                     | 05013| Lane Healey (Exp.1)
 |                     | 05014| The Fixer
 |:heavy_check_mark:   | 05015| Maria Kingsford
@@ -274,7 +274,7 @@
 |                     | 05031| The Lord Provides
 |:heavy_check_mark:   | 05032| Phantasm
 |:heavy_check_mark:   | 05033| Walk the Path
-|                     | 05034| Soothe
+|:heavy_check_mark:   | 05034| Soothe
 |                     | 05035| Swinford Finds Trouble
 |                     | 05036| Under the Weather
 |:heavy_check_mark:   | 05037| Faster on the Draw
@@ -321,7 +321,7 @@
 |                     | 07007| Max Baine (Exp.1)
 |                     | 07008| El Grajo
 |:heavy_check_mark:   | 07009| Jacqueline Isham
-|                     | 07010| Huntsmen's Society
+|:heavy_check_mark:   | 07010| Huntsmen's Society
 |                     | 07011| Secured Stockyard
 |:heavy_check_mark:   | 07012| La Quema
 |                     | 07013| Asyncoil Gun
@@ -415,10 +415,10 @@
 |                     | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
-|                     | 10005| Emre, The Turkish Bear
+|:heavy_check_mark:   | 10005| Emre, The Turkish Bear
 |                     | 10006| Michael "The Badger" Dodge
 |                     | 10007| Jim Cheveyo
-|                     | 10008| Enapay
+|:heavy_check_mark:   | 10008| Enapay
 |                     | 10009| Danny Wilde
 |                     | 10010| Dabney Scuttlesby
 |                     | 10011| Ivor Hawley (Exp.1)
@@ -499,7 +499,7 @@
 |:heavy_check_mark:   | 12012| Old Marge's Manor
 |:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
-|                     | 12015| Guide Horse
+|:heavy_check_mark:   | 12015| Guide Horse
 |                     | 12016| Marty
 |                     | 12017| Righteous Fury
 |                     | 12018| Owl's Insight
@@ -591,7 +591,7 @@
 |                     | 15006| Emilia Vivirias
 |                     | 15007| "Professor" Duncan
 |                     | 15008| The Highbinder Hotel
-|                     | 15009| 2nd Bank Of Gomorra
+|:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
 |                     | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer
 |                     | 15012| Espuelas
@@ -619,7 +619,7 @@
 |                     | 16008| Antoine Peterson
 |                     | 16009| Denise Brancini
 |                     | 16010| Long Strides Ranch
-|                     | 16011| The Gomorra Gazette
+|:heavy_check_mark:   | 16011| The Gomorra Gazette
 |:heavy_check_mark:   | 16012| "Open Wound"
 |                     | 16013| Doomsday Supply
 |                     | 16014| Bacillus Pasteuria
@@ -677,12 +677,12 @@
 |                     | 18014| Christine Perfect
 |                     | 18015| Father Tolarios
 |:heavy_check_mark:   | 18016| Hattie DeLorre
-|                     | 18017| Diego Linares
+|:heavy_check_mark:   | 18017| Diego Linares
 |:heavy_check_mark:   | 18018| Post-A-Tron
 |                     | 18019| Jimmy "The Saint"
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
-|                     | 18022| Nickel Night Inn
+|:heavy_check_mark:   | 18022| Nickel Night Inn
 |:heavy_check_mark:   | 18023| Sherman Mortgage
 |                     | 18024| Gomorra Gaming Commission
 |                     | 18025| Cliff's #4 Saloon

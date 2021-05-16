@@ -5,6 +5,7 @@ class TheFourthRing extends OutfitCard {
     setupCardAbilities(ability) {
         this.reaction({
             title: 'React: The Fourth Ring',
+            triggerBefore: true,
             when: {
                 onPullSuccess: event => 
                     event.pullingDude && 

@@ -16,7 +16,7 @@ class JonLongstride extends DudeCard {
                 this.game.addMessage('{0} uses {1}\'s ability to unboot {1}\'s Horse', context.player, this),
             handler: (context) => {
                 context.target.resetAbilities();
-                this.game.resolveGameActions(GameActions.unbootCard({ card: context.target }), context);
+                this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context);
             }
         });
     }
