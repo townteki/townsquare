@@ -3,7 +3,7 @@ const DeedCard = require('../../deedcard.js');
 class TheMayorsOffice extends DeedCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'Noon: Modify Influence',
+            title: 'The Mayor\'s Office',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
@@ -15,7 +15,7 @@ class TheMayorsOffice extends DeedCard {
                 this.abilityContext = context;
                 this.game.promptWithMenu(context.player, this, {
                     activePrompt: {
-                        menuTitle: 'Raise or lower their influence by one?',
+                        menuTitle: 'Raise or lower the dude\'s influence?',
                         buttons: [
                             {
                                 text: 'Raise by one',
