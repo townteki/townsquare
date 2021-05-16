@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/247/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/255/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -180,7 +180,7 @@
 |                     | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
 |:heavy_check_mark:   | 02017| Forget
-|                     | 02018| Make 'em Sweat
+|:heavy_check_mark:   | 02018| Make 'em Sweat
 |                     | 02019| Back Ways
 |                     | 02020| Hired Help
 |                     | 02021| Too Much Attention
@@ -222,11 +222,11 @@
 |                     | 04005| Dr. Arden Gillman
 |                     | 04006| Arvid Mardh
 |                     | 04007| Allie Hensman (Exp.1)
-|                     | 04008| Milt Clemons
+|:heavy_check_mark:   | 04008| Milt Clemons
 |:heavy_check_mark:   | 04009| Jake Smiley
 |                     | 04010| QUATERMAN
-|                     | 04011| Angela Payne
-|                     | 04012| The Mayor's Office
+|:heavy_check_mark:   | 04011| Angela Payne
+|:heavy_check_mark:   | 04012| The Mayor's Office
 |:heavy_check_mark:   | 04013| Hunter Protections
 |:heavy_check_mark:   | 04014| The Evidence
 |                     | 04015| Teleportation Device
@@ -252,7 +252,7 @@
 |                     | 05009| Zoe Halbrook
 |                     | 05010| Abram Grothe (Exp.1)
 |                     | 05011| William Specks
-|                     | 05012| Chuan "Jen" Qí
+|:heavy_check_mark:   | 05012| Chuan "Jen" Qí
 |                     | 05013| Lane Healey (Exp.1)
 |                     | 05014| The Fixer
 |:heavy_check_mark:   | 05015| Maria Kingsford
@@ -418,7 +418,7 @@
 |:heavy_check_mark:   | 10005| Emre, The Turkish Bear
 |                     | 10006| Michael "The Badger" Dodge
 |                     | 10007| Jim Cheveyo
-|                     | 10008| Enapay
+|:heavy_check_mark:   | 10008| Enapay
 |                     | 10009| Danny Wilde
 |                     | 10010| Dabney Scuttlesby
 |                     | 10011| Ivor Hawley (Exp.1)
@@ -677,7 +677,7 @@
 |                     | 18014| Christine Perfect
 |                     | 18015| Father Tolarios
 |:heavy_check_mark:   | 18016| Hattie DeLorre
-|                     | 18017| Diego Linares
+|:heavy_check_mark:   | 18017| Diego Linares
 |:heavy_check_mark:   | 18018| Post-A-Tron
 |                     | 18019| Jimmy "The Saint"
 |                     | 18020| Mario Crane (Exp.1)
