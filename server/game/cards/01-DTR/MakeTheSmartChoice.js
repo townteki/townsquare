@@ -33,9 +33,10 @@ class MakeTheSmartChoice extends ActionCard {
                     onYes: () => {
                         this.game.shootout.sendHome(context.target, context)
                             .thenExecute(() => this.game.addMessage(
-                                '{0} uses {1} to send {2} home booted', 
+                                '{0} decides to {1} and sends {2} home', 
                                 context.target.controller, 
-                                this, context.target
+                                this, 
+                                context.target
                             ));
                     }
                 });
