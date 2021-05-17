@@ -4,7 +4,7 @@ class Mausoleum extends DeedCard {
     setupCardAbilities(ability) {
         this.reaction({
             title: 'Mausoleum',
-            costs: ability.costs.bootSelf(),
+            cost: ability.costs.bootSelf(),
             when: {
                 onCardAced: event =>
                     !event.card.hasOneOfKeywords(['token', 'abomination']) && event.card.getType() === 'dude'
