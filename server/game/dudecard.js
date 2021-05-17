@@ -4,6 +4,7 @@ const GameActions = require('./GameActions');
 const {ShootoutStatuses, Tokens} = require('./Constants');
 const NullEvent = require('./NullEvent.js');
 const SpellCard = require('./spellcard.js');
+const ActionCard = require('./actioncard.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -472,6 +473,13 @@ class DudeCard extends DrawCard {
             return false;
         }
         return this.canPerformSkillOn(spell) && this.spellFunc(spell);
+    }
+
+    canPerformTechnique(card) {
+        if(!(card instanceof ActionCard) && !card.hasKeyword('technique')) {
+            return false;
+        }
+        return this.isKungFu();    
     }
 
     addSkillKfBonus(bonus, source) {
