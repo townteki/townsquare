@@ -9,7 +9,7 @@ class Mausoleum extends DeedCard {
                 onCardAced: event =>
                     !event.card.hasOneOfKeywords(['token', 'abomination']) && event.card.getType() === 'dude'
             },
-            message: context => this.game.addMessage('{0} uses {1} to have {1} gain a permanent CP', context.player, this),
+            message: context => this.game.addMessage('{0} uses {1} to have it gain a permanent CP', context.player, this),
             handler: () => {
                 this.modifyControl(1);
             }
