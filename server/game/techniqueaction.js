@@ -1,7 +1,7 @@
 const CardAction = require('./cardaction.js');
 
 /**
- * Represents a job ability provided by card text.
+ * Represents a Technique ability provided by card text.
  *
  * Properties:
  * title        - string that is used within the card menu associated with this
@@ -17,9 +17,6 @@ const CardAction = require('./cardaction.js');
  *                any phase.
  * location     - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
- * limit        - the max number of uses for the repeatable action.
- * clickToActivate - boolean that indicates the action should be activated when
- *                   the card is clicked.
  * onSuccess    - function that will be executed if technique succeeds. Takes context
  *                as parameter. 
  * onFail       - function that will be executed if technique fails. Takes context
