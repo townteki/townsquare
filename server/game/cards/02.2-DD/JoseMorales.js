@@ -5,7 +5,7 @@ class JoseMorales extends DudeCard {
         this.persistentEffect({
             condition: () => this.game.shootout && this.isParticipating(),
             match: this,
-            effect: ability.effects.modifySkillRating('huckster', this.bullets)
+            effect: ability.effects.dynamicSkillRating('huckster', () => this.bullets)
         });
     }
 }

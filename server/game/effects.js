@@ -462,6 +462,30 @@ const Effects = {
             }
         };
     },
+    dynamicSkillRating: function(type, skillRatingFunc) {
+        return {
+            title: `${type[0].toUpperCase() + type.slice(1)} rating modified`,
+            apply: function(card, context) {
+                context.dynamicSkillRating = context.dynamicSkillRating || {};
+                context.dynamicSkillRating[card.uuid] = skillRatingFunc(card, context) || [];
+                let value = context.dynamicSkillRating[card.uuid];
+                card.modifySkillRating(type, value);
+            },
+            reapply: function(card, context) {
+                let currentProperty = context.dynamicSkillRating[card.uuid];
+                let newProperty = skillRatingFunc(card, context) || 0;
+                context.dynamicSkillRating[card.uuid] = newProperty;
+                let value = newProperty - currentProperty;
+                card.modifySkillRating(type, value);
+            },
+            unapply: function(card, context) {
+                let value = context.dynamicSkillRating[card.uuid];
+                card.modifySkillRating(type, -value);
+                delete context.dynamicSkillRating[card.uuid];
+            },
+            isStateDependent: true
+        };
+    },
     productionToBeReceivedBy: function(player) {
         return {
             title: `Production to be received by: ${player.name}`,
