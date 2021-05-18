@@ -61,7 +61,7 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(!this.gameAction) {
-            if(card.getType() !== 'spell' && !isJob) {
+            if(card.getType() !== 'spell' && !isJob && card.getType() !== 'action' && !card.hasKeyword('technique')) {
                 throw new Error('Actions must have a `gameAction` or `handler` property.');
             } else {
                 this.gameAction = new HandlerGameActionWrapper({ handler: () => true });

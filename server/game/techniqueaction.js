@@ -30,7 +30,7 @@ class TechniqueAction extends CardAction {
             throw new Error('Technique Actions must have a `onSuccess` property.');
         }
         this.onFail = properties.onFail || (() => true);
-        if(this.ability.card.getType() !== 'action') {
+        if(this.card.getType() !== 'action') {
             throw new Error('This is not an action card!');
         }
     }
@@ -46,14 +46,14 @@ class TechniqueAction extends CardAction {
         let possibleKFDudes = context.player.cardsInPlay.filter(card => 
             card.location === 'play area' &&
             card.getType() === 'dude' &&
-            card.canPerformTechnique(this.ability.card)
+            card.canPerformTechnique(this.card)
         );
         if(possibleKFDudes.length === 1) {
             context.kfDude = possibleKFDudes[0];
             this.performTechnique(context);
         } else {
-            this.ability.game.promptForSelect(context.player, {
-                activePromptTitle: 'Select Kung Fu Dude for ' + this.ability.card.title,
+            this.game.promptForSelect(context.player, {
+                activePromptTitle: 'Select Kung Fu Dude for ' + this.card.title,
                 context: context,
                 cardCondition: card => possibleKFDudes.includes(card),
                 onSelect: (player, card) => {
@@ -66,29 +66,29 @@ class TechniqueAction extends CardAction {
     }
 
     performTechnique(context) {
-        const kfRating = context.kfDude.getSkillRatingForCard(this.ability.card);
-        context.difficulty = context.kfDude + kfRating;
+        const kfRating = context.kfDude.getKungFuRating();
+        context.difficulty = context.kfDude.value + kfRating;
         context.difficulty = context.difficulty > 13 ? 13 : context.difficulty;
         if(context.target) {
-            this.ability.game.addMessage('{0} attempts to perform {1} on {2} (with difficulty {3})', 
-                context.player, this.ability.card, context.target, context.difficulty);
+            this.game.addMessage('{0} attempts to perform {1} on {2} using {3} (with difficulty {4})', 
+                context.player, this.card, context.target, context.kfDude, context.difficulty);
         } else {
-            this.ability.game.addMessage('{0} attempts to perform {1} (with difficulty {2})', 
-                context.player, this.ability.card, context.difficulty);
+            this.game.addMessage('{0} attempts to perform {1} using {2} (with difficulty {3})', 
+                context.player, this.card, context.kfDude, context.difficulty);
         }
         super.executeHandler(context);
         context.player.pullForKungFu(context.difficulty, {
             successHandler: context => this.onSuccess(context),
             failHandler: context => this.onFail(context),
             pullingDude: context.kfDude,
-            source: this.ability.card
+            source: this.card
         }, context);
     }
 
     canBePerformed(player) {
         return player.cardsInPlay.find(card => 
             card.getType() === 'dude' &&
-            card.canPerformTechnique(this.ability.card)
+            card.canPerformTechnique(this.card)
         );
     }
 }
