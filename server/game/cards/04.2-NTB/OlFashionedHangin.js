@@ -16,7 +16,7 @@ class OlFashionedHangin extends ActionCard {
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(GameActions.aceCard({ card: job.mark }), context);
                 if(job.leader.location === 'play area') {
-                    this.game.addMessage('{0} gains 1 CP', job.leader);
+                    this.game.addMessage('{0}\'s hangman, {1}, gains 1 CP as a result of {2}', context.player, job.leader, this);
                     job.leader.modifyControl(1);
                 }
             }
