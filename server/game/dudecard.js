@@ -476,7 +476,7 @@ class DudeCard extends DrawCard {
     }
 
     canPerformTechnique(card) {
-        if(!(card instanceof ActionCard) && !card.hasKeyword('technique')) {
+        if(!(card instanceof ActionCard) || !card.hasKeyword('technique')) {
             return false;
         }
         return this.isKungFu();    
