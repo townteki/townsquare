@@ -6,8 +6,7 @@ class RabbitsLunarLeap extends ActionCard {
         this.techniqueAction({
             title: 'Rabbit\'s Lunar Leap',
             playType: ['shootout:join'],
-            // TODO M2 what card should actionContext target?
-            // actionContext: { card: this, gameAction: 'joinPosse' },
+            actionContext: { gameAction: 'joinPosse' },
             // Combo will be implemented in another PR
             combo: () => true,
             onSuccess: (context) => {

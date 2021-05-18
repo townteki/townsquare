@@ -37,35 +37,24 @@ class TechniqueAction extends CardAction {
 
     meetsRequirements(context) {
         if(super.meetsRequirements(context)) {
-            return this.canBePerformed(context.player);
+            return this.canBePerformed(context);
         }
         return false;
     }
 
-    executeHandler(context) {
-        let possibleKFDudes = context.player.cardsInPlay.filter(card => 
-            card.location === 'play area' &&
+    getAvailableKfDudes(context) {
+        const kfDudes = context.player.cardsInPlay.filter(card => 
             card.getType() === 'dude' &&
-            card.canPerformTechnique(this.card)
+            card.canPerformTechnique(this.card) &&
+            (!this.actionContext || card.allowGameAction(this.actionContext.gameAction, context))
         );
-        if(possibleKFDudes.length === 1) {
-            context.kfDude = possibleKFDudes[0];
-            this.performTechnique(context);
-        } else {
-            this.game.promptForSelect(context.player, {
-                activePromptTitle: 'Select Kung Fu Dude for ' + this.card.title,
-                context: context,
-                cardCondition: card => possibleKFDudes.includes(card),
-                onSelect: (player, card) => {
-                    context.kfDude = card;
-                    this.performTechnique(context);
-                    return true;
-                }
-            });
+        if(this.playTypePlayed() === 'shootout') {
+            return kfDudes.filter(dude => dude.isParticipating());
         }
+        return kfDudes;
     }
 
-    performTechnique(context) {
+    executeHandler(context) {
         const kfRating = context.kfDude.getKungFuRating();
         context.difficulty = context.kfDude.value + kfRating;
         context.difficulty = context.difficulty > 13 ? 13 : context.difficulty;
@@ -85,11 +74,27 @@ class TechniqueAction extends CardAction {
         }, context);
     }
 
-    canBePerformed(player) {
-        return player.cardsInPlay.find(card => 
-            card.getType() === 'dude' &&
-            card.canPerformTechnique(this.card)
-        );
+    canBePerformed(context) {
+        return this.getAvailableKfDudes(context).length > 0;
+    }
+
+    resolveTargets(context) {
+        let possibleKFDudes = this.getAvailableKfDudes(context);
+        if(possibleKFDudes.length === 1) {
+            context.kfDude = possibleKFDudes[0];
+        } else {
+            this.game.promptForSelect(context.player, {
+                activePromptTitle: 'Select dude to perform technique',
+                context: context,
+                cardCondition: card => possibleKFDudes.includes(card),
+                onSelect: (player, card) => {
+                    context.kfDude = card;
+                    return true;
+                },
+                source: this.card
+            });
+        }
+        return super.resolveTargets(context);
     }
 }
 
