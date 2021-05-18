@@ -1,7 +1,7 @@
-const ActionCard = require('../../actioncard.js');
 const GameActions = require('../../GameActions/index.js');
+const TechniqueCard = require('../../techniquecard.js');
 
-class RabbitsLunarLeap extends ActionCard {
+class RabbitsLunarLeap extends TechniqueCard {
     setupCardAbilities() {
         this.techniqueAction({
             title: 'Rabbit\'s Lunar Leap',
