@@ -18,6 +18,7 @@ const SpellAction = require('./spellaction');
 const SpellReaction = require('./spellreaction');
 const SpellBeforeReaction = require('./spellbeforereaction');
 const CardTraitBeforeReaction = require('./cardtraitbeforereaction');
+const TechniqueAction = require('./techniqueaction');
 
 class BaseCard {
     constructor(owner, cardData) {
@@ -158,6 +159,12 @@ class BaseCard {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var spell = new SpellAction(this.game, this, properties);
         this.abilities.actions.push(spell);
+    }
+
+    techniqueAction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
+        var technique = new TechniqueAction(this.game, this, properties);
+        this.abilities.actions.push(technique);
     }
 
     reaction(properties) {

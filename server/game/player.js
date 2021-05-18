@@ -1323,6 +1323,14 @@ class Player extends Spectator {
         this.handlePull(props, context);
     }
 
+    pullForKungFu(difficulty, properties, context) {
+        let props = Object.assign(properties, {
+            successCondition: pulledValue => pulledValue < difficulty,
+            pullBonus: 0
+        });
+        this.handlePull(props, context);
+    }
+
     returnCardToHand(card, allowSave = true, context) {
         return this.game.resolveGameAction(GameActions.returnCardToHand({ card, allowSave }), this.createContext(context));
     }
