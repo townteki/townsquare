@@ -7,7 +7,7 @@ class Mausoleum extends DeedCard {
             cost: ability.costs.bootSelf(),
             when: {
                 onCardAced: event =>
-                    !event.card.hasOneOfKeywords(['token', 'abomination']) && event.card.getType() === 'dude' && EventTarget.originalLocation === 'play area'
+                    !event.card.hasOneOfKeywords(['token', 'abomination']) && event.card.getType() === 'dude' && event.originalLocation === 'play area'
             },
             message: context => this.game.addMessage('{0} uses {1} to have it gain a permanent CP', context.player, this),
             handler: () => {
