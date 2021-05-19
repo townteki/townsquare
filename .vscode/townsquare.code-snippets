@@ -171,6 +171,23 @@
 		"description": "Prompt with menu"
 	},
 
+	"Prompt For Yes/No": {
+		"scope": "javascript,typescript",
+		"prefix": "promptyesno",
+		"body": [
+			"this.game.promptForYesNo(${1:player}, {",
+			"\ttitle: '$2',",
+			"\tonYes: player => {",
+            "\t\t$3",
+			"\t},",
+			"\tonNo: player => {",
+            "\t\t$4",
+			"\t}",
+			"});"
+		],
+		"description": "Prompt for Yes or No"
+	},
+
 	"Persistent Effect": {
 		"scope": "javascript,typescript",
 		"prefix": "persistenteffect",
@@ -291,6 +308,28 @@
 			"});"
 		],
 		"description": "Spell reaction"
+	},
+
+	"Card Technique Action": {
+		"scope": "javascript,typescript",
+		"prefix": "techniqueaction",
+		"body": [
+			"this.techniqueAction({",
+			"\ttitle: '${1:Title}',",
+			"\tplayType: ['${2|noon,shootout,shootout:join,resolution,cheatin resolution|}'],",     
+			"\tcost: ability.costs.${3:bootKfDude()},",  
+			"\ttarget: ${5:targetselect},",
+			"\tcombo: context => ${6:true},",
+			"\tonSuccess: (context) => {",
+			"\t\t$21",
+			"\t},",
+			"\tonFail: (context) => {",
+			"\t\t$22",
+            "\t},",
+			"\tsource: this",
+			"});"
+		],
+		"description": "Technique action"
 	},
 
 	"Trait Reaction": {

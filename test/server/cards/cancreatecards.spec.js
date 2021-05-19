@@ -16,6 +16,9 @@ describe('All Cards', function() {
             if(Object.getPrototypeOf(cardClass).name === 'SpellCard') {
                 cardData = { type_code: 'spell' };
             }
+            if(Object.getPrototypeOf(cardClass).name === 'TechniqueCard') {
+                cardData = { keywords: 'technique', type_code: 'action' };
+            }
             new cardClass(this.playerSpy, cardData);
         });
     }

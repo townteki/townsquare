@@ -76,14 +76,14 @@ class DudeCard extends DrawCard {
         return skills;
     }
 
-    getSkillRating(skillName) {
-        const baseSkillRating = this.keywords.getSkillRating(skillName);
+    getSkillRating(skillNameOrKF) {
+        const baseSkillRating = this.keywords.getSkillRating(skillNameOrKF);
         if(baseSkillRating === null || baseSkillRating === undefined) {
             return;
         }
         const bonus = this.skillKfBonuses.reduce((aggregator, bonus) => {
             if(typeof(bonus.bonus) === 'function') {
-                return aggregator + (bonus.bonus(skillName) || 0);
+                return aggregator + (bonus.bonus(skillNameOrKF) || 0);
             }
             return aggregator + bonus.bonus;
         }, 0);
@@ -106,6 +106,10 @@ class DudeCard extends DrawCard {
         if(spellOrGadget.isSpirit() || spellOrGadget.isTotem()) {
             return this.getSkillRating('shaman');
         }
+    }
+
+    getKungFuRating() {
+        return this.getSkillRating('kung fu');
     }
 
     canPerformSkillOn(spellOrGadget) {
