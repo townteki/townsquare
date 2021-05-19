@@ -25,6 +25,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.waitForTargetResolution()),
             new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
+            new SimpleStep(game, () => this.checkCombo()),
             new SimpleStep(game, () => this.postResolveAbilityUpdates()),
             new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
             new SimpleStep(game, () => this.game.popAbilityContext())
@@ -199,6 +200,15 @@ class AbilityResolver extends BaseStep {
             });
         } else {
             this.ability.executeHandler(this.context);
+        }
+    }
+
+    checkCombo() {
+        if(this.cancelled || !this.ability.combo) {
+            return;
+        }
+        if(this.ability.combo(this.context)) {
+            this.ability.performCombo(this.context);
         }
     }
 

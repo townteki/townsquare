@@ -7,8 +7,11 @@ class RabbitsLunarLeap extends TechniqueCard {
             title: 'Rabbit\'s Lunar Leap',
             playType: ['shootout:join'],
             actionContext: { gameAction: 'joinPosse' },
-            // Combo will be implemented in another PR
-            combo: () => true,
+            combo: () => {
+                const myDudes = this.game.shootout.getPosseByPlayer(this.controller).getDudes();
+                const oppDudes = this.game.shootout.getPosseByPlayer(this.controller.getOpponent()).getDudes();
+                return myDudes.length <= oppDudes.length;
+            },
             onSuccess: (context) => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: context.kfDude }), context).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to move {2} to posse', context.player, this, context.kfDude);
