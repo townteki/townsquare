@@ -2,11 +2,11 @@ const ActionCard = require('../../actioncard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class Ambush extends ActionCard {
-    setupCardAbilities() {
+    setupCardAbilities(ability) {
         this.job({
             title: 'Ambush',
             playType: 'noon',
-            bootLeader: 'true',
+            cost: ability.costs.bootLeader(),
             target: {
                 activePromptTitle: 'Choose a dude to ambush',
                 waitingPromptTitle: 'Waiting for opponent to choose a dude',
@@ -22,7 +22,11 @@ class Ambush extends ActionCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to lead an ambush against {2}', context.player, this, context.target),
             onSuccess: (job, context) => {
-                this.game.resolveGameAction(GameActions.aceCard({ card: job.mark }), context);
+                if(job.mark.location === 'play area') {
+                    this.game.resolveGameAction(GameActions.aceCard({ card: job.mark }), context).thenExecute(() => {
+                        this.game.addMessage('{0} successfuly ambushed and aced {1}', context.player, job.mark);
+                    });
+                }
             }
         });
     }
