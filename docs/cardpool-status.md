@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/255/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/257/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -331,7 +331,7 @@
 |:heavy_check_mark:   | 07017| Consecration
 |                     | 07018| Mark of Pestilence
 |                     | 07019| Cookin' Up Trouble
-|                     | 07020| Ol' Fashioned Hangin'
+|:heavy_check_mark:   | 07020| Ol' Fashioned Hangin'
 |:heavy_check_mark:   | 07021| No Turning Back
 
 ## `04.3-NN` Nightmare at Noon
@@ -728,7 +728,7 @@
 |                     | 19018| Agent Provocateur
 |                     | 19019| F1 Burch
 |                     | 19020| Taff's Distillery
-|                     | 19021| Mausoleum
+|:heavy_check_mark:   | 19021| Mausoleum
 |                     | 19022| Epitaph Branch Office
 |                     | 19023| Buffalo Emporium
 |                     | 19024| Explorer's Lodge
