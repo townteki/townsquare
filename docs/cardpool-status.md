@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/257/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/260/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -125,7 +125,7 @@
 |                     | 01111| Auction
 |:heavy_check_mark:   | 01112| The Stakes Just Rose
 |:heavy_check_mark:   | 01113| Sun in Yer Eyes
-|                     | 01114| Ambush
+|:heavy_check_mark:   | 01114| Ambush
 |:heavy_check_mark:   | 01115| Coachwhip!
 |                     | 01116| War Paint
 |:heavy_check_mark:   | 01117| Bad Company
@@ -196,7 +196,7 @@
 |                     | 03005| Tallulah "Lula" Morgan
 |                     | 03006| Dr. Emanuel Ashbel
 |:heavy_check_mark:   | 03007| Angélica Espinosa
-|                     | 03008| José Morales
+|:heavy_check_mark:   | 03008| José Morales
 |                     | 03009| Genesee "Gina" Tailfeathers
 |                     | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
@@ -492,7 +492,7 @@
 |                     | 12005| The Tattooed Man
 |                     | 12006| Riorden O'Lithen
 |                     | 12007| "Lucky" Sky Borne
-|                     | 12008| Miranda Clarke
+|:heavy_check_mark:   | 12008| Miranda Clarke
 |                     | 12009| Elliot Smithson
 |                     | 12010| Shelby Hunt
 |:heavy_check_mark:   | 12011| The Joker's Smile
