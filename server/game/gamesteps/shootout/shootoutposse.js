@@ -90,15 +90,15 @@ class ShootoutPosse {
     }
 
     actOnPosse(action, exception = () => false) {
-        this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(dude => !exception(dude)).forEach(dude => action(dude));
+        this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(dude => dude && !exception(dude)).forEach(dude => action(dude));
     }
     
     getDudes(condition = () => true) {
-        return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(card => condition(card));
+        return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(card => card && condition(card));
     }
 
     findInPosse(predicate = () => true) {
-        return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).find(card => predicate(card));
+        return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).find(card => card && predicate(card));
     }
 }
 
