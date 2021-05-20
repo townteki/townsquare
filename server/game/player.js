@@ -507,8 +507,8 @@ class Player extends Spectator {
         this.handResult = new HandResult();
     }
 
-    sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length, null, 'sundown');
+    redrawToHandSize(reason) {
+        this.drawCardsToHand(this.handSize - this.hand.length, null, reason);
     }
 
     isOverHandsizeLimit() {
