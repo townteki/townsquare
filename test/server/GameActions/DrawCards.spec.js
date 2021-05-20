@@ -5,6 +5,7 @@ describe('DrawCards', function() {
         this.playerSpy = jasmine.createSpyObj('player', ['canDraw', 'getNumCardsToDraw', 'placeCardInPile', 'shuffleDiscardToDrawDeck', 'drawDeckAction']);
         this.playerSpy.getNumCardsToDraw.and.returnValue(2);
         this.playerSpy.drawDeck = ['card1', 'card2'];
+        this.playerSpy.discardPile = [];
         this.playerSpy.drawnCards = 0;
         this.props = { player: this.playerSpy, amount: 2 };
     });
