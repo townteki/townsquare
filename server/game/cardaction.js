@@ -127,7 +127,7 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(this.card.getType() === 'action') {
-            let actionType = context.isComboAction ? 'combo' : 'play';
+            let actionType = context.comboNumber ? 'combo' : 'play';
             if(!context.player.isCardInPlayableLocation(this.card, actionType)) {
                 return false;
             }

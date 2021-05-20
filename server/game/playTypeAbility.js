@@ -85,7 +85,7 @@ class PlayTypeAbility extends BaseAbility {
             game: this.game,
             player: player,
             source: this.card,
-            isComboAction: this.options && this.options.isComboAction
+            comboNumber: this.options && this.options.comboNumber
         });
     }
 }

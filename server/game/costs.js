@@ -116,7 +116,7 @@ const Costs = {
     expendAction: function() {
         return {
             canPay: function(context) {
-                return context.player.isCardInPlayableLocation(context.source, context.isComboAction ? 'combo' : 'play') && 
+                return context.player.isCardInPlayableLocation(context.source, context.comboNumber ? 'combo' : 'play') && 
                     context.player.canPlay(context.source, 'play');
             },
             pay: function(context) {

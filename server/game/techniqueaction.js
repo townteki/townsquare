@@ -110,28 +110,32 @@ class TechniqueAction extends CardAction {
     }
 
     performCombo(context) {
-        this.game.promptForYesNo(context.player, {
-            title: 'Do you want to combo?',
-            onYes: player => {
-                this.game.promptForSelect(player, {
-                    activePromptTitle: 'Select a technique to combo',
-                    waitingPromptTitle: 'Waiting for opponent to select technique',
-                    cardCondition: card => ['hand', 'discard pile'].includes(card.location) && 
+        context.comboNumber = context.comboNumber || 0;
+        if(context.comboNumber < context.kfDude.getKungFuRating()) {
+            this.game.promptForYesNo(context.player, {
+                title: `Do you want to combo (${context.comboNumber + 1}.)?`,
+                onYes: player => {
+                    this.game.promptForSelect(player, {
+                        activePromptTitle: 'Select a technique to combo',
+                        waitingPromptTitle: 'Waiting for opponent to select technique',
+                        cardCondition: card => ['hand', 'discard pile'].includes(card.location) && 
                         card.hasKeyword('technique') &&
                         card.code !== this.card.code &&
                         card.isSameTao(this.card),
-                    cardType: 'action',
-                    onSelect: (player, card) => {
-                        this.game.addMessage('{0} is performing a combo {1} by {2}', player, card, context.kfDude);
-                        card.useAbility(player, { kfDude: context.kfDude, isComboAction: true });
-                        return true;
-                    }
-                });
-            },
-            onNo: () => {
-                this.game.markActionAsTaken(context);
-            }
-        });        
+                        cardType: 'action',
+                        onSelect: (player, card) => {
+                            context.comboNumber += 1;
+                            this.game.addMessage('{0} is performing a combo {1} by {2}', player, card, context.kfDude);
+                            card.useAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber });
+                            return true;
+                        }
+                    });
+                },
+                onNo: () => {
+                    this.game.markActionAsTaken(context);
+                }
+            });  
+        }      
     }
 }
 
