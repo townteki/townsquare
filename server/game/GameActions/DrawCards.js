@@ -17,7 +17,7 @@ class DrawCards extends GameAction {
     }
 
     canChangeGameState({ player, amount }) {
-        return amount > 0 && player.getNumCardsToDraw(amount) > 0;
+        return amount > 0 && (player.getNumCardsToDraw(amount) > 0 || player.discardPile.length > 0);
     }
 
     createEvent({ player, amount, reason = 'ability', source, target = 'hand' }) {

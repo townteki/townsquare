@@ -27,7 +27,8 @@ class ChatCommands {
             '/clear-effects': this.clearEffects,
             '/cleff': this.clearEffects,
             '/control': this.control,
-            '/discard': this.discard,
+            '/discard-random': this.discardRandom,
+            '/discard-deck': this.discardFromDeck,
             '/disconnectme': this.disconnectMe,
             '/draw': this.draw,
             '/give-control': this.giveControl,
@@ -470,10 +471,18 @@ class ChatCommands {
         });
     }
 
-    discard(player, args) {
+    discardFromDeck(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
 
-        this.game.addAlert('danger', '{0} uses the /discard command to discard {1} at random', player, TextHelper.count(num, 'card'));
+        this.game.addAlert('danger', '{0} uses the /discard-deck command to discard {1} from deck', player, TextHelper.count(num, 'card'));
+        
+        player.discardFromDraw(num);
+    }
+
+    discardRandom(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+
+        this.game.addAlert('danger', '{0} uses the /discard-random command to discard {1} at random', player, TextHelper.count(num, 'card'));
 
         player.discardAtRandom(num);
     }

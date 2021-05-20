@@ -883,8 +883,13 @@ class Player extends Spectator {
             return false;
         }
 
-        if(playingType === 'shoppin' && (card.getGameLocation().determineController() !== this || card.booted)) {
-            return false;
+        if(playingType === 'shoppin') {
+            if(card.getGameLocation().determineController() !== this) {
+                return false;
+            } 
+            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
+                return false;
+            }
         }
 
         return true;
