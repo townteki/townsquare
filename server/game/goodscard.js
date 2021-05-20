@@ -10,7 +10,7 @@ class GoodsCard extends HeartsCard {
             return false;
         }
 
-        if(card.getType() === 'deed') {
+        if(card.getType() === 'deed' || card.getType() === 'outfit') {
             if(!this.hasKeyword('improvement')) {
                 return false;
             }
