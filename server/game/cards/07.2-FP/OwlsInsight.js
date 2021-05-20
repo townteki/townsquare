@@ -18,8 +18,8 @@ class OwlsInsight extends SpellCard {
     processSpellOrGoods(context) {
         if(!this.doneSelecting) {
             this.game.promptForSelect(context.player, {
-                activePromptTitle: 'Select goods or spells to attach',
-                waitingPromptTitle: 'Waiting for opponent to select goods or spells',
+                activePromptTitle: 'Select goods or spell to attach',
+                waitingPromptTitle: 'Waiting for opponent to select goods or spell',
                 cardCondition: card => card.location === 'hand' && card.owner === context.player,
                 cardType: ['goods', 'spell'],
                 onSelect: (player, card) => {
