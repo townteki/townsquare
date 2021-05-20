@@ -759,11 +759,60 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 20001| 108 Gracious Gifts
+|                     | 20002| Property Is Theft
+|                     | 20003| The Spiritual Society
+|                     | 20004| Joe Vermilion
+|                     | 20005| Ying-Ssi Chieh T'ang
+|                     | 20006| E Gui
+|                     | 20007| Buskers
+|                     | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
+|                     | 20011| Matthew Rising Sun
+|                     | 20012| Feichi "Suitcase" Lee
+|                     | 20013| Geronimo
+|                     | 20014| Papa Marias
+|                     | 20015| Skinwalker
+|                     | 20016| Tonton Macoute
+|                     | 20017| Kevin Wainwright (Exp.1)
+|                     | 20018| Padre Ernesto de Diaz
+|                     | 20019| Dr. Erik Yaple
+|                     | 20020| Quincy Washburne
+|                     | 20021| Xiong "Wendy" Cheng (Exp.1)
+|                     | 20022| Takahashi Jinrai
+|                     | 20023| "Handsome" Dan Deeds
+|                     | 20024| Vida Azul
+|                     | 20025| Bartholomew P. Fountain
 |:heavy_check_mark:   | 20026| Ike Clanton
+|                     | 20027| Frank Stillwell
+|                     | 20028| Silas Aims (Exp.1)
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
+|                     | 20030| Virginia Ann Earp
+|                     | 20031| Campbell & Hatch Billiard Parlor
+|                     | 20032| Clanton Ranch
+|                     | 20033| Concordia Cemetery
+|                     | 20034| Ike's Place
+|                     | 20035| Five Aces Gambling Hall
+|                     | 20036| Old Washoe Club
+|                     | 20037| Quarter Horse
+|                     | 20038| Electrostatic Pump Gun
+|                     | 20039| Claws
+|                     | 20040| Analytical Cognisizer
+|                     | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
+|                     | 20043| Bedazzle
+|                     | 20044| Exultant Translocation
+|                     | 20045| Retribution
+|                     | 20046| Gateway
+|                     | 20047| Guiding Wind
+|                     | 20048| Mischievous Coyote
+|                     | 20049| Murdered in Tombstone
+|                     | 20050| Hostile Takeover
+|                     | 20051| Jade King Stance
+|                     | 20052| Heist
+|                     | 20053| I'm Your Huckleberry
+|                     | 20054| Monkey Goes to the Mountain
+|                     | 20055| Curse of Failure
 |:heavy_check_mark:   | 20056| Ricochet
 
 ## `13-O4B` Out for Blood
@@ -771,15 +820,180 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 21001| House of Many Faiths
+|                     | 21002| Office of Ancestral Affairs
+|                     | 21003| Bayou Vermilion Railroad
+|                     | 21004| Fort 51
+|                     | 21005| Smith & Robards Trade Show
+|                     | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
+|                     | 21008| Ke Wang
+|                     | 21009| Baijiu Sue
+|                     | 21010| Reverend Bob Hungate
+|                     | 21011| Father Diamond
+|                     | 21012| Master Shou
+|                     | 21013| Brother Petrovic
+|                     | 21014| Leychaa'i Youngheart
+|                     | 21015| Monomi Miles
+|                     | 21016| Klah
+|                     | 21017| Black Elk (Exp.1)
+|                     | 21018| Nathaniel Tuwikaa
+|                     | 21019| The Faceless One
+|                     | 21020| Lorena Corbett
+|                     | 21021| Auntie Sinister
+|                     | 21022| Mason Adler
+|                     | 21023| Enrique Dos Santos
+|                     | 21024| Reverend Endicott
+|                     | 21025| Sgt. Elijah Clay
+|                     | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
+|                     | 21028| Roberto Muratore
+|                     | 21029| Adelaide Rose
+|                     | 21030| Dr. Gregory Tremane
+|                     | 21031| Big Nose Kate
+|                     | 21032| Johnny Ringo
+|                     | 21033| Violet Esperanza
+|                     | 21034| Curly Bill Brocius
+|                     | 21035| Byron Decker
+|                     | 21036| Carter Richardson
+|                     | 21037| Valeria Batten (Exp.1)
+|                     | 21038| Steph & Gertie's Tonsorium
+|                     | 21039| Gateway Station
+|                     | 21040| Hart's Tea Shoppe
+|                     | 21041| Bird Cage Theater
+|                     | 21042| Cochise County Courthouse
+|                     | 21043| Gage Export Co.
+|                     | 21044| Magnum Opus Tenebri
+|                     | 21045| Scattergun
+|                     | 21046| Adler's Needle
+|                     | 21047| Wrathful Spider
+|                     | 21048| Guiding Light
+|                     | 21049| Champion
+|                     | 21050| Malison
+|                     | 21051| Dancing Butterfly
+|                     | 21052| Ten-Foot Punch
+|                     | 21053| Fleet-Footed
+|                     | 21054| You're A Daisy If You Do
+|                     | 21055| Twilight Is Upon Us
+|                     | 21056| Test of Wills
 
 ## `14-HCWM` Hell's Comin' With Me
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|                     | 22001| Andrew Lane
+|                     | 22002| Hank Ketchum
+|                     | 22003| Lacy O'Malley
+|                     | 22004| The Tombstone Haint
+|                     | 22005| Rock Woofstone
+|                     | 22006| Arielle Moriah
+|                     | 22007| Gabriel Prior
+|                     | 22008| Mr. Baird
+|                     | 22009| Harlan Stanton
+|                     | 22010| Dr. Delphi Wallis
+|                     | 22011| Cooper Grannon
+|                     | 22012| Vivene Goldsun
+|                     | 22013| Maurice Croker
+|                     | 22014| Bogie Man
+|                     | 22015| Evan Lucas
+|                     | 22016| Tawodi
+|                     | 22017| Tsintah
+|                     | 22018| Jackie Sanjuro
+|                     | 22019| Speaks-with-Buffalo
+|                     | 22020| Judge Wells Spicer
+|                     | 22021| Joan McGruder
+|                     | 22022| Virgil Earp
+|                     | 22023| Marshal Caves Callarman
+|                     | 22024| Florentino "Indian Charlie" Cruz
+|                     | 22025| Tomas Ramirez
+|                     | 22026| Pete Spence
+|                     | 22027| Jonah Essex (Exp.1)
+|                     | 22028| Camillus S. Fly
+|                     | 22029| QUATERMAN PRIME
+|                     | 22030| Winona Rein-Breaker
+|                     | 22031| Nicole Sumner
+|                     | 22032| Red River Roulette
+|                     | 22033| Kiva of Fathomless Reach
+|                     | 22034| Crystal Palace
+|                     | 22035| Rham's Readings
+|                     | 22036| Jonah's Retreat
+|                     | 22037| Schieffelin Hall
+|                     | 22038| Blue Lightnin'
+|                     | 22039| Magnum Rounds
+|                     | 22040| Iron Mole
+|                     | 22041| Net Gun
+|                     | 22042| Scratch
+|                     | 22043| Battered Banjo
+|                     | 22044| Bolts o' Doom
+|                     | 22045| Lethargy
+|                     | 22046| Mind Twist
+|                     | 22047| Dies Irae
+|                     | 22048| Babble On
+|                     | 22049| Ancestor's Reproach
+|                     | 22050| Secret Paths
+|                     | 22051| Fannin' the Hammer
+|                     | 22052| Tumblebleeds!
+|                     | 22053| Takin' Cover
+|                     | 22054| Hell's Comin' With Me!
+|                     | 22055| Frontier Feud
+|                     | 22056| Seizing the Pearl of Death
 
 ## `15-W2D` Welcome to Deadwood
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|                     | 23001| Yasmin Tian
+|                     | 23002| "Dynamite" Jacc
+|                     | 23003| Bai Yang Chen (Exp.1)
+|                     | 23004| Huang Li
+|                     | 23005| Arthur Dingler
+|                     | 23006| Deadwood Dick
+|                     | 23007| Al Swearengen
+|                     | 23008| Aunt Lou Marchbanks
+|                     | 23009| Lew Esquilin
+|                     | 23010| Mourning Mist
+|                     | 23011| Victor "Nines" de Boré
+|                     | 23012| The Angler
+|                     | 23013| Sifting Squirrel
+|                     | 23014| Lewis "Grizzly" Evans
+|                     | 23015| "Professor" Duncan (Exp.1)
+|                     | 23016| Yiska
+|                     | 23017| Dr. JT Goodenough
+|                     | 23018| Seth Bullock
+|                     | 23019| Clint Ramsey (Exp.1)
+|                     | 23020| Mimi "The Nun" O'Brien
+|                     | 23021| Sam Bass
+|                     | 23022| Rosaleen Byrne
+|                     | 23023| Jack McCall
+|                     | 23024| Reggie Mallard
+|                     | 23025| Alferd Packer
+|                     | 23026| John "Aces" Radcliffe (Exp.1)
+|                     | 23027| Willa Mae MacGowan (Exp.1)
+|                     | 23028| New Varney Nosferatu
+|                     | 23029| Carmichael's Livery
+|                     | 23030| Land Purchase
+|                     | 23031| Heath's Curiosity Shoppe
+|                     | 23032| The Gem Theater
+|                     | 23033| Baird's Debt Collections
+|                     | 23034| Cheyenne Club
+|                     | 23035| Nuttal & Mann's No. 10 Saloon
+|                     | 23036| Winner's Circle Auction House
+|                     | 23037| Feathered Friend
+|                     | 23038| Bulletproof Vest
+|                     | 23039| Pale Horse
+|                     | 23040| Kinetic Accretion Actualizer
+|                     | 23041| Missed Me!
+|                     | 23042| Mark of War
+|                     | 23043| We Stand Amazed
+|                     | 23044| Benediction
+|                     | 23045| Guiding the Pack
+|                     | 23046| Elk's Protection
+|                     | 23047| Get Off My Land!
+|                     | 23048| Look What I Found!
+|                     | 23049| Mantis Pinch
+|                     | 23050| As Nature and God Intended
+|                     | 23051| Play for Blood
+|                     | 23052| Bad Beat
+|                     | 23053| Fallen Star
+|                     | 23054| Masonic Augment
+|                     | 23055| Swagger
+|                     | 23056| Vamoosin'
