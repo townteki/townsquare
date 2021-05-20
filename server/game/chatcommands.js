@@ -65,7 +65,9 @@ class ChatCommands {
             return false;
         }
 
-        return this.commands[command].call(this, player, args) !== false;
+        const result = this.commands[command].call(this, player, args);
+        this.game.raiseEvent('onChatCommandCall', { command });
+        return result !== false;
     }
 
     draw(player, args) {
