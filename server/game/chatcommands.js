@@ -49,12 +49,15 @@ class ChatCommands {
             '/rmkey': this.removeKeyword,
             '/reset-abilities': this.resetAbilities,
             '/resab': this.resetAbilities,
+            '/reset-stats': this.resetStats,
             '/reveal-hand': this.revealHand,
+            '/shooter': this.shooter,
+            '/shuffle-discard': this.shuffleDiscard,
             '/skill-rating': this.skillRating,
             '/skill': this.skillRating,
-            '/shooter': this.shooter,
             '/suit': this.suit,
             '/token': this.setToken,
+            '/use': this.useAbility,
             '/unblank': this.unblank,
             '/value': this.value
         };
@@ -645,7 +648,7 @@ class ChatCommands {
                 this.game.promptForSelect(p, {
                     activePromptTitle: 'Select where to ' + title,
                     waitingPromptTitle: 'Waiting for opponent to select parent for attachment',
-                    cardCondition: card => card.location === 'play area' && card.controller === player,
+                    cardCondition: card => card.location === 'play area' && (card.controller === player || card.hasKeyword('condition')),
                     cardType: ['deed', 'dude'],
                     onSelect: (player, target) => {
                         player.performAttach(card, target, 'chatcommand');    
@@ -656,6 +659,63 @@ class ChatCommands {
                 return true;
             }
         });
+    }
+
+    useAbility(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to use',
+            waitingPromptTitle: 'Waiting for opponent to select card to use',
+            cardCondition: card => ['play area', 'hand', 'draw deck', 'discard pile', 'dead pile'].includes(card.location) && card.controller === player,
+            cardType: ['goods', 'spell', 'action', 'dude', 'deed'],
+            onSelect: (p, card) => {
+                if(card.getType() === 'action' && card.location === 'hand') {
+                    this.game.addAlert('warning', '{0} is playing unscripted {1}', p, card);
+                    p.moveCard(card, 'being played');
+                } else {
+                    this.game.addAlert('warning', '{0} uses unscripted card {1}', p, card);
+                }
+                return true;
+            }
+        });        
+    }
+
+    resetStats(player, args) {
+        var stat = args[1];
+        var statsToReset = ['suit', 'value', 'bullets', 'influence', 'control', 'upkeep', 'production'];
+        if(stat && !statsToReset.includes(stat)) {
+            this.game.addAlert('danger', '{0} uses the /reset-stats command with incorrect stat "{1}"', 
+                player, stat);
+            return;        
+        }
+        var textStat = 'stats';
+        if(stat) {
+            textStat = stat;
+            statsToReset = [stat];
+        }
+        this.game.promptForSelect(player, {
+            activePromptTitle: `Select a card to reset stat${textStat}`,
+            waitingPromptTitle: 'Waiting for opponent to reset stats',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['goods', 'spell', 'action', 'dude', 'deed'],
+            onSelect: (p, card) => {
+                statsToReset.forEach(stat => {
+                    if(stat === 'suit') {
+                        card.addSuitEffect('chatcommand', card.getPrintedStat(stat));
+                    } else {
+                        if(stat) {
+                            card[stat] = card.getPrintedStat(stat);
+                        }
+                    }
+                });
+                this.game.addAlert('danger', '{0} uses the /reset-stats command to set{1} of {2} to printed', 
+                    p, textStat, card);
+                return true;
+            }
+        });
+    }
+
+    shuffleDiscard(player) {
+        player.shuffleDiscardToDrawDeck();
     }
 
     getNumberOrDefault(string, defaultNumber) {
