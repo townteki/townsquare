@@ -182,6 +182,7 @@ class TownSquare extends GameLocation {
             isAdjacent: (targetUuid) => this.isAdjacent(targetUuid),
             isOutOfTown: () => false,
             hasKeyword: () => false,
+            hasAttachment: () => false,
             adjacentLocations: () => 
                 this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation())
         }), null, null);
