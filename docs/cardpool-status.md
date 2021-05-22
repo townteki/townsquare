@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/260/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/262/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -380,10 +380,10 @@
 |:heavy_check_mark:   | 09014| Bai Yang Chen
 |                     | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
-|                     | 09017| Mazatl
+|:heavy_check_mark:   | 09017| Mazatl
 |:heavy_check_mark:   | 09018| Marcia Ridge
 |:white_check_mark:   | 09019| Richard Faulkner
-|                     | 09020| Lydia Bear-Hands
+|:heavy_check_mark:   | 09020| Lydia Bear-Hands
 |                     | 09021| Jackson Trouble
 |:white_check_mark:   | 09022| Black Elk
 |:white_check_mark:   | 09023| Bloody Teeth
