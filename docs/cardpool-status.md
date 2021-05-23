@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/262/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/264/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -502,7 +502,7 @@
 |:heavy_check_mark:   | 12015| Guide Horse
 |                     | 12016| Marty
 |                     | 12017| Righteous Fury
-|                     | 12018| Owl's Insight
+|:heavy_check_mark:   | 12018| Owl's Insight
 |                     | 12019| Outgunned
 |                     | 12020| Martyr's Cry
 |                     | 12021| Deliberate Infection
@@ -540,7 +540,7 @@
 |                     | 14001| Carlton "Min" Rutherford
 |                     | 14002| Lucretia Fanzini
 |                     | 14003| Rhonda Sageblossom
-|                     | 14004| Francisco Rosales
+|:heavy_check_mark:   | 14004| Francisco Rosales
 |                     | 14005| Ambrose Douglas
 |                     | 14006| Constance Daughtry
 |                     | 14007| Tallulah "Lula" Morgan (Exp.1)
