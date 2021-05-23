@@ -7,14 +7,14 @@ class FranciscoRosales extends DudeCard {
         this.job({
             title: 'Francisco Rosales',
             playType: 'noon',
-            cost: ability.costs.bootLeader(),
+            cost: ability.costs.bootSelf(),
             target: 'townsquare',
             message: context =>
                 this.game.addMessage('{0} uses {1} to mark town square for a job', context.player, this),
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(
                     GameActions.search({
-                        title: 'Select a horse or sidekick for Francisco',
+                        title: 'Select a horse or sidekick',
                         match: { keyword: ['Horse', 'sidekick'], type: 'goods' },
                         location: ['discard pile'],
                         numToSelect: 1,
