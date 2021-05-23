@@ -11,7 +11,8 @@ class FlightOfTheLepus extends ActionCard {
                 this.game.promptForSelect(context.player, {
                     activePromptTitle: `Select up to ${numToSelect} dudes`,
                     waitingPromptTitle: 'Waiting for opponent to select dudes',
-                    cardCondition: card => card.location === 'play area' && card.isParticipating(),
+                    cardCondition: card => card.location === 'play area' && 
+                        (!this.game.shootout || card.isParticipating()),
                     cardType: 'dude',
                     numCards: numToSelect,
                     multiSelect: true,
