@@ -507,8 +507,8 @@ class Player extends Spectator {
         this.handResult = new HandResult();
     }
 
-    sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length, null, 'sundown');
+    redrawToHandSize(reason) {
+        this.drawCardsToHand(this.handSize - this.hand.length, null, reason);
     }
 
     isOverHandsizeLimit() {
@@ -1424,6 +1424,7 @@ class Player extends Spectator {
             moveType: params.moveType || 'default',
             needToBoot: params.needToBoot || params.needToBoot === false ? params.needToBoot : null,
             allowBooted: !!params.allowBooted,
+            markActionAsTaken: !!params.markActionAsTaken,
             context: params.context
         };
         let origin = this.game.findLocation(dude.gamelocation);
@@ -1467,6 +1468,10 @@ class Player extends Spectator {
         dude.moveToLocation(destination.uuid);
         if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
+        }
+        if(options.markActionAsTaken) {
+            options.context.ability = options.context.ability || { title: 'move '};
+            this.game.markActionAsTaken(options.context);
         }
     }
 
