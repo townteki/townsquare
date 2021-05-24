@@ -142,6 +142,26 @@ class DudeCard extends DrawCard {
 
     setupDudeCardAbilities() {
         this.action({
+            title: 'Move',
+            abilitySourceType: 'game',
+            condition: () => this.game.currentPhase === 'high noon' && !this.booted,
+            target: { cardType: 'location' },
+            targetController: 'current',
+            actionContext: { card: this, gameAction: 'moveDude' },
+            handler: context => {
+                this.game.resolveGameAction(GameActions.moveDude({ 
+                    card: this, 
+                    targetUuid: context.target.uuid, 
+                    options: { 
+                        isCardEffect: false,
+                        markActionAsTaken: true
+                    } 
+                }), context);
+            },
+            player: this.controller,
+            printed: false
+        });
+        this.action({
             title: 'Call Out',
             abilitySourceType: 'game',
             condition: () => this.game.currentPhase === 'high noon' && !this.booted,
@@ -165,8 +185,7 @@ class DudeCard extends DrawCard {
             },
             player: this.controller,
             printed: false
-        });
-
+        });  
         this.action({
             title: 'Trade',
             abilitySourceType: 'game',
@@ -186,7 +205,7 @@ class DudeCard extends DrawCard {
             },
             player: this.controller,
             printed: false
-        });        
+        });  
     }
 
     createSnapshot(clone, cloneBaseAttributes = true) {
