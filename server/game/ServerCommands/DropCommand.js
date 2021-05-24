@@ -25,7 +25,10 @@ class DropCommand {
                 this.game.resolveGameAction(GameActions.moveDude({ 
                     card: this.card, 
                     targetUuid: this.gameLocation, 
-                    options: { isCardEffect: false } 
+                    options: { 
+                        isCardEffect: false,
+                        markActionAsTaken: true
+                    } 
                 }), defaultContext);
             }
             return;
