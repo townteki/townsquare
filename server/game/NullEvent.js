@@ -44,6 +44,10 @@ class NullEvent {
 
     clearAttachedEvents() {
     }
+
+    isNull() {
+        return true;
+    }
 }
 
 module.exports = NullEvent;

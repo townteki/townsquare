@@ -9,8 +9,7 @@ class Ricochet extends ActionCard {
             handler: context => {
                 if(this.game.shootout) {
                     const opponent = context.player.getOpponent();
-                    const oppPosse = this.game.shootout.getPosseByPlayer(opponent);
-                    let shooter = opponent.findCardInPlayByUuid(oppPosse.shooterUuid);
+                    const shooter = this.game.shootout.getPosseByPlayer(opponent).shooter;
                     this.game.resolveGameAction(GameActions.discardCard({ card: shooter }), context).thenExecute(() => {
                         this.game.addMessage('{0} uses {1} to discard {2}', context.player, this, shooter);
                     });
