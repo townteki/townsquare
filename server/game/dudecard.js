@@ -5,6 +5,7 @@ const {ShootoutStatuses, Tokens} = require('./Constants');
 const NullEvent = require('./NullEvent.js');
 const SpellCard = require('./spellcard.js');
 const ActionCard = require('./actioncard.js');
+const AbilityDsl = require('./abilitydsl.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -24,6 +25,13 @@ class DudeCard extends DrawCard {
             }
             return spell.parent === this;
         };
+        this.persistentEffect({
+            condition: () => this.controller.outfit && 
+                    this.gang_code !== this.controller.outfit.gang_code && 
+                    this.gang_code !== 'neutral',
+            match: this,
+            effect: AbilityDsl.effects.dynamicUpkeep(() => this.influence)
+        });
         this.setupDudeCardAbilities();
     }
 
@@ -134,6 +142,26 @@ class DudeCard extends DrawCard {
 
     setupDudeCardAbilities() {
         this.action({
+            title: 'Move',
+            abilitySourceType: 'game',
+            condition: () => this.game.currentPhase === 'high noon' && !this.booted,
+            target: { cardType: 'location' },
+            targetController: 'current',
+            actionContext: { card: this, gameAction: 'moveDude' },
+            handler: context => {
+                this.game.resolveGameAction(GameActions.moveDude({ 
+                    card: this, 
+                    targetUuid: context.target.uuid, 
+                    options: { 
+                        isCardEffect: false,
+                        markActionAsTaken: true
+                    } 
+                }), context);
+            },
+            player: this.controller,
+            printed: false
+        });
+        this.action({
             title: 'Call Out',
             abilitySourceType: 'game',
             condition: () => this.game.currentPhase === 'high noon' && !this.booted,
@@ -157,8 +185,7 @@ class DudeCard extends DrawCard {
             },
             player: this.controller,
             printed: false
-        });
-
+        });  
         this.action({
             title: 'Trade',
             abilitySourceType: 'game',
@@ -178,7 +205,7 @@ class DudeCard extends DrawCard {
             },
             player: this.controller,
             printed: false
-        });        
+        });  
     }
 
     createSnapshot(clone, cloneBaseAttributes = true) {

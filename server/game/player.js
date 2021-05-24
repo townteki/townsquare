@@ -511,8 +511,8 @@ class Player extends Spectator {
         this.handResult = new HandResult();
     }
 
-    sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length, null, 'sundown');
+    redrawToHandSize(reason) {
+        this.drawCardsToHand(this.handSize - this.hand.length, null, reason);
     }
 
     isOverHandsizeLimit() {
@@ -887,8 +887,13 @@ class Player extends Spectator {
             return false;
         }
 
-        if(playingType === 'shoppin' && (card.getGameLocation().determineController() !== this || card.booted)) {
-            return false;
+        if(playingType === 'shoppin') {
+            if(card.getGameLocation().determineController() !== this) {
+                return false;
+            } 
+            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
+                return false;
+            }
         }
 
         return true;
@@ -1039,10 +1044,9 @@ class Player extends Spectator {
 
     determineUpkeep() {
         let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
-            (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.influence > 0)));
+            card.upkeep > 0);
         let upkeep = upkeepCards.reduce((memo, card) => {
-            let additionalUpkeep = card.gang_code !== this.outfit.gang_code && card.gang_code !== 'neutral' ? card.influence : 0;
-            return memo + card.upkeep + additionalUpkeep;
+            return memo + card.upkeep;
         }, 0);
 
         return upkeep;
@@ -1424,6 +1428,7 @@ class Player extends Spectator {
             moveType: params.moveType || 'default',
             needToBoot: params.needToBoot || params.needToBoot === false ? params.needToBoot : null,
             allowBooted: !!params.allowBooted,
+            markActionAsTaken: !!params.markActionAsTaken,
             context: params.context
         };
         let origin = this.game.findLocation(dude.gamelocation);
@@ -1467,6 +1472,10 @@ class Player extends Spectator {
         dude.moveToLocation(destination.uuid);
         if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
+        }
+        if(options.markActionAsTaken) {
+            options.context.ability = options.context.ability || { title: 'move '};
+            this.game.markActionAsTaken(options.context);
         }
     }
 

@@ -25,7 +25,10 @@ class DropCommand {
                 this.game.resolveGameAction(GameActions.moveDude({ 
                     card: this.card, 
                     targetUuid: this.gameLocation, 
-                    options: { isCardEffect: false } 
+                    options: { 
+                        isCardEffect: false,
+                        markActionAsTaken: true
+                    } 
                 }), defaultContext);
             }
             return;
@@ -64,7 +67,11 @@ class DropCommand {
         }
 
         if(this.game.currentPhase !== 'setup') {
-            this.addGameMessage();
+            if(this.targetLocation === 'being played' && this.originalLocation === 'hand') {
+                this.game.addAlert('warning', '{0} is playing {1}', this.player, this.card);
+            } else {
+                this.addGameMessage();
+            }
         }
     }
 

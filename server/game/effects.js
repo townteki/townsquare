@@ -506,6 +506,7 @@ const Effects = {
     dynamicBullets: dynamicStatModifier('bullets'),
     dynamicInfluence: dynamicStatModifier('influence'),
     dynamicProduction: dynamicStatModifier('production'),
+    dynamicUpkeep: dynamicStatModifier('upkeep'),
     modifyHandSize: function(value) {
         return {
             title: `Hand Size modified: ${value}`,
