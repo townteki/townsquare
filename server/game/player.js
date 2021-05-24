@@ -507,8 +507,8 @@ class Player extends Spectator {
         this.handResult = new HandResult();
     }
 
-    sundownRedraw() {
-        this.drawCardsToHand(this.handSize - this.hand.length, null, 'sundown');
+    redrawToHandSize(reason) {
+        this.drawCardsToHand(this.handSize - this.hand.length, null, reason);
     }
 
     isOverHandsizeLimit() {
@@ -883,8 +883,13 @@ class Player extends Spectator {
             return false;
         }
 
-        if(playingType === 'shoppin' && (card.getGameLocation().determineController() !== this || card.booted)) {
-            return false;
+        if(playingType === 'shoppin') {
+            if(card.getGameLocation().determineController() !== this) {
+                return false;
+            } 
+            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
+                return false;
+            }
         }
 
         return true;
@@ -1035,10 +1040,9 @@ class Player extends Spectator {
 
     determineUpkeep() {
         let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
-            (card.upkeep > 0 || (card.gang_code !== this.outfit.gang_code && card.influence > 0)));
+            card.upkeep > 0);
         let upkeep = upkeepCards.reduce((memo, card) => {
-            let additionalUpkeep = card.gang_code !== this.outfit.gang_code && card.gang_code !== 'neutral' ? card.influence : 0;
-            return memo + card.upkeep + additionalUpkeep;
+            return memo + card.upkeep;
         }, 0);
 
         return upkeep;

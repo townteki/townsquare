@@ -12,11 +12,14 @@ class WylieJenks extends DudeCard {
     }
 
     getWantedDudesInOpposingPosse() {
-        if(!this.game.shootout || !this.game.shootout.opposingPosse) {
+        if(!this.game.shootout) {
             return 0;
         }
-        let opposingWantedDudes = this.game.shootout.opposingPosse.getDudes(dude => dude.isWanted());
-        return opposingWantedDudes.length;
+        const oppPosse = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());
+        if(!oppPosse) {
+            return 0;
+        }
+        return oppPosse.getDudes(dude => dude.isWanted()).length;
     }
 }
 
