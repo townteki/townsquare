@@ -39,6 +39,7 @@ class ChatCommands {
             '/join-posse': this.joinPosse,
             '/join-without-move': this.joinPosseWoMove,
             '/kung-fu': this.kungFuRating,
+            '/look-deck': this.lookAtDeck,
             '/move': this.move,
             '/pull': this.pull,
             '/rematch': this.rematch,
@@ -51,6 +52,7 @@ class ChatCommands {
             '/resab': this.resetAbilities,
             '/reset-stats': this.resetStats,
             '/reveal-hand': this.revealHand,
+            '/reveal-deck': this.revealDeck,
             '/shooter': this.shooter,
             '/shuffle-discard': this.shuffleDiscard,
             '/skill-rating': this.skillRating,
@@ -557,6 +559,29 @@ class ChatCommands {
     revealHand(player) {
         this.game.addAlert('danger',
             '{0} uses the /reveal-hand command to reveal their hand as: {1}', player, player.hand);
+    }
+
+    revealDeck(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        const topCards = player.drawDeck.slice(0, num);
+        this.game.addAlert('danger',
+            '{0} uses the /reveal-deck command to reveal {1} cards from deck: {2}', player, num, topCards);
+    }
+
+    lookAtDeck(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        const actualAmount = Math.min(num, player.drawDeck.length);
+        const topCards = player.drawDeck.slice(0, actualAmount);
+        this.game.promptForSelect(player, {
+            activePromptTitle: `Look at ${player.name}'s deck`,
+            revealTargets: true,
+            cardCondition: card => card.location === 'draw deck' && 
+                card.controller === player && 
+                topCards.includes(card),
+            onSelect: () => true
+        });
+        this.game.addAlert('danger',
+            '{0} uses the /look-deck command to look at {1} cards from top of their deck', player, num);
     }
 
     removeFromGame(player) {
