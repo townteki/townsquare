@@ -10,16 +10,43 @@ class TradingPrompt extends UiPrompt {
             this.attachments = [attachments];
         }
         this.fromDudeCard = this.attachments[0].parent;
+        this.tradingLocationUuid = this.fromDudeCard.gamelocation;
+        this.tradingDone = false;
+        this.isFirstTrading = true;
+    }
+
+    activeCondition() {
+        return !this.tradingDone;
+    }
+
+    isComplete() {
+        return this.tradingDone;
     }
 
     continue() {
+        if(!this.tradingDone) {
+            if(this.isFirstTrading) {
+                this.performTrading(this.fromDudeCard);
+                this.isFirstTrading = false;
+            } else {
+                this.selectFromDude();
+            }
+        }
+        return super.continue();
+    }
+
+    performTrading() {
         this.game.promptForSelect(this.player, {
-            activePromptTitle: 'Select dude for trading',
-            cardCondition: card => card.gamelocation === this.fromDudeCard.gamelocation && card !== this.fromDudeCard,
+            promptTitle: 'Tradin\' action',
+            activePromptTitle: 'Select dude to receive goods',
+            cardCondition: card => card.controller === this.player && 
+                card.gamelocation === this.fromDudeCard.gamelocation && 
+                card !== this.fromDudeCard,
             onSelect: (player, toDudeCard) => {
                 let targetPlayer = toDudeCard.controller;
                 if(toDudeCard.hasAttachmentForTrading()) {
                     this.game.promptForSelect(targetPlayer, {
+                        promptTitle: 'Tradin\' action',
                         activePromptTitle: 'Select attachment(s) for swapping',
                         multiSelect: true,
                         numCards: 0,
@@ -43,7 +70,36 @@ class TradingPrompt extends UiPrompt {
                 return true;
             }
         });
-        return true;
+    }
+
+    selectFromDude() {
+        this.game.promptForSelect(this.player, {
+            promptTitle: 'Tradin\' action',
+            activePromptTitle: 'Select another dude to trade goods from',
+            waitingPromptTitle: 'Waiting for opponent to select dude',
+            cardCondition: card => card.location === 'play area' &&
+                card.hasAttachmentForTrading() &&
+                this.tradingLocationUuid === card.gamelocation,
+            cardType: 'dude',
+            onSelect: (player, dude) => {
+                this.fromDudeCard = dude;
+                this.game.promptForSelect(player, {
+                    activePromptTitle: 'Select attachment(s) to trade',
+                    multiSelect: true,
+                    numCards: 0,
+                    cardCondition: card => card.controller === player && dude.canTradeGoods(card),
+                    onSelect: (player, cards) => {
+                        this.attachments = cards;
+                        this.performTrading();
+                        return true;
+                    }
+                });                
+                return true;
+            },
+            onCancel: () => {
+                this.tradingDone = true;
+            }
+        });
     }
 
     attachAttachments(attachments, fromDude, toDude, actionWord) {

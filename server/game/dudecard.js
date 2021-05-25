@@ -194,10 +194,7 @@ class DudeCard extends DrawCard {
                 activePromptTitle: 'Select attachment(s) to trade',
                 multiSelect: true,
                 numCards: 0,
-                cardCondition: card => card.getType() === 'goods' && 
-                    card.parent === this &&
-                    !card.wasTraded() &&
-                    !card.cannotBeTraded()
+                cardCondition: card => this.canTradeGoods(card)
             },
             targetController: 'current',
             handler: context => {
@@ -290,6 +287,13 @@ class DudeCard extends DrawCard {
         }
         const tempContext = { game: this.game, player: this.controller };
         return this.canRefuseWithoutGoingHomeBooted() || (this.allowGameAction('boot', tempContext) && this.allowGameAction('moveDude', tempContext));
+    }
+
+    canTradeGoods(card) {
+        return card.getType() === 'goods' && 
+        card.parent === this &&
+        !card.wasTraded() &&
+        !card.cannotBeTraded();        
     }
 
     callOut(card, canReject = true) {
