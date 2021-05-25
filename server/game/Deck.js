@@ -8,6 +8,7 @@ const ActionCard = require('./actioncard.js');
 const OutfitCard = require('./outfitcard');
 const JokerCard = require('./jokercard');
 const LegendCard = require('./legendcard');
+const TechniqueCard = require('./techniquecard');
 
 class Deck {
     constructor(data) {
@@ -120,7 +121,11 @@ class Deck {
             cardClass = SpellCard;
         }
         if(cardData.type_code === 'action') {
-            cardClass = ActionCard;
+            if(cardData.keywords && cardData.keywords.toLowerCase().includes('technique')) {
+                cardClass = TechniqueCard;
+            } else {
+                cardClass = ActionCard;
+            }
         }
         if(cardData.type_code === 'joker') {
             cardClass = JokerCard;

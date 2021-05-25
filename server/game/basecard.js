@@ -351,6 +351,10 @@ class BaseCard {
         return true;
     }
 
+    findKeywords(condition) {
+        return this.keywords.getValues().filter(keyword => condition(keyword.toLowerCase()));
+    }
+
     hasKeyword(keyword) {
         return this.keywords.contains(keyword.toLowerCase());
     }
@@ -510,7 +514,7 @@ class BaseCard {
     getActionMenuItems(player, options) {
         return this.abilities.actions.map((action, index) => { 
             if(options) {
-                action.options = options;
+                action.options = Object.assign(action.options || {}, options);
             }
             return { 
                 action: action, 
