@@ -33,6 +33,11 @@ class TechniqueAction extends CardAction {
         if(this.card.getType() !== 'action') {
             throw new Error('This is not an action card!');
         }
+        if(properties.combo) {
+            this.combo = properties.combo;
+            this.options = this.options || {};
+            this.options.doNotMarkActionAsTaken = true;
+        }
     }
 
     meetsRequirements(context) {
@@ -55,6 +60,9 @@ class TechniqueAction extends CardAction {
     }
 
     executeHandler(context) {
+        if(!context.kfDude) {
+            return;
+        }
         const kfRating = context.kfDude.getKungFuRating();
         context.difficulty = context.kfDude.value + kfRating;
         context.difficulty = context.difficulty > 13 ? 13 : context.difficulty;
@@ -79,22 +87,55 @@ class TechniqueAction extends CardAction {
     }
 
     resolveTargets(context) {
-        let possibleKFDudes = this.getAvailableKfDudes(context);
-        if(possibleKFDudes.length === 1) {
-            context.kfDude = possibleKFDudes[0];
+        if(this.options.kfDude) {
+            context.kfDude = this.options.kfDude;
         } else {
-            this.game.promptForSelect(context.player, {
-                activePromptTitle: 'Select dude to perform technique',
-                context: context,
-                cardCondition: card => possibleKFDudes.includes(card),
-                onSelect: (player, card) => {
-                    context.kfDude = card;
-                    return true;
-                },
-                source: this.card
-            });
+            let possibleKFDudes = this.getAvailableKfDudes(context);
+            if(possibleKFDudes.length === 1) {
+                context.kfDude = possibleKFDudes[0];
+            } else {
+                this.game.promptForSelect(context.player, {
+                    activePromptTitle: 'Select dude to perform technique',
+                    context: context,
+                    cardCondition: card => possibleKFDudes.includes(card),
+                    onSelect: (player, card) => {
+                        context.kfDude = card;
+                        return true;
+                    },
+                    source: this.card
+                });
+            }
         }
         return super.resolveTargets(context);
+    }
+
+    performCombo(context) {
+        context.comboNumber = context.comboNumber || 0;
+        if(context.comboNumber < context.kfDude.getKungFuRating()) {
+            this.game.promptForYesNo(context.player, {
+                title: `Do you want to combo (${context.comboNumber + 1}.)?`,
+                onYes: player => {
+                    this.game.promptForSelect(player, {
+                        activePromptTitle: 'Select a technique to combo',
+                        waitingPromptTitle: 'Waiting for opponent to select technique',
+                        cardCondition: card => ['hand', 'discard pile'].includes(card.location) && 
+                        card.hasKeyword('technique') &&
+                        card.code !== this.card.code &&
+                        card.isSameTao(this.card),
+                        cardType: 'action',
+                        onSelect: (player, card) => {
+                            context.comboNumber += 1;
+                            this.game.addMessage('{0} is performing a combo {1} by {2}', player, card, context.kfDude);
+                            card.useAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber });
+                            return true;
+                        }
+                    });
+                },
+                onNo: () => {
+                    this.game.markActionAsTaken(context);
+                }
+            });  
+        }      
     }
 }
 

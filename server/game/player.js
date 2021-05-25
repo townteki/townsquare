@@ -229,6 +229,10 @@ class Player extends Spectator {
     isCardInPlayableLocation(card, playingType) {
         let playableLocations = ['shoppin', 'play'].map(playingType =>
             new PlayableLocation(playingType, card => card.controller === this && card.location === 'hand'));
+        if(playingType === 'combo') {
+            playableLocations.push(new PlayableLocation(playingType, card => 
+                card.controller === this && (card.location === 'hand' || card.location === 'discard pile')));
+        }
         return playableLocations.some(location => location.playingType === playingType && location.contains(card));
     }
 
