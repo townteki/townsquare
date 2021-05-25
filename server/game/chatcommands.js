@@ -40,6 +40,7 @@ class ChatCommands {
             '/join-without-move': this.joinPosseWoMove,
             '/kung-fu': this.kungFuRating,
             '/move': this.move,
+            '/pass': this.pass,
             '/pull': this.pull,
             '/rematch': this.rematch,
             '/remove-from-game': this.removeFromGame,
@@ -171,6 +172,12 @@ class ChatCommands {
         player.modifyRank(change);
         this.game.addAlert('danger', '{0} uses the /hand-rank command to set their hand rank to {1}', 
             player, player.getTotalRank());
+    }
+
+    pass(player) {
+        if(this.game.currentPlayWindow) {
+            this.game.currentPlayWindow.onPass(player);
+        }
     }
 
     pull(player, args) {
@@ -665,14 +672,18 @@ class ChatCommands {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to use',
             waitingPromptTitle: 'Waiting for opponent to select card to use',
-            cardCondition: card => ['play area', 'hand', 'draw deck', 'discard pile', 'dead pile'].includes(card.location) && card.controller === player,
+            cardCondition: card => ['play area', 'hand'].includes(card.location) && card.controller === player,
             cardType: ['goods', 'spell', 'action', 'dude', 'deed'],
             onSelect: (p, card) => {
+                const unscriptedText = card.cardData.scripted ? '' : ' unscripted';
                 if(card.getType() === 'action' && card.location === 'hand') {
-                    this.game.addAlert('warning', '{0} is playing unscripted {1}', p, card);
+                    this.game.addAlert('warning', '{0} is playing{1} {2}', p, unscriptedText, card);
                     p.moveCard(card, 'being played');
                 } else {
-                    this.game.addAlert('warning', '{0} uses unscripted card {1}', p, card);
+                    this.game.addAlert('warning', '{0} uses{1} card {2}', p, unscriptedText, card);
+                }
+                if(this.game.currentPlayWindow) {
+                    player.unscriptedCardPlayed = card;
                 }
                 return true;
             }
