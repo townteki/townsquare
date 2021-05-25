@@ -125,6 +125,10 @@ class Event {
 
         return this.name;
     }
+
+    isNull() {
+        return false;
+    }
 }
 
 module.exports = Event;

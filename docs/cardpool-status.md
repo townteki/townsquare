@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/264/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/268/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -306,7 +306,7 @@
 |:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
 |                     | 06020| Incubation
-|                     | 06021| Flight of the Lepus
+|:heavy_check_mark:   | 06021| Flight of the Lepus
 
 ## `04.2-NTB` No Turning Back
 
@@ -503,7 +503,7 @@
 |                     | 12016| Marty
 |                     | 12017| Righteous Fury
 |:heavy_check_mark:   | 12018| Owl's Insight
-|                     | 12019| Outgunned
+|:heavy_check_mark:   | 12019| Outgunned
 |                     | 12020| Martyr's Cry
 |                     | 12021| Deliberate Infection
 
@@ -615,10 +615,10 @@
 |                     | 16004| Hupirika Sue
 |                     | 16005| The Harvester
 |                     | 16006| Lucy Clover (Exp.1)
-|                     | 16007| Buckin' Billy Ballard
+|:heavy_check_mark:   | 16007| Buckin' Billy Ballard
 |                     | 16008| Antoine Peterson
 |                     | 16009| Denise Brancini
-|                     | 16010| Long Strides Ranch
+|:heavy_check_mark:   | 16010| Long Strides Ranch
 |:heavy_check_mark:   | 16011| The Gomorra Gazette
 |:heavy_check_mark:   | 16012| "Open Wound"
 |                     | 16013| Doomsday Supply
