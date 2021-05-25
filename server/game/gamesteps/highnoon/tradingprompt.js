@@ -37,12 +37,16 @@ class TradingPrompt extends UiPrompt {
 
     performTrading() {
         this.game.promptForSelect(this.player, {
-            activePromptTitle: 'Select dude for trading',
-            cardCondition: card => card.gamelocation === this.fromDudeCard.gamelocation && card !== this.fromDudeCard,
+            promptTitle: 'Tradin\' action',
+            activePromptTitle: 'Select dude to receive goods',
+            cardCondition: card => card.controller === this.player && 
+                card.gamelocation === this.fromDudeCard.gamelocation && 
+                card !== this.fromDudeCard,
             onSelect: (player, toDudeCard) => {
                 let targetPlayer = toDudeCard.controller;
                 if(toDudeCard.hasAttachmentForTrading()) {
                     this.game.promptForSelect(targetPlayer, {
+                        promptTitle: 'Tradin\' action',
                         activePromptTitle: 'Select attachment(s) for swapping',
                         multiSelect: true,
                         numCards: 0,
@@ -71,7 +75,7 @@ class TradingPrompt extends UiPrompt {
     selectFromDude() {
         this.game.promptForSelect(this.player, {
             promptTitle: 'Tradin\' action',
-            activePromptTitle: 'Select another dude (or Done to finish)',
+            activePromptTitle: 'Select another dude to trade goods from',
             waitingPromptTitle: 'Waiting for opponent to select dude',
             cardCondition: card => card.location === 'play area' &&
                 card.hasAttachmentForTrading() &&
@@ -83,7 +87,7 @@ class TradingPrompt extends UiPrompt {
                     activePromptTitle: 'Select attachment(s) to trade',
                     multiSelect: true,
                     numCards: 0,
-                    cardCondition: card => dude.canTradeGoods(card),
+                    cardCondition: card => card.controller === player && dude.canTradeGoods(card),
                     onSelect: (player, cards) => {
                         this.attachments = cards;
                         this.performTrading();
