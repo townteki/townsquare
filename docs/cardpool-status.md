@@ -260,7 +260,7 @@
 |                     | 05017| Sister Lois Otwell
 |:heavy_check_mark:   | 05018| Félix Amador
 |:heavy_check_mark:   | 05019| Nicodemus Whateley
-|                     | 05020| Pettigrew's Pawnshop
+|:heavy_check_mark:   | 05020| Pettigrew's Pawnshop
 |:heavy_check_mark:   | 05021| California Tax Office
 |                     | 05022| St. Anthony's Chapel
 |                     | 05023| The Whateley Estate
