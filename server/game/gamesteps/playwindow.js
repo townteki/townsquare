@@ -1,10 +1,28 @@
 const ContinuousPlayerOrderPrompt = require('./continuousplayerorderprompt.js');
 
 class PlayWindow extends ContinuousPlayerOrderPrompt {
-    constructor(game, name, activePromptTitle, playerNameOrder = [], buttonFunctions = {}) {
-        super(game, activePromptTitle, playerNameOrder, buttonFunctions);
+    constructor(game, name, activePromptTitle, playerNameOrder = []) {
+        super(game, activePromptTitle, playerNameOrder);
         this.name = name;
         this.playWindowOpened = false;
+        this.onDone = (player) => {
+            if(player !== this.currentPlayer) {
+                return false;
+            }
+            if(player) {
+                player.unscriptedCardPlayed = null;
+            }
+            this.nextPlayer();
+        };
+        this.onPass = (player) => {
+            if(player !== this.currentPlayer) {
+                return false;
+            }
+            if(player) {
+                player.unscriptedCardPlayed = null;
+            }
+            this.completePlayer();
+        };
     }
 
     skipCondition() {
@@ -12,6 +30,25 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
             return true;
         }
         return false; 
+    }
+
+    activePrompt(player) {
+        let title = this.activePromptTitle;
+        if(player.unscriptedCardPlayed) {
+            const unscriptedText = player.unscriptedCardPlayed.cardData.scripted ? '' : ' unscripted';
+            title = `Playing${unscriptedText} card ${player.unscriptedCardPlayed.title}`;
+            this.buttons = [
+                { arg: this.player, text: 'Done', method: 'onDone'}
+            ];
+        } else {
+            this.buttons = [
+                { arg: this.player, text: 'Pass', method: 'onPass'}
+            ];            
+        }
+        return {
+            menuTitle: title,
+            buttons: this.buttons
+        };
     }
 
     continue() {
