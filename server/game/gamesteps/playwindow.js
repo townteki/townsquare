@@ -9,6 +9,9 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
             if(player !== this.currentPlayer) {
                 return false;
             }
+            if(player.unscriptedCardPlayed && player.unscriptedCardPlayed.location === 'being played') {
+                player.moveCard(player.unscriptedCardPlayed, 'discard pile');
+            }
             if(player) {
                 player.unscriptedCardPlayed = null;
             }
