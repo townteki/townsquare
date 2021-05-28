@@ -153,8 +153,7 @@ class DudeCard extends DrawCard {
                     card: this, 
                     targetUuid: context.target.uuid, 
                     options: { 
-                        isCardEffect: false,
-                        markActionAsTaken: true
+                        isCardEffect: false
                     } 
                 }), context);
             },
