@@ -1,4 +1,3 @@
-const GameActions = require('../../GameActions/index.js');
 const TechniqueCard = require('../../techniquecard.js');
 
 class RabbitsDeception extends TechniqueCard {
@@ -12,7 +11,7 @@ class RabbitsDeception extends TechniqueCard {
             },
             onSuccess: (context) => {
                 const wasBooted = context.kfDude.booted;
-                this.game.resolveGameAction(GameActions.sendHome({ card: context.kfDude }), context).thenExecute(() => {
+                this.game.shootout.sendHome(context.kfDude, context).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, context.kfDude);
                 });
                 if(!wasBooted) {
@@ -21,8 +20,9 @@ class RabbitsDeception extends TechniqueCard {
                         waitingPromptTitle: 'Waiting for opponent to select dude',
                         cardCondition: card => card.controller !== this.controller && card.isParticipating(),
                         cardType: 'dude',
+                        gameAction: 'sendHome',
                         onSelect: (player, card) => {
-                            this.game.resolveGameAction(GameActions.sendHome({ card }), context).thenExecute(() => {
+                            this.game.shootout.sendHome(card, context).thenExecute(() => {
                                 this.game.addMessage('{0} uses {1} to send {2} home booted because {3} was not booted', 
                                     player, this, card, context.kfDude);
                             });

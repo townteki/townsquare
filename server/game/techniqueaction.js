@@ -75,7 +75,12 @@ class TechniqueAction extends CardAction {
         }
         super.executeHandler(context);
         context.player.pullForKungFu(context.difficulty, {
-            successHandler: context => this.onSuccess(context),
+            successHandler: context => {
+                this.onSuccess(context);
+                if(this.combo && this.combo(context)) {
+                    this.performCombo(context);
+                }
+            },
             failHandler: context => this.onFail(context),
             pullingDude: context.kfDude,
             source: this.card
@@ -110,6 +115,10 @@ class TechniqueAction extends CardAction {
     }
 
     performCombo(context) {
+        if(!context.kfDude) {
+            // this can happen if player cancels the technique on Kung Fu dude selection
+            return;
+        }
         context.comboNumber = context.comboNumber || 0;
         if(context.comboNumber < context.kfDude.getKungFuRating()) {
             this.game.promptForYesNo(context.player, {

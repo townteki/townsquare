@@ -9,7 +9,14 @@ class JarretBlake extends DudeCard {
             target: {
                 activePromptTitle: 'Select dude to swap',
                 cardCondition: { location: 'play area', controller: 'current', participating: true },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: card => {
+                    const actions = ['removeFromPosse'];
+                    if(card.gamelocation !== this.gamelocation) {
+                        actions.push('moveDude');
+                    }
+                    return actions;
+                }
             },
             ifCondition: () => this.hasAttachment(attachment => attachment.hasKeyword('Horse')),
             ifFailMessage: context => 
@@ -17,9 +24,10 @@ class JarretBlake extends DudeCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to swap him with {2}', context.player, this, context.target),
             handler: context => {
-                this.game.shootout.removeFromPosse(context.target);
-                this.game.resolveGameAction(GameActions.moveDude({ card: context.target, targetUuid: this.gamelocation }));
-                this.game.resolveGameAction(GameActions.joinPosse({ card: this }), context);
+                this.game.resolveGameAction(GameActions.removeFromPosse({ card: context.target }), context).thenExecute(() => {
+                    this.game.resolveGameAction(GameActions.moveDude({ card: context.target, targetUuid: this.gamelocation }));
+                    this.game.resolveGameAction(GameActions.joinPosse({ card: this }), context);
+                });
             }
         });
     }
