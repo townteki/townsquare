@@ -119,6 +119,15 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.casualtiesAndRunOrGun())
         ];
 
+        if(this.leaderPosse.shooter && this.leaderPosse.shooter.isParticipating()) {
+            this.leaderPosse.shooter.shootoutStatus = ShootoutStatuses.LeaderPosse;
+            this.leaderPosse.shooter = null;
+        }
+        if(this.markPosse.shooter && this.markPosse.shooter.isParticipating()) {
+            this.markPosse.shooter.shootoutStatus = ShootoutStatuses.MarkPosse;
+            this.leaderPosse.shooter = null;
+        }
+
         this.game.raiseEvent('onShootoutRoundStarted');
         this.queueStep(new SimpleStep(this.game, () => {
             if(!this.checkEndCondition()) {
