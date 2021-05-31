@@ -980,20 +980,6 @@ const Effects = {
             }
         };
     },
-    canAttachWeapon: function(condition) {
-        var canAttachWeaponFunc;
-        return {
-            apply: function(card) {
-                canAttachWeaponFunc = card.canAttachWeapon;
-                card.canAttachWeapon = (weapon) => {
-                    return condition(weapon);
-                };
-            },
-            unapply: function(card) {
-                card.canAttachWeapon = canAttachWeaponFunc;
-            }
-        };
-    },
     canPlay: function(predicate) {
         let playableLocation = new PlayableLocation('play', predicate);
         return {
@@ -1003,6 +989,20 @@ const Effects = {
             },
             unapply: function(player) {
                 player.playableLocations = player.playableLocations.filter(l => l !== playableLocation);
+            }
+        };
+    },
+    changeWeaponLimitFunction: function(weaponLimitFunc) {
+        var savedFunc;
+        return {
+            apply: function(card) {
+                savedFunc = card.checkWeaponLimit;
+                card.checkWeaponLimit = () => {
+                    return weaponLimitFunc();
+                };
+            },
+            unapply: function(card) {
+                card.checkWeaponLimit = savedFunc;
             }
         };
     },

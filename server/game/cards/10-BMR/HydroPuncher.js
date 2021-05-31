@@ -8,18 +8,8 @@ class HydroPuncher extends GoodsCard {
             effect: ability.effects.setAsStud()
         });
         this.whileAttached({
-            effect: ability.effects.canAttachWeapon(weapon => {
-                let weapons = this.getAttachmentsByKeywords(['weapon']);
-                if(weapons && weapons.length >= 2) {
-                    return false;
-                }
-                if(!weapons || weapons.length === 0) {
-                    return true;
-                }
-                if(this.parent.hasKeyword('gadget')) {
-                    return true;
-                }
-                return weapons[0].hasKeyword('melee') && weapon.hasKeyword('melee');
+            effect: ability.effects.changeWeaponLimitFunction(() => {
+                this.weaponCheck();
             })
         });
         this.action({
@@ -42,11 +32,42 @@ class HydroPuncher extends GoodsCard {
                         cardType: ['goods', 'spell'],
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.bootCard({ card: card }), context).thenExecute(() =>
-                                this.game.addMessage('{0} boots also {1} as result of {3}', context.player, this, card));
+                                this.game.addMessage('{0} boots also {1} as result of {3}', player, this, card));
                             return true;
                         }
                     });
                 }
+            }
+        });
+    }
+
+    weaponCheck() {
+        let weapons = this.parent.getAttachmentsByKeywords(['weapon']);
+        if(!weapons || weapons.length < 2) {
+            return;
+        }
+        if(this.parent.hasKeyword('gadget') && weapons.length === 2) {
+            return;
+        }
+        if(weapons[0].hasKeyword('melee') && weapons[1].hasKeyword('melee') && weapons.length === 2) {
+            return;
+        }
+        this.discardOverLimit(weapons);
+    }
+
+    discardOverLimit(weapons) {
+        this.game.promptForSelect(this.controller, {
+            activePromptTitle: 'Select weapon to discard to meet the limit',
+            waitingPromptTitle: 'Waiting for opponent to discard weapon over limit',
+            cardCondition: card => weapons.includes(card),
+            onSelect: (player, card) => {
+                this.game.resolveGameAction(GameActions.discardCard({ card })).thenExecute(() => {
+                    this.game.addMessage('{0} discards weapon {1} that is over the limit', player, card);
+                    if(card !== this) {
+                        this.weaponCheck();
+                    }
+                });
+                return true;
             }
         });
     }

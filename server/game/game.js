@@ -1031,7 +1031,6 @@ class Game extends EventEmitter {
     postEventCalculations() {
         this.effectEngine.recalculateDirtyTargets();
         this.effectEngine.reapplyStateDependentEffects();
-        this.attachmentValidityCheck.enforceValidity();
     }
 
     updateEffectsOnCard(card, predicate) {

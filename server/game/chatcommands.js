@@ -675,16 +675,19 @@ class ChatCommands {
             waitingPromptTitle: 'Waiting for opponent to select card to attach/reattach',
             cardCondition: card => ['play area', 'hand', 'draw deck', 'discard pile', 'dead pile'].includes(card.location) && card.controller === player,
             cardType: ['goods', 'spell', 'action', 'dude'],
-            onSelect: (p, card) => {
-                const title = (card.parent ? 'reattach ' : 'attach ') + card.title;
+            onSelect: (p, cardToAttach) => {
+                const title = (cardToAttach.parent ? 'reattach ' : 'attach ') + cardToAttach.title;
                 this.game.promptForSelect(p, {
                     activePromptTitle: 'Select where to ' + title,
                     waitingPromptTitle: 'Waiting for opponent to select parent for attachment',
-                    cardCondition: card => card.location === 'play area' && (card.controller === player || card.hasKeyword('condition')),
-                    cardType: ['deed', 'dude'],
+                    cardCondition: card => card.location === 'play area' && 
+                        card.controller.canAttach(cardToAttach, card) &&
+                        (card.controller === player || cardToAttach.hasKeyword('condition')),
+                    cardType: ['deed', 'dude', 'outfit'],
                     onSelect: (player, target) => {
-                        player.performAttach(card, target, 'chatcommand');    
-                        this.game.addAlert('danger', '{0} uses the /attach command to attach {1} to {2}', player, card, target);                            
+                        player.performAttach(cardToAttach, target, 'chatcommand');    
+                        this.game.addAlert('danger', '{0} uses the /attach command to attach {1} to {2}', player, cardToAttach, target);         
+                        this.game.attachmentValidityCheck.enforceValidity();                   
                         return true;
                     }
                 });
