@@ -8,27 +8,63 @@ class AttachmentValidityCheck {
         let invalidAttachments = this.filterInvalidAttachments();
         let needsDiscard = invalidAttachments.filter(attachment => !this.beingDiscarded.includes(attachment));
 
-        if(needsDiscard.length === 0) {
-            return;
+        if(needsDiscard.length > 0) {
+            this.beingDiscarded = this.beingDiscarded.concat(needsDiscard);
+
+            this.game.queueSimpleStep(() => {
+                for(let [owner, cards] of this.groupAttachmentsByOwner(needsDiscard)) {
+                    owner.discardCards(cards, false, discarded => {
+                        this.game.addMessage('{0} is forced to discard {1} due to being invalidly attached', owner, discarded);
+                    });
+                }
+            });
+            this.game.queueSimpleStep(() => {
+                this.beingDiscarded = this.beingDiscarded.filter(attachment => !needsDiscard.includes(attachment));
+            });
         }
 
-        this.beingDiscarded = this.beingDiscarded.concat(needsDiscard);
-
         this.game.queueSimpleStep(() => {
-            for(let [owner, cards] of this.groupAttachmentsByOwner(needsDiscard)) {
-                owner.discardCards(cards, false, discarded => {
-                    this.game.addMessage('{0} is forced to discard {1} due to being invalidly attached', owner, discarded);
-                });
+            const allParents = this.game.filterCardsInPlay(card => card.getType() === 'dude' && card.hasAttachment() && !card.facedown);
+            for(let parent of allParents) {
+                const weaponLimit = parent.checkWeaponLimit();
+                if(weaponLimit) {
+                    this.discardByType(parent.controller, 'weapon', weaponLimit);
+                }
+                const horseLimit = parent.checkHorseLimit();
+                if(horseLimit) {
+                    this.discardByType(parent.controller, 'horse', horseLimit);
+                }
+                const attireLimit = parent.checkAttireLimit();
+                if(attireLimit) {
+                    this.discardByType(parent.controller, 'attire', attireLimit);
+                }
             }
         });
-        this.game.queueSimpleStep(() => {
-            this.beingDiscarded = this.beingDiscarded.filter(attachment => !needsDiscard.includes(attachment));
+    }
+
+    discardByType(player, attType, limitObject) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: `Select ${attType}(s) to discard down to limit ${limitObject.limit}`,
+            waitingPromptTitle: `Waiting for opponent to discard ${attType}(s) over limit`,
+            cardCondition: card => limitObject.cards.includes(card),
+            multiSelect: true,
+            numCards: limitObject.cards.length - limitObject.limit,
+            onSelect: (player, cards) => {
+                player.discardCards(cards, false, () => 
+                    this.game.addMessage('{0} discards over the limit {1}(s): {2}', player, attType, cards)
+                );
+                return true;
+            }
         });
     }
 
     filterInvalidAttachments() {
-        let attachmentsInPlay = this.game.filterCardsInPlay(card => card.parent && card.getType() === 'attachment' && !card.isBeingRemoved && !card.facedown);
-        return attachmentsInPlay.filter(card => !card.controller.canAttach(card, card.parent));
+        const allAttachments = this.game.filterCardsInPlay(card => 
+            card.parent && ['goods', 'spell', 'action'].includes(card.getType()) && !card.isBeingRemoved && !card.facedown);
+        if(!allAttachments || allAttachments.length === 0) {
+            return [];
+        }
+        return allAttachments.filter(card => !card.controller.canAttach(card, card.parent));
     }
 
     groupAttachmentsByOwner(cards) {

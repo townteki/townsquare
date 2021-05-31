@@ -342,28 +342,37 @@ class DudeCard extends DrawCard {
         return this.hasAttachment(att => att.hasKeyword('Horse'));
     }
 
-    canAttachWeapon() {
+    checkWeaponLimit() {
         let weapons = this.getAttachmentsByKeywords(['weapon']);
-        if(weapons && weapons.length > 0) {
-            return false;
+        if(weapons && weapons.length > 1) {
+            return {
+                limit: 1,
+                cards: weapons
+            };
         }
-        return true;
+        return null;        
     }
 
-    canAttachHorse() {
+    checkHorseLimit() {
         let horses = this.getAttachmentsByKeywords(['horse']);
-        if(horses && horses.length > 0) {
-            return false;
+        if(horses && horses.length > 1) {
+            return {
+                limit: 1,
+                cards: horses
+            };
         }
-        return true;
+        return null;
     }
 
-    canAttachAttire() {
+    checkAttireLimit() {
         let attires = this.getAttachmentsByKeywords(['attire']);
-        if(attires && attires.length > 0) {
-            return false;
+        if(attires && attires.length > 1) {
+            return {
+                limit: 1,
+                cards: attires
+            };
         }
-        return true;
+        return null;
     }
 
     canJoinWithoutMoving() {

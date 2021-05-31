@@ -32,26 +32,6 @@ class HeartsCard extends DrawCard {
         });
     }
 
-    canAttach(player, card) {
-        if(!super.canAttach(player, card)) {
-            return false;
-        }
-
-        if(card.getType() === 'dude') {
-            if(this.hasKeyword('weapon') && !card.canAttachWeapon(this)) {
-                return false;
-            } 
-            if(this.hasKeyword('horse') && !card.canAttachHorse(this)) {
-                return false;
-            }
-            if(this.hasKeyword('attire') && !card.canAttachAttire(this)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     canBeTraded() {
         return this.canTrade;
     }
