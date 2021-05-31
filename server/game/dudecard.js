@@ -32,6 +32,11 @@ class DudeCard extends DrawCard {
             match: this,
             effect: AbilityDsl.effects.dynamicUpkeep(() => this.influence)
         });
+        this.persistentEffect({
+            condition: () => this.location === 'play area' && this.isKungFu(),
+            match: this,
+            effect: AbilityDsl.effects.dynamicValue(() => this.getKungFuRating())
+        });
         this.setupDudeCardAbilities();
     }
 
