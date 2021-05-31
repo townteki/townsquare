@@ -16,7 +16,13 @@ class FlightOfTheLepus extends ActionCard {
                     cardType: 'dude',
                     numCards: numToSelect,
                     multiSelect: true,
-                    gameAction: 'moveDude',
+                    gameAction: card => {
+                        const actions = ['removeFromPosse'];
+                        if(!card.isAtHome()) {
+                            actions.push('moveDude');
+                        }
+                        return actions;
+                    },
                     onSelect: (player, cards) => {
                         if(this.game.shootout) {
                             this.game.promptForYesNo(player, {
@@ -43,7 +49,7 @@ class FlightOfTheLepus extends ActionCard {
         dudes.forEach(dude => {
             const homeUuid = dude.controller.outfit.uuid;
             this.game.resolveGameAction(GameActions.moveDude({ card: dude, targetUuid: homeUuid }), context).thenExecute(() => {
-                this.game.shootout.removeFromPosse(dude);
+                this.game.resolveGameAction(GameActions.removeFromPosse({ card: dude }), context);
             });
             if(boot) {
                 this.game.resolveGameAction(GameActions.bootCard({ card: dude }), context);

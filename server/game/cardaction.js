@@ -99,8 +99,8 @@ class CardAction extends PlayTypeAbility {
         if(!this.actionContext || !this.actionContext.card || !this.actionContext.gameAction) {
             return true;
         }
-        if(typeof(this.gameAction) === 'function') {
-            return this.actionContext.card.allowGameAction(this.gameAction(context), context);
+        if(typeof(this.actionContext.gameAction) === 'function') {
+            return this.actionContext.card.allowGameAction(this.actionContext.gameAction(this.actionContext.card, context), context);
         }
         if(!Array.isArray(this.actionContext.gameAction)) {
             return this.actionContext.card.allowGameAction(this.actionContext.gameAction, context);

@@ -102,6 +102,12 @@ class Shootout extends Phase {
         this.leaderPlayer.casualties = 0;
         this.opposingPlayer.rankModifier = 0;
         this.opposingPlayer.casualties = 0;
+        if(this.leaderPosse) {
+            this.leaderPosse.resetForTheRound();
+        }
+        if(this.markPosse) {
+            this.markPosse.resetForTheRound();
+        }
     }
 
     beginShootoutRound() {
@@ -245,16 +251,14 @@ class Shootout extends Phase {
     }
 
     removeFromPosse(dude) {
-        this.game.raiseEvent('onDudeLeftPosse', { card: dude, shootout: this }, event => {
-            if(event.shootout.belongsToLeaderPlayer(event.card) && event.shootout.leaderPosse) {
-                event.shootout.leaderPosse.removeFromPosse(event.card);
-            } else if(event.shootout.belongsToOpposingPlayer(event.card) && event.shootout.opposingPosse) {
-                event.shootout.opposingPosse.removeFromPosse(event.card);
-            }
-            if(this.jobSuccessful === null) {
-                this.recordJobStatus();
-            }
-        });
+        if(this.belongsToLeaderPlayer(dude) && this.leaderPosse) {
+            this.leaderPosse.removeFromPosse(dude);
+        } else if(this.belongsToOpposingPlayer(dude) && this.opposingPosse) {
+            this.opposingPosse.removeFromPosse(dude);
+        }
+        if(this.jobSuccessful === null) {
+            this.recordJobStatus();
+        }
     }
 
     gatherPosses() {

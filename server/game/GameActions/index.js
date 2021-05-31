@@ -20,6 +20,7 @@ const PlaceToken = require('./PlaceToken');
 const PutIntoPlay = require('./PutIntoPlay');
 const RemoveBounty = require('./RemoveBounty');
 const RemoveFromGame = require('./RemoveFromGame');
+const RemoveFromPosse = require('./RemoveFromPosse');
 const ReturnCardToHand = require('./ReturnCardToHand');
 const RevealCard = require('./RevealCard');
 const Search = require('./Search');
@@ -125,6 +126,7 @@ const GameActions = {
      */
     removeBounty: props => new AbilityAdapter(RemoveBounty, props),
     removeFromGame: props => new AbilityAdapter(RemoveFromGame, props),
+    removeFromPosse: props => new AbilityAdapter(RemoveFromPosse, props),
     returnCardToHand: props => new AbilityAdapter(ReturnCardToHand, props),
     revealCard: props => new AbilityAdapter(RevealCard, props),
     /**

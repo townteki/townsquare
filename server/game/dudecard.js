@@ -231,7 +231,7 @@ class DudeCard extends DrawCard {
         }
         this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.controller.outfit.uuid, options }), context);
         if(options.fromPosse && this.game.shootout) {
-            this.game.shootout.removeFromPosse(this);
+            this.game.resolveGameAction(GameActions.removeFromPosse({ card: this }), context);
         } 
     }
 
@@ -513,7 +513,8 @@ class DudeCard extends DrawCard {
         if(!(card instanceof ActionCard) || !card.hasKeyword('technique')) {
             return false;
         }
-        return this.isKungFu();    
+        const kfRating = this.getKungFuRating(card);
+        return kfRating !== null && kfRating !== undefined;    
     }
 
     addSkillKfBonus(bonus, source) {
@@ -531,8 +532,10 @@ class DudeCard extends DrawCard {
         }
         super.leavesPlay();
 
-        if(this.game.shootout) {
-            this.game.shootout.removeFromPosse(this);
+        if(this.isParticipating()) {
+            this.game.raiseEvent('onDudeLeftPosse', { card: this, shootout: this.game.shootout }, event => {
+                event.shootout.removeFromPosse(event.card);
+            });
         }
         this.removeStudEffect('chatcommand');
     }
