@@ -98,6 +98,13 @@ class ShootoutPosse {
     findInPosse(predicate = () => true) {
         return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).find(card => card && predicate(card));
     }
+
+    resetForTheRound() {
+        if(this.shooter && this.shooter.isParticipating()) {
+            this.shooter.shootoutStatus = ShootoutStatuses.LeaderPosse;
+            this.shooter = null;
+        }        
+    }
 }
 
 module.exports = ShootoutPosse;

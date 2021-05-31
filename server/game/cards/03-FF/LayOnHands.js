@@ -20,13 +20,20 @@ class LayOnHands extends SpellCard {
             difficulty: 8,
             onSuccess: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: this.parent, allowSave: false }), context).thenExecute(() => {
-                    context.replaceHandler(() => {
-                        this.game.resolveGameAction(GameActions.sendHome({ card: context.event.card }), context);
-                        this.untilEndOfRound(ability => ({
-                            match: context.event.card,
-                            effect: ability.effects.doesNotUnbootAtSundown()
-                        }));
-                        this.game.addMessage('{0} uses {1} to save {2} and send them home booted instead', context.player, this, context.event.card);
+                    const saveEventHandler = context.event.handler;
+                    context.replaceHandler(event => {
+                        const sendHomeEvent = this.game.resolveGameAction(GameActions.sendHome({ card: context.event.card }), context);
+                        if(!sendHomeEvent.isNull()) {
+                            this.untilEndOfRound(ability => ({
+                                match: context.event.card,
+                                effect: ability.effects.doesNotUnbootAtSundown()
+                            }));
+                            this.game.addMessage('{0} uses {1} to save {2} and send them home booted instead', context.player, this, context.event.card);
+                        } else {
+                            this.game.addMessage('{0} uses {1}, but {2} could not be saved because some effect prevented to send them home booted instead', 
+                                context.player, this, context.event.card);
+                            saveEventHandler(event);
+                        }
                     });
                 });
             }

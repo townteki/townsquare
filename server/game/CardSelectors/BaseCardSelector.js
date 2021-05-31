@@ -85,7 +85,7 @@ class BaseCardSelector {
             return false;
         }
         if(typeof(this.gameAction) === 'function') {
-            return card.allowGameAction(this.gameAction(context), context);
+            return card.allowGameAction(this.gameAction(card, context), context);
         }
         if(!Array.isArray(this.gameAction)) {
             return card.allowGameAction(this.gameAction, context);

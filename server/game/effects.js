@@ -758,6 +758,8 @@ const Effects = {
         cannotEffectType('sendHome', opponent => `Cannot be sent home${opponent ? ' by' + opponent : ''}`),
     cannotBeSentHomeByShootout: 
         cannotEffect('sendHome', 'shootout', opponent => `Cannot be sent home by${opponent} shootout`),
+    cannotLeaveShootout: 
+        cannotEffectType('removeFromPosse', () => 'Cannot leave shootout'),
     cannotBeCalledOut: 
         cannotEffectType('callout', opponent => `Cannot be called out${opponent ? ' by' + opponent : ''}`),
     cannotBeAced: 
@@ -943,6 +945,23 @@ const Effects = {
             },
             unapply: function(card) {
                 card.getSkillRatingForCard = getSkillRatingFunc;
+            }
+        };
+    },
+    canPerformTechniqueUsing: function(skillname, condition = () => true) {
+        var getKfRatingFunc;
+        return {
+            title: `Can perform Technique using ${skillname}`,
+            apply: function(card) {
+                getKfRatingFunc = card.getKungFuRating;
+                card.getKungFuRating = technique => {
+                    if(condition(technique)) {
+                        return card.getSkillRating(skillname);
+                    }
+                };
+            },
+            unapply: function(card) {
+                card.getKungFuRating = getKfRatingFunc;
             }
         };
     },
