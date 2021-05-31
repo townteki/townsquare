@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/270/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/272/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -479,7 +479,7 @@
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
 |                     | 11022| A Slight Modification
-|                     | 11023| Rabbit Takes Revenge
+|:heavy_check_mark:   | 11023| Rabbit Takes Revenge
 
 ## `07.2-FP` Foul Play
 
@@ -635,7 +635,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 17001| Shi Long Peng
+|:heavy_check_mark:   | 17001| Shi Long Peng
 |                     | 17002| Seamus McCaffrey
 |                     | 17003| Gene North Star
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
