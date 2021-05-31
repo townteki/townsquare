@@ -102,6 +102,12 @@ class Shootout extends Phase {
         this.leaderPlayer.casualties = 0;
         this.opposingPlayer.rankModifier = 0;
         this.opposingPlayer.casualties = 0;
+        if(this.leaderPosse) {
+            this.leaderPosse.resetForTheRound();
+        }
+        if(this.markPosse) {
+            this.markPosse.resetForTheRound();
+        }
     }
 
     beginShootoutRound() {
@@ -118,15 +124,6 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.determineWinner()),
             new SimpleStep(this.game, () => this.casualtiesAndRunOrGun())
         ];
-
-        if(this.leaderPosse.shooter && this.leaderPosse.shooter.isParticipating()) {
-            this.leaderPosse.shooter.shootoutStatus = ShootoutStatuses.LeaderPosse;
-            this.leaderPosse.shooter = null;
-        }
-        if(this.markPosse.shooter && this.markPosse.shooter.isParticipating()) {
-            this.markPosse.shooter.shootoutStatus = ShootoutStatuses.MarkPosse;
-            this.leaderPosse.shooter = null;
-        }
 
         this.game.raiseEvent('onShootoutRoundStarted');
         this.queueStep(new SimpleStep(this.game, () => {
