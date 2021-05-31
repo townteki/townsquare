@@ -69,6 +69,9 @@ class DropCommand {
         if(this.game.currentPhase !== 'setup') {
             if(this.targetLocation === 'being played' && this.originalLocation === 'hand') {
                 this.game.addAlert('warning', '{0} is playing {1}', this.player, this.card);
+                if(this.game.currentPlayWindow) {
+                    this.player.unscriptedCardPlayed = this.card;
+                }
             } else {
                 this.addGameMessage();
             }

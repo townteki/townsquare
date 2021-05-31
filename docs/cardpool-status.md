@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/269/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/270/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -260,7 +260,7 @@
 |                     | 05017| Sister Lois Otwell
 |:heavy_check_mark:   | 05018| Félix Amador
 |:heavy_check_mark:   | 05019| Nicodemus Whateley
-|                     | 05020| Pettigrew's Pawnshop
+|:heavy_check_mark:   | 05020| Pettigrew's Pawnshop
 |:heavy_check_mark:   | 05021| California Tax Office
 |                     | 05022| St. Anthony's Chapel
 |                     | 05023| The Whateley Estate
