@@ -42,10 +42,11 @@ class BaseAbility {
     }
 
     resetOptions() {
-        this.options = {
-            skipCost: () => false,
-            callback: () => true
-        };
+        if(!this.options) {
+            this.options = {};
+        }
+        this.options.skipCost = () => false;
+        this.options.callback = () => true;
     }
 
     buildCost(cost) {

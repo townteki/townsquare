@@ -63,9 +63,7 @@ class TechniqueAction extends CardAction {
         if(!context.kfDude) {
             return;
         }
-        const kfRating = context.kfDude.getKungFuRating();
-        context.difficulty = context.kfDude.value + kfRating;
-        context.difficulty = context.difficulty > 13 ? 13 : context.difficulty;
+        context.difficulty = context.kfDude.value > 13 ? 13 : context.kfDude.value;
         if(context.target) {
             this.game.addMessage('{0} attempts to perform {1} on {2} using {3} (with difficulty {4})', 
                 context.player, this.card, context.target, context.kfDude, context.difficulty);
@@ -77,11 +75,22 @@ class TechniqueAction extends CardAction {
         context.player.pullForKungFu(context.difficulty, {
             successHandler: context => {
                 this.onSuccess(context);
-                if(this.combo && this.combo(context)) {
-                    this.performCombo(context);
+                if(this.combo) {
+                    this.game.queueSimpleStep(() => {
+                        if(this.combo(context)) {
+                            this.performCombo(context);
+                        } else {
+                            this.game.markActionAsTaken(context);
+                        }
+                    });
                 }
             },
-            failHandler: context => this.onFail(context),
+            failHandler: context => {
+                this.onFail(context);
+                if(this.combo) {
+                    this.game.queueSimpleStep(() => this.game.markActionAsTaken(context));                 
+                }
+            },
             pullingDude: context.kfDude,
             source: this.card
         }, context);
