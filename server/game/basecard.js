@@ -935,7 +935,7 @@ class BaseCard {
                 shooter: this.cardData.shooter,
                 influence: this.cardData.influence,
                 control: this.cardData.control,
-                value: this.cardData.value,
+                value: this.cardData.rank,
                 suit: this.cardData.suit,
                 upkeep: this.cardData.upkeep,
                 production: this.cardData.production
