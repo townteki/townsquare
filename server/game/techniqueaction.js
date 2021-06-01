@@ -75,11 +75,22 @@ class TechniqueAction extends CardAction {
         context.player.pullForKungFu(context.difficulty, {
             successHandler: context => {
                 this.onSuccess(context);
-                if(this.combo && this.combo(context)) {
-                    this.performCombo(context);
+                if(this.combo) {
+                    this.game.queueSimpleStep(() => {
+                        if(this.combo(context)) {
+                            this.performCombo(context);
+                        } else {
+                            this.game.markActionAsTaken(context);
+                        }
+                    });
                 }
             },
-            failHandler: context => this.onFail(context),
+            failHandler: context => {
+                this.onFail(context);
+                if(this.combo) {
+                    this.game.queueSimpleStep(() => this.game.markActionAsTaken(context));                 
+                }
+            },
             pullingDude: context.kfDude,
             source: this.card
         }, context);

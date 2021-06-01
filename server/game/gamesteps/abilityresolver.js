@@ -210,7 +210,7 @@ class AbilityResolver extends BaseStep {
     }
 
     raiseOnAbilityResolvedEvent() {
-        // An event card is considered to be played even if it has been
+        // An action card is considered to be played even if it has been
         // cancelled. Raising the event here will allow trait reactions and
         // reactions to fire with the appropriate timing. There are no cards
         // with a reaction to a card being played. If any are ever released,
@@ -218,7 +218,11 @@ class AbilityResolver extends BaseStep {
         // ability instead.
         if(this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
-                this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
+                if(this.context.source.isTaoTechnique && this.context.source.isTaoTechnique()) {
+                    this.handleTaoTechniques();
+                } else {
+                    this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
+                }
                 this.context.source.resetAbilities();
             }
 
@@ -236,6 +240,23 @@ class AbilityResolver extends BaseStep {
         }
         if(this.ability.isCardAbility()) {
             this.game.raiseEvent('onCardAbilityResolved', { ability: this.ability, context: this.context });
+        }
+    }
+
+    handleTaoTechniques() {
+        const eventHandler = () => {
+            if(this.context.source.location === 'being played') {
+                this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
+            }
+        };
+        if(this.game.shootout) {
+            this.game.once('onPlayWindowClosed', eventHandler);
+            this.game.once('onShootoutPhaseFinished', () => {
+                eventHandler();
+                this.game.removeListener('onPlayWindowClosed', eventHandler);
+            });            
+        } else {
+            this.game.once('onPhaseEnded', eventHandler);
         }
     }
 }
