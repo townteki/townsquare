@@ -505,6 +505,7 @@ const Effects = {
     preventAdjacency: adjacency('prevent'),
     dynamicBullets: dynamicStatModifier('bullets'),
     dynamicInfluence: dynamicStatModifier('influence'),
+    dynamicValue: dynamicStatModifier('value'),
     dynamicProduction: dynamicStatModifier('production'),
     dynamicUpkeep: dynamicStatModifier('upkeep'),
     modifyHandSize: function(value) {
