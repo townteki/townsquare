@@ -555,7 +555,7 @@
 |:heavy_check_mark:   | 14016| Notary Public
 |                     | 14017| Market Street
 |                     | 14018| Companhurst's
-|                     | 14019| Epidemic Laboratory
+|:heavy_check_mark:   | 14019| Epidemic Laboratory
 |:heavy_check_mark:   | 14020| Walters Creek Distillery
 |:heavy_check_mark:   | 14021| Silent Sigil
 |                     | 14022| Auto-Gatling
