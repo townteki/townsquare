@@ -1,4 +1,5 @@
 const CardAction = require('./cardaction.js');
+const GameActions = require('./GameActions/index.js');
 
 /**
  * Represents a Technique ability provided by card text.
@@ -47,18 +48,6 @@ class TechniqueAction extends CardAction {
         return false;
     }
 
-    getAvailableKfDudes(context) {
-        const kfDudes = context.player.cardsInPlay.filter(card => 
-            card.getType() === 'dude' &&
-            card.canPerformTechnique(this.card) &&
-            (!this.actionContext || card.allowGameAction(this.actionContext.gameAction, context))
-        );
-        if(this.playTypePlayed() === 'shootout') {
-            return kfDudes.filter(dude => dude.isParticipating());
-        }
-        return kfDudes;
-    }
-
     executeHandler(context) {
         if(!context.kfDude) {
             return;
@@ -97,16 +86,38 @@ class TechniqueAction extends CardAction {
     }
 
     canBePerformed(context) {
-        return this.getAvailableKfDudes(context).length > 0;
+        return context.comboNumber || this.game.getAvailableKfDudes(context).length > 0;
+    }
+
+    applyCostOnKfDude(context) {
+        if(context.costs && context.costs.bootKfDude) {
+            this.game.resolveGameAction(GameActions.bootCard({ card: context.kfDude }));
+        }
+    }
+
+    resetKfOptions() {
+        if(!this.options) {
+            this.options = {};
+        }
+        this.options.kfDude = null;
+    }
+
+    canPayCosts(context) {
+        if(this.options.kfDude) {
+            context.kfDude = this.options.kfDude;
+        }
+        return super.canPayCosts(context);
     }
 
     resolveTargets(context) {
         if(this.options.kfDude) {
             context.kfDude = this.options.kfDude;
+            this.applyCostOnKfDude(context);
         } else {
-            let possibleKFDudes = this.getAvailableKfDudes(context);
+            let possibleKFDudes = this.game.getAvailableKfDudes(context, context.costs && context.costs.bootKfDude);
             if(possibleKFDudes.length === 1) {
                 context.kfDude = possibleKFDudes[0];
+                this.applyCostOnKfDude(context);
             } else {
                 this.game.promptForSelect(context.player, {
                     activePromptTitle: 'Select dude to perform technique',
@@ -114,6 +125,7 @@ class TechniqueAction extends CardAction {
                     cardCondition: card => possibleKFDudes.includes(card),
                     onSelect: (player, card) => {
                         context.kfDude = card;
+                        this.applyCostOnKfDude(context);
                         return true;
                     },
                     source: this.card
@@ -137,15 +149,19 @@ class TechniqueAction extends CardAction {
                         activePromptTitle: 'Select a technique to combo',
                         waitingPromptTitle: 'Waiting for opponent to select technique',
                         cardCondition: card => ['hand', 'discard pile'].includes(card.location) && 
-                        card.hasKeyword('technique') &&
-                        card.code !== this.card.code &&
-                        card.isSameTao(this.card),
+                            card.hasKeyword('technique') &&
+                            card.code !== this.card.code &&
+                            card.isSameTao(this.card) &&
+                            card.hasEnabledCardAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber }),
                         cardType: 'action',
                         onSelect: (player, card) => {
                             context.comboNumber += 1;
                             this.game.addMessage('{0} is performing a combo {1} by {2}', player, card, context.kfDude);
                             card.useAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber });
                             return true;
+                        },
+                        onCancel: () => {
+                            this.game.markActionAsTaken(context);
                         }
                     });
                 },

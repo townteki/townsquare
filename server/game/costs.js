@@ -111,6 +111,25 @@ const Costs = {
      */
     unboot: condition => CostBuilders.unboot.select(condition),
     /**
+     * This cost will not boot the Kung Fu dude as it is selected later when targets are
+     * selected. It just makes sure there are available unbooted KF dudes and updates
+     * context so the KF dudes is booted once they are selected.
+     */
+    bootKfDude: function() {
+        return {
+            canPay: function(context) {
+                if(context.kfDude) {
+                    return !context.kfDude.booted;
+                }
+                const kfDudes = context.game.getAvailableKfDudes(context, true);
+                return kfDudes && kfDudes.length > 0;
+            },
+            pay: function(context) {
+                context.costs.bootKfDude = true;
+            }
+        };
+    },
+    /**
      * Cost that will place the played event card in the player's discard pile.
      */
     expendAction: function() {

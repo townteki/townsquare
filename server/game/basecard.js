@@ -511,6 +511,11 @@ class BaseCard {
         return menu;
     }
 
+    hasEnabledCardAbility(player, options = {}) {
+        const cardAbilityMenuItems = this.getActionMenuItems(player, options).filter(menuItem => menuItem.action.abilitySourceType === 'card');
+        return cardAbilityMenuItems && cardAbilityMenuItems.some(menuItem => !menuItem.item.disabled);
+    }
+
     getActionMenuItems(player, options) {
         return this.abilities.actions.map((action, index) => { 
             if(options) {
