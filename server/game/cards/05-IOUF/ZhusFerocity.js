@@ -9,17 +9,17 @@ class ZhusFerocity extends TechniqueCard {
                 if(!context.zhusTarget) {
                     return false;
                 }
-                return this.bullets > context.zhusTarget.bullets;
+                return context.kfDude.bullets > context.zhusTarget.bullets;
             },
             onSuccess: (context) => {
                 this.applyAbilityEffect(context.ability, ability => ({
-                    match: this,
+                    match: context.kfDude,
                     effect: ability.effects.modifyBullets(1)
                 }));
                 this.game.promptForSelect(context.player, {
-                    activePromptTitle: 'Select a dude',
+                    activePromptTitle: 'Select an opposing dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
-                    cardCondition: card => card.isParticipating(),
+                    cardCondition: card => card.controller !== this.owner && card.isParticipating(),
                     cardType: 'dude',
                     onSelect: (player, dude) => {
                         context.zhusTarget = dude;
@@ -28,7 +28,8 @@ class ZhusFerocity extends TechniqueCard {
                             effect: ability.effects.modifyBullets(-1)
                         }));
                         return true;
-                    }
+                    },
+                    source: this
                 });
             },
             source: this

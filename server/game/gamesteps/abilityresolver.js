@@ -258,6 +258,7 @@ class AbilityResolver extends BaseStep {
         } else {
             this.game.once('onPhaseEnded', eventHandler);
         }
+        this.context.ability.resetKfOptions();
     }
 }
 

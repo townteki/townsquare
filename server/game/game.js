@@ -1082,6 +1082,19 @@ class Game extends EventEmitter {
         });
     }
 
+    getAvailableKfDudes(context, needUnbooted = false) {
+        const kfDudes = context.player.cardsInPlay.filter(card => 
+            card.getType() === 'dude' &&
+            card.canPerformTechnique(context.source) &&
+            (!needUnbooted || !card.booted) &&
+            (!context.ability.actionContext || card.allowGameAction(context.ability.actionContext.gameAction, context))
+        );
+        if(this.shootout && context.ability.playTypePlayed() !== 'shootout:join') {
+            return kfDudes.filter(dude => dude.isParticipating());
+        }
+        return kfDudes;
+    }
+
     takeControl(player, card) {
         var oldController = card.controller;
         var newController = player;
