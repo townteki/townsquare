@@ -27,6 +27,8 @@ class ZhusFerocity extends TechniqueCard {
                             match: dude,
                             effect: ability.effects.modifyBullets(-1)
                         }));
+                        this.game.addMessage('{0} uses {1} to give {2} -1 bullet and {3} +1 bullet', 
+                            player, this, dude, context.kfDude);
                         return true;
                     },
                     source: this
