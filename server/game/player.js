@@ -1683,7 +1683,6 @@ class Player extends Spectator {
     getState(activePlayer) {
         let isActivePlayer = activePlayer === this;
         let promptState = isActivePlayer ? this.promptState.getState() : {};
-        let fullDiscardPile = this.discardPile.concat(this.beingPlayed);
         let locationsState = this.locations.map(location => {
             return {
                 uuid: location.uuid,
@@ -1696,7 +1695,7 @@ class Player extends Spectator {
             cardPiles: {
                 cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
                 deadPile: this.getSummaryForCardList(this.deadPile, activePlayer).reverse(),
-                discardPile: this.getSummaryForCardList(fullDiscardPile, activePlayer),
+                discardPile: this.getSummaryForCardList(this.discardPile, activePlayer),
                 drawDeck: this.getSummaryForCardList(this.drawDeck, activePlayer),
                 hand: this.getSummaryForCardList(this.hand, activePlayer),
                 drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
