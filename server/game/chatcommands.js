@@ -27,6 +27,7 @@ class ChatCommands {
             '/clear-effects': this.clearEffects,
             '/cleff': this.clearEffects,
             '/control': this.control,
+            '/done': this.done,
             '/discard-random': this.discardRandom,
             '/discard-deck': this.discardFromDeck,
             '/disconnectme': this.disconnectMe,
@@ -85,48 +86,50 @@ class ChatCommands {
     }
 
     bullets(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set bullets for',
             waitingPromptTitle: 'Waiting for opponent to set bullets',
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude'],
             onSelect: (p, card) => {
-                let bullets = num - card.bullets;
-                card.bullets += bullets;
-
-                if(card.bullets < 0) {
-                    card.bullets = 0;
+                let bullets = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    bullets = modifier.set - card.bullets;
                 }
-                this.game.addAlert('danger', '{0} uses the /bullets command to set the bullets of {1} to {2}', p, card, num);
+                card.bullets += bullets;
+                this.game.addAlert('danger', '{0} uses the /bullets command to set the bullets of {1} to {2}', p, card, card.bullets);
                 return true;
             }
         });
     }
 
     bounty(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set bounty for',
             waitingPromptTitle: 'Waiting for opponent to set bounty',
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude'],
             onSelect: (p, card) => {
-                let change = card.bounty - num;
-                if(num > 0) {
-                    card.decreaseBounty(change);
+                let change = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    change = modifier.set - card.bounty;
+                }
+                if(change < 0) {
+                    card.decreaseBounty(change * -1);
                 } else {
-                    card.increaseBounty(change * -1);
+                    card.increaseBounty(change);
                 }
 
-                this.game.addAlert('danger', '{0} uses the /bounty command to set the bounty of {1} to {2}', p, card, num);
+                this.game.addAlert('danger', '{0} uses the /bounty command to set the bounty of {1} to {2}', p, card, card.bounty);
                 return true;
             }
         });
     }
 
     influence(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         var type = args[2] || 'influence';
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set ' + type + ' for',
@@ -135,33 +138,31 @@ class ChatCommands {
             cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
                 // TODO M2 so far we only use standard influence, no influence:deed
-                let influence = num - card.influence;
-                card.influence += influence;
-
-                if(card.influence < 0) {
-                    card.influence = 0;
+                let influence = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    influence = modifier.set - card.influence;
                 }
-                this.game.addAlert('danger', '{0} uses the /influence command to set the influence of {1} to {2}', p, card, num);
+                card.influence += influence;
+                this.game.addAlert('danger', '{0} uses the /influence command to set the influence of {1} to {2}', p, card, card.influence);
                 return true;
             }
         });
     }
 
     control(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set control for',
             waitingPromptTitle: 'Waiting for opponent to set control',
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude', 'deed', 'goods', 'spell'],
             onSelect: (p, card) => {
-                let control = num - card.control;
-                card.control += control;
-
-                if(card.control < 0) {
-                    card.control = 0;
+                let control = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    control = modifier.set - card.control;
                 }
-                this.game.addAlert('danger', '{0} uses the /control command to set the control of {1} to {2}', p, card, num);
+                card.control += control;
+                this.game.addAlert('danger', '{0} uses the /control command to set the control of {1} to {2}', p, card, card.control);
                 return true;
             }
         });
@@ -179,6 +180,12 @@ class ChatCommands {
     pass(player) {
         if(this.game.currentPlayWindow) {
             this.game.currentPlayWindow.onPass(player);
+        }
+    }
+
+    done(player) {
+        if(this.game.currentPlayWindow) {
+            this.game.currentPlayWindow.onDone(player);
         }
     }
 
@@ -241,7 +248,7 @@ class ChatCommands {
         if(skillName === 'mad') {
             skillName = 'mad scientist';
         }
-        var num = this.getNumberOrDefault(args[2], 1);
+        var modifier = this.determineModifier(args[2]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to modify skill/kung fu rating for',
             waitingPromptTitle: 'Waiting for opponent to select card',
@@ -254,7 +261,10 @@ class ChatCommands {
                         p, card, skillName);     
                     return true;               
                 }
-                let change = num - currentRating;
+                let change = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    change = modifier.set - currentRating;
+                }
                 card.keywords.modifySkillRating(skillName, change);
                 if(skillName !== 'kung fu') {
                     this.game.addAlert('danger', '{0} uses the /skill-rating command to set {1} rating of {2} to {3}', 
@@ -269,8 +279,7 @@ class ChatCommands {
     }
 
     kungFuRating(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
-        this.skillRating(player, [null, 'kung fu', num]);
+        this.skillRating(player, [null, 'kung fu', args[1]]);
     }
 
     shooter(player, args) {
@@ -606,20 +615,19 @@ class ChatCommands {
     }
 
     value(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set value for',
             waitingPromptTitle: 'Waiting for opponent to set value',
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
             onSelect: (p, card) => {
-                let value = num - card.value;
-                card.value += value;
-
-                if(card.value < 0) {
-                    card.value = 0;
+                let value = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    value = modifier.set - card.value;
                 }
-                this.game.addAlert('danger', '{0} uses the /value command to set the value of {1} to {2}', p, card, num);
+                card.value += value;
+                this.game.addAlert('danger', '{0} uses the /value command to set the value of {1} to {2}', p, card, card.value);
                 return true;
             }
         });
@@ -807,6 +815,24 @@ class ChatCommands {
             player: player
         });
         return true;
+    }
+
+    determineModifier(arg) {
+        if(typeof(arg) === 'string') {
+            if(arg === '+') {
+                return { mod: 1 };
+            }
+            if(arg === '-') {
+                return { mod: -1 };
+            }
+            if(arg.startsWith('+')) {
+                return { mod: this.getNumberOrDefault(arg, 1) };
+            }
+            if(arg.startsWith('-')) {
+                return { mod: this.getNumberOrDefault(arg, -1) };
+            }            
+        }
+        return { set: this.getNumberOrDefault(arg, 1) };
     }
 }
 
