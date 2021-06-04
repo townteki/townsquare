@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/275/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/277/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -367,7 +367,7 @@
 |                     | 09001| The 108 Righteous Bandits
 |                     | 09002| Eagle Wardens
 |                     | 09003| Benjamin Washington
-|                     | 09004| Daomei Wang
+|:heavy_check_mark:   | 09004| Daomei Wang
 |:heavy_check_mark:   | 09005| Randall
 |                     | 09006| Xiaodan Li
 |                     | 09007| Longwei Fu
@@ -401,7 +401,7 @@
 |                     | 09035| The Pack Awakens
 |                     | 09036| Shifu Speaks
 |:heavy_check_mark:   | 09037| Zhu's Ferocity
-|                     | 09038| Raking Dragons
+|:heavy_check_mark:   | 09038| Raking Dragons
 |                     | 09039| Rabbit's Lunar Leap
 |:heavy_check_mark:   | 09040| Zhu's Reward
 |:heavy_check_mark:   | 09041| Ancestor Spirit
