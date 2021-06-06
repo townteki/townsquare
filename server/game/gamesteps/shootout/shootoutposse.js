@@ -42,40 +42,96 @@ class ShootoutPosse {
         dude.shootoutStatus = ShootoutStatuses.None;
     }
 
+    findShooter(stud = true) {
+        let dudes = this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid));
+        if(dudes.length === 0) {
+            return 0;
+        }
+        const possibleShooters = [];
+        const otherDudes = [];
+        const otherTypeDudes = [];
+        dudes.forEach(dude => {
+            let rating = this.shootout.useInfluence ? dude.influence : dude.bullets;
+            if((dude.isStud() && stud) || (dude.isDraw() && !stud)) {
+                if(rating > 0) {
+                    possibleShooters.push(dude);
+                } else {
+                    otherDudes.push(dude);
+                }
+            } else {
+                otherTypeDudes.push(dude);
+            }
+        });
+        if(possibleShooters.length > 0) {
+            return possibleShooters.reduce((shooter, dude) => {
+                if(!shooter) {
+                    return dude;
+                }
+                let rating = this.shootout.useInfluence ? dude.influence : dude.bullets;
+                let shooterRating = this.shootout.useInfluence ? shooter.influence : shooter.bullets;
+                return rating > shooterRating ? dude : shooter;
+            });
+        }
+        if(otherDudes.length > 0) {
+            if(dudes.length === otherDudes.length) {
+                return otherDudes[0];
+            }
+            return otherTypeDudes[0];
+        }
+    }
+
     getStudBonus(onlyShooter = false) {
-        let shooterRating = this.shootout.useInfluence ? this.shooter.influence : this.shooter.bullets;
+        let shooterBonus = 0;
+        let tempShooter = this.shooter;
+        if(!tempShooter) {
+            tempShooter = this.findShooter();
+            if(!tempShooter) {
+                return 0;
+            }
+        }
+        if(tempShooter.isStud()) {
+            shooterBonus = this.shootout.useInfluence ? tempShooter.influence : tempShooter.bullets;
+        }
         if(onlyShooter) {
-            return this.shooter.isStud() && !this.shooter.doesNotProvideBulletRatings() ? shooterRating : 0;
+            return !tempShooter.doesNotProvideBulletRatings() ? shooterBonus : 0;
         }
 
-        let bonus = this.studBonus;
-        this.posse.forEach(dudeUuid => {
+        let baseBonus = this.studBonus + shooterBonus;
+        return this.posse.reduce((bonus, dudeUuid) => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            let dudeRating = this.shootout.useInfluence ? dude.influence : dude.bullets;
             if(dude.isStud() && !dude.doesNotProvideBulletRatings()) {
-                bonus += dude === this.shooter ? dudeRating : 1;
-            }   
-        });
-
-        return bonus;
+                // if dude is shooter, bonus was already counted
+                return bonus += dude !== tempShooter ? 1 : 0;
+            }
+            return bonus;
+        }, baseBonus);
     }
 
     getDrawBonus(onlyShooter = false) {
-        let shooterRating = this.shootout.useInfluence ? this.shooter.influence : this.shooter.bullets;
+        let shooterBonus = 0;
+        let tempShooter = this.shooter;
+        if(!tempShooter) {
+            tempShooter = this.findShooter(false);
+            if(!tempShooter) {
+                return 0;
+            }
+        }
+        if(tempShooter.isDraw()) {
+            shooterBonus = this.shootout.useInfluence ? tempShooter.influence : tempShooter.bullets;
+        }
         if(onlyShooter) {
-            return this.shooter.isDraw() && !this.shooter.doesNotProvideBulletRatings() ? shooterRating : 0;
+            return !tempShooter.doesNotProvideBulletRatings() ? shooterBonus : 0;
         }
 
-        let bonus = this.drawBonus;
-        this.posse.forEach(dudeUuid => {
+        let baseBonus = this.drawBonus + shooterBonus;
+        return this.posse.reduce((bonus, dudeUuid) => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            let dudeRating = this.shootout.useInfluence ? dude.influence : dude.bullets;
-            if(dude.isDraw() && !this.shooter.doesNotProvideBulletRatings()) {
-                bonus += dude === this.shooter ? dudeRating : 1;
-            }   
-        });
-
-        return bonus;
+            if(dude.isDraw() && !dude.doesNotProvideBulletRatings()) {
+                // if dude is shooter, bonus was already counted
+                return bonus += dude !== tempShooter ? 1 : 0;
+            }
+            return bonus;
+        }, baseBonus);
     }
 
     pickShooter(shooter) {

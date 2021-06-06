@@ -15,6 +15,7 @@ const PlayWindow = require('./playwindow.js');
 class Shootout extends Phase {
     constructor(game, phase, leader, mark, options = { isJob: false }) {
         super(game, 'Shootout');
+        this.round = 0;
         this.highNoonPhase = phase;
         this.options = options;
         this.leader = leader;
@@ -125,6 +126,7 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.casualtiesAndRunOrGun())
         ];
 
+        this.round += 1;
         this.game.raiseEvent('onShootoutRoundStarted');
         this.queueStep(new SimpleStep(this.game, () => {
             if(!this.checkEndCondition()) {
@@ -424,6 +426,27 @@ class Shootout extends Phase {
 
     getGameElementType() {
         return 'shootout';
+    }
+
+    getState() {
+        let playerStats = this.game.getPlayers().map(player => {
+            const posse = this.getPosseByPlayer(player);
+            return {
+                player: player.name,
+                shooter: (posse && posse.shooter) ? posse.shooter.title : null,
+                studBonus: posse ? posse.getStudBonus() : 0,
+                drawBonus: posse ? posse.getDrawBonus() : 0,
+                handRank: player.getTotalRank(),
+                casualties: player.casualties
+            };
+        });
+
+        return {
+            effects: null,
+            round: this.round,
+            playerStats
+
+        };
     }
 }
 
