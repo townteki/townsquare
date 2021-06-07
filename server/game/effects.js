@@ -206,18 +206,18 @@ function dynamicStatModifier(propName) {
                 context[dynamicPropName][card.uuid] = calculate(card, context) || 0;
                 let value = context[dynamicPropName][card.uuid];
                 this.title = `${propNameCapital} modified: ${value}`;
-                card[functionName](value, true);
+                card[functionName](value, true, true);
             },
             reapply: function(card, context) {
                 let currentProperty = context[dynamicPropName][card.uuid];
                 let newProperty = calculate(card, context) || 0;
                 context[dynamicPropName][card.uuid] = newProperty;
                 let value = newProperty - currentProperty;
-                card[functionName](value, true);
+                card[functionName](value, true, true);
             },
             unapply: function(card, context) {
                 let value = context[dynamicPropName][card.uuid];
-                card[functionName](-value, false);
+                card[functionName](-value, false, true);
                 delete context[dynamicPropName][card.uuid];
             },
             isStateDependent
@@ -323,10 +323,10 @@ const Effects = {
             title: `Bullets modified: ${value}`,
             gameAction: value < 0 ? 'decreaseBullets' : 'increaseBullets',
             apply: function(card) {
-                card.modifyBullets(value, true);
+                card.modifyBullets(value, true, true);
             },
             unapply: function(card) {
-                card.modifyBullets(-value, false);
+                card.modifyBullets(-value, false, true);
             }
         };
     },
@@ -337,10 +337,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.bullets;
-                card.modifyBullets(context.changeAmount[card.uuid], true);
+                card.modifyBullets(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyBullets(context.changeAmount[card.uuid] * -1);
+                card.modifyBullets(context.changeAmount[card.uuid] * -1, false, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -377,10 +377,10 @@ const Effects = {
             title: `Control modified: ${value}`,
             gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
-                card.modifyControl(value, true);
+                card.modifyControl(value, true, true);
             },
             unapply: function(card) {
-                card.modifyControl(-value, false);
+                card.modifyControl(-value, false, true);
             }
         };
     },
@@ -391,10 +391,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.control;
-                card.modifyControl(context.changeAmount[card.uuid], true);
+                card.modifyControl(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyControl(context.changeAmount[card.uuid] * -1);
+                card.modifyControl(context.changeAmount[card.uuid] * -1, false, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -853,6 +853,9 @@ const Effects = {
     dudesCannotFlee: function() {
         return playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout')();
     },
+    onlyShooterContributes: function() {
+        return playerOptionEffect('onlyShooterContributes', 'Only shooter contributes')();
+    },
     modifyPosseStudBonus: function(amount) {
         return {
             title: `Stud Bonus modified: ${amount}`,
@@ -862,6 +865,18 @@ const Effects = {
             },
             unapply: function(player) {
                 player.modifyPosseStudBonus(-amount);
+            }
+        };
+    },
+    modifyPosseShooterBonus: function(amount) {
+        return {
+            title: `Shooter Bonus modified: ${amount}`,
+            targetType: 'player',
+            apply: function(player) {
+                player.modifyPosseShooterBonus(amount);
+            },
+            unapply: function(player) {
+                player.modifyPosseShooterBonus(-amount);
             }
         };
     },

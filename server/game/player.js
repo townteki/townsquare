@@ -1108,6 +1108,15 @@ class Player extends Spectator {
         }
     }
 
+    modifyPosseShooterBonus(amount) {
+        if(this.game.shootout) {
+            let playerPosse = this.game.shootout.getPosseByPlayer(this);
+            if(playerPosse) {
+                playerPosse.shooterBonus += amount;
+            }
+        }
+    }
+
     addCasualties(number) {
         this.casualties += number;
     }
@@ -1678,6 +1687,10 @@ class Player extends Spectator {
 
     dudesCannotFlee() {
         return this.options.contains('dudesCannotFlee');
+    }
+
+    onlyShooterContributes() {
+        return this.options.contains('onlyShooterContributes');
     }
 
     getState(activePlayer) {
