@@ -10,7 +10,7 @@ class BaijiuJar extends GoodsCard {
             ]
         });
         this.action({
-            title: 'Baiju Jar',
+            title: 'Baijiu Jar',
             playType: ['shootout'],
             cost: [ 
                 ability.costs.bootSelf(),
