@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/279/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/281/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -708,8 +708,8 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 19001| Darius Hellstromme
-|                     | 19002| Ezekiah Grimme
+|:heavy_check_mark:   | 19001| Darius Hellstromme
+|:heavy_check_mark:   | 19002| Ezekiah Grimme
 |                     | 19003| Jasper Stone
 |                     | 19004| Raven
 |                     | 19005| Wang Men Wu
