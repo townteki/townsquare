@@ -8,6 +8,7 @@ class XuiYinChen extends DudeCard {
             cost: ability.costs.bootSelf(),
             message: context =>
                 this.game.addMessage('{0} uses {1}\'s ability on their posse to give them +1 influence and make them studs', context.player, this),
+            gameAction: 'increaseInfluence'
             handler: (context) => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this.game.shootout.getPosseByPlayer(context.player).getDudes(),
