@@ -903,6 +903,10 @@ class BaseCard {
         }
     }
 
+    isSpell() {
+        return false;
+    }
+
     coversCasualties(type = 'any') {
         if(this.getType() === 'dude') {
             let harrowCasualty = this.isHarrowed() ? 1 : 0;
