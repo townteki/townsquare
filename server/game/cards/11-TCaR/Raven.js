@@ -27,7 +27,6 @@ class Raven extends LegendCard {
                 cardCondition: { location: 'play area', controller: 'any', condition: card => !card.isOutOfTown() },
                 cardType: ['deed']
             },
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 this.untilEndOfRound(ability => ({
                     condition: () => this.game.shootout &&
