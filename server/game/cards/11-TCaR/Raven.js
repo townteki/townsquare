@@ -14,8 +14,8 @@ class Raven extends LegendCard {
         this.persistentEffect({
             condition: () => this.game.currentPhase === 'sundown' &&
                 this.ravenHasEnoughOccupiedDeeds(),
-            match: this,
-            effect: ability.effects.modifyControl(1)
+            match: this.owner,
+            effect: ability.effects.modifyPlayerControl(1)
         });
 
         this.action({
@@ -49,14 +49,15 @@ class Raven extends LegendCard {
                         givePermBullets(dudesAtRaven[0]);
                     } else {
                         this.game.promptForSelect(context.player, {
-                            activePromptTitle: 'Select a dude',
+                            activePromptTitle: 'Select a dude to get permanent bullet',
                             waitingPromptTitle: 'Waiting for opponent to select dude',
                             cardCondition: card => dudesAtRaven.includes(card),
                             cardType: 'dude',
                             onSelect: (player, card) => {
                                 givePermBullets(card);
                                 return true;
-                            }
+                            },
+                            source: this
                         });
                     }
                 };
@@ -84,7 +85,7 @@ class Raven extends LegendCard {
     ravenHasEnoughOccupiedDeeds() {
         const opponent = this.controller.getOpponent();
         const allLocations = this.controller.locations.concat(opponent.locations || []);
-        const inTownDeeds = allLocations.filter(loc => loc.locationCard.getType() === 'deed' && !loc.locationCard.isOutOfTown());
+        const inTownDeeds = allLocations.map(loc => loc.locationCard).filter(card => card.getType() === 'deed' && !card.isOutOfTown());
         const occupation = {};
         inTownDeeds.forEach(deed => {
             if(deed.controller !== deed.owner) {
@@ -95,7 +96,7 @@ class Raven extends LegendCard {
                 }
             }
         });
-        return occupation[this.controller.name] >= occupation[opponent.name];
+        return (occupation[this.controller.name] || 0) >= (occupation[opponent.name] || 0);
     }
 }
 

@@ -377,10 +377,10 @@ const Effects = {
             title: `Control modified: ${value}`,
             gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
-                card.modifyControl(value, true, true);
+                card.modifyControl(value, true);
             },
             unapply: function(card) {
-                card.modifyControl(-value, false, true);
+                card.modifyControl(-value, false);
             }
         };
     },
@@ -391,10 +391,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.control;
-                card.modifyControl(context.changeAmount[card.uuid], true, true);
+                card.modifyControl(context.changeAmount[card.uuid], true);
             },
             unapply: function(card, context) {
-                card.modifyControl(context.changeAmount[card.uuid] * -1, false, true);
+                card.modifyControl(context.changeAmount[card.uuid] * -1, false);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -484,6 +484,17 @@ const Effects = {
                 delete context.dynamicSkillRating[card.uuid];
             },
             isStateDependent: true
+        };
+    },
+    modifyPlayerControl: function(value) {
+        return {
+            title: `Player Control modified: ${value}`,
+            apply: function(player) {
+                player.control += value;
+            },
+            unapply: function(player) {
+                player.control -= value;
+            }
         };
     },
     productionToBeReceivedBy: function(player) {
