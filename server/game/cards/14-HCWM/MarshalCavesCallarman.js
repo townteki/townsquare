@@ -2,11 +2,6 @@ const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class MarshalCavesCallarman extends DudeCard {
-    getBountyAmount(card) {
-        const bountyAmount = parseInt(card.bounty);
-
-        return bountyAmount;
-    }
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.isWanted(),
@@ -20,7 +15,8 @@ class MarshalCavesCallarman extends DudeCard {
         this.action({
             title: 'Reduce Bounty',
             playType: 'noon',
-            condition: () => this.locationCard.hasKeyword('Public'),
+            ifCondition: () => this.locationCard.hasKeyword('Public'),
+            ifFailMessage: context => this.game.addMessage('{0} uses {1}\'s ability, but it has no effect since he is not at a Public location', context.player, this),
             cost: ability.costs.discardFromHand(),
             message: context => this.game.addMessage('{0} uses {1}\'s ability to discard {2} and reduce his bounty by 1', context.player, this, context.costs.discardFromHand),
             handler: context => {
