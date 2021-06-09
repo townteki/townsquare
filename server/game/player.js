@@ -1154,6 +1154,44 @@ class Player extends Spectator {
         this.locations.push(newLocation);
     }
 
+    removeDeedFromPlay(card, dudeAction) {
+        const gameLocation = card.getGameLocation();
+        gameLocation.getDudes().forEach(dude => dudeAction(dude));
+        gameLocation.adjacencyMap.forEach((value, key) => {
+            const gl = this.findLocation(key);
+            if(gl.adjacencyMap.has(gameLocation.uuid)) {
+                gl.adjacencyMap.delete(gameLocation.uuid);
+            }
+        });
+        this.locations = this.locations.filter(loc => loc !== gameLocation);
+        if(!card.isOutOfTown()) {
+            const orderedLocations = this.locations.sort((a, b) => {
+                return a.order - b.order;
+            });
+            let rightOrder = 0;
+            for(let i = 0; i < orderedLocations.length; i++) {
+                if(orderedLocations[i].order === 0) {
+                    let leftOrder = 0;
+                    rightOrder = 1;
+                    for(let j = i - 1; j >= 0; j--) {
+                        leftOrder -= 1;
+                        orderedLocations[j].order = leftOrder;                     
+                    }
+                }
+                if(i < (orderedLocations.length - 1)) {
+                    const gap = Math.abs(orderedLocations[i].order - orderedLocations[i + 1].order);
+                    if(gap > 1) {
+                        orderedLocations[i].addAdjacency(orderedLocations[i + 1], 'game');
+                    }
+                    if(rightOrder > 0) {
+                        orderedLocations[i].order = rightOrder;
+                        rightOrder += 1;
+                    }
+                }
+            }
+        }
+    }
+
     promptForDeedStreetSide(card) {
         this.game.queueStep(new DeedStreetSidePrompt(this.game, this, card, 'play'));
     }
@@ -1514,6 +1552,9 @@ class Player extends Spectator {
 
             if(targetLocation !== 'play area') {
                 let cardLeavePlay = () => {
+                    if(card.getType() === 'deed') {
+                        this.removeDeedFromPlay(card, dude => dude.sendHome({ needToBoot: true }));
+                    }
                     card.leavesPlay();
                     card.moveTo(targetLocation);
                 };
