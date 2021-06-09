@@ -37,21 +37,22 @@ class Raven extends LegendCard {
                 this.game.addMessage('{0} uses {1} to give their shooter +2 bullets during shootouts in {2}', 
                     context.player, this, context.target);
                 const eventHandler = () => {
-                    const dudesAtRaven = this.game.getDudesAtLocation(context.target.uuid);
+                    const eligibleDudes = this.game.getDudesAtLocation(context.target.uuid).filter(dude => dude.permanentBullets <= 0);
                     const givePermBullets = card => {
-                        if(card.permanentBullets <= 0) {
+                        if(card.permanentBullets <= 0 && !this.permanentBulletGiven) {
                             this.game.addMessage('{0} gives +1 permanent bullets to {1} thanks to {2}', 
                                 context.player, card, this);                           
                             card.modifyBullets(1);
+                            this.permanentBulletGiven = true;
                         }
                     };
-                    if(dudesAtRaven.length === 1) {
-                        givePermBullets(dudesAtRaven[0]);
-                    } else {
+                    if(eligibleDudes.length === 1) {
+                        givePermBullets(eligibleDudes[0]);
+                    } else if(eligibleDudes.length > 1) {
                         this.game.promptForSelect(context.player, {
                             activePromptTitle: 'Select a dude to get permanent bullet',
                             waitingPromptTitle: 'Waiting for opponent to select dude',
-                            cardCondition: card => dudesAtRaven.includes(card),
+                            cardCondition: card => eligibleDudes.includes(card),
                             cardType: 'dude',
                             onSelect: (player, card) => {
                                 givePermBullets(card);
@@ -67,6 +68,7 @@ class Raven extends LegendCard {
                 }, eventHandler);
                 this.game.once('onRoundEnded', () => {
                     this.game.removeListener('onShootoutPhaseFinished', eventHandler);
+                    this.permanentBulletGiven = false;
                 });
                 this.game.once('onSundownAfterVictoryCheck', () => {
                     if(context.target.controller === context.player && context.target.owner !== context.player) {
