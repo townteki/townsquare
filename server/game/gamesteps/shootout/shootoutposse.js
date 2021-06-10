@@ -8,6 +8,7 @@ class ShootoutPosse {
         this.shooter = null;
         this.studBonus = 0;
         this.drawBonus = 0;
+        this.shooterBonus = 0;
         this.isLeading = isLeading;
     }
 
@@ -42,9 +43,9 @@ class ShootoutPosse {
         dude.shootoutStatus = ShootoutStatuses.None;
     }
 
-    getStudBonus(onlyShooter = false) {
+    getStudBonus() {
         let shooterRating = this.shootout.useInfluence ? this.shooter.influence : this.shooter.bullets;
-        if(onlyShooter) {
+        if(this.player.onlyShooterContributes()) {
             return this.shooter.isStud() && !this.shooter.doesNotProvideBulletRatings() ? shooterRating : 0;
         }
 
@@ -60,9 +61,9 @@ class ShootoutPosse {
         return bonus;
     }
 
-    getDrawBonus(onlyShooter = false) {
+    getDrawBonus() {
         let shooterRating = this.shootout.useInfluence ? this.shooter.influence : this.shooter.bullets;
-        if(onlyShooter) {
+        if(this.player.onlyShooterContributes()) {
             return this.shooter.isDraw() && !this.shooter.doesNotProvideBulletRatings() ? shooterRating : 0;
         }
 
@@ -85,6 +86,13 @@ class ShootoutPosse {
         } else {
             shooter.shootoutStatus = ShootoutStatuses.MarkShooter;
         }
+        this.shooter.lastingEffect(ability => ({
+            until: {
+                onShootoutRoundFinished: () => true
+            },
+            match: this.shooter,
+            effect: ability.effects.dynamicBullets(() => this.shooterBonus)
+        }));
     }
 
     actOnPosse(action, exception = () => false) {

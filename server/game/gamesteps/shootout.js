@@ -31,6 +31,7 @@ class Shootout extends Phase {
 
         this.loserCasualtiesMod = 0;
         this.jobSuccessful = null;
+        this.winningPlayer = null;
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
@@ -55,7 +56,7 @@ class Shootout extends Phase {
         } else {
             let opponent = this.leaderPlayer.getOpponent();
             if(this.game.getNumberOfPlayers() < 2) {
-                this.endJob();
+                this.endShootout();
             } else {
                 this.opposingPlayerName = opponent.name;
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
@@ -65,7 +66,7 @@ class Shootout extends Phase {
                         this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
                     },
                     onNo: () => {
-                        this.endJob();
+                        this.endShootout();
                     }
                 }));
             }
@@ -150,7 +151,11 @@ class Shootout extends Phase {
     }
 
     endPhase(isCancel = false) {
-        this.game.raiseEvent('onShootoutPhaseFinished', { phase: this.name });
+        this.game.raiseEvent('onShootoutPhaseFinished', {
+            phase: this.name, 
+            shootout: this,
+            winner: this.winningPlayer 
+        });
         this.game.currentPhase = this.highNoonPhase;
         var attackingPlayer = this.leaderPlayer;
         var defendingPlayer = this.opposingPlayer;
@@ -169,8 +174,16 @@ class Shootout extends Phase {
         this.game.addAlert('phasestart', phaseName + ' ended!');        
     }
 
-    endJob(recordStatus = true) {
+    endShootout(recordStatus = true) {
         if(!this.isJob()) {
+            if((!this.opposingPosse || this.opposingPosse.isEmpty()) &&
+                this.leaderPosse && !this.leaderPosse.isEmpty()) {
+                this.winningPlayer = this.leaderPlayer;
+            }
+            if((!this.leaderPosse || this.leaderPosse.isEmpty()) &&
+                this.opposingPosse && !this.opposingPosse.isEmpty()) {
+                this.winningPlayer = this.opposingPlayer;
+            }
             return;
         }
         if(recordStatus) {
@@ -385,7 +398,7 @@ class Shootout extends Phase {
             this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
             this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
         } else {
-            this.endJob(false);
+            this.endShootout(false);
         }
     }
     

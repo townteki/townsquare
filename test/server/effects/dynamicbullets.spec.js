@@ -24,8 +24,8 @@ describe('Effects.dynamicBullets', function() {
         });
 
         it('should modify bullets based on the result of the calculate method', function() {
-            expect(this.card1.modifyBullets).toHaveBeenCalledWith(3, true);
-            expect(this.card2.modifyBullets).toHaveBeenCalledWith(4, true);
+            expect(this.card1.modifyBullets).toHaveBeenCalledWith(3, true, true);
+            expect(this.card2.modifyBullets).toHaveBeenCalledWith(4, true, true);
         });
 
         it('should store the modifier for each card on context', function() {
@@ -42,7 +42,7 @@ describe('Effects.dynamicBullets', function() {
         });
 
         it('should increase the bullets by the difference', function() {
-            expect(this.card1.modifyBullets).toHaveBeenCalledWith(1, true);
+            expect(this.card1.modifyBullets).toHaveBeenCalledWith(1, true, true);
         });
     });
 
@@ -57,8 +57,8 @@ describe('Effects.dynamicBullets', function() {
         it('should reduce the previously applied value', function() {
             this.effect.unapply(this.card1, this.context);
             this.effect.unapply(this.card2, this.context);
-            expect(this.card1.modifyBullets).toHaveBeenCalledWith(-3, false);
-            expect(this.card2.modifyBullets).toHaveBeenCalledWith(-4, false);
+            expect(this.card1.modifyBullets).toHaveBeenCalledWith(-3, false, true);
+            expect(this.card2.modifyBullets).toHaveBeenCalledWith(-4, false, true);
         });
     });
 });
