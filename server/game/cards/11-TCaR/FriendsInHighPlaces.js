@@ -32,22 +32,23 @@ class FriendsInHighPlaces extends ActionCard {
             ifFailMessage: context => {
                 this.game.addMessage('{0} uses {1} but does not make anyone a stud because their posse\'s total influence is less than the opposing posse\'s', context.player, this);
             },
+            target: {
+                activePromptTitle: 'Select a dude to make a stud',
+                cardCondition: { 
+                    location: 'play area', 
+                    controller: 'current', 
+                    participating: true,
+                    condition: card => card.isDraw()
+                },
+                cardType: ['dude'],
+                ifAble: true
+            },
             handler: context => {
-                this.game.promptForSelect(context.player, {
-                    activePromptTitle: 'Select a dude to make a stud',
-                    waitingPromptTitle: 'Waiting for opponent to select a dude',
-                    cardCondition: { location: 'play area', controller: context.player, 
-                        condition: card => card.isParticipating() && card.isDraw()},
-                    cardType: 'dude',
-                    onSelect: (player, dudeToStud) => {
-                        this.applyAbilityEffect(context.ability, ability => ({
-                            match: dudeToStud,
-                            effect: ability.effects.setAsStud()
-                        }));
-                        this.game.addMessage('{0} uses {1} to make {2} a stud', context.player, this, dudeToStud);
-                        return true;
-                    }
-                });
+                this.applyAbilityEffect(context.ability, ability => ({
+                    match: context.target,
+                    effect: ability.effects.setAsStud()
+                }));
+                this.game.addMessage('{0} uses {1} to make {2} a stud', context.player, this, context.target);
             }
         });
     }

@@ -16,7 +16,7 @@ class ZhusFerocity extends TechniqueCard {
                     match: context.kfDude,
                     effect: ability.effects.modifyBullets(1)
                 }));
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select an opposing dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.controller !== this.owner && card.isParticipating(),

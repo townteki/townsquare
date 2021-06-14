@@ -28,6 +28,7 @@ class Deck {
             };
         }
 
+        cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
         let cardClass = cards[cardData.code] || OutfitCard;
 
         return new cardClass(player, cardData);
@@ -44,6 +45,8 @@ class Deck {
                 wealth: this.data.legend.wealth,
                 production: this.data.legend.production
             };
+            
+            cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
             let cardClass = cards[cardData.code] || LegendCard;
 
             return new cardClass(player, cardData);
