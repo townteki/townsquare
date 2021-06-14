@@ -54,6 +54,7 @@ class Player extends Spectator {
         this.discardNumber = StartingDiscardNumber;
         this.costReducers = [];
         this.redrawBonus = 0;
+        this.control = 0;
         this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;
@@ -1108,6 +1109,15 @@ class Player extends Spectator {
         }
     }
 
+    modifyPosseShooterBonus(amount) {
+        if(this.game.shootout) {
+            let playerPosse = this.game.shootout.getPosseByPlayer(this);
+            if(playerPosse) {
+                playerPosse.shooterBonus += amount;
+            }
+        }
+    }
+
     addCasualties(number) {
         this.casualties += number;
     }
@@ -1415,7 +1425,7 @@ class Player extends Spectator {
         let controlCards = this.game.findCardsInPlay(card => card.control > 0 && card.controller === this);
         let control = controlCards.reduce((memo, card) => {
             return memo + card.control;
-        }, 0);
+        }, this.control);
 
         return control;
     }
@@ -1719,6 +1729,10 @@ class Player extends Spectator {
 
     dudesCannotFlee() {
         return this.options.contains('dudesCannotFlee');
+    }
+
+    onlyShooterContributes() {
+        return this.options.contains('onlyShooterContributes');
     }
 
     getState(activePlayer) {
