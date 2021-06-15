@@ -30,7 +30,7 @@
 |:heavy_check_mark:   | 01016| Judge Harry Somerset
 |:heavy_check_mark:   | 01017| Philip Swinford
 |:heavy_check_mark:   | 01018| Tommy Harden
-|                     | 01019| Prescott Utter
+|:heavy_check_mark:   | 01019| Prescott Utter
 |:white_check_mark:   | 01020| Andreas Andregg
 |                     | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
