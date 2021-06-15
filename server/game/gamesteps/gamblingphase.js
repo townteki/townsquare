@@ -90,8 +90,8 @@ class GamblingPhase extends Phase {
         } else {
             this.game.addAlert('info', '{0} is the winner and receives {1} GR{2}', winner.player, this.lowballPot, debtorText);
         }
-
-        this.game.getPlayers().forEach(player => player.firstPlayer = winner.player === player);   
+ 
+        this.game.setFirstPlayer(winner.player);
         winner.player.modifyGhostRock(this.lowballPot);
     }
 
