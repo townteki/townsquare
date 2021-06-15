@@ -23,7 +23,7 @@ class PapaMarias extends DudeCard {
                             card: context.target, 
                             targetUuid: this.gamelocation
                         }));
-                        this.game.addMessage('{0} moves to {1}\'s location.', context.target, this);
+                        this.game.addMessage('{0} uses {1} to move {2} to {1}\'s location', context.player, this, context.target);
                     },
                     pullingDude: this,
                     source: this
