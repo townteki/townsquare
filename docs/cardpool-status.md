@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/287/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/291/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -771,7 +771,7 @@
 |                     | 20011| Matthew Rising Sun
 |                     | 20012| Feichi "Suitcase" Lee
 |                     | 20013| Geronimo
-|                     | 20014| Papa Marias
+|:heavy_check_mark:   | 20014| Papa Marias
 |                     | 20015| Skinwalker
 |                     | 20016| Tonton Macoute
 |                     | 20017| Kevin Wainwright (Exp.1)
@@ -910,7 +910,7 @@
 |                     | 22028| Camillus S. Fly
 |                     | 22029| QUATERMAN PRIME
 |                     | 22030| Winona Rein-Breaker
-|                     | 22031| Nicole Sumner
+|:heavy_check_mark:   | 22031| Nicole Sumner
 |                     | 22032| Red River Roulette
 |                     | 22033| Kiva of Fathomless Reach
 |                     | 22034| Crystal Palace
@@ -948,7 +948,7 @@
 |                     | 23005| Arthur Dingler
 |                     | 23006| Deadwood Dick
 |                     | 23007| Al Swearengen
-|                     | 23008| Aunt Lou Marchbanks
+|:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
 |                     | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
 |                     | 23011| Victor "Nines" de Boré
