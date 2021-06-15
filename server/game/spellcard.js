@@ -23,6 +23,10 @@ class SpellCard extends HeartsCard {
                 card.getGameLocation().getDudes().find(dude => dude.hasKeyword('shaman') && !dude.booted);
         }
     }
+
+    isSpell() {
+        return true;
+    }
 }
 
 module.exports = SpellCard;

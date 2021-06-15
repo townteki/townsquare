@@ -48,6 +48,7 @@ class BaseCard {
         this.currentInfluence = cardData.influence;
         this.currentProduction = cardData.production;
         this.wealth = cardData.wealth;
+        this.permanentBullets = 0;
 
         this.tokens = {};
 
@@ -734,13 +735,16 @@ class BaseCard {
         this.game.raiseEvent('onCardValueChanged', params);
     }
 
-    modifyBullets(amount, applying = true) {
+    modifyBullets(amount, applying = true, fromEffect = false) {
         this.currentBullets += amount;
-
+        if(!fromEffect) {
+            this.permanentBullets += amount;
+        }
         let params = {
             card: this,
             amount: amount,
-            applying: applying
+            applying: applying.player,
+            fromEffect
         };
         this.game.raiseEvent('onCardBulletsChanged', params);
     }
@@ -897,6 +901,10 @@ class BaseCard {
         if(_.intersection(['spell', 'goods'], [this.getType()]).length > 0) {
             return true;
         }
+    }
+
+    isSpell() {
+        return false;
     }
 
     coversCasualties(type = 'any') {

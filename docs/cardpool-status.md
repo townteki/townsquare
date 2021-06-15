@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/277/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/287/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -372,10 +372,10 @@
 |                     | 09006| Xiaodan Li
 |                     | 09007| Longwei Fu
 |:heavy_check_mark:   | 09008| Natalya
-|                     | 09009| Xui Yin Chen
+|:heavy_check_mark:   | 09009| Xui Yin Chen
 |                     | 09010| Hamshanks
 |                     | 09011| Hiram Capatch
-|                     | 09012| Yunxu Jiang
+|:heavy_check_mark:   | 09012| Yunxu Jiang
 |                     | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
 |                     | 09015| T'ou Chi Chow
@@ -685,8 +685,8 @@
 |:heavy_check_mark:   | 18022| Nickel Night Inn
 |:heavy_check_mark:   | 18023| Sherman Mortgage
 |                     | 18024| Gomorra Gaming Commission
-|                     | 18025| Cliff's #4 Saloon
-|                     | 18026| Baijiu Jar
+|:heavy_check_mark:   | 18025| Cliff's #4 Saloon
+|:heavy_check_mark:   | 18026| Baijiu Jar
 |:heavy_check_mark:   | 18027| Bowie Knife
 |:heavy_check_mark:   | 18028| Hydro-Puncher
 |                     | 18029| Rancher's Lariat
@@ -708,10 +708,10 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 19001| Darius Hellstromme
-|                     | 19002| Ezekiah Grimme
-|                     | 19003| Jasper Stone
-|                     | 19004| Raven
+|:heavy_check_mark:   | 19001| Darius Hellstromme
+|:heavy_check_mark:   | 19002| Ezekiah Grimme
+|:heavy_check_mark:   | 19003| Jasper Stone
+|:heavy_check_mark:   | 19004| Raven
 |                     | 19005| Wang Men Wu
 |:heavy_check_mark:   | 19006| Charging Bear
 |                     | 19007| Fears No Owls
@@ -883,7 +883,7 @@
 |                     | 22001| Andrew Lane
 |                     | 22002| Hank Ketchum
 |                     | 22003| Lacy O'Malley
-|                     | 22004| The Tombstone Haint
+|:heavy_check_mark:   | 22004| The Tombstone Haint
 |                     | 22005| Rock Woofstone
 |                     | 22006| Arielle Moriah
 |                     | 22007| Gabriel Prior
@@ -902,7 +902,7 @@
 |                     | 22020| Judge Wells Spicer
 |                     | 22021| Joan McGruder
 |                     | 22022| Virgil Earp
-|                     | 22023| Marshal Caves Callarman
+|:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |                     | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
 |                     | 22026| Pete Spence
