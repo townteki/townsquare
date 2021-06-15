@@ -23,7 +23,6 @@ class GuidingWind extends SpellCard {
                     effect: ability.effects.setBullets(newBullets)
                 }));
                 this.game.addMessage('{0} uses {1} to set {2}\'s bullets to {3}', context.player, this, context.target, newBullets);
-                }
             }
         });
     }
