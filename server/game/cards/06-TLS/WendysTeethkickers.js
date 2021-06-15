@@ -6,10 +6,13 @@ class WendysTeethkickers extends GoodsCard {
         this.reaction({
             title: 'Wendy\'s Teethkickers',
             when: {
-                onDudeSentHome: event => event.options.originalLocation === this.gamelocation && event.card.booted,
+                onDudeSentHome: event => event.options.originalLocation === this.gamelocation && 
+                    event.card.booted &&
+                    event.card.controller !== this.controller,
                 onDudeMoved: event => event.options.originalLocation === this.gamelocation &&
                     event.target === event.card.controller.getOutfitCard().uuid &&
-                    event.card.booted
+                    event.card.booted &&
+                    event.card.controller !== this.controller
             },
             cost: ability.costs.bootSelf(),
             actionContext: { card: this.parent, gameAction: 'unboot' },
