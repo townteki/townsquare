@@ -37,13 +37,15 @@ class FallenStar extends ActionCard {
                 this.game.addMessage('{0} uses {1} to choose {2} as the target for {3} instead', 
                     context.player, this, context.targets.redirect, context.targets.original),
             handler: context => {
+                const savedEventHandler = context.event.handler;
                 context.replaceHandler(event => {
+                    this.game.resolveGameAction(GameActions.bootCard({ card: context.targets.redirect }), context);
                     if(event.targets) {
                         const selection = context.event.targets.selections.find(selection => selection.value === context.targets.original);
                         selection.resolve(context.targets.redirect);
+                        savedEventHandler(event);
                     }
                     if(event.cards) {
-                        this.game.resolveGameAction(GameActions.bootCard({ card: context.targets.redirect }), context);
                         let index = event.cards.indexOf(context.targets.original);
                         event.cards[index] = context.targets.redirect;
                         event.properties.onSelect(context.player, event.cards);
@@ -61,9 +63,11 @@ class FallenStar extends ActionCard {
             const selector = context.event.properties.selector || CardSelector.for(context.event.properties);
             return !context.event.cards.includes(card) && selector.canTarget(card, context);
         }
-        const selection = context.event.targets.selections.find(selection => selection.value === context.targets.original);
+        const targets = context.event.targets.getTargets();
+        const selection = context.event.targets.selections.find(selection => selection.value === targets[0]);
         return (
-            selection.isEligible(card) &&
+            !context.event.targets.getTargets().includes(card) &&
+            selection && selection.isEligible(card) &&
             card.controller === this.controller &&
             card.getType() === 'dude'
         );
