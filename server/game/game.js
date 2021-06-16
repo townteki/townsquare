@@ -647,6 +647,7 @@ class Game extends EventEmitter {
         }
 
         player.discardCards(cards);
+        this.addMessage('{0} discards {1} from draw hand', player, cards);
         this.clearDrawHandSelection(playerName);
     }
 
