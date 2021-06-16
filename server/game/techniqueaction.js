@@ -145,6 +145,7 @@ class TechniqueAction extends CardAction {
             this.game.promptForYesNo(context.player, {
                 title: `Do you want to combo (${context.comboNumber + 1}.)?`,
                 onYes: player => {
+                    context.comboNumber += 1;
                     this.game.promptForSelect(player, {
                         activePromptTitle: 'Select a technique to combo',
                         waitingPromptTitle: 'Waiting for opponent to select technique',
@@ -155,7 +156,6 @@ class TechniqueAction extends CardAction {
                             card.hasEnabledCardAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber }),
                         cardType: 'action',
                         onSelect: (player, card) => {
-                            context.comboNumber += 1;
                             this.game.addMessage('{0} is performing a combo {1} by {2}', player, card, context.kfDude);
                             card.useAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber });
                             return true;
