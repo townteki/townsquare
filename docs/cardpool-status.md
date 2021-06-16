@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/291/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/292/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -804,7 +804,7 @@
 |                     | 20044| Exultant Translocation
 |                     | 20045| Retribution
 |                     | 20046| Gateway
-|                     | 20047| Guiding Wind
+|:heavy_check_mark:   | 20047| Guiding Wind
 |                     | 20048| Mischievous Coyote
 |                     | 20049| Murdered in Tombstone
 |                     | 20050| Hostile Takeover
