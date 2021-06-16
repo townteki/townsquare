@@ -1364,10 +1364,15 @@ class Game extends EventEmitter {
     getState(activePlayerName) {
         let activePlayer = this.playersAndSpectators[activePlayerName] || new AnonymousSpectator();
         let playerState = {};
+        let shootoutState = null;
 
         if(this.started) {
             for(let player of this.getPlayers()) {
                 playerState[player.name] = player.getState(activePlayer);
+            }
+
+            if(this.shootout) {
+                shootoutState = this.shootout.getState();
             }
 
             this.timeLimit.checkForTimeLimitReached();
@@ -1380,6 +1385,7 @@ class Game extends EventEmitter {
                 players: playerState,
                 messages: this.gameChat.messages,
                 showHand: this.showHand,
+                shootout: shootoutState,
                 spectators: this.getSpectators().map(spectator => {
                     return {
                         id: spectator.id,
