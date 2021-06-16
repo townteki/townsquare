@@ -12,8 +12,8 @@ class ValuePrompt extends UiPrompt {
         this.valueIsSet = false;
     }
 
-    activeCondition() {
-        return !this.valueIsSet;
+    activeCondition(player) {
+        return player === this.player && !this.valueIsSet;
     }
 
     activePrompt() {
@@ -64,6 +64,10 @@ class ValuePrompt extends UiPrompt {
     }
 
     onMenuCommand(player, arg) {
+        if(player !== this.player) {
+            return false;
+        }
+        
         switch(arg) {
             case 'returnValue':
                 this.valueIsSet = true;
