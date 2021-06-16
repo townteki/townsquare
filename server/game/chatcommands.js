@@ -709,7 +709,7 @@ class ChatCommands {
             activePromptTitle: 'Select a card to use',
             waitingPromptTitle: 'Waiting for opponent to select card to use',
             cardCondition: card => ['play area', 'hand'].includes(card.location) && card.controller === player,
-            cardType: ['goods', 'spell', 'action', 'dude', 'deed'],
+            cardType: ['goods', 'spell', 'action', 'dude', 'deed', 'outfit', 'legend'],
             onSelect: (p, card) => {
                 const unscriptedText = card.cardData.scripted ? '' : ' unscripted';
                 if(card.getType() === 'action' && card.location === 'hand') {

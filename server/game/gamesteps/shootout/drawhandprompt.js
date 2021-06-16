@@ -131,6 +131,7 @@ class DrawHandPrompt extends UiPrompt {
             let numberToRedraw = this.selectedCards[player.name].length + player.redrawBonus;
             player.discardCards(this.selectedCards[player.name]);
             player.drawCardsToDrawHand(numberToRedraw);
+            this.game.addMessage('{0} discards {1} to redraw {2} cards', player, this.selectedCards[player.name], numberToRedraw);
             this.getDrawCount(player).handRedrawn = true;
             this.selectedCards[player.name] = [];
             player.clearSelectedCards();
