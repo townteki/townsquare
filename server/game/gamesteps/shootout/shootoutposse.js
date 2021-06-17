@@ -100,7 +100,7 @@ class ShootoutPosse {
         let baseBonus = this.studBonus + shooterBonus;
         return this.posse.reduce((bonus, dudeUuid) => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            if(dude.isStud() && !dude.doesNotProvideBulletRatings()) {
+            if(dude && dude.isStud() && !dude.doesNotProvideBulletRatings()) {
                 // if dude is shooter, bonus was already counted
                 return bonus += dude !== tempShooter ? 1 : 0;
             }
@@ -127,7 +127,7 @@ class ShootoutPosse {
         let baseBonus = this.drawBonus + shooterBonus;
         return this.posse.reduce((bonus, dudeUuid) => {
             let dude = this.player.findCardInPlayByUuid(dudeUuid);
-            if(dude.isDraw() && !dude.doesNotProvideBulletRatings()) {
+            if(dude && dude.isDraw() && !dude.doesNotProvideBulletRatings()) {
                 // if dude is shooter, bonus was already counted
                 return bonus += dude !== tempShooter ? 1 : 0;
             }

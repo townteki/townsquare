@@ -7,9 +7,13 @@ class RabbitsLunarLeap extends TechniqueCard {
             title: 'Rabbit\'s Lunar Leap',
             playType: ['shootout:join'],
             actionContext: { gameAction: 'joinPosse' },
-            combo: () => {
-                const myDudes = this.game.shootout.getPosseByPlayer(this.controller).getDudes();
-                const oppDudes = this.game.shootout.getPosseByPlayer(this.controller.getOpponent()).getDudes();
+            combo: context => {
+                let myDudes = this.game.shootout.getPosseByPlayer(this.controller).getDudes();
+                // this code is specific for Wang Men Wu who ignores Token dudes when checking for combo
+                if(context.kfDude.code === '19005' && !context.kfDude.isAnyBlank()) {
+                    myDudes = myDudes.filter(dude => !dude.isToken());
+                }
+                let oppDudes = this.game.shootout.getPosseByPlayer(this.controller.getOpponent()).getDudes();
                 return myDudes.length <= oppDudes.length;
             },
             onSuccess: (context) => {
