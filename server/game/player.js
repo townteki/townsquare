@@ -1490,6 +1490,9 @@ class Player extends Spectator {
     }
 
     moveCard(card, targetLocation, options = {}, callback) {
+        if(!targetLocation) {
+            return;
+        }
         if(card.isToken()) {
             if(card.location === 'out of game') {
                 return;
