@@ -5,17 +5,15 @@ class GabrielPrior extends DudeCard {
         this.traitReaction({
             triggerBefore: true,
             when: {
-                onCardPulled: event => event.props.usedBy === this.uuid &&
+                onCardPulled: event => event.props.pullingDude === this &&
                     event.props.source.hasKeyword('miracle')
             },
             handler: context => {
-                this.lastingEffect(ability => ({
-                    until: {
-                        [onPullSuccess || onPullFail]
-                    },
-                    match: this,
-                    effect: ability.effects.modifySkillRating('blessed', this.getSkillBonus())
-                }));
+                const saveEventHandler = context.event.handler;
+                context.replaceHandler(event => {
+                    event.value += this.getSkillBonus();
+                    saveEventHandler(event);
+                });
             }
         });
     }
