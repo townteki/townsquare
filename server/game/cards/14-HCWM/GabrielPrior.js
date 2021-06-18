@@ -11,7 +11,11 @@ class GabrielPrior extends DudeCard {
             handler: context => {
                 const saveEventHandler = context.event.handler;
                 context.replaceHandler(event => {
-                    event.value += this.getSkillBonus();
+                    if(event.value) {
+                        event.value += this.getSkillBonus();
+                    } else {
+                        event.value = this.getSkillBonus();
+                    }
                     saveEventHandler(event);
                 });
             }
