@@ -7,7 +7,7 @@ class LandPurchase extends DeedCard {
         this.job({
             title: 'Land Purchase',
             playType: 'noon',
-            cost: ability.costs.bootSelf(),
+            cost: ability.costs.bootLeader(),
             target: {
                 cardCondition: { condition: card => card === this },
                 autoSelect: true
