@@ -30,7 +30,8 @@ class FallenStar extends ActionCard {
                 },
                 redirect: {
                     activePromptTitle: 'Select a target for redirection',
-                    cardCondition: (card, context) => this.isEligibleTarget(card, context)
+                    cardCondition: (card, context) => !card.booted && this.isEligibleTarget(card, context),
+                    gameAction: 'boot'
                 }
             },
             message: context => 

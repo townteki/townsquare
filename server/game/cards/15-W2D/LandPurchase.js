@@ -21,7 +21,7 @@ class LandPurchase extends DeedCard {
                         {
                             title: 'Select a deed to put into play',
                             location: 'discard pile',
-                            match: { condition: card => card.getType() === 'deed' },
+                            match: { condition: card => card.getType() === 'deed' && card !== this },
                             player: context.player,
                             numToSelect: 1,
                             cancelMessage:() =>
