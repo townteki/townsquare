@@ -15,6 +15,7 @@ class LandPurchase extends DeedCard {
             message: context => this.game.addMessage('{0} plays {1} marking itself', context.player, this),
             onSuccess: (job, context) => {
                 this.owner.removeDeedFromPlay(this, dude => dude.sendHome({ needToBoot: true }));
+                this.game.resolveGameAction(GameActions.discardCard({ card: this }), context);
                 this.game.resolveGameAction(
                     GameActions.search(
                         {
