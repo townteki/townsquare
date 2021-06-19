@@ -39,9 +39,9 @@ class StartingPossePrompt extends AllPlayerPrompt {
     }
 
     validateStartingPosse(player) {
-        // TODO Xiaodan LI!!
-        if(player.hand.length > 5) {
-            return `Too many cards in (${player.hand.length}) in starting gang`;
+        const startingSize = player.hand.reduce((size, card) => size + card.startingSize, 0);
+        if(startingSize > 5) {
+            return `Too many cards in (${startingSize}) in starting gang`;
         }
         const posseCost = player.hand.reduce((aggregator, card) => aggregator + card.cost, 0);
         if(posseCost > player.ghostrock) {
