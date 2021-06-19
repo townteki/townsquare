@@ -791,9 +791,15 @@ const Effects = {
     cannotBeSetToDraw: 
         cannotEffectType('setAsDraw', opponent => `Cannot be set to draw${opponent ? ' by' + opponent : ''}`),
     cannotBeSetToDrawByShootout: 
-        cannotEffect('setAsDraw', 'shootout', opponent => `Cannot be set to draw by${opponent} shootout`),        
+        cannotEffect('setAsDraw', 'shootout', opponent => `Cannot be set to draw by${opponent} shootout`),  
+    cannotIncreaseInfluence: 
+        cannotEffectType('increaseInfluence', opponent => `Cannot have influence increased${opponent ? ' by' + opponent : ''}`),      
     cannotDecreaseInfluence: 
         cannotEffectType('decreaseInfluence', opponent => `Cannot have influence decreased${opponent ? ' by' + opponent : ''}`),
+    cannotIncreaseControl: 
+        cannotEffectType('increaseControl', opponent => `Cannot have control increased${opponent ? ' by' + opponent : ''}`),      
+    cannotDecreaseControl: 
+        cannotEffectType('decreaseControl', opponent => `Cannot have control decreased${opponent ? ' by' + opponent : ''}`),
     cannotPlay: function(condition) {
         let restriction = (card, playingType) => card.getType() === 'event' && playingType === 'play' && condition(card);
         return this.cannotPutIntoPlay(restriction);
@@ -941,6 +947,9 @@ const Effects = {
     },
     cannotFlee: function() {
         return optionEffect('cannotFlee', 'Cannot Flee')();
+    },
+    cannotAttachCards: function() {
+        return optionEffect('cannotAttachCards', 'Cannot Attach Cards')();
     },
     canRefuseWithoutGoingHomeBooted: function() {
         return optionEffect('canRefuseWithoutGoingHomeBooted', 'Can Refuse without going Home')();
