@@ -226,11 +226,11 @@ class DrawCard extends BaseCard {
      * Opponent cards only, etc) for this card.
      */
     canAttach(player, card) {
-        if(!card) {
+        if(!card || card.cannotAttachCards()) {
             return false;
         }
 
-        if((this.getType() !== 'goods') && (this.getType() !== 'spell')) {
+        if((this.getType() !== 'goods') && (this.getType() !== 'spell') && (this.getType() !== 'action' || !this.hasKeyword('condition'))) {
             return false;
         }
         if(card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
@@ -337,6 +337,10 @@ class DrawCard extends BaseCard {
 
     cannotFlee() {
         return this.options.contains('cannotFlee');
+    }
+
+    cannotAttachCards() {
+        return this.options.contains('cannotAttachCards');
     }
 
     canRefuseWithoutGoingHomeBooted() {
