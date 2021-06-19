@@ -11,7 +11,8 @@ class WangMenWu extends DudeCard {
             handler: context => {
                 const gunslinger = context.player.placeToken('Gunslinger', this.gamelocation);
                 this.game.resolveGameAction(GameActions.joinPosse({ card: gunslinger }), context);
-                this.game.addMessage('{0} uses {1} to have {2} joins their posse', context.player, this, gunslinger);
+                this.game.resolveGameAction(GameActions.bootCard({ card: gunslinger }), context);
+                this.game.addMessage('{0} uses {1} to have {2} joins their posse booted', context.player, this, gunslinger);
                 this.game.before('onShooterPicked', () => {
                     gunslinger.removeFromGame();
                 }, true, event => event.player === context.player);
