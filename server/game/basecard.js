@@ -49,6 +49,7 @@ class BaseCard {
         this.currentProduction = cardData.production;
         this.wealth = cardData.wealth;
         this.permanentBullets = 0;
+        this.startingSize = 1;
 
         this.tokens = {};
 
