@@ -137,7 +137,7 @@ class GameLocation {
         if(!adjacency) {
             return;
         }
-        adjacency = adjacency.filter(adjItem => adjItem.source !== source && adjItem.type !== type);
+        adjacency = adjacency.filter(adjItem => (source !== 'any' && adjItem.source !== source) || (type !== 'any' && adjItem.type !== type));
         if(adjacency.length === 0) {
             this.adjacencyMap.delete(uuid);
         } else {

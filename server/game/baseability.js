@@ -268,6 +268,32 @@ class BaseAbility {
         this.message.output(context.game, context);
     }
 
+    selectAnotherTarget(player, context, properties) {
+        const saveOnSelect = properties.onSelect;
+        const updatedOnSelect = (player, card) => {
+            let cards = card;
+            if(!Array.isArray(card)) {
+                cards = [card];
+            }
+            // make it always an array for the event properties ('cards'), but keep it the same ('card')
+            // as we got it when used in 'saveOnSelect', because login in onSelect function expects it that way.
+            context.game.raiseEvent('onTargetsChosen', { ability: this, player, cards, properties }, event => {
+                saveOnSelect(event.player, card);
+            });
+            return true;
+        };
+        properties.onSelect = updatedOnSelect;
+        if(properties.gameAction) {
+            if(!Array.isArray(properties.gameAction)) {
+                properties.gameAction = [properties.gameAction];
+            }
+            properties.gameAction.push('target');
+        } else {
+            properties.gameAction = ['target'];
+        }
+        context.game.promptForSelect(player, properties);
+    }
+
     /**
      * Executes the ability once all costs have been paid. Inheriting classes
      * should override this method to implement their behavior; by default it

@@ -30,7 +30,7 @@ class LaQuema extends GoodsCard {
             actionContext: { card: this.parent, gameAction: 'moveDude' },
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }), context);
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' && 

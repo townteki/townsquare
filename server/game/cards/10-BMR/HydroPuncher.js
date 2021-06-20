@@ -25,7 +25,7 @@ class HydroPuncher extends GoodsCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 if(context.target.hasAttachment()) {
-                    this.game.promptForSelect(context.player, {
+                    context.ability.selectAnotherTarget(context.player, context, {
                         activePromptTitle: 'Choose an attachment',
                         waitingPromptTitle: 'Waiting for opponent to choose an attachment',
                         cardCondition: card => card.parent === context.target,
