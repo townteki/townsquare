@@ -8,7 +8,7 @@ class MoveDude extends GameAction {
     canChangeGameState({ card, targetUuid, options = {}, context }) {
         let params = this.getDefaultOptions(options);
         return (
-            card.getType() === 'dude' &&
+            card && card.getType() === 'dude' &&
             card.gamelocation !== targetUuid &&
             ['outfit', 'play area'].includes(card.location) &&
             card.allowGameAction('moveDude', context) &&

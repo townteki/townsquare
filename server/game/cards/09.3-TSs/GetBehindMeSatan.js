@@ -11,7 +11,7 @@ class GetBehindMeSatan extends SpellCard {
                 context.player.modifyCasualties(-this.parent.getSkillRating('blessed'));
                 let opponentPosse = this.game.shootout.getPosseByPlayer(context.player.getOpponent());
                 if(opponentPosse && opponentPosse.findInPosse(dude => dude.hasKeyword('abomination'))) {
-                    this.game.promptForSelect(context.player, {
+                    context.ability.selectAnotherTarget(context.player, context, {
                         activePromptTitle: 'Select an abomination',
                         waitingPromptTitle: 'Waiting for opponent to select an abomination',
                         cardCondition: card => card.location === 'play area' &&

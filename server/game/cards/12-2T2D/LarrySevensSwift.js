@@ -17,7 +17,7 @@ class LarrySevensSwift extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
-                    this.game.promptForSelect(context.player, {
+                    context.ability.selectAnotherTarget(context.player, context, {
                         activePromptTitle: 'Select an attachment',
                         waitingPromptTitle: 'Waiting for opponent to select an attachment',
                         cardCondition: card => card.location === 'play area' && 

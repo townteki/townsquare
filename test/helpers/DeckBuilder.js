@@ -57,7 +57,7 @@ class DeckBuilder {
         let starting = 0;
         allCards.forEach(cardCount => {
             if(params.startingTitles.includes(cardCount.card.title)) {
-                cardCount.card.starting = true;
+                cardCount.starting = 1;
                 starting++;
             }
         });

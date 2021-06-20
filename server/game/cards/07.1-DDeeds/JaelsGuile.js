@@ -40,7 +40,7 @@ class JaelsGuile extends GoodsCard {
         const dudesInPosse = this.game.shootout.getPosseByPlayer(player).getDudes();
         const wantedDudes = dudesInPosse.filter(dude => dude.isWanted());
         let dudesForSelection = wantedDudes.length > 0 ? wantedDudes : dudesInPosse;
-        this.game.promptForSelect(player, {
+        context.ability.selectAnotherTarget(player, context, {
             activePromptTitle: `Select ${order} dude to boot or discard`,
             waitingPromptTitle: 'Waiting for opponent to select dude',
             cardCondition: card => dudesForSelection.includes(card),
