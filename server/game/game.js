@@ -554,7 +554,7 @@ class Game extends EventEmitter {
     }
 
     recordWinner(winner, reason) {
-        if(this.winner) {
+        if(this.winner && this.router.ignoreWin) {
             return;
         }
 

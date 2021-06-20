@@ -33,6 +33,8 @@ class GameServer {
 
         this.host = process.env.HOST || config.host;
 
+        this.ignoreWin = !!config.ignoreWin;
+
         this.zmqSocket = new ZmqSocket(this.host, this.protocol, version.build);
         this.zmqSocket.on('onStartGame', this.onStartGame.bind(this));
         this.zmqSocket.on('onSpectator', this.onSpectator.bind(this));
