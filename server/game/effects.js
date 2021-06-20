@@ -751,11 +751,13 @@ const Effects = {
             title: `Control taken by: ${newController.name}`,
             apply: function(card, context) {
                 let finalController = typeof newController === 'function' ? newController() : newController;
+                context.originalController = context.originalController || {};
+                context.originalController[card.uuid] = card.controller;
                 context.game.takeControl(finalController, card, context.source);
-                context.game.addMessage('{0} uses {1} to take control of {2}', context.source.controller, context.source, card);
             },
             unapply: function(card, context) {
-                context.game.revertControl(card, context.source);
+                context.game.revertControl(card, context.originalController[card.uuid]);
+                delete context.originalController[card.uuid];
             }
         };
     },

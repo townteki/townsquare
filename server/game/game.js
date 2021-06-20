@@ -1114,6 +1114,15 @@ class Game extends EventEmitter {
             newController.cardsInPlay.push(card);
             newController.allCards.push(card);
             card.controller = newController;
+            if(this.shootout && card.getType() === 'dude' && card.isParticipating()) {
+                if(this.shootout.isInLeaderPosse(card)) {
+                    this.shootout.leaderPosse.removeFromPosse(card);
+                    this.shootout.opposingPosse.addToPosse(card);
+                } else {
+                    this.shootout.opposingPosse.removeFromPosse(card);
+                    this.shootout.leaderPosse.addToPosse(card);
+                }
+            }
 
             if(card.location !== 'play area') {
                 let originalLocation = card.location;
@@ -1126,13 +1135,17 @@ class Game extends EventEmitter {
         });
     }
 
-    revertControl(card, source) {
+    revertControl(card, controller) {
         if(card.location !== 'play area') {
             return;
         }
 
         card.controller.removeCardFromPile(card);
-        card.revertControl(source);
+        if(!controller) {
+            card.controller = card.owner;
+        } else {
+            card.controller = controller;
+        }
         card.controller.cardsInPlay.push(card);
 
         this.handleControlChange(card);

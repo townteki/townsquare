@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/295/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/300/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -712,7 +712,7 @@
 |:heavy_check_mark:   | 19002| Ezekiah Grimme
 |:heavy_check_mark:   | 19003| Jasper Stone
 |:heavy_check_mark:   | 19004| Raven
-|                     | 19005| Wang Men Wu
+|:heavy_check_mark:   | 19005| Wang Men Wu
 |:heavy_check_mark:   | 19006| Charging Bear
 |                     | 19007| Fears No Owls
 |                     | 19008| Black Owl
@@ -810,7 +810,7 @@
 |                     | 20050| Hostile Takeover
 |                     | 20051| Jade King Stance
 |                     | 20052| Heist
-|                     | 20053| I'm Your Huckleberry
+|:heavy_check_mark:   | 20053| I'm Your Huckleberry
 |                     | 20054| Monkey Goes to the Mountain
 |:heavy_check_mark:   | 20055| Curse of Failure
 |:heavy_check_mark:   | 20056| Ricochet
@@ -930,7 +930,7 @@
 |                     | 22048| Babble On
 |                     | 22049| Ancestor's Reproach
 |                     | 22050| Secret Paths
-|                     | 22051| Fannin' the Hammer
+|:heavy_check_mark:   | 22051| Fannin' the Hammer
 |                     | 22052| Tumblebleeds!
 |                     | 22053| Takin' Cover
 |                     | 22054| Hell's Comin' With Me!
@@ -970,7 +970,7 @@
 |                     | 23027| Willa Mae MacGowan (Exp.1)
 |                     | 23028| New Varney Nosferatu
 |                     | 23029| Carmichael's Livery
-|                     | 23030| Land Purchase
+|:heavy_check_mark:   | 23030| Land Purchase
 |                     | 23031| Heath's Curiosity Shoppe
 |                     | 23032| The Gem Theater
 |                     | 23033| Baird's Debt Collections
@@ -993,7 +993,7 @@
 |                     | 23050| As Nature and God Intended
 |                     | 23051| Play for Blood
 |                     | 23052| Bad Beat
-|                     | 23053| Fallen Star
+| :heavy_check_mark:  | 23053| Fallen Star
 |                     | 23054| Masonic Augment
 |                     | 23055| Swagger
 |                     | 23056| Vamoosin'
