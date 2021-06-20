@@ -1,11 +1,12 @@
 const BaseStep = require('./basestep.js');
 
 class JokerPrompt extends BaseStep {
-    constructor(game, jokerCard, callback) {
+    constructor(game, jokerCard, callback, bonusValue) {
         super(game);
         this.jokerCard = jokerCard;
         this.callback = callback;
         this.selectedValue = 13;
+        this.bonusValue = bonusValue;
     }
 
     continue() {
@@ -13,7 +14,10 @@ class JokerPrompt extends BaseStep {
     }
 
     selectJokerValue(player, arg) {
-        this.selectedValue = arg;
+        this.selectedValue = +arg;
+        if(this.bonusValue) {
+            this.selectedValue += this.bonusValue;
+        }
         this.game.promptForSuit(player, 'Select joker\'s suit', 'selectJokerSuit', this, this.jokerCard);
         return true;
     }

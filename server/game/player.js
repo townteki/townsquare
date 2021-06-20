@@ -1301,7 +1301,7 @@ class Player extends Spectator {
         this.game.raiseEvent('onCardPulled', { card: pulledCard, value: pulledCard.value, suit: pulledCard.suit, props }, event => {
             if(callback) {
                 if(event.card.getType() === 'joker' && (!event.value || !event.suit)) {
-                    this.game.queueStep(new JokerPrompt(this.game, event.card, callback));
+                    this.game.queueStep(new JokerPrompt(this.game, event.card, callback, event.value));
                 } else {
                     callback(event.card, event.value, event.suit);
                 }
@@ -1528,6 +1528,9 @@ class Player extends Spectator {
     }
 
     moveCard(card, targetLocation, options = {}, callback) {
+        if(!targetLocation) {
+            return;
+        }
         if(card.isToken()) {
             if(card.location === 'out of game') {
                 return;

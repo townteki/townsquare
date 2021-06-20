@@ -101,7 +101,9 @@ class Deck {
                 if(starting > 0) {
                     cardEntry.card.starting = true;
                     starting--;
-                }                
+                } else {
+                    cardEntry.card.starting = false;
+                }        
                 func(cardEntry.card);
             }
         }

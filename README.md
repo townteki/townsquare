@@ -28,7 +28,7 @@ If you only need help with setting the development IDE, please see [Development]
 - [x] Gadget inventing
 - [x] Legends
 
-- [ ] Kung Fu
+- [x] Kung Fu
 - [x] Deck Management
 
 See [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md) of implemented card scripts.

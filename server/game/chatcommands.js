@@ -681,7 +681,7 @@ class ChatCommands {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to attach/reattach',
             waitingPromptTitle: 'Waiting for opponent to select card to attach/reattach',
-            cardCondition: card => ['play area', 'hand', 'draw deck', 'discard pile', 'dead pile'].includes(card.location) && card.controller === player,
+            cardCondition: card => ['play area', 'hand', 'discard pile'].includes(card.location) && card.controller === player,
             cardType: ['goods', 'spell', 'action', 'dude'],
             onSelect: (p, cardToAttach) => {
                 const title = (cardToAttach.parent ? 'reattach ' : 'attach ') + cardToAttach.title;

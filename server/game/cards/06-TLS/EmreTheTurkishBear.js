@@ -7,7 +7,7 @@ class EmreTheTurkishBear extends DudeCard {
             title: 'Emre, The Turkish Bear',
             triggerBefore: true,
             when: {
-                onCardPulled: event => event.props.usedBy !== this.uuid &&
+                onCardPulled: event => event.props.pullingDude !== this &&
                     event.props.pullingDude && event.props.source &&
                     event.props.pullingDude.gamelocation === this.gamelocation &&
                     event.props.source.hasKeyword('technique')
@@ -16,7 +16,6 @@ class EmreTheTurkishBear extends DudeCard {
                 const saveEventHandler = context.event.handler;
                 context.replaceHandler(event => {
                     const originalCard = event.card;
-                    event.props.usedBy = this.uuid;
                     event.card = context.player.pull(null, false, event.props);
                     this.game.addMessage('{0} uses {1} to replace the pulled {2}of{3}({4} ) with a new pull and make him a stud', 
                         context.player, this, originalCard.value, originalCard.suit, originalCard);

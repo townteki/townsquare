@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/292/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/295/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -725,7 +725,7 @@
 |                     | 19015| Rabid Rance Hitchcock
 |                     | 19016| Morgan Lash
 |                     | 19017| Johnny Brocklehurst
-|                     | 19018| Agent Provocateur
+|:heavy_check_mark:   | 19018| Agent Provocateur
 |                     | 19019| F1 Burch
 |                     | 19020| Taff's Distillery
 |:heavy_check_mark:   | 19021| Mausoleum
@@ -812,7 +812,7 @@
 |                     | 20052| Heist
 |                     | 20053| I'm Your Huckleberry
 |                     | 20054| Monkey Goes to the Mountain
-|                     | 20055| Curse of Failure
+|:heavy_check_mark:   | 20055| Curse of Failure
 |:heavy_check_mark:   | 20056| Ricochet
 
 ## `13-O4B` Out for Blood
@@ -886,7 +886,7 @@
 |:heavy_check_mark:   | 22004| The Tombstone Haint
 |                     | 22005| Rock Woofstone
 |                     | 22006| Arielle Moriah
-|                     | 22007| Gabriel Prior
+|:heavy_check_mark:   | 22007| Gabriel Prior
 |                     | 22008| Mr. Baird
 |                     | 22009| Harlan Stanton
 |                     | 22010| Dr. Delphi Wallis
