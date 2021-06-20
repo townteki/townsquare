@@ -1028,6 +1028,49 @@ const Effects = {
             }
         };
     },
+    preventCasualties: function() {
+        var getCasualtiesDesc;
+        return {
+            title: 'Casualties are prevented',
+            apply: function(player) {
+                getCasualtiesDesc = Object.getOwnPropertyDescriptor(player, 'casualties');
+                Object.defineProperty(player, 'casualties', {
+                    get: function() {
+                        return 0;
+                    },
+                    set: function(value) {
+                        this.currentCasualties = value;
+                    }
+                });
+            },
+            unapply: function(player) {
+                Object.defineProperty(player, 'casualties', getCasualtiesDesc);
+            }
+        };
+    },
+    doubleCasualties: function() {
+        var getCasualtiesDesc;
+        return {
+            title: 'Casualties are doubled',
+            apply: function(player) {
+                getCasualtiesDesc = Object.getOwnPropertyDescriptor(player, 'casualties');
+                Object.defineProperty(player, 'casualties', {
+                    get: function() {
+                        if(this.currentCasualties < 0) {
+                            return 0;
+                        }
+                        return this.currentCasualties * 2;
+                    },
+                    set: function(value) {
+                        this.currentCasualties = value;
+                    }
+                });
+            },
+            unapply: function(player) {
+                Object.defineProperty(player, 'casualties', getCasualtiesDesc);
+            }
+        };
+    },
     changeWeaponLimitFunction: function(weaponLimitFunc) {
         var savedFunc;
         return {

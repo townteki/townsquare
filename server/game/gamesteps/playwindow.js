@@ -76,6 +76,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     }
 
     completePlayer() {
+        this.game.raiseEvent('onPassAction', { playWindow: this });
         this.game.addMessage('{0} passes {1} action', this.currentPlayer, this.name);
         super.completePlayer();
     }
