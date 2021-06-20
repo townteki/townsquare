@@ -23,7 +23,7 @@ class FasterOnTheDraw extends ActionCard {
                         effect: ability.effects.setAsStud()
                     }));
                 }
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select an opposing dude who is slower on the draw',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.isParticipating() && card.controller !== context.player,

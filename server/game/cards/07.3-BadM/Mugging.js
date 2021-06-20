@@ -31,7 +31,7 @@ class Mugging extends ActionCard {
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(GameActions.sendHome({ card: job.mark }), context).thenExecute(() =>
                     this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, job.mark));
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select up to 2 attachments',
                     waitingPromptTitle: 'Waiting for opponent to select attachments',
                     cardCondition: card => card.parent === job.mark && card.booted,

@@ -13,7 +13,7 @@ class RakingDragons extends TechniqueCard {
                 return context.kfDude.value > context.dragonTarget.value;
             },
             onSuccess: (context) => {
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.isParticipating(),

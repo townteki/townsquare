@@ -7,7 +7,7 @@ class SendHome extends GameAction {
 
     canChangeGameState({ card, options = {}, context }) {
         return (
-            card.getType() === 'dude' &&
+            card && card.getType() === 'dude' &&
             ['outfit', 'play area'].includes(card.location) &&
             (options.isAfterJob || card.isAtHome() || (card.allowGameAction('moveDude', context))) &&
             (options.isAfterJob || !options.needToBoot || card.allowGameAction('boot', context)) &&

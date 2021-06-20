@@ -1,4 +1,3 @@
-const AbilityMessage = require('./AbilityMessage.js');
 const AbilityUsage = require('./abilityusage.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
@@ -187,12 +186,7 @@ class CardAction extends PlayTypeAbility {
     }
 
     executeHandler(context) {
-        if(!this.ifCondition || this.ifCondition(context)) {
-            super.executeHandler(context);
-        } else {
-            let formattedCancelMessage = AbilityMessage.create(this.ifFailMessage || '{player} uses {source} but fails to meet requirements');
-            formattedCancelMessage.output(context.game, context);            
-        }
+        super.executeHandler(context);
         this.usage.increment();
     }
 

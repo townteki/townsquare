@@ -31,7 +31,7 @@ class BuckinBillyBallard extends DudeCard {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
                     context.player.drawCardsToHand(1, context);
                 });
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude to boot',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' &&

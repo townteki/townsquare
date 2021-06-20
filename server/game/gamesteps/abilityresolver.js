@@ -2,6 +2,7 @@ const BaseStep = require('./basestep.js');
 const Event = require('../event');
 const GamePipeline = require('../gamepipeline.js');
 const SimpleStep = require('./simplestep.js');
+const AbilityMessage = require('../AbilityMessage.js');
 
 class AbilityResolver extends BaseStep {
     constructor(game, ability, context) {
@@ -20,6 +21,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.context.resolutionStage = 'effect'),
             new SimpleStep(game, () => this.choosePlayer()),
             new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
+            new SimpleStep(game, () => this.checkifCondition()),
             new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
@@ -137,6 +139,19 @@ class AbilityResolver extends BaseStep {
         }
     }
 
+    checkifCondition() {
+        if(this.cancelled) {
+            return;
+        }
+
+        if(this.ability.ifCondition && !this.ability.ifCondition(this.context)) {
+            this.cancelled = true;
+            let formattedCancelMessage = AbilityMessage.create(this.ability.ifFailMessage || '{player} uses {source} but fails to meet requirements');
+            formattedCancelMessage.output(this.game, this.context);
+            this.ability.usage.increment();
+        }
+    }
+
     raiseOnAbilityTargetsResolutionEvent() {
         if(this.cancelled) {
             return;
@@ -174,7 +189,7 @@ class AbilityResolver extends BaseStep {
         this.context.targets.setSelections(this.targetResults);
 
         if(this.context.targets.hasTargets()) {
-            this.game.raiseEvent('onTargetsChosen', { ability: this.ability, targets: this.context.targets }, () => {
+            this.game.raiseEvent('onTargetsChosen', { ability: this.ability, player: this.context.player, targets: this.context.targets }, () => {
                 this.context.targets.updateTargets();
                 this.context.target = this.context.targets.defaultTarget;
             });

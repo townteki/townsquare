@@ -15,7 +15,7 @@ class RabbitsDeception extends TechniqueCard {
                     this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, context.kfDude);
                 });
                 if(!wasBooted) {
-                    this.game.promptForSelect(context.player, {
+                    context.ability.selectAnotherTarget(context.player, context, {
                         activePromptTitle: 'Select a dude to send home booted',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
                         cardCondition: card => card.controller !== this.controller && card.isParticipating(),
