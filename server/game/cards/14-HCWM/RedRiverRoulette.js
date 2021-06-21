@@ -12,23 +12,14 @@ class RedRiverRoulette extends DeedCard {
                     context.ability.selectAnotherTarget(context.player, context, {
                         activePromptTitle: 'Choose a dude',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: { 
-                            location: 'play area', 
-                            controller: 'current', 
-                            condition: card => card.gamelocation === this.gamelocation 
-                        },
+                        cardCondition: card => card.location === 'play area' &&
+                            card.controller === context.player && 
+                            card.gamelocation === this.gamelocation,
                         cardType: 'dude',
                         gameAction: 'boot',
                         onSelect: (player, card) => {
-                            this.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
-                                this.lastingEffect(ability => ({
-                                    until: {
-                                        onShootoutRoundFinished: () => true,
-                                        onShootoutPhaseFinished: () => true
-                                    },
-                                    match: this.game.getPlayers(),
-                                    effect: ability.effects.preventCasualties()
-                                }));
+                            this.game.resolveGameAction(GameActions.bootCard({ card }), context).thenExecute(() => {
+                                this.game.getPlayers().forEach(player => player.modifyCasualties(-999));
                                 this.game.addMessage('{0} uses {1} and boots {2} to prevent all casualties', 
                                     player, this, card);
                             });
@@ -41,25 +32,18 @@ class RedRiverRoulette extends DeedCard {
                 }
                 this.lastingEffect(ability => ({
                     until: {
-                        onShootoutRoundFinished: () => true,
-                        onShootoutPhaseFinished: () => true
+                        onShootoutRoundFinished: () => true
                     },
                     match: this.game.shootout.getParticipants(),
                     effect: ability.effects.cannotFlee()
                 }));
                 const eventHandler = () => {
-                    this.lastingEffect(ability => ({
-                        until: {
-                            onShootoutRoundFinished: () => true,
-                            onShootoutPhaseFinished: () => true
-                        },
-                        match: this.game.getPlayers(),
-                        effect: ability.effects.doubleCasualties()
-                    }));
+                    this.game.getPlayers().forEach(player => player.modifyCasualties(player.casualties));
                 };
-                this.game.once('onShootoutRoundStarted', eventHandler);
+                const currentShootoutRound = this.game.shootout.round;
+                this.game.onceConditional('onShootoutCasualtiesStepStarted', { condition: event => event.shootoutRound === currentShootoutRound + 1 }, eventHandler);
                 this.game.once('onShootoutPhaseFinished', () => 
-                    this.game.removeListener('onShootoutRoundStarted', eventHandler));
+                    this.game.removeListener('onShootoutCasualtiesStepStarted', eventHandler));
             }
         });
     }
