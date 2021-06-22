@@ -81,7 +81,10 @@ class ShootoutPosse {
         }
     }
 
-    getStudBonus() {
+    getStudBonus(checkSwitched = true) {
+        if(checkSwitched && this.player.bulletBonusesAreSwitched()) {
+            return this.getDrawBonus(false);
+        }
         let shooterBonus = 0;
         let tempShooter = this.shooter;
         if(!tempShooter) {
@@ -108,7 +111,10 @@ class ShootoutPosse {
         }, baseBonus);
     }
 
-    getDrawBonus() {
+    getDrawBonus(checkSwitched = true) {
+        if(checkSwitched && this.player.bulletBonusesAreSwitched()) {
+            return this.getStudBonus(false);
+        }
         let shooterBonus = 0;
         let tempShooter = this.shooter;
         if(!tempShooter) {

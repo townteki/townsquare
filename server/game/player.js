@@ -1734,6 +1734,10 @@ class Player extends Spectator {
         return this.options.contains('dudesCannotFlee');
     }
 
+    bulletBonusesAreSwitched() {
+        return this.options.contains('bulletBonusesSwitched');
+    }
+
     onlyShooterContributes() {
         return this.options.contains('onlyShooterContributes');
     }
