@@ -9,6 +9,7 @@ class MischievousCoyote extends SpellCard {
             condition: () => this.hasOneDrawAndStud(),
             difficulty: 9,
             onSuccess: (context) => {
+                this.game.addMessage('{0} uses {1} to switch draw and stud bullet bonuses', context.player, this);
                 this.lastingEffect(ability => ({
                     until: {
                         onShootoutRoundFinished: () => true
