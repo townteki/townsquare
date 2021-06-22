@@ -44,7 +44,7 @@ class TheWinningAgenda extends ActionCard {
                 if(rankMod > 3) {
                     rankMod = 3;
                 }
-                context.player.modifyRank(rankMod);
+                context.player.modifyRank(rankMod, context);
                 this.game.addMessage('{0} uses {1} and {2}\'s influence to increase their hand rank by {3}; Current rank is {4}', 
                     context.player, this, context.target, rankMod, context.player.getTotalRank());
             }

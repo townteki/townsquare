@@ -1095,9 +1095,11 @@ class Player extends Spectator {
         this.game.addMessage('{0}\'s Total rank: {1} (modifier {2})', this, this.getTotalRank(), this.rankModifier);
     }
 
-    modifyRank(amount) {
-        this.rankModifier += amount;
-        this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+    modifyRank(amount, context, applying = true) {
+        if(!this.cannotModifyHandRanks(context) || !applying) {
+            this.rankModifier += amount;
+            this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+        }
     }
 
     modifyPosseStudBonus(amount) {
@@ -1728,6 +1730,10 @@ class Player extends Spectator {
 
     isTimerEnabled() {
         return !this.noTimer && this.user.settings.windowTimer !== 0;
+    }
+
+    cannotModifyHandRanks(context = {}) {
+        return this.options.contains('cannotModifyHandRanks', context);
     }
 
     dudesCannotFlee() {

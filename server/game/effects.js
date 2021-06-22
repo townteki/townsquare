@@ -548,11 +548,11 @@ const Effects = {
             title: `Hand Rank modified: ${value}`,
             targetType: 'player',
             gameAction: 'modifyHandRank',
-            apply: function(player) {
-                player.modifyRank(value);
+            apply: function(player, context) {
+                player.modifyRank(value, context, true);
             },
-            unapply: function(player) {
-                player.modifyRank(-value);
+            unapply: function(player, context) {
+                player.modifyRank(-value, context, false);
             }
         };
     },
@@ -568,18 +568,18 @@ const Effects = {
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
                 let value = context.dynamicHandRank[player.name];
                 this.title = `Hand Rank modified: ${value}`;
-                player.modifyRank(value);
+                player.modifyRank(value, context, true);
             },
             reapply: function(player, context) {
                 let currentProperty = context.dynamicHandRank[player.name];
                 let newProperty = calculate(player, context) || 0;
                 context.dynamicHandRank[player.name] = newProperty;
                 let value = newProperty - currentProperty;
-                player.modifyRank(value);
+                player.modifyRank(value, context, true);
             },
             unapply: function(player, context) {
                 let value = context.dynamicHandRank[player.name];
-                player.modifyRank(-value);
+                player.modifyRank(-value, context, false);
                 delete context.dynamicHandRank[player.name];
             },
             isStateDependent
@@ -869,6 +869,9 @@ const Effects = {
             }
         }; 
     },
+    cannotModifyHandRanks: function() {
+        return playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified')();
+    },    
     dudesCannotFlee: function() {
         return playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout')();
     },

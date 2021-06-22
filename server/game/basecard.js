@@ -853,6 +853,10 @@ class BaseCard {
         return gameLocationObject && gameLocationObject.isAdjacent(locationUuid);
     }
 
+    isNearby(locationUuid) {
+        return this.gamelocation === locationUuid || this.isAdjacent(locationUuid);
+    }
+
     isInControlledLocation() {
         return this.locationCard && this.locationCard.controller === this.controller;
     }
