@@ -804,14 +804,14 @@ class ChatCommands {
         player.handlePull({
             successCondition: pulledValue => {
                 if(skillOrFu === 'kung fu') {
-                    return pulledValue < this.pullingDude.value + pullBonus;
+                    return pulledValue < this.pullingDude.value;
                 }
                 return pulledValue >= this.pullDifficulty;
             }, 
             pullingDude: this.pullingDude,
             pullBonus: skillOrFu !== 'kung fu' ? pullBonus : 0,
             source: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
-                `chatcommands with difficulty ${this.pullingDude.value + pullBonus}`,
+                `chatcommands with difficulty ${this.pullingDude.value}`,
             player: player
         });
         return true;
