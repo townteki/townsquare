@@ -665,6 +665,14 @@ class BaseCard {
         this.markAsDirty();
     }
 
+    removeEffects(condition = () => true) {
+        this.game.effectEngine.effects.forEach(effect => {
+            if(condition(effect)) {
+                effect.removeTarget(this);
+            }
+        });  
+    }
+
     addKeyword(keyword) {
         this.keywords.addKeyword(keyword);
     }

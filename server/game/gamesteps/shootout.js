@@ -388,7 +388,7 @@ class Shootout extends Phase {
     }
 
     casualtiesAndRunOrGun() {
-        this.game.raiseEvent('onShootoutCasualtiesStepStarted');
+        this.game.raiseEvent('onShootoutCasualtiesStepStarted', { shootoutRound: this.round });
         this.queueStep(new TakeYerLumpsPrompt(this.game, this.shootoutLoseWinOrder));
         this.queueStep(new RunOrGunPrompt(this.game, this.shootoutLoseWinOrder));
     }
