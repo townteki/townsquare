@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/300/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/306/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -802,10 +802,10 @@
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
 |                     | 20043| Bedazzle
 |                     | 20044| Exultant Translocation
-|                     | 20045| Retribution
+|:heavy_check_mark:   | 20045| Retribution
 |                     | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
-|                     | 20048| Mischievous Coyote
+|:heavy_check_mark:   | 20048| Mischievous Coyote
 |                     | 20049| Murdered in Tombstone
 |                     | 20050| Hostile Takeover
 |                     | 20051| Jade King Stance
@@ -898,9 +898,9 @@
 |                     | 22016| Tawodi
 |                     | 22017| Tsintah
 |                     | 22018| Jackie Sanjuro
-|                     | 22019| Speaks-with-Buffalo
+|:heavy_check_mark:   | 22019| Speaks-with-Buffalo
 |                     | 22020| Judge Wells Spicer
-|                     | 22021| Joan McGruder
+|:heavy_check_mark:   | 22021| Joan McGruder
 |                     | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |                     | 22024| Florentino "Indian Charlie" Cruz
@@ -911,7 +911,7 @@
 |                     | 22029| QUATERMAN PRIME
 |                     | 22030| Winona Rein-Breaker
 |:heavy_check_mark:   | 22031| Nicole Sumner
-|                     | 22032| Red River Roulette
+|:heavy_check_mark:   | 22032| Red River Roulette
 |                     | 22033| Kiva of Fathomless Reach
 |                     | 22034| Crystal Palace
 |                     | 22035| Rham's Readings
@@ -943,7 +943,7 @@
 |--------|-----:|:------------------------:|
 |                     | 23001| Yasmin Tian
 |                     | 23002| "Dynamite" Jacc
-|                     | 23003| Bai Yang Chen (Exp.1)
+|:heavy_check_mark:   | 23003| Bai Yang Chen (Exp.1)
 |                     | 23004| Huang Li
 |                     | 23005| Arthur Dingler
 |                     | 23006| Deadwood Dick
