@@ -312,6 +312,7 @@ const Effects = {
         };
     },
     calloutCannotBeRefused: optionEffect('calloutCannotBeRefused', 'Callout cannot be Refused'),
+    cannotRefuseCallout: optionEffect('cannotRefuseCallout', 'Cannot refuse callouts'),
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin', 'Does not get Bounty on Join'),
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown', 'Does not Unboot at Sundown'),
     doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings', 'Does not provide Bullets'),
@@ -968,6 +969,9 @@ const Effects = {
     },
     canBeInventedWithoutBooting: function() {
         return optionEffect('canBeInventedWithoutBooting', 'Can be Invented without Booting')();
+    },
+    canBeCalledOutAtHome: function() {
+        return optionEffect('canBeCalledOutAtHome', 'Can be Called out at Home')();
     },
     canUseControllerAbilities: function() {
         return optionEffect('canUseControllerAbilities', 'Can use Controller Abilities')();
