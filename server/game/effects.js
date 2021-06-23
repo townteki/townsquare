@@ -869,6 +869,9 @@ const Effects = {
             }
         }; 
     },
+    switchBulletBonuses: function() {
+        return playerOptionEffect('bulletBonusesSwitched', 'Bullet bonuses are switched')();
+    },
     dudesCannotFlee: function() {
         return playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout')();
     },
