@@ -6,7 +6,7 @@ class LayOnHands extends SpellCard {
         this.spellReaction({
             triggerBefore: true,
             when: {
-                onCardAced: event => event.card.getType() === 'dude' && 
+                onCardAced: event => event.canPrevent && event.card.getType() === 'dude' && 
                     event.originalLocation === 'play area' &&
                     (event.card.gamelocation === this.gamelocation ||
                     event.card.isAdjacent(this.gamelocation)),

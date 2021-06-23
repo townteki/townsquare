@@ -871,6 +871,8 @@ const Effects = {
     },
     cannotModifyHandRanks: 
         playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified'),
+    switchBulletBonuses:
+        playerOptionEffect('bulletBonusesSwitched', 'Bullet bonuses are switched'),
     dudesCannotFlee: 
         playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout'),
     onlyShooterContributes:
