@@ -58,7 +58,7 @@ class NoTurningBack extends ActionCard {
                     },
                     source: this
                 });
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onShootoutRoundFinished: () => true
                     },

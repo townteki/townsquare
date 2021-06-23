@@ -16,10 +16,10 @@ class CampbellHatchBilliardParlor extends DeedCard {
                     match: this.game.getPlayers(),
                     effect: [
                         ability.effects.cannotModifyHandRanks(this, context => context.ability && 
-                            ['shootout', 'resolution', 'react'].includes(context.ability.playTypePlayed()))
+                            ['shootout', 'resolution', 'react'].includes(context.ability.playTypePlayed(context)))
                     ]
                 }));
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onShootoutRoundFinished: () => true,
                         onShootoutPhaseFinished: () => true
@@ -36,7 +36,7 @@ class CampbellHatchBilliardParlor extends DeedCard {
 
     abilityProtectCondition(context) {
         return context.ability && 
-            ['shootout', 'resolution'].includes(context.ability.playTypePlayed());
+            ['shootout', 'resolution'].includes(context.ability.playTypePlayed(context));
     }
 }
 

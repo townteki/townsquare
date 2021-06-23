@@ -14,7 +14,7 @@ class StonesColtDragoons extends GoodsCard {
                 this.game.addMessage('{0} uses {1} to boot {2} who does not unboot at Sundown', context.player, this, context.event.card),
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.event.card }), context);
-                this.untilEndOfRound(ability => ({
+                this.untilEndOfRound(context.ability, ability => ({
                     match: context.event.card,
                     effect: ability.effects.doesNotUnbootAtSundown()
                 }));

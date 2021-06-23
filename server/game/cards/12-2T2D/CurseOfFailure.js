@@ -37,7 +37,7 @@ class CurseOfFailure extends ActionCard {
             },
             message: context => this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             onSuccess: (job, context) => {
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onCardAbilityResolved: event => event.ability === context.ability
                     },

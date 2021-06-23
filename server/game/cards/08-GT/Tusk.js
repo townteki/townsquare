@@ -16,7 +16,7 @@ class Tusk extends GoodsCard {
                 onAbilityTargetsResolution: event => event.ability.isCardAbility() && event.player === this.controller.getOpponent()
             },
             handler: context => {
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onCardAbilityResolved: event => event.ability === context.event.ability
                     },

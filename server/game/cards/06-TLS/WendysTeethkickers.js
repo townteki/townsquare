@@ -19,7 +19,7 @@ class WendysTeethkickers extends GoodsCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to give {2} +1 influence and unboot them', context.player, this, this.parent),
             handler: context => {
-                this.untilEndOfRound(ability => ({
+                this.untilEndOfRound(context.ability, ability => ({
                     match: this.parent,
                     effect: ability.effects.modifyInfluence(1)
                 }));

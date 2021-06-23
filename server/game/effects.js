@@ -869,15 +869,12 @@ const Effects = {
             }
         }; 
     },
-    cannotModifyHandRanks: function() {
-        return playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified')();
-    },    
-    dudesCannotFlee: function() {
-        return playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout')();
-    },
-    onlyShooterContributes: function() {
-        return playerOptionEffect('onlyShooterContributes', 'Only shooter contributes')();
-    },
+    cannotModifyHandRanks: 
+        playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified'),
+    dudesCannotFlee: 
+        playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout'),
+    onlyShooterContributes:
+        playerOptionEffect('onlyShooterContributes', 'Only shooter contributes'),
     modifyPosseStudBonus: function(amount) {
         return {
             title: `Stud Bonus modified: ${amount}`,

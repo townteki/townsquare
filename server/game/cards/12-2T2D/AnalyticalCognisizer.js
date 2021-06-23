@@ -22,7 +22,9 @@ class AnalyticalCognisizer extends GoodsCard {
             },
             cost: [
                 ability.costs.bootSelf(),
-                ability.costs.discardFromHand(card => card.getType() === 'goods')
+                ability.costs.discardFromHand((card, context) => 
+                    card.getType() === 'goods' &&
+                    context.event.props.source !== card)
             ],
             message: context => 
                 this.game.addMessage('{0} uses {1} and discards {2} from hand to change pull suit to Hearts', 

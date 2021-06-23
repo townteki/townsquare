@@ -243,21 +243,23 @@ class BaseCard {
 
     applyAbilityEffect(ability, propertyFactory) {
         if(this.game.shootout) {
-            this.untilEndOfShootoutPhase(propertyFactory, ability);
+            this.untilEndOfShootoutPhase(ability, propertyFactory);
         } else {
             var properties = propertyFactory(AbilityDsl);
             if(ability.playTypePlayed() === 'noon') {
                 this.game.addEffect(this, Object.assign({ 
                     duration: 'untilEndOfRound', 
                     location: 'any', 
-                    ability: ability 
+                    ability: ability,
+                    causedByPlayType: ability.playTypePlayed()
                 }, properties));
             } else {
                 this.game.addEffect(this, Object.assign({ 
                     duration: 'untilEndOfPhase', 
                     location: 'any', 
                     phase: this.game.currentPhase, 
-                    ability: ability  
+                    ability: ability,
+                    causedByPlayType: ability.playTypePlayed()
                 }, properties));
             }
         }
@@ -267,13 +269,14 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * shootout round.
      */
-    untilEndOfShootoutRound(propertyFactory, ability, targetLocation = 'play area') {
+    untilEndOfShootoutRound(ability, propertyFactory, targetLocation = 'play area', causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfShootoutRound', 
             location: 'any', 
             targetLocation: targetLocation,
-            ability: ability  
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)  
         }, properties));
     }
 
@@ -281,25 +284,27 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * shootout phase.
      */
-    untilEndOfShootoutPhase(propertyFactory, ability) {
+    untilEndOfShootoutPhase(ability, propertyFactory, causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfShootoutPhase', 
             location: 'any', 
-            ability: ability  
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)  
         }, properties));
     }
 
     /**
      * Applies an immediate effect which lasts until the end of the phase.
      */
-    untilEndOfPhase(propertyFactory, phaseName = '', ability) {
+    untilEndOfPhase(ability, propertyFactory, phaseName = '', causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfPhase', 
             location: 'any', 
             phase: phaseName, 
-            ability: ability   
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
     }
 
@@ -307,25 +312,27 @@ class BaseCard {
      * Applies an immediate effect which expires at the end of the phase. Per
      * game rules this duration is outside of the phase.
      */
-    atEndOfPhase(propertyFactory, phaseName = '', ability) {
+    atEndOfPhase(ability, propertyFactory, phaseName = '', causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'atEndOfPhase', 
             location: 'any', 
             phase: phaseName, 
-            ability: ability   
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
     }
 
     /**
      * Applies an immediate effect which lasts until the end of the round.
      */
-    untilEndOfRound(propertyFactory, ability) {
+    untilEndOfRound(ability, propertyFactory, causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfRound', 
             location: 'any', 
-            ability: ability   
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
     }
 
@@ -333,13 +340,21 @@ class BaseCard {
      * Applies a lasting effect which lasts until an event contained in the
      * `until` property for the effect has occurred.
      */
-    lastingEffect(propertyFactory, ability) {
+    lastingEffect(ability, propertyFactory, causedByPlayType) {
         let properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'custom', 
             location: 'any', 
-            ability: ability   
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
+    }
+
+    buildPlayTypePlayed(ability, causedByPlayType) {
+        if(causedByPlayType) {
+            return causedByPlayType;
+        }
+        return ability ? ability.playTypePlayed() : undefined;
     }
 
     doAction(player, arg) {

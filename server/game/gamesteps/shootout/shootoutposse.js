@@ -142,7 +142,7 @@ class ShootoutPosse {
         } else {
             shooter.shootoutStatus = ShootoutStatuses.MarkShooter;
         }
-        this.shooter.lastingEffect(ability => ({
+        this.shooter.lastingEffect(null, ability => ({
             until: {
                 onShootoutRoundFinished: () => true
             },

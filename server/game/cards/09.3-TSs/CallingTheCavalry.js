@@ -8,14 +8,14 @@ class CallingTheCavalry extends ActionCard {
             message: context => this.game.addMessage('{0} uses {1} to give both players +1 hand rank for each Horse in their posse', context.player, this),
             handler: context => {
                 let eventHandler = () => {
-                    this.lastingEffect(ability => ({
+                    this.lastingEffect(context.ability, ability => ({
                         until: {
                             onShootoutRoundFinished: () => true
                         },
                         condition: () => this.game.shootout,
                         match: this.game.getPlayers(),
                         effect: ability.effects.dynamicHandRankMod(player => this.getNumberOfMountsForPlayer(player))
-                    }));
+                    }), context.causedByPlayType);
                 };
                 this.game.onceConditional('onPlayWindowOpened', { condition: event => event.playWindow.name === 'shootout resolution' }, eventHandler);
                 this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onPlayWindowOpened', eventHandler));   
