@@ -788,7 +788,7 @@
 |                     | 20028| Silas Aims (Exp.1)
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
 |                     | 20030| Virginia Ann Earp
-|                     | 20031| Campbell & Hatch Billiard Parlor
+|:heavy_check_mark:   | 20031| Campbell & Hatch Billiard Parlor
 |                     | 20032| Clanton Ranch
 |                     | 20033| Concordia Cemetery
 |                     | 20034| Ike's Place
@@ -797,7 +797,7 @@
 |                     | 20037| Quarter Horse
 |                     | 20038| Electrostatic Pump Gun
 |                     | 20039| Claws
-|                     | 20040| Analytical Cognisizer
+|:heavy_check_mark:   | 20040| Analytical Cognisizer
 |                     | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
 |                     | 20043| Bedazzle
