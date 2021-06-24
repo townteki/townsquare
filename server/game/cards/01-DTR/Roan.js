@@ -12,8 +12,8 @@ class Roan extends GoodsCard {
             cost: ability.costs.bootSelf(),
             message: context => 
                 this.game.addMessage('{0} uses {1} to prevent {2} from booting when joining posse', context.player, this, this.parent),
-            handler: () => {
-                this.lastingEffect(ability => ({
+            handler: context => {
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onShootoutPossesGathered: () => true,
                         onShootoutPhaseFinished: () => true

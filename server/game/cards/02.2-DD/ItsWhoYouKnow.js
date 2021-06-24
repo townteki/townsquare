@@ -16,20 +16,20 @@ class ItsWhoYouKnow extends ActionCard {
             },
             handler: context => {
                 let eventHandler = () => {
-                    this.lastingEffect(ability => ({
+                    this.lastingEffect(context.ability, ability => ({
                         until: {
                             onShootoutPhaseFinished: () => true
                         },
                         match: this.game.shootout,
                         effect: ability.effects.useInfluenceForShootout()
-                    }));
-                    this.lastingEffect(ability => ({
+                    }), context.causedByPlayType);
+                    this.lastingEffect(context.ability, ability => ({
                         until: {
                             onShootoutPhaseFinished: () => true
                         },
                         match: context.target,
                         effect: ability.effects.setAsStud()
-                    }));
+                    }), context.causedByPlayType);
                     this.game.addMessage('{0}\'s dude {1} becomes a stud and for this shootout influence is used instead of bullet rating', 
                         context.player, context.target);
                 };

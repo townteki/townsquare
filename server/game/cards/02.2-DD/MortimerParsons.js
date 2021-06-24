@@ -10,7 +10,7 @@ class MortimerParsons extends DudeCard {
                 this.game.addMessage('{0}\'s cheatin\' hand sends {1} home booted and reduces his influence to 0', context.player, this),
             handler: context => {
                 if(this.influence > 0) {
-                    this.untilEndOfRound(ability => ({
+                    this.untilEndOfRound(context.ability, ability => ({
                         match: this,
                         effect: ability.effects.setInfluence(0)
                     }));

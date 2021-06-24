@@ -45,7 +45,7 @@ class Forget extends SpellCard {
     }
 
     blankAbility(player, arg) {
-        this.untilEndOfRound(ability => ({
+        this.untilEndOfRound(this.context.ability, ability => ({
             match: this.context.target,
             effect: ability.effects.cannotTriggerCardAbilities(ability => ability.title === arg)
         }));

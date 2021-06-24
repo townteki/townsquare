@@ -9,8 +9,8 @@ class TheOrphanage extends DeedCard {
             message: context =>
                 this.game.addMessage('{0} uses {1} to give -1 CP and +2 production to all deeds with 2 or more CP',
                     context.player, this),
-            handler: () => {
-                this.untilEndOfPhase(ability => ({
+            handler: context => {
+                this.untilEndOfPhase(context.ability, ability => ({
                     condition: () => true,
                     match: card => card.getType() === 'deed' && card.control >= 2,
                     effect: [

@@ -15,16 +15,7 @@ class CannotRestriction {
     }
 
     isMatch(type, abilityContext, targetController) {
-        // "playTypePlayed" attribute is stored in the context when effect is created.
-        // It is used because the playTypePlayed() function returns the playType based 
-        // on current Play Window which can be incorrect (e.g. effect created by shootout 
-        // action that is checked during resolution).
-        let abilityPlayType = abilityContext.playTypePlayed;
-        if(!abilityPlayType) {
-            // if there is no playTypePlayed in the context (we are not checking effect), use
-            // the ability playTypePlayed() function that returns playType based on current Play Window.
-            abilityPlayType = abilityContext.ability ? abilityContext.ability.playTypePlayed() : 'game';
-        }
+        let abilityPlayType = abilityContext.ability ? abilityContext.ability.playTypePlayed(abilityContext) : 'game';
         return (this.type === type || this.type === 'any') &&
             (this.playType === abilityPlayType || this.playType === 'any') && 
             this.matchesController(abilityContext.player, targetController) && 

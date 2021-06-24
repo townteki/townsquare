@@ -24,7 +24,7 @@ class CaliforniaTaxOffice extends DeedCard {
                         title: `Do you want to pay ${context.target.upkeep} GR upkeep for ${context.target.title} ?`,
                         onYes: player => {
                             player.spendGhostRock(context.target.upkeep);
-                            this.untilEndOfPhase(ability => ({
+                            this.untilEndOfPhase(context.ability, ability => ({
                                 condition: () => true,
                                 match: context.target,
                                 effect: ability.effects.modifyUpkeep(-1 * context.target.upkeep)

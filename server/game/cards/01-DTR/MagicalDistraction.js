@@ -14,7 +14,7 @@ class MagicalDistraction extends ActionCard {
             handler: context => {
                 context.player.pull((pulledCard, pulledValue) => {
                     let currentRank = context.player.getTotalRank();
-                    context.player.modifyRank(pulledValue - currentRank);
+                    context.player.modifyRank(pulledValue - currentRank, context);
                     context.player.handlePulledCard(pulledCard);
                     this.game.addMessage('{0} uses {1} to set their draw hand rank to {2}', 
                         context.player, this, context.player.getTotalRank());
