@@ -15,7 +15,9 @@ class Remedy extends SpellCard {
             onSuccess: (context) => {
                 this.removeEffects(effect => (effect.gameAction === 'increaseBullets' ||
                     effect.gameAction === 'decreaseBullets') &&
-                    effect.source.getType() !== 'goods' && !effect.source.hasKeyword('weapon')
+                    effect.source.getType() !== 'goods' && 
+                    !effect.source.hasKeyword('weapon') &&
+                    effect.source.parent === context.target
                 );
                 this.lastingEffect(context.ability, ability => ({
                     until: {
@@ -23,8 +25,13 @@ class Remedy extends SpellCard {
                     },
                     condition: () => this.isParticipating(),
                     match: this,
-                    effect: ability.effects.modifyBullets(-this.permanentBullets)
+                    effect: [
+                        ability.effects.modifyBullets(-this.permanentBullets),
+                        ability.effects.cannotLeaveShootout('any', context => context.ability && context.ability.isCardAbility())
+                    ]
                 }));  
+                this.game.addMessage('{0} uses {1} to remove all bullet modifiers except attached weapons from {2}', 
+                    context.player, this, context.target);
             },
             source: this
         });
