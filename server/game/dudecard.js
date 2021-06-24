@@ -173,7 +173,7 @@ class DudeCard extends DrawCard {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && this.gamelocation &&
                     card.gamelocation === this.gamelocation &&
-                    !this.getGameLocation().isHome(card.controller) &&
+                    (!this.getGameLocation().isHome(card.controller) || card.canBeCalledOutAtHome()) &&
                     card.uuid !== this.uuid &&
                     card.controller !== this.controller,
                 autoSelect: false,
@@ -286,7 +286,7 @@ class DudeCard extends DrawCard {
         if(!canReject) {
             return false;
         }
-        if(fromDude.calloutCannotBeRefused(this)) {
+        if(fromDude.calloutCannotBeRefused(this) || this.cannotRefuseCallout(fromDude)) {
             return false;
         }
         const tempContext = { game: this.game, player: this.controller };
@@ -390,6 +390,10 @@ class DudeCard extends DrawCard {
 
     canJoinWhileBooted() {
         return this.options.contains('canJoinWhileBooted', this);
+    }
+
+    canBeCalledOutAtHome() {
+        return this.options.contains('canBeCalledOutAtHome', this);
     }
 
     getMoveOptions() {
