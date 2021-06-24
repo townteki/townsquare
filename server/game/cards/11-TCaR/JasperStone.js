@@ -21,7 +21,7 @@ class JasperStone extends LegendCard {
             },
             handler: context => {
                 const jaspersPosse = this.game.shootout.getPosseByPlayer(context.player);
-                this.untilEndOfShootoutPhase(ability => ({
+                this.untilEndOfShootoutPhase(context.ability, ability => ({
                     condition: () => this.game.shootout && 
                         context.target.isOpposing(context.player) &&
                         jaspersPosse.getDudes(dude => !dude.isToken()).length > 0,

@@ -48,14 +48,15 @@ class DecimatorArray extends GoodsCard {
                 cardType: ['dude', 'deed', 'action', 'goods', 'spell']
             },
             handler: context => {
+                this.cardContext = context;
                 if(context.target.suit === 'Hearts') {
                     this.cardToChange = context.target;
                     this.game.promptForValue(context.player, `Change value in ${context.target.value} of ${context.target.suit} to`, 'chooseValue', this, this);
                 } else {
-                    this.untilEndOfShootoutRound(ability => ({
+                    this.untilEndOfShootoutRound(context.ability, ability => ({
                         match: context.target,
                         effect: ability.effects.setSuit('Hearts', this.uuid)
-                    }), null, 'draw hand');
+                    }), 'draw hand');
                     this.game.addMessage('{0} uses {1} to change suit of {2} to Hearts', context.player, this, context.target);
                     context.player.determineHandResult('changes hand to');               
                 }
@@ -64,10 +65,10 @@ class DecimatorArray extends GoodsCard {
     }
 
     chooseValue(player, arg) {
-        this.untilEndOfShootoutRound(ability => ({
+        this.untilEndOfShootoutRound(this.cardContext.ability, ability => ({
             match: this.cardToChange,
             effect: ability.effects.setValue(arg, this.uuid)
-        }), null, 'draw hand');
+        }), 'draw hand');
         this.game.addMessage('{0} uses {1} to change value of {2} to {3}', player, this, this.cardToChange, arg);
         player.determineHandResult('changes hand to');
         return true;

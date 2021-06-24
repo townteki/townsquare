@@ -24,7 +24,7 @@ class JamesGhetty extends DudeCard {
         if(!spendParams.context || !spendParams.context.ability) {
             return false;
         }
-        return spendParams.context.ability.playTypePlayed() === 'shootout';
+        return spendParams.context.ability.playTypePlayed(spendParams.context) === 'shootout';
     }
 }
 

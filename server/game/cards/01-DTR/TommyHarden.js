@@ -11,7 +11,7 @@ class TommyHarden extends DudeCard {
                 if(context.player.isCheatin()) {
                     rankMod = 1;
                 }
-                context.player.modifyRank(rankMod);
+                context.player.modifyRank(rankMod, context);
                 this.game.addMessage('{0}\'s rank is increased by {1} thanks to the {2}; Current rank is {3}', 
                     context.player, rankMod, this, context.player.getTotalRank());
             }

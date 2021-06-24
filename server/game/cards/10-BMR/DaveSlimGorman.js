@@ -17,7 +17,7 @@ class DaveSlimGorman extends DudeCard {
                     context.player, this, context.event.source),
             handler: context => {
                 this.game.resolveGameAction(GameActions.discardCard({ card: context.event.source }), context).thenExecute(() => {
-                    this.untilEndOfShootoutRound(ability => ({
+                    this.untilEndOfShootoutRound(context.ability, ability => ({
                         match: this.game.shootout.getParticipants(),
                         effect: ability.effects.setAsDraw()
                     }));

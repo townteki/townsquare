@@ -12,7 +12,7 @@ class HolyRoller extends SpellCard {
                     match: this.parent,
                     effect: ability.effects.modifyBullets(1)
                 }));
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onShootoutRoundFinished: () => true
                     },

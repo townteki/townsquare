@@ -8,7 +8,7 @@ class ItsNotWhatYouKnow extends ActionCard {
             choosePlayer: true,
             cost: ability.costs.payReduceableGRCost(),
             handler: context => {
-                context.chosenPlayer.modifyRank(-1);
+                context.chosenPlayer.modifyRank(-1, context);
                 this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 1 rank; Current rank is {3}', 
                     context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
             }
@@ -19,7 +19,7 @@ class ItsNotWhatYouKnow extends ActionCard {
             choosePlayer: true,
             cost: ability.costs.payReduceableGRCost(),
             handler: context => {
-                context.chosenPlayer.modifyRank(-4);
+                context.chosenPlayer.modifyRank(-4, context);
                 this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 4 ranks; Current rank is {3}', 
                     context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
             }

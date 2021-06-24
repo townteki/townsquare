@@ -15,7 +15,7 @@ class FriendsInHighPlaces extends ActionCard {
                 this.game.addMessage('{0} uses {1} to refuse the callout without moving home booted', context.player, this);
             },
             handler: context => {
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onCardCallOutFinished: () => true
                     },

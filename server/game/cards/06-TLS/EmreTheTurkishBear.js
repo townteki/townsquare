@@ -31,7 +31,7 @@ class EmreTheTurkishBear extends DudeCard {
                         saveEventHandler(event);
                     }
                 });
-                this.untilEndOfRound(ability => ({
+                this.untilEndOfRound(context.ability, ability => ({
                     match: this,
                     effect: ability.effects.setAsStud()
                 }));

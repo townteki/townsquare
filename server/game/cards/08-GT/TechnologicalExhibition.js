@@ -32,7 +32,7 @@ class TechnologicalExhibition extends ActionCard {
                             format: '{player} plays {source} to search their discard pile and hand, but does not find a gadget'
                         },
                         handler: card => {
-                            this.lastingEffect(ability => ({
+                            this.lastingEffect(context.ability, ability => ({
                                 until: {
                                     onTechnologicalExhibitionFinished: () => true
                                 },

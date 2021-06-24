@@ -13,7 +13,7 @@ class IkeClanton extends DudeCard {
             },
             message: context => this.game.addMessage('{0} uses {1} to give Rowdy keyword to {2}', context.player, this, context.target),
             handler: context => {
-                this.untilEndOfPhase(ability => ({
+                this.untilEndOfPhase(context.ability, ability => ({
                     condition: () => true,
                     match: context.target,
                     effect: ability.effects.addKeyword('rowdy')

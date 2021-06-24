@@ -14,6 +14,7 @@ class CominUpRoses extends ActionCard {
                 cardType: ['dude', 'deed', 'goods', 'spell', 'action']
             },
             handler: context => {
+                this.resolutionContext = context;
                 this.cardsToChange = [context.target];
                 this.game.promptForSuit(context.player, `Change suit in ${context.target.value} of ${context.target.suit} to`, 'chooseSuit', this, this);
             }
@@ -43,21 +44,23 @@ class CominUpRoses extends ActionCard {
     }
 
     chooseValue(player, arg) {
+        let context = this.resolutionContext || this.cheatinResContext;
         let cardToChange = this.cardsToChange[0];
-        this.untilEndOfShootoutRound(ability => ({
+        this.untilEndOfShootoutRound(context.ability, ability => ({
             match: cardToChange,
             effect: ability.effects.setValue(arg, this.uuid)
-        }), null, 'draw hand');
+        }), 'draw hand');
         this.game.promptForSuit(player, `Change suit in ${cardToChange.value} of ${cardToChange.suit} to`, 'chooseSuit', this, this);
         return true;
     }
 
     chooseSuit(player, arg) {
+        let context = this.resolutionContext || this.cheatinResContext;
         let cardToChange = this.cardsToChange.shift();
-        this.untilEndOfShootoutRound(ability => ({
+        this.untilEndOfShootoutRound(context.ability, ability => ({
             match: cardToChange,
             effect: ability.effects.setSuit(arg, this.uuid)
-        }), null, 'draw hand');
+        }), 'draw hand');
         if(this.cheatinResContext) {
             this.game.addMessage('{0} uses {1} to change suit and value of {2} in draw hand to {3}of{4}', 
                 player, this, cardToChange, cardToChange.value, arg);

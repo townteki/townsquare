@@ -30,7 +30,7 @@ class RedRiverRoulette extends DeedCard {
                     this.game.addMessage('{0} uses {1} but it does not have any effect because they do not have a legal hand', 
                         context.player, this);
                 }
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onShootoutRoundFinished: () => true
                     },

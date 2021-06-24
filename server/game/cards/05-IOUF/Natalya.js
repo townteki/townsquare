@@ -10,7 +10,7 @@ class Natalya extends DudeCard {
                     this.controller.ghostrock < this.controller.getOpponent().ghostrock
             },
             handler: context => {
-                this.untilEndOfPhase(ability => ({
+                this.untilEndOfPhase(context.ability, ability => ({
                     match: this.locationCard,
                     effect: ability.effects.productionToBeReceivedBy(context.player)
                 }), 'upkeep');             

@@ -20,7 +20,7 @@ class GetBehindMeSatan extends SpellCard {
                         card.hasKeyword('abomination'),
                         cardType: 'dude',
                         onSelect: (player, card) => {
-                            let eventHandler = () => this.lastingEffect(ability => ({
+                            let eventHandler = () => this.lastingEffect(context.ability, ability => ({
                                 until: {
                                     onShootoutRoundFinished: () => true
                                 },

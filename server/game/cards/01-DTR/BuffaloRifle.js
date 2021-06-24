@@ -12,7 +12,7 @@ class BuffaloRifle extends GoodsCard {
                 context.game.promptForYesNo(context.player, {
                     title: 'Do you want to use ' + this.title + ' and snipe from distance?',
                     onYes: () => {
-                        this.lastingEffect(ability => ({
+                        this.lastingEffect(context.ability, ability => ({
                             until: {
                                 onShootoutPossesGathered: () => true,
                                 onShootoutPhaseFinished: () => true

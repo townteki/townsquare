@@ -19,7 +19,7 @@ class BaiYangChenExp1 extends DudeCard {
                     effect.gameAction === 'decreaseBullets'
                 );
                 this.bullets = this.getPrintedStat('bullets');
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onShootoutPhaseFinished: () => true
                     },
