@@ -34,7 +34,15 @@ class PlayTypeAbility extends BaseAbility {
         return result;
     }
 
-    playTypePlayed() {
+    playTypePlayed(context) {
+        // "causedByPlayType" attribute is stored in the context when effect is created.
+        // It is used because the returning the playType based on current Play Window 
+        // can be incorrect (e.g. effect created by shootout action that is checked during resolution).
+        if(context && context.causedByPlayType) {
+            return context.causedByPlayType;
+        }
+        // if there is no causedByPlayType in the context (we are not checking for effect), 
+        // return playType based on current Play Window.
         if(this.playType.includes('noon') && this.game.getCurrentPlayWindowName() === 'high noon') {
             return 'noon';
         } 

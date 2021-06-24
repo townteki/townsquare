@@ -13,6 +13,7 @@ class AbilityResolver extends BaseStep {
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
             new SimpleStep(game, () => this.createSnapshot()),
+            new SimpleStep(game, () => this.updatePlayTypeCause()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
             new SimpleStep(game, () => this.context.resolutionStage = 'cost'),
             new SimpleStep(game, () => this.resolveCosts()),
@@ -68,6 +69,10 @@ class AbilityResolver extends BaseStep {
 
             return true;
         }
+    }
+
+    updatePlayTypeCause() {
+        this.context.causedByPlayType = this.ability.playTypePlayed();
     }
 
     createSnapshot() {

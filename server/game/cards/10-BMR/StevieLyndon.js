@@ -8,7 +8,7 @@ class StevieLyndon extends DudeCard {
                 onCardAbilityInitiated: event => event.source.parent === this && event.source.hasKeyword('hymn')
             },
             handler: context => {
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onCardAbilityResolved: event => event.ability === context.event.ability
                     },

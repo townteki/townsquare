@@ -26,7 +26,7 @@ class LydiaBearHands extends DudeCard {
                             card.isParticipating(),
                         cardType: 'dude',
                         onSelect: (player, card) => {
-                            this.untilEndOfShootoutPhase(ability => ({
+                            this.untilEndOfShootoutPhase(context.ability, ability => ({
                                 match: card,
                                 effect: ability.effects.addKeyword('harrowed')
                             }));

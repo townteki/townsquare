@@ -28,7 +28,7 @@ class Raven extends LegendCard {
                 cardType: ['deed']
             },
             handler: context => {
-                this.untilEndOfRound(ability => ({
+                this.untilEndOfRound(context.ability, ability => ({
                     condition: () => this.game.shootout &&
                         this.game.shootout.shootoutLocation.locationCard === context.target,
                     match: context.player,

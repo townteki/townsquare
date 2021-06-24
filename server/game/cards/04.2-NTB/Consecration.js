@@ -13,7 +13,7 @@ class Consecration extends SpellCard {
             },
             difficulty: 7,
             onSuccess: (context) => {
-                this.untilEndOfRound(ability => ({
+                this.untilEndOfRound(context.ability, ability => ({
                     match: context.target,
                     effect: [
                         ability.effects.modifyBullets(2),

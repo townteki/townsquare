@@ -39,7 +39,7 @@ describe('Effect', function() {
             source: this.sourceSpy, 
             player: undefined, 
             ability: undefined, 
-            playTypePlayed: undefined,
+            causedByPlayType: undefined,
             resolutionStage: 'effect' 
         };
         this.properties.match.and.returnValue(true);

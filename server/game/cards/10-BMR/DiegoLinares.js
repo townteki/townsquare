@@ -8,7 +8,7 @@ class DiegoLinares extends DudeCard {
                 onGadgetInventing: event => event.gadget.hasOneOfKeywords(['horse', 'sidekick'])
             },
             handler: context => {
-                this.lastingEffect(ability => ({
+                this.lastingEffect(context.ability, ability => ({
                     until: {
                         onGadgetInventing: event => event.gadget === context.event.gadget
                     },

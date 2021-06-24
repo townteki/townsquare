@@ -19,7 +19,7 @@ class DrewBeauman extends DudeCard {
                         card.hasKeyword('gadget'),
                     cardType: 'goods',
                     onSelect: (player, card) => {
-                        this.lastingEffect(ability => ({
+                        this.lastingEffect(context.ability, ability => ({
                             until: {
                                 onDrewBeaumanFinished: () => true
                             },

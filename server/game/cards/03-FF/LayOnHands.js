@@ -24,7 +24,7 @@ class LayOnHands extends SpellCard {
                     context.replaceHandler(event => {
                         const sendHomeEvent = this.game.resolveGameAction(GameActions.sendHome({ card: context.event.card }), context);
                         if(!sendHomeEvent.isNull()) {
-                            this.untilEndOfRound(ability => ({
+                            this.untilEndOfRound(context.ability, ability => ({
                                 match: context.event.card,
                                 effect: ability.effects.doesNotUnbootAtSundown()
                             }));
