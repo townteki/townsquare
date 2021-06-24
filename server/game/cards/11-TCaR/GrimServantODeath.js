@@ -20,7 +20,7 @@ class GrimServantODeath extends ActionCard {
             message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 this.game.promptForYesNo(context.target.controller, {
-                    title: `Do you want to have ${context.target} join the posse?`,
+                    title: `Do you want to have ${context.target.title} join the posse?`,
                     onYes: player => {
                         this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }), context).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} to lure {2} into posse, and {3} decides to join them', 
