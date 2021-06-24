@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/308/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/310/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -732,13 +732,13 @@
 |                     | 19022| Epitaph Branch Office
 |                     | 19023| Buffalo Emporium
 |                     | 19024| Explorer's Lodge
-|                     | 19025| The Oriental
+|:heavy_check_mark:   | 19025| The Oriental Saloon
 |                     | 19026| Hellstromme Plant #9
 |:heavy_check_mark:   | 19027| Bilton Collection Agency
 |:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
 |                     | 19030| Forsaken Hound
-|                     | 19031| The Bloody Star
+|:heavy_check_mark:   | 19031| The Bloody Star
 |                     | 19032| Cavalry Escort
 |                     | 19033| Nightmare Realm
 |                     | 19034| Sentinel
