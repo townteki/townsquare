@@ -18,7 +18,6 @@ class OldMargesManor extends DeedCard {
         });
         this.action({
             title: 'React: Move GR to Old Marge\'s Manor',
-            playType: ['noon'],
             cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Choose a card to transfer GR from',
