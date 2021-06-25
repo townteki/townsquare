@@ -25,12 +25,14 @@ class CorporealTwist extends SpellCard {
                     this.game.addMessage('{0} gains CP on {1} thanks to {2}',
                         this.controller, this.parent, this);
                 };
-                this.game.onceConditional('onCardDiscarded', { condition: event => event.card === context.target }, eventHandler);
-                this.game.onceConditional('onCardAced', { condition: event => event.card === context.target }, eventHandler);
-                this.game.once('onShootoutPhaseFinished', () => {
-                    this.game.removeListener('onCardDiscarded', eventHandler);
-                    this.game.removeListener('onCardAced', eventHandler);
-                });
+                this.game.onceConditional('onCardDiscarded', {
+                    until: 'onShootoutPhaseFinished',
+                    condition: event => event.card === context.target 
+                }, eventHandler);
+                this.game.onceConditional('onCardAced', { 
+                    until: 'onShootoutPhaseFinished',
+                    condition: event => event.card === context.target 
+                }, eventHandler);
                 this.game.addMessage('{0} uses {1} on {2}, who gets -1 bullets and -2 value',
                     context.player, this, context.target);
             },

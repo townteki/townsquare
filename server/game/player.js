@@ -325,6 +325,7 @@ class Player extends Spectator {
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
         this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
+        this.game.raiseEvent('onHandResultDetermined', { player: this });
     }
 
     drawCardsToHand(numCards = 1, context, reason) {

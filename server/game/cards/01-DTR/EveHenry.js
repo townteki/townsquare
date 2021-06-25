@@ -8,14 +8,14 @@ const GameActions = require('../../GameActions/index.js');
 class EveHenry extends DudeCard {
     entersPlay() {
         super.entersPlay();
-        this.game.onceConditional('onCardDiscarded', { condition: event => event.card === this && event.isCasualty }, 
+        this.discardHandler = this.game.onceConditional('onCardDiscarded', { condition: event => event.card === this && event.isCasualty }, 
             event => this.eventHandler(event)
         );
     }
 
     leavesPlay() {
         super.leavesPlay();
-        this.game.removeListener('onCardDiscarded', event => this.eventHandler(event));
+        this.game.removeListener('onCardDiscarded', this.discardHandler);
     }
 
     eventHandler(event) {

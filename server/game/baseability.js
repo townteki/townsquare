@@ -38,6 +38,7 @@ class BaseAbility {
         this.gameAction = this.buildGameAction(properties);
         this.cannotBeUsed = false;
         this.printed = !!properties.printed;
+        this.defaultOptions = properties.options;
         this.resetOptions();
     }
 
@@ -45,8 +46,12 @@ class BaseAbility {
         if(!this.options) {
             this.options = {};
         }
-        this.options.skipCost = () => false;
-        this.options.callback = () => true;
+        if(this.defaultOptions) {
+            this.options.skipCost = this.defaultOptions.skipCost;
+            this.options.callback = this.defaultOptions.callback;
+        }
+        this.options.skipCost = this.options.skipCost || (() => false);
+        this.options.callback = this.options.callback || (() => true);
     }
 
     buildCost(cost) {
