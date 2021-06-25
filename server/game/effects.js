@@ -938,43 +938,34 @@ const Effects = {
             }
         };
     },
-    selectAsFirstCasualty: function() {
-        return optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty')();
-    },
-    cannotBringDudesIntoPosseByShootout: cannotEffectPlayType('shootout:join', opponent => `Cannot bring dudes to posse by${opponent} shootout`, 'shootout'),
-    cannotBeChosenAsCasualty: function() {
-        return optionEffect('cannotBeChosenAsCasualty', 'Cannot be chosen as Casualty')();
-    },
-    cannotBeTraded: function() {
-        return optionEffect('cannotBeTraded', 'Cannot be Traded')();
-    },
-    cannotFlee: function() {
-        return optionEffect('cannotFlee', 'Cannot Flee')();
-    },
-    cannotAttachCards: function() {
-        return optionEffect('cannotAttachCards', 'Cannot Attach Cards')();
-    },
-    canRefuseWithoutGoingHomeBooted: function() {
-        return optionEffect('canRefuseWithoutGoingHomeBooted', 'Can Refuse without going Home')();
-    },
-    canJoinWithoutBooting: function() {
-        return optionEffect('canJoinWithoutBooting', 'Can Join without Booting')();
-    },
-    canJoinWithoutMoving: function() {
-        return optionEffect('canJoinWithoutMoving', 'Can Join without Moving')();
-    },
-    canJoinWhileBooted: function() {
-        return optionEffect('canJoinWhileBooted', 'Can Join while Booted')();
-    },
-    canBeInventedWithoutBooting: function() {
-        return optionEffect('canBeInventedWithoutBooting', 'Can be Invented without Booting')();
-    },
-    canBeCalledOutAtHome: function() {
-        return optionEffect('canBeCalledOutAtHome', 'Can be Called out at Home')();
-    },
-    canUseControllerAbilities: function() {
-        return optionEffect('canUseControllerAbilities', 'Can use Controller Abilities')();
-    },
+    selectAsFirstCasualty:
+        optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty'),
+    cannotBringDudesIntoPosseByShootout: 
+        cannotEffectPlayType('shootout:join', opponent => `Cannot bring dudes to posse by${opponent} shootout`, 'shootout'),
+    cannotBeChosenAsCasualty:
+        optionEffect('cannotBeChosenAsCasualty', 'Cannot be chosen as Casualty'),
+    cannotBeTraded:
+        optionEffect('cannotBeTraded', 'Cannot be Traded'),
+    cannotFlee:
+        optionEffect('cannotFlee', 'Cannot Flee'),
+    cannotAttachCards:
+        optionEffect('cannotAttachCards', 'Cannot Attach Cards'),
+    canRefuseWithoutGoingHomeBooted:
+        optionEffect('canRefuseWithoutGoingHomeBooted', 'Can Refuse without going Home'),
+    canMoveWithoutBooting:
+        optionEffect('canMoveWithoutBooting', 'Can Move without Booting'),
+    canJoinWithoutBooting:
+        optionEffect('canJoinWithoutBooting', 'Can Join without Booting'),
+    canJoinWithoutMoving:
+        optionEffect('canJoinWithoutMoving', 'Can Join without Moving'),
+    canJoinWhileBooted:
+        optionEffect('canJoinWhileBooted', 'Can Join while Booted'),
+    canBeInventedWithoutBooting:
+        optionEffect('canBeInventedWithoutBooting', 'Can be Invented without Booting'),
+    canBeCalledOutAtHome:
+        optionEffect('canBeCalledOutAtHome', 'Can be Called out at Home'),
+    canUseControllerAbilities:
+        optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
     canPerformSkillUsing: function(skillname, condition) {
         var getSkillRatingFunc;
         return {

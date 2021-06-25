@@ -1497,6 +1497,10 @@ class Player extends Spectator {
             return;
         }
 
+        if(dude.canMoveWithoutBooting(Object.assign(options, { dude, origin, destination }))) {
+            options.needToBoot = false;
+        }
+
         if(options.needToBoot === null && !options.isCardEffect) {
             if(!options.allowBooted && dude.booted) {
                 return;

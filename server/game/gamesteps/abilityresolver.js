@@ -12,6 +12,7 @@ class AbilityResolver extends BaseStep {
         this.context = context;
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
+            new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionStarted', { ability: this.ability, context: this.context })),
             new SimpleStep(game, () => this.createSnapshot()),
             new SimpleStep(game, () => this.updatePlayTypeCause()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
@@ -30,6 +31,7 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.postResolveAbilityUpdates()),
             new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
+            new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionFinished', { ability: this.ability, context: this.context })),
             new SimpleStep(game, () => this.game.popAbilityContext()),
             new SimpleStep(game, () => this.game.attachmentValidityCheck.enforceValidity())
         ]);
