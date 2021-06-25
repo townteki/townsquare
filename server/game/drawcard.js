@@ -226,7 +226,7 @@ class DrawCard extends BaseCard {
      * Opponent cards only, etc) for this card.
      */
     canAttach(player, card) {
-        if(!card || card.cannotAttachCards()) {
+        if(!card || card.cannotAttachCards(this)) {
             return false;
         }
 
@@ -343,8 +343,8 @@ class DrawCard extends BaseCard {
         return this.options.contains('cannotFlee');
     }
 
-    cannotAttachCards() {
-        return this.options.contains('cannotAttachCards');
+    cannotAttachCards(attachment) {
+        return this.options.contains('cannotAttachCards', attachment);
     }
 
     canRefuseWithoutGoingHomeBooted() {
