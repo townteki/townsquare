@@ -41,9 +41,10 @@ class RedRiverRoulette extends DeedCard {
                     this.game.getPlayers().forEach(player => player.modifyCasualties(player.casualties));
                 };
                 const currentShootoutRound = this.game.shootout.round;
-                this.game.onceConditional('onShootoutCasualtiesStepStarted', { condition: event => event.shootoutRound === currentShootoutRound + 1 }, eventHandler);
-                this.game.once('onShootoutPhaseFinished', () => 
-                    this.game.removeListener('onShootoutCasualtiesStepStarted', eventHandler));
+                this.game.onceConditional('onShootoutCasualtiesStepStarted', { 
+                    until: 'onShootoutPhaseFinished',
+                    condition: event => event.shootoutRound === currentShootoutRound + 1 
+                }, eventHandler);
             }
         });
     }
