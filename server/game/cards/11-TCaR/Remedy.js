@@ -13,11 +13,13 @@ class Remedy extends SpellCard {
             },
             difficulty: 7,
             onSuccess: (context) => {
-                this.removeEffects(effect => (effect.gameAction === 'increaseBullets' ||
-                    effect.gameAction === 'decreaseBullets') &&
+                context.target.removeEffects(effect => (effect.gameAction === 'increaseBullets' ||
+                    effect.gameAction === 'decreaseBullets' ||
+                    effect.gameAction === 'setAsStud' ||
+                    effect.gameAction === 'setAsDraw') &&
                     effect.source.getType() !== 'goods' && 
                     !effect.source.hasKeyword('weapon') &&
-                    effect.source.parent === context.target
+                    effect.source.parent !== context.target
                 );
                 this.lastingEffect(context.ability, ability => ({
                     until: {

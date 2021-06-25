@@ -40,13 +40,16 @@ class JasperStone extends LegendCard {
                     if(jaspersPosse.shooter && jaspersPosse.shooter.isParticipating()) {
                         givePermBonuses(jaspersPosse.shooter);
                     } else {
-                        const shooterPickHandler = event => givePermBonuses(event.card);
-                        this.game.onceConditional('onShooterPicked', { condition: event => event.card.controller === context.player }, shooterPickHandler);
-                        this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onShooterPicked', shooterPickHandler));
+                        this.game.onceConditional('onShooterPicked', { 
+                            until: 'onShootoutPhaseFinished',
+                            condition: event => event.card.controller === context.player 
+                        }, event => givePermBonuses(event.card));
                     }
                 };
-                this.game.onceConditional('onCardAced', { condition: event => event.card === context.target }, eventHandler);
-                this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onCardAced', eventHandler));
+                this.game.onceConditional('onCardAced', { 
+                    until: 'onShootoutPhaseFinished',
+                    condition: event => event.card === context.target 
+                }, eventHandler);
             }
         });
     }

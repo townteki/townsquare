@@ -47,15 +47,14 @@ class GrimServantODeath extends ActionCard {
                             },
                             source: this
                         });
-                        const eventHandler = event => {
+                        this.game.onceConditional('onHandResultDetermined', { 
+                            until: 'onShootoutRoundFinished',
+                            condition: event => event.player === context.player.getOpponent() && context.player.getOpponent().isCheatin()
+                        }, event => {
                             event.player.modifyCasualties(2);
                             this.game.addMessage('{0} will take 2 extra casualties as a punishment by {1} for his cheatin\' hand', 
                                 event.player, this);
-                        };
-                        this.game.onceConditional('onHandResultDetermined', { 
-                            condition: event => event.player === context.player.getOpponent() && context.player.getOpponent().isCheatin()
-                        }, eventHandler);
-                        this.game.once('onShootoutRoundFinished', () => this.game.removeListener('onHandResultDetermined', eventHandler));
+                        });
                     },
                     source: this
                 });
