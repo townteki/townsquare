@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/310/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/312/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -722,9 +722,9 @@
 |                     | 19012| Sheriff Eli Waters
 |                     | 19013| Adrián Vallejo
 |                     | 19014| Prof. Aloysius Roe
-|                     | 19015| Rabid Rance Hitchcock
+|:heavy_check_mark:   | 19015| Rabid Rance Hitchcock
 |                     | 19016| Morgan Lash
-|                     | 19017| Johnny Brocklehurst
+|:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
 |                     | 19019| F1 Burch
 |                     | 19020| Taff's Distillery
