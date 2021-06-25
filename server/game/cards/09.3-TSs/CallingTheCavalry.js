@@ -17,8 +17,10 @@ class CallingTheCavalry extends ActionCard {
                         effect: ability.effects.dynamicHandRankMod(player => this.getNumberOfMountsForPlayer(player))
                     }), context.causedByPlayType);
                 };
-                this.game.onceConditional('onPlayWindowOpened', { condition: event => event.playWindow.name === 'shootout resolution' }, eventHandler);
-                this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onPlayWindowOpened', eventHandler));   
+                this.game.onceConditional('onPlayWindowOpened', {
+                    until: 'onShootoutPhaseFinished',
+                    condition: event => event.playWindow.name === 'shootout resolution' 
+                }, eventHandler);
                 this.game.promptForSelect(context.player, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
