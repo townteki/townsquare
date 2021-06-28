@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/316/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/322/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -779,7 +779,7 @@
 |                     | 20019| Dr. Erik Yaple
 |                     | 20020| Quincy Washburne
 |                     | 20021| Xiong "Wendy" Cheng (Exp.1)
-|                     | 20022| Takahashi Jinrai
+|:heavy_check_mark:   | 20022| Takahashi Jinrai
 |                     | 20023| "Handsome" Dan Deeds
 |                     | 20024| Vida Azul
 |                     | 20025| Bartholomew P. Fountain
@@ -889,21 +889,21 @@
 |:heavy_check_mark:   | 22007| Gabriel Prior
 |                     | 22008| Mr. Baird
 |                     | 22009| Harlan Stanton
-|                     | 22010| Dr. Delphi Wallis
+|:heavy_check_mark:   | 22010| Dr. Delphi Wallis
 |                     | 22011| Cooper Grannon
 |                     | 22012| Vivene Goldsun
 |                     | 22013| Maurice Croker
-|                     | 22014| Bogie Man
+|:heavy_check_mark:   | 22014| Bogie Man
 |                     | 22015| Evan Lucas
 |                     | 22016| Tawodi
 |                     | 22017| Tsintah
-|                     | 22018| Jackie Sanjuro
+|:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
 |                     | 22020| Judge Wells Spicer
 |:heavy_check_mark:   | 22021| Joan McGruder
 |                     | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
-|                     | 22024| Florentino "Indian Charlie" Cruz
+|:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
 |                     | 22026| Pete Spence
 |                     | 22027| Jonah Essex (Exp.1)
@@ -935,7 +935,7 @@
 |                     | 22053| Takin' Cover
 |                     | 22054| Hell's Comin' With Me!
 |                     | 22055| Frontier Feud
-|                     | 22056| Seizing the Pearl of Death
+|:heavy_check_mark:   | 22056| Seizing the Pearl of Death
 
 ## `15-W2D` Welcome to Deadwood
 
