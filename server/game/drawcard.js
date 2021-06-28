@@ -315,6 +315,10 @@ class DrawCard extends BaseCard {
         return this.hasKeyword('Gadget');
     }
 
+    doesNotReturnAfterJob() {
+        return this.options.contains('doesNotReturnAfterJob');
+    }
+
     doesNotProvideBulletRatings() {
         return this.options.contains('doesNotProvideBulletRatings');
     }
