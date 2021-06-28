@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/310/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/316/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -722,9 +722,9 @@
 |                     | 19012| Sheriff Eli Waters
 |                     | 19013| Adrián Vallejo
 |                     | 19014| Prof. Aloysius Roe
-|                     | 19015| Rabid Rance Hitchcock
+|:heavy_check_mark:   | 19015| Rabid Rance Hitchcock
 |                     | 19016| Morgan Lash
-|                     | 19017| Johnny Brocklehurst
+|:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
 |                     | 19019| F1 Burch
 |                     | 19020| Taff's Distillery
@@ -744,10 +744,10 @@
 |                     | 19034| Sentinel
 |                     | 19035| Censure
 |                     | 19036| Raven's Ruin
-|                     | 19037| Remedy
+|:heavy_check_mark:   | 19037| Remedy
 |                     | 19038| Intercession
 |                     | 19039| Disarm
-|                     | 19040| Grim Servant O' Death
+|:heavy_check_mark:   | 19040| Grim Servant O' Death
 |                     | 19041| Behold White Bull
 |                     | 19042| You Had ONE Job!
 |:heavy_check_mark:   | 19043| Friends in High Places
@@ -785,9 +785,9 @@
 |                     | 20025| Bartholomew P. Fountain
 |:heavy_check_mark:   | 20026| Ike Clanton
 |                     | 20027| Frank Stillwell
-|                     | 20028| Silas Aims (Exp.1)
+|:heavy_check_mark:   | 20028| Silas Aims (Exp.1)
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
-|                     | 20030| Virginia Ann Earp
+|:heavy_check_mark:   | 20030| Virginia Ann Earp
 |:heavy_check_mark:   | 20031| Campbell & Hatch Billiard Parlor
 |                     | 20032| Clanton Ranch
 |                     | 20033| Concordia Cemetery

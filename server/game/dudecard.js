@@ -380,6 +380,11 @@ class DudeCard extends DrawCard {
         return null;
     }
 
+    // what can be in `moveOptions` can be found in `player.moveDude()`
+    canMoveWithoutBooting(moveOptions) {
+        return this.options.contains('canMoveWithoutBooting', moveOptions);
+    }
+
     canJoinWithoutMoving() {
         return this.options.contains('canJoinWithoutMoving', this);
     }

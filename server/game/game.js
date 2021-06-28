@@ -969,6 +969,7 @@ class Game extends EventEmitter {
         };
         this.once(eventName, conditionalHandler);
         this.once(updatedParams.until, () => this.removeListener(eventName, conditionalHandler));
+        return conditionalHandler;
     }
 
     raiseEvent(eventName, params, handler) {

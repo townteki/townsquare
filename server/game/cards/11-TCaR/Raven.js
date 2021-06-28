@@ -67,7 +67,6 @@ class Raven extends LegendCard {
                         event.shootout.winner === context.player
                 }, eventHandler);
                 this.game.once('onRoundEnded', () => {
-                    this.game.removeListener('onShootoutPhaseFinished', eventHandler);
                     this.permanentBulletGiven = false;
                 });
                 this.game.once('onSundownAfterVictoryCheck', () => {
