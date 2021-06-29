@@ -1,4 +1,5 @@
 const GameAction = require('./GameAction');
+const RemoveFromPosse = require('./RemoveFromPosse');
 
 class MoveDude extends GameAction {
     constructor() {
@@ -13,7 +14,8 @@ class MoveDude extends GameAction {
             ['outfit', 'play area'].includes(card.location) &&
             card.allowGameAction('moveDude', context) &&
             (!params.needToBoot || card.allowGameAction('boot', context) || 
-            (params.toPosse && card.canJoinWithoutBooting()))
+            (params.toPosse && card.canJoinWithoutBooting())) &&
+            (!context.game.shootout || this.canLeaveShootout(card))
         );
     }
 
@@ -23,6 +25,10 @@ class MoveDude extends GameAction {
         params.context = context;
         return this.event('onDudeMoved', { card, target: targetUuid, options: params }, event => {
             event.card.controller.moveDude(event.card, event.target, event.options);
+            if(context.game.shootout && event.card.isParticipating() && 
+                event.options.originalLocation === context.game.shootout.shootoutLocation.uuid) {
+                event.thenAttachEvent(RemoveFromPosse.createEvent({ card: event.card, context: event.options.context }));
+            }
         });
     }
 
@@ -37,6 +43,13 @@ class MoveDude extends GameAction {
             return Object.assign(options, defaultOptions);
         }
         return options;
+    }
+
+    canLeaveShootout(card, context) {
+        if(!card.isParticipating()) {
+            return true;
+        }
+        return card.allowGameAction('removeFromPosse', context);
     }
 }
 
