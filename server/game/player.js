@@ -902,7 +902,7 @@ class Player extends Spectator {
     }
 
     attach(attachment, card, playingType, attachCallback, defaultScientist) {
-        if(!card || !attachment || !this.canAttach(attachment, card)) {
+        if(!card || !attachment || !this.canAttach(attachment, card, playingType)) {
             return false;
         }
 

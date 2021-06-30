@@ -64,7 +64,7 @@ class AttachmentValidityCheck {
         if(!allAttachments || allAttachments.length === 0) {
             return [];
         }
-        return allAttachments.filter(card => !card.controller.canAttach(card, card.parent));
+        return allAttachments.filter(card => !card.controller.canAttach(card, card.parent, 'validityCheck'));
     }
 
     groupAttachmentsByOwner(cards) {

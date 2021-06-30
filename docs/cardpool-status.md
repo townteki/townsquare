@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/326/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/331/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -719,11 +719,11 @@
 |                     | 19009| Zeb Whateley-Dupont
 |                     | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson
-|                     | 19012| Sheriff Eli Waters
+|:heavy_check_mark:   | 19012| Sheriff Eli Waters
 |                     | 19013| Adrián Vallejo
 |                     | 19014| Prof. Aloysius Roe
 |:heavy_check_mark:   | 19015| Rabid Rance Hitchcock
-|                     | 19016| Morgan Lash
+|:heavy_check_mark:   | 19016| Morgan Lash
 |:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
 |                     | 19019| F1 Burch
@@ -765,10 +765,10 @@
 |                     | 20005| Ying-Ssi Chieh T'ang
 |                     | 20006| E Gui
 |                     | 20007| Buskers
-|                     | 20008| Taiyari
+|:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
-|                     | 20011| Matthew Rising Sun
+|:heavy_check_mark:   | 20011| Matthew Rising Sun
 |                     | 20012| Feichi "Suitcase" Lee
 |                     | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
@@ -778,7 +778,7 @@
 |                     | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
 |                     | 20020| Quincy Washburne
-|                     | 20021| Xiong "Wendy" Cheng (Exp.1)
+|:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
 |:heavy_check_mark:   | 20022| Takahashi Jinrai
 |                     | 20023| "Handsome" Dan Deeds
 |                     | 20024| Vida Azul
