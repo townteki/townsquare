@@ -6,7 +6,7 @@ class SpellCard extends HeartsCard {
         this.canTrade = false;
     }
 
-    canAttach(player, card) {
+    canAttach(player, card, playingType) {
         if(!super.canAttach(player, card)) {
             return false;
         }
@@ -19,9 +19,13 @@ class SpellCard extends HeartsCard {
                 return true;
             }
         } else if(card.isLocationCard() && this.isTotem()) {
+            if(playingType === 'validityCheck') {
+                return true;
+            }
             return card.controller === this.controller && 
                 card.getGameLocation().getDudes().find(dude => dude.hasKeyword('shaman') && !dude.booted);
         }
+        return false;
     }
 
     isSpell() {

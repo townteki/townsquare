@@ -967,15 +967,15 @@ const Effects = {
         optionEffect('canBeCalledOutAtHome', 'Can be Called out at Home'),
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
-    canPerformSkillUsing: function(skillname, condition) {
+    canPerformSkillUsing: function(skillnameOrKF, condition) {
         var getSkillRatingFunc;
         return {
-            title: `Can perform ${skillname} skills`,
+            title: `Can perform other skills using ${skillnameOrKF}`,
             apply: function(card) {
                 getSkillRatingFunc = card.getSkillRatingForCard;
                 card.getSkillRatingForCard = spellOrGadget => {
                     if(condition(spellOrGadget)) {
-                        return card.getSkillRating(skillname);
+                        return card.getSkillRating(skillnameOrKF);
                     }
                 };
             },
