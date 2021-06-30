@@ -191,7 +191,13 @@ class Shootout extends Phase {
         if(recordStatus) {
             this.recordJobStatus();
         }
-        this.actOnLeaderPosse(card => this.sendHome(card, { isCardEffect: false, isAfterJob: true }));
+        this.game.raiseEvent('onDudesReturnAfterJob', { job: this }, event => {
+            event.job.actOnLeaderPosse(card => {
+                if(!card.doesNotReturnAfterJob()) {
+                    event.job.sendHome(card, { isCardEffect: false, isAfterJob: true });
+                }
+            });
+        });
     }
 
     queueStep(step) {

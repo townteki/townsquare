@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/322/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/326/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -741,7 +741,7 @@
 |:heavy_check_mark:   | 19031| The Bloody Star
 |                     | 19032| Cavalry Escort
 |                     | 19033| Nightmare Realm
-|                     | 19034| Sentinel
+|:heavy_check_mark:   | 19034| Sentinel
 |                     | 19035| Censure
 |                     | 19036| Raven's Ruin
 |:heavy_check_mark:   | 19037| Remedy
@@ -794,9 +794,9 @@
 |                     | 20034| Ike's Place
 |                     | 20035| Five Aces Gambling Hall
 |                     | 20036| Old Washoe Club
-|                     | 20037| Quarter Horse
+|:heavy_check_mark:   | 20037| Quarter Horse
 |                     | 20038| Electrostatic Pump Gun
-|                     | 20039| Claws
+|:heavy_check_mark:   | 20039| Claws
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
 |                     | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
@@ -809,7 +809,7 @@
 |                     | 20049| Murdered in Tombstone
 |                     | 20050| Hostile Takeover
 |                     | 20051| Jade King Stance
-|                     | 20052| Heist
+|:heavy_check_mark:   | 20052| Heist
 |:heavy_check_mark:   | 20053| I'm Your Huckleberry
 |                     | 20054| Monkey Goes to the Mountain
 |:heavy_check_mark:   | 20055| Curse of Failure
