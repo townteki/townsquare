@@ -7,12 +7,13 @@ const path = require('path');
 const CardService = require('../../services/CardService.js');
 
 class CardImport {
-    constructor(db, dataSource, imageSource, imageDir) {
+    constructor(db, dataSource, imageSource, imageDir, isPt) {
         this.db = db;
         this.dataSource = dataSource;
         this.imageSource = imageSource;
         this.imageDir = imageDir;
         this.cardService = new CardService(db);
+        this.isPt = isPt;
     }
 
     async import() {
@@ -26,7 +27,12 @@ class CardImport {
     }
 
     async importCards() {
-        let cards = await this.dataSource.getCards();
+        let cards;
+        if(this.isPt) {
+            cards = await this.dataSource.getPtCards();
+        } else {
+            cards = await this.dataSource.getCards();
+        }
 
         await this.cardService.replaceCards(cards);
 
@@ -54,7 +60,12 @@ class CardImport {
     }
 
     async importPacks() {
-        let packs = await this.dataSource.getPacks();
+        let packs;
+        if(this.isPt) {
+            packs = await this.dataSource.getPtPacks();
+        } else {
+            packs = await this.dataSource.getPacks();
+        }        
 
         await this.cardService.replacePacks(packs);
 

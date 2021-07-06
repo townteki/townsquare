@@ -46,6 +46,7 @@ class Game extends EventEmitter {
 
         this.event = details.event;
         this.eventName = details.event && details.event.name;
+        // restrictedList.cardSet = [ 'new | 'original' ]
         this.restrictedList = details.restrictedList;
         this.allCards = [];
         this.attachmentValidityCheck = new AttachmentValidityCheck(this);

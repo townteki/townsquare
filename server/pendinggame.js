@@ -312,6 +312,7 @@ class PendingGame {
             node: this.node ? this.node.identity : undefined,
             owner: this.owner.username,
             players: playerSummaries,
+            restrictedList: this.restrictedList,
             showHand: this.showHand,
             started: this.started,
             spectators: _.map(this.spectators, spectator => {
@@ -357,6 +358,7 @@ class PendingGame {
             name: this.name,
             owner: this.owner.getDetails(),
             players,
+            restrictedList: this.restrictedList,
             showHand: this.showHand,
             spectators,
             useGameTimeLimit: this.useGameTimeLimit,
