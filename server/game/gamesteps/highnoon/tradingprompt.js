@@ -40,6 +40,7 @@ class TradingPrompt extends UiPrompt {
             promptTitle: 'Tradin\' action',
             activePromptTitle: 'Select dude to receive goods',
             cardCondition: card => card.controller === this.player && 
+                card.getType() === 'dude' &&
                 card.gamelocation === this.fromDudeCard.gamelocation && 
                 card !== this.fromDudeCard,
             onSelect: (player, toDudeCard) => {

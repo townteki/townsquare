@@ -16,6 +16,9 @@ class CostReducer {
     }
 
     buildPlayingTypes(properties) {
+        if(!properties.playingTypes) {
+            return ['any'];
+        }
         let playingTypes = Array.isArray(properties.playingTypes) ? properties.playingTypes : [properties.playingTypes];
         return playingTypes;
     }
@@ -25,7 +28,7 @@ class CostReducer {
             return false;
         }
 
-        return this.playingTypes.includes(playingType) && !!this.match(card);
+        return (this.playingTypes.includes(playingType) || this.playingTypes.includes('any')) && !!this.match(card);
     }
 
     getAmount(card) {

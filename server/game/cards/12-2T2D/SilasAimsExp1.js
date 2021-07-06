@@ -6,11 +6,7 @@ class SilasAimsExp1 extends DudeCard {
         this.persistentEffect({
             condition: () => true,
             match: this,
-            effect: [
-                ability.effects.cannotIncreaseBullets('any', context => context.source !== this),
-                ability.effects.cannotDecreaseBullets('any', context => context.source !== this),
-                ability.effects.dynamicBullets(() => this.bounty > 4 ? 4 : this.bounty)
-            ]
+            effect: ability.effects.dynamicBullets(() => this.bounty > 4 ? 4 : this.bounty)
         });
 
         this.action({

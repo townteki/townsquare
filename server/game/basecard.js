@@ -70,8 +70,11 @@ class BaseCard {
     }
 
     get value() {
-        if(this.currentValue < 0) {
-            return 0;
+        if(this.currentValue <= 0) {
+            return 1;
+        }
+        if(this.currentValue > 13) {
+            return 13;
         }
         return this.currentValue;
     }

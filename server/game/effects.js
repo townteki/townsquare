@@ -316,6 +316,7 @@ const Effects = {
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin', 'Does not get Bounty on Join'),
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown', 'Does not Unboot at Sundown'),
     doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings', 'Does not provide Bullets'),
+    doesNotReturnAfterJob: optionEffect('doesNotReturnAfterJob', 'Does not go Home after Job'),
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },
@@ -966,15 +967,15 @@ const Effects = {
         optionEffect('canBeCalledOutAtHome', 'Can be Called out at Home'),
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
-    canPerformSkillUsing: function(skillname, condition) {
+    canPerformSkillUsing: function(skillnameOrKF, condition) {
         var getSkillRatingFunc;
         return {
-            title: `Can perform ${skillname} skills`,
+            title: `Can perform other skills using ${skillnameOrKF}`,
             apply: function(card) {
                 getSkillRatingFunc = card.getSkillRatingForCard;
                 card.getSkillRatingForCard = spellOrGadget => {
                     if(condition(spellOrGadget)) {
-                        return card.getSkillRating(skillname);
+                        return card.getSkillRating(skillnameOrKF);
                     }
                 };
             },

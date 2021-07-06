@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/316/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/331/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -719,11 +719,11 @@
 |                     | 19009| Zeb Whateley-Dupont
 |                     | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson
-|                     | 19012| Sheriff Eli Waters
+|:heavy_check_mark:   | 19012| Sheriff Eli Waters
 |                     | 19013| Adrián Vallejo
 |                     | 19014| Prof. Aloysius Roe
 |:heavy_check_mark:   | 19015| Rabid Rance Hitchcock
-|                     | 19016| Morgan Lash
+|:heavy_check_mark:   | 19016| Morgan Lash
 |:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
 |                     | 19019| F1 Burch
@@ -741,7 +741,7 @@
 |:heavy_check_mark:   | 19031| The Bloody Star
 |                     | 19032| Cavalry Escort
 |                     | 19033| Nightmare Realm
-|                     | 19034| Sentinel
+|:heavy_check_mark:   | 19034| Sentinel
 |                     | 19035| Censure
 |                     | 19036| Raven's Ruin
 |:heavy_check_mark:   | 19037| Remedy
@@ -765,10 +765,10 @@
 |                     | 20005| Ying-Ssi Chieh T'ang
 |                     | 20006| E Gui
 |                     | 20007| Buskers
-|                     | 20008| Taiyari
+|:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
-|                     | 20011| Matthew Rising Sun
+|:heavy_check_mark:   | 20011| Matthew Rising Sun
 |                     | 20012| Feichi "Suitcase" Lee
 |                     | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
@@ -778,8 +778,8 @@
 |                     | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
 |                     | 20020| Quincy Washburne
-|                     | 20021| Xiong "Wendy" Cheng (Exp.1)
-|                     | 20022| Takahashi Jinrai
+|:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
+|:heavy_check_mark:   | 20022| Takahashi Jinrai
 |                     | 20023| "Handsome" Dan Deeds
 |                     | 20024| Vida Azul
 |                     | 20025| Bartholomew P. Fountain
@@ -794,9 +794,9 @@
 |                     | 20034| Ike's Place
 |                     | 20035| Five Aces Gambling Hall
 |                     | 20036| Old Washoe Club
-|                     | 20037| Quarter Horse
+|:heavy_check_mark:   | 20037| Quarter Horse
 |                     | 20038| Electrostatic Pump Gun
-|                     | 20039| Claws
+|:heavy_check_mark:   | 20039| Claws
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
 |                     | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
@@ -809,7 +809,7 @@
 |                     | 20049| Murdered in Tombstone
 |                     | 20050| Hostile Takeover
 |                     | 20051| Jade King Stance
-|                     | 20052| Heist
+|:heavy_check_mark:   | 20052| Heist
 |:heavy_check_mark:   | 20053| I'm Your Huckleberry
 |                     | 20054| Monkey Goes to the Mountain
 |:heavy_check_mark:   | 20055| Curse of Failure
@@ -889,21 +889,21 @@
 |:heavy_check_mark:   | 22007| Gabriel Prior
 |                     | 22008| Mr. Baird
 |                     | 22009| Harlan Stanton
-|                     | 22010| Dr. Delphi Wallis
+|:heavy_check_mark:   | 22010| Dr. Delphi Wallis
 |                     | 22011| Cooper Grannon
 |                     | 22012| Vivene Goldsun
 |                     | 22013| Maurice Croker
-|                     | 22014| Bogie Man
+|:heavy_check_mark:   | 22014| Bogie Man
 |                     | 22015| Evan Lucas
 |                     | 22016| Tawodi
 |                     | 22017| Tsintah
-|                     | 22018| Jackie Sanjuro
+|:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
 |                     | 22020| Judge Wells Spicer
 |:heavy_check_mark:   | 22021| Joan McGruder
 |                     | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
-|                     | 22024| Florentino "Indian Charlie" Cruz
+|:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
 |                     | 22026| Pete Spence
 |                     | 22027| Jonah Essex (Exp.1)
@@ -935,7 +935,7 @@
 |                     | 22053| Takin' Cover
 |                     | 22054| Hell's Comin' With Me!
 |                     | 22055| Frontier Feud
-|                     | 22056| Seizing the Pearl of Death
+|:heavy_check_mark:   | 22056| Seizing the Pearl of Death
 
 ## `15-W2D` Welcome to Deadwood
 
