@@ -56,6 +56,7 @@ class Effect {
             // save the playTypePlayed to have info about what type of play (shootout, resolution etc.) created the effect
             causedByPlayType: this.buildPlayTypePlayed(properties)
         };
+        this.fromTrait = !!properties.fromTrait;
         this.active = !source.facedown;
         this.isConditional = !!properties.condition || this.targetType === 'player' && typeof(properties.match) === 'function';
         this.isStateDependent = this.isConditional || this.effect.isStateDependent;

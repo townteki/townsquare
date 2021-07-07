@@ -428,29 +428,43 @@ class ChatCommands {
         });
     }
 
-    blank(player) {
+    blank(player, args) {
+        var blankType = args[1];
+        if(!blankType) {
+            blankType = 'full';
+        }
+        const blankBonuses = ['bulletBonuses', 'infBonuses'].includes(blankType);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to blank card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                (!blankBonuses || card.getType() === 'goods'),
             onSelect: (p, card) => {
-                card.setBlank('full');
+                card.setBlank(blankType);
 
-                this.game.addAlert('danger', '{0} uses the /blank command to blank {1}', p, card);
+                this.game.addAlert('danger', '{0} uses the /blank command to blank {1} (type "{2}")', p, card, blankType);
                 return true;
             }
         });
     }
 
-    unblank(player) {
+    unblank(player, args) {
+        var blankType = args[1];
+        if(!blankType) {
+            blankType = 'full';
+        }
+        const blankBonuses = ['bulletBonuses', 'infBonuses'].includes(blankType);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to unblank card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                (!blankBonuses || card.getType() === 'goods'),
             onSelect: (p, card) => {
-                card.clearBlank('full');
+                card.clearBlank(blankType);
 
-                this.game.addAlert('danger', '{0} uses the /unblank command to remove the blank condition from {1}', p, card);
+                this.game.addAlert('danger', '{0} uses the /unblank command to remove the blank condition from {1} (type "{2}")', p, card, blankType);
                 return true;
             }
         });

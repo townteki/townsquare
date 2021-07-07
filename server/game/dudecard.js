@@ -30,12 +30,14 @@ class DudeCard extends DrawCard {
                     this.gang_code !== this.controller.outfit.gang_code && 
                     this.gang_code !== 'neutral',
             match: this,
-            effect: AbilityDsl.effects.dynamicUpkeep(() => this.influence)
+            effect: AbilityDsl.effects.dynamicUpkeep(() => this.influence),
+            fromTrait: false
         });
         this.persistentEffect({
             condition: () => this.location === 'play area' && this.isKungFu(),
             match: this,
-            effect: AbilityDsl.effects.dynamicValue(() => this.getKungFuRating())
+            effect: AbilityDsl.effects.dynamicValue(() => this.getKungFuRating()),
+            fromTrait: false
         });
         this.setupDudeCardAbilities();
     }

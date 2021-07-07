@@ -9,7 +9,7 @@ describe('CardForcedReaction', function () {
         });
         this.playerSpy = jasmine.createSpyObj('player', ['canUseControllerAbilities', 'canTrigger']);
         this.gameSpy.getPlayers.and.returnValue([this.playerSpy]);
-        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank', 'hasKeyword', 'canUseControllerAbilities']);
+        this.cardSpy = jasmine.createSpyObj('card', ['getType', 'isAnyBlank', 'hasKeyword', 'canUseControllerAbilities', 'isTraitBlank']);
         this.cardSpy.location = 'play area';
         this.usageSpy = jasmine.createSpyObj('usage', ['increment', 'isUsed', 'registerEvents', 'unregisterEvents']);
 

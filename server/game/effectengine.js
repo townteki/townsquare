@@ -126,9 +126,12 @@ class EffectEngine {
     }
 
     onCardBlankToggled(event) {
-        let { card, isBlank } = event;
+        let { card, isBlank, blankType } = event;
         let targets = this.getTargets();
-        let matchingEffects = this.effects.filter(effect => effect.duration === 'persistent' && effect.source === card);
+        let matchingEffects = this.effects.filter(effect => 
+            effect.duration === 'persistent' && 
+            effect.source === card &&
+            (blankType !== 'trait' || effect.fromTrait));
         for(let effect of matchingEffects) {
             effect.setActive(!isBlank, targets);
         }
