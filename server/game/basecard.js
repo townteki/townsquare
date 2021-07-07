@@ -228,7 +228,11 @@ class BaseCard {
             throw new Error(`'${location}' is not a supported effect location.`);
         }
 
-        this.abilities.persistentEffects.push(Object.assign({ duration: 'persistent', location: location }, properties));
+        this.abilities.persistentEffects.push(Object.assign({ 
+            duration: 'persistent', 
+            location: location,
+            fromTrait: true
+        }, properties));
     }
 
     resetAbilities() {
@@ -603,6 +607,10 @@ class BaseCard {
         return this.blanks.contains('excludingKeywords');
     }
 
+    isTraitBlank() {
+        return this.blanks.contains('trait');
+    }
+
     isParticipating() {
         return this.game.shootout && this.game.shootout.isInShootout(this);
     }
@@ -653,11 +661,13 @@ class BaseCard {
 
     setBlank(type) {
         let before = this.isAnyBlank();
+        let beforeTrait = this.isTraitBlank();
         this.blanks.add(type);
         let after = this.isAnyBlank();
+        let afterTrait = this.isTraitBlank();
 
-        if(!before && after) {
-            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after });
+        if((!before && after) || (!beforeTrait && afterTrait)) {
+            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after || afterTrait, blankType: type });
         }
     }
 
@@ -705,11 +715,13 @@ class BaseCard {
 
     clearBlank(type) {
         let before = this.isAnyBlank();
+        let beforeTrait = this.isTraitBlank();
         this.blanks.remove(type);
         let after = this.isAnyBlank();
+        let afterTrait = this.isTraitBlank();
 
-        if(before && !after) {
-            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after });
+        if((before && !after) || (beforeTrait && !afterTrait)) {
+            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after || afterTrait, blankType: type });
         }
     }
 

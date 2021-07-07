@@ -11,13 +11,15 @@ class HeartsCard extends DrawCard {
         if(this.bullets) {
             this.whileAttached({
                 condition: () => !useMeleeEffect || !this.meleeWeaponCondition(),
-                effect: AbilityDsl.effects.dynamicBullets(() => this.bullets)
+                effect: AbilityDsl.effects.dynamicBullets(() => this.bullets),
+                fromTrait: false
             });
         }
         if(this.influence) {
             this.whileAttached({
                 condition: () => true,
-                effect: AbilityDsl.effects.dynamicInfluence(() => this.influence)
+                effect: AbilityDsl.effects.dynamicInfluence(() => this.influence),
+                fromTrait: false
             });
         }
     }

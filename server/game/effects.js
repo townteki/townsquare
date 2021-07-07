@@ -702,6 +702,15 @@ const Effects = {
             card.clearBlank('full');
         }
     },
+    traitBlank: {
+        title: 'Trait Blank',
+        apply: function(card) {
+            card.setBlank('trait');
+        },
+        unapply: function(card) {
+            card.clearBlank('trait');
+        }
+    },
     setActionPlacementLocation: function(location) {
         return {
             apply: function(card) {
