@@ -711,6 +711,15 @@ const Effects = {
             card.clearBlank('trait');
         }
     },
+    bulletBonusBlank: {
+        title: 'Bullet Bonus Blank',
+        apply: function(card) {
+            card.setBlank('bulletBonuses');
+        },
+        unapply: function(card) {
+            card.clearBlank('bulletBonuses');
+        }        
+    },
     setActionPlacementLocation: function(location) {
         return {
             apply: function(card) {

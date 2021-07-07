@@ -433,10 +433,13 @@ class ChatCommands {
         if(!blankType) {
             blankType = 'full';
         }
+        const blankBonuses = ['bulletBonuses', 'infBonuses'].includes(blankType);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to blank card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                (!blankBonuses || card.getType() === 'goods'),
             onSelect: (p, card) => {
                 card.setBlank(blankType);
 
@@ -451,10 +454,13 @@ class ChatCommands {
         if(!blankType) {
             blankType = 'full';
         }
+        const blankBonuses = ['bulletBonuses', 'infBonuses'].includes(blankType);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to unblank card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                (!blankBonuses || card.getType() === 'goods'),
             onSelect: (p, card) => {
                 card.clearBlank(blankType);
 

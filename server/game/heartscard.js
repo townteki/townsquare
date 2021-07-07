@@ -10,14 +10,14 @@ class HeartsCard extends DrawCard {
 
         if(this.bullets) {
             this.whileAttached({
-                condition: () => !useMeleeEffect || !this.meleeWeaponCondition(),
+                condition: () => (!useMeleeEffect || !this.meleeWeaponCondition()) && !this.areBulletBonusesBlanked(),
                 effect: AbilityDsl.effects.dynamicBullets(() => this.bullets),
                 fromTrait: false
             });
         }
         if(this.influence) {
             this.whileAttached({
-                condition: () => true,
+                condition: () => !this.areInfBonusesBlanked(),
                 effect: AbilityDsl.effects.dynamicInfluence(() => this.influence),
                 fromTrait: false
             });
@@ -54,6 +54,18 @@ class HeartsCard extends DrawCard {
 
     reset() {
         this.traded = false;
+    }
+
+    areBonusesBlanked() {
+        return this.blanks.contains('bulletBonuses') && this.blanks.contains('infBonuses');
+    }
+
+    areBulletBonusesBlanked() {
+        return this.blanks.contains('bulletBonuses');
+    }
+
+    areInfBonusesBlanked() {
+        return this.blanks.contains('infBonuses');
     }
 
     isHex() {
