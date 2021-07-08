@@ -112,7 +112,7 @@ class CardAction extends PlayTypeAbility {
             return false;
         }
 
-        if(this.card.hasKeyword('headline') && this.game.shootout.headlineUsed) {
+        if(this.card.hasKeyword('headline') && (this.game.shootout && this.game.shootout.headlineUsed)) {
             return false;
         }
 

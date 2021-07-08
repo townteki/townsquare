@@ -990,7 +990,7 @@
 |                     | 23047| Get Off My Land!
 |                     | 23048| Look What I Found!
 |                     | 23049| Mantis Pinch
-|                     | 23050| As Nature and God Intended
+| :heavy_check_mark:  | 23050| As Nature and God Intended
 |                     | 23051| Play for Blood
 |                     | 23052| Bad Beat
 | :heavy_check_mark:  | 23053| Fallen Star
