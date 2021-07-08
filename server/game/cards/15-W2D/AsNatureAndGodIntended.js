@@ -6,7 +6,7 @@ class AsNatureAndGodIntended extends ActionCard {
             title: 'As Nature and God Intended',
             playType: ['shootout'],
             message: context =>
-                this.game.addMessage('{0} playes {1}.', context.player, this), // TODO: Not sure about what to output here, regurgitating the card's effect is too verbose. [ST 2021/07/07]
+                this.game.addMessage(' {0} uses {1} to disable all Weapons and make all Kung Fu dudes studs until end of this round', context.player, this), // TODO: Not sure about what to output here, regurgitating the card's effect is too verbose. [ST 2021/07/07]
             handler: context => {
                 // All Weapons lose their bullet bonuses, traits, and Shootout abilities until the end of this round of the shootout.
                 this.lastingEffect(context.ability, ability => ({
