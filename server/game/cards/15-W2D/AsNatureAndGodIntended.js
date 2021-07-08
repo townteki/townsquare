@@ -6,8 +6,7 @@ class AsNatureAndGodIntended extends ActionCard {
             title: 'As Nature and God Intended',
             playType: ['shootout'],
             message: context =>
-                this.game.addMessage('{0} playes {1}.', 
-                    context.player, this),
+                this.game.addMessage('{0} playes {1}.', context.player, this), // TODO: Not sure about what to output here, regurgitating the card's effect is too verbose. [ST 2021/07/07]
             handler: context => {
                 // All Weapons lose their bullet bonuses, traits, and Shootout abilities until the end of this round of the shootout.
                 this.lastingEffect(context.ability, ability => ({
@@ -18,8 +17,8 @@ class AsNatureAndGodIntended extends ActionCard {
                     match: card => card.getType() === 'goods' && card.hasKeyword('weapon') && card.parent && card.parent.isParticipating(),
                     targetController: 'any',
                     effect: [
-                        ability.effects.blankExcludingKeywords,
-                        ability.effects.setBullets(0),
+                        ability.effects.traitBlank,
+                        ability.effects.bulletBonusBlank,
                         ability.effects.cannotTriggerCardAbilities(ability => ability.playType && ability.playType.includes('shootout'))
                     ]
                 }), context.causedByPlayType);
