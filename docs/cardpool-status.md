@@ -905,7 +905,7 @@
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
-|                     | 22026| Pete Spence
+|:heavy_check_mark:   | 22026| Pete Spence
 |                     | 22027| Jonah Essex (Exp.1)
 |                     | 22028| Camillus S. Fly
 |                     | 22029| QUATERMAN PRIME
