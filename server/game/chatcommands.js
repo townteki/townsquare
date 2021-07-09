@@ -674,6 +674,9 @@ class ChatCommands {
         if(!card) {
             return false;
         }
+        if(this.game.restrictedList.isPt && !player.user.permissions.isContributor) {
+            return false;
+        }
 
         let deck = new Deck();
         let preparedCard = deck.createCard(player, card);
