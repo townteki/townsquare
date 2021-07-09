@@ -23,6 +23,10 @@ class TechniqueCard extends ActionCard {
     getTaoKeywords() {
         return this.findKeywords(keyword => keyword.toLowerCase().startsWith('tao of'));
     }
+
+    getComboAbility() {
+        return this.abilities.actions.find(action => action.combo);
+    }
 }
 
 module.exports = TechniqueCard;

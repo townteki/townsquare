@@ -206,6 +206,11 @@ class ChatCommands {
             onSelect: (p, card) => {
                 this.pullingDude = card;
                 this.pullDifficulty = num;
+                if(player.unscriptedCardPlayed) {
+                    player.unscriptedPull = {
+                        pullingDude: card
+                    };
+                }
                 let skillsOrFu = args[1] !== 'kf' ? card.getSkills() : ['kung fu'];
                 if(skillsOrFu.length > 1) {
                     let buttons = skillsOrFu.map(skill => {
@@ -725,7 +730,7 @@ class ChatCommands {
             cardCondition: card => ['play area', 'hand'].includes(card.location) && card.controller === player,
             cardType: ['goods', 'spell', 'action', 'dude', 'deed', 'outfit', 'legend'],
             onSelect: (p, card) => {
-                const unscriptedText = card.cardData.scripted ? '' : ' unscripted';
+                const unscriptedText = card.isScripted() ? '' : ' unscripted';
                 if(card.getType() === 'action' && card.location === 'hand') {
                     this.game.addAlert('warning', '{0} is playing{1} {2}', p, unscriptedText, card);
                     p.moveCard(card, 'being played');
@@ -822,6 +827,8 @@ class ChatCommands {
                 }
                 return pulledValue >= this.pullDifficulty;
             }, 
+            successHandler: () => player.unscriptedPull.isSuccessful = true,
+            failHandler: () => player.unscriptedPull.isSuccessful = false,
             pullingDude: this.pullingDude,
             pullBonus: skillOrFu !== 'kung fu' ? pullBonus : 0,
             source: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
