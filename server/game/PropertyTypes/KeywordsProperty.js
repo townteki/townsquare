@@ -26,7 +26,11 @@ class KeywordsProperty {
 
         var firstLine = keywords.split('\n')[0];
 
-        firstLine.split('\u2022').forEach(keyword => this.addKeyword(keyword, true));
+        if(firstLine.indexOf('*') !== -1) {
+            firstLine.split('*').forEach(keyword => this.addKeyword(keyword, true));
+        } else {
+            firstLine.split('\u2022').forEach(keyword => this.addKeyword(keyword, true));
+        }
     }
 
     setPrintedValues(results) {
