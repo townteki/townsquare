@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/331/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/334/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -827,7 +827,7 @@
 |                     | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
 |                     | 21008| Ke Wang
-|                     | 21009| Baijiu Sue
+|:heavy_check_mark:   | 21009| Baijiu Sue
 |                     | 21010| Reverend Bob Hungate
 |                     | 21011| Father Diamond
 |                     | 21012| Master Shou
@@ -913,7 +913,7 @@
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
 |                     | 22033| Kiva of Fathomless Reach
-|                     | 22034| Crystal Palace
+|:heavy_check_mark:   | 22034| Crystal Palace
 |                     | 22035| Rham's Readings
 |                     | 22036| Jonah's Retreat
 |                     | 22037| Schieffelin Hall
@@ -969,7 +969,7 @@
 |                     | 23026| John "Aces" Radcliffe (Exp.1)
 |                     | 23027| Willa Mae MacGowan (Exp.1)
 |                     | 23028| New Varney Nosferatu
-|                     | 23029| Carmichael's Livery
+|:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
 |                     | 23031| Heath's Curiosity Shoppe
 |                     | 23032| The Gem Theater
