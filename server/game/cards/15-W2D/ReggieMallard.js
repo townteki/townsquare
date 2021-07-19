@@ -13,7 +13,7 @@ class ReggieMallard extends DudeCard {
         if(!this.game.shootout) {
             return 0;
         }
-        const Posse = this.game.shootout.getPosseByPlayer(this.controller);
+        const posse = this.game.shootout.getPosseByPlayer(this.controller);
 
         if(Posse) {
             // Check if there are more than 4 hucksters in the posse, and if so, return 4, otherwise return the number of hucksters in the posse
