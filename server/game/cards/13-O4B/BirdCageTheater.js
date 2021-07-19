@@ -12,7 +12,7 @@ class BirdCageTheater extends DeedCard {
                 cardType: ['dude']
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} to lead a job to reduce {2}\'s control of the town', context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to lead a job to reduce {2}\'s CP to 0', context.player, this, context.target),
             onSuccess: (job) => {
                 job.mark.modifyControl(-job.mark.control);
                 this.modifyControl(1);
