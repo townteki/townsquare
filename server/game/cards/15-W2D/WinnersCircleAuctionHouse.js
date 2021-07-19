@@ -10,25 +10,16 @@ class WinnersCircleAuctionHouse extends DeedCard {
     }
 
     dudeCheck() {
-        let controllerDudeCount = 0;
-        let oppDudeCount = 0;
-
         const gameLocation = this.getGameLocation();
         if(!gameLocation) {
             return 0;
         }
-
-        const controllerDudes = gameLocation.getDudes().find(dude => dude.controller === this.controller);
-        if(controllerDudes) {
-            controllerDudeCount = 1;
-        }
-
-        const oppDudes = gameLocation.getDudes().find(dude => dude.controller === this.controller.getOpponent());
-        if(oppDudes) {
-            oppDudeCount = 1;
-        }
-
-        return controllerDudeCount + oppDudeCount;
+        return this.game.getPlayers().reduce((aggregate, player) => {
+            if(gameLocation.getDudes().find(dude => dude.controller === player)) {
+                return aggregate + 1;
+            }
+            return aggregate;
+        }, 0);
     }
 }
 
