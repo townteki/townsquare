@@ -70,6 +70,10 @@ class DudeCard extends DrawCard {
     }
 
     getStat(statName) {
+        if(statName.startsWith('skill:')) {
+            const skillName = statName.split(':')[1];
+            return this.getSkillRating(skillName);
+        }
         switch(statName) {
             // TODO M2 need to separate general influence and influence for controling deeds
             case 'influence': 
@@ -475,14 +479,28 @@ class DudeCard extends DrawCard {
         return this.tokens[Tokens.bounty] || 0;
     }
 
-    increaseBounty(amount = 1) {
-        this.modifyToken(Tokens.bounty, amount);
-        this.game.raiseEvent('onCardBountyChanged', { card: this, amount: amount });
+    increaseBounty(amount = 1, max = 999) {
+        if(amount <= 0 || this.bounty >= max) {
+            return;
+        }
+        let realAmount = amount;
+        if(this.bounty + amount > max) {
+            realAmount = max - this.bounty;
+        }
+        this.modifyToken(Tokens.bounty, realAmount);
+        this.game.raiseEvent('onCardBountyChanged', { card: this, amount: realAmount });
     }
 
-    decreaseBounty(amount = 1) {
-        this.modifyToken(Tokens.bounty, amount * -1);
-        this.game.raiseEvent('onCardBountyChanged', { card: this, amount: amount * -1 });
+    decreaseBounty(amount = 1, min = 0) {
+        if(amount <= 0 || this.bounty <= min) {
+            return;
+        }
+        let realAmount = amount;
+        if(this.bounty - amount < min) {
+            realAmount = this.bounty - min;
+        }
+        this.modifyToken(Tokens.bounty, realAmount * -1);
+        this.game.raiseEvent('onCardBountyChanged', { card: this, amount: realAmount * -1 });
     }
 
     collectBounty(player) {
