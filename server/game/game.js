@@ -100,6 +100,10 @@ class Game extends EventEmitter {
         this.pushAbilityContext({ resolutionStage: 'framework' });
     }
 
+    isLegacy() {
+        this.restrictedList.cardSet === 'original';
+    }
+
     reportError(e) {
         this.router.handleError(this, e);
     }

@@ -5,16 +5,25 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         super(game, activePromptTitle, playerNameOrder);
         this.name = name;
         this.playWindowOpened = false;
+        this.orderPassed = true;
         this.onDone = (player) => {
             if(player !== this.currentPlayer) {
                 return false;
             }
             if(player.unscriptedCardPlayed && player.unscriptedCardPlayed.location === 'being played') {
-                player.moveCard(player.unscriptedCardPlayed, 'discard pile');
+                if(player.unscriptedCardPlayed.hasKeyword('technique') && player.unscriptedCardPlayed.isTaoTechnique()) {
+                    const kfDude = player.unscriptedPull ? player.unscriptedPull.pullingDude : null;
+                    const isSuccessful = player.unscriptedPull ? player.unscriptedPull.isSuccessful : null;
+                    player.handleTaoTechniques(player.unscriptedCardPlayed, kfDude, isSuccessful);
+                } else {
+                    player.moveCard(player.unscriptedCardPlayed, 'discard pile');
+                }
             }
             if(player) {
                 player.unscriptedCardPlayed = null;
+                player.unscriptedPull = null;
             }
+            this.orderPassed = true;
             this.nextPlayer();
         };
         this.onPass = (player) => {
@@ -24,6 +33,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
             if(player) {
                 player.unscriptedCardPlayed = null;
             }
+            this.orderPassed = true;
             this.completePlayer();
         };
     }
@@ -62,6 +72,11 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
                 this.game.currentPlayWindow = this;
                 this.playWindowOpened = true;
                 this.game.raiseEvent('onPlayWindowOpened', { playWindow: this });
+            } else {
+                if(!this.game.isLegacy() && this.name === 'shootout plays' && this.orderPassed) {
+                    this.currentPlayer.checkAndPerformCombo();
+                }
+                this.orderPassed = false;
             }
         } else {
             this.game.currentPlayWindow = null;
