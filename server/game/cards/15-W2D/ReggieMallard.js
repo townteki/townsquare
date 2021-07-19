@@ -17,7 +17,8 @@ class ReggieMallard extends DudeCard {
 
         if(Posse) {
             // Check if there are more than 4 hucksters in the posse, and if so, return 4, otherwise return the number of hucksters in the posse
-            return (Posse.getDudes(dude => dude.hasKeyword('huckster')).length > 4) ? 4 : Posse.getDudes(dude => dude.hasKeyword('huckster')).length;
+            const hucksters = Posse.getDudes(dude => dude.hasKeyword('huckster'));
+            return (hucksters.length > 4) ? 4 : hucksters.length;
         }
         return 0;
     }
