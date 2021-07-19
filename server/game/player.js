@@ -617,6 +617,41 @@ class Player extends Spectator {
         return true;
     }
 
+    getPossibleComboCard() {
+        let kfDudes = this.cardsInPlay.filter(card => card.getType() === 'dude' && card.isKungFu());
+        if(this.game.shootout) {
+            kfDudes = kfDudes.filter(dude => dude.isParticipating());
+        }
+        if(!kfDudes) {
+            return;
+        }
+        for(let kfDude of kfDudes) {
+            let techniqueCards = kfDude.getAttachmentsByKeywords(['technique']);
+            if(techniqueCards && techniqueCards.length > 0) {
+                return techniqueCards.find(techCard => techCard.isTaoTechnique() && !techCard.booted);
+            }
+        }
+    }
+
+    checkAndPerformCombo() {
+        const comboCard = this.getPossibleComboCard();
+        if(!comboCard) {
+            return;
+        }
+        this.bootCard(comboCard);
+        const comboAbility = comboCard.getComboAbility();
+        if(!comboAbility) {
+            return;
+        }
+        comboAbility.performCombo({
+            game: this.game,
+            player: this,
+            kfDude: comboCard.parent,
+            comboNumber: comboCard.parent.getAttachmentsByKeywords(['technique']).length - 1,
+            source: comboCard
+        });  
+    }
+
     isAllowed(card, triggerPlayer = 'controller') {
         if(triggerPlayer === 'any') {
             return true;
@@ -880,12 +915,15 @@ class Player extends Spectator {
     }
 
     canAttach(attachment, card, playingType) {
-        if(!attachment || !card) {
+        if(!attachment || !card || card === attachment) {
             return false;
         }
 
-        // TODO M2 check if can be attached by discarding som other attachment (e.g. Weapon)
-        if(card.location !== 'play area' || card === attachment || !attachment.canAttach(this, card, playingType)) {
+        if(card.location !== 'play area' && playingType !== 'technique') {
+            return false;
+        }
+
+        if(!attachment.canAttach(this, card, playingType)) {
             return false;
         }
 
@@ -1286,6 +1324,30 @@ class Player extends Spectator {
             this.aceCard(card);
         } else {
             this.moveCard(card, 'discard pile', { isPull: true });
+        }
+    }
+
+    handleTaoTechniques(technique, kfDude, isSuccessful) {
+        const eventHandler = () => {
+            if(technique.location === 'being played' || technique.parent === kfDude) {
+                technique.owner.moveCard(technique, technique.actionPlacementLocation);
+            }
+        };
+        if(!this.game.isLegacy()) {
+            this.attach(technique, kfDude, 'technique', () => {
+                if(!isSuccessful) {
+                    this.bootCard(technique);
+                }
+            });
+        }
+        if(this.game.shootout) {
+            this.game.once('onPlayWindowClosed', eventHandler);
+            this.game.once('onShootoutPhaseFinished', () => {
+                eventHandler();
+                this.game.removeListener('onPlayWindowClosed', eventHandler);
+            });            
+        } else {
+            this.game.once('onPhaseEnded', eventHandler);
         }
     }
 
