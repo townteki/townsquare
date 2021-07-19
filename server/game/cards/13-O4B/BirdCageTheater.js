@@ -17,7 +17,7 @@ class BirdCageTheater extends DeedCard {
                 job.mark.modifyControl(-job.mark.control);
                 this.modifyControl(1);
                 this.modifyProduction(1);
-                this.game.addMessage('{0} uses {1} to reduce {2}\'s CP to 0 and {1} gains a permanent +1 CP and GR', this.controller, this, job.mark);
+                this.game.addMessage('{0} uses {1} to reduce {2}\'s CP to 0 and {1} gains a permanent +1 CP and +1 production', this.controller, this, job.mark);
             }
         });
     }
