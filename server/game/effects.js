@@ -1060,6 +1060,19 @@ const Effects = {
             }
         };
     },
+    setGritFunc: function(func) {
+        return {
+            apply: function(card, context) {
+                context.setGritFunc = context.setGritFunc || {};
+                context.setGritFunc[card.uuid] = card.gritFunc;
+                card.gritFunc = func;
+            },
+            unapply: function(card, context) {
+                card.gritFunc = context.setGritFunc[card.uuid];
+                delete context.setGritFunc[card.uuid];
+            }
+        };
+    },
     reduceCost: function(properties) {
         return {
             targetType: 'player',
