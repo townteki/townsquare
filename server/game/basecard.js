@@ -730,6 +730,10 @@ class BaseCard {
         return cardText.includes(text.toLowerCase());
     }
 
+    isScripted() {
+        return this.cardData.scripted;
+    }
+
     get gamelocation() {
         if(this.location !== 'play area') {
             return '';
@@ -1008,7 +1012,7 @@ class BaseCard {
             menu: this.getMenu(activePlayer),
             new: this.new,
             production: this.production,
-            scripted: this.cardData.scripted,
+            scripted: this.isScripted(),
             suit: this.suit,
             title: this.title,
             tokens: this.tokens,
