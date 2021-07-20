@@ -897,6 +897,8 @@ const Effects = {
         playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout'),
     onlyShooterContributes:
         playerOptionEffect('onlyShooterContributes', 'Only shooter contributes'),
+    otherDudesCannotJoin:
+        playerOptionEffect('otherDudesCannotJoin', 'Other dudes cannot join posse'),
     modifyPosseStudBonus: function(amount) {
         return {
             title: `Stud Bonus modified: ${amount}`,

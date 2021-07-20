@@ -32,10 +32,13 @@ class LorenaCorbett extends DudeCard {
                         activePromptTitle: 'Select mystical goods',
                         waitingPromptTitle: 'Waiting for opponent to select mystical goods',
                         cardCondition: card => mysticalGoods.includes(card),
-                        cardType: 'dude',
+                        cardType: 'goods',
+                        gameAction: 'boot',
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.bootCard({ card }), context).thenExecute(() => {
-                                this.game.addMessage('{0} uses {1} and boots {2} to boot {3}', context.player, this, card, context.target);
+                                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
+                                    this.game.addMessage('{0} uses {1} and boots {2} to boot {3}', context.player, this, card, context.target);
+                                });
                             });
                             return true;
                         },
