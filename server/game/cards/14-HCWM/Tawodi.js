@@ -10,7 +10,7 @@ class Tawodi extends DudeCard {
             cost: ability.costs.bootSelf(),
             target: 'townsquare',
             message: context => {
-                this.game.addMessage('{0} uses {1} to start a job marking {2}.', context.player, this, context.target);
+                this.game.addMessage('{0} uses {1} to start a job marking {2}', context.player, this, context.target);
             },
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(
