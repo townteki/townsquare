@@ -11,10 +11,20 @@ class TheAngler extends DudeCard {
                 cardCondition: card => card.locationCard === this.locationCard && card.value === this.value && card.getType() === 'dude' && card.controller !== this.controller
             },
             message: context => {
-                this.game.addMessage('{0} uses {1} to call out {2}', this.controller, this, context.target)
+                this.game.addMessage('{0} uses {1} to call out {2}', this.controller, this, context.target);
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.callOut({ caller: this, callee: context.target }), context);
+            }
+        });
+
+        this.action({
+            title: 'Change Value',
+            playType: 'noon',
+            cost: ability.costs.discardFromHand(),
+            handler: context => {
+                this.value === context.costs.discardFromHand.value;
+                this.game.addMessage('{0} uses {1} to change {1}\'s value to {2}', context.player, this, context.costs.discardFromHand.value);
             }
         });
     }
