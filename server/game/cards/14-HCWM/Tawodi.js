@@ -26,15 +26,7 @@ class Tawodi extends DudeCard {
                             format: '{player} plays {source} to search their discard pile, but does not find a dude or deed'
                         },
                         handler: card => {
-                            if(card.cost >= 3) {
-                                this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(2), context.player, card);
-                            }
-                            if(card.cost === 2) {
-                                this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(1), context.player, card);
-                            }
-                            if(card.cost === 1) {
-                                this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(0), context.player, card);
-                            }
+                            this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(2, 1), context.player, card);
                         }
                     }),
                     context
