@@ -52,8 +52,8 @@ class Fort51 extends OutfitCard {
                     title: 'Do you want to discard a card?',
                     onYes: () => {
                         context.player.discardFromHand(1, discarded => {
-                            this.game.addMessage('{0} uses {1} to discard {2}', context.player, this, discarded)
-                        },   { title: this.title });
+                            this.game.addMessage('{0} uses {1} to discard {2}', context.player, this, discarded);
+                        }, { title: this.title });
                     }
                 });
             }
