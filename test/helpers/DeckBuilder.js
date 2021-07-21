@@ -104,12 +104,6 @@ class DeckBuilder {
             throw new Error(`Unable to find any card matching ${codeOrLabelOrName}`);
         }
 
-        if(cardsByTitle.length > 1) {
-            cardsByTitle.sort((a, b) => a.releaseDate < b.releaseDate ? -1 : 1);
-            let matchingLabels = cardsByTitle.map(card => `${card.title} (${card.pack_code})`).join('\n');
-            console.warn(`Multiple cards match the name ${codeOrLabelOrName}. Use one of these instead:\n${matchingLabels}`);
-        }
-
         return cardsByTitle[0];
     }
 }

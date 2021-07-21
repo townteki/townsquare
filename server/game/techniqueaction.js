@@ -37,7 +37,9 @@ class TechniqueAction extends CardAction {
         if(properties.combo) {
             this.combo = properties.combo;
             this.options = this.options || {};
-            this.options.doNotMarkActionAsTaken = true;
+            if(this.game.isLegacy()) {
+                this.options.doNotMarkActionAsTaken = true;
+            }
         }
     }
 
@@ -63,8 +65,9 @@ class TechniqueAction extends CardAction {
         super.executeHandler(context);
         context.player.pullForKungFu(context.difficulty, {
             successHandler: context => {
+                context.pull.isSuccessful = true;
                 this.onSuccess(context);
-                if(this.combo) {
+                if(this.combo && this.game.isLegacy()) {
                     this.game.queueSimpleStep(() => {
                         if(this.combo(context)) {
                             this.performCombo(context);
@@ -75,9 +78,12 @@ class TechniqueAction extends CardAction {
                 }
             },
             failHandler: context => {
+                context.pull.isSuccessful = false;
                 this.onFail(context);
-                if(this.combo) {
-                    this.game.queueSimpleStep(() => this.game.markActionAsTaken(context));                 
+                if(this.game.isLegacy()) {
+                    if(this.combo) {
+                        this.game.queueSimpleStep(() => this.game.markActionAsTaken(context));                 
+                    }
                 }
             },
             pullingDude: context.kfDude,
@@ -143,7 +149,7 @@ class TechniqueAction extends CardAction {
         context.comboNumber = context.comboNumber || 0;
         if(context.comboNumber < context.kfDude.getKungFuRating()) {
             this.game.promptForYesNo(context.player, {
-                title: `Do you want to combo (${context.comboNumber + 1}.)?`,
+                title: `Do you want to combo (${context.comboNumber + 1})?`,
                 onYes: player => {
                     context.comboNumber += 1;
                     this.game.promptForSelect(player, {
@@ -153,21 +159,36 @@ class TechniqueAction extends CardAction {
                             card.hasKeyword('technique') &&
                             card.code !== this.card.code &&
                             card.isSameTao(this.card) &&
-                            card.hasEnabledCardAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber }),
+                            (!card.isScripted() ||
+                            card.hasEnabledCardAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber })),
                         cardType: 'action',
                         onSelect: (player, card) => {
-                            this.game.addMessage('{0} is performing a combo {1} by {2}', player, card, context.kfDude);
-                            card.useAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber });
+                            if(!card.isScripted()) {
+                                this.game.addAlert('warning', '{0} is playing unscripted {1}', player, card);
+                                player.moveCard(card, 'being played');
+                                player.unscriptedCardPlayed = card;
+                                player.unscriptedPull = {
+                                    pullingDude: card
+                                };
+                            } else {
+                                this.game.addMessage('{0} is performing a combo {1} by {2}', player, card, context.kfDude);
+                                card.useAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber });
+                            }
                             return true;
                         },
                         onCancel: () => {
-                            this.game.markActionAsTaken(context);
+                            if(this.game.isLegacy()) {
+                                this.game.markActionAsTaken(context);
+                            }
                         }
                     });
                 },
                 onNo: () => {
-                    this.game.markActionAsTaken(context);
-                }
+                    if(this.game.isLegacy()) {
+                        this.game.markActionAsTaken(context);
+                    }
+                },
+                source: this.card
             });  
         }      
     }
