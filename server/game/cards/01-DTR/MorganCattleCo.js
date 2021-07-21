@@ -22,7 +22,7 @@ class MorganCattleCo extends OutfitCard {
             },
             handler: context => {
                 let bootedDude = context.costs.boot;
-                this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(bootedDude.influence, () => {
+                this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(bootedDude.influence, 0, () => {
                     if(context.target.location === 'play area') {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: bootedDude, 
