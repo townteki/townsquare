@@ -537,6 +537,7 @@ const Effects = {
     dynamicInfluence: dynamicStatModifier('influence'),
     dynamicValue: dynamicStatModifier('value'),
     dynamicProduction: dynamicStatModifier('production'),
+    dynamicControl: dynamicStatModifier('control'),
     dynamicUpkeep: dynamicStatModifier('upkeep'),
     modifyHandSize: function(value) {
         return {
