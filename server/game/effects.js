@@ -281,11 +281,28 @@ const Effects = {
     determineControlByBullets: function() {
         return {
             title: 'Control Determinator: Bullets',
-            apply: function(card) {
+            apply: function(card, context) {
+                context.controlDeterminator = context.controlDeterminator || {};
+                context.controlDeterminator[card.uuid] = card.controlDeterminator;
                 card.controlDeterminator = 'bullets';
             },
-            unapply: function(card) {
-                card.controlDeterminator = 'influence:deed';
+            unapply: function(card, context) {
+                card.controlDeterminator = context.controlDeterminator[card.uuid];
+                delete context.controlDeterminator[card.uuid];
+            }
+        };
+    }, 
+    determineControlBySkill: function(skillName) {
+        return {
+            title: `Control Determinator: Skill - ${skillName}`,
+            apply: function(card, context) {
+                context.controlDeterminator = context.controlDeterminator || {};
+                context.controlDeterminator[card.uuid] = card.controlDeterminator;
+                card.controlDeterminator = `skill:${skillName}`;
+            },
+            unapply: function(card, context) {
+                card.controlDeterminator = context.controlDeterminator[card.uuid];
+                delete context.controlDeterminator[card.uuid];
             }
         };
     }, 
