@@ -8,7 +8,8 @@ class TheAngler extends DudeCard {
             playType: 'noon',
             target: {
                 location: 'play area',
-                cardCondition: card => card.locationCard === this.locationCard && card.value === this.value && card.getType() === 'dude' && card.controller !== this.controller
+                cardCondition: card => this.isInSameLocation(card) && card.value === this.value && card.getType() === 'dude' && card.controller !== this.controller,
+                gameAction: 'callout',
             },
             message: context => {
                 this.game.addMessage('{0} uses {1} to call out {2}', this.controller, this, context.target);
