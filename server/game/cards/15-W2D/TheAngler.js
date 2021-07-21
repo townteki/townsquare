@@ -23,7 +23,10 @@ class TheAngler extends DudeCard {
             playType: 'noon',
             cost: ability.costs.discardFromHand(),
             handler: context => {
-                this.value === context.costs.discardFromHand.value;
+                this.applyAbilityEffect(context.ability, ability => ({
+                    match: this,
+                    effect: ability.effects.setValue(context.costs.discardFromHand.value)
+                }));                
                 this.game.addMessage('{0} uses {1} to change {1}\'s value to {2}', context.player, this, context.costs.discardFromHand.value);
             }
         });
