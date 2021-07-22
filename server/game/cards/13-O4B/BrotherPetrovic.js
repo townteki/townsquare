@@ -10,13 +10,11 @@ class BrotherPetrovic extends DudeCard {
             },
             handler: context => {
                 let opponent = context.player.getOpponent();
-
-                if(opponent.ghostrock >= 2) {
-                    context.player.modifyGhostRock(2);
-                    opponent.modifyGhostRock(-2);
-                    this.game.addMessage('{0} uses {1} to force {2} to pay them 2 GR', context.player, this, opponent);
+                if(opponent.ghostrock >= this.influence) {
+                    this.game.transferGhostRock({from: opponent, to: context.player, amount: this.influence});
+                    this.game.addMessage('{0} uses {1} to force {2} to pay them {3} GR', context.player, this, opponent, this.influence);
                 } else {
-                    this.game.addMessage('{0} tries to use {1} to force {2} to pay them 2 GR but {2} is too poor', context.player, this, opponent);
+                    this.game.addMessage('{0} tries to use {1} to force {2} to pay them {3} GR but {2} is too poor', context.player, this, opponent, this.influence);
                 }
             }
         });
