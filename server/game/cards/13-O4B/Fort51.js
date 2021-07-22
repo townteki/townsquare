@@ -15,8 +15,9 @@ class Fort51 extends OutfitCard {
                     cardType: 'dude',
                     gameAction: 'addBounty',
                     onSelect: (player, card) => {
-                        this.game.resolveGameAction(GameActions.addBounty({ card, amount: 1 }), context);
-                        this.game.addMessage('{0} gives {1} 1 bounty thanks to {2}', player, card, this);
+                        this.game.resolveGameAction(GameActions.addBounty({ card, amount: 1 }), context).thenExecute(() => {
+                            this.game.addMessage('{0} gives {1} 1 bounty thanks to {2}', player, card, this);
+                        });
                         return true;
                     }
                 });
@@ -45,7 +46,7 @@ class Fort51 extends OutfitCard {
                     card: context.target, amount: 1
                 })).thenExecute(() => {
                     context.player.modifyGhostRock(1);
-                    this.game.addMessage('{0} uses {1} to boot {2}, take 1 bounty from {3} and gain 1 GR', context.player, this, context.costs.boot, context.target);
+                    this.game.addMessage('{0} uses {1} to boot {2}, take 1 bounty from {3}, and gain 1 GR', context.player, this, context.costs.boot, context.target);
                 });
 
                 this.game.promptForYesNo(context.player, {
