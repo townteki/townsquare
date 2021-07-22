@@ -34,8 +34,8 @@ class Fort51 extends OutfitCard {
                 waitingPromptTitle: 'Waiting for opponent to select a dude',
                 cardCondition: { 
                     location: 'play area', 
-                    condition: card =>
-                        card.controller !== this.controller && card.isWanted()
+                    controller: 'opponent',
+                    wanted: true
                 },
                 cardType: ['dude'],
                 gameAction: 'removeBounty'
