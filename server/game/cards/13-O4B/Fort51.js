@@ -8,7 +8,7 @@ class Fort51 extends OutfitCard {
                 onGadgetInvented: event => event.gadget.hasKeyword('Weapon') || event.gadget.getType() === 'dude' && event.player === this.controller
             },
             handler: context => {
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' && card.controller !== this.controller && card.influence < context.event.gadget.cost,
