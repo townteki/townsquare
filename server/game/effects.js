@@ -278,6 +278,18 @@ const Effects = {
             }
         };
     },
+    increaseMaxCheatin: function(value) {
+        return {
+            title: `Increase Cheatin' plays by ${value}`,
+            targetType: 'player',
+            apply: function(player) {
+                player.maxAllowedCheatin += value;
+            },
+            unapply: function(player) {
+                player.maxAllowedCheatin -= value;
+            }
+        };
+    },
     determineControlByBullets: function() {
         return {
             title: 'Control Determinator: Bullets',
