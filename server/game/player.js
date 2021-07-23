@@ -1815,6 +1815,10 @@ class Player extends Spectator {
         return this.options.contains('onlyShooterContributes');
     }
 
+    otherDudesCannotJoin() {
+        return this.options.contains('otherDudesCannotJoin');        
+    }
+
     getState(activePlayer) {
         let isActivePlayer = activePlayer === this;
         let promptState = isActivePlayer ? this.promptState.getState() : {};

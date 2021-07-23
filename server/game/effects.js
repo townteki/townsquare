@@ -278,6 +278,18 @@ const Effects = {
             }
         };
     },
+    increaseMaxCheatin: function(value) {
+        return {
+            title: `Increase Cheatin' plays by ${value}`,
+            targetType: 'player',
+            apply: function(player) {
+                player.maxAllowedCheatin += value;
+            },
+            unapply: function(player) {
+                player.maxAllowedCheatin -= value;
+            }
+        };
+    },
     determineControlByBullets: function() {
         return {
             title: 'Control Determinator: Bullets',
@@ -915,6 +927,8 @@ const Effects = {
         playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout'),
     onlyShooterContributes:
         playerOptionEffect('onlyShooterContributes', 'Only shooter contributes'),
+    otherDudesCannotJoin:
+        playerOptionEffect('otherDudesCannotJoin', 'Other dudes cannot join posse'),
     modifyPosseStudBonus: function(amount) {
         return {
             title: `Stud Bonus modified: ${amount}`,
@@ -1075,6 +1089,19 @@ const Effects = {
             },
             unapply: function(card) {
                 card.checkWeaponLimit = savedFunc;
+            }
+        };
+    },
+    setGritFunc: function(func) {
+        return {
+            apply: function(card, context) {
+                context.setGritFunc = context.setGritFunc || {};
+                context.setGritFunc[card.uuid] = card.gritFunc;
+                card.gritFunc = func;
+            },
+            unapply: function(card, context) {
+                card.gritFunc = context.setGritFunc[card.uuid];
+                delete context.setGritFunc[card.uuid];
             }
         };
     },

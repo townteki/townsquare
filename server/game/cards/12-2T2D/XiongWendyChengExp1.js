@@ -29,7 +29,7 @@ class XiongWendyChengExp1 extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.sendHome({ card: context.target }), context);
-                if(context.target.bounty > context.target.getGrit()) {
+                if(context.target.bounty > context.target.getGrit(context)) {
                     this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context).thenExecute(() => {
                         this.game.addMessage('{0} uses {1} to send {2} home booted and discards them', context.player, this, context.target);
                     });
