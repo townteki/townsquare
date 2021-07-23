@@ -33,7 +33,7 @@ class RedHorsesTail extends SpellCard {
                 cardType: ['dude'],
                 gameAction: ['sendHome', 'boot']
             },
-            difficulty: context => context.target.getGrit(),
+            difficulty: context => context.target.getGrit(context),
             onSuccess: (context) => {
                 this.game.shootout.sendHome(context.target, context)
                     .thenExecute(() => this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, context.target));

@@ -293,11 +293,28 @@ const Effects = {
     determineControlByBullets: function() {
         return {
             title: 'Control Determinator: Bullets',
-            apply: function(card) {
+            apply: function(card, context) {
+                context.controlDeterminator = context.controlDeterminator || {};
+                context.controlDeterminator[card.uuid] = card.controlDeterminator;
                 card.controlDeterminator = 'bullets';
             },
-            unapply: function(card) {
-                card.controlDeterminator = 'influence:deed';
+            unapply: function(card, context) {
+                card.controlDeterminator = context.controlDeterminator[card.uuid];
+                delete context.controlDeterminator[card.uuid];
+            }
+        };
+    }, 
+    determineControlBySkill: function(skillName) {
+        return {
+            title: `Control Determinator: Skill - ${skillName}`,
+            apply: function(card, context) {
+                context.controlDeterminator = context.controlDeterminator || {};
+                context.controlDeterminator[card.uuid] = card.controlDeterminator;
+                card.controlDeterminator = `skill:${skillName}`;
+            },
+            unapply: function(card, context) {
+                card.controlDeterminator = context.controlDeterminator[card.uuid];
+                delete context.controlDeterminator[card.uuid];
             }
         };
     }, 
@@ -532,6 +549,7 @@ const Effects = {
     dynamicInfluence: dynamicStatModifier('influence'),
     dynamicValue: dynamicStatModifier('value'),
     dynamicProduction: dynamicStatModifier('production'),
+    dynamicControl: dynamicStatModifier('control'),
     dynamicUpkeep: dynamicStatModifier('upkeep'),
     modifyHandSize: function(value) {
         return {
@@ -909,6 +927,8 @@ const Effects = {
         playerOptionEffect('dudesCannotFlee', 'Dudes cannot flee shootout'),
     onlyShooterContributes:
         playerOptionEffect('onlyShooterContributes', 'Only shooter contributes'),
+    otherDudesCannotJoin:
+        playerOptionEffect('otherDudesCannotJoin', 'Other dudes cannot join posse'),
     modifyPosseStudBonus: function(amount) {
         return {
             title: `Stud Bonus modified: ${amount}`,
@@ -1069,6 +1089,19 @@ const Effects = {
             },
             unapply: function(card) {
                 card.checkWeaponLimit = savedFunc;
+            }
+        };
+    },
+    setGritFunc: function(func) {
+        return {
+            apply: function(card, context) {
+                context.setGritFunc = context.setGritFunc || {};
+                context.setGritFunc[card.uuid] = card.gritFunc;
+                card.gritFunc = func;
+            },
+            unapply: function(card, context) {
+                card.gritFunc = context.setGritFunc[card.uuid];
+                delete context.setGritFunc[card.uuid];
             }
         };
     },
