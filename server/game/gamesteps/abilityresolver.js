@@ -84,7 +84,7 @@ class AbilityResolver extends BaseStep {
     }
 
     markActionAsTaken() {
-        if(this.cancelled || this.ability.options.doNotMarkActionAsTaken) {
+        if((this.cancelled && this.cancelReason !== 'ifCondition') || this.ability.options.doNotMarkActionAsTaken) {
             return;
         }
         if(this.ability.isAction()) {
@@ -153,6 +153,7 @@ class AbilityResolver extends BaseStep {
 
         if(this.ability.ifCondition && !this.ability.ifCondition(this.context)) {
             this.cancelled = true;
+            this.cancelReason = 'ifCondition';
             let formattedCancelMessage = AbilityMessage.create(this.ability.ifFailMessage || '{player} uses {source} but fails to meet requirements');
             formattedCancelMessage.output(this.game, this.context);
             this.ability.usage.increment();
@@ -241,7 +242,8 @@ class AbilityResolver extends BaseStep {
         if(this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
                 if(this.context.source.isTaoTechnique && this.context.source.isTaoTechnique()) {
-                    this.handleTaoTechniques();
+                    this.context.player.handleTaoTechniques(this.context.source, this.context.kfDude, this.context.pull.isSuccessful);
+                    this.context.ability.resetKfOptions();
                 } else {
                     this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
                 }
@@ -263,24 +265,6 @@ class AbilityResolver extends BaseStep {
         if(this.ability.isCardAbility()) {
             this.game.raiseEvent('onCardAbilityResolved', { ability: this.ability, context: this.context });
         }
-    }
-
-    handleTaoTechniques() {
-        const eventHandler = () => {
-            if(this.context.source.location === 'being played') {
-                this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
-            }
-        };
-        if(this.game.shootout) {
-            this.game.once('onPlayWindowClosed', eventHandler);
-            this.game.once('onShootoutPhaseFinished', () => {
-                eventHandler();
-                this.game.removeListener('onPlayWindowClosed', eventHandler);
-            });            
-        } else {
-            this.game.once('onPhaseEnded', eventHandler);
-        }
-        this.context.ability.resetKfOptions();
     }
 }
 

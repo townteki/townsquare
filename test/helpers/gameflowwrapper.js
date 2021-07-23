@@ -21,6 +21,7 @@ class GameFlowWrapper {
         };
         this.game = new Game(details, { router: gameRouter });
         this.game.started = true;
+        this.game.isLegacy = () => false;
 
         this.allPlayers = this.game.getPlayers().map(player => new PlayerInteractionWrapper(this.game, player));
         this.playerToPlayerWrapperIndex = this.allPlayers.reduce((index, playerWrapper) => {

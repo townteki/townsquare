@@ -231,7 +231,10 @@ class DrawCard extends BaseCard {
             return false;
         }
 
-        if((this.getType() !== 'goods') && (this.getType() !== 'spell') && (this.getType() !== 'action' || !this.hasKeyword('condition'))) {
+        if(this.getType() !== 'goods' && this.getType() !== 'spell' && this.getType() !== 'action') {
+            return false;
+        }
+        if(this.getType() === 'action' && !this.hasKeyword('condition') && !this.hasKeyword('technique')) {
             return false;
         }
         if(card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {

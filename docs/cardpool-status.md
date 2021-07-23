@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/331/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/345/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -824,10 +824,10 @@
 |                     | 21003| Bayou Vermilion Railroad
 |                     | 21004| Fort 51
 |                     | 21005| Smith & Robards Trade Show
-|                     | 21006| Jonah's Alliance
+|:heavy_check_mark:   | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
 |                     | 21008| Ke Wang
-|                     | 21009| Baijiu Sue
+|:heavy_check_mark:   | 21009| Baijiu Sue
 |                     | 21010| Reverend Bob Hungate
 |                     | 21011| Father Diamond
 |                     | 21012| Master Shou
@@ -835,12 +835,12 @@
 |                     | 21014| Leychaa'i Youngheart
 |                     | 21015| Monomi Miles
 |                     | 21016| Klah
-|                     | 21017| Black Elk (Exp.1)
+|:heavy_check_mark:   | 21017| Black Elk (Exp.1)
 |                     | 21018| Nathaniel Tuwikaa
 |                     | 21019| The Faceless One
-|                     | 21020| Lorena Corbett
+|:heavy_check_mark:   | 21020| Lorena Corbett
 |                     | 21021| Auntie Sinister
-|                     | 21022| Mason Adler
+|:heavy_check_mark:   | 21022| Mason Adler
 |                     | 21023| Enrique Dos Santos
 |                     | 21024| Reverend Endicott
 |                     | 21025| Sgt. Elijah Clay
@@ -853,13 +853,13 @@
 |                     | 21032| Johnny Ringo
 |                     | 21033| Violet Esperanza
 |                     | 21034| Curly Bill Brocius
-|                     | 21035| Byron Decker
+|:heavy_check_mark:   | 21035| Byron Decker
 |                     | 21036| Carter Richardson
 |                     | 21037| Valeria Batten (Exp.1)
 |                     | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
 |                     | 21040| Hart's Tea Shoppe
-|                     | 21041| Bird Cage Theater
+|:heavy_check_mark:   | 21041| Bird Cage Theater
 |                     | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
 |                     | 21044| Magnum Opus Tenebri
@@ -869,7 +869,7 @@
 |                     | 21048| Guiding Light
 |                     | 21049| Champion
 |                     | 21050| Malison
-|                     | 21051| Dancing Butterfly
+|:heavy_check_mark:   | 21051| Dancing Butterfly
 |                     | 21052| Ten-Foot Punch
 |                     | 21053| Fleet-Footed
 |                     | 21054| You're A Daisy If You Do
@@ -895,7 +895,7 @@
 |                     | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
 |                     | 22015| Evan Lucas
-|                     | 22016| Tawodi
+|:heavy_check_mark:   | 22016| Tawodi
 |                     | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
@@ -913,7 +913,7 @@
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
 |                     | 22033| Kiva of Fathomless Reach
-|                     | 22034| Crystal Palace
+|:heavy_check_mark:   | 22034| Crystal Palace
 |                     | 22035| Rham's Readings
 |                     | 22036| Jonah's Retreat
 |                     | 22037| Schieffelin Hall
@@ -952,7 +952,7 @@
 |                     | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
 |                     | 23011| Victor "Nines" de Boré
-|                     | 23012| The Angler
+|:heavy_check_mark:   | 23012| The Angler
 |                     | 23013| Sifting Squirrel
 |                     | 23014| Lewis "Grizzly" Evans
 |                     | 23015| "Professor" Duncan (Exp.1)
@@ -964,19 +964,19 @@
 |                     | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
-|                     | 23024| Reggie Mallard
+|:heavy_check_mark:   | 23024| Reggie Mallard
 |                     | 23025| Alferd Packer
 |                     | 23026| John "Aces" Radcliffe (Exp.1)
 |                     | 23027| Willa Mae MacGowan (Exp.1)
 |                     | 23028| New Varney Nosferatu
-|                     | 23029| Carmichael's Livery
+|:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
 |                     | 23031| Heath's Curiosity Shoppe
 |                     | 23032| The Gem Theater
 |                     | 23033| Baird's Debt Collections
 |                     | 23034| Cheyenne Club
 |                     | 23035| Nuttal & Mann's No. 10 Saloon
-|                     | 23036| Winner's Circle Auction House
+|:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
 |                     | 23038| Bulletproof Vest
 |                     | 23039| Pale Horse
