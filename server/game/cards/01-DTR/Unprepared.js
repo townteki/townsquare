@@ -29,7 +29,7 @@ class Unprepared extends ActionCard {
                         match: context.target.attachments,
                         effect: [
                             ability.effects.blankExcludingKeywords,
-                            ability.effects.setBullets(0),
+                            ability.effects.bulletBonusBlank,
                             ability.effects.cannotTriggerCardAbilities()
                         ]
                     }));                     

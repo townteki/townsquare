@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/334/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/340/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -824,7 +824,7 @@
 |                     | 21003| Bayou Vermilion Railroad
 |                     | 21004| Fort 51
 |                     | 21005| Smith & Robards Trade Show
-|                     | 21006| Jonah's Alliance
+|:heavy_check_mark:   | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
 |                     | 21008| Ke Wang
 |:heavy_check_mark:   | 21009| Baijiu Sue
@@ -835,7 +835,7 @@
 |                     | 21014| Leychaa'i Youngheart
 |                     | 21015| Monomi Miles
 |                     | 21016| Klah
-|                     | 21017| Black Elk (Exp.1)
+|:heavy_check_mark:   | 21017| Black Elk (Exp.1)
 |                     | 21018| Nathaniel Tuwikaa
 |                     | 21019| The Faceless One
 |                     | 21020| Lorena Corbett
@@ -859,7 +859,7 @@
 |                     | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
 |                     | 21040| Hart's Tea Shoppe
-|                     | 21041| Bird Cage Theater
+|:heavy_check_mark:   | 21041| Bird Cage Theater
 |                     | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
 |                     | 21044| Magnum Opus Tenebri
@@ -895,7 +895,7 @@
 |                     | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
 |                     | 22015| Evan Lucas
-|                     | 22016| Tawodi
+|:heavy_check_mark:   | 22016| Tawodi
 |                     | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
@@ -964,7 +964,7 @@
 |                     | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
-|                     | 23024| Reggie Mallard
+|:heavy_check_mark:   | 23024| Reggie Mallard
 |                     | 23025| Alferd Packer
 |                     | 23026| John "Aces" Radcliffe (Exp.1)
 |                     | 23027| Willa Mae MacGowan (Exp.1)
@@ -976,7 +976,7 @@
 |                     | 23033| Baird's Debt Collections
 |                     | 23034| Cheyenne Club
 |                     | 23035| Nuttal & Mann's No. 10 Saloon
-|                     | 23036| Winner's Circle Auction House
+|:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
 |                     | 23038| Bulletproof Vest
 |                     | 23039| Pale Horse
