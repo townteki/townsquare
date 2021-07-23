@@ -37,7 +37,12 @@ class PutIntoPlayCardAction extends BaseAbility {
     resolveCosts(context) {
         var { game, player, source } = context;
         if(this.reduceAmount) {
-            this.costReducer = new SingleCostReducer(game, player, null, { card: source, amount: this.reduceAmount, playingTypes: 'any'});
+            this.costReducer = new SingleCostReducer(game, player, null, { 
+                card: source, 
+                amount: this.reduceAmount, 
+                minimum: this.properties.minimum,
+                playingTypes: 'any'
+            });
             player.addCostReducer(this.costReducer);
         }
         return super.resolveCosts(context);
