@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/340/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/345/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -838,9 +838,9 @@
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
 |                     | 21018| Nathaniel Tuwikaa
 |                     | 21019| The Faceless One
-|                     | 21020| Lorena Corbett
+|:heavy_check_mark:   | 21020| Lorena Corbett
 |                     | 21021| Auntie Sinister
-|                     | 21022| Mason Adler
+|:heavy_check_mark:   | 21022| Mason Adler
 |                     | 21023| Enrique Dos Santos
 |                     | 21024| Reverend Endicott
 |                     | 21025| Sgt. Elijah Clay
@@ -853,7 +853,7 @@
 |                     | 21032| Johnny Ringo
 |                     | 21033| Violet Esperanza
 |                     | 21034| Curly Bill Brocius
-|                     | 21035| Byron Decker
+|:heavy_check_mark:   | 21035| Byron Decker
 |                     | 21036| Carter Richardson
 |                     | 21037| Valeria Batten (Exp.1)
 |                     | 21038| Steph & Gertie's Tonsorium
@@ -869,7 +869,7 @@
 |                     | 21048| Guiding Light
 |                     | 21049| Champion
 |                     | 21050| Malison
-|                     | 21051| Dancing Butterfly
+|:heavy_check_mark:   | 21051| Dancing Butterfly
 |                     | 21052| Ten-Foot Punch
 |                     | 21053| Fleet-Footed
 |                     | 21054| You're A Daisy If You Do
@@ -952,7 +952,7 @@
 |                     | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
 |                     | 23011| Victor "Nines" de Boré
-|                     | 23012| The Angler
+|:heavy_check_mark:   | 23012| The Angler
 |                     | 23013| Sifting Squirrel
 |                     | 23014| Lewis "Grizzly" Evans
 |                     | 23015| "Professor" Duncan (Exp.1)
