@@ -57,21 +57,23 @@ class GameLocation {
         playersStats.set(this.locationCard.controllingPlayer.name, 0);
         this.occupants.forEach(dudeUuid => {
             let dude = this.game.findCardInPlayByUuid(dudeUuid);
-            let determinator = defaultDeterminator;
-            if(dude.controlDeterminator !== 'influence:deed') {
-                determinator = dude.controlDeterminator;
-            }
-            let amount = dude.getStat(determinator);
-            if(amount > 0) {
-                let currentAmount = playersStats.get(dude.controller.name) || 0;
-                playersStats.set(dude.controller.name, currentAmount + amount);
-                if(dude.controller.name === playerWithMost.name) {
-                    currentController = dude.controller;
-                } else if(playersStats.get(dude.controller.name) > playersStats.get(playerWithMost.name)) {
-                    playerWithMost = dude.controller;
-                    currentController = dude.controller;
-                } else if(playersStats.get(dude.controller.name) === playersStats.get(playerWithMost.name)) {
-                    currentController = this.locationCard.owner;
+            if(dude) {
+                let determinator = defaultDeterminator;
+                if(dude.controlDeterminator !== 'influence:deed') {
+                    determinator = dude.controlDeterminator;
+                }
+                let amount = dude.getStat(determinator);
+                if(amount > 0) {
+                    let currentAmount = playersStats.get(dude.controller.name) || 0;
+                    playersStats.set(dude.controller.name, currentAmount + amount);
+                    if(dude.controller.name === playerWithMost.name) {
+                        currentController = dude.controller;
+                    } else if(playersStats.get(dude.controller.name) > playersStats.get(playerWithMost.name)) {
+                        playerWithMost = dude.controller;
+                        currentController = dude.controller;
+                    } else if(playersStats.get(dude.controller.name) === playersStats.get(playerWithMost.name)) {
+                        currentController = this.locationCard.owner;
+                    }
                 }
             }
         });

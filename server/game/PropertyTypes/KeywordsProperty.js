@@ -51,7 +51,7 @@ class KeywordsProperty {
     }
 
     addKeyword(keyword, isPrinted = false) {
-        let results = /([a-z A-Z]+)(\d*)$/.exec(keyword.toLowerCase().trim());  
+        let results = /([a-z A-Z-]+)(\d*)$/.exec(keyword.toLowerCase().trim());  
         if(results) {
             this.add(results[1].trim());
             if(isPrinted) {
