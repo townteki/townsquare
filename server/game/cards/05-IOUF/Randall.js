@@ -5,7 +5,7 @@ class Randall extends DudeCard {
         this.persistentEffect({
             condition: () => this.location === 'play area' &&
                 this.game.currentPhase !== 'setup' &&
-                this.getGameLocation().getDudes().length > 2,
+                this.game.getDudesAtLocation(this.gamelocation).length > 2,
             match: this.controller,
             effect: ability.effects.modifyHandSize(1)
         });

@@ -25,7 +25,7 @@ class Sentinel extends SpellCard {
                     cardCondition: { 
                         location: 'play area', 
                         condition: card => card.isAdjacent(this.gamelocation) ||
-                            card.getGameLocation().isTownSquare()
+                            this.game.isTownSquare(card.gamelocation)
                     },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
