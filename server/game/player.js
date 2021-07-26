@@ -852,7 +852,7 @@ class Player extends Spectator {
         let getPullProperties = scientist => {
             return {
                 successHandler: context => {
-                    this.game.addMessage('{0} successfuly invent {1} using the {2} ( skill rating {3})', 
+                    this.game.addMessage('{0} successfuly invents {1} using {2} ( skill rating {3})', 
                         this, gadget, scientist, context.pull.pullBonus);
                     this.game.raiseEvent('onGadgetInvented', { gadget, scientist, context }, event => {
                         successHandler(event.context, event.scientist);
@@ -860,7 +860,7 @@ class Player extends Spectator {
                 },
                 failHandler: context => {
                     this.game.raiseEvent('onGadgetInventFailed', { gadget, scientist, context });
-                    this.game.addMessage('{0} fails to invent {1} using the {2} ( skill rating {3})', 
+                    this.game.addMessage('{0} fails to invent {1} using {2} ( skill rating {3})', 
                         this, gadget, scientist, context.pull.pullBonus);
                     this.moveCard(gadget, 'discard pile');
                 },
