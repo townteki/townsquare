@@ -12,7 +12,7 @@ class SoulBlast extends SpellCard {
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude']
             },
-            difficulty: context => context.target.getGrit(),
+            difficulty: context => context.target.getGrit(context),
             onSuccess: (context) => {
                 if(context.totalPullValue - 6 >= context.difficulty) {
                     this.game.resolveGameAction(GameActions.aceCard({ card: context.target }), context)

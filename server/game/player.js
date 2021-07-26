@@ -695,8 +695,6 @@ class Player extends Spectator {
     }
 
     canControl(card) {
-        let owner = card.owner;
-
         if(!card.isUnique()) {
             return true;
         }
@@ -705,23 +703,11 @@ class Player extends Spectator {
             return false;
         }
 
-        if(owner === this) {
-            let controlsAnOpponentsCopy = this.anyCardsInPlay(c => c.title === card.title && c.owner !== this && !c.facedown);
-            let opponentControlsOurCopy = this.game.getPlayers().some(player => {
-                return player !== this && player.anyCardsInPlay(c => c.title === card.title && c.owner === this && c !== card && !c.facedown);
-            });
-
-            return !controlsAnOpponentsCopy && !opponentControlsOurCopy;
+        if(card.owner === this) {
+            return !this.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
         }
 
-        if(owner.isAced(card)) {
-            return false;
-        }
-
-        let controlsACopy = this.anyCardsInPlay(c => c.title === card.title && !c.facedown);
-        let opponentControlsACopy = owner.anyCardsInPlay(c => c.title === card.title && c !== card && !c.facedown);
-
-        return !controlsACopy && !opponentControlsACopy;
+        return true;
     }
 
     putIntoPlay(card, params = {}) {
@@ -866,7 +852,7 @@ class Player extends Spectator {
         let getPullProperties = scientist => {
             return {
                 successHandler: context => {
-                    this.game.addMessage('{0} successfuly invent {1} using the {2} ( skill rating {3})', 
+                    this.game.addMessage('{0} successfuly invents {1} using {2} ( skill rating {3})', 
                         this, gadget, scientist, context.pull.pullBonus);
                     this.game.raiseEvent('onGadgetInvented', { gadget, scientist, context }, event => {
                         successHandler(event.context, event.scientist);
@@ -874,7 +860,7 @@ class Player extends Spectator {
                 },
                 failHandler: context => {
                     this.game.raiseEvent('onGadgetInventFailed', { gadget, scientist, context });
-                    this.game.addMessage('{0} fails to invent {1} using the {2} ( skill rating {3})', 
+                    this.game.addMessage('{0} fails to invent {1} using {2} ( skill rating {3})', 
                         this, gadget, scientist, context.pull.pullBonus);
                     this.moveCard(gadget, 'discard pile');
                 },
@@ -928,7 +914,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(card.getGameLocation().determineController() !== this) {
+            if(!card.locationCard || card.locationCard.controller !== this) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
@@ -1207,6 +1193,9 @@ class Player extends Spectator {
 
     removeDeedFromPlay(card, dudeAction) {
         const gameLocation = card.getGameLocation();
+        if(!gameLocation) {
+            return;
+        }
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
             const gl = this.findLocation(key);
@@ -1813,6 +1802,10 @@ class Player extends Spectator {
 
     onlyShooterContributes() {
         return this.options.contains('onlyShooterContributes');
+    }
+
+    otherDudesCannotJoin() {
+        return this.options.contains('otherDudesCannotJoin');        
     }
 
     getState(activePlayer) {
