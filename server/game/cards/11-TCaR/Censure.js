@@ -1,5 +1,6 @@
 const GameActions = require('../../GameActions/index.js');
 const SpellCard = require('../../spellcard.js');
+const ChoosePlayerPrompt = require('../../gamesteps/ChoosePlayerPrompt');
 
 class Censure extends SpellCard {
     setupCardAbilities(ability) {
@@ -7,14 +8,17 @@ class Censure extends SpellCard {
             title: 'Censure',
             playType: ['cheatin resolution'],
             cost: ability.costs.bootSelf(),
-            choosePlayer: true,
             difficulty: 6,
             onSuccess: (context) => {
                 context.game.promptForYesNo(this.controller, {
                     title: 'Increase handrank?',
                     onYes: () => {
-                        context.chosenPlayer.modifyRank(2, context);
-                        this.game.addMessage('{0} uses {1} to increase {2}\'s hand rank by 2', context.player, this, context.chosenPlayer);
+                        this.game.promptForPlayer(context.player, {
+                            onSelect: chosenPlayer => {
+                                chosenPlayer.modifyRank(2, context)
+                            }
+                        })
+                        this.game.addMessage('{0} uses {1} to increase {2}\'s hand rank by 2', context.player, this, playerToMod);
                         return true;
                     }
                 });

@@ -730,6 +730,18 @@ class Game extends EventEmitter {
         }));
     }
 
+    promptForPlayer(player, { condition = () => true, context, enabled, onSelect, onCancel }) {
+        this.queueStep(new ChoosePlayerPrompt(this, player, {
+            context,
+            enabled,
+            onSelect,
+            onCancel,
+            condition: true,
+            activePromptTitle: 'Select a player',
+            waitingPromptTitle: 'Waiting for player to select a player'
+        }));
+    }
+
     menuButton(playerName, arg, method, promptId) {
         var player = this.getPlayerByName(playerName);
         if(!player) {
