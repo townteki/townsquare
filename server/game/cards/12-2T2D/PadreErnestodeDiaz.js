@@ -11,7 +11,7 @@ class PadreErnestodeDiaz extends DudeCard {
                 context.game.promptForYesNo(context.player, {
                     title: 'Do you want to discard a card?',
                     onYes: () => {
-                        this.game.promptForSelect(this.controller, {
+                        context.ability.selectAnotherTarget(context.player, context, {
                             promptTitle: this.title,
                             activePromptTitle: 'Select a miracle to boot',
                             waitingPromptTitle: 'Waiting for opponent to select a card',
