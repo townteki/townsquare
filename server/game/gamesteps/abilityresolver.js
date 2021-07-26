@@ -84,7 +84,7 @@ class AbilityResolver extends BaseStep {
     }
 
     markActionAsTaken() {
-        if(this.cancelled || this.ability.options.doNotMarkActionAsTaken) {
+        if((this.cancelled && this.cancelReason !== 'ifCondition') || this.ability.options.doNotMarkActionAsTaken) {
             return;
         }
         if(this.ability.isAction()) {
@@ -153,6 +153,7 @@ class AbilityResolver extends BaseStep {
 
         if(this.ability.ifCondition && !this.ability.ifCondition(this.context)) {
             this.cancelled = true;
+            this.cancelReason = 'ifCondition';
             let formattedCancelMessage = AbilityMessage.create(this.ability.ifFailMessage || '{player} uses {source} but fails to meet requirements');
             formattedCancelMessage.output(this.game, this.context);
             this.ability.usage.increment();

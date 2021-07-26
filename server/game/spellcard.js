@@ -23,7 +23,7 @@ class SpellCard extends HeartsCard {
                 return true;
             }
             return card.controller === this.controller && 
-                card.getGameLocation().getDudes().find(dude => dude.hasKeyword('shaman') && !dude.booted);
+                this.game.getDudesAtLocation(card.gamelocation).find(dude => dude.hasKeyword('shaman') && !dude.booted);
         }
         return false;
     }
