@@ -12,7 +12,7 @@ class AuntieSinister extends DudeCard {
             when: {
                 onPullSuccess: event => 
                     event.pullingDude === this && event.pullingDude.isParticipating() && 
-                        ((event.pulledValue + this.getSkillRating('huckster')) - 6 >= event.source.difficulty) && event.source.isHex()
+                        (event.context.totalPullValue - 6 >= event.source.difficulty) && event.source.getType() === 'spell' && event.source.isHex()
             },
             handler: context => {
                 this.modifyBullets(2);
