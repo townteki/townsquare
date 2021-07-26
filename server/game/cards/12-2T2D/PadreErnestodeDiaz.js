@@ -9,7 +9,7 @@ class PadreErnestodeDiaz extends DudeCard {
             },
             handler: context => {
                 context.game.promptForYesNo(context.player, {
-                    title: 'Do you want to use Padre Ernesto de Diaz\'s ability?',
+                    title: 'Do you want to discard a card?',
                     onYes: () => {
                         this.game.promptForSelect(this.controller, {
                             promptTitle: this.title,
@@ -25,7 +25,8 @@ class PadreErnestodeDiaz extends DudeCard {
                                 return true;
                             }
                         });            
-                    }
+                    },
+					source: this
                 });
             }
         });
