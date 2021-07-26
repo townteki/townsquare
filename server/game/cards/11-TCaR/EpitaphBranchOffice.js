@@ -6,12 +6,11 @@ class EpitaphBranchOffice extends DeedCard {
             title: 'Epitaph Branch Office',
             cost: ability.costs.bootSelf(),
             when: {
-                onSundownAfterVictoryCheck: () => this.game.findCardsInPlay(card =>
-                    card.location === 'play area' && card.controller === this.controller && card.getType() === 'dude' &&
-                        card.control === 0 && card.influence >= 1 && card.isInOpponentsHome()).length > 0
+                onSundownAfterVictoryCheck: () => this.controller.cardsInPlay.some(card => card.getType() === 'dude' &&
+                    card.control === 0 && card.influence >= 1 && card.isInOpponentsHome())
             },
             handler: context => {
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select a dude',
                     cardCondition: card => card.controller === context.player && card.control === 0 && 
