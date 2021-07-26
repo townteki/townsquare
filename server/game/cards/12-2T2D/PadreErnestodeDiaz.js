@@ -16,6 +16,7 @@ class PadreErnestodeDiaz extends DudeCard {
                             activePromptTitle: 'Select a miracle to boot',
                             waitingPromptTitle: 'Waiting for opponent to select a card',
                             cardCondition: card => card.parent === this && card.getType() === 'spell' && card.isMiracle(),
+                            gameAction: 'boot',
                             onSelect: (p, card) => {
                                 this.game.resolveGameAction(GameActions.bootCard({ card: card }, context)).thenExecute(() => {
                                     this.game.resolveGameAction(GameActions.drawCards({ player: p, amount: 1 }), context).thenExecute(() => {
