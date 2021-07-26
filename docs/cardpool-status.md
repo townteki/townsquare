@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/345/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/350/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -729,7 +729,7 @@
 |                     | 19019| F1 Burch
 |                     | 19020| Taff's Distillery
 |:heavy_check_mark:   | 19021| Mausoleum
-|                     | 19022| Epitaph Branch Office
+|:heavy_check_mark:   | 19022| Epitaph Branch Office
 |                     | 19023| Buffalo Emporium
 |                     | 19024| Explorer's Lodge
 |:heavy_check_mark:   | 19025| The Oriental Saloon
@@ -822,7 +822,7 @@
 |:heavy_check_mark:   | 21001| House of Many Faiths
 |                     | 21002| Office of Ancestral Affairs
 |                     | 21003| Bayou Vermilion Railroad
-|                     | 21004| Fort 51
+|:heavy_check_mark:   | 21004| Fort 51
 |                     | 21005| Smith & Robards Trade Show
 |:heavy_check_mark:   | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
@@ -831,7 +831,7 @@
 |                     | 21010| Reverend Bob Hungate
 |                     | 21011| Father Diamond
 |                     | 21012| Master Shou
-|                     | 21013| Brother Petrovic
+|:heavy_check_mark:   | 21013| Brother Petrovic
 |                     | 21014| Leychaa'i Youngheart
 |                     | 21015| Monomi Miles
 |                     | 21016| Klah
@@ -839,7 +839,7 @@
 |                     | 21018| Nathaniel Tuwikaa
 |                     | 21019| The Faceless One
 |:heavy_check_mark:   | 21020| Lorena Corbett
-|                     | 21021| Auntie Sinister
+|:heavy_check_mark:   | 21021| Auntie Sinister
 |:heavy_check_mark:   | 21022| Mason Adler
 |                     | 21023| Enrique Dos Santos
 |                     | 21024| Reverend Endicott
@@ -872,7 +872,7 @@
 |:heavy_check_mark:   | 21051| Dancing Butterfly
 |                     | 21052| Ten-Foot Punch
 |                     | 21053| Fleet-Footed
-|                     | 21054| You're A Daisy If You Do
+|:heavy_check_mark:   | 21054| You're A Daisy If You Do
 |                     | 21055| Twilight Is Upon Us
 |                     | 21056| Test of Wills
 

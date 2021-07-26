@@ -22,6 +22,13 @@ class GoodsCard extends HeartsCard {
     canBeInventedWithoutBooting() {
         return this.options.contains('canBeInventedWithoutBooting');
     }
+
+    isAtHome() {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        return this.getGameLocation().isHome(this.controller);
+    }
 }
 
 module.exports = GoodsCard;
