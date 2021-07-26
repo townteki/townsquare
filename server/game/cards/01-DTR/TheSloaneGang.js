@@ -9,7 +9,7 @@ class TheSloaneGang extends OutfitCard {
             cost: ability.costs.bootSelf(),        
             target: {
                 activePromptTitle: 'Select dude in Town Square',
-                cardCondition: { location: 'play area', condition: card => card.getGameLocation().isTownSquare() },
+                cardCondition: { location: 'play area', condition: card => this.game.isTownSquare(card.gamelocation) },
                 cardType: 'dude',
                 gameAction: 'boot'
             },
@@ -35,7 +35,7 @@ class TheSloaneGang extends OutfitCard {
         if(dude.location !== 'play area') {
             return;
         }
-        if(dude.getGameLocation().isTownSquare()) {
+        if(this.game.isTownSquare(dude.gamelocation)) {
             if(dude.control <= 0) {
                 this.game.promptWithMenu(player, this, {
                     activePrompt: {

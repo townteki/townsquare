@@ -914,7 +914,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(card.getGameLocation().determineController() !== this) {
+            if(!card.locationCard || card.locationCard.controller !== this) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
@@ -1193,6 +1193,9 @@ class Player extends Spectator {
 
     removeDeedFromPlay(card, dudeAction) {
         const gameLocation = card.getGameLocation();
+        if(!gameLocation) {
+            return;
+        }
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
             const gl = this.findLocation(key);
