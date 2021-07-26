@@ -14,7 +14,8 @@ class JackieSanjuro extends DudeCard {
 
         this.persistentEffect({
             match: this,
-            effect: ability.effects.cannotAttachCards(this, attachment => !attachment.hasKeyword('melee'))
+            effect: ability.effects.cannotAttachCards(this, attachment => 
+                attachment.hasKeyword('weapon') && !attachment.hasKeyword('melee'))
         });
     }
 }

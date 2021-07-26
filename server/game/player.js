@@ -695,8 +695,6 @@ class Player extends Spectator {
     }
 
     canControl(card) {
-        let owner = card.owner;
-
         if(!card.isUnique()) {
             return true;
         }
@@ -705,23 +703,11 @@ class Player extends Spectator {
             return false;
         }
 
-        if(owner === this) {
-            let controlsAnOpponentsCopy = this.anyCardsInPlay(c => c.title === card.title && c.owner !== this && !c.facedown);
-            let opponentControlsOurCopy = this.game.getPlayers().some(player => {
-                return player !== this && player.anyCardsInPlay(c => c.title === card.title && c.owner === this && c !== card && !c.facedown);
-            });
-
-            return !controlsAnOpponentsCopy && !opponentControlsOurCopy;
+        if(card.owner === this) {
+            return !this.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
         }
 
-        if(owner.isAced(card)) {
-            return false;
-        }
-
-        let controlsACopy = this.anyCardsInPlay(c => c.title === card.title && !c.facedown);
-        let opponentControlsACopy = owner.anyCardsInPlay(c => c.title === card.title && c !== card && !c.facedown);
-
-        return !controlsACopy && !opponentControlsACopy;
+        return true;
     }
 
     putIntoPlay(card, params = {}) {
