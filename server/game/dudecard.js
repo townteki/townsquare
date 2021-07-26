@@ -12,6 +12,7 @@ class DudeCard extends DrawCard {
         super(owner, cardData);
 
         this.maxBullets = null;
+        this.gritFunc = null;
         this.currentUpkeep = this.cardData.upkeep;
 
         this.shootoutStatus = ShootoutStatuses.None;
@@ -136,8 +137,17 @@ class DudeCard extends DrawCard {
         return skillRating !== null && skillRating !== undefined;
     }
 
-    getGrit() {
-        return this.value + this.bullets + this.influence;
+    /**
+     * Returns Grit (value + bullets + influence) of a dude.
+     * @param {AbilityContext} context This context is needed for specific cards (e.g. Lorena Corbett)
+     * @returns {number}
+     */
+    getGrit(context) {
+        const currentGrit = this.value + this.bullets + this.influence;
+        if(this.gritFunc) {
+            return this.gritFunc(currentGrit, context);
+        }
+        return currentGrit;
     }
 
     modifyUpkeep(amount, applying = true) {
@@ -179,7 +189,7 @@ class DudeCard extends DrawCard {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && this.gamelocation &&
                     card.gamelocation === this.gamelocation &&
-                    (!this.getGameLocation().isHome(card.controller) || card.canBeCalledOutAtHome()) &&
+                    (!this.game.isHome(this.gamelocation, card.controller) || card.canBeCalledOutAtHome()) &&
                     card.uuid !== this.uuid &&
                     card.controller !== this.controller,
                 autoSelect: false,
@@ -514,7 +524,7 @@ class DudeCard extends DrawCard {
         if(this.location !== 'play area') {
             return false;
         }
-        return this.getGameLocation().isHome(this.controller);
+        return this.game.isHome(this.gamelocation, this.controller);
     }
 
     isWanted() {

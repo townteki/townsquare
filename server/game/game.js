@@ -288,6 +288,26 @@ class Game extends EventEmitter {
         return foundLocations.map(locationCard => locationCard.getGameLocation());
     }
 
+    isTownSquare(locationUuid) {
+        const gameLocation = this.findLocation(locationUuid);
+        return gameLocation ? gameLocation.isTownSquare() : false;
+    }
+
+    isOutfit(locationUuid) {
+        const gameLocation = this.findLocation(locationUuid);
+        return gameLocation ? gameLocation.isOutfit() : false;
+    }
+
+    isHome(locationUuid, player) {
+        const gameLocation = this.findLocation(locationUuid);
+        return gameLocation ? gameLocation.isHome(player) : false;
+    }
+
+    isOpponentsHome(locationUuid, player) {
+        const gameLocation = this.findLocation(locationUuid);
+        return gameLocation ? gameLocation.isOpponentsHome(player) : false;
+    }
+
     getDudesAtLocation(locationUuid) {
         let gameLocation = this.findLocation(locationUuid);
         if(!gameLocation) {
@@ -658,6 +678,9 @@ class Game extends EventEmitter {
 
     clearDrawHandSelection(playerName) {
         let player = this.getPlayerByName(playerName);
+        if(!player) {
+            return;
+        }
         player.clearSelectedCards();
         this.pipeline.clearSelectedCards(player);
     }
