@@ -10,7 +10,7 @@ class EpitaphBranchOffice extends DeedCard {
                     card.control === 0 && card.influence >= 1 && card.isInOpponentsHome())
             },
             handler: context => {
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select a dude',
                     cardCondition: card => card.controller === context.player && card.control === 0 && 
