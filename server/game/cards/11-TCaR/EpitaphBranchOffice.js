@@ -22,7 +22,8 @@ class EpitaphBranchOffice extends DeedCard {
                         card.modifyControl(1);
                         this.game.addMessage('{0} uses {1} to give {2} +1 permanent CP', player, this, card);
                         return true;
-                    }
+                    },
+                    source: this
                 });
             },
             source: this
