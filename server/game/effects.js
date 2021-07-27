@@ -290,6 +290,21 @@ const Effects = {
             }
         };
     },
+    setMaxInfByLocation: function(value) {
+        return {
+            title: `Set Max Inf in Location to ${value}`,
+            targetType: 'player',
+            apply: function(player, context) {
+                context.setMaxInfByLocation = context.setMaxInfByLocation || {};
+                context.setMaxInfByLocation[player.name] = player.maxInfByLocation;
+                player.maxInfByLocation = value;
+            },
+            unapply: function(player, context) {
+                player.maxInfByLocation = context.setMaxInfByLocation[player.name];
+                delete context.setMaxInfByLocation[player.name];
+            }
+        };
+    },
     determineControlByBullets: function() {
         return {
             title: 'Control Determinator: Bullets',
@@ -1156,9 +1171,9 @@ const Effects = {
     reduceNextPlayedCardCost: function(amount, match) {
         return this.reduceNextCardCost('play', amount, match);
     },
-    reduceFirstCardCostEachRound: function(playingTypes, amount, match) {
+    reduceFirstCardCostEachRound: function(amount, match) {
         return this.reduceCost({
-            playingTypes: playingTypes,
+            playingTypes: ['shoppin', 'ability', 'play'],
             amount: amount,
             match: match,
             limit: 1

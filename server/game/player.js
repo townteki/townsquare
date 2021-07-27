@@ -55,6 +55,7 @@ class Player extends Spectator {
         this.costReducers = [];
         this.redrawBonus = 0;
         this.control = 0;
+        this.maxInfByLocation = 999;
         this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;
@@ -1486,7 +1487,17 @@ class Player extends Spectator {
 
     getTotalInfluence() {
         let influenceCards = this.game.findCardsInPlay(card => card.getType() === 'dude' && card.influence > 0 && card.controller === this);
+        let infByLocation = {};
         let influence = influenceCards.reduce((memo, card) => {
+            if(isNaN(infByLocation[card.gamelocation])) {
+                infByLocation[card.gamelocation] = 0;
+            }
+            if(infByLocation[card.gamelocation] + card.influence > this.maxInfByLocation) {
+                const diff = this.maxInfByLocation - infByLocation[card.gamelocation];
+                infByLocation[card.gamelocation] = this.maxInfByLocation;
+                return memo + diff;
+            }
+            infByLocation[card.gamelocation] += card.influence;
             return memo + card.influence;
         }, 0);
 
