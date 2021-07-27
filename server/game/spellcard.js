@@ -1,9 +1,17 @@
+const AbilityDsl = require('./abilitydsl.js');
 const HeartsCard = require('./heartscard.js');
 
 class SpellCard extends HeartsCard {
     constructor(owner, cardData) {
         super(owner, cardData);
         this.canTrade = false;
+        if(this.isTotem()) {
+            this.persistentEffect({
+                match: this,
+                effect: AbilityDsl.effects.canUseControllerAbilities(this, () => true),
+                fromTrait: false
+            });
+        }        
     }
 
     canAttach(player, card, playingType) {

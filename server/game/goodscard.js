@@ -18,10 +18,6 @@ class GoodsCard extends HeartsCard {
 
         return true;
     }
-
-    canBeInventedWithoutBooting() {
-        return this.options.contains('canBeInventedWithoutBooting');
-    }
 }
 
 module.exports = GoodsCard;
