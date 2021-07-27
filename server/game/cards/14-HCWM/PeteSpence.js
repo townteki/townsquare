@@ -41,7 +41,8 @@ class PeteSpence extends DudeCard {
                                     this.game.addMessage('{0}\'s bounty is raised by 1 from attaching {1}', card.parent, card);
                                 }
                             }), context.player, card);
-                        }
+                        }, 
+                        source: this
                     }),
                     context
                 );                
