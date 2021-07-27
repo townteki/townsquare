@@ -9,7 +9,7 @@ class PeteSpence extends DudeCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
-                activePromptTitle: 'Mark an in-town location other than Pete\'s current location',
+                activePromptTitle: 'Mark an in-town location',
                 cardCondition: {
                     location: 'play area',
                     controller: 'any',
@@ -18,11 +18,11 @@ class PeteSpence extends DudeCard {
                 cardType: ['location']
             },
             message: context =>
-                this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target),
+                this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(
                     GameActions.search({
-                        title: 'Select an Attire or Non-Unique Weapon for Pete to fetch',
+                        title: 'Select an Attire or Non-Unique Weapon',
                         match: { condition: card => card.hasKeyword('attire') || (card.hasKeyword('weapon') && !card.isUnique()) },
                         location: ['discard pile'],
                         numToSelect: 1,
