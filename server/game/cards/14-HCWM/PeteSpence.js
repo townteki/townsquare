@@ -15,7 +15,7 @@ class PeteSpence extends DudeCard {
                     controller: 'any',
                     condition: card => !card.isOutOfTown() && card.gamelocation !== this.gamelocation
                 },
-                cardType: ['location', 'townsquare', 'outfit']
+                cardType: ['location']
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target),
