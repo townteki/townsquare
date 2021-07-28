@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/350/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/352/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -775,7 +775,7 @@
 |                     | 20015| Skinwalker
 |                     | 20016| Tonton Macoute
 |                     | 20017| Kevin Wainwright (Exp.1)
-|                     | 20018| Padre Ernesto de Diaz
+|:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
 |                     | 20020| Quincy Washburne
 |:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
@@ -905,7 +905,7 @@
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
-|                     | 22026| Pete Spence
+|:heavy_check_mark:   | 22026| Pete Spence
 |                     | 22027| Jonah Essex (Exp.1)
 |                     | 22028| Camillus S. Fly
 |                     | 22029| QUATERMAN PRIME
