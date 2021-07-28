@@ -11,7 +11,9 @@ class JohnnyRingo extends DudeCard {
         this.action({
             title: 'Johnny Ringo',
             playType: ['shootout'],
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
+            message: context => 
+                this.game.addMessage('{0} uses {1} to prevent dudes to be chosen or affected by their opponent\'s abilities', 
+                    context.player, this),
             handler: context => {
                 this.lastingEffect(context.ability, ability => ({
                     until: {
