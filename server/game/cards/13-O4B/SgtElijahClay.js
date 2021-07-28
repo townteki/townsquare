@@ -14,9 +14,7 @@ class SgtElijahClay extends DudeCard {
             handler: context => {
                 this.lastingEffect(context.ability, ability => ({
                     until: {
-                        onShootoutPhaseFinished: () => true,
-                        onCardAbilityResolved: () => true,
-                        onPassAction: () => true
+                        onShootoutPhaseFinished: () => true
                     },
                     condition: () => this.isParticipating(),
                     match: this,
@@ -25,9 +23,7 @@ class SgtElijahClay extends DudeCard {
                 if(this.bullets < 3) {
                     this.lastingEffect(context.ability, ability => ({
                         until: {
-                            onShootoutPhaseFinished: () => true,
-                            onCardAbilityResolved: () => true,
-                            onPassAction: () => true
+                            onShootoutPhaseFinished: () => true
                         },
                         condition: () => this.isParticipating(),
                         match: this,
