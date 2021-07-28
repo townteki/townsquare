@@ -91,7 +91,7 @@ class ChatCommands {
             activePromptTitle: 'Select a card to set bullets for',
             waitingPromptTitle: 'Waiting for opponent to set bullets',
             cardCondition: card => card.location === 'play area' && card.controller === player,
-            cardType: ['dude'],
+            cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
                 let bullets = modifier.mod;
                 if(modifier.set !== undefined && modifier.set !== null) {
@@ -711,8 +711,8 @@ class ChatCommands {
                     activePromptTitle: 'Select where to ' + title,
                     waitingPromptTitle: 'Waiting for opponent to select parent for attachment',
                     cardCondition: card => card.location === 'play area' && 
-                        card.controller.canAttach(cardToAttach, card) &&
-                        (card.controller === player || cardToAttach.hasKeyword('condition')),
+                        card.controller.canAttach(cardToAttach, card, 'chatcommand') &&
+                        (card.controller === player || cardToAttach.hasKeyword('condition') || cardToAttach.hasKeyword('totem')),
                     cardType: ['deed', 'dude', 'outfit'],
                     onSelect: (player, target) => {
                         player.performAttach(cardToAttach, target, 'chatcommand');    
@@ -830,8 +830,16 @@ class ChatCommands {
                 }
                 return pulledValue >= this.pullDifficulty;
             }, 
-            successHandler: () => player.unscriptedPull.isSuccessful = true,
-            failHandler: () => player.unscriptedPull.isSuccessful = false,
+            successHandler: () => {
+                if(player.unscriptedPull) {
+                    player.unscriptedPull.isSuccessful = true;
+                }
+            },
+            failHandler: () => {
+                if(player.unscriptedPull) {
+                    player.unscriptedPull.isSuccessful = false;
+                }
+            },
             pullingDude: this.pullingDude,
             pullBonus: skillOrFu !== 'kung fu' ? pullBonus : 0,
             source: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :

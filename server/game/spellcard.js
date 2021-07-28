@@ -27,7 +27,7 @@ class SpellCard extends HeartsCard {
                 return true;
             }
         } else if(card.isLocationCard() && this.isTotem()) {
-            if(playingType === 'validityCheck') {
+            if(['validityCheck', 'chatcommand'].includes(playingType)) {
                 return true;
             }
             return card.controller === this.controller && 
