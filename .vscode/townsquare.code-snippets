@@ -254,7 +254,7 @@
 			"\tcost: ability.costs.${3:bootLeader()},",  
 			"\ttarget: ${5:targetselect}",
 			"\tmessage: context => this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),",
-			"\tonSuccess: (job) => {",
+			"\tonSuccess: (job, context) => {",
 			"\t\t$21",
 			"\t},",
 			"\tonFail: (job) => {",
