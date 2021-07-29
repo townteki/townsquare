@@ -4,7 +4,7 @@ class Raven extends LegendCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.game.shootout && this.game.shootout.leaderPlayer === this.controller &&
-                this.getPosseBullets(this.controller) < this.getPosseBullets(this.controller.getOpponent()),
+                this.game.shootout.getPosseStat(this.controller, 'bullets') < this.game.shootout.getPosseStat(this.controller.getOpponent(), 'bullets'),
             match: this.owner,
             effect: [
                 ability.effects.modifyPosseStudBonus(-2)
@@ -76,11 +76,6 @@ class Raven extends LegendCard {
                 });
             }
         });
-    }
-
-    getPosseBullets(player) {
-        let playerPosseDudes = this.game.shootout.getPosseByPlayer(player).getDudes();
-        return playerPosseDudes.reduce((memo, dude) => memo + dude.bullets, 0);
     }
 
     ravenHasEnoughOccupiedDeeds() {

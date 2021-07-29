@@ -218,6 +218,11 @@ class Shootout extends Phase {
         return this.leaderPosse ? this.leaderPosse.getDudes().concat(dudes) : dudes;
     }
 
+    getPosseStat(player, stat) {
+        const posse = this.getPosseByPlayer(player);
+        return posse ? posse.getTotalStat(stat) : 0;
+    }
+
     isInLeaderPosse(card) {
         return this.leaderPosse && this.leaderPosse.isInPosse(card);
     }
