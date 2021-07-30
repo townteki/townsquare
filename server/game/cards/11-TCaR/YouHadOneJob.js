@@ -3,45 +3,33 @@ const ActionCard = require('../../actioncard.js');
 class YouHadOneJob extends ActionCard {
     setupCardAbilities() {
         this.action({
-            title: 'Shootout: Make Stud',
+            title: 'Shootout: Change Bullet Type',
             target: {
                 cardCondition: {
                     location: 'play area',
-                    condition: card => card.isWanted() && card.bounty >= 3
+                    condition: card => card.isWanted() && card.bounty >= 3 && card.isParticipating()
                 },
                 cardType: 'dude'
             },
-            message: context => {
-                this.game.addMessage('{0} uses {1} to make {2} a stud', context.player, this, context.target);
-            },
             handler: context => {
-                this.applyAbilityEffect(context.ability, ability => ({
-                    match: context.target,
-                    effect: ability.effects.setAsStud()
-                }));
-            },
-            source: this
-        });
-
-        this.action({
-            title: 'Shootout: Make Draw',
-            target: {
-                cardCondition: {
-                    location: 'play area',
-                    condition: card => card.isWanted() && card.bounty >= 3
-                },
-                cardType: 'dude'
-            },
-            message: context => {
-                this.game.addMessage('{0} uses {1} to make {2} a draw', context.player, this, context.target);
-            },
-            handler: context => {
-                this.applyAbilityEffect(context.ability, ability => ({
-                    match: context.target,
-                    effect: ability.effects.setAsDraw()
-                }));
-            },
-            source: this
+                this.abilityContext = context;
+                this.game.promptWithMenu(context.player, this, {
+                    activePrompt: {
+                        menuTitle: 'Change to stud or draw?',
+                        buttons: [
+                            {
+                                text: 'Change to Stud',
+                                method: 'stud'
+                            },
+                            {
+                                text: 'Change to Draw',
+                                method: 'draw'
+                            }
+                        ]
+                    },
+                    source: this
+                });
+            }
         });
 
         this.action({
@@ -70,6 +58,24 @@ class YouHadOneJob extends ActionCard {
             },
             source: this
         });
+    }
+
+    stud(player) {
+        this.applyAbilityEffect(this.abilityContext.ability, ability => ({
+            match: this.abilityContext.target,
+            effect: ability.effects.setAsStud()
+        }));
+        this.game.addMessage('{0} uses {1} to make {2} a stud', player, this, this.abilityContext.target);
+        return true;
+    }
+
+    draw(player) {
+        this.applyAbilityEffect(this.abilityContext.ability, ability => ({
+            match: this.abilityContext.target,
+            effect: ability.effects.setAsDraw()
+        }));
+        this.game.addMessage('{0} uses {1} to make {2} a draw', player, this, this.abilityContext.target);
+        return true;
     }
 }
 
