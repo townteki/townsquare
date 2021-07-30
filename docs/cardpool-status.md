@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/350/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/358/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -697,7 +697,7 @@
 |                     | 18034| Burn 'Em Out
 |                     | 18035| Shiny Things
 |                     | 18036| We Got Beef!
-|                     | 18037| Great Sage Matching Heaven
+|:heavy_check_mark:   | 18037| Great Sage Matching Heaven
 |                     | 18038| Two Hundred Fifty Rounds
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
@@ -775,7 +775,7 @@
 |                     | 20015| Skinwalker
 |                     | 20016| Tonton Macoute
 |                     | 20017| Kevin Wainwright (Exp.1)
-|                     | 20018| Padre Ernesto de Diaz
+|:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
 |                     | 20020| Quincy Washburne
 |:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
@@ -820,7 +820,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 21001| House of Many Faiths
-|                     | 21002| Office of Ancestral Affairs
+|:heavy_check_mark:   | 21002| Office of Ancestral Affairs
 |                     | 21003| Bayou Vermilion Railroad
 |:heavy_check_mark:   | 21004| Fort 51
 |                     | 21005| Smith & Robards Trade Show
@@ -833,7 +833,7 @@
 |                     | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
 |                     | 21014| Leychaa'i Youngheart
-|                     | 21015| Monomi Miles
+|:heavy_check_mark:   | 21015| Monomi Miles
 |                     | 21016| Klah
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
 |                     | 21018| Nathaniel Tuwikaa
@@ -843,14 +843,14 @@
 |:heavy_check_mark:   | 21022| Mason Adler
 |                     | 21023| Enrique Dos Santos
 |                     | 21024| Reverend Endicott
-|                     | 21025| Sgt. Elijah Clay
+|:heavy_check_mark:   | 21025| Sgt. Elijah Clay
 |                     | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
 |                     | 21028| Roberto Muratore
 |                     | 21029| Adelaide Rose
 |                     | 21030| Dr. Gregory Tremane
 |                     | 21031| Big Nose Kate
-|                     | 21032| Johnny Ringo
+|:heavy_check_mark:   | 21032| Johnny Ringo
 |                     | 21033| Violet Esperanza
 |                     | 21034| Curly Bill Brocius
 |:heavy_check_mark:   | 21035| Byron Decker
@@ -860,7 +860,7 @@
 |                     | 21039| Gateway Station
 |                     | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
-|                     | 21042| Cochise County Courthouse
+|:heavy_check_mark:   | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
 |                     | 21044| Magnum Opus Tenebri
 |                     | 21045| Scattergun
@@ -905,7 +905,7 @@
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
-|                     | 22026| Pete Spence
+|:heavy_check_mark:   | 22026| Pete Spence
 |                     | 22027| Jonah Essex (Exp.1)
 |                     | 22028| Camillus S. Fly
 |                     | 22029| QUATERMAN PRIME

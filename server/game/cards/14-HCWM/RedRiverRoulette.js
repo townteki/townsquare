@@ -34,7 +34,8 @@ class RedRiverRoulette extends DeedCard {
                     until: {
                         onShootoutRoundFinished: () => true
                     },
-                    match: this.game.shootout.getParticipants(),
+                    condition: () => true,
+                    match: card => card.getType() === 'dude' && card.isParticipating(),
                     effect: ability.effects.cannotFlee()
                 }));
                 const eventHandler = () => {

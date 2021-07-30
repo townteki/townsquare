@@ -48,7 +48,7 @@ const Costs = {
      * Cost that requires booting a card that will lead a job and matches the passed condition
      * predicate function.
      */
-    bootLeader: condition => CostBuilders.bootLeader.select(condition),
+    bootLeader: condition => CostBuilders.bootLeader.select(condition, 'dude'),
     /**
      * Cost that requires booting any number of cards that match the
      * passed condition predicate function.

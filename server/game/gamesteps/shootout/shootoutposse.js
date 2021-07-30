@@ -157,6 +157,10 @@ class ShootoutPosse {
         }));
     }
 
+    getTotalStat(stat) {
+        return this.getDudes().reduce((memo, dude) => memo + dude.getStat(stat), 0);
+    }
+
     actOnPosse(action, exception = () => false) {
         this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(dude => dude && !exception(dude)).forEach(dude => action(dude));
     }
