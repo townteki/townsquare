@@ -245,7 +245,6 @@ class DudeCard extends DrawCard {
 
     removeStudEffect(source) {
         this.studReferenceArray = this.studReferenceArray.filter(studRef => studRef.source !== source);
-        this.game.raiseEvent('onDudeBecomesDraw', { card: this });
     }
 
     sendHome(options = {}, context) {
