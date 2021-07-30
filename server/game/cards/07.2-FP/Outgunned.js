@@ -6,7 +6,8 @@ class Outgunned extends ActionCard {
         this.action({
             title: 'Outgunned',
             playType: ['resolution'],
-            ifCondition: () => this.getPosseBullets(this.controller) > this.getPosseBullets(this.controller.getOpponent()),
+            ifCondition: () => 
+                this.game.shootout.getPosseStat(this.controller, 'bullets') > this.game.shootout.getPosseStat(this.controller.getOpponent(), 'bullets'),
             ifFailMessage: context => {
                 this.game.addMessage('{0} uses {1} but it does not have any effect because their posse\'s total bullets is not more than the opposing posse\'s', 
                     context.player, this);
@@ -29,11 +30,6 @@ class Outgunned extends ActionCard {
                 }
             }
         });
-    }
-
-    getPosseBullets(player) {
-        let playerPosseDudes = this.game.shootout.getPosseByPlayer(player).getDudes();
-        return playerPosseDudes.reduce((memo, dude) => memo + dude.bullets, 0);
     }
 }
 

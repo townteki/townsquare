@@ -24,7 +24,8 @@ class CampbellHatchBilliardParlor extends DeedCard {
                         onShootoutRoundFinished: () => true,
                         onShootoutPhaseFinished: () => true
                     },
-                    match: this.game.shootout,
+                    condition: () => true,
+                    match: card => card.getType() === 'dude' && card.isParticipating(),
                     effect: [
                         ability.effects.cannotBeAced('any', context => this.abilityProtectCondition(context)),
                         ability.effects.cannotBeDiscarded('any', context => this.abilityProtectCondition(context))

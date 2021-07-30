@@ -9,12 +9,14 @@ const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
 
 function cannotEffect(type = 'any', playType = 'any', titleFunc = () => '', targetType = '') {
-    return function(controller, predicate) {
+    return function(controller, predicate, overrideType, overridePlayType) {
+        const finalType = overrideType ? overrideType : type;
+        const finalPlayType = overridePlayType ? overridePlayType : playType;
         const title = titleFunc(controller === 'opponent' ? ' opponent' : '');
         if(targetType === 'shootout') {
-            return shootoutRestrictionEffect(new CannotRestriction(type, playType, controller, predicate), title);
+            return shootoutRestrictionEffect(new CannotRestriction(finalType, finalPlayType, controller, predicate), title);
         }
-        return cardRestrictionEffect(new CannotRestriction(type, playType, controller, predicate), title);
+        return cardRestrictionEffect(new CannotRestriction(finalType, finalPlayType, controller, predicate), title);
     };
 }
 

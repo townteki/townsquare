@@ -9,7 +9,8 @@ class ShieldOfFaith extends SpellCard {
             difficulty: 7,
             onSuccess: (context) => {
                 this.applyAbilityEffect(context.ability, ability => ({
-                    match: this.game.shootout,
+                    condition: () => true,
+                    match: card => card.getType() === 'dude' && card.isParticipating(),
                     effect: [
                         ability.effects.cannotBeAced('any', context => this.abilityProtectCondition(context)),
                         ability.effects.cannotBeDiscarded('any', context => this.abilityProtectCondition(context))
