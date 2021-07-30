@@ -82,6 +82,8 @@ class DudeCard extends DrawCard {
                 return this.influence;
             case 'bullets':
                 return this.bullets;
+            case 'bounty':
+                return this.bullets;
         }
     }
 
