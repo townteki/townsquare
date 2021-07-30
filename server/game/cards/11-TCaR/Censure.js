@@ -38,7 +38,7 @@ class Censure extends SpellCard {
                     context.game.promptForYesNo(this.controller, {
                         title: 'Send dude home booted?',
                         onYes: () => {
-                            context.game.promptForSelect(this.controller, {
+                            context.ability.selectAnotherTarget(this.controller, context, {
                                 activePromptTitle: 'Select dude to send home booted',
                                 waitingPromptTitle: 'Waiting for opponent to select dude',
                                 cardCondition: card => card.location === 'play area' && card.isOpposing(this.controller),
