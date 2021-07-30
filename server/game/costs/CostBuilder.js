@@ -29,10 +29,11 @@ class CostBuilder {
      * Returns a cost that asks the player to select a card matching the passed condition.
      * @param {function} conditionOrMatcher Either a function that takes a card and ability context and returns whether to allow the player to select it, or a properties hash to be used as a card matcher.
      */
-    select(conditionOrMatcher = () => true) {
+    select(conditionOrMatcher = () => true, cardType) {
         return new SelectCardCost(this.action, {
             activePromptTitle: this.titles.select,
-            cardCondition: CardMatcher.createMatcher(conditionOrMatcher)
+            cardCondition: CardMatcher.createMatcher(conditionOrMatcher),
+            cardType
         });
     }
 

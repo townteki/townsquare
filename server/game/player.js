@@ -55,6 +55,7 @@ class Player extends Spectator {
         this.costReducers = [];
         this.redrawBonus = 0;
         this.control = 0;
+        this.maxInfByLocation = 999;
         this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
         this.timerSettings.windowTimer = user.settings.windowTimer;
@@ -852,7 +853,7 @@ class Player extends Spectator {
         let getPullProperties = scientist => {
             return {
                 successHandler: context => {
-                    this.game.addMessage('{0} successfuly invent {1} using the {2} ( skill rating {3})', 
+                    this.game.addMessage('{0} successfuly invents {1} using {2} ( skill rating {3})', 
                         this, gadget, scientist, context.pull.pullBonus);
                     this.game.raiseEvent('onGadgetInvented', { gadget, scientist, context }, event => {
                         successHandler(event.context, event.scientist);
@@ -860,7 +861,7 @@ class Player extends Spectator {
                 },
                 failHandler: context => {
                     this.game.raiseEvent('onGadgetInventFailed', { gadget, scientist, context });
-                    this.game.addMessage('{0} fails to invent {1} using the {2} ( skill rating {3})', 
+                    this.game.addMessage('{0} fails to invent {1} using {2} ( skill rating {3})', 
                         this, gadget, scientist, context.pull.pullBonus);
                     this.moveCard(gadget, 'discard pile');
                 },
@@ -1486,7 +1487,17 @@ class Player extends Spectator {
 
     getTotalInfluence() {
         let influenceCards = this.game.findCardsInPlay(card => card.getType() === 'dude' && card.influence > 0 && card.controller === this);
+        let infByLocation = {};
         let influence = influenceCards.reduce((memo, card) => {
+            if(isNaN(infByLocation[card.gamelocation])) {
+                infByLocation[card.gamelocation] = 0;
+            }
+            if(infByLocation[card.gamelocation] + card.influence > this.maxInfByLocation) {
+                const diff = this.maxInfByLocation - infByLocation[card.gamelocation];
+                infByLocation[card.gamelocation] = this.maxInfByLocation;
+                return memo + diff;
+            }
+            infByLocation[card.gamelocation] += card.influence;
             return memo + card.influence;
         }, 0);
 
