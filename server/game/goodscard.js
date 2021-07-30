@@ -19,8 +19,11 @@ class GoodsCard extends HeartsCard {
         return true;
     }
 
-    canBeInventedWithoutBooting() {
-        return this.options.contains('canBeInventedWithoutBooting');
+    isAtHome() {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        return this.getGameLocation().isHome(this.controller);
     }
 }
 

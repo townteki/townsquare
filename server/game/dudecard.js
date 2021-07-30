@@ -82,6 +82,8 @@ class DudeCard extends DrawCard {
                 return this.influence;
             case 'bullets':
                 return this.bullets;
+            case 'bounty':
+                return this.bullets;
         }
     }
 
@@ -189,7 +191,7 @@ class DudeCard extends DrawCard {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && this.gamelocation &&
                     card.gamelocation === this.gamelocation &&
-                    (!this.getGameLocation().isHome(card.controller) || card.canBeCalledOutAtHome()) &&
+                    (!this.game.isHome(this.gamelocation, card.controller) || card.canBeCalledOutAtHome()) &&
                     card.uuid !== this.uuid &&
                     card.controller !== this.controller,
                 autoSelect: false,
@@ -524,7 +526,7 @@ class DudeCard extends DrawCard {
         if(this.location !== 'play area') {
             return false;
         }
-        return this.getGameLocation().isHome(this.controller);
+        return this.game.isHome(this.gamelocation, this.controller);
     }
 
     isWanted() {

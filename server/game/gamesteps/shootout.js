@@ -32,6 +32,7 @@ class Shootout extends Phase {
 
         this.loserCasualtiesMod = 0;
         this.jobSuccessful = null;
+        this.jobUnopposed = false;
         this.winningPlayer = null;
         this.headlineUsed = false;
         this.shootoutLoseWinOrder = [];
@@ -67,6 +68,7 @@ class Shootout extends Phase {
                         this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
                     },
                     onNo: () => {
+                        this.jobUnopposed = true;
                         this.endShootout();
                     }
                 }));
@@ -216,6 +218,11 @@ class Shootout extends Phase {
     getParticipants() {
         let dudes = this.opposingPosse ? this.opposingPosse.getDudes() : [];
         return this.leaderPosse ? this.leaderPosse.getDudes().concat(dudes) : dudes;
+    }
+
+    getPosseStat(player, stat) {
+        const posse = this.getPosseByPlayer(player);
+        return posse ? posse.getTotalStat(stat) : 0;
     }
 
     isInLeaderPosse(card) {

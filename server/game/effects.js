@@ -9,12 +9,14 @@ const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
 
 function cannotEffect(type = 'any', playType = 'any', titleFunc = () => '', targetType = '') {
-    return function(controller, predicate) {
+    return function(controller, predicate, overrideType, overridePlayType) {
+        const finalType = overrideType ? overrideType : type;
+        const finalPlayType = overridePlayType ? overridePlayType : playType;
         const title = titleFunc(controller === 'opponent' ? ' opponent' : '');
         if(targetType === 'shootout') {
-            return shootoutRestrictionEffect(new CannotRestriction(type, playType, controller, predicate), title);
+            return shootoutRestrictionEffect(new CannotRestriction(finalType, finalPlayType, controller, predicate), title);
         }
-        return cardRestrictionEffect(new CannotRestriction(type, playType, controller, predicate), title);
+        return cardRestrictionEffect(new CannotRestriction(finalType, finalPlayType, controller, predicate), title);
     };
 }
 
@@ -287,6 +289,21 @@ const Effects = {
             },
             unapply: function(player) {
                 player.maxAllowedCheatin -= value;
+            }
+        };
+    },
+    setMaxInfByLocation: function(value) {
+        return {
+            title: `Set Max Inf in Location to ${value}`,
+            targetType: 'player',
+            apply: function(player, context) {
+                context.setMaxInfByLocation = context.setMaxInfByLocation || {};
+                context.setMaxInfByLocation[player.name] = player.maxInfByLocation;
+                player.maxInfByLocation = value;
+            },
+            unapply: function(player, context) {
+                player.maxInfByLocation = context.setMaxInfByLocation[player.name];
+                delete context.setMaxInfByLocation[player.name];
             }
         };
     },
@@ -1156,9 +1173,9 @@ const Effects = {
     reduceNextPlayedCardCost: function(amount, match) {
         return this.reduceNextCardCost('play', amount, match);
     },
-    reduceFirstCardCostEachRound: function(playingTypes, amount, match) {
+    reduceFirstCardCostEachRound: function(amount, match) {
         return this.reduceCost({
-            playingTypes: playingTypes,
+            playingTypes: ['shoppin', 'ability', 'play'],
             amount: amount,
             match: match,
             limit: 1

@@ -5,7 +5,7 @@ class BirdCageTheater extends DeedCard {
         this.job({
             title: 'Bird Cage Theater',
             playType: 'noon',
-            cost: ability.costs.bootSelf(),
+            cost: ability.costs.bootLeader(),
             target: {
                 activePromptTitle: 'Select a dude',
                 cardCondition: { location: 'play area', controller: 'opponent', condition: card => card.control > 0 },

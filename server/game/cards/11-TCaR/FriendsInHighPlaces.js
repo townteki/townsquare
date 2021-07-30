@@ -28,9 +28,11 @@ class FriendsInHighPlaces extends ActionCard {
         this.action({
             title: 'Shootout: Friends in High Places',
             playType: 'shootout',
-            ifCondition: () => this.getPosseInfluence(this.controller) > this.getPosseInfluence(this.controller.getOpponent()),
+            ifCondition: () => 
+                this.game.shootout.getPosseStat(this.controller, 'influence') > this.game.shootout.getPosseStat(this.controller.getOpponent(), 'influence'),
             ifFailMessage: context => {
-                this.game.addMessage('{0} uses {1} but does not make anyone a stud because their posse\'s total influence is less than the opposing posse\'s', context.player, this);
+                this.game.addMessage('{0} uses {1} but does not make anyone a stud because their posse\'s total influence is less than the opposing posse\'s', 
+                    context.player, this);
             },
             target: {
                 activePromptTitle: 'Select a dude to make a stud',
@@ -51,11 +53,6 @@ class FriendsInHighPlaces extends ActionCard {
                 this.game.addMessage('{0} uses {1} to make {2} a stud', context.player, this, context.target);
             }
         });
-    }
-
-    getPosseInfluence(player) {
-        let playerPosseDudes = this.game.shootout.getPosseByPlayer(player).getDudes();
-        return playerPosseDudes.reduce((memo, dude) => memo + dude.influence, 0);
     }
 }
 
