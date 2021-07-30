@@ -1,6 +1,4 @@
-const GameActions = require('../../GameActions/index.js');
 const SpellCard = require('../../spellcard.js');
-const ChoosePlayerPrompt = require('../../gamesteps/ChoosePlayerPrompt');
 
 class Censure extends SpellCard {
     setupCardAbilities(ability) {
