@@ -19,7 +19,7 @@ class CallingTheCavalry2 extends ActionCard {
                 };
                 this.game.onceConditional('onPlayWindowOpened', { condition: event => event.playWindow.name === 'shootout resolution' }, eventHandler);
                 this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onPlayWindowOpened', eventHandler));
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' && card.controller === context.player && card.isParticipating(),

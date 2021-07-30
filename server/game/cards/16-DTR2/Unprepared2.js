@@ -36,7 +36,7 @@ class Unprepared2 extends ActionCard {
                 cardType: ['dude']
             },
             handler: context => {
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select up to 2 attachments',
                     waitingPromptTitle: 'Waiting for opponent to select attachments',
                     cardCondition: card => card.location === 'play area' && card.parent === context.target,
@@ -59,8 +59,8 @@ class Unprepared2 extends ActionCard {
                             context.player, this, cards);               
                         return true;
                     },
-                    onCancel: (player) => {
-                        this.game.addMessage('{0} uses {1}, but does not select any attachments', context.player, this)
+                    onCancel: () => {
+                        this.game.addMessage('{0} uses {1} but does not select any attachments', context.player, this);
                     }
                 });
             }

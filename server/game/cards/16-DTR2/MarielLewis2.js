@@ -13,13 +13,20 @@ class MarielLewis2 extends DudeCard {
                     context.player, this);
             },
             handler: context => {
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Choose a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' &&
                         card.controller !== this.controller &&
                         card.isParticipating(),
                     cardType: 'dude',
+                    gameAction: card => {
+                        const actions = ['removeFromPosse'];
+                        if(card.gamelocation !== this.gamelocation) {
+                            actions.push('moveDude');
+                        }
+                        return actions;
+                    },
                     onSelect: (player, card) => {
                         this.game.resolveGameAction(GameActions.sendHome({ card, options: { needToBoot: false }}), context).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} to send {2} home without booting', player, this, card);

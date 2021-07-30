@@ -20,10 +20,11 @@ class SavedByGrace extends OutfitCard {
             cost: ability.costs.bootSelf(),
             handler: context => {
                 context.player.moveCard(context.event.pulledCard, 'hand');
-                this.game.promptForSelect(this.controller, {
+                context.ability.selectAnotherTarget(this.controller, context, {
                     activePromptTitle: 'Select a card to discard',
                     waitingPromptTitle: 'Waiting for opponent to discard a card',
                     cardCondition: card => card.location === 'hand' && card.controller === this.controller,
+                    gameAction: 'discard',
                     onSelect: (p, card) => {
                         this.game.resolveGameAction(GameActions.discardCard({ card: card }, context)).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} to put pulled {2} to their hand and discards {3}', 
