@@ -13,15 +13,25 @@ class Censure extends SpellCard {
                 context.game.promptForYesNo(this.controller, {
                     title: 'Increase handrank?',
                     onYes: () => {
-                        this.game.promptForPlayer(context.player, {
-                            onSelect: chosenPlayer => {
-                                chosenPlayer.modifyRank(2, context)
-                            }
-                        })
-                        this.game.addMessage('{0} uses {1} to increase {2}\'s hand rank by 2', context.player, this, playerToMod);
-                        return true;
+                        this.game.promptWithMenu(context.player, this, {
+                            activePrompt: {
+                                menuTitle: 'Which player?',
+                                buttons: [
+                                    {
+                                        text: context.player.name,
+                                        method: 'chooseMe'
+                                    },
+                                    {
+                                        text: context.player.getOpponent().name,
+                                        method: 'chooseOpponent'
+                                    }
+                                ]
+                            },
+                            source: this
+                        });
                     }
                 });
+                
                 /* Check if this is a shootout and if so, reduce casualties */
                 if(this.game.shootout) {
                     context.player.modifyCasualties(-3);
@@ -49,6 +59,18 @@ class Censure extends SpellCard {
             },
             source: this
         });
+    }
+
+    chooseMe(player) {
+        player.modifyRank(2, this.abilityContext);
+        this.game.addMessage('{0} uses {1} to raise their hand rank by 2', player, this);
+        return true;
+    }
+
+    chooseOpponent(player) {
+        player.getOpponent().modifyRank(2, this.abilitycontext);
+        this.game.addMessage('{0} uses {1} to raise {3}\'s hand rank by 2', player, this, player.getOpponent());
+        return true;
     }
 }
 
