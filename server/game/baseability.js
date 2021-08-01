@@ -281,7 +281,7 @@ class BaseAbility {
                 cards = [card];
             }
             // make it always an array for the event properties ('cards'), but keep it the same ('card')
-            // as we got it when used in 'saveOnSelect', because login in onSelect function expects it that way.
+            // as we got it when used in 'saveOnSelect', because logic in onSelect function expects it that way.
             context.game.raiseEvent('onTargetsChosen', { ability: this, player, cards, properties }, event => {
                 saveOnSelect(event.player, card);
             });
