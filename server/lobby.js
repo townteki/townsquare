@@ -754,11 +754,11 @@ class Lobby {
         this.broadcastGameMessage('removegame', game);
 
         let newGame = new PendingGame(game.owner, {
+            event: game.event,
+            restrictedList: game.restrictedList,
             spectators: game.allowSpectators,
             showHand: game.showHand,
             gameType: game.gameType,
-            isMelee: game.isMelee,
-            useRookery: game.useRookery,
             useGameTimeLimit: game.useGameTimeLimit,
             gameTimeLimit: game.gameTimeLimit
         });
