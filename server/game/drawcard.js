@@ -367,24 +367,24 @@ class DrawCard extends BaseCard {
         return this.options.contains('canBeInventedWithoutBooting');
     }    
 
-    canBeAced() {
-        return this.allowGameAction('ace');
+    canBeAced(context) {
+        return this.allowGameAction('ace', context);
     }
 
-    canBeDiscarded() {
-        return this.allowGameAction('discard');
+    canBeDiscarded(context) {
+        return this.allowGameAction('discard', context);
     }
 
-    canBeBooted() {
-        return this.allowGameAction('boot');
+    canBeBooted(context) {
+        return this.allowGameAction('boot', context);
     }
 
-    canBeUnbooted() {
-        return this.allowGameAction('unboot');
+    canBeUnbooted(context) {
+        return this.allowGameAction('unboot', context);
     }
 
-    canBeCalledOut() {
-        return this.allowGameAction('callout');
+    canBeCalledOut(context) {
+        return this.allowGameAction('callout', context);
     }
 
     getSummary(activePlayer) {
