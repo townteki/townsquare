@@ -1182,7 +1182,12 @@ const Effects = {
         });
     },
     reduceFirstPlayedCardCostEachRound: function(amount, match) {
-        return this.reduceFirstCardCostEachRound('play', amount, match);
+        return this.reduceCost({
+            playTypes: ['play'],
+            amount: amount, 
+            match: match,
+            limit: 1
+        });
     },
     increaseCost: function(properties) {
         properties.isIncrease = true;
