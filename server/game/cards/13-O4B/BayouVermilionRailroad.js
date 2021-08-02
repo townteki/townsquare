@@ -1,4 +1,5 @@
 const OutfitCard = require('../../outfitcard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class BayouVermilionRailroad extends OutfitCard {
     setupCardAbilities(ability) {
@@ -18,15 +19,17 @@ class BayouVermilionRailroad extends OutfitCard {
                 }
             },
             handler: context => {
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
+                context.player.modifyGhostRock(1);
                 this.untilEndOfPhase(context.ability, ability => ({
                     condition: () => true,
-                    match: context.target.getGameLocation(),
+                    match: card => context.target.getGameLocation().uuid === card.uuid,
                     effect: [
-                        ability.effects.modifyProduction(0),
-                        ability.effect.modifyControl(0)
+                        ability.effects.setProduction(0),
+                        ability.effects.setControl(0)
                     ]
                 }), 'upkeep');
-                
+
             },
             source: this
         });
