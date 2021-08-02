@@ -43,6 +43,7 @@ class ChatCommands {
             '/look-deck': this.lookAtDeck,
             '/move': this.move,
             '/pass': this.pass,
+            '/prod': this.prod,
             '/pull': this.pull,
             '/rematch': this.rematch,
             '/remove-from-game': this.removeFromGame,
@@ -230,6 +231,26 @@ class ChatCommands {
             }
         });
     }
+
+    prod(player, args) {
+        var modifier = this.determineModifier(args[1]);
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set production for',
+            waitingPromptTitle: 'Waiting for opponent to set production',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'goods', 'deed'],
+            onSelect: (p, card) => {
+                let prod = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    prod = modifier.set - card.production;
+                }
+                card.production += prod;
+                this.game.addAlert('danger', '{0} uses the /prod command to set the production of {1} to {2}', 
+                    p, card, card.production);
+                return true;
+            }
+        });
+    }    
 
     resetAbilities(player) {
         this.game.promptForSelect(player, {

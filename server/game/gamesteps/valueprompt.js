@@ -16,10 +16,10 @@ class ValuePrompt extends UiPrompt {
         return player === this.player && !this.valueIsSet;
     }
 
-    activePrompt() {
+    activePrompt(player) {
         return {
             menuTitle: this.title,
-            buttons: this.getButtons()
+            buttons: this.getButtons(player)
         };
     }
 
@@ -31,10 +31,11 @@ class ValuePrompt extends UiPrompt {
         return this.valueIsSet;
     }
 
-    getButtons() {
+    getButtons(player) {
         const currentValueButton = {
             text: this.getValueText(),
-            arg: 'returnValue'
+            arg: 'returnValue',
+            disabled: !this.condition(player, this.currentValue)
         };
         const minButton = {
             text: '',
