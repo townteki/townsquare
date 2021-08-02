@@ -486,6 +486,24 @@ const Effects = {
             }
         };
     },
+
+    setProduction: function(value) {
+        return {
+            title: `Production set to: ${value}`,
+            gameAction: card => card.control > value ? 'decreaseProduction' : 'increaseProduction',
+            apply: function(card, context) {
+                context.changeAmount = context.changeAmount || {};
+                context.changeAmount[card.uuid] = value - card.production;
+                card.modifyProduction(context.changeAmount[card.uuid], true);
+            },
+            unapply: function(card, context) {
+                card.modifyProduction(context.changeAmount[card.uuid] * -1, false);
+                delete context.changeAmount[card.uuid];
+            }
+        };
+    },
+
+
     modifyUpkeep: function(value) {
         return {
             title: `Upkeep modified: ${value}`,
