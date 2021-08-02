@@ -503,7 +503,6 @@ const Effects = {
         };
     },
 
-
     modifyUpkeep: function(value) {
         return {
             title: `Upkeep modified: ${value}`,

@@ -29,7 +29,6 @@ class BayouVermilionRailroad extends OutfitCard {
                         ability.effects.setControl(0)
                     ]
                 }), 'upkeep');
-
             },
             source: this
         });
