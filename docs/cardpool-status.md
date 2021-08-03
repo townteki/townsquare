@@ -854,7 +854,7 @@
 |                     | 21033| Violet Esperanza
 |                     | 21034| Curly Bill Brocius
 |:heavy_check_mark:   | 21035| Byron Decker
-|                     | 21036| Carter Richardson
+|:heavy_check_mark:   | 21036| Carter Richardson
 |                     | 21037| Valeria Batten (Exp.1)
 |                     | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
