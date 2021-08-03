@@ -821,7 +821,7 @@
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 21001| House of Many Faiths
 |:heavy_check_mark:   | 21002| Office of Ancestral Affairs
-|                     | 21003| Bayou Vermilion Railroad
+|:heavy_check_mark:   | 21003| Bayou Vermilion Railroad
 |:heavy_check_mark:   | 21004| Fort 51
 |                     | 21005| Smith & Robards Trade Show
 |:heavy_check_mark:   | 21006| Jonah's Alliance
