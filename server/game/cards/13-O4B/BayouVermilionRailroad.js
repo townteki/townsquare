@@ -15,8 +15,9 @@ class BayouVermilionRailroad extends OutfitCard {
                 activePromptTitle: 'Select a Mystical card',
                 cardCondition: { 
                     location: 'play area',
-                    condition: card => card.hasKeyword('mystical') && card.isAtDeed() && !card.booted && card.canBeBooted()
-                }
+                    condition: card => card.hasKeyword('mystical') && card.isAtDeed()
+                },
+                gameAction: 'boot'
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
