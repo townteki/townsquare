@@ -21,10 +21,8 @@ class BayouVermilionRailroad extends OutfitCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 context.player.modifyGhostRock(1);
-                const targetLocationUuid = context.target.getGameLocation().uuid;
                 this.untilEndOfPhase(context.ability, ability => ({
-                    condition: () => true,
-                    match: card => targetLocationUuid === card.uuid,
+                    match: context.target.locationCard,
                     effect: [
                         ability.effects.setProduction(0),
                         ability.effects.setControl(0)
