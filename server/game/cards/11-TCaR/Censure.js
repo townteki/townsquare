@@ -9,7 +9,7 @@ class Censure extends SpellCard {
             difficulty: 6,
             onSuccess: (context) => {
                 context.game.promptForYesNo(this.controller, {
-                    title: 'Increase handrank?',
+                    title: 'Increase hand rank?',
                     onYes: () => {
                         this.game.promptWithMenu(context.player, this, {
                             activePrompt: {
