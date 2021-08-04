@@ -275,22 +275,22 @@ const Costs = {
      * the passed maximum and either the player's or his opponent's ghostrock.
      * Used by Flame-Thrower.
      */
-    payXGhostRock: function(minFunc, maxFunc, opponentFunc) {
+    payXGhostRock: function(minFunc, maxFunc, playingType = 'play', opponentFunc) {
         return {
             canPay: function(context) {
-                let reduction = context.player.getCostReduction('play', context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source);
                 let opponentObj = opponentFunc && opponentFunc(context);
 
                 if(!opponentObj) {
-                    return context.player.getSpendableGhostRock({ playingType: 'play', context: context }) >= (minFunc(context) - reduction);
+                    return context.player.getSpendableGhostRock({ playingType: playingType, context: context }) >= (minFunc(context) - reduction);
                 }
-                return opponentObj.getSpendableGhostRock({ playingType: 'play', context: context }) >= (minFunc(context) - reduction);
+                return opponentObj.getSpendableGhostRock({ playingType: playingType, context: context }) >= (minFunc(context) - reduction);
             },
             resolve: function(context, result = { resolved: false }) {
-                let reduction = context.player.getCostReduction('play', context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source);
                 let opponentObj = opponentFunc && opponentFunc(context);
                 let player = opponentObj || context.player;
-                let ghostrock = player.getSpendableGhostRock({ playingType: 'play', context: context });
+                let ghostrock = player.getSpendableGhostRock({ playingType: playingType, context: context });
                 let max = Math.min(maxFunc(context), ghostrock + reduction);
 
                 context.game.queueStep(new XValuePrompt(minFunc(context), max, context, reduction, 'Select GR payment'));
@@ -305,10 +305,10 @@ const Costs = {
                 context.game.spendGhostRock({ 
                     player: player, 
                     amount: context.grCost, 
-                    playingType: 'play', 
+                    playingType: playingType, 
                     context: context 
                 });
-                context.player.markUsedReducers('play', context.source);
+                context.player.markUsedReducers(playingType, context.source);
             }
         };
     },

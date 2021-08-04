@@ -18,13 +18,6 @@ class GoodsCard extends HeartsCard {
 
         return true;
     }
-
-    isAtHome() {
-        if(this.location !== 'play area') {
-            return false;
-        }
-        return this.getGameLocation().isHome(this.controller);
-    }
 }
 
 module.exports = GoodsCard;
