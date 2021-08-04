@@ -10,6 +10,8 @@ class Intercession extends SpellCard {
             cost: ability.costs.bootSelf(),
             difficulty: 5,
             target: {
+                activePromptTitle: 'Select your dude',
+                waitingPromptTitle: 'Waiting for opponent to select a dude',
                 cardCondition: card => card.controller === this.controller && card.location === 'play area',
                 cardType: 'dude'
             },
