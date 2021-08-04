@@ -315,6 +315,20 @@ class DrawCard extends BaseCard {
         super.leavesPlay();
     }
 
+    isAtHome() {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        return this.game.isHome(this.gamelocation, this.controller);
+    }
+
+    isAtDeed() {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        return this.locationCard && this.locationCard.getType() === 'deed';
+    }
+
     isGadget() {
         return this.hasKeyword('Gadget');
     }
