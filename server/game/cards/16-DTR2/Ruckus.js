@@ -3,7 +3,6 @@ const DudeCard = require('../../dudecard.js');
 class Ruckus extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            // the isAtDeed function is in different PR (#716) wait until it is merged
             condition: () => this.isAtDeed(),
             match: this,
             effect: ability.effects.determineControlByBullets()
