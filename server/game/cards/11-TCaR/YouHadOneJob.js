@@ -36,25 +36,17 @@ class YouHadOneJob extends ActionCard {
             title: 'Resolution: Reduce Casualties',
             playType: 'resolution',
             handler: context => {
-                if(!context.player.isCheatin()) {
-                    this.game.promptForYesNo(context.player, {
-                        title: 'Reduce your casualties by 2?',
-                        onYes: player => {
-                            player.modifyCasualties(-2);
-                            this.game.addMessage('{0} uses {1} to reduce their casualties by 2', player, this);
-                        }
-                    });
-                }
-
-                if(!context.player.getOpponent().isCheatin()) {
-                    this.game.promptForYesNo(context.player.getOpponent(), {
-                        title: 'Reduce your casualties by 2?',
-                        onYes: player => {
-                            player.modifyCasualties(-2);
-                            this.game.addMessage('{0} uses {1} to reduce their casualties by 2', player, this);
-                        }
-                    });
-                }
+                this.game.getPlayers().forEach(p => {
+                    if(!p.isCheatin()) {
+                        this.game.promptForYesNo(p, {
+                            title: 'Reduce your casualties by 2?',
+                            onYes: player => {
+                                player.modifyCasualties(-2);
+                                this.game.addMessage('{0} uses {1} to reduce their casualties by 2', player, this);
+                            }
+                        });
+                    }
+                });
             },
             source: this
         });
