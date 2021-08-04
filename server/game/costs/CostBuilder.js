@@ -30,11 +30,15 @@ class CostBuilder {
      * @param {function} conditionOrMatcher Either a function that takes a card and ability context and returns whether to allow the player to select it, or a properties hash to be used as a card matcher.
      */
     select(conditionOrMatcher = () => true, cardType) {
-        return new SelectCardCost(this.action, {
+        const props = {
             activePromptTitle: this.titles.select,
-            cardCondition: CardMatcher.createMatcher(conditionOrMatcher),
-            cardType
-        });
+            cardCondition: CardMatcher.createMatcher(conditionOrMatcher)
+        };
+        // cannot pass undefined "cardType" because it would prevent from it being set to default
+        if(cardType) {
+            props.cardType = cardType;
+        }
+        return new SelectCardCost(this.action, props);
     }
 
     /**

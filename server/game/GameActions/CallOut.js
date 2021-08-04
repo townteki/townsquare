@@ -8,7 +8,7 @@ class CallOut extends GameAction {
     canChangeGameState({ caller, callee, isCardEffect = true }) {
         return ['outfit', 'play area'].includes(caller.location) && 
             ['outfit', 'play area'].includes(callee.location) && 
-            caller.gamelocation === callee.gamelocation &&
+            this.passesLocationCondition(caller, callee) &&
             (isCardEffect || !caller.booted) &&
             callee.canBeCalledOut();
     }
@@ -21,6 +21,16 @@ class CallOut extends GameAction {
                 event.caller.game.startShootout(event.caller, event.callee);
             }
         });
+    }
+
+    passesLocationCondition(caller, callee) {
+        if(caller.gamelocation === callee.gamelocation) {
+            return true;
+        }
+        if(caller.canCallOutAdjacent() && caller.isAdjacent(callee.gamelocation)) {
+            return true;
+        }
+        return false;
     }
 }
 
