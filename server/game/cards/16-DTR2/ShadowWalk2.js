@@ -1,7 +1,7 @@
 const GameActions = require('../../GameActions/index.js');
 const SpellCard = require('../../spellcard.js');
 
-class ShadowWalk extends SpellCard {
+class ShadowWalk2 extends SpellCard {
     setupCardAbilities(ability) {
         this.spellAction({
             title: 'Noon: Shadow Walk',
@@ -35,16 +35,25 @@ class ShadowWalk extends SpellCard {
             onSuccess: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent })).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent); 
-                    this.game.promptWithMenu(context.player, this, {
-                        activePrompt: {
-                            menuTitle: 'Make shootout play',
-                            buttons: [
-                                { text: 'Pass', method: 'pass' }
-                            ],
-                            promptTitle: this.title
-                        },
-                        source: this
-                    });
+                });
+                this.game.promptForYesNo(context.player, {
+                    title: `Do you want to discard ${this.title} to make another play?`,
+                    onYes: player => {
+                        this.game.resolveGameAction(GameActions.discardCard({ card: this })).thenExecute(() => {
+                            this.game.addMessage('{0} uses {1} and discard it to make another play', context.player, this); 
+                            this.game.promptWithMenu(player, this, {
+                                activePrompt: {
+                                    menuTitle: 'Make shootout play',
+                                    buttons: [
+                                        { text: 'Pass', method: 'pass' }
+                                    ],
+                                    promptTitle: this.title
+                                },
+                                source: this
+                            });
+                        });
+                    },
+                    source: this
                 });
             },
             source: this
@@ -56,6 +65,6 @@ class ShadowWalk extends SpellCard {
     }
 }
 
-ShadowWalk.code = '01102';
+ShadowWalk2.code = '25247';
 
-module.exports = ShadowWalk;
+module.exports = ShadowWalk2;

@@ -117,7 +117,7 @@ class AbilityTarget {
         }
         let buttons = [];
         if((this.cardType.includes('location') || this.cardType.includes('townsquare')) && 
-            this.selector.canTarget(context.game.townsquare.locationCard)) {
+            this.selector.canTarget(context.game.townsquare.locationCard, context)) {
             buttons = [{ text: 'Town Square' }];
             this.activePromptTitle = this.activePromptTitle || 'Select target location for movement';
         }
