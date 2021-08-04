@@ -110,6 +110,10 @@ class GameLocation {
         return this.locationCard && this.locationCard.getType() === 'outfit';
     }
 
+    isDeed() {
+        return this.locationCard && this.locationCard.getType() === 'deed';
+    }
+
     isHome(player) {
         return this.isOutfit() && this.locationCard.owner === player;
     }
