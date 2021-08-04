@@ -8,6 +8,7 @@ class Censure extends SpellCard {
             cost: ability.costs.bootSelf(),
             difficulty: 6,
             onSuccess: (context) => {
+                this.abilityContext = context;
                 context.game.promptForYesNo(this.controller, {
                     title: 'Increase hand rank?',
                     onYes: () => {
