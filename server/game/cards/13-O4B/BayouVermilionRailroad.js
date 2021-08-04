@@ -22,13 +22,20 @@ class BayouVermilionRailroad extends OutfitCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 context.player.modifyGhostRock(1);
-                this.untilEndOfPhase(context.ability, ability => ({
-                    match: context.target.locationCard,
-                    effect: [
-                        ability.effects.setProduction(0),
-                        ability.effects.setControl(0)
-                    ]
-                }), 'upkeep');
+                this.game.addMessage('{0} gains 1 GR from {1}', context.player, this);
+                context.game.promptForYesNo(context.player, {
+                    title: 'Do you want to reduce ' + context.target.locationCard.title + '\'s CP and production to 0?',
+                    onYes: () => {
+                        this.untilEndOfPhase(context.ability, ability => ({
+                            match: context.target.locationCard,
+                            effect: [
+                                ability.effects.setProduction(0),
+                                ability.effects.setControl(0)
+                            ]
+                        }), 'upkeep');
+                        this.game.addMessage('{0} uses {1} to reduce {2}\'s CP and production to 0 until after Upkeep', context.player, this, context.target.locationCard);
+                    }
+                });
             },
             source: this
         });
