@@ -4,6 +4,7 @@ class YouHadOneJob extends ActionCard {
     setupCardAbilities() {
         this.action({
             title: 'Shootout: Change Bullet Type',
+            playType: 'shootout',
             target: {
                 cardCondition: {
                     location: 'play area',
@@ -35,7 +36,7 @@ class YouHadOneJob extends ActionCard {
         this.action({
             title: 'Resolution: Reduce Casualties',
             playType: 'resolution',
-            handler: context => {
+            handler: () => {
                 this.game.getPlayers().forEach(p => {
                     if(!p.isCheatin()) {
                         this.game.promptForYesNo(p, {
