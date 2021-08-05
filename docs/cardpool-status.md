@@ -749,7 +749,7 @@
 |                     | 19039| Disarm
 |:heavy_check_mark:   | 19040| Grim Servant O' Death
 |                     | 19041| Behold White Bull
-|                     | 19042| You Had ONE Job!
+|:heavy_check_mark:   | 19042| You Had ONE Job!
 |:heavy_check_mark:   | 19043| Friends in High Places
 |                     | 19044| Shan Fan Showdown!
 |:heavy_check_mark:   | 19045| The Winning Agenda
