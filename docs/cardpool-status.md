@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/359/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/363/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -549,7 +549,7 @@
 |                     | 14010| Theo Whateley-Boyer
 |                     | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
-|                     | 14013| Henry Moran
+|:heavy_check_mark:   | 14013| Henry Moran
 |                     | 14014| Gomorra Lot Commission
 |                     | 14015| Wagner Memorial Ranch
 |:heavy_check_mark:   | 14016| Notary Public
@@ -742,14 +742,14 @@
 |                     | 19032| Cavalry Escort
 |                     | 19033| Nightmare Realm
 |:heavy_check_mark:   | 19034| Sentinel
-|                     | 19035| Censure
+|:heavy_check_mark:   | 19035| Censure
 |                     | 19036| Raven's Ruin
 |:heavy_check_mark:   | 19037| Remedy
-|                     | 19038| Intercession
+|:heavy_check_mark:   | 19038| Intercession
 |                     | 19039| Disarm
 |:heavy_check_mark:   | 19040| Grim Servant O' Death
 |                     | 19041| Behold White Bull
-|                     | 19042| You Had ONE Job!
+|:heavy_check_mark:   | 19042| You Had ONE Job!
 |:heavy_check_mark:   | 19043| Friends in High Places
 |                     | 19044| Shan Fan Showdown!
 |:heavy_check_mark:   | 19045| The Winning Agenda
