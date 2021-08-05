@@ -1049,6 +1049,8 @@ const Effects = {
         optionEffect('canBeInventedWithoutBooting', 'Can be Invented without Booting'),
     canBeCalledOutAtHome:
         optionEffect('canBeCalledOutAtHome', 'Can be Called out at Home'),
+    canCallOutAdjacent:
+        optionEffect('canCallOutAdjacent', 'Can Call out Adjacent Dude'),
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
     canPerformSkillUsing: function(skillnameOrKF, condition) {
