@@ -420,6 +420,10 @@ class DudeCard extends DrawCard {
         return this.options.contains('canBeCalledOutAtHome', this);
     }
 
+    canCallOutAdjacent() {
+        return this.options.contains('canCallOutAdjacent', this);
+    }
+
     getMoveOptions() {
         return {
             moveToPosse: !this.canJoinWithoutMoving(),

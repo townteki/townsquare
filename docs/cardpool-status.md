@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/359/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/360/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -549,7 +549,7 @@
 |                     | 14010| Theo Whateley-Boyer
 |                     | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
-|                     | 14013| Henry Moran
+|:heavy_check_mark:   | 14013| Henry Moran
 |                     | 14014| Gomorra Lot Commission
 |                     | 14015| Wagner Memorial Ranch
 |:heavy_check_mark:   | 14016| Notary Public

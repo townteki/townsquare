@@ -1102,8 +1102,9 @@ class Game extends EventEmitter {
     }
 
     revealHands() {
-        this.getPlayers().forEach(player => player.revealDrawHand());
-        this.raiseEvent('onDrawHandsRevealed', { shootout: this.shootout });
+        this.raiseEvent('onDrawHandsRevealed', { shootout: this.shootout }, () => {
+            this.getPlayers().forEach(player => player.revealDrawHand());
+        });
     }
 
     placeOnBottomOfDeck(card, options = { allowSave: true }) {
