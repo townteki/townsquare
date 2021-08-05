@@ -242,6 +242,7 @@ class DudeCard extends DrawCard {
 
     addStudEffect(source, shooterType) {
         this.studReferenceArray.unshift({ source: source, shooter: shooterType});
+        this.game.raiseEvent('onDudeBecomesStud', { card: this });
     }
 
     removeStudEffect(source) {
@@ -417,6 +418,10 @@ class DudeCard extends DrawCard {
 
     canBeCalledOutAtHome() {
         return this.options.contains('canBeCalledOutAtHome', this);
+    }
+
+    canCallOutAdjacent() {
+        return this.options.contains('canCallOutAdjacent', this);
     }
 
     getMoveOptions() {
