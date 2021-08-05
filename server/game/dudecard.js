@@ -242,6 +242,7 @@ class DudeCard extends DrawCard {
 
     addStudEffect(source, shooterType) {
         this.studReferenceArray.unshift({ source: source, shooter: shooterType});
+        this.game.raiseEvent('onDudeBecomesStud', { card: this });
     }
 
     removeStudEffect(source) {
