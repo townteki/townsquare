@@ -18,11 +18,11 @@ class YouHadOneJob extends ActionCard {
                         menuTitle: 'Change to stud or draw?',
                         buttons: [
                             {
-                                text: 'Change to Stud',
+                                text: 'Stud',
                                 method: 'stud'
                             },
                             {
-                                text: 'Change to Draw',
+                                text: 'Draw',
                                 method: 'draw'
                             }
                         ]
