@@ -28,14 +28,13 @@ class Censure extends SpellCard {
                             },
                             source: this
                         });
-                    }
+                    },
+                    source: this
                 });
                 
                 /* Check if this is a shootout and if so, reduce casualties */
                 if(this.game.shootout) {
-                    context.player.modifyCasualties(-3);
-                    this.game.addMessage('{0} uses {1} to reduce their casualties by 3 this round', context.player, this);
-                    
+                    context.player.modifyCasualties(-3);                   
                     context.game.promptForYesNo(this.controller, {
                         title: 'Send dude home booted?',
                         onYes: () => {
@@ -46,13 +45,18 @@ class Censure extends SpellCard {
                                 cardType: 'dude',
                                 gameAction: 'sendHome',
                                 onSelect: (player, card) => {
-                                    this.game.addMessage('{0} uses {1} to send {2} home booted', player, this, card);
+                                    this.game.addMessage('{0} uses {1} to reduce their casualties by 3 this round and to send {2} home booted', 
+                                        player, this, card);
                                     this.game.shootout.sendHome(card, context);
                                     return true;
                                 }
                             });
                             return true;
-                        }
+                        },
+                        onNo: () => {
+                            this.game.addMessage('{0} uses {1} to reduce their casualties by 3 this round', context.player, this);
+                        },
+                        source: this
                     });
                 }
             },
@@ -68,7 +72,7 @@ class Censure extends SpellCard {
 
     chooseOpponent(player) {
         player.getOpponent().modifyRank(2, this.abilitycontext);
-        this.game.addMessage('{0} uses {1} to raise {3}\'s hand rank by 2', player, this, player.getOpponent());
+        this.game.addMessage('{0} uses {1} to raise {2}\'s hand rank by 2', player, this, player.getOpponent());
         return true;
     }
 }
