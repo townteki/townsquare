@@ -522,13 +522,6 @@ class DudeCard extends DrawCard {
         });
     }
 
-    isAtHome() {
-        if(this.location !== 'play area') {
-            return false;
-        }
-        return this.game.isHome(this.gamelocation, this.controller);
-    }
-
     isWanted() {
         return this.tokens[Tokens.bounty] > 0;
     }

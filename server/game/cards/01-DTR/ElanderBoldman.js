@@ -19,9 +19,11 @@ class ElanderBoldman extends DudeCard {
             },
             message: context => {
                 if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
-                    this.game.addMessage('{0} uses {1} to pull {2} and discards {3} because pulled card is a club', context.player, this);
+                    this.game.addMessage('{0} uses {1} to pull {2} and discards {3} because pulled card is a club', 
+                        context.player, this, context.pull.pulledCard, context.target);
                 } else {
-                    this.game.addMessage('{0} uses {1} to pull {2} and gives {3}\'s Weapon Gadget +3 bullets ', context.player, this);
+                    this.game.addMessage('{0} uses {1} to pull {2} and gives {3}\'s Weapon Gadget +3 bullets ', 
+                        context.player, this, context.pull.pulledCard, context.target);
                 }
             },
             handler: context => {
