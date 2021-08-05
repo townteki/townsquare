@@ -968,10 +968,22 @@ const Effects = {
             title: `Stud Bonus modified: ${amount}`,
             targetType: 'player',
             apply: function(player) {
-                player.modifyPosseStudBonus(amount);
+                player.modifyPosseBonus(amount, 'stud');
             },
             unapply: function(player) {
-                player.modifyPosseStudBonus(-amount);
+                player.modifyPosseBonus(-amount, 'stud');
+            }
+        };
+    },
+    modifyPosseDrawBonus: function(amount) {
+        return {
+            title: `Draw Bonus modified: ${amount}`,
+            targetType: 'player',
+            apply: function(player) {
+                player.modifyPosseBonus(amount, 'draw');
+            },
+            unapply: function(player) {
+                player.modifyPosseBonus(-amount, 'draw');
             }
         };
     },
