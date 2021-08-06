@@ -30,8 +30,8 @@ class CarterRichardson extends DudeCard {
                 activePromptTitle: 'Select a dude',
                 cardCondition: { 
                     location: 'play area', 
-                    controller: 'opponent', 
-                    condition: dude => this.isOpponentsDudeWithHighestBounty(dude)
+                    controller: 'any', 
+                    condition: dude => this.isDudeWithHighestBounty(dude)
                 },
                 cardType: ['dude']
             },
@@ -47,7 +47,7 @@ class CarterRichardson extends DudeCard {
         });
     }
 
-    isOpponentsDudeWithHighestBounty(dude) {
+    isDudeWithHighestBounty(dude) {
         const wantedOpponentDudes = this.game.getDudesInPlay().filter(dude => dude.isWanted());
         const highestBounty = wantedOpponentDudes.reduce((highestBounty, dude) => {
             return Math.max(dude.bounty, highestBounty);
