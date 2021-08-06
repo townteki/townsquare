@@ -2,15 +2,12 @@ const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class CarterRichardson extends DudeCard {
-    constructor(owner, cardData) {
-        super(owner, cardData, true);
-    }
     setupCardAbilities(ability) {
         this.playAction({
             title: 'Carter Richardson: shootout',
             playType: 'shootout',
             cost: ability.costs.payReduceableGRCost(),
-            condition: () => this.game.shootout && this.game.shootout.getPosseByPlayer(this.controller.getOpponent()) && this.game.shootout.getPosseByPlayer(this.controller.getOpponent()).getDudes(dude => dude.isWanted()).length,
+            condition: () => this.isWantedDudeOpposing(),
             message: context => this.game.addMessage('{0} plays {1} into your posse', context.player, this),
             handler: context => {
                 this.game.resolveGameAction(GameActions.putIntoPlay({ 
@@ -45,6 +42,14 @@ class CarterRichardson extends DudeCard {
                 }), context);
             }
         });
+    }
+
+    isWantedDudeOpposing() {
+        if(!this.game.shootout) {
+            return false;
+        }
+        const oppPosse = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());
+        return oppPosse && oppPosse.getDudes(dude => dude.isWanted()).length;
     }
 
     isDudeWithHighestBounty(dude) {
