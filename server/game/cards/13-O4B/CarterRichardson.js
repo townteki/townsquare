@@ -10,7 +10,7 @@ class CarterRichardson extends DudeCard {
             title: 'Carter Richardson: shootout',
             playType: 'shootout',
             cost: ability.costs.payReduceableGRCost(),
-            condition: () => this.game.shootout && this.game.shootout.getPosseByPlayer(this.controller.getOpponent()).getDudes(dude => dude.isWanted()).length,
+            condition: () => this.game.shootout && this.game.shootout.getPosseByPlayer(this.controller.getOpponent()) && this.game.shootout.getPosseByPlayer(this.controller.getOpponent()).getDudes(dude => dude.isWanted()).length,
             message: context => this.game.addMessage('{0} plays {1} into your posse', context.player, this),
             handler: context => {
                 this.game.resolveGameAction(GameActions.putIntoPlay({ 
