@@ -1128,11 +1128,16 @@ class Player extends Spectator {
         }
     }
 
-    modifyPosseStudBonus(amount) {
+    modifyPosseBonus(amount, type = 'stud') {
         if(this.game.shootout) {
             let playerPosse = this.game.shootout.getPosseByPlayer(this);
             if(playerPosse) {
-                playerPosse.studBonus += amount;
+                if(type === 'stud') {
+                    playerPosse.studBonus += amount;
+                }
+                if(type === 'draw') {
+                    playerPosse.drawBonus += amount;
+                }
             }
         }
     }

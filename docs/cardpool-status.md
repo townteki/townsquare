@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/363/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/368/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -852,10 +852,10 @@
 |                     | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
 |                     | 21033| Violet Esperanza
-|                     | 21034| Curly Bill Brocius
+|:heavy_check_mark:   | 21034| Curly Bill Brocius
 |:heavy_check_mark:   | 21035| Byron Decker
 |:heavy_check_mark:   | 21036| Carter Richardson
-|                     | 21037| Valeria Batten (Exp.1)
+|:heavy_check_mark:   | 21037| Valeria Batten (Exp.1)
 |                     | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
 |                     | 21040| Hart's Tea Shoppe
@@ -868,7 +868,7 @@
 |                     | 21047| Wrathful Spider
 |                     | 21048| Guiding Light
 |                     | 21049| Champion
-|                     | 21050| Malison
+|:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
 |                     | 21052| Ten-Foot Punch
 |                     | 21053| Fleet-Footed
@@ -919,7 +919,7 @@
 |                     | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
 |                     | 22039| Magnum Rounds
-|                     | 22040| Iron Mole
+|:heavy_check_mark:   | 22040| Iron Mole
 |                     | 22041| Net Gun
 |                     | 22042| Scratch
 |                     | 22043| Battered Banjo
