@@ -4,9 +4,9 @@ const GameActions = require('../GameActions');
 const SingleCostReducer = require('../singlecostreducer');
 
 class PutIntoPlayCardAction extends BaseAbility {
-    constructor(properties = { playType: 'ability', sourceType: 'ability', target: '' }, callback) {
+    constructor(properties = { playType: 'ability', abilitySourceType: 'ability', target: '' }, callback) {
         super({
-            abilitySourceType: properties.sourceType,
+            abilitySourceType: properties.abilitySourceType,
             cost: [
                 Costs.payReduceableGRCost(properties.playType)
             ]

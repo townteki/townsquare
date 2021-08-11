@@ -420,6 +420,18 @@ const Effects = {
             }
         };
     },
+    modifyDeedInfluence: function(value) {
+        return {
+            title: `Deed Influence modified: ${value}`,
+            gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
+            apply: function(card) {
+                card.modifyDeedInfluence(value, true);
+            },
+            unapply: function(card) {
+                card.modifyDeedInfluence(-value, false);
+            }
+        };
+    },
     modifyControl: function(value) {
         return {
             title: `Control modified: ${value}`,

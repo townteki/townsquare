@@ -92,6 +92,7 @@ class GamblingPhase extends Phase {
         }
  
         this.game.setFirstPlayer(winner.player);
+        this.game.raiseEvent('onLowballWinnerDetermined', { winner: winner.player });
         winner.player.modifyGhostRock(this.lowballPot);
     }
 
