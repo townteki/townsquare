@@ -1,16 +1,18 @@
+const GenericTracker = require('../../EventTrackers/GenericTracker.js');
 const GameActions = require('../../GameActions/index.js');
 const OutfitCard = require('../../outfitcard.js');
 
-class RegulatorRedux extends OutfitCard {
+class MorganRegulators2 extends OutfitCard {
     setupCardAbilities(ability) {
+        this.tracker = GenericTracker.forRound(this.game, 'onShootoutPhaseStarted');
         this.persistentEffect({
-            condition: () => true,
+            condition: () => !this.tracker.eventHappened(),
             match: this.game.getPlayers(),
             effect: ability.effects.setMaxInfByLocation(5)
         });
 
         this.action({
-            title: 'Regulators Redux',
+            title: 'Morgan Regulators',
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             target: {
@@ -23,7 +25,6 @@ class RegulatorRedux extends OutfitCard {
                 cardType: ['dude'],
                 gameAction: 'moveDude'
             },
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({
                     card: context.target,
@@ -42,6 +43,6 @@ class RegulatorRedux extends OutfitCard {
     }
 }
 
-RegulatorRedux.code = '25096';
+MorganRegulators2.code = '25096';
 
-module.exports = RegulatorRedux;
+module.exports = MorganRegulators2;
