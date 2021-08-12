@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/372/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/382/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -341,13 +341,13 @@
 |                     | 08001| Junior
 |                     | 08002| The Fabulous Mister Miss
 |                     | 08003| Sister Mary Gideon
-|                     | 08004| Nathan Shane
+|:heavy_check_mark:   | 08004| Nathan Shane
 |                     | 08005| Warren Graves
 |                     | 08006| Jack O'Hara
 |                     | 08007| John "Aces" Radcliffe
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
 |                     | 08009| Old Man McDroste
-|                     | 08010| Flint's Amusements
+|:heavy_check_mark:   | 08010| Flint's Amusements
 |                     | 08011| Lula's Exploit
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
@@ -369,7 +369,7 @@
 |                     | 09003| Benjamin Washington
 |:heavy_check_mark:   | 09004| Daomei Wang
 |:heavy_check_mark:   | 09005| Randall
-|                     | 09006| Xiaodan Li
+|:heavy_check_mark:   | 09006| Xiaodan Li
 |                     | 09007| Longwei Fu
 |:heavy_check_mark:   | 09008| Natalya
 |:heavy_check_mark:   | 09009| Xui Yin Chen
@@ -402,7 +402,7 @@
 |                     | 09036| Shifu Speaks
 |:heavy_check_mark:   | 09037| Zhu's Ferocity
 |:heavy_check_mark:   | 09038| Raking Dragons
-|                     | 09039| Rabbit's Lunar Leap
+|:heavy_check_mark:   | 09039| Rabbit's Lunar Leap
 |:heavy_check_mark:   | 09040| Zhu's Reward
 |:heavy_check_mark:   | 09041| Ancestor Spirit
 |:heavy_check_mark:   | 09042| Nature Spirit
@@ -445,7 +445,7 @@
 |:heavy_check_mark:   | 10032| Red Horse's Tail
 |:heavy_check_mark:   | 10033| Fire of Nanahbozho
 |                     | 10034| Civil War
-|                     | 10035| Rabbit's Deception
+|:heavy_check_mark:   | 10035| Rabbit's Deception
 |                     | 10036| A Hero's Passing
 |                     | 10037| Tummy Twister
 |                     | 10038| Backroom Deals
@@ -566,7 +566,7 @@
 |                     | 14027| Crafty Hare
 |:heavy_check_mark:   | 14028| Onward Christian Soldiers
 |                     | 14029| Turtle's Guard
-|                     | 14030| Sight Beyond Sight
+|:heavy_check_mark:   | 14030| Sight Beyond Sight
 |                     | 14031| Requiem for a Good Boy
 |                     | 14032| Fool Me Once...
 |                     | 14033| Fiddle Game
@@ -652,7 +652,7 @@
 |                     | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
 |:heavy_check_mark:   | 17017| Ghostly Communion
-|                     | 17018| Calling The Cavalry
+|:heavy_check_mark:   | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
 |                     | 17020| Showboating
 |                     | 17021| All Or Nothing
