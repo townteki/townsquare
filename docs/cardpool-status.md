@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/378/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/382/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -139,7 +139,7 @@
 |:heavy_check_mark:   | 01125| Run 'Em Down!
 |:heavy_check_mark:   | 01126| Bounty Hunter
 |:heavy_check_mark:   | 01127| Reserves
-|                     | 01128| Rumors
+|:heavy_check_mark:   | 01128| Rumors
 |:heavy_check_mark:   | 01129| Cheatin' Varmint
 |                     | 01130| Fresh Horses
 |:heavy_check_mark:   | 01131| Magical Distraction
@@ -173,7 +173,7 @@
 |                     | 02008| Alice Stowe
 |:white_check_mark:   | 02009| Wilber Crowley
 |:white_check_mark:   | 02010| Roderick Byre
-|                     | 02011| Town Council
+|:heavy_check_mark:   | 02011| Town Council
 |                     | 02012| The R&D Ranch
 |                     | 02013| Telepathy Helmet
 |:heavy_check_mark:   | 02014| Faithful Hound
@@ -665,7 +665,7 @@
 |                     | 18002| Gateway To Beyond
 |                     | 18003| Full Moon Brotherhood
 |                     | 18004| Justice In Exile
-|                     | 18005| Morgan Regulators
+|:heavy_check_mark:   | 18005| Morgan Regulators
 |                     | 18006| Protection Racket
 |                     | 18007| Zui Waidan
 |                     | 18008| Mr. Outang
@@ -693,7 +693,7 @@
 |                     | 18030| De Annulos Mysteriis
 |                     | 18031| Heartseeker
 |                     | 18032| Tse-Che-Nako's Weaving
-|                     | 18033| Amazing Grace
+|:heavy_check_mark:   | 18033| Amazing Grace
 |                     | 18034| Burn 'Em Out
 |                     | 18035| Shiny Things
 |                     | 18036| We Got Beef!

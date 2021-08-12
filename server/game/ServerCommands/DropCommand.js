@@ -1,17 +1,18 @@
 const PublicLocations = new Set(['dead pile', 'discard pile', 'out of game', 'play area']);
+const CardAction = require('../cardaction');
 const GameActions = require('../GameActions');
 const DiscardCard = require('../GameActions/DiscardCard');
 const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
 const StandardActions = require('../PlayActions/StandardActions');
 
 class DropCommand {
-    constructor(game, player, card, targetLocation, gameLocation) {
+    constructor(game, player, card, targetLocation, gamelocation) {
         this.game = game;
         this.player = player;
         this.card = card;
         this.originalLocation = card.location;
         this.targetLocation = targetLocation;
-        this.gameLocation = gameLocation;
+        this.gamelocation = gamelocation;
     }
 
     execute() {
@@ -22,14 +23,36 @@ class DropCommand {
 
         if(this.originalLocation === this.targetLocation) {
             if(this.card.getType() === 'dude' && this.targetLocation === 'play area') {
-                this.game.resolveGameAction(GameActions.moveDude({ 
-                    card: this.card, 
-                    targetUuid: this.gameLocation, 
-                    options: { 
-                        isCardEffect: false,
-                        markActionAsTaken: true
-                    } 
-                }), defaultContext);
+                const moveActionProps = {
+                    title: 'Move',
+                    abilitySourceType: 'game',
+                    condition: () => this.game.currentPhase === 'high noon' && !this.card.booted,
+                    target: {
+                        cardCondition: { 
+                            location: 'play area',
+                            controller: 'any',
+                            condition: card => card.uuid === this.gamelocation
+                        },
+                        cardType: ['location'],
+                        autoSelect: true
+                    },
+                    actionContext: { card: this.card, gameAction: 'moveDude' },
+                    handler: context => {
+                        this.game.resolveGameAction(GameActions.moveDude({ 
+                            card: this.card, 
+                            targetUuid: context.target.uuid, 
+                            options: { 
+                                isCardEffect: false
+                            } 
+                        }), context);
+                    },
+                    player: this.player,
+                    printed: false
+                };
+                if(this.gamelocation === this.game.townsquare.uuid) {
+                    moveActionProps.target = 'townsquare';
+                }
+                this.game.resolveStandardAbility(new CardAction(this.game, this.card, moveActionProps), this.player, this.card);
             }
             return;
         }
@@ -43,19 +66,19 @@ class DropCommand {
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
                     title: 'Are you perfoming Shoppin\' play?',
                     onYes: () => {
-                        this.game.resolveStandardAbility(StandardActions.shoppin(this.gameLocation), this.player, this.card);
+                        this.game.resolveStandardAbility(StandardActions.shoppin(this.gamelocation), this.player, this.card);
                     },
                     onNo: () => this.game.resolveGameAction(GameActions.putIntoPlay({ 
                         player: this.player,
                         card: this.card, 
-                        params: { target: this.gameLocation }
+                        params: { target: this.gamelocation }
                     }), defaultContext)
                 }));
             } else {
                 this.game.resolveGameAction(GameActions.putIntoPlay({ 
                     player: this.player,
                     card: this.card, 
-                    params: { playingType: 'setup', target: this.gameLocation, force: true }
+                    params: { playingType: 'setup', target: this.gamelocation, force: true }
                 }), defaultContext);
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {

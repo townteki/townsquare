@@ -14,6 +14,7 @@ class DudeCard extends DrawCard {
         this.maxBullets = null;
         this.gritFunc = null;
         this.currentUpkeep = this.cardData.upkeep;
+        this.currentDeedInfluence = 0;
 
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
@@ -70,6 +71,17 @@ class DudeCard extends DrawCard {
         this.currentUpkeep = amount;
     }
 
+    get deedInfluence() {
+        if(this.currentDeedInfluence < 0) {
+            return 0;
+        }
+        return this.currentDeedInfluence;
+    }
+
+    set deedInfluence(amount) {
+        this.currentDeedInfluence = amount;
+    }
+
     getStat(statName) {
         if(statName.startsWith('skill:')) {
             const skillName = statName.split(':')[1];
@@ -78,8 +90,9 @@ class DudeCard extends DrawCard {
         switch(statName) {
             // TODO M2 need to separate general influence and influence for controling deeds
             case 'influence': 
-            case 'influence:deed': 
                 return this.influence;
+            case 'influence:deed': 
+                return this.influence + this.deedInfluence;
             case 'bullets':
                 return this.bullets;
             case 'bounty':
@@ -161,6 +174,17 @@ class DudeCard extends DrawCard {
             applying: applying
         };
         this.game.raiseEvent('onCardUpkeepChanged', params);
+    }
+
+    modifyDeedInfluence(amount, applying = true) {
+        this.currentDeedInfluence += amount;
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardDeedInfluenceChanged', params);
     }
 
     setupDudeCardAbilities() {
