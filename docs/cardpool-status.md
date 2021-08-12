@@ -645,7 +645,7 @@
 |                     | 17008| Pancho Castillo (Exp.1)
 |                     | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
-|                     | 17011| Grimoires & More
+|:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
 |                     | 17013| Pedro
 |                     | 17014| Aetheric Shockwave Inducer
