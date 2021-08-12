@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/382/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/384/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -730,7 +730,7 @@
 |                     | 19020| Taff's Distillery
 |:heavy_check_mark:   | 19021| Mausoleum
 |:heavy_check_mark:   | 19022| Epitaph Branch Office
-|                     | 19023| Buffalo Emporium
+|:heavy_check_mark:   | 19023| Buffalo Emporium
 |                     | 19024| Explorer's Lodge
 |:heavy_check_mark:   | 19025| The Oriental Saloon
 |                     | 19026| Hellstromme Plant #9
@@ -746,7 +746,7 @@
 |                     | 19036| Raven's Ruin
 |:heavy_check_mark:   | 19037| Remedy
 |:heavy_check_mark:   | 19038| Intercession
-|                     | 19039| Disarm
+|:heavy_check_mark:   | 19039| Disarm
 |:heavy_check_mark:   | 19040| Grim Servant O' Death
 |                     | 19041| Behold White Bull
 |:heavy_check_mark:   | 19042| You Had ONE Job!
