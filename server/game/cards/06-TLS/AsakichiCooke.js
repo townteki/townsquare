@@ -5,6 +5,7 @@ class AsakichiCooke extends DudeCard {
     setupCardAbilities(ability) {
         this.action({
             title: 'Move Your Dude',
+            playType: 'noon',
             cost: ability.costs.discardFromHand(),
             target: {
                 activePromptTitle: 'Choose your dude at this location',

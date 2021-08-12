@@ -4,7 +4,7 @@ class ShoppinCardAction extends PutIntoPlayCardAction {
     constructor(target = '') {
         super({ 
             playType: 'shoppin', 
-            sourceType: 'game', 
+            abilitySourceType: 'game', 
             target: target 
         });
         this.title = 'Play';

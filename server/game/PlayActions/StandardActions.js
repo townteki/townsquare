@@ -5,7 +5,7 @@ var StandardActions = {};
 
 var defaultProperties = {
     playType: 'ability', 
-    sourceType: 'ability', 
+    abilitySourceType: 'ability', 
     target: ''
 };
 

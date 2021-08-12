@@ -39,7 +39,7 @@ class OfficeOfAncestralAffairs extends OutfitCard {
                             handler: card => {
                                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                                     playType: 'validityCheck',
-                                    sourceType: 'ability',
+                                    abilitySourceType: 'ability',
                                     targetParent: job.mark
                                 }, () => {
                                     this.game.addMessage('{0} uses {1} to plant {2} at job mark {3}', context.player, this, card, job.mark);
