@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/384/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/385/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -674,7 +674,7 @@
 |                     | 18011| Eva Bright Eyes
 |                     | 18012| Mick Aduladi
 |                     | 18013| Absalom Hotchkiss
-|                     | 18014| Christine Perfect
+|:heavy_check_mark:   | 18014| Christine Perfect
 |                     | 18015| Father Tolarios
 |:heavy_check_mark:   | 18016| Hattie DeLorre
 |:heavy_check_mark:   | 18017| Diego Linares
