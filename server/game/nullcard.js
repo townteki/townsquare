@@ -18,6 +18,22 @@ class NullCard {
     isLocationCard() {
         return false;
     }
+
+    isOutOfTown() {
+        return false;
+    }
+
+    allowGameAction() {
+        return true;
+    }
+
+    isAdjacent() {
+        return false;
+    }
+
+    adjacentLocations() {
+        return [];
+    }
 }
 
 module.exports = NullCard;
