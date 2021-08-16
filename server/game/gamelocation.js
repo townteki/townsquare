@@ -190,7 +190,14 @@ class TownSquare extends GameLocation {
             hasKeyword: () => false,
             hasAttachment: () => false,
             adjacentLocations: () => 
-                this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation())
+                this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation()),
+            getShortSummary: () => {
+                return {
+                    code: 'townsquare',
+                    title: 'Town Square',
+                    type: 'townsquare'
+                };
+            }
         }), null, null);
 
         this.key = 'townsquare';

@@ -6,7 +6,8 @@ class WangMenWu extends DudeCard {
         this.reaction({
             title: 'Wang Men Wu',
             when: {
-                onPossesFormed: () => this.game.shootout.opposingPlayer === this.controller
+                onPossesFormed: () => this.game.shootout && 
+                    this.game.shootout.opposingPlayer === this.controller
             },
             handler: context => {
                 const gunslinger = context.player.placeToken('Gunslinger', this.gamelocation);
