@@ -12,12 +12,11 @@ class GrimServantODeath extends ActionCard {
                     location: 'play area', 
                     controller: 'any', 
                     condition: card => !card.isParticipating() &&
-                        card.isAtHome() &&
+                        card.isAtHome() && this.game.shootout &&
                         card.controller === this.game.shootout.opposingPlayer
                 },
                 cardType: ['dude']
             },
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 this.game.promptForYesNo(context.target.controller, {
                     title: `Do you want to have ${context.target.title} join the posse?`,
