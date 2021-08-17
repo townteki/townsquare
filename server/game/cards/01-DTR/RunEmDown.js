@@ -10,7 +10,9 @@ class RunEmDown extends ActionCard {
                 activePromptTitle: 'Choose location with mounted dudes',
                 cardCondition: { 
                     location: 'play area', 
-                    condition: card => this.game.getDudesAtLocation(card.gamelocation).some(occupant => occupant.hasHorse()) },
+                    condition: card => 
+                        this.game.getDudesAtLocation(card.gamelocation).some(occupant => occupant && occupant.hasHorse()) 
+                },
                 cardType: ['location']
             },
             handler: context => {
