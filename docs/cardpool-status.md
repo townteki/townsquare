@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/385/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/387/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -849,7 +849,7 @@
 |                     | 21028| Roberto Muratore
 |                     | 21029| Adelaide Rose
 |                     | 21030| Dr. Gregory Tremane
-|                     | 21031| Big Nose Kate
+|:heavy_check_mark:   | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
 |                     | 21033| Violet Esperanza
 |:heavy_check_mark:   | 21034| Curly Bill Brocius
@@ -914,7 +914,7 @@
 |:heavy_check_mark:   | 22032| Red River Roulette
 |                     | 22033| Kiva of Fathomless Reach
 |:heavy_check_mark:   | 22034| Crystal Palace
-|                     | 22035| Rham's Readings
+|:heavy_check_mark:   | 22035| Rham's Readings
 |                     | 22036| Jonah's Retreat
 |                     | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
