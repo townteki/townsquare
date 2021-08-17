@@ -717,7 +717,7 @@
 |                     | 19007| Fears No Owls
 |                     | 19008| Black Owl
 |                     | 19009| Zeb Whateley-Dupont
-|                     | 19010| Rosenbaum's Golem
+|:heavy_check_mark:   | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
 |                     | 19013| Adrián Vallejo
