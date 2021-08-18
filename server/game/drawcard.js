@@ -353,6 +353,14 @@ class DrawCard extends BaseCard {
         return this.options.contains('cannotRefuseCallout', opponentDude);
     }
 
+    cannotBePickedAsShooter() {
+        return this.options.contains('cannotBePickedAsShooter', this);
+    }
+
+    cannotInventGadgets() {
+        return this.options.contains('cannotInventGadgets', this);
+    }
+
     cannotBeChosenAsCasualty() {
         return this.options.contains('cannotBeChosenAsCasualty', this);
     }

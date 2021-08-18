@@ -6,7 +6,8 @@ class GoodsCard extends HeartsCard {
             return false;
         }
 
-        if(this.isGadget() && playingType === 'shoppin' && !card.hasKeyword('mad scientist')) {
+        if(this.isGadget() && playingType === 'shoppin' && 
+            (!card.hasKeyword('mad scientist') || card.cannotInventGadgets())) {
             return false;
         }
 

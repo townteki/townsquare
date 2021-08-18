@@ -875,6 +875,7 @@ class Player extends Spectator {
                 waitingPromptTitle: 'Waiting for opponent to select dude',
                 cardCondition: card => card.location === 'play area' &&
                     card.controller === this &&
+                    !card.cannotInventGadgets() &&
                     (!card.booted || gadget.canBeInventedWithoutBooting()) &&
                     card.canPerformSkillOn(gadget) &&
                     card.isInControlledLocation(),
