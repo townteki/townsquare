@@ -174,7 +174,7 @@
 |:white_check_mark:   | 02009| Wilber Crowley
 |:white_check_mark:   | 02010| Roderick Byre
 |:heavy_check_mark:   | 02011| Town Council
-|                     | 02012| The R&D Ranch
+|:heavy_check_mark:   | 02012| The R&D Ranch
 |                     | 02013| Telepathy Helmet
 |:heavy_check_mark:   | 02014| Faithful Hound
 |                     | 02015| Plasma Drill
@@ -731,7 +731,7 @@
 |:heavy_check_mark:   | 19021| Mausoleum
 |:heavy_check_mark:   | 19022| Epitaph Branch Office
 |:heavy_check_mark:   | 19023| Buffalo Emporium
-|                     | 19024| Explorer's Lodge
+|:heavy_check_mark:   | 19024| Explorer's Lodge
 |:heavy_check_mark:   | 19025| The Oriental Saloon
 |                     | 19026| Hellstromme Plant #9
 |:heavy_check_mark:   | 19027| Bilton Collection Agency

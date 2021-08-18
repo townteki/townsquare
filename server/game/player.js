@@ -1640,7 +1640,7 @@ class Player extends Spectator {
             if(targetLocation !== 'play area') {
                 let cardLeavePlay = () => {
                     if(card.getType() === 'deed') {
-                        this.removeDeedFromPlay(card, dude => dude.sendHome({ needToBoot: true }));
+                        this.removeDeedFromPlay(card, dude => dude && dude.sendHome({ needToBoot: true }));
                     }
                     card.leavesPlay();
                     card.moveTo(targetLocation);
