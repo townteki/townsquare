@@ -4,9 +4,7 @@ class TravisMoone extends DudeCard {
     setupCardAbilities(ability) {
         this.reaction({
             title: 'React: Travis Moone',
-            when: {
-                onSetupFinished: () => this.controller.availableGrifterActions > 0
-            },
+            grifter: true,
             cost: [ability.costs.bootSelf()],
             message: context =>
                 this.game.addMessage('{0} uses {1} to shuffle hand to draw deck and draw a new hand', context.player, this),
