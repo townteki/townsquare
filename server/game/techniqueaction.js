@@ -37,9 +37,6 @@ class TechniqueAction extends CardAction {
         if(properties.combo) {
             this.combo = properties.combo;
             this.options = this.options || {};
-            if(this.game.isLegacy()) {
-                this.options.doNotMarkActionAsTaken = true;
-            }
         }
     }
 
@@ -67,24 +64,10 @@ class TechniqueAction extends CardAction {
             successHandler: context => {
                 context.pull.isSuccessful = true;
                 this.onSuccess(context);
-                if(this.combo && this.game.isLegacy()) {
-                    this.game.queueSimpleStep(() => {
-                        if(this.combo(context)) {
-                            this.performCombo(context);
-                        } else {
-                            this.game.markActionAsTaken(context);
-                        }
-                    });
-                }
             },
             failHandler: context => {
                 context.pull.isSuccessful = false;
                 this.onFail(context);
-                if(this.game.isLegacy()) {
-                    if(this.combo) {
-                        this.game.queueSimpleStep(() => this.game.markActionAsTaken(context));                 
-                    }
-                }
             },
             pullingDude: context.kfDude,
             source: this.card
@@ -159,6 +142,7 @@ class TechniqueAction extends CardAction {
                             card.hasKeyword('technique') &&
                             card.code !== this.card.code &&
                             card.isSameTao(this.card) &&
+                            (context.kfDude.isParticipating() || this.checkIfShootoutJoinAction(card)) &&
                             (!card.isScripted() ||
                             card.hasEnabledCardAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber })),
                         cardType: 'action',
@@ -175,22 +159,24 @@ class TechniqueAction extends CardAction {
                                 card.useAbility(player, { kfDude: context.kfDude, comboNumber: context.comboNumber });
                             }
                             return true;
-                        },
-                        onCancel: () => {
-                            if(this.game.isLegacy()) {
-                                this.game.markActionAsTaken(context);
-                            }
                         }
                     });
-                },
-                onNo: () => {
-                    if(this.game.isLegacy()) {
-                        this.game.markActionAsTaken(context);
-                    }
                 },
                 source: this.card
             });  
         }      
+    }
+
+    checkIfShootoutJoinAction(card) {
+        if(card.getType() !== 'action') {
+            return false;
+        }
+        return card.abilities.actions.some(action => {
+            if(action.playType && action.playType.includes('shootout:join')) {
+                return true;
+            }
+            return false;
+        });
     }
 }
 

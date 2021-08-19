@@ -17,13 +17,13 @@ class SunTouchedRaven extends SpellCard {
                         numToSelect: 3,
                         doNotShuffleDeck: true,
                         message: {
-                            format: '{player} plays {source} to look at top 5 cards of their deck, and discard up to 3 of them'
+                            format: '{player} plays {source} to look at top 5 cards of their deck, and from them discards {searchTarget}'
                         },
                         cancelMessage: {
                             format: '{player} plays {source} to look at top 5 cards of their deck, but does not discard any of them'
                         },
-                        handler: (card, searchContext) => {
-                            this.game.resolveGameAction(GameActions.discardCard({ card: card, source: this }), searchContext);
+                        handler: (cards, searchContext) => {
+                            context.player.discardCards(cards, false, () => true, {}, searchContext);
                         }
                     }),
                     context

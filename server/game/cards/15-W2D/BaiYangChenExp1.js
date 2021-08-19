@@ -5,7 +5,7 @@ class BaiYangChenExp1 extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             match: this,
-            effect: ability.effects.cannotAttachCards()
+            effect: ability.effects.cannotAttachCards(this, attachment => !attachment.hasKeyword('technique'))
         });
         this.traitReaction({
             when: {
