@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/391/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/394/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -721,7 +721,7 @@
 |                     | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
 |                     | 19013| Adrián Vallejo
-|                     | 19014| Prof. Aloysius Roe
+|:heavy_check_mark:   | 19014| Prof. Aloysius Roe
 |:heavy_check_mark:   | 19015| Rabid Rance Hitchcock
 |:heavy_check_mark:   | 19016| Morgan Lash
 |:heavy_check_mark:   | 19017| Johnny Brocklehurst
@@ -881,7 +881,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 22001| Andrew Lane
-|                     | 22002| Hank Ketchum
+|:heavy_check_mark:   | 22002| Hank Ketchum
 |                     | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
 |                     | 22005| Rock Woofstone

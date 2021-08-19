@@ -707,6 +707,10 @@ class ChatCommands {
         let deck = new Deck();
         let preparedCard = deck.createCard(player, card);
 
+        if(!preparedCard) {
+            return true;
+        }
+
         preparedCard.applyAnyLocationPersistentEffects();
 
         if(deck.isDrawCard(card)) {
