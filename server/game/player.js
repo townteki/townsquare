@@ -584,8 +584,8 @@ class Player extends Spectator {
         }
     }
 
-    isAced(card) {
-        return card.isUnique() && this.deadPile.some(c => c.title === card.title);
+    isAced(card, checkSelf = true) {
+        return card.isUnique() && this.deadPile.some(c => c.title === card.title && (checkSelf || c !== card));
     }
 
     playCard(card, arg) {
@@ -692,15 +692,15 @@ class Player extends Spectator {
             return true;
         }
 
-        return this.canControl(card);
+        return this.canControl(card, true);
     }
 
-    canControl(card) {
+    canControl(card, puttingIntoPlay = false) {
         if(!card.isUnique()) {
             return true;
         }
 
-        if(this.isAced(card)) {
+        if(this.isAced(card, !puttingIntoPlay)) {
             return false;
         }
 

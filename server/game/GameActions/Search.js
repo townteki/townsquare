@@ -56,14 +56,12 @@ class Search extends GameAction {
                     }
                     if(this.handler) {
                         let searchTargets = context.searchTarget;
-                        if(!Array.isArray(context.searchTarget)) {
-                            searchTargets = [context.searchTarget];
+                        if(this.numToSelect === 1 && context.searchTarget.length) {
+                            searchTargets = context.searchTarget[0];
                         }
-                        searchTargets.forEach(targetCard => {
-                            let thenEvent = new Event('onActionOnSearchedCard', { card: targetCard, context: context }, 
-                                event => this.handler(event.card, event.context));
-                            event.thenAttachEvent(thenEvent);
-                        });
+                        let thenEvent = new Event('onActionOnSearchedCard', { cards: searchTargets, context: context }, 
+                            event => this.handler(event.cards, event.context));
+                        event.thenAttachEvent(thenEvent);
                     }
                     return true;
                 },

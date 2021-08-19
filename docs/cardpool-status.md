@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/387/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/391/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -281,7 +281,7 @@
 |:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
 |:heavy_check_mark:   | 05040| Meet The New Boss
-|                     | 06001| Funtime Freddy
+|:heavy_check_mark:   | 06001| Funtime Freddy
 
 ## `04.1-FJ` Final Justice
 
@@ -421,7 +421,7 @@
 |:heavy_check_mark:   | 10008| Enapay
 |                     | 10009| Danny Wilde
 |                     | 10010| Dabney Scuttlesby
-|                     | 10011| Ivor Hawley (Exp.1)
+|:heavy_check_mark:   | 10011| Ivor Hawley (Exp.1)
 |                     | 10012| Deborah West
 |                     | 10013| Abram Grothe (Exp.2)
 |                     | 10014| "Dead" Billy Jones
