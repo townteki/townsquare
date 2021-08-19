@@ -19,6 +19,12 @@ class RosenbaumsGolem extends DudeCard {
                     context.game.promptForYesNo(context.player, {
                         title: 'Do you want to give ' + context.target.title + ' +5 value?',
                         onYes: () => {
+                            this.applyAbilityEffect(context.ability, ability => ({
+                                match: context.target,
+                                effect: [
+                                    ability.effects.modifyValue(5)
+                                ]
+                            }));
                             this.game.addMessage('{0} uses {1} to give {2} +5 value', context.player, this, context.target);
                             if(context.target.getGrit() >= 11) {
                                 context.ability.selectAnotherTarget(context.player, context, {
