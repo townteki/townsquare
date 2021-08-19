@@ -620,9 +620,6 @@ class Player extends Spectator {
 
     getPossibleComboCard() {
         let kfDudes = this.cardsInPlay.filter(card => card.getType() === 'dude' && card.isKungFu());
-        if(this.game.shootout) {
-            kfDudes = kfDudes.filter(dude => dude.isParticipating());
-        }
         if(!kfDudes) {
             return;
         }
@@ -1328,13 +1325,11 @@ class Player extends Spectator {
                 technique.owner.moveCard(technique, technique.actionPlacementLocation);
             }
         };
-        if(!this.game.isLegacy()) {
-            this.attach(technique, kfDude, 'technique', () => {
-                if(!isSuccessful) {
-                    this.bootCard(technique);
-                }
-            });
-        }
+        this.attach(technique, kfDude, 'technique', () => {
+            if(!isSuccessful) {
+                this.bootCard(technique);
+            }
+        });
         if(this.game.shootout) {
             this.game.once('onPlayWindowClosed', eventHandler);
             this.game.once('onShootoutPhaseFinished', () => {

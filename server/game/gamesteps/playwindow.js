@@ -73,7 +73,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
                 this.playWindowOpened = true;
                 this.game.raiseEvent('onPlayWindowOpened', { playWindow: this });
             } else {
-                if(!this.game.isLegacy() && this.name === 'shootout plays' && this.orderPassed) {
+                if(this.name === 'shootout plays' && this.orderPassed) {
                     this.currentPlayer.checkAndPerformCombo();
                 }
                 this.orderPassed = false;
