@@ -19,7 +19,7 @@ class MaggieHarris extends DudeCard {
                         location: ['discard pile'],
                         numToSelect: 1,
                         message: {
-                            format: '{player} plays {source} to search their discard pile, and put {searchTarget} into play'
+                            format: '{player} plays {source} to search their discard pile, and puts {searchTarget} into play'
                         },
                         cancelMessage: {
                             format: '{player} plays {source} to search their discard pile, but does not find a horse'
