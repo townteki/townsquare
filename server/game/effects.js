@@ -365,6 +365,7 @@ const Effects = {
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown', 'Does not Unboot at Sundown'),
     doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings', 'Does not provide Bullets'),
     doesNotReturnAfterJob: optionEffect('doesNotReturnAfterJob', 'Does not go Home after Job'),
+    doesNotHaveToBeInvented: optionEffect('doesNotHaveToBeInvented', 'Does not have to be Invented'),
     restrictAttachmentsTo: function(trait) {
         return Effects.addKeyword(`No attachments except <i>${trait}</i>`);
     },

@@ -347,12 +347,13 @@ class BaseCard {
      * Applies a lasting effect which lasts until an event contained in the
      * `until` property for the effect has occurred.
      */
-    lastingEffect(ability, propertyFactory, causedByPlayType) {
+    lastingEffect(ability, propertyFactory, causedByPlayType, targetLocation = 'play area') {
         let properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'custom', 
             location: 'any', 
             ability: ability,
+            targetLocation: targetLocation,
             causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
     }

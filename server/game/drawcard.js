@@ -341,6 +341,10 @@ class DrawCard extends BaseCard {
         return this.options.contains('doesNotProvideBulletRatings');
     }
 
+    doesNotHaveToBeInvented() {
+        return this.options.contains('doesNotHaveToBeInvented');
+    }
+
     isSelectedAsFirstCasualty() {
         return this.options.contains('isSelectedAsFirstCasualty', this);
     }
