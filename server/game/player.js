@@ -929,7 +929,9 @@ class Player extends Spectator {
             return false;
         }
 
-        if(attachment.getType() !== 'legend' && attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
+        if(attachment.getType() !== 'legend' && attachment.isGadget() && 
+            (playingType === 'shoppin' || playingType === 'ability') &&
+            !attachment.doesNotHaveToBeInvented()) {
             let scientist = defaultScientist || (playingType === 'shoppin' ? card : null);
             this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
         } else {

@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/394/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/396/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -908,7 +908,7 @@
 |:heavy_check_mark:   | 22026| Pete Spence
 |                     | 22027| Jonah Essex (Exp.1)
 |                     | 22028| Camillus S. Fly
-|                     | 22029| QUATERMAN PRIME
+|:heavy_check_mark:   | 22029| QUATERMAN PRIME
 |                     | 22030| Winona Rein-Breaker
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
@@ -966,7 +966,7 @@
 |                     | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
 |                     | 23025| Alferd Packer
-|                     | 23026| John "Aces" Radcliffe (Exp.1)
+|:heavy_check_mark:   | 23026| John "Aces" Radcliffe (Exp.1)
 |                     | 23027| Willa Mae MacGowan (Exp.1)
 |                     | 23028| New Varney Nosferatu
 |:heavy_check_mark:   | 23029| Carmichael's Livery
