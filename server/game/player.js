@@ -860,8 +860,7 @@ class Player extends Spectator {
                     card.controller === this &&
                     !card.cannotInventGadgets() &&
                     (!card.booted || gadget.canBeInventedWithoutBooting()) &&
-                    card.canPerformSkillOn(gadget) &&
-                    card.isInControlledLocation(),
+                    card.canPerformSkillOn(gadget),
                 cardType: 'dude',
                 onSelect: (player, card) => {
                     if(!gadget.canBeInventedWithoutBooting()) {
