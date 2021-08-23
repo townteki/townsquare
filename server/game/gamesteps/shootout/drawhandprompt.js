@@ -130,14 +130,15 @@ class DrawHandPrompt extends UiPrompt {
         }
         if(arg === 'redraw') {
             const numberToRedraw = this.selectedCards[player.name].length + player.redrawBonus;
-            player.discardCards(this.selectedCards[player.name]);
+            const playerSelectedCards = [...this.selectedCards[player.name]];
+            player.discardCards(playerSelectedCards);
             player.drawCardsToDrawHand(numberToRedraw).thenExecute(() => {
-                this.game.addMessage('{0} discards {1} to redraw {2} cards', player, this.selectedCards[player.name], numberToRedraw);
-                this.getDrawCount(player).handRedrawn = true;
-                this.selectedCards[player.name] = [];
-                player.clearSelectedCards();
-                player.clearSelectableCards();                
+                this.game.addMessage('{0} discards {1} to redraw {2} cards', player, playerSelectedCards, numberToRedraw);
             });
+            this.getDrawCount(player).handRedrawn = true;
+            this.selectedCards[player.name] = [];            
+            player.clearSelectedCards();
+            player.clearSelectableCards();                            
             return false;
         }
         if(arg === 'revealdraw') {
