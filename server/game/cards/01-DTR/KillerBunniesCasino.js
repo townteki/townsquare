@@ -4,7 +4,7 @@ class KillerBunniesCasino extends DeedCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => true,
-            match: this.controller,
+            match: player => player === this.controller,
             effect: [
                 ability.effects.modifySundownDiscard(1)
             ]
