@@ -201,20 +201,6 @@ class Player extends Spectator {
         return cardsToReturn;
     }
 
-    anyCardsInPlay(predicateOrMatcher) {
-        const predicate = typeof(predicateOrMatcher) === 'function'
-            ? predicateOrMatcher
-            : card => CardMatcher.isMatch(card, predicateOrMatcher);
-        return this.game.allCards.some(card => card.controller === this && card.location === 'play area' && predicate(card));
-    }
-
-    filterCardsInPlay(predicateOrMatcher) {
-        const predicate = typeof(predicateOrMatcher) === 'function'
-            ? predicateOrMatcher
-            : card => CardMatcher.isMatch(card, predicateOrMatcher);
-        return this.game.allCards.filter(card => card.controller === this && card.location === 'play area' && predicate(card));
-    }
-
     getNumberOfCardsInPlay(predicateOrMatcher) {
         const predicate = typeof(predicateOrMatcher) === 'function'
             ? predicateOrMatcher
@@ -702,7 +688,7 @@ class Player extends Spectator {
         }
 
         if(card.owner === this) {
-            return !this.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
+            return !this.game.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
         }
 
         return true;
