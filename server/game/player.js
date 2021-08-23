@@ -1597,8 +1597,11 @@ class Player extends Spectator {
         }
     }
 
-    moveCard(card, targetLocation, options = {}, callback) {
+    moveCard(card, targetLocation, options = {}, callback, context) {
         if(!targetLocation) {
+            return;
+        }
+        if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
             return;
         }
         if(card.isToken()) {
@@ -1802,6 +1805,10 @@ class Player extends Spectator {
 
     cannotModifyHandRanks(context = {}) {
         return this.options.contains('cannotModifyHandRanks', context);
+    }
+
+    cardsCannotLeaveDiscard(context = {}) {
+        return this.options.contains('cardsCannotLeaveDiscard', context);
     }
 
     dudesCannotFlee() {
