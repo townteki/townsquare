@@ -14,7 +14,9 @@ class GrimoiresAndMore extends DeedCard {
                 const dude = context.event.card;
                 context.player.pull((pulledCard) => {
                     if('clubs' === pulledCard.suit.toLowerCase()) {
-                        this.game.resolveGameAction(GameActions.sendHome({ card: dude, needToBoot: true}), context);
+                        this.game.resolveGameAction(GameActions.sendHome({ card: dude, needToBoot: true}), context).thenExecute(() => {
+                            this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, dude);
+                        });
                     } else {
                         this.game.resolveGameAction(
                             GameActions.search({
