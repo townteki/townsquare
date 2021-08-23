@@ -109,14 +109,15 @@ class DrawHandPrompt extends UiPrompt {
 
     onMenuCommand(player, arg) {
         if(arg === 'draw') {
-            let drawCount = this.getDrawCount(player);
-            player.drawCardsToDrawHand(drawCount.number);
-            this.getDrawCount(player).handDrawn = true;
-            if(this.getDrawCount(player).redraw === 0) {
-                this.getDrawCount(player).handRedrawn = true;
-            } else {
-                this.highlightSelectableCards(player);
-            }
+            const drawCount = this.getDrawCount(player);
+            player.drawCardsToDrawHand(drawCount.number).thenExecute(() => {
+                this.getDrawCount(player).handDrawn = true;
+                if(this.getDrawCount(player).redraw === 0) {
+                    this.getDrawCount(player).handRedrawn = true;
+                } else {
+                    this.highlightSelectableCards(player);
+                }
+            });
             return false;
         }
         if(arg === 'moreCards') {
@@ -128,14 +129,15 @@ class DrawHandPrompt extends UiPrompt {
             return false;
         }
         if(arg === 'redraw') {
-            let numberToRedraw = this.selectedCards[player.name].length + player.redrawBonus;
+            const numberToRedraw = this.selectedCards[player.name].length + player.redrawBonus;
             player.discardCards(this.selectedCards[player.name]);
-            player.drawCardsToDrawHand(numberToRedraw);
-            this.game.addMessage('{0} discards {1} to redraw {2} cards', player, this.selectedCards[player.name], numberToRedraw);
-            this.getDrawCount(player).handRedrawn = true;
-            this.selectedCards[player.name] = [];
-            player.clearSelectedCards();
-            player.clearSelectableCards();
+            player.drawCardsToDrawHand(numberToRedraw).thenExecute(() => {
+                this.game.addMessage('{0} discards {1} to redraw {2} cards', player, this.selectedCards[player.name], numberToRedraw);
+                this.getDrawCount(player).handRedrawn = true;
+                this.selectedCards[player.name] = [];
+                player.clearSelectedCards();
+                player.clearSelectableCards();                
+            });
             return false;
         }
         if(arg === 'revealdraw') {
