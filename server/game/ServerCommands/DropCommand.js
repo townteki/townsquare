@@ -113,6 +113,7 @@ class DropCommand {
             'out of game': DrawDeckCardTypes,
             'play area': ['goods', 'spell', 'dude', 'deed']
         };
+        const AllowedTypesForTownSquare = ['goods', 'dude', 'spell'];
 
         let allowedTypes = AllowedTypesForPile[this.targetLocation];
 
@@ -120,6 +121,12 @@ class DropCommand {
             return false;
         }
 
+        if(this.gamelocation === 'townsquare' && !AllowedTypesForTownSquare.includes(this.card.getType())) {
+            return false;
+        }
+        if(['street-left', 'street-right'].includes(this.gamelocation) && (this.card.getType() !== 'deed' || this.card.owner !== this.player)) {
+            return false;
+        }
         return allowedTypes.includes(this.card.getType());
     }
 
