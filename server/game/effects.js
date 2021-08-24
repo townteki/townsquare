@@ -969,6 +969,8 @@ const Effects = {
     },
     cannotModifyHandRanks: 
         playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified'),
+    cardsCannotLeaveDiscard:
+        playerOptionEffect('cardsCannotLeaveDiscard', 'Cards cannot leave discard'),
     switchBulletBonuses:
         playerOptionEffect('bulletBonusesSwitched', 'Bullet bonuses are switched'),
     dudesCannotFlee: 
