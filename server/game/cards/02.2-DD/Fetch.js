@@ -19,8 +19,12 @@ class Fetch extends SpellCard {
                         cardCondition: card => card.location === 'draw hand' && card.controller === this.controller,
                         cardType: ['dude', 'deed', 'goods', 'spell', 'action', 'joker'],
                         onSelect: (player, card) => {
-                            player.moveCard(card, 'hand');
-                            this.game.addMessage('{0} places {1} back to their hand thanks to {2}', player, card, this);                          
+                            if(player.moveCardWithContext(card, 'hand', context)) {
+                                this.game.addMessage('{0} places {1} back to their hand thanks to {2}', player, card, this);                                  
+                            } else {
+                                this.game.addMessage('{0} cannot place {1} to their hand because some effect prevents them from doing so', 
+                                    player, card);   
+                            }                        
                             return true;
                         },
                         source: this

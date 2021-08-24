@@ -42,7 +42,10 @@ class TrickShooting extends ActionCard {
                                     }
                                 },
                                 handler: (card) => {
-                                    context.player.moveCard(card, 'hand');
+                                    if(!context.player.moveCardWithContext(card, 'hand', context)) {
+                                        this.game.addMessage('{0} cannot move {1} because some effect prevents them from doing so', 
+                                            context.player, card);   
+                                    }
                                 }
                             }),
                             context

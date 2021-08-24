@@ -1597,11 +1597,16 @@ class Player extends Spectator {
         }
     }
 
-    moveCard(card, targetLocation, options = {}, callback, context) {
-        if(!targetLocation) {
-            return;
-        }
+    moveCardWithContext(card, targetLocation, context) {
         if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
+            return false;
+        }        
+        this.moveCard(card, targetLocation, {}, null);
+        return true;
+    }
+
+    moveCard(card, targetLocation, options = {}, callback) {
+        if(!targetLocation) {
             return;
         }
         if(card.isToken()) {
@@ -1826,6 +1831,10 @@ class Player extends Spectator {
     otherDudesCannotJoin() {
         return this.options.contains('otherDudesCannotJoin');        
     }
+
+    discardAllDuringSundown() {
+        return this.options.contains('discardAllDuringSundown');
+    }    
 
     getState(activePlayer) {
         let isActivePlayer = activePlayer === this;

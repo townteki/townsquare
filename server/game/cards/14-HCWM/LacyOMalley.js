@@ -7,7 +7,8 @@ class LacyOMalley extends LegendCard {
             effect: [
                 ability.effects.cannotPutIntoPlay(card => card.location === 'discard pile'),
                 ability.effects.cardsCannotLeaveDiscard(this, context => context.ability && 
-                    context.ability.isCardAbility())
+                    context.ability.isCardAbility()),
+                ability.effects.discardAllDuringSundown()
             ]
         });
     }

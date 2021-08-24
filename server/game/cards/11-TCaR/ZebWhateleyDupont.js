@@ -9,15 +9,12 @@ class ZebWhateleyDupont extends DudeCard {
         });
 
         this.persistentEffect({
-            condition: () => this.opposingHighGritDude() && this.bullets < 2,
+            condition: () => this.controller.outfit.gang_code === 'fearmongers' && this.opposingHighGritDude(),
             match: this,
-            effect: ability.effects.setBullets(2)
-        });
-
-        this.persistentEffect({
-            condition: () => this.opposingHighGritDude(),
-            match: this,
-            effect: ability.effects.cannotBeSetToDraw()
+            effect: [
+                ability.effects.setMinBullets(2),
+                ability.effects.cannotBeSetToDraw()
+            ]
         });
     }
 

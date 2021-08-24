@@ -18,7 +18,10 @@ class HaroldAimslee extends DudeCard {
                 this.game.addMessage('{0} uses {1} to discard {2} and get {3} to hand from discard pile', 
                     context.player, this, context.costs.discardFromHand, context.target),
             handler: context => {
-                context.player.moveCard(context.target, 'hand');
+                if(!context.player.moveCardWithContext(context.target, 'hand', context)) {
+                    this.game.addMessage('{0} cannot move {1} because some effect prevents them from doing so', 
+                        context.player, context.target);                    
+                }
             }
         });
     }
