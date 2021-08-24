@@ -12,10 +12,10 @@ class GrimoiresAndMore extends DeedCard {
             cost: ability.costs.bootSelf(),
             handler: context => {
                 const dude = context.event.card;
-                context.player.pull((pulledCard) => {
-                    if('clubs' === pulledCard.suit.toLowerCase()) {
+                context.player.pull((pulledCard, pulledValue, pulledSuit) => {
+                    if('clubs' === pulledSuit.toLowerCase()) {
                         this.game.resolveGameAction(GameActions.sendHome({ card: dude, needToBoot: true}), context).thenExecute(() => {
-                            this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, dude);
+                            this.game.addMessage('{0} uses {1} to pull {2} and has to send {3} home because it is a club', context.player, this, pulledCard, dude);
                         });
                     } else {
                         this.game.resolveGameAction(
