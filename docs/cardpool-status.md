@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/396/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/397/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -645,7 +645,7 @@
 |                     | 17008| Pancho Castillo (Exp.1)
 |                     | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
-|                     | 17011| Grimoires & More
+|:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
 |                     | 17013| Pedro
 |                     | 17014| Aetheric Shockwave Inducer
