@@ -791,7 +791,7 @@
 |:heavy_check_mark:   | 20031| Campbell & Hatch Billiard Parlor
 |                     | 20032| Clanton Ranch
 |                     | 20033| Concordia Cemetery
-|                     | 20034| Ike's Place
+|:heavy_check_mark:   | 20034| Ike's Place
 |                     | 20035| Five Aces Gambling Hall
 |                     | 20036| Old Washoe Club
 |:heavy_check_mark:   | 20037| Quarter Horse
