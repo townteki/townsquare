@@ -5,7 +5,7 @@ class SpiritualSociety extends OutfitCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onCardsDrawn: event => event.player === this.owner && event.reason === 'sundown' &&
+                onAfterHandRefill: event => event.player === this.owner &&
                     this.isControllingTownSquare()
             },
             handler: context => {
