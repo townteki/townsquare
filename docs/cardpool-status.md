@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/397/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/399/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -759,8 +759,8 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 20001| 108 Gracious Gifts
-|                     | 20002| Property Is Theft
-|                     | 20003| The Spiritual Society
+|:heavy_check_mark:   | 20002| Property Is Theft
+|:heavy_check_mark:   | 20003| The Spiritual Society
 |                     | 20004| Joe Vermilion
 |                     | 20005| Ying-Ssi Chieh T'ang
 |                     | 20006| E Gui
