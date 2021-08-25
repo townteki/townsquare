@@ -19,10 +19,10 @@ class FranciscoRosales extends DudeCard {
                         location: ['discard pile'],
                         numToSelect: 1,
                         message: {
-                            format: '{player} plays {source} to search their discard pile, and put {searchTarget} into play'
+                            format: '{player} plays {source} and searches their discard pile to put {searchTarget} into play'
                         },
                         cancelMessage: {
-                            format: '{player} plays {source} to search their discard pile, but does not find a horse or sidekick'
+                            format: '{player} plays {source} and searches their discard pile, but does not find a horse or sidekick'
                         },
                         handler: card => {
                             this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(2), context.player, card);

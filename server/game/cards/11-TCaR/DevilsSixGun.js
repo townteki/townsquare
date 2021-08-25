@@ -17,10 +17,10 @@ class DevilsSixGun extends GoodsCard {
                         match: { condition: card => card.getType() === 'joker', location: ['draw deck', 'discard pile', 'dead pile'] },
                         numToSelect: 1,
                         message: {
-                            format: '{player} uses {source} to search for {searchTarget} and puts it into their draw hand'
+                            format: '{player} uses {source} and searches for {searchTarget} to put it into their draw hand'
                         },
                         cancelMessage: {
-                            format: '{player} uses {source} to search their draw deck, discard pile and Boot Hill, but does not find a Joker'
+                            format: '{player} uses {source} and searches their draw deck, discard pile and Boot Hill, but does not find a Joker'
                         },
                         handler: jokerCard => {
                             if(context.player.moveCardWithContext(jokerCard, 'draw hand', context)) {

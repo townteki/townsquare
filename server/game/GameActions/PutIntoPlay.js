@@ -5,10 +5,10 @@ class PutIntoPlay extends GameAction {
         super('putIntoPlay');
     }
 
-    canChangeGameState({ player, card }) {
+    canChangeGameState({ player, card, params = {} }) {
         player = player || card.controller;
         return card.location !== 'play area' &&
-            player.canPutIntoPlay(card);
+            player.canPutIntoPlay(card, this.getDefaultParams(params));
     }
 
     createEvent({ player, card, params = {} }) {

@@ -10,7 +10,7 @@ class MaggieHarris extends DudeCard {
             cost: ability.costs.bootSelf(),
             target: 'currentHome',
             message: context =>
-                this.game.addMessage('{0} plays {1} on {2}.', context.player, this, context.target),
+                this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(
                     GameActions.search({
@@ -19,10 +19,10 @@ class MaggieHarris extends DudeCard {
                         location: ['discard pile'],
                         numToSelect: 1,
                         message: {
-                            format: '{player} plays {source} to search their discard pile, and puts {searchTarget} into play'
+                            format: '{player} plays {source} and searches their discard pile to put {searchTarget} into play'
                         },
                         cancelMessage: {
-                            format: '{player} plays {source} to search their discard pile, but does not find a horse'
+                            format: '{player} plays {source} and searches their discard pile, but does not find a horse'
                         },
                         handler: card => {
                             this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(1), context.player, card);

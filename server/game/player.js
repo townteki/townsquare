@@ -669,6 +669,11 @@ class Player extends Spectator {
     }
 
     canPutIntoPlay(card, params = {}) {
+        if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(params.context)) {
+            this.game.addMessage('{0} cannot put {1} into play because cards cannot leave discard pile', this, card);
+            return false;
+        }
+
         if(card.getType() === 'action') {
             return false;
         }
