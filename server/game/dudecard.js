@@ -11,7 +11,6 @@ class DudeCard extends DrawCard {
     constructor(owner, cardData) {
         super(owner, cardData);
 
-        this.maxBullets = null;
         this.gritFunc = null;
         this.currentUpkeep = this.cardData.upkeep;
         this.currentDeedInfluence = 0;

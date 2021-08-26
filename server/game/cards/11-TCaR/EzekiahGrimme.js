@@ -34,7 +34,7 @@ class EzekiahGrimme extends LegendCard {
                             player, this, context.event.pulledCard, context.event.pullingDude),
                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                             playType: 'ability',
-                            abilitySourceType: 'ability',
+                            abilitySourceType: 'card',
                             targetParent: context.event.pullingDude,
                             booted: true
                         }), player, context.event.pulledCard);
@@ -85,7 +85,7 @@ class EzekiahGrimme extends LegendCard {
                                 context.player, this, spell, context.costs.boot);
                             this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                                 playType: 'ability',
-                                abilitySourceType: 'ability',
+                                abilitySourceType: 'card',
                                 targetParent: context.costs.boot
                             }), player, spell);                        
                             return true;

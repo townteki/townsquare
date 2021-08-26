@@ -29,7 +29,7 @@ class DrewBeauman extends DudeCard {
                         }));  
                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                             playType: 'ability',
-                            abilitySourceType: 'ability',
+                            abilitySourceType: 'card',
                             scientist: this
                         }, () => {
                             this.game.addMessage('{0} invents {1} without booting thanks to {2}', player, card, this);
