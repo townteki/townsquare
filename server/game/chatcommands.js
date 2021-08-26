@@ -868,7 +868,7 @@ class ChatCommands {
             },
             pullingDude: this.pullingDude,
             pullBonus: skillOrFu !== 'kung fu' ? pullBonus : 0,
-            source: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
+            chatCommandDiff: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
                 `chatcommands with difficulty ${this.pullingDude.value}`,
             player: player
         });

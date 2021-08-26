@@ -21,7 +21,7 @@ class StrengthOfTheAncestors extends SpellCard {
                     () => this.game.effectEngine.unapplyAndRemove(effect => effect.source === this));
                 this.game.addMessage('{0} uses {1} to give {2} +3 bullets, make them a stud and prevent them from being booted ' +
                     ' or sent home booted by opposing card effects while they do not leave {3}', 
-                context.player, this, context.target, context.target.locationCard);
+                context.player, this, this.parent, this.parent.locationCard);
             },
             source: this
         });

@@ -88,7 +88,7 @@ class GameLocation {
     }
 
     getDudes() {
-        return this.occupants.map(dudeUuid => this.game.findCardInPlayByUuid(dudeUuid));
+        return this.occupants.map(dudeUuid => this.game.findCardInPlayByUuid(dudeUuid)).filter(dude => dude);
     }
 
     isAdjacent(uuid) {
