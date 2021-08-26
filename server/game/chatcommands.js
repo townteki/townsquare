@@ -32,6 +32,7 @@ class ChatCommands {
             '/discard-deck': this.discardFromDeck,
             '/disconnectme': this.disconnectMe,
             '/draw': this.draw,
+            '/first-player': this.firstPlayer,
             '/give-control': this.giveControl,
             '/hand-rank': this.handRank,
             '/hr': this.handRank,

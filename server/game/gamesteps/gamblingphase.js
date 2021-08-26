@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const CheatingResolutionPrompt = require('./gambling/cheatingresolutionprompt.js');
@@ -24,7 +23,7 @@ class GamblingPhase extends Phase {
     }
 
     ante() {
-        _.each(this.game.getPlayers(), player => {
+        this.game.getPlayers().forEach(player => {
             if(player.getSpendableGhostRock() <= 0) {
                 player.debtor = true;
             } else {
@@ -40,23 +39,29 @@ class GamblingPhase extends Phase {
 
     findWinner() {
         let onTiebreaker = false;
-        let winner = _.reduce(this.game.getPlayers(), (player, memo) => {
-            let pRank = player.getTotalRank();
-            let mRank = memo.getTotalRank();
+        const players = this.game.getPlayers();
+        if(players.length === 1) {
+            return players[0];
+        }
+        const rank0 = players[0].getTotalRank();
+        const rank1 = players[1].getTotalRank();
+        let winner = players[0];
 
-            if(pRank < mRank) {
-                return player;
-            } else if(pRank === mRank) {
-                let tiebreakResult = this.game.resolveTiebreaker(player, memo, true);
-                if(tiebreakResult === 'exact tie') {
-                    return null;
-                }
-                onTiebreaker = true;
-                return tiebreakResult.winner;
+        const tiebreaks0 = players[0].getHandRank().tiebreaker.concat(players[0].getHandRank().tiebreakerHighCards);
+        const tiebreaks1 = players[1].getHandRank().tiebreaker.concat(players[1].getHandRank().tiebreakerHighCards);
+        this.game.addAlert('warning', 'DEBUG: {0} rank: {1}, tiebreaks: {2} | {3} rank: {4}, tiebreaks: {5}', 
+            players[0], rank0, tiebreaks0, players[1], rank1, tiebreaks1);
+
+        if(rank1 < rank0) {
+            winner = players[1];
+        } else if(rank0 === rank1) {
+            let tiebreakResult = this.game.resolveTiebreaker(players[0], players[1], true);
+            if(tiebreakResult === 'exact tie') {
+                winner = null;
             }
-
-            return memo;
-        });
+            onTiebreaker = true;
+            winner = tiebreakResult.winner;
+        }
 
         return { player: winner, onTiebreaker: onTiebreaker };
     }
