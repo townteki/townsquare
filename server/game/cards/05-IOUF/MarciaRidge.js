@@ -12,8 +12,8 @@ class MarciaRidge extends DudeCard {
 
     isPlayerControllingTownSquare() {
         let opponent = this.controller.getOpponent();
-        let playerTSDudes = this.game.townsquare.getDudes().filter(dude => dude.controller === this.controller);
-        let opponentTSDudes = this.game.townsquare.getDudes().filter(dude => dude.controller === opponent);
+        let playerTSDudes = this.game.townsquare.getDudes().filter(dude => dude && dude.controller === this.controller);
+        let opponentTSDudes = this.game.townsquare.getDudes().filter(dude => dude && dude.controller === opponent);
         return playerTSDudes.reduce((memo, dude) => memo + dude.influence, 0) > opponentTSDudes.reduce((memo, dude) => memo + dude.influence, 0);
     }
 }

@@ -5,7 +5,8 @@ class GabrielPrior extends DudeCard {
         this.traitReaction({
             triggerBefore: true,
             when: {
-                onCardPulled: event => event.props.pullingDude === this &&
+                onCardPulled: event => event.props.pullingDude && event.props.source &&
+                    event.props.pullingDude === this &&
                     event.props.source.hasKeyword('miracle')
             },
             handler: context => {
