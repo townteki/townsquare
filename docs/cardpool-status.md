@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/399/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/401/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -716,7 +716,7 @@
 |:heavy_check_mark:   | 19006| Charging Bear
 |                     | 19007| Fears No Owls
 |                     | 19008| Black Owl
-|                     | 19009| Zeb Whateley-Dupont
+|:heavy_check_mark:   | 19009| Zeb Whateley-Dupont
 |:heavy_check_mark:   | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
@@ -882,7 +882,7 @@
 |--------|-----:|:------------------------:|
 |                     | 22001| Andrew Lane
 |:heavy_check_mark:   | 22002| Hank Ketchum
-|                     | 22003| Lacy O'Malley
+|:heavy_check_mark:   | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
 |                     | 22005| Rock Woofstone
 |                     | 22006| Arielle Moriah
