@@ -12,7 +12,7 @@ class MorganLash extends DudeCard {
 
         this.persistentEffect({
             condition: () => this.isShooterMostWanted(),
-            match: this.controller,
+            match: player => player === this.controller,
             effect: ability.effects.modifyPosseShooterBonus(2)
         });
 

@@ -201,20 +201,6 @@ class Player extends Spectator {
         return cardsToReturn;
     }
 
-    anyCardsInPlay(predicateOrMatcher) {
-        const predicate = typeof(predicateOrMatcher) === 'function'
-            ? predicateOrMatcher
-            : card => CardMatcher.isMatch(card, predicateOrMatcher);
-        return this.game.allCards.some(card => card.controller === this && card.location === 'play area' && predicate(card));
-    }
-
-    filterCardsInPlay(predicateOrMatcher) {
-        const predicate = typeof(predicateOrMatcher) === 'function'
-            ? predicateOrMatcher
-            : card => CardMatcher.isMatch(card, predicateOrMatcher);
-        return this.game.allCards.filter(card => card.controller === this && card.location === 'play area' && predicate(card));
-    }
-
     getNumberOfCardsInPlay(predicateOrMatcher) {
         const predicate = typeof(predicateOrMatcher) === 'function'
             ? predicateOrMatcher
@@ -707,7 +693,7 @@ class Player extends Spectator {
         }
 
         if(card.owner === this) {
-            return !this.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
+            return !this.game.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
         }
 
         return true;
@@ -879,8 +865,7 @@ class Player extends Spectator {
                     card.controller === this &&
                     !card.cannotInventGadgets() &&
                     (!card.booted || gadget.canBeInventedWithoutBooting()) &&
-                    card.canPerformSkillOn(gadget) &&
-                    card.isInControlledLocation(),
+                    card.canPerformSkillOn(gadget),
                 cardType: 'dude',
                 onSelect: (player, card) => {
                     if(!gadget.canBeInventedWithoutBooting()) {
@@ -934,7 +919,9 @@ class Player extends Spectator {
             return false;
         }
 
-        if(attachment.getType() !== 'legend' && attachment.isGadget() && (playingType === 'shoppin' || playingType === 'ability')) {
+        if(attachment.getType() !== 'legend' && attachment.isGadget() && 
+            (playingType === 'shoppin' || playingType === 'ability') &&
+            !attachment.doesNotHaveToBeInvented()) {
             let scientist = defaultScientist || (playingType === 'shoppin' ? card : null);
             this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
         } else {

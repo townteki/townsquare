@@ -5,7 +5,7 @@ class AutoRevolver extends GoodsCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.parent && this.parent.isParticipating(),
-            match: this.controller,
+            match: player => player === this.controller,
             effect: [
                 ability.effects.addRedrawBonus(1)
             ]
