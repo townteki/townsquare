@@ -31,15 +31,15 @@ class OfficeOfAncestralAffairs extends OutfitCard {
                             location: ['discard pile'],
                             numToSelect: 1,
                             message: {
-                                format: '{player} plays {source} to search their discard pile, and put {searchTarget} into play'
+                                format: '{player} plays {source} and searches their discard pile to put {searchTarget} into play'
                             },
                             cancelMessage: {
-                                format: '{player} plays {source} to search their discard pile, but does not find a Totem'
+                                format: '{player} plays {source} and searches their discard pile, but does not find a Totem'
                             },
                             handler: card => {
                                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                                     playType: 'validityCheck',
-                                    abilitySourceType: 'ability',
+                                    abilitySourceType: 'card',
                                     targetParent: job.mark
                                 }, () => {
                                     this.game.addMessage('{0} uses {1} to plant {2} at job mark {3}', context.player, this, card, job.mark);

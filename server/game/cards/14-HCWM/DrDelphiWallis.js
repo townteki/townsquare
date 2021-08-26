@@ -17,7 +17,6 @@ class DrDelphiWallis extends DudeCard {
                 },
                 cardType: ['dude']
             },
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 const skillRating = this.getSkillRating('mad scientist');
                 context.player.pullForSkill(context.target.getGrit(context), skillRating, {

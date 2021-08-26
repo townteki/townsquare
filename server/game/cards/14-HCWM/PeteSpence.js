@@ -27,10 +27,10 @@ class PeteSpence extends DudeCard {
                         location: ['discard pile'],
                         numToSelect: 1,
                         message: {
-                            format: '{player} plays {source} to search their discard pile, and puts {searchTarget} into play'
+                            format: '{player} plays {source} and searches their discard pile to puts {searchTarget} into play'
                         },
                         cancelMessage: {
-                            format: '{player} plays {source} to search their discard pile, but does not find an Attire or Non-Unique Weapon'
+                            format: '{player} plays {source} and searches their discard pile, but does not find an Attire or Non-Unique Weapon'
                         },
                         handler: card => {
                             this.game.resolveStandardAbility(StandardActions.putIntoPlay({

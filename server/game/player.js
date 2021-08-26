@@ -662,6 +662,11 @@ class Player extends Spectator {
     }
 
     canPutIntoPlay(card, params = {}) {
+        if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(params.context)) {
+            this.game.addMessage('{0} cannot put {1} into play because cards cannot leave discard pile', this, card);
+            return false;
+        }
+
         if(card.getType() === 'action') {
             return false;
         }
@@ -1591,6 +1596,14 @@ class Player extends Spectator {
         }
     }
 
+    moveCardWithContext(card, targetLocation, context) {
+        if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
+            return false;
+        }        
+        this.moveCard(card, targetLocation, {}, null);
+        return true;
+    }
+
     moveCard(card, targetLocation, options = {}, callback) {
         if(!targetLocation) {
             return;
@@ -1798,6 +1811,10 @@ class Player extends Spectator {
         return this.options.contains('cannotModifyHandRanks', context);
     }
 
+    cardsCannotLeaveDiscard(context = {}) {
+        return this.options.contains('cardsCannotLeaveDiscard', context);
+    }
+
     dudesCannotFlee() {
         return this.options.contains('dudesCannotFlee');
     }
@@ -1813,6 +1830,10 @@ class Player extends Spectator {
     otherDudesCannotJoin() {
         return this.options.contains('otherDudesCannotJoin');        
     }
+
+    discardAllDuringSundown() {
+        return this.options.contains('discardAllDuringSundown');
+    }    
 
     getState(activePlayer) {
         let isActivePlayer = activePlayer === this;

@@ -26,8 +26,7 @@ class TrickShooting extends ActionCard {
                                 numToSelect: 1,
                                 doNotShuffleDeck: true,
                                 message: {
-                                    format: '{player} uses {source}, gives {targetDude} +1 bullets , looks at {cardNum} cards from the top of their deck ' +
-                                        'and puts one to their hand',
+                                    format: '{player} uses {source}, gives {targetDude} +1 bullets and looks at {cardNum} cards from the top of their deck',
                                     args: { 
                                         targetDude: context => context.target,
                                         cardNum: context => context.target.bullets
@@ -42,7 +41,11 @@ class TrickShooting extends ActionCard {
                                     }
                                 },
                                 handler: (card) => {
-                                    context.player.moveCard(card, 'hand');
+                                    if(!context.player.moveCardWithContext(card, 'hand', context)) {
+                                        this.game.addMessage('{0} cannot move a card because some effect prevents them from doing so', context.player);
+                                    } else {
+                                        this.game.addMessage('{0} uses {1} to put a card into their hand', context.player, this);
+                                    }
                                 }
                             }),
                             context
