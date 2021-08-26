@@ -18,8 +18,7 @@ class IkesPlace extends DeedCard {
             message: context => this.game.addMessage('{0} uses {1} to reduce {2}\'s CP and production to 0 until after Upkeep', context.player, this, context.target),
             handler: context => {
                 this.untilEndOfPhase(context.ability, ability => ({
-                    condition: () => true,
-                    match: card => card === context.target,
+                    match: context.target,
                     effect: [
                         ability.effects.setProduction(0),
                         ability.effects.setControl(0)
