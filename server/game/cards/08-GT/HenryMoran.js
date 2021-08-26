@@ -22,7 +22,7 @@ class HenryMoran extends DudeCard {
                         amount: actualAmount,
                         desiredAmount: 5
                     };                    
-                    context.player.drawDeckAction(props, card => context.player.moveCard(card, 'draw hand'));
+                    context.player.drawDeckAction(props, card => context.player.moveCardWithContext(card, 'draw hand', context));
                 });
             }
         });

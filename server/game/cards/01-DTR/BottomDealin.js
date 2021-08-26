@@ -17,7 +17,7 @@ class BottomDealin extends ActionCard {
                         amount: actualAmount,
                         desiredAmount: 5
                     };                    
-                    context.player.drawDeckAction(props, card => opponent.moveCard(card, 'draw hand'));
+                    context.player.drawDeckAction(props, card => opponent.moveCardWithContext(card, 'draw hand', context));
                     opponent.drawHandRevealed = true;
                     opponent.drawHandSelected = true;
                     opponent.determineHandResult('\'s hand has been bottom dealt to', true);

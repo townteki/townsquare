@@ -24,11 +24,14 @@ class LandPurchase extends DeedCard {
                             match: { condition: card => card.getType() === 'deed' && card !== this },
                             player: context.player,
                             numToSelect: 1,
-                            cancelMessage:() =>
-                                this.game.addMessage('{0} searches their discard pile and finds nothing', context.player, this),
+                            message: {
+                                format: '{player} searches their discard pile to put {searchTarget} into play'
+                            },
+                            cancelMessage: {
+                                format: '{player} searches their discard pile and finds nothing'
+                            },
                             handler: card => {
                                 this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(3), context.player, card);
-                                this.game.addMessage('{0} searches their discard pile and finds {1}', context.player, card);
                             }
                         }), context
                 );  

@@ -38,9 +38,13 @@ class ArnoldStewart extends DudeCard {
                                         cardCondition: card => discardedCards.includes(card) && card.hasKeyword('out of town'),
                                         cardType: 'deed',
                                         onSelect: (player, card) => {
-                                            player.moveCard(card, 'hand');
-                                            this.game.addMessage('{0} uses {1}, boots him and {2} to discard 5 cards from deck and puts {3} to hand', 
-                                                player, this, context.target, card);
+                                            if(player.moveCardWithContext(card, 'hand', context)) {
+                                                this.game.addMessage('{0} uses {1}, boots him and {2} to discard 5 cards from deck and puts {3} to hand', 
+                                                    player, this, context.target, card);
+                                            } else {
+                                                this.game.addMessage('{0} uses {1}, but some effect prevents them from moving {2} to hand', 
+                                                    player, this, card);                                                
+                                            }
                                             return true;
                                         },
                                         source: this
