@@ -311,7 +311,17 @@ class Player extends Spectator {
         }
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
-        this.game.addMessage('{0} {1} {2}{3} (Rank {4})', this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
+        let handText = '';
+        if(handResultText === 'reveals') {
+            handText = ' - ' + this.drawHand.reduce((handText, card) => {
+                if(card.getType() === 'joker') {
+                    return handText + 'Joker | ';
+                }
+                return handText + `${card.getValueText()} of ${card.suit} | `;
+            }, '');
+        }
+        this.game.addMessage('{0} {1} {2}{3} (Rank {4}){5}', 
+            this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank, handText);
         this.game.raiseEvent('onHandResultDetermined', { player: this });
     }
 
@@ -655,6 +665,11 @@ class Player extends Spectator {
     }
 
     canPutIntoPlay(card, params = {}) {
+        if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(params.context)) {
+            this.game.addMessage('{0} cannot put {1} into play because cards cannot leave discard pile', this, card);
+            return false;
+        }
+
         if(card.getType() === 'action') {
             return false;
         }
@@ -1339,7 +1354,7 @@ class Player extends Spectator {
         let pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'being played');
         if(addMessage) {
-            this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.value, pulledCard.suit, pulledCard);
+            this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.getValueText(), pulledCard.suit, pulledCard);
         }
         this.game.raiseEvent('onCardPulled', { card: pulledCard, value: pulledCard.value, suit: pulledCard.suit, props }, event => {
             if(callback) {
@@ -1584,6 +1599,14 @@ class Player extends Spectator {
         }
     }
 
+    moveCardWithContext(card, targetLocation, context) {
+        if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
+            return false;
+        }        
+        this.moveCard(card, targetLocation, {}, null);
+        return true;
+    }
+
     moveCard(card, targetLocation, options = {}, callback) {
         if(!targetLocation) {
             return;
@@ -1791,6 +1814,10 @@ class Player extends Spectator {
         return this.options.contains('cannotModifyHandRanks', context);
     }
 
+    cardsCannotLeaveDiscard(context = {}) {
+        return this.options.contains('cardsCannotLeaveDiscard', context);
+    }
+
     dudesCannotFlee() {
         return this.options.contains('dudesCannotFlee');
     }
@@ -1806,6 +1833,10 @@ class Player extends Spectator {
     otherDudesCannotJoin() {
         return this.options.contains('otherDudesCannotJoin');        
     }
+
+    discardAllDuringSundown() {
+        return this.options.contains('discardAllDuringSundown');
+    }    
 
     getState(activePlayer) {
         let isActivePlayer = activePlayer === this;

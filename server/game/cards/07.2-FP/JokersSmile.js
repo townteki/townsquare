@@ -52,8 +52,11 @@ class JokersSmile extends DeedCard {
                     cardType: 'joker',
                     autoSelect: true,
                     onSelect: (player, card) => {
-                        player.moveCard(card, 'discard pile');
-                        this.game.addMessage('{0} uses {1} and pays 1 GR to move {2} from Boot Hill to discard pile', player, this, card);
+                        if(player.moveCardWithContext(card, 'discard pile', context)) {
+                            this.game.addMessage('{0} uses {1} and pays 1 GR to move {2} from Boot Hill to discard pile', player, this, card);
+                        } else {
+                            this.game.addMessage('{0} uses {1}, but some effect prevents them from moving {2}', player, this, card);                             
+                        }
                         return true;
                     }
                 });
