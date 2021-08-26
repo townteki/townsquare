@@ -26,10 +26,10 @@ class TechnologicalExhibition extends ActionCard {
                         location: ['hand', 'discard pile'],
                         numToSelect: 1,
                         message: {
-                            format: '{player} plays {source} to search their discard pile and hand, and put {searchTarget} into play'
+                            format: '{player} plays {source} and searches their discard pile and hand to put {searchTarget} into play'
                         },
                         cancelMessage: {
-                            format: '{player} plays {source} to search their discard pile and hand, but does not find a gadget'
+                            format: '{player} plays {source} and searches their discard pile and hand, but does not find a gadget'
                         },
                         handler: card => {
                             this.lastingEffect(context.ability, ability => ({

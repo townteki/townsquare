@@ -280,6 +280,20 @@ const Effects = {
             }
         };
     },
+    setMinBullets: function(value) {
+        return {
+            title: `Set Min Bullets to ${value}`,
+            apply: function(card, context) {
+                context.setMinBullets = context.setMinBullets || {};
+                context.setMinBullets[card.uuid] = card.minBullets;
+                card.minBullets = value;
+            },
+            unapply: function(card, context) {
+                card.minBullets = context.setMinBullets[card.uuid];
+                delete context.setMinBullets[card.uuid];
+            }
+        };
+    },    
     increaseMaxCheatin: function(value) {
         return {
             title: `Increase Cheatin' plays by ${value}`,
@@ -970,6 +984,8 @@ const Effects = {
     },
     cannotModifyHandRanks: 
         playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified'),
+    cardsCannotLeaveDiscard:
+        playerOptionEffect('cardsCannotLeaveDiscard', 'Cards cannot leave discard'),
     switchBulletBonuses:
         playerOptionEffect('bulletBonusesSwitched', 'Bullet bonuses are switched'),
     dudesCannotFlee: 
@@ -978,6 +994,8 @@ const Effects = {
         playerOptionEffect('onlyShooterContributes', 'Only shooter contributes'),
     otherDudesCannotJoin:
         playerOptionEffect('otherDudesCannotJoin', 'Other dudes cannot join posse'),
+    discardAllDuringSundown: 
+        playerOptionEffect('discardAllDuringSundown', 'Discard all cards during Sundown'),        
     modifyPosseStudBonus: function(amount) {
         return {
             title: `Stud Bonus modified: ${amount}`,

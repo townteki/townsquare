@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/396/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/401/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -645,7 +645,7 @@
 |                     | 17008| Pancho Castillo (Exp.1)
 |                     | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
-|                     | 17011| Grimoires & More
+|:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
 |                     | 17013| Pedro
 |                     | 17014| Aetheric Shockwave Inducer
@@ -716,7 +716,7 @@
 |:heavy_check_mark:   | 19006| Charging Bear
 |                     | 19007| Fears No Owls
 |                     | 19008| Black Owl
-|                     | 19009| Zeb Whateley-Dupont
+|:heavy_check_mark:   | 19009| Zeb Whateley-Dupont
 |:heavy_check_mark:   | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
@@ -759,8 +759,8 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 20001| 108 Gracious Gifts
-|                     | 20002| Property Is Theft
-|                     | 20003| The Spiritual Society
+|:heavy_check_mark:   | 20002| Property Is Theft
+|:heavy_check_mark:   | 20003| The Spiritual Society
 |                     | 20004| Joe Vermilion
 |                     | 20005| Ying-Ssi Chieh T'ang
 |                     | 20006| E Gui
@@ -882,7 +882,7 @@
 |--------|-----:|:------------------------:|
 |                     | 22001| Andrew Lane
 |:heavy_check_mark:   | 22002| Hank Ketchum
-|                     | 22003| Lacy O'Malley
+|:heavy_check_mark:   | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
 |                     | 22005| Rock Woofstone
 |                     | 22006| Arielle Moriah

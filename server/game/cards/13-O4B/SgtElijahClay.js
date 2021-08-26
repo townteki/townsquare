@@ -17,19 +17,12 @@ class SgtElijahClay extends DudeCard {
                         onShootoutPhaseFinished: () => true
                     },
                     condition: () => this.isParticipating(),
-                    match: this,
-                    effect: ability.effects.setAsStud()
+                    match: card => card === this,
+                    effect: [
+                        ability.effects.setAsStud(),
+                        ability.effects.setMinBullets(3)
+                    ]
                 }));
-                if(this.bullets < 3) {
-                    this.lastingEffect(context.ability, ability => ({
-                        until: {
-                            onShootoutPhaseFinished: () => true
-                        },
-                        condition: () => this.isParticipating(),
-                        match: this,
-                        effect: ability.effects.setBullets(3)
-                    }));                    
-                }
             }
         });
     }

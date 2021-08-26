@@ -24,7 +24,10 @@ class TheWhateleyEstate extends DeedCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to move {2} from Boot Hill to discard pile', context.player, this, context.target),
             handler: context => {
-                context.player.moveCard(context.target, 'discard pile');
+                if(!context.player.moveCardWithContext(context.target, 'discard pile', context)) {
+                    this.game.addMessage('{0} cannot move {1} because some effect prevents them from doing so', 
+                        context.player, context.target);       
+                }
             }
         });
     }

@@ -19,11 +19,14 @@ class RecruitmentDrive extends ActionCard {
                             match: { condition: card => card.getType() === 'dude' || card.getType() === 'deed' },
                             player: context.player,
                             numToSelect: 1,
-                            cancelMessage:() =>
-                                this.game.addMessage('{0} searches their discard pile and finds nothing', context.player, this),
+                            message: {
+                                format: '{player} uses {source} and searches their discard pile to put {searchTarget} into play'
+                            },
+                            cancelMessage: {
+                                format: '{player} uses {source} and searches their discard pile but finds nothing'
+                            },                            
                             handler: card => {
                                 this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(5), context.player, card);
-                                this.game.addMessage('{0} searches their discard pile and finds {1}', context.player, card);
                             }
                         }), context
                 );                
