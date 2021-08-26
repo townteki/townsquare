@@ -311,13 +311,16 @@ class Player extends Spectator {
         }
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
-        let handText = this.drawHand.reduce((handText, card) => {
-            if(card.getType() === 'joker') {
-                return handText + 'Joker | ';
-            }
-            return handText + `${card.getValueText()} of ${card.suit} | `;
-        }, '');
-        this.game.addMessage('{0} {1} {2}{3} (Rank {4}) - {5}', 
+        let handText = '';
+        if(handResultText === 'reveals') {
+            handText = ' - ' + this.drawHand.reduce((handText, card) => {
+                if(card.getType() === 'joker') {
+                    return handText + 'Joker | ';
+                }
+                return handText + `${card.getValueText()} of ${card.suit} | `;
+            }, '');
+        }
+        this.game.addMessage('{0} {1} {2}{3} (Rank {4}){5}', 
             this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank, handText);
         this.game.raiseEvent('onHandResultDetermined', { player: this });
     }
