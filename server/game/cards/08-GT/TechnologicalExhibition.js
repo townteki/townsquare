@@ -39,7 +39,8 @@ class TechnologicalExhibition extends ActionCard {
                                 match: card,
                                 targetLocation: card.location,
                                 effect: [
-                                    ability.effects.canBeInventedWithoutBooting()
+                                    ability.effects.canBeInventedWithoutBooting(),
+                                    ability.effects.modifyDifficulty(-5)
                                 ]
                             }));                            
                             this.game.resolveStandardAbility(StandardActions.putIntoPlayWithReduction(5), context.player, card);

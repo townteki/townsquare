@@ -580,6 +580,18 @@ const Effects = {
             isStateDependent: true
         };
     },
+    modifyDifficulty: function(value) {
+        return {
+            title: `Difficulty modified: ${value}`,
+            gameAction: value < 0 ? 'decreaseDifficulty' : 'increaseDifficulty',
+            apply: function(card) {
+                card.difficultyMod += value;
+            },
+            unapply: function(card) {
+                card.difficultyMod -= value;
+            }
+        };
+    },    
     modifyPlayerControl: function(value) {
         return {
             title: `Player Control modified: ${value}`,
