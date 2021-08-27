@@ -32,6 +32,7 @@ class ChatCommands {
             '/discard-deck': this.discardFromDeck,
             '/disconnectme': this.disconnectMe,
             '/draw': this.draw,
+            '/first-player': this.firstPlayer,
             '/give-control': this.giveControl,
             '/hand-rank': this.handRank,
             '/hr': this.handRank,
@@ -867,7 +868,7 @@ class ChatCommands {
             },
             pullingDude: this.pullingDude,
             pullBonus: skillOrFu !== 'kung fu' ? pullBonus : 0,
-            source: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
+            chatCommandDiff: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
                 `chatcommands with difficulty ${this.pullingDude.value}`,
             player: player
         });

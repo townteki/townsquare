@@ -20,6 +20,7 @@ class SundownPhase extends Phase {
     sundownRedraw() {
         this.game.getPlayers().forEach(player => {
             player.redrawToHandSize('sundown');
+            this.game.raiseEvent('onAfterHandRefill', { player });
         });
     }
 

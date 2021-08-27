@@ -50,6 +50,8 @@ class BaseCard {
         this.wealth = cardData.wealth;
         this.permanentBullets = 0;
         this.startingSize = 1;
+        this.maxBullets = null;
+        this.minBullets = 0;        
 
         this.tokens = {};
 
@@ -88,8 +90,8 @@ class BaseCard {
     }
 
     get bullets() {
-        if(this.currentBullets < 0) {
-            return 0;
+        if(this.currentBullets < this.minBullets) {
+            return this.minBullets;
         }
         return this.currentBullets;
     }
@@ -126,6 +128,21 @@ class BaseCard {
             return new NullCard();
         }
         return location.locationCard;
+    }
+
+    getValueText() {
+        switch(this.value) {
+            case 1:
+                return 'A';
+            case 11:
+                return 'J';
+            case 12:
+                return 'Q';
+            case 13:
+                return 'K';  
+            default:
+                return this.value;
+        }
     }
 
     addSuitEffect(source, suit = '') {

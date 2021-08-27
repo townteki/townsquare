@@ -5,7 +5,7 @@ var StandardActions = {};
 
 var defaultProperties = {
     playType: 'ability', 
-    abilitySourceType: 'ability', 
+    abilitySourceType: 'card', 
     target: ''
 };
 

@@ -29,7 +29,8 @@ class FuntimeFreddy extends DudeCard {
                         handler: selectedHexes => {
                             const revealFunc = card => selectedHexes.includes(card);
                             this.game.cardVisibility.addRule(revealFunc);
-                            this.game.promptForSelect(context.player.getOpponent(), {
+                            const choosingPlayer = this.game.getNumberOfPlayers() === 1 ? context.player : context.player.getOpponent();
+                            this.game.promptForSelect(choosingPlayer, {
                                 activePromptTitle: 'Choose a card to ace',
                                 waitingPromptTitle: 'Waiting for opponent to select card to ace',
                                 cardCondition: card => selectedHexes.includes(card),
@@ -49,7 +50,7 @@ class FuntimeFreddy extends DudeCard {
                                             onSelect: (player, huckster) => {
                                                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                                                     playType: 'ability',
-                                                    abilitySourceType: 'ability',
+                                                    abilitySourceType: 'card',
                                                     targetParent: huckster
                                                 }), player, hexToAttach);  
                                                 player.discardFromHand(1, discarded => 

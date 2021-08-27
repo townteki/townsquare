@@ -19,7 +19,7 @@ class ThisllHurtInTheMornin extends ActionCard {
                 context.player.discardCards(context.target, false, (discardedCards) => {
                     const opponent = context.player.getOpponent();
                     const topCards = opponent.drawDeck.slice(0, discardedCards.length);
-                    topCards.forEach(card => opponent.moveCard(card, 'draw hand'));
+                    topCards.forEach(card => opponent.moveCardWithContext(card, 'draw hand', context));
                     if(!context.player.isCheatin()) {
                         discardedCards.forEach(card => {
                             this.game.queueSimpleStep(() => {
