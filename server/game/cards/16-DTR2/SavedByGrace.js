@@ -12,7 +12,7 @@ class SavedByGrace extends OutfitCard {
             title: 'Saved by Grace',
             when: {
                 onPullSuccess: event => 
-                    event.pullingDude && 
+                    event.pullingDude && event.source && 
                     event.pullingDude.controller === this.controller && 
                     event.source.getType() === 'spell' &&
                     event.source.isMiracle()
