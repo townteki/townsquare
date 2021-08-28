@@ -99,7 +99,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(this.isCardAbility() && !this.isForcedAbility() && context.player && !context.player.canTrigger(this)) {
+        if(this.isCardAbility() && !this.isTraitAbility() && context.player && !context.player.canTrigger(this)) {
             return false;
         }
 
