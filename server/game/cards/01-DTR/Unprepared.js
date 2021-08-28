@@ -20,7 +20,7 @@ class Unprepared extends ActionCard {
                     match: context.target,
                     effect: [
                         ability.effects.modifyBullets(-1),
-                        ability.effects.cannotTriggerCardAbilities()
+                        ability.effects.cannotTriggerCardAbilities(ability => !ability.isTraitAbility())
                     ]
                 }));
                 if(context.target.attachments.length > 0) {

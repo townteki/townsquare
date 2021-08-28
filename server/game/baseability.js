@@ -329,7 +329,7 @@ class BaseAbility {
         return false;
     }
 
-    isForcedAbility() {
+    isTraitAbility() {
         return false;
     }
 
