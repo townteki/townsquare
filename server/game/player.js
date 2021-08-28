@@ -1385,9 +1385,9 @@ class Player extends Spectator {
                 context.totalPullValue = pulledValue + props.pullBonus;
             }
             if(props.successCondition(pulledValue + props.pullBonus)) {
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.',
+                    this, pulledValue, pulledSuit, pulledCard, props.source);
                 this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
-                    this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.',
-                        this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source);
                     let isAbility = !!context;
                     const pullInfo = { 
                         pulledValue: event.pulledValue, 
@@ -1406,9 +1406,9 @@ class Player extends Spectator {
                     }
                 });
             } else {
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.',
+                    this, pulledValue, pulledSuit, pulledCard, props.source);
                 this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
-                    this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.',
-                        this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source);
                     let isAbility = !!context;
                     const pullInfo = { 
                         pulledValue: event.pulledValue, 
