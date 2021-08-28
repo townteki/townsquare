@@ -61,6 +61,7 @@ class Player extends Spectator {
         this.timerSettings.windowTimer = user.settings.windowTimer;
         this.shuffleArray = shuffle;
         this.availableGrifterActions = 1;
+        this.currentCheck = false;
         this.resetCheatinResInfo();
 
         this.createAdditionalPile('out of game');
@@ -1385,9 +1386,9 @@ class Player extends Spectator {
                 context.totalPullValue = pulledValue + props.pullBonus;
             }
             if(props.successCondition(pulledValue + props.pullBonus)) {
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.',
+                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff);
                 this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
-                    this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.',
-                        this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source ? event.source : event.chatCommandDiff);
                     let isAbility = !!context;
                     const pullInfo = { 
                         pulledValue: event.pulledValue, 
@@ -1406,9 +1407,9 @@ class Player extends Spectator {
                     }
                 });
             } else {
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.',
+                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff);
                 this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
-                    this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.',
-                        this, event.pulledValue, event.pulledSuit, event.pulledCard, event.source);
                     let isAbility = !!context;
                     const pullInfo = { 
                         pulledValue: event.pulledValue, 
@@ -1506,6 +1507,14 @@ class Player extends Spectator {
         }, 0);
 
         return influence;
+    }
+
+    isInCheck() {
+        if(this.game.getNumberOfPlayers() <= 1) {
+            return false;
+        }
+        this.currentCheck = this.getTotalInfluence() < this.getOpponent().getTotalControl();
+        return this.currentCheck;
     }
 
     removeAttachment(attachment, allowSave = true) {
@@ -1860,6 +1869,7 @@ class Player extends Spectator {
                 drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
                 beingPlayed: this.getSummaryForCardList(this.beingPlayed, activePlayer)
             },
+            inCheck: this.currentCheck,
             disconnected: !!this.disconnectedAt,
             outfit: this.outfit.getSummary(activePlayer),
             firstPlayer: this.firstPlayer,

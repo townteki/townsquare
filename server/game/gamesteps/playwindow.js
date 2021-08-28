@@ -30,11 +30,14 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
             if(player !== this.currentPlayer) {
                 return false;
             }
-            if(player) {
-                player.unscriptedCardPlayed = null;
+            if(this.name === 'high noon' && player.isInCheck()) {
+                this.game.promptForYesNo(player, {
+                    title: 'You are in CHECK, do you really want to Pass?',
+                    onYes: player => this.completePlayer(player)                
+                });
+            } else {
+                this.completePlayer(player);
             }
-            this.orderPassed = true;
-            this.completePlayer();
         };
     }
 
@@ -87,12 +90,17 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     }
 
     markActionAsTaken(player) {
+        this.game.checkWinCondition();
         this.onDone(player);
     }
 
-    completePlayer() {
+    completePlayer(player) {
+        if(player) {
+            player.unscriptedCardPlayed = null;
+        }
+        this.orderPassed = true;        
         this.game.raiseEvent('onPassAction', { playWindow: this });
-        this.game.addMessage('{0} passes {1} action', this.currentPlayer, this.name);
+        this.game.addMessage('{0} passes {1} action', player, this.name);
         super.completePlayer();
     }
 }
