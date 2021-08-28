@@ -33,7 +33,8 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
             new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionFinished', { ability: this.ability, context: this.context })),
             new SimpleStep(game, () => this.game.popAbilityContext()),
-            new SimpleStep(game, () => this.game.attachmentValidityCheck.enforceValidity())
+            new SimpleStep(game, () => this.game.attachmentValidityCheck.enforceValidity()),
+            new SimpleStep(game, () => this.game.checkWinCondition())
         ]);
     }
 

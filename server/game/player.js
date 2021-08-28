@@ -61,6 +61,7 @@ class Player extends Spectator {
         this.timerSettings.windowTimer = user.settings.windowTimer;
         this.shuffleArray = shuffle;
         this.availableGrifterActions = 1;
+        this.currentCheck = false;
         this.resetCheatinResInfo();
 
         this.createAdditionalPile('out of game');
@@ -1507,6 +1508,14 @@ class Player extends Spectator {
         return influence;
     }
 
+    isInCheck() {
+        if(this.game.getNumberOfPlayers() <= 1) {
+            return false;
+        }
+        this.currentCheck = this.getTotalInfluence() < this.getOpponent().getTotalControl();
+        return this.currentCheck;
+    }
+
     removeAttachment(attachment, allowSave = true) {
         attachment.isBeingRemoved = true;
         attachment.owner.moveCard(attachment, 'discard pile', { allowSave: allowSave }, () => {
@@ -1859,6 +1868,7 @@ class Player extends Spectator {
                 drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
                 beingPlayed: this.getSummaryForCardList(this.beingPlayed, activePlayer)
             },
+            inCheck: this.currentCheck,
             disconnected: !!this.disconnectedAt,
             outfit: this.outfit.getSummary(activePlayer),
             firstPlayer: this.firstPlayer,

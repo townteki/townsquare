@@ -523,14 +523,15 @@ class Game extends EventEmitter {
         player.modifyGhostRock(-appliedAmount);
     }
 
-    checkWinCondition(player) { 
-        let opponent = player.getOpponent();
-        if(opponent.name === 'test player') {
+    checkWinCondition() { 
+        if(this.getNumberOfPlayers() <= 1) {
             return;
         }
-        if(player.getTotalControl() > opponent.getTotalInfluence()) {
-            this.addAlert('info', 'CHECK: {0} checks {1}.', player, opponent);
-        }
+        this.getPlayers().forEach(player => {
+            if(!player.currentCheck & player.isInCheck()) {
+                this.addAlert('info', 'CHECK: {0} is in check', player);
+            }
+        });
     }
 
     resolveTiebreaker(player1, player2, isForLowball = false) {
@@ -1181,7 +1182,7 @@ class Game extends EventEmitter {
         }
         card.controller.cardsInPlay.push(card);
 
-        this.handleControlChange(card);
+        this.raiseEvent('onCardTakenControl', { card: card });
     }
 
     getShootoutLocationCard() {
@@ -1223,11 +1224,6 @@ class Game extends EventEmitter {
         if(isCancel) {
             this.pipeline.cancelStep();
         }
-    }
-
-    handleControlChange(card) {
-        this.raiseEvent('onCardTakenControl', { card: card });
-        this.checkWinCondition(card.controller);
     }
 
     applyGameAction(actionType, cards, func, options = {}) {
