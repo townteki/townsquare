@@ -6,7 +6,7 @@ class DaveSlimGorman extends DudeCard {
         this.reaction({
             title: 'Dave "Slim" Gorman',
             when: {
-                onPullSuccess: event => 
+                onPullSuccess: event => event.source &&
                     event.pullingDude === this &&
                     event.source.getType() === 'spell' && 
                     event.source.isHex() &&

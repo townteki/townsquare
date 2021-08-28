@@ -13,6 +13,7 @@ class DrawCard extends BaseCard {
 
         this.booted = false;
         this.minCost = 0;
+        this.difficultyMod = 0;
         this.currentControl = this.cardData.control || 0;
         if(!this.hasKeyword('rowdy')) {
             this.controlDeterminator = 'influence:deed';
@@ -43,7 +44,8 @@ class DrawCard extends BaseCard {
     }
 
     get difficulty() {
-        return this.keywords.getDifficulty();
+        const finalDifficulty = this.keywords.getDifficulty() + this.difficultyMod;
+        return finalDifficulty < 1 ? 1 : finalDifficulty;
     }
 
     get control() {

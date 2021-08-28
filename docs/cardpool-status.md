@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/401/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/402/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -791,7 +791,7 @@
 |:heavy_check_mark:   | 20031| Campbell & Hatch Billiard Parlor
 |                     | 20032| Clanton Ranch
 |                     | 20033| Concordia Cemetery
-|                     | 20034| Ike's Place
+|:heavy_check_mark:   | 20034| Ike's Place
 |                     | 20035| Five Aces Gambling Hall
 |                     | 20036| Old Washoe Club
 |:heavy_check_mark:   | 20037| Quarter Horse
