@@ -33,7 +33,7 @@ class TraitTriggeredAbility extends TriggeredAbility {
         return true;
     }
 
-    isForcedAbility() {
+    isTraitAbility() {
         return true;
     }
 }

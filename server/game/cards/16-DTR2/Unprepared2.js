@@ -21,7 +21,7 @@ class Unprepared2 extends ActionCard {
                     match: context.target,
                     effect: [
                         ability.effects.modifyBullets(-1),
-                        ability.effects.cannotTriggerCardAbilities()
+                        ability.effects.cannotTriggerCardAbilities(ability => ability.isTriggeredAbility())
                     ]
                 }));
             }
