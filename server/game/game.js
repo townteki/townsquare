@@ -529,7 +529,7 @@ class Game extends EventEmitter {
         }
         this.getPlayers().forEach(player => {
             if(!player.currentCheck & player.isInCheck()) {
-                this.addAlert('info', 'CHECK: {0} is in check', player);
+                this.addAlert('warning', 'CHECK: {0} is in check', player);
             }
         });
     }
