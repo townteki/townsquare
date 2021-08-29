@@ -14,15 +14,6 @@ class ProtectionRacket extends OutfitCard {
                     card.locationCard.getType() === 'deed'
                 )
             ],
-            target: {
-                activePromptTitle: 'Select your dude',
-                cardCondition: { 
-                    location: 'play area', 
-                    controller: 'current', 
-                    condition: card => card.locationCard.getType() === 'deed'
-                },
-                cardType: ['dude']
-            },
             handler: context => {
                 let numOfOccupiedDeeds = 0;
                 let numOfDeedsOwnedByOpp = 0;
