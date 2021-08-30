@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/402/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/411/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -103,7 +103,7 @@
 |:heavy_check_mark:   | 01089| Auto-Revolver
 |:heavy_check_mark:   | 01090| Pinto
 |:heavy_check_mark:   | 01091| Flame-Thrower
-|                     | 01092| Force Field
+|:heavy_check_mark:   | 01092| Force Field
 |:heavy_check_mark:   | 01093| Quickdraw Handgun
 |:heavy_check_mark:   | 01094| Mechanical Horse
 |:heavy_check_mark:   | 01095| Tin Star
@@ -219,7 +219,7 @@
 |                     | 04002| Smiling Tom
 |:heavy_check_mark:   | 04003| Philip Swinford (Exp.1)
 |:heavy_check_mark:   | 04004| Drew Beauman
-|                     | 04005| Dr. Arden Gillman
+|:heavy_check_mark:   | 04005| Dr. Arden Gillman
 |                     | 04006| Arvid Mardh
 |                     | 04007| Allie Hensman (Exp.1)
 |:heavy_check_mark:   | 04008| Milt Clemons
@@ -251,7 +251,7 @@
 |                     | 05008| Rev. Perry Inbody
 |                     | 05009| Zoe Halbrook
 |                     | 05010| Abram Grothe (Exp.1)
-|                     | 05011| William Specks
+|:heavy_check_mark:   | 05011| William Specks
 |:heavy_check_mark:   | 05012| Chuan "Jen" Qí
 |                     | 05013| Lane Healey (Exp.1)
 |                     | 05014| The Fixer
@@ -491,7 +491,7 @@
 |:heavy_check_mark:   | 12004| Mariel Lewis
 |                     | 12005| The Tattooed Man
 |                     | 12006| Riorden O'Lithen
-|                     | 12007| "Lucky" Sky Borne
+|:heavy_check_mark:   | 12007| "Lucky" Sky Borne
 |:heavy_check_mark:   | 12008| Miranda Clarke
 |                     | 12009| Elliot Smithson
 |                     | 12010| Shelby Hunt
@@ -666,7 +666,7 @@
 |                     | 18003| Full Moon Brotherhood
 |                     | 18004| Justice In Exile
 |:heavy_check_mark:   | 18005| Morgan Regulators
-|                     | 18006| Protection Racket
+|:heavy_check_mark:   | 18006| Protection Racket
 |                     | 18007| Zui Waidan
 |                     | 18008| Mr. Outang
 |:heavy_check_mark:   | 18009| Stevie Lyndon
@@ -793,9 +793,9 @@
 |                     | 20033| Concordia Cemetery
 |:heavy_check_mark:   | 20034| Ike's Place
 |                     | 20035| Five Aces Gambling Hall
-|                     | 20036| Old Washoe Club
+|:heavy_check_mark:   | 20036| Old Washoe Club
 |:heavy_check_mark:   | 20037| Quarter Horse
-|                     | 20038| Electrostatic Pump Gun
+|:heavy_check_mark:   | 20038| Electrostatic Pump Gun
 |:heavy_check_mark:   | 20039| Claws
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
 |                     | 20041| Ranger's Bible
@@ -823,7 +823,7 @@
 |:heavy_check_mark:   | 21002| Office of Ancestral Affairs
 |:heavy_check_mark:   | 21003| Bayou Vermilion Railroad
 |:heavy_check_mark:   | 21004| Fort 51
-|                     | 21005| Smith & Robards Trade Show
+|:heavy_check_mark:   | 21005| Smith & Robards Trade Show
 |:heavy_check_mark:   | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
 |                     | 21008| Ke Wang
@@ -848,7 +848,7 @@
 |:white_check_mark:   | 21027| Eli Leatherwood
 |                     | 21028| Roberto Muratore
 |                     | 21029| Adelaide Rose
-|                     | 21030| Dr. Gregory Tremane
+|:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
 |                     | 21033| Violet Esperanza
