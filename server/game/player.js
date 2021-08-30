@@ -1043,9 +1043,11 @@ class Player extends Spectator {
     }
 
     startPosse() {
-        _.each(this.hand, (card) => {
-            this.game.drop(this.name, card.uuid, 'play area', this.outfit.uuid);
-            this.ghostrock -= card.cost;
+        this.hand.forEach(card => {
+            if(!['goods', 'spell', 'action', 'joker'].includes(card.getType())) {
+                this.game.drop(this.name, card.uuid, 'play area', this.outfit.uuid);
+                this.ghostrock -= card.cost;
+            }
         });
 
         this.posse = true;
