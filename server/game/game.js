@@ -1162,7 +1162,7 @@ class Game extends EventEmitter {
                 let originalLocation = card.location;
                 card.moveTo('play area');
                 card.applyPersistentEffects();
-                this.raiseMergedEvent('onCardEntersPlay', { card: card, playingType: 'play', originalLocation: originalLocation });
+                this.raiseEvent('onCardEntersPlay', { card: card, playingType: 'play', originalLocation: originalLocation });
             }
 
             this.raiseEvent('onCardTakenControl', { card: card });
