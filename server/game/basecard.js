@@ -937,6 +937,12 @@ class BaseCard {
         return location && location.isOpponentsHome(this.controller);
     }
 
+    isInOutOfTown() {
+        let location = this.getGameLocation();
+        let tempLocCard = location ? location.locationCard : null;
+        return tempLocCard && tempLocCard.isOutOfTown();
+    }
+
     isLocationCard() {
         return false;
     }
