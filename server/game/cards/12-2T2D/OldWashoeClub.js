@@ -4,7 +4,7 @@ const GameActions = require('../../GameActions/index.js');
 class OldWashoeClub extends DeedCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'Controller Shootout, Boot: Send an opposing A-value dude home booted.',
+            title: 'Shootout: Send A-dude home booted',
             cost: ability.costs.bootSelf(),
             playType: ['shootout'],
             target: {
@@ -25,7 +25,7 @@ class OldWashoeClub extends DeedCard {
             }
         });
         this.action({
-            title: 'Controller Shootout, Boot: Discard a Sidekick.',
+            title: 'Shootout: Discard a Sidekick',
             cost: ability.costs.bootSelf(),
             playType: ['shootout'],
             target: {
