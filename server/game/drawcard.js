@@ -335,6 +335,10 @@ class DrawCard extends BaseCard {
         return this.hasKeyword('Gadget');
     }
 
+    isOutOfTown() {
+        return this.hasKeyword('Out of Town');
+    }
+
     doesNotReturnAfterJob() {
         return this.options.contains('doesNotReturnAfterJob');
     }
