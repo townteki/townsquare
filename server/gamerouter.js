@@ -15,6 +15,7 @@ class GameRouter extends EventEmitter {
 
         this.workers = {};
         this.gameService = new GameService(monk(configService.getValue('dbPath')));
+        this.workerTimeout = configService.getValue('workerTimeout') || 1;
 
         router.bind(`tcp://0.0.0.0:${configService.getValue('mqPort')}`, err => {
             if(err) {
@@ -239,7 +240,7 @@ class GameRouter extends EventEmitter {
 
     checkTimeouts() {
         var currentTime = Date.now();
-        const pingTimeout = 1 * 60 * 1000;
+        const pingTimeout = this.workerTimeout * 60 * 1000;
 
         for(const worker of Object.values(this.workers)) {
             if(worker.disconnected) {
