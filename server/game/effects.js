@@ -925,6 +925,10 @@ const Effects = {
         cannotEffectType('increaseControl', opponent => `Cannot have control increased${opponent ? ' by' + opponent : ''}`),      
     cannotDecreaseControl: 
         cannotEffectType('decreaseControl', opponent => `Cannot have control decreased${opponent ? ' by' + opponent : ''}`),
+    cannotIncreaseProduction: 
+        cannotEffectType('increaseProduction', opponent => `Cannot have production increased${opponent ? ' by' + opponent : ''}`),      
+    cannotDecreaseProduction: 
+        cannotEffectType('decreaseProduction', opponent => `Cannot have production decreased${opponent ? ' by' + opponent : ''}`),
     cannotPlay: function(condition) {
         let restriction = (card, playingType) => card.getType() === 'event' && playingType === 'play' && condition(card);
         return this.cannotPutIntoPlay(restriction);

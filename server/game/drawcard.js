@@ -228,7 +228,7 @@ class DrawCard extends BaseCard {
      * Checks whether the passed card meets the attachment restrictions (e.g.
      * Opponent cards only, etc) for this card.
      */
-    canAttach(player, card) {
+    canAttach(player, card, playingType) {
         if(!card || card.cannotAttachCards(this)) {
             return false;
         }
@@ -241,7 +241,13 @@ class DrawCard extends BaseCard {
         }
         if(card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
             return false;
-        }   
+        }
+
+        // Do not check attachment restrictions if this is Improvement goods type. That is because the
+        // restriction is checked only at the time it is being attached.
+        if(this.isImprovement() && playingType === 'validityCheck') {
+            return true;
+        }
         
         let context = { player: player };
 
@@ -333,6 +339,10 @@ class DrawCard extends BaseCard {
 
     isGadget() {
         return this.hasKeyword('Gadget');
+    }
+
+    isImprovement() {
+        return this.hasKeyword('Improvement');
     }
 
     isOutOfTown() {
