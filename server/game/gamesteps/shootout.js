@@ -102,16 +102,20 @@ class Shootout extends Phase {
     resetForTheRound() {
         this.winner = null;
         this.loser = null;
-        this.leaderPlayer.rankModifier = 0;
-        this.leaderPlayer.casualties = 0;
-        this.opposingPlayer.rankModifier = 0;
-        this.opposingPlayer.casualties = 0;
+        this.resetModifiers();
         if(this.leaderPosse) {
             this.leaderPosse.resetForTheRound();
         }
         if(this.markPosse) {
             this.markPosse.resetForTheRound();
         }
+    }
+
+    resetModifiers() {
+        this.leaderPlayer.rankModifier = 0;
+        this.leaderPlayer.casualties = 0;
+        this.opposingPlayer.rankModifier = 0;
+        this.opposingPlayer.casualties = 0;
     }
 
     beginShootoutRound() {
@@ -169,6 +173,7 @@ class Shootout extends Phase {
         }
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
+        this.resetModifiers();
         this.game.endShootout(isCancel);
         if(this.isJob()) {
             this.options.jobAbility.setResult(this.jobSuccessful, this);
