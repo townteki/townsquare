@@ -29,6 +29,17 @@ class DrawCard extends BaseCard {
         this.options = new ReferenceConditionalSetProperty();
     }
 
+    get controller() {
+        if(this.parent) {
+            this.controller = this.parent.controller;
+        }
+        return this.controllingPlayer;
+    }
+
+    set controller(controller) {
+        this.controllingPlayer = controller;
+    }
+
     get gamelocation() {
         let tempLocation = super.gamelocation;
 
