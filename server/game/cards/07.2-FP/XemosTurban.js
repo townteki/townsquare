@@ -44,7 +44,7 @@ class XemosTurban extends GoodsCard {
                     } else {
                         this.game.addMessage('{0} uses {1}, but the experiment fails', context.player, this);
                     }
-                }, true);
+                }, true, { context });
             }
         });
     }
