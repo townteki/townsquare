@@ -943,12 +943,6 @@ class BaseCard {
         return tempLocCard && tempLocCard.isOutOfTown();
     }
 
-    isInOutOfTown() {
-        let location = this.getGameLocation();
-        let tempLocCard = location ? location.locationCard : null;
-        return tempLocCard && tempLocCard.isOutOfTown();
-    }
-
     isLocationCard() {
         return false;
     }
