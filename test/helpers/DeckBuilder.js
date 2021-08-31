@@ -46,23 +46,25 @@ class DeckBuilder {
         return cards;
     }
 
-    buildDeck(outfitTitle, cardLabels, startingTitles, addDefaultDeck = true) {
-        if(addDefaultDeck) {
-            cardLabels = cardLabels.concat(DefaultDeck);
+    buildDeck(properties) {
+        let params = Object.assign({ addDefaultDeck: true }, properties);
+        if(params.addDefaultDeck) {
+            params.cardTitles = params.cardTitles.concat(DefaultDeck);
         }
-        let allCards = this.createCardCounts(cardLabels);
-        let outfit = this.getCard(outfitTitle);
+        let allCards = this.createCardCounts(params.cardTitles);
+        let outfit = this.getCard(params.outfitTitle);
+        let legend = params.legendTitle ? this.getCard(params.legendTitle) : null;
         let starting = 0;
         allCards.forEach(cardCount => {
-            if(startingTitles.includes(cardCount.card.title)) {
-                cardCount.card.starting = true;
+            if(params.startingTitles.includes(cardCount.card.title)) {
+                cardCount.starting = 1;
                 starting++;
             }
         });
 
         return {
             outfit: outfit,
-            legend: null,
+            legend: legend,
             drawCards: allCards.filter(cardCount => ['dude', 'deed', 'goods', 'spell', 'action'].includes(cardCount.card.type_code)),
             starting: starting
         };
@@ -100,12 +102,6 @@ class DeckBuilder {
 
         if(cardsByTitle.length === 0) {
             throw new Error(`Unable to find any card matching ${codeOrLabelOrName}`);
-        }
-
-        if(cardsByTitle.length > 1) {
-            cardsByTitle.sort((a, b) => a.releaseDate < b.releaseDate ? -1 : 1);
-            let matchingLabels = cardsByTitle.map(card => `${card.title} (${card.pack_code})`).join('\n');
-            console.warn(`Multiple cards match the name ${codeOrLabelOrName}. Use one of these instead:\n${matchingLabels}`);
         }
 
         return cardsByTitle[0];

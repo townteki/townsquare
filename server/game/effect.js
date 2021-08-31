@@ -48,7 +48,15 @@ class Effect {
         this.gameAction = this.effect.gameAction || 'genericEffect';
         this.targets = [];
         this.appliedTargets = new Set();
-        this.context = { game: game, source: source, ability: properties.ability };
+        this.context = { 
+            game: game, 
+            source: source, 
+            player: source.controller, 
+            ability: properties.ability,
+            // save the playTypePlayed to have info about what type of play (shootout, resolution etc.) created the effect
+            causedByPlayType: this.buildPlayTypePlayed(properties)
+        };
+        this.fromTrait = !!properties.fromTrait;
         this.active = !source.facedown;
         this.isConditional = !!properties.condition || this.targetType === 'player' && typeof(properties.match) === 'function';
         this.isStateDependent = this.isConditional || this.effect.isStateDependent;
@@ -64,12 +72,22 @@ class Effect {
         return [properties];
     }
 
+    buildPlayTypePlayed(properties) {
+        if(properties.causedByPlayType) {
+            return properties.causedByPlayType;
+        }
+        return properties.ability ? properties.ability.playTypePlayed() : undefined;
+    }
+
     buildTargetLocation(targetLocation) {
+        if(!targetLocation) {
+            return ['play area'];
+        }
         if(Array.isArray(targetLocation)) {
             return targetLocation;
         }
 
-        return targetLocation || ['play area'];
+        return [targetLocation];
     }
 
     buildEffect(effect) {
@@ -245,6 +263,18 @@ class Effect {
         }
     }
 
+    updateAppliedTarget(target) {
+        if(!this.appliedTargets.has(target) && this.canApply(target)) {
+            this.effect.apply(target, this.context);
+            this.appliedTargets.add(target);
+            return;            
+        }
+        if(this.appliedTargets.has(target) && !this.canApply(target)) {
+            this.effect.unapply(target, this.context);
+            this.appliedTargets.delete(target);            
+        }
+    }
+
     reapply(newTargets) {
         if(!this.active) {
             return;
@@ -288,6 +318,14 @@ class Effect {
 
     get order() {
         return this.effect.order || 0;
+    }
+
+    getSummary() {
+        return {
+            title: this.effect.title,
+            gameAction: this.effect.gameAction,
+            source: this.source.uuid
+        };
     }
 }
 

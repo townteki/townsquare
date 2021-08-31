@@ -19,24 +19,11 @@ If you only need help with setting the development IDE, please see [Development]
 
 ## Project status
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/townteki/townsquare/Node.js%20CI/master?style=plastic)
-![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fimg.shields.io%2Fwebsite%2Fhttps%2Fdev.doomtown.us%2Fplay)
+![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fimg.shields.io%2Fwebsite%2Fhttps%2Fdoomtown.online%2Fplay)
 
 ### Implementation:
 
-- [x] Base Game engine (phases, shootouts, play actions etc) 
-- [x] Spell casting
-- [x] Gadget inventing
-- [ ] Legends
-
-- [ ] Kung Fu
-- [ ] Deck Management
-
-See [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md) of implemented card scripts.
-
-### Test coverage:
-- [ ] Base Game engine (phases, shootouts, game actions etc) 
-- [ ] Spells
-- [ ] Gadgets
+Game engine is implemented, for implemented card scripts see: [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md)
 
 ## Issues
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.

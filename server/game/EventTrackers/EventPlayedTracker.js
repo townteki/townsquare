@@ -5,11 +5,7 @@ class EventPlayedTracker {
 
     constructor(game, endingEvent) {
         this.events = [];
-        // TODO: should be onCardPlayed but it is currently fired after the
-        // ability has resolved. That would be too late in case of chains of
-        // interrupt cards, e.g. Hand's Judgment vs Hand's Judgment vs Hand's
-        // Judgment
-        game.on('onCardAbilityInitiated:cancelinterrupt', event => this.trackEvent(event));
+        game.on('onCardAbilityInitiated:cancelreaction', event => this.trackEvent(event));
         game.on(endingEvent, () => this.clearEvents());
     }
 

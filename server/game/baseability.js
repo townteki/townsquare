@@ -7,10 +7,11 @@ const AbilityTarget = require('./AbilityTarget.js');
 const ChooseGameAction = require('./GameActions/ChooseGameAction');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper');
 const BaseCardSelector = require('./CardSelectors/BaseCardSelector');
+/** @typedef {import('./AbilityContext')} AbilityContext */
 
 /**
  * Base class representing an ability that can be done by the player. This
- * includes card actions, reactions, interrupts, playing a card.
+ * includes card actions, reactions, playing a card.
  *
  * Most of the methods take a context object. While the structure will vary from
  * inheriting classes, it is guaranteed to have at least the `game` object, the
@@ -35,14 +36,22 @@ class BaseAbility {
         this.cannotBeCanceled = !!properties.cannotBeCanceled;
         this.abilitySourceType = properties.abilitySourceType || 'card';
         this.gameAction = this.buildGameAction(properties);
+        this.cannotBeUsed = false;
+        this.printed = !!properties.printed;
+        this.defaultOptions = properties.options;
         this.resetOptions();
     }
 
     resetOptions() {
-        this.options = {
-            skipCost: () => false,
-            callback: () => true
-        };
+        if(!this.options) {
+            this.options = {};
+        }
+        if(this.defaultOptions) {
+            this.options.skipCost = this.defaultOptions.skipCost;
+            this.options.callback = this.defaultOptions.callback;
+        }
+        this.options.skipCost = this.options.skipCost || (() => false);
+        this.options.callback = this.options.callback || (() => true);
     }
 
     buildCost(cost) {
@@ -105,7 +114,7 @@ class BaseAbility {
     }
 
     meetsRequirements() {
-        return true;
+        return !this.cannotBeUsed;
     }
 
     /**
@@ -264,6 +273,32 @@ class BaseAbility {
         this.message.output(context.game, context);
     }
 
+    selectAnotherTarget(player, context, properties) {
+        const saveOnSelect = properties.onSelect;
+        const updatedOnSelect = (player, card) => {
+            let cards = card;
+            if(!Array.isArray(card)) {
+                cards = [card];
+            }
+            // make it always an array for the event properties ('cards'), but keep it the same ('card')
+            // as we got it when used in 'saveOnSelect', because logic in onSelect function expects it that way.
+            context.game.raiseEvent('onTargetsChosen', { ability: this, player, cards, properties }, event => {
+                saveOnSelect(event.player, card);
+            });
+            return true;
+        };
+        properties.onSelect = updatedOnSelect;
+        if(properties.gameAction) {
+            if(!Array.isArray(properties.gameAction)) {
+                properties.gameAction = [properties.gameAction];
+            }
+            properties.gameAction.push('target');
+        } else {
+            properties.gameAction = ['target'];
+        }
+        context.game.promptForSelect(player, properties);
+    }
+
     /**
      * Executes the ability once all costs have been paid. Inheriting classes
      * should override this method to implement their behavior; by default it
@@ -294,7 +329,7 @@ class BaseAbility {
         return false;
     }
 
-    isForcedAbility() {
+    isTraitAbility() {
         return false;
     }
 

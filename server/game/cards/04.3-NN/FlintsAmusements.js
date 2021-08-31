@@ -18,13 +18,13 @@ class FlintsAmusements extends DeedCard {
             title: 'Flint\'s Amusements',
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
+            ifCondition: () => this.tracker.eventHappened(),
+            ifFailMessage: context => 
+                this.game.addMessage('{0} uses {1} but does not draw a card because he did not play Cheatin\' Resolution this day.', context.player, this),
+            message: context =>
+                this.game.addMessage('{0} uses {1} to draw a card because he played Cheatin\' Resolution this day.', context.player, this),
             handler: context => {
-                if(this.tracker.eventHappened()) {
-                    context.player.drawCardsToHand();
-                    this.game.addMessage('{0} uses {1} to draw a card because he played Cheatin\' Resolution this day.', context.player, this);
-                } else {
-                    this.game.addMessage('{0} uses {1} but does not draw a card because he did not play Cheatin\' Resolution this day.', context.player, this);
-                }
+                context.player.drawCardsToHand(1, context);
             }
         });
     }

@@ -17,7 +17,7 @@ describe('TraitTriggeredAbilityWindow', function() {
 
         this.window = new TraitTriggeredAbilityWindow(this.gameSpy, {
             event: this.eventSpy,
-            abilityType: 'forcedinterrupt'
+            abilityType: 'traitbeforereaction'
         });
 
         function createCard(properties) {
@@ -29,7 +29,7 @@ describe('TraitTriggeredAbilityWindow', function() {
         function createAbility(card, context) {
             let ability = jasmine.createSpyObj('ability', ['createContext', 'getChoices', 'canResolve']);
             ability.card = card;
-            ability.createContext.and.returnValue(context);
+            ability.createContext.and.returnValue([context]);
             ability.getChoices.and.returnValue([{ choice: 'default' }]);
             ability.canResolve.and.returnValue(true);
             return ability;

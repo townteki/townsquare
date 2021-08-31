@@ -21,7 +21,19 @@ const TriggeredAbility = require('./triggeredability.js');
  *            be in in order to activate the reaction. Defaults to 'play area'.
  */
 class TraitTriggeredAbility extends TriggeredAbility {
-    isForcedAbility() {
+    meetsRequirements(context) {
+        if(!super.meetsRequirements(context)) {
+            return false;
+        }
+
+        if(this.card.isTraitBlank()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    isTraitAbility() {
         return true;
     }
 }

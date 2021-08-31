@@ -15,7 +15,7 @@ class CannotRestriction {
     }
 
     isMatch(type, abilityContext, targetController) {
-        let abilityPlayType = abilityContext.ability ? abilityContext.ability.playTypePlayed() : 'game';
+        let abilityPlayType = abilityContext.ability ? abilityContext.ability.playTypePlayed(abilityContext) : 'game';
         return (this.type === type || this.type === 'any') &&
             (this.playType === abilityPlayType || this.playType === 'any') && 
             this.matchesController(abilityContext.player, targetController) && 

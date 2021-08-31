@@ -31,6 +31,10 @@ class Phase extends BaseStep {
         return this.pipeline.handleMenuCommand(player, arg, method, promptId);
     }
 
+    clearSelectedCards(player) {
+        this.pipeline.clearSelectedCards(player);
+    }
+
     cancelStep() {
         this.pipeline.cancelStep();
     }

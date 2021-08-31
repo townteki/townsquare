@@ -10,10 +10,12 @@ class MicahRyse extends DudeCard {
                 type: 'spell',
                 condition: card => card.isHex() && card.parent === this
             }),
+            actionContext: { card: this, gameAction: 'moveDude' },
             handler: context => {
                 this.game.promptForLocation(context.player, {
                     activePromptTitle: 'Select where Mycah should move to',
                     waitingPromptTitle: 'Waiting for opponent to select location for Mycah',
+                    cardCondition: { location: 'play area' },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: this, 

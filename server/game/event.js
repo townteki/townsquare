@@ -49,10 +49,6 @@ class Event {
         }
     }
 
-    allowAutomaticSave() {
-        return this.allowSave && this.automaticSaveWithDupe && !!this.card;
-    }
-
     saveCard() {
         if(!this.card || this.cancelled) {
             return;
@@ -128,6 +124,10 @@ class Event {
         }
 
         return this.name;
+    }
+
+    isNull() {
+        return false;
     }
 }
 

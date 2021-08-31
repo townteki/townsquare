@@ -152,7 +152,7 @@ this.traitReaction({
 
 Every time you will need to use game locations such as various deeds on your street, townsquare, outfit or others, use their `uuid` attribute. For example if I want to pass Town Square location to some function, I will use `game.townsquare.uuid`.
 
-**Important:** To get `uuid` of the current location of a card, you can either use attribute `gamelocation` or `getLocation().uuid`. Every type of card except action cards has a `gamelocation` attribute.
+**Important:** To get `uuid` of the current location of a card, you can either use attribute `gamelocation` or `getGameLocation().uuid`. Every type of card except action cards has a `gamelocation` attribute.
 
 For example to move a dude with Mustang to a target location:
 
@@ -431,21 +431,12 @@ this.untilEndOfPhase(ability => ({
 }), 'upkeep'
 ```
 
-To apply an effect that will expire 'at the end of the phase', use `atEndOfPhase`:
+To apply an effect to last until the end of the round, use `untilEndOfRound`:
 ```javascript
 // Reduce Mortimers influence to 0 until after Sundown.
 this.untilEndOfRound(ability => ({
     match: this,
     effect: ability.effects.setInfluence(0)
-}));
-```
-
-To apply an effect to last until the end of the round, use `untilEndOfRound`:
-```javascript
-/// Until the end of the round, add the 'Winter' trait to the specified plot card.
-this.untilEndOfRound(ability => ({
-    match: plotCard,
-    effect: ability.effects.addTrait('Winter')
 }));
 ```
 

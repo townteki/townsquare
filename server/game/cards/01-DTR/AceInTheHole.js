@@ -29,10 +29,14 @@ class AceInTheHole extends SpellCard {
                                 waitingPromptTitle: 'Waiting for opponent to select replacement card',
                                 cardCondition: card => card.controller === context.player && card.location === 'hand',
                                 onSelect: (player, replacementCard) => {
-                                    player.moveCard(replacementCard, 'draw hand');
-                                    this.game.addMessage('{0} uses {1} cast by {2} to ace {3} in draw hand and replace it with {4}', 
-                                        context.player, this, this.parent, cardToAce, replacementCard);
-                                    player.determineHandResult('changes hand to');
+                                    if(player.moveCardWithContext(replacementCard, 'draw hand', context)) {
+                                        this.game.addMessage('{0} uses {1} cast by {2} to ace {3} in draw hand and replace it with {4}', 
+                                            context.player, this, this.parent, cardToAce, replacementCard);
+                                        player.determineHandResult('changes hand to');
+                                    } else {
+                                        this.game.addMessage('{0} uses {1} cast by {2}, but some effect prevents them from moving {3} to draw hand', 
+                                            context.player, this, this.parent, replacementCard);
+                                    }
                                     return true;
                                 }
                             });

@@ -1,16 +1,9 @@
-const AbilityContext = require('./AbilityContext.js');
 const AbilityUsage = require('./abilityusage.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const PlayTypeAbility = require('./playTypeAbility.js');
 
-const AllowedTypesForPhase = {
-    'high noon': ['noon'],
-    'shootout plays': ['shootout', 'shootout:join'],
-    'shootout resolution': ['resolution', 'cheatin resolution'],
-    'gambling': ['cheatin resolution']
-};
 const CardTypesForShootout = ['dude', 'goods', 'spell'];
 
 /**
@@ -31,23 +24,23 @@ const CardTypesForShootout = ['dude', 'goods', 'spell'];
  * location     - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
  * limit        - the max number of uses for the repeatable action.
- * anyPlayer    - boolean indicating that the action may be executed by a player
- *                other than the card's controller. Defaults to false.
+ * triggeringPlayer - string indicating player that can execute the action.
+ *                Default is 'controller', other possible values are 'owner' or 'any'
  * clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
  */
 class CardAction extends PlayTypeAbility {
     constructor(game, card, properties, isJob = false) {
-        super(properties);
-        this.game = game;
-        this.card = card;
+        super(game, card, properties);
         this.title = properties.title;
         if(this.isCardAbility()) {
             this.usage = new AbilityUsage(properties, this.playType);
         }
-        this.anyPlayer = properties.anyPlayer || false;
         this.condition = properties.condition;
+        this.ifCondition = properties.ifCondition;
+        this.ifFailMessage = properties.ifFailMessage;
         this.clickToActivate = !!properties.clickToActivate;
+        this.actionContext = properties.actionContext;
         if(properties.location) {
             if(Array.isArray(properties.location)) {
                 this.location = properties.location;
@@ -67,7 +60,7 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(!this.gameAction) {
-            if(card.getType() !== 'spell' && !isJob) {
+            if(card.getType() !== 'spell' && !isJob && card.getType() !== 'action' && !card.hasKeyword('technique')) {
                 throw new Error('Actions must have a `gameAction` or `handler` property.');
             } else {
                 this.gameAction = new HandlerGameActionWrapper({ handler: () => true });
@@ -79,12 +72,17 @@ class CardAction extends PlayTypeAbility {
         if(this.playType.includes('cheatin resolution')) {
             return this.card.controller.canPlayCheatinResolution();
         }
-        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join') && CardTypesForShootout.includes(this.card.getType())) {
-            return this.game.shootout.isInShootout(this.card);
-        }
+        if(this.game.isShootoutPlayWindow() && !this.playType.includes('shootout:join')) {
+            if(this.card.getType() === 'spell' && this.card.isTotem()) {
+                return this.game.shootout.shootoutLocation === this.card.getGameLocation();
+            }
+            if(CardTypesForShootout.includes(this.card.getType())) {
+                return this.game.shootout.isInShootout(this.card);
+            }
+        }        
         return true;
     }
-
+    
     isLocationValid(location) {
         return this.location.includes(location);
     }
@@ -93,31 +91,28 @@ class CardAction extends PlayTypeAbility {
         return this.isLocationValid(this.card.location);
     }
 
-    allowPlayer(player) {
-        return this.card.controller === player || this.anyPlayer;
-    }
-
-    createContext(player) {
-        return new AbilityContext({
-            ability: this,
-            game: this.game,
-            player: player,
-            source: this.card
-        });
+    allowGameAction(context) {
+        if(!this.gameAction.allow(context)) {
+            return false;
+        }
+        if(!this.actionContext || !this.actionContext.card || !this.actionContext.gameAction) {
+            return true;
+        }
+        if(typeof(this.actionContext.gameAction) === 'function') {
+            return this.actionContext.card.allowGameAction(this.actionContext.gameAction(this.actionContext.card, context), context);
+        }
+        if(!Array.isArray(this.actionContext.gameAction)) {
+            return this.actionContext.card.allowGameAction(this.actionContext.gameAction, context);
+        }
+        return this.actionContext.gameAction.every(gameAction => this.actionContext.card.allowGameAction(gameAction, context));
     }
 
     meetsRequirements(context) {
-        if(this.playType !== 'any' && this.game.currentPlayWindow) {
-            let allowedTypes = AllowedTypesForPhase[this.game.getCurrentPlayWindowName()];
-            if(!allowedTypes) {
-                return false;
-            }
-            if(!this.playType.some(type => AllowedTypesForPhase[this.game.getCurrentPlayWindowName()].includes(type))) {
-                return false;
-            }
+        if(!super.meetsRequirements(context)) {
+            return false;
         }
 
-        if(this.card.hasKeyword('headline') && this.game.shootout.headlineUsed) {
+        if(this.card.hasKeyword('headline') && (this.game.shootout && this.game.shootout.headlineUsed)) {
             return false;
         }
 
@@ -126,15 +121,15 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(!this.options.allowUsed && this.usage.isUsed()) {
+            context.disableIcon = 'hourglass';
             return false;
         }
 
-        if(!this.allowPlayer(context.player)) {
-            return false;
-        }
-
-        if(this.card.getType() === 'action' && !context.player.isCardInPlayableLocation(this.card, 'play')) {
-            return false;
+        if(this.card.getType() === 'action') {
+            let actionType = context.comboNumber ? 'combo' : 'play';
+            if(!context.player.isCardInPlayableLocation(this.card, actionType)) {
+                return false;
+            }
         }
 
         if(this.card.getType() !== 'action' && !this.isLocationValid(this.card.location)) {
@@ -153,7 +148,26 @@ class CardAction extends PlayTypeAbility {
             return false;
         }
 
-        return this.canResolvePlayer(context) && this.canPayCosts(context) && this.canResolveTargets(context) && this.gameAction.allow(context);
+        if(!this.canResolvePlayer(context)) {
+            return false;
+        }
+
+        if(!this.canPayCosts(context)) {
+            context.disableIcon = 'usd';
+            return false;
+        }
+
+        if(!this.canResolveTargets(context)) {
+            context.disableIcon = 'screenshot';
+            return false;
+        }
+
+        if(!this.allowGameAction(context)) {
+            context.disableIcon = 'ban-circle';
+            return false;
+        }
+
+        return true;
     }
 
     // Main execute function that excutes the ability. Once the targets are selected, the executeHandler is called.
@@ -178,12 +192,14 @@ class CardAction extends PlayTypeAbility {
 
     getMenuItem(arg, player) {
         let context = this.createContext(player);
+        let disabled = !this.meetsRequirements(context);
         return { 
             text: this.title, 
             method: 'doAction', 
             arg: arg, 
-            anyPlayer: !!this.anyPlayer, 
-            disabled: !this.meetsRequirements(context) 
+            triggeringPlayer: this.triggeringPlayer, 
+            disabled: disabled,
+            menuIcon: context.disableIcon 
         };
     }
 

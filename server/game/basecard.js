@@ -3,9 +3,8 @@ const _ = require('underscore');
 
 const AbilityDsl = require('./abilitydsl');
 const CardAction = require('./cardaction');
-const CardForcedInterrupt = require('./cardforcedinterrupt');
 const CardTraitReaction = require('./cardtraitreaction');
-const CardInterrupt = require('./cardinterrupt');
+const CardBeforeReaction = require('./cardbeforereaction');
 const CardMatcher = require('./CardMatcher');
 const CardReaction = require('./cardreaction');
 const CustomPlayAction = require('./PlayActions/CustomPlayAction');
@@ -17,6 +16,9 @@ const JobAction = require('./jobaction');
 const NullCard = require('./nullcard');
 const SpellAction = require('./spellaction');
 const SpellReaction = require('./spellreaction');
+const SpellBeforeReaction = require('./spellbeforereaction');
+const CardTraitBeforeReaction = require('./cardtraitbeforereaction');
+const TechniqueAction = require('./techniqueaction');
 
 class BaseCard {
     constructor(owner, cardData) {
@@ -38,13 +40,18 @@ class BaseCard {
 
         this.cost = cardData.cost;
         this.currentValue = cardData.rank;
-        this.suit = cardData.suit;
+        this.suitReferenceArray = [];
+        this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
         this.type = cardData.type;
         this.type_code = cardData.type_code;
         this.currentBullets = cardData.bullets;
         this.currentInfluence = cardData.influence;
         this.currentProduction = cardData.production;
         this.wealth = cardData.wealth;
+        this.permanentBullets = 0;
+        this.startingSize = 1;
+        this.maxBullets = null;
+        this.minBullets = 0;        
 
         this.tokens = {};
 
@@ -65,8 +72,11 @@ class BaseCard {
     }
 
     get value() {
-        if(this.currentValue < 0) {
-            return 0;
+        if(this.currentValue <= 0) {
+            return 1;
+        }
+        if(this.currentValue > 13) {
+            return 13;
         }
         return this.currentValue;
     }
@@ -75,9 +85,13 @@ class BaseCard {
         this.currentValue = amount;
     }
 
+    get suit() {
+        return this.suitReferenceArray[0].suit;
+    }
+
     get bullets() {
-        if(this.currentBullets < 0) {
-            return 0;
+        if(this.currentBullets < this.minBullets) {
+            return this.minBullets;
         }
         return this.currentBullets;
     }
@@ -116,6 +130,34 @@ class BaseCard {
         return location.locationCard;
     }
 
+    getValueText() {
+        switch(this.value) {
+            case 1:
+                return 'A';
+            case 11:
+                return 'J';
+            case 12:
+                return 'Q';
+            case 13:
+                return 'K';  
+            default:
+                return this.value;
+        }
+    }
+
+    addSuitEffect(source, suit = '') {
+        let newSuit = suit.toLowerCase();
+        if(!newSuit) {
+            return;
+        }
+        newSuit = newSuit[0].toUpperCase() + newSuit.slice(1);
+        this.suitReferenceArray.unshift({ source, suit: newSuit });
+    }
+
+    removeSuitEffect(source) {
+        this.suitReferenceArray = this.suitReferenceArray.filter(suitRef => suitRef.source !== source);
+    }
+
     registerEvents(events) {
         this.eventsForRegistration = events;
     }
@@ -124,48 +166,58 @@ class BaseCard {
     }
 
     action(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var action = new CardAction(this.game, this, properties);
         this.abilities.actions.push(action);
     }
 
     job(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var job = new JobAction(this.game, this, properties);
         this.abilities.actions.push(job);
     }
 
     spellAction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var spell = new SpellAction(this.game, this, properties);
         this.abilities.actions.push(spell);
     }
 
-    //Comprehensive Rules React Priorities
-    // 1) Traits with "instead"
-    // 2) Reacts with "instead"
-    // 3) Other traits
-    // 4) Other reacts
-    //
+    techniqueAction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
+        var technique = new TechniqueAction(this.game, this, properties);
+        this.abilities.actions.push(technique);
+    }
+
     reaction(properties) {
-        var reaction = new CardReaction(this.game, this, properties);
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
+        var reaction;
+        if(properties.triggerBefore || properties.canCancel) {
+            reaction = new CardBeforeReaction(this.game, this, properties);            
+        } else {
+            reaction = new CardReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
     spellReaction(properties) {
-        var reaction = new SpellReaction(this.game, this, properties);
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
+        var reaction;
+        if(properties.triggerBefore || properties.canCancel) {
+            reaction = new SpellBeforeReaction(this.game, this, properties);            
+        } else {
+            reaction = new SpellReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
     traitReaction(properties) {
-        var reaction = new CardTraitReaction(this.game, this, properties);
-        this.abilities.reactions.push(reaction);
-    }
-
-    interrupt(properties) {
-        var reaction = new CardInterrupt(this.game, this, properties);
-        this.abilities.reactions.push(reaction);
-    }
-
-    forcedInterrupt(properties) {
-        var reaction = new CardForcedInterrupt(this.game, this, properties);
+        var reaction;
+        if(properties.triggerBefore) {
+            reaction = new CardTraitBeforeReaction(this.game, this, properties);            
+        } else {
+            reaction = new CardTraitReaction(this.game, this, properties);
+        }
         this.abilities.reactions.push(reaction);
     }
 
@@ -174,7 +226,7 @@ class BaseCard {
      * play area.
      */
     playAction(properties) {
-        this.abilities.playActions.push(new CustomPlayAction(this.game, properties));
+        this.abilities.playActions.push(new CustomPlayAction(this.game, this, properties));
     }
 
     /**
@@ -193,7 +245,11 @@ class BaseCard {
             throw new Error(`'${location}' is not a supported effect location.`);
         }
 
-        this.abilities.persistentEffects.push(Object.assign({ duration: 'persistent', location: location }, properties));
+        this.abilities.persistentEffects.push(Object.assign({ 
+            duration: 'persistent', 
+            location: location,
+            fromTrait: true
+        }, properties));
     }
 
     resetAbilities() {
@@ -201,23 +257,33 @@ class BaseCard {
         this.abilities.actions.forEach(action => action.resetAbilityUsage());
     }
 
+    updateAbilitiesBlanking(condition = () => true, cannotBeUsed = true) {
+        this.abilities.actions.concat(this.abilities.reactions).forEach(ability => {
+            if(condition(ability)) {
+                ability.cannotBeUsed = cannotBeUsed;
+            }
+        });
+    }
+
     applyAbilityEffect(ability, propertyFactory) {
         if(this.game.shootout) {
-            this.untilEndOfShootoutPhase(propertyFactory, ability);
+            this.untilEndOfShootoutPhase(ability, propertyFactory);
         } else {
             var properties = propertyFactory(AbilityDsl);
             if(ability.playTypePlayed() === 'noon') {
                 this.game.addEffect(this, Object.assign({ 
                     duration: 'untilEndOfRound', 
                     location: 'any', 
-                    ability: ability 
+                    ability: ability,
+                    causedByPlayType: ability.playTypePlayed()
                 }, properties));
             } else {
                 this.game.addEffect(this, Object.assign({ 
                     duration: 'untilEndOfPhase', 
                     location: 'any', 
                     phase: this.game.currentPhase, 
-                    ability: ability  
+                    ability: ability,
+                    causedByPlayType: ability.playTypePlayed()
                 }, properties));
             }
         }
@@ -227,12 +293,14 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * shootout round.
      */
-    untilEndOfShootoutRound(propertyFactory, ability) {
+    untilEndOfShootoutRound(ability, propertyFactory, targetLocation = 'play area', causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfShootoutRound', 
             location: 'any', 
-            ability: ability  
+            targetLocation: targetLocation,
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)  
         }, properties));
     }
 
@@ -240,25 +308,27 @@ class BaseCard {
      * Applies an immediate effect which lasts until the end of the current
      * shootout phase.
      */
-    untilEndOfShootoutPhase(propertyFactory, ability) {
+    untilEndOfShootoutPhase(ability, propertyFactory, causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfShootoutPhase', 
             location: 'any', 
-            ability: ability  
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)  
         }, properties));
     }
 
     /**
      * Applies an immediate effect which lasts until the end of the phase.
      */
-    untilEndOfPhase(propertyFactory, phaseName = '', ability) {
+    untilEndOfPhase(ability, propertyFactory, phaseName = '', causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfPhase', 
             location: 'any', 
             phase: phaseName, 
-            ability: ability   
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
     }
 
@@ -266,25 +336,27 @@ class BaseCard {
      * Applies an immediate effect which expires at the end of the phase. Per
      * game rules this duration is outside of the phase.
      */
-    atEndOfPhase(propertyFactory, phaseName = '', ability) {
+    atEndOfPhase(ability, propertyFactory, phaseName = '', causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'atEndOfPhase', 
             location: 'any', 
             phase: phaseName, 
-            ability: ability   
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
     }
 
     /**
      * Applies an immediate effect which lasts until the end of the round.
      */
-    untilEndOfRound(propertyFactory, ability) {
+    untilEndOfRound(ability, propertyFactory, causedByPlayType) {
         var properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'untilEndOfRound', 
             location: 'any', 
-            ability: ability   
+            ability: ability,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
     }
 
@@ -292,13 +364,22 @@ class BaseCard {
      * Applies a lasting effect which lasts until an event contained in the
      * `until` property for the effect has occurred.
      */
-    lastingEffect(propertyFactory, ability) {
+    lastingEffect(ability, propertyFactory, causedByPlayType, targetLocation = 'play area') {
         let properties = propertyFactory(AbilityDsl);
         this.game.addEffect(this, Object.assign({ 
             duration: 'custom', 
             location: 'any', 
-            ability: ability   
+            ability: ability,
+            targetLocation: targetLocation,
+            causedByPlayType: this.buildPlayTypePlayed(ability, causedByPlayType)   
         }, properties));
+    }
+
+    buildPlayTypePlayed(ability, causedByPlayType) {
+        if(causedByPlayType) {
+            return causedByPlayType;
+        }
+        return ability ? ability.playTypePlayed() : undefined;
     }
 
     doAction(player, arg) {
@@ -310,6 +391,10 @@ class BaseCard {
 
         action.execute(player);
         return true;
+    }
+
+    findKeywords(condition) {
+        return this.keywords.getValues().filter(keyword => condition(keyword.toLowerCase()));
     }
 
     hasKeyword(keyword) {
@@ -360,7 +445,7 @@ class BaseCard {
         if(!clone) {
             return;
         }
-        clone.suit = this.suit;
+        clone.suitReferenceArray = this.suitReferenceArray;
         clone.currentValue = this.currentValue;
         clone.currentProduction = this.currentProduction;
         clone.currentInfluence = this.currentInfluence;
@@ -420,6 +505,7 @@ class BaseCard {
         this.tokens = {};        
         this.clearNew();
         this.gamelocation = '';
+        this.removeSuitEffect('chatcommand');
     }
 
     clearTokens() {
@@ -438,15 +524,26 @@ class BaseCard {
             return;
         }
 
-        if(this.location === 'play area') {
+        if(this.location === 'play area' && player === this.controller) {
             menu = [{ command: 'click', text: 'Boot / Unboot' }];
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
         if(menuCardActionItems.length > 0) {
+            let menuIcon = 'flash';
+            const disabled = menuCardActionItems.every(menuItem => menuItem.item.disabled);
+            if(disabled) {
+                if(menuCardActionItems.length === 1) {
+                    menuIcon = menuCardActionItems[0].item.menuIcon;
+                } else {
+                    menuIcon = null;
+                }
+            }
             menu = menu.concat({ 
                 text: 'Use ability', 
                 method: 'useAbility', 
-                disabled: menuCardActionItems.every(menuItem => menuItem.item.disabled) 
+                triggeringPlayer: 'any',
+                disabled: disabled,
+                menuIcon: menuIcon
             });
         }
         let menuOtherActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType !== 'card');
@@ -456,10 +553,15 @@ class BaseCard {
         return menu;
     }
 
+    hasEnabledCardAbility(player, options = {}) {
+        const cardAbilityMenuItems = this.getActionMenuItems(player, options).filter(menuItem => menuItem.action.abilitySourceType === 'card');
+        return cardAbilityMenuItems && cardAbilityMenuItems.some(menuItem => !menuItem.item.disabled);
+    }
+
     getActionMenuItems(player, options) {
         return this.abilities.actions.map((action, index) => { 
             if(options) {
-                action.options = options;
+                action.options = Object.assign(action.options || {}, options);
             }
             return { 
                 action: action, 
@@ -512,15 +614,19 @@ class BaseCard {
     }
 
     isAnyBlank() {
-        return this.isFullBlank() || this.isBlankExcludingTraits();
+        return this.isFullBlank() || this.isBlankExcludingKeywords();
     }
 
     isFullBlank() {
         return this.blanks.contains('full');
     }
 
-    isBlankExcludingTraits() {
-        return this.blanks.contains('excludingTraits');
+    isBlankExcludingKeywords() {
+        return this.blanks.contains('excludingKeywords');
+    }
+
+    isTraitBlank() {
+        return this.blanks.contains('trait');
     }
 
     isParticipating() {
@@ -573,17 +679,26 @@ class BaseCard {
 
     setBlank(type) {
         let before = this.isAnyBlank();
+        let beforeTrait = this.isTraitBlank();
         this.blanks.add(type);
         let after = this.isAnyBlank();
+        let afterTrait = this.isTraitBlank();
 
-        if(!before && after) {
-            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after });
+        if((!before && after) || (!beforeTrait && afterTrait)) {
+            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after || afterTrait, blankType: type });
         }
     }
 
     allowGameAction(actionType, context) {
         let currentAbilityContext = context || this.game.currentAbilityContext;
-        return !this.abilityRestrictions.some(restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller));
+        if(currentAbilityContext && !currentAbilityContext.card) {
+            currentAbilityContext.card = this;
+        }
+        let callback = restriction => restriction.isMatch(actionType, currentAbilityContext, this.controller);
+        if(this.game.shootout && this.game.shootout.abilityRestrictions.some(callback)) {
+            return false;
+        }
+        return !this.abilityRestrictions.some(callback);
     }
 
     addAbilityRestriction(restriction) {
@@ -594,6 +709,14 @@ class BaseCard {
     removeAbilityRestriction(restriction) {
         this.abilityRestrictions = this.abilityRestrictions.filter(r => r !== restriction);
         this.markAsDirty();
+    }
+
+    removeEffects(condition = () => true) {
+        this.game.effectEngine.effects.forEach(effect => {
+            if(condition(effect)) {
+                effect.removeTarget(this);
+            }
+        });  
     }
 
     addKeyword(keyword) {
@@ -610,17 +733,23 @@ class BaseCard {
 
     clearBlank(type) {
         let before = this.isAnyBlank();
+        let beforeTrait = this.isTraitBlank();
         this.blanks.remove(type);
         let after = this.isAnyBlank();
+        let afterTrait = this.isTraitBlank();
 
-        if(before && !after) {
-            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after });
+        if((before && !after) || (beforeTrait && !afterTrait)) {
+            this.game.raiseEvent('onCardBlankToggled', { card: this, isBlank: after || afterTrait, blankType: type });
         }
     }
 
     hasText(text) {
         let cardText = this.cardData.text.toLowerCase();
         return cardText.includes(text.toLowerCase());
+    }
+
+    isScripted() {
+        return this.cardData.scripted;
     }
 
     get gamelocation() {
@@ -667,13 +796,16 @@ class BaseCard {
         this.game.raiseEvent('onCardValueChanged', params);
     }
 
-    modifyBullets(amount, applying = true) {
+    modifyBullets(amount, applying = true, fromEffect = false) {
         this.currentBullets += amount;
-
+        if(!fromEffect) {
+            this.permanentBullets += amount;
+        }
         let params = {
             card: this,
             amount: amount,
-            applying: applying
+            applying: applying.player,
+            fromEffect
         };
         this.game.raiseEvent('onCardBulletsChanged', params);
     }
@@ -773,6 +905,18 @@ class BaseCard {
         return this.game.findLocation(this.gamelocation);
     }
 
+    isAdjacent(locationUuid) {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        let gameLocationObject = this.getGameLocation();
+        return gameLocationObject && gameLocationObject.isAdjacent(locationUuid);
+    }
+
+    isNearby(locationUuid) {
+        return this.gamelocation === locationUuid || this.isAdjacent(locationUuid);
+    }
+
     isInControlledLocation() {
         return this.locationCard && this.locationCard.controller === this.controller;
     }
@@ -786,6 +930,17 @@ class BaseCard {
     isInTownSquare() {
         let location = this.getGameLocation();
         return location && location.isTownSquare();
+    }
+
+    isInOpponentsHome() {
+        let location = this.getGameLocation();
+        return location && location.isOpponentsHome(this.controller);
+    }
+    
+    isInOutOfTown() {
+        let location = this.getGameLocation();
+        let tempLocCard = location ? location.locationCard : null;
+        return tempLocCard && tempLocCard.isOutOfTown();
     }
 
     isLocationCard() {
@@ -817,6 +972,10 @@ class BaseCard {
         if(_.intersection(['spell', 'goods'], [this.getType()]).length > 0) {
             return true;
         }
+    }
+
+    isSpell() {
+        return false;
     }
 
     coversCasualties(type = 'any') {
@@ -851,7 +1010,8 @@ class BaseCard {
         let selectionState = activePlayer.getCardSelectionState(this);
         if(!this.game.isCardVisible(this, activePlayer)) {
             return { facedown: true, uuid: this.uuid, tokens: this.tokens, ...selectionState };
-        }     
+        }
+        const effects = this.game.effectEngine.getAppliedEffectsOnCard(this).map(effect => effect.getSummary());
 
         let state = {
             printedStats: {
@@ -859,7 +1019,7 @@ class BaseCard {
                 shooter: this.cardData.shooter,
                 influence: this.cardData.influence,
                 control: this.cardData.control,
-                value: this.cardData.value,
+                value: this.cardData.rank,
                 suit: this.cardData.suit,
                 upkeep: this.cardData.upkeep,
                 production: this.cardData.production
@@ -868,6 +1028,7 @@ class BaseCard {
             code: this.cardData.code,
             cost: this.cardData.cost,
             controlled: this.owner !== this.controller,
+            effects: effects,
             facedown: this.facedown,
             gamelocation: this.gamelocation,
             influence: this.influence,
@@ -875,6 +1036,7 @@ class BaseCard {
             menu: this.getMenu(activePlayer),
             new: this.new,
             production: this.production,
+            scripted: this.isScripted(),
             suit: this.suit,
             title: this.title,
             tokens: this.tokens,

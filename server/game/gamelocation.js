@@ -24,7 +24,7 @@ class GameLocation {
             this.addAdjacency(this.game.townsquare, 'game');
         }
         if(locationCard.defaultAdjacencyEffects) {
-            locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect => 
+            locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect =>
                 this.addAdjacency(adjacencyEffect.location, adjacencyEffect.source, adjacencyEffect.type));
         }
         this.occupants = [];
@@ -57,21 +57,23 @@ class GameLocation {
         playersStats.set(this.locationCard.controllingPlayer.name, 0);
         this.occupants.forEach(dudeUuid => {
             let dude = this.game.findCardInPlayByUuid(dudeUuid);
-            let determinator = defaultDeterminator;
-            if(dude.controlDeterminator !== 'influence:deed') {
-                determinator = dude.controlDeterminator;
-            }
-            let amount = dude.getStat(determinator);
-            if(amount > 0) {
-                let currentAmount = playersStats.get(dude.controller.name) || 0;
-                playersStats.set(dude.controller.name, currentAmount + amount);
-                if(dude.controller.name === playerWithMost.name) {
-                    currentController = dude.controller;
-                } else if(playersStats.get(dude.controller.name) > playersStats.get(playerWithMost.name)) {
-                    playerWithMost = dude.controller;
-                    currentController = dude.controller;
-                } else if(playersStats.get(dude.controller.name) === playersStats.get(playerWithMost.name)) {
-                    currentController = this.locationCard.owner;
+            if(dude) {
+                let determinator = defaultDeterminator;
+                if(dude.controlDeterminator !== 'influence:deed') {
+                    determinator = dude.controlDeterminator;
+                }
+                let amount = dude.getStat(determinator);
+                if(amount > 0) {
+                    let currentAmount = playersStats.get(dude.controller.name) || 0;
+                    playersStats.set(dude.controller.name, currentAmount + amount);
+                    if(dude.controller.name === playerWithMost.name) {
+                        currentController = dude.controller;
+                    } else if(playersStats.get(dude.controller.name) > playersStats.get(playerWithMost.name)) {
+                        playerWithMost = dude.controller;
+                        currentController = dude.controller;
+                    } else if(playersStats.get(dude.controller.name) === playersStats.get(playerWithMost.name)) {
+                        currentController = this.locationCard.owner;
+                    }
                 }
             }
         });
@@ -83,6 +85,10 @@ class GameLocation {
             }
         }
         return currentController;
+    }
+
+    getDudes() {
+        return this.occupants.map(dudeUuid => this.game.findCardInPlayByUuid(dudeUuid)).filter(dude => dude);
     }
 
     isAdjacent(uuid) {
@@ -100,8 +106,20 @@ class GameLocation {
         return false;
     }
 
+    isOutfit() {
+        return this.locationCard && this.locationCard.getType() === 'outfit';
+    }
+
+    isDeed() {
+        return this.locationCard && this.locationCard.getType() === 'deed';
+    }
+
     isHome(player) {
-        return this.locationCard && this.locationCard.getType() === 'outfit' && this.locationCard.owner === player;
+        return this.isOutfit() && this.locationCard.owner === player;
+    }
+
+    isOpponentsHome(player) {
+        return this.isOutfit() && this.locationCard.owner !== player;
     }
 
     addAdjacency(location, source, type = 'adjacent') {
@@ -125,12 +143,12 @@ class GameLocation {
         if(!adjacency) {
             return;
         }
-        adjacency = adjacency.filter(adjItem => adjItem.source !== source && adjItem.type !== type);
+        adjacency = adjacency.filter(adjItem => (source !== 'any' && adjItem.source !== source) || (type !== 'any' && adjItem.type !== type));
         if(adjacency.length === 0) {
             this.adjacencyMap.delete(uuid);
         } else {
             this.adjacencyMap.set(uuid, adjacency);
-        }  
+        }
     }
 
     addDude(card) {
@@ -160,11 +178,26 @@ class TownSquare extends GameLocation {
         // TODO M2 probably will have to create town square card since it is possible to
         // attach to town square
         super(game, Object.assign(new NullCard(), {
-            title: 'Town Square', 
+            title: 'Town Square',
             uuid: TownSquareUUID,
             getType: () => 'townsquare',
-            getLocation: () => this,
-            gamelocation: 'townsquare'
+            location: 'play area',
+            getGameLocation: () => this,
+            gamelocation: 'townsquare',
+            allowGameAction: () => true,
+            isAdjacent: (targetUuid) => this.isAdjacent(targetUuid),
+            isOutOfTown: () => false,
+            hasKeyword: () => false,
+            hasAttachment: () => false,
+            adjacentLocations: () => 
+                this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation()),
+            getShortSummary: () => {
+                return {
+                    code: 'townsquare',
+                    title: 'Town Square',
+                    type: 'townsquare'
+                };
+            }
         }), null, null);
 
         this.key = 'townsquare';

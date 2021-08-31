@@ -12,26 +12,30 @@ class UlyssesMarks extends DudeCard {
         this.action({
             title: 'Ulysses Marks',
             playType: 'noon',     
+            ifCondition: () => this.locationCard.hasKeyword('Saloon'),
+            ifFailMessage: context => 
+                this.game.addMessage('{0} uses {1} but fails because he is not in Saloon', context.player, this),
+            target: {
+                activePromptTitle: 'Select a dude to kick out of the saloon',
+                ifAble: true,
+                cardCondition: { 
+                    location: 'play area', 
+                    controller: 'any', 
+                    condition: card => card !== this && this.isInSameLocation(card) 
+                },
+                cardType: ['dude'],
+                autoSelect: true,
+                gameAction: 'moveDude'
+            },
             handler: context => {
-                if(this.locationCard.hasKeyword('Saloon')) {
-                    this.game.promptForSelect(context.player, {
-                        activePromptTitle: 'Select a dude to kick out of the saloon',
-                        waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: card => card !== this && this.isInSameLocation(card),
-                        cardType: 'dude',
-                        autoSelect: true,
-                        onSelect: (player, card) => {
-                            this.game.resolveGameAction(GameActions.moveDude({ 
-                                card: card, 
-                                targetUuid: this.game.townsquare.uuid, 
-                                options: { needToBoot: true, allowBooted: true } 
-                            }), context);
-                            this.game.addMessage('{0} uses {1} to kick {2} out of the {3}', player, this, card, this.locationCard);
-                            return true;
-                        },
-                        source: this
-                    });
-                }
+                this.game.resolveGameAction(GameActions.moveDude({ 
+                    card: context.target, 
+                    targetUuid: this.game.townsquare.uuid, 
+                    options: { needToBoot: true, allowBooted: true } 
+                }), context).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to kick {2} out of the {3}', 
+                        context.player, this, context.target, this.locationCard);
+                });
             }
         });
     }

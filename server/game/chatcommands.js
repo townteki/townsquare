@@ -9,30 +9,63 @@ class ChatCommands {
         this.commands = {
             '/ace': this.ace,
             '/add-keyword': this.addKeyword,
+            '/addkey': this.addKeyword,
             '/add-card': this.addCard,
+            '/attach': this.attach,
             '/bullets': this.bullets,
+            '/bul': this.bullets,
             '/blank': this.blank,
             '/bounty': this.bounty,
             '/cancel-prompt': this.cancelPrompt,
+            '/canpr': this.cancelPrompt,
             '/cancel-shootout': this.cancelShootout,
+            '/canshoot': this.cancelShootout,
             '/clear-shooter': this.clearShooter,
+            '/clshoot': this.clearShooter,
+            '/clear-suit': this.clearSuit,
+            '/clsuit': this.clearSuit,
+            '/clear-effects': this.clearEffects,
+            '/cleff': this.clearEffects,
             '/control': this.control,
-            '/discard': this.discard,
+            '/done': this.done,
+            '/discard-random': this.discardRandom,
+            '/discard-deck': this.discardFromDeck,
             '/disconnectme': this.disconnectMe,
             '/draw': this.draw,
+            '/first-player': this.firstPlayer,
             '/give-control': this.giveControl,
+            '/hand-rank': this.handRank,
+            '/hr': this.handRank,
             '/inf': this.influence,
+            '/join': this.joinPosse,
             '/join-posse': this.joinPosse,
-            '/move-bottom': this.moveBottom,
+            '/join-without-move': this.joinPosseWoMove,
+            '/kung-fu': this.kungFuRating,
+            '/look-deck': this.lookAtDeck,
+            '/move': this.move,
+            '/pass': this.pass,
+            '/prod': this.prod,
+            '/pull': this.pull,
             '/rematch': this.rematch,
             '/remove-from-game': this.removeFromGame,
             '/remove-from-posse': this.removeFromPosse,
+            '/rmfp': this.removeFromPosse,
             '/remove-keyword': this.removeKeyword,
+            '/rmkey': this.removeKeyword,
             '/reset-abilities': this.resetAbilities,
+            '/resab': this.resetAbilities,
+            '/reset-stats': this.resetStats,
             '/reveal-hand': this.revealHand,
+            '/reveal-deck': this.revealDeck,
             '/shooter': this.shooter,
+            '/shuffle-discard': this.shuffleDiscard,
+            '/skill-rating': this.skillRating,
+            '/skill': this.skillRating,
+            '/suit': this.suit,
             '/token': this.setToken,
-            '/unblank': this.unblank
+            '/use': this.useAbility,
+            '/unblank': this.unblank,
+            '/value': this.value
         };
     }
 
@@ -41,7 +74,9 @@ class ChatCommands {
             return false;
         }
 
-        return this.commands[command].call(this, player, args) !== false;
+        const result = this.commands[command].call(this, player, args);
+        this.game.raiseEvent('onChatCommandCall', { command });
+        return result !== false;
     }
 
     draw(player, args) {
@@ -53,100 +88,225 @@ class ChatCommands {
     }
 
     bullets(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set bullets for',
             waitingPromptTitle: 'Waiting for opponent to set bullets',
             cardCondition: card => card.location === 'play area' && card.controller === player,
-            cardType: ['dude'],
+            cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
-                let bullets = num - card.bullets;
-                card.bullets += bullets;
-
-                if(card.bullets < 0) {
-                    card.bullets = 0;
+                let bullets = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    bullets = modifier.set - card.bullets;
                 }
-                this.game.addAlert('danger', '{0} uses the /bullets command to set the bullets of {1} to {2}', p, card, num);
+                card.bullets += bullets;
+                this.game.addAlert('danger', '{0} uses the /bullets command to set the bullets of {1} to {2}', p, card, card.bullets);
                 return true;
             }
         });
     }
 
     bounty(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set bounty for',
             waitingPromptTitle: 'Waiting for opponent to set bounty',
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude'],
             onSelect: (p, card) => {
-                let change = card.bounty - num;
-                if(num > 0) {
-                    card.decreaseBounty(change);
+                let change = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    change = modifier.set - card.bounty;
+                }
+                if(change < 0) {
+                    card.decreaseBounty(change * -1);
                 } else {
-                    card.increaseBounty(change * -1);
+                    card.increaseBounty(change);
                 }
 
-                this.game.addAlert('danger', '{0} uses the /bounty command to set the bounty of {1} to {2}', p, card, num);
+                this.game.addAlert('danger', '{0} uses the /bounty command to set the bounty of {1} to {2}', p, card, card.bounty);
                 return true;
             }
         });
     }
 
     influence(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
-        var type = this.getNumberOrDefault(args[2], 'influence');
+        var modifier = this.determineModifier(args[1]);
+        var type = args[2] || 'influence';
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set ' + type + ' for',
             waitingPromptTitle: 'Waiting for opponent to set ' + type,
             cardCondition: card => card.location === 'play area' && card.controller === player,
-            cardType: ['dude'],
+            cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
                 // TODO M2 so far we only use standard influence, no influence:deed
-                let influence = num - card.influence;
-                card.influence += influence;
-
-                if(card.influence < 0) {
-                    card.influence = 0;
+                let influence = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    influence = modifier.set - card.influence;
                 }
-                this.game.addAlert('danger', '{0} uses the /influence command to set the influence of {1} to {2}', p, card, num);
+                card.influence += influence;
+                this.game.addAlert('danger', '{0} uses the /influence command to set the influence of {1} to {2}', p, card, card.influence);
                 return true;
             }
         });
     }
 
     control(player, args) {
-        var num = this.getNumberOrDefault(args[1], 1);
+        var modifier = this.determineModifier(args[1]);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to set control for',
             waitingPromptTitle: 'Waiting for opponent to set control',
             cardCondition: card => card.location === 'play area' && card.controller === player,
             cardType: ['dude', 'deed', 'goods', 'spell'],
             onSelect: (p, card) => {
-                let control = num - card.control;
-                card.control += control;
-
-                if(card.control < 0) {
-                    card.control = 0;
+                let control = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    control = modifier.set - card.control;
                 }
-                this.game.addAlert('danger', '{0} uses the /control command to set the control of {1} to {2}', p, card, num);
+                card.control += control;
+                this.game.addAlert('danger', '{0} uses the /control command to set the control of {1} to {2}', p, card, card.control);
                 return true;
             }
         });
     }
+
+    handRank(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        let totalRank = player.getHandRank().rank + player.rankModifier;
+        let change = num - totalRank;
+        player.modifyRank(change);
+        this.game.addAlert('danger', '{0} uses the /hand-rank command to set their hand rank to {1}', 
+            player, player.getTotalRank());
+    }
+
+    pass(player) {
+        if(this.game.currentPlayWindow) {
+            this.game.currentPlayWindow.onPass(player);
+        }
+    }
+
+    done(player) {
+        if(this.game.currentPlayWindow) {
+            this.game.currentPlayWindow.onDone(player);
+        }
+    }
+
+    pull(player, args) {
+        let condition = args[1] === 'kf' ? card => card.isKungFu() : card => card.isSkilled();
+        var num = this.getNumberOrDefault(args[1], 0);
+        if(!num && args[1] !== 'kf') {
+            player.handlePulledCard(player.pull(() => true, true));
+            return;
+        }
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude performing pull',
+            waitingPromptTitle: 'Waiting for opponent to select dude performing pull',
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                condition(card),
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                this.pullingDude = card;
+                this.pullDifficulty = num;
+                if(player.unscriptedCardPlayed) {
+                    player.unscriptedPull = {
+                        pullingDude: card
+                    };
+                }
+                let skillsOrFu = args[1] !== 'kf' ? card.getSkills() : ['kung fu'];
+                if(skillsOrFu.length > 1) {
+                    let buttons = skillsOrFu.map(skill => {
+                        return { text: skill.charAt(0).toUpperCase() + skill.slice(1), arg: skill, method: 'selectSkillOrFu' };
+                    });
+                    this.game.promptWithMenu(p, this, {
+                        activePrompt: {
+                            menuTitle: 'Select skill',
+                            buttons: buttons
+                        },
+                        source: this
+                    });
+                } else {
+                    this.selectSkillOrFu(p, skillsOrFu[0]);
+                }
+                return true;
+            }
+        });
+    }
+
+    prod(player, args) {
+        var modifier = this.determineModifier(args[1]);
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set production for',
+            waitingPromptTitle: 'Waiting for opponent to set production',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'goods', 'deed'],
+            onSelect: (p, card) => {
+                let prod = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    prod = modifier.set - card.production;
+                }
+                card.production += prod;
+                this.game.addAlert('danger', '{0} uses the /prod command to set the production of {1} to {2}', 
+                    p, card, card.production);
+                return true;
+            }
+        });
+    }    
 
     resetAbilities(player) {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to reset ability for',
             waitingPromptTitle: 'Waiting for opponent to reset ability',
             cardCondition: card => card.location === 'play area' && card.controller === player,
-            cardType: ['dude', 'deed', 'goods', 'spell', 'action', 'outfit'],
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action', 'outfit', 'legend'],
             onSelect: (p, card) => {
                 card.resetAbilities();
                 this.game.addAlert('danger', '{0} uses the /reset-ability command to reset abilities for card {1}', p, card);
                 return true;
             }
         });        
+    }
+
+    skillRating(player, args) {
+        var skillName = args[1];
+        if(!skillName) {
+            return;
+        }
+        if(skillName === 'mad') {
+            skillName = 'mad scientist';
+        }
+        var modifier = this.determineModifier(args[2]);
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to modify skill/kung fu rating for',
+            waitingPromptTitle: 'Waiting for opponent to select card',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                const currentRating = card.keywords.getSkillRating(skillName);
+                if(currentRating === null || currentRating === undefined) {
+                    this.game.addAlert('danger', '{0} uses the /skill-rating or /kung-fu, but {1} is missing {2}. First add it using /add-keyword', 
+                        p, card, skillName);     
+                    return true;               
+                }
+                let change = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    change = modifier.set - currentRating;
+                }
+                card.keywords.modifySkillRating(skillName, change);
+                if(skillName !== 'kung fu') {
+                    this.game.addAlert('danger', '{0} uses the /skill-rating command to set {1} rating of {2} to {3}', 
+                        p, skillName, card, card.keywords.getSkillRating(skillName));
+                } else {
+                    this.game.addAlert('danger', '{0} uses the /kung-fu command to set {1} rating of {2} to {3}', 
+                        p, skillName, card, card.keywords.getSkillRating(skillName));                    
+                }
+                return true;
+            }
+        });
+    }
+
+    kungFuRating(player, args) {
+        this.skillRating(player, [null, 'kung fu', args[1]]);
     }
 
     shooter(player, args) {
@@ -184,6 +344,34 @@ class ChatCommands {
         });        
     }
 
+    suit(player, args) {
+        var type = args[1];
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set suit for',
+            waitingPromptTitle: 'Waiting for opponent to set suit',
+            cardCondition: card => ['play area', 'draw hand'].includes(card.location) && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                card.addSuitEffect('chatcommand', type);
+                this.game.addAlert('danger', '{0} uses the /suit command to set the {1} to {2}', p, card, type);
+                return true;
+            }
+        });
+    }
+
+    clearSuit(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to clear chatcommand suit for',
+            waitingPromptTitle: 'Waiting for opponent to clear suit',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            onSelect: (p, card) => {
+                card.removeSuitEffect('chatcommand');
+                this.game.addAlert('danger', '{0} uses the /clear-suit command to clear chatcommand suit for {1}', p, card);
+                return true;
+            }
+        });        
+    }
+
     ace(player) {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
@@ -199,7 +387,7 @@ class ChatCommands {
         });
     }
 
-    joinPosse(player) {
+    joinPosse(player, doMove = true) {
         if(!this.game.shootout) {
             return;
         }
@@ -210,7 +398,41 @@ class ChatCommands {
             cardType: ['dude'],
             onSelect: (p, card) => {
                 this.game.shootout.addToPosse(card);
-                this.game.addAlert('danger', '{0} uses the /join-posse command to add {1} to posse', p, card);
+                let actionText = 'add';
+                if(doMove) {
+                    card.moveToShootoutLocation({ needToBoot: false, allowBooted: true });
+                    actionText = 'move';
+                }
+                this.game.addAlert('danger', '{0} uses the /join-posse command to {1} {2} to posse', p, actionText, card);
+                return true;
+            }
+        });
+    }
+
+    joinPosseWoMove(player) {
+        this.joinPosse(player, false);
+    }
+
+    move(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a dude to move',
+            waitingPromptTitle: 'Waiting for opponent to select dude to move',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude'],
+            onSelect: (p, card) => {
+                this.game.promptForLocation(p, {
+                    activePromptTitle: 'Select where to move ' + card.title,
+                    waitingPromptTitle: 'Waiting for opponent to select location',
+                    onSelect: (player, location) => {
+                        player.moveDude(card, location.uuid, {
+                            isCardEffect: false,
+                            needToBoot: false,
+                            allowBooted: true
+                        });    
+                        this.game.addAlert('danger', '{0} uses the /move command to move {1} to {2}', p, card, location);                            
+                        return true;
+                    }
+                });
                 return true;
             }
         });
@@ -233,29 +455,43 @@ class ChatCommands {
         });
     }
 
-    blank(player) {
+    blank(player, args) {
+        var blankType = args[1];
+        if(!blankType) {
+            blankType = 'full';
+        }
+        const blankBonuses = ['bulletBonuses', 'infBonuses'].includes(blankType);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to blank card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                (!blankBonuses || card.getType() === 'goods'),
             onSelect: (p, card) => {
-                card.setBlank('full');
+                card.setBlank(blankType);
 
-                this.game.addAlert('danger', '{0} uses the /blank command to blank {1}', p, card);
+                this.game.addAlert('danger', '{0} uses the /blank command to blank {1} (type "{2}")', p, card, blankType);
                 return true;
             }
         });
     }
 
-    unblank(player) {
+    unblank(player, args) {
+        var blankType = args[1];
+        if(!blankType) {
+            blankType = 'full';
+        }
+        const blankBonuses = ['bulletBonuses', 'infBonuses'].includes(blankType);
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to unblank card',
-            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardCondition: card => card.location === 'play area' && 
+                card.controller === player &&
+                (!blankBonuses || card.getType() === 'goods'),
             onSelect: (p, card) => {
-                card.clearBlank('full');
+                card.clearBlank(blankType);
 
-                this.game.addAlert('danger', '{0} uses the /unblank command to remove the blank condition from {1}', p, card);
+                this.game.addAlert('danger', '{0} uses the /unblank command to remove the blank condition from {1} (type "{2}")', p, card, blankType);
                 return true;
             }
         });
@@ -299,10 +535,18 @@ class ChatCommands {
         });
     }
 
-    discard(player, args) {
+    discardFromDeck(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
 
-        this.game.addAlert('danger', '{0} uses the /discard command to discard {1} at random', player, TextHelper.count(num, 'card'));
+        this.game.addAlert('danger', '{0} uses the /discard-deck command to discard {1} from deck', player, TextHelper.count(num, 'card'));
+        
+        player.discardFromDraw(num);
+    }
+
+    discardRandom(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+
+        this.game.addAlert('danger', '{0} uses the /discard-random command to discard {1} at random', player, TextHelper.count(num, 'card'));
 
         player.discardAtRandom(num);
     }
@@ -331,13 +575,14 @@ class ChatCommands {
         this.game.cancelPromptUsed = true;
     }
 
-    // TODO M2 not really working, should be updated
     cancelShootout(player) {
         if(!this.game.shootout) {
             return;
         }
         this.game.addAlert('danger', '{0} uses the /cancel-shootout to end the shootout.', player);
-        this.game.shootout.endPhase(); 
+        if(this.game.shootout.leaderPosse) {
+            this.game.shootout.actOnLeaderPosse(dude => this.game.shootout.removeFromPosse(dude));
+        }
     }
 
     setToken(player, args) {
@@ -368,22 +613,32 @@ class ChatCommands {
         player.socket.disconnect();
     }
 
-    moveBottom(player) {
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a card',
-            waitingPromptTitle: 'Waiting for opponent to move a card to the bottom of his deck',
-            cardCondition: card => card.controller === player && card.owner === player,
-            onSelect: (p, card) => {
-                player.moveCard(card, 'draw deck', { bottom: true });
-                this.game.addAlert('danger', '{0} uses the /move-bottom command to move {1} to the bottom of their deck', p, card);
-                return true;
-            }
-        });
-    }
-
     revealHand(player) {
         this.game.addAlert('danger',
             '{0} uses the /reveal-hand command to reveal their hand as: {1}', player, player.hand);
+    }
+
+    revealDeck(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        const topCards = player.drawDeck.slice(0, num);
+        this.game.addAlert('danger',
+            '{0} uses the /reveal-deck command to reveal {1} cards from deck: {2}', player, num, topCards);
+    }
+
+    lookAtDeck(player, args) {
+        var num = this.getNumberOrDefault(args[1], 1);
+        const actualAmount = Math.min(num, player.drawDeck.length);
+        const topCards = player.drawDeck.slice(0, actualAmount);
+        this.game.promptForSelect(player, {
+            activePromptTitle: `Look at ${player.name}'s deck`,
+            revealTargets: true,
+            cardCondition: card => card.location === 'draw deck' && 
+                card.controller === player && 
+                topCards.includes(card),
+            onSelect: () => true
+        });
+        this.game.addAlert('danger',
+            '{0} uses the /look-deck command to look at {1} cards from top of their deck', player, num);
     }
 
     removeFromGame(player) {
@@ -400,6 +655,43 @@ class ChatCommands {
         });
     }
 
+    value(player, args) {
+        var modifier = this.determineModifier(args[1]);
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to set value for',
+            waitingPromptTitle: 'Waiting for opponent to set value',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                let value = modifier.mod;
+                if(modifier.set !== undefined && modifier.set !== null) {
+                    value = modifier.set - card.value;
+                }
+                card.value += value;
+                this.game.addAlert('danger', '{0} uses the /value command to set the value of {1} to {2}', p, card, card.value);
+                return true;
+            }
+        });
+    }
+
+    clearEffects(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card',
+            waitingPromptTitle: 'Waiting for opponent to select a card',
+            cardCondition: card => card.location === 'play area' && card.controller === player && card.owner === player,
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            onSelect: (p, card) => {
+                this.game.effectEngine.effects.forEach(effect => {
+                    if(effect.source !== card) {
+                        effect.removeTarget(card);
+                    }
+                });
+                this.game.addAlert('danger', '{0} uses the /clear-effects command to remove effects from {1}', player, card);
+                return true;
+            }
+        });
+    }
+
     addCard(player, args) {
         let cardInfo = args.slice(1).join(' ');
         let card = Object.values(this.game.cardData).find(c => {
@@ -409,9 +701,16 @@ class ChatCommands {
         if(!card) {
             return false;
         }
+        if(this.game.restrictedList.isPt && !player.user.permissions.isContributor) {
+            return false;
+        }
 
         let deck = new Deck();
         let preparedCard = deck.createCard(player, card);
+
+        if(!preparedCard) {
+            return true;
+        }
 
         preparedCard.applyAnyLocationPersistentEffects();
 
@@ -424,6 +723,94 @@ class ChatCommands {
         this.game.addAlert('danger', '{0} uses the /add-card command to add {1} to their deck', player, preparedCard);
 
         return true;
+    }
+
+    attach(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to attach/reattach',
+            waitingPromptTitle: 'Waiting for opponent to select card to attach/reattach',
+            cardCondition: card => ['play area', 'hand', 'discard pile'].includes(card.location) && card.controller === player,
+            cardType: ['goods', 'spell', 'action', 'dude'],
+            onSelect: (p, cardToAttach) => {
+                const title = (cardToAttach.parent ? 'reattach ' : 'attach ') + cardToAttach.title;
+                this.game.promptForSelect(p, {
+                    activePromptTitle: 'Select where to ' + title,
+                    waitingPromptTitle: 'Waiting for opponent to select parent for attachment',
+                    cardCondition: card => card.location === 'play area' && 
+                        card.controller.canAttach(cardToAttach, card, 'chatcommand') &&
+                        (card.controller === player || cardToAttach.hasKeyword('condition') || cardToAttach.hasKeyword('totem')),
+                    cardType: ['deed', 'dude', 'outfit'],
+                    onSelect: (player, target) => {
+                        player.performAttach(cardToAttach, target, 'chatcommand');    
+                        this.game.addAlert('danger', '{0} uses the /attach command to attach {1} to {2}', player, cardToAttach, target);         
+                        this.game.attachmentValidityCheck.enforceValidity();                   
+                        return true;
+                    }
+                });
+                return true;
+            }
+        });
+    }
+
+    useAbility(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select a card to use',
+            waitingPromptTitle: 'Waiting for opponent to select card to use',
+            cardCondition: card => ['play area', 'hand'].includes(card.location) && card.controller === player,
+            cardType: ['goods', 'spell', 'action', 'dude', 'deed', 'outfit', 'legend'],
+            onSelect: (p, card) => {
+                const unscriptedText = card.isScripted() ? '' : ' unscripted';
+                if(card.getType() === 'action' && card.location === 'hand') {
+                    this.game.addAlert('warning', '{0} is playing{1} {2}', p, unscriptedText, card);
+                    p.moveCard(card, 'being played');
+                } else {
+                    this.game.addAlert('warning', '{0} uses{1} card {2}', p, unscriptedText, card);
+                }
+                if(this.game.currentPlayWindow) {
+                    player.unscriptedCardPlayed = card;
+                }
+                return true;
+            }
+        });        
+    }
+
+    resetStats(player, args) {
+        var stat = args[1];
+        var statsToReset = ['suit', 'value', 'bullets', 'influence', 'control', 'upkeep', 'production'];
+        if(stat && !statsToReset.includes(stat)) {
+            this.game.addAlert('danger', '{0} uses the /reset-stats command with incorrect stat "{1}"', 
+                player, stat);
+            return;        
+        }
+        var textStat = 'stats';
+        if(stat) {
+            textStat = stat;
+            statsToReset = [stat];
+        }
+        this.game.promptForSelect(player, {
+            activePromptTitle: `Select a card to reset stat${textStat}`,
+            waitingPromptTitle: 'Waiting for opponent to reset stats',
+            cardCondition: card => card.location === 'play area' && card.controller === player,
+            cardType: ['goods', 'spell', 'action', 'dude', 'deed'],
+            onSelect: (p, card) => {
+                statsToReset.forEach(stat => {
+                    if(stat === 'suit') {
+                        card.addSuitEffect('chatcommand', card.getPrintedStat(stat));
+                    } else {
+                        if(stat) {
+                            card[stat] = card.getPrintedStat(stat);
+                        }
+                    }
+                });
+                this.game.addAlert('danger', '{0} uses the /reset-stats command to set{1} of {2} to printed', 
+                    p, textStat, card);
+                return true;
+            }
+        });
+    }
+
+    shuffleDiscard(player) {
+        player.shuffleDiscardToDrawDeck();
     }
 
     getNumberOrDefault(string, defaultNumber) {
@@ -456,6 +843,54 @@ class ChatCommands {
         }
 
         this.game.queueStep(new RematchPrompt(this.game, player));
+    }
+
+    selectSkillOrFu(player, skillOrFu) {
+        let pullBonus = this.pullingDude.getSkillRating(skillOrFu);
+        this.game.addAlert('warning', '{0} uses the /pull command to perform "{1}" pull with {2}', 
+            player, skillOrFu, this.pullingDude);
+        player.handlePull({
+            successCondition: pulledValue => {
+                if(skillOrFu === 'kung fu') {
+                    return pulledValue < this.pullingDude.value;
+                }
+                return pulledValue >= this.pullDifficulty;
+            }, 
+            successHandler: () => {
+                if(player.unscriptedPull) {
+                    player.unscriptedPull.isSuccessful = true;
+                }
+            },
+            failHandler: () => {
+                if(player.unscriptedPull) {
+                    player.unscriptedPull.isSuccessful = false;
+                }
+            },
+            pullingDude: this.pullingDude,
+            pullBonus: skillOrFu !== 'kung fu' ? pullBonus : 0,
+            chatCommandDiff: skillOrFu !== 'kung fu' ? `chatcommands with difficulty ${this.pullDifficulty}` :
+                `chatcommands with difficulty ${this.pullingDude.value}`,
+            player: player
+        });
+        return true;
+    }
+
+    determineModifier(arg) {
+        if(typeof(arg) === 'string') {
+            if(arg === '+') {
+                return { mod: 1 };
+            }
+            if(arg === '-') {
+                return { mod: -1 };
+            }
+            if(arg.startsWith('+')) {
+                return { mod: this.getNumberOrDefault(arg, 1) };
+            }
+            if(arg.startsWith('-')) {
+                return { mod: this.getNumberOrDefault(arg, -1) };
+            }            
+        }
+        return { set: this.getNumberOrDefault(arg, 1) };
     }
 }
 

@@ -17,7 +17,7 @@ class SamanthaSammyCooke extends DudeCard {
             },
             handler: context => {
                 if(context.target.hasKeyword('Horse')) {
-                    context.player.pull({
+                    context.player.handlePull({
                         successCondition: pulledValue => pulledValue > context.target.value,
                         successHandler: () => {
                             this.game.addMessage('{0} uses {1} to successfuly catch {2}', context.player, this, context.target);
@@ -30,7 +30,7 @@ class SamanthaSammyCooke extends DudeCard {
                             this.game.addMessage('{0} uses {1} who tries to catch {2}, but fails', context.player, this, context.target);
                         },
                         source: this
-                    });
+                    }, context);
                 } else {
                     this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
                     this.game.addMessage('{0} uses {1} to discard {2}', context.player, this, context.target);

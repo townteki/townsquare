@@ -4,10 +4,10 @@ const KeywordsProperty = require('../../../server/game/PropertyTypes/KeywordsPro
 describe('BaseCard', function () {
     beforeEach(function () {
         this.testCard = { code: '111', title: 'test 1', gang_code: 'neutral' };
-        this.limitedCard = { code: '1234', text: 'Limited.', gang_code: 'neutral' };
-        this.nonLimitedCard = { code: '2222', text: 'Stealth.', gang_code: 'neutral' };
         this.game = jasmine.createSpyObj('game', ['isCardVisible', 'raiseEvent']);
         this.owner = jasmine.createSpyObj('owner', ['getCardSelectionState', 'isSpectator']);
+        this.game.effectEngine = jasmine.createSpyObj('effectEngine', ['getAppliedEffectsOnCard']);
+        this.game.effectEngine.getAppliedEffectsOnCard.and.returnValue([]);
         this.owner.getCardSelectionState.and.returnValue({});
         this.owner.game = this.game;
         this.card = new BaseCard(this.owner, this.testCard);

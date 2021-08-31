@@ -1,8 +1,7 @@
-const _ = require('underscore');
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
-const ReferenceCountedSetProperty = require('./PropertyTypes/ReferenceCountedSetProperty.js');
+const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
 const LocationsWithEventHandling = ['play area', 'legend'];
 
@@ -10,18 +9,24 @@ class DrawCard extends BaseCard {
     constructor(owner, cardData) {
         super(owner, cardData);
 
-        this.attachments = _([]);
+        this.attachments = [];
 
         this.booted = false;
         this.minCost = 0;
-        this.currentControl = this.cardData.control;
+        this.difficultyMod = 0;
+        this.currentControl = this.cardData.control || 0;
+        if(!this.hasKeyword('rowdy')) {
+            this.controlDeterminator = 'influence:deed';
+        } else {
+            this.controlDeterminator = 'bullets';
+        }
 
         if(cardData.starting) {
             this.starting = true;
         }       
         
         this.actionPlacementLocation = 'discard pile';
-        this.shootoutOptions = new ReferenceCountedSetProperty();
+        this.options = new ReferenceConditionalSetProperty();
     }
 
     get gamelocation() {
@@ -36,6 +41,11 @@ class DrawCard extends BaseCard {
 
     set gamelocation(gamelocation) {
         super.gamelocation = gamelocation;
+    }
+
+    get difficulty() {
+        const finalDifficulty = this.keywords.getDifficulty() + this.difficultyMod;
+        return finalDifficulty < 1 ? 1 : finalDifficulty;
     }
 
     get control() {
@@ -69,7 +79,7 @@ class DrawCard extends BaseCard {
         clone.attachments = this.attachments.map(attachment => attachment.createSnapshot());
         clone.booted = this.booted;
         clone.parent = this.parent;
-        clone.shootoutOptions = this.shootoutOptions;
+        clone.options = this.options;
 
         return clone;
     }
@@ -92,7 +102,8 @@ class DrawCard extends BaseCard {
                     menu = menu.concat({ method: 'playCard', text: 'Shoppin\' play', arg: 'shoppin' });
                 }
                 if(this.abilities.playActions.length > 0) {
-                    menu = menu.concat({ method: 'playCard', text: 'Play action', arg: 'play' });
+                    let isEnabled = this.abilities.playActions.some(playAction => playAction.meetsRequirements(playAction.createContext(player)));
+                    menu = menu.concat({ method: 'playCard', text: 'Play action', arg: 'play', disabled: !isEnabled });
                 }
                 return menu.concat(discardItem);
             default:
@@ -122,14 +133,6 @@ class DrawCard extends BaseCard {
 
     getMinCost() {
         return this.minCost;
-    }
-
-    getInfluence() {
-        return this.influence || 0;
-    }  
-
-    getControl() {
-        return this.control || 0;
     }
     
     moveTo(targetLocation, parent) {
@@ -207,13 +210,14 @@ class DrawCard extends BaseCard {
             match: (card, context) => card === this.parent && (!properties.match || properties.match(card, context)),
             targetController: 'any',
             effect: properties.effect,
-            recalculateWhen: properties.recalculateWhen
+            recalculateWhen: properties.recalculateWhen,
+            fromTrait: properties.fromTrait
         });
     }
 
-    clearBlank() {
-        super.clearBlank();
-        this.attachments.each(attachment => {
+    clearBlank(type) {
+        super.clearBlank(type);
+        this.attachments.forEach(attachment => {
             if(!this.canAttach(this.controller, attachment)) {
                 this.controller.discardCard(attachment, false);
             }
@@ -225,17 +229,24 @@ class DrawCard extends BaseCard {
      * Opponent cards only, etc) for this card.
      */
     canAttach(player, card) {
-        if(!card) {
+        if(!card || card.cannotAttachCards(this)) {
             return false;
         }
 
-        if((this.getType() !== 'goods') && (this.getType() !== 'spell')) {
+        if(this.getType() !== 'goods' && this.getType() !== 'spell' && this.getType() !== 'action') {
+            return false;
+        }
+        if(this.getType() === 'action' && !this.hasKeyword('condition') && !this.hasKeyword('technique')) {
             return false;
         }
         if(card.getType() !== 'dude' && card.getType() !== 'outfit' && card.getType() !== 'deed') {
             return false;
-        }    
-        return true;
+        }   
+        
+        let context = { player: player };
+
+        return !this.attachmentRestrictions || 
+            this.attachmentRestrictions.some(restriction => restriction(card, context));
     }
 
     hasAttachmentForTrading(condition = () => true) {
@@ -243,7 +254,7 @@ class DrawCard extends BaseCard {
     }
 
     hasAttachment(condition = () => true, forTrading = false) {
-        if(this.attachments.isEmpty()) {
+        if(this.attachments.length === 0) {
             return false;
         }
         let attsFitCondition = this.attachments.filter(attachment => condition(attachment));
@@ -254,7 +265,7 @@ class DrawCard extends BaseCard {
             return true;
         }
 
-        let tradingAttachments = attsFitCondition.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded());
+        let tradingAttachments = attsFitCondition.filter(attachment => attachment.getType() === 'goods' && !attachment.wasTraded() && !attachment.cannotBeTraded());
         return tradingAttachments.length > 0;
     }
     
@@ -269,12 +280,20 @@ class DrawCard extends BaseCard {
         });
     }
 
+    hasAttachmentWithKeywords(keywords) {
+        let searchKeywords = keywords;
+        if(!Array.isArray(keywords)) {
+            searchKeywords = [keywords];
+        }
+        return this.getAttachmentsByKeywords(searchKeywords).length > 0;
+    }
+
     removeAttachment(attachment) {
         if(!attachment || !this.attachments.includes(attachment)) {
             return;
         }
 
-        this.attachments = _(this.attachments.reject(a => a === attachment));
+        this.attachments = this.attachments.filter(a => a !== attachment);
         attachment.parent = undefined;
     }
 
@@ -289,7 +308,7 @@ class DrawCard extends BaseCard {
     leavesPlay() {
         this.booted = false;
         this.control = 0;
-        this.attachments.each(attachment => {
+        this.attachments.forEach(attachment => {
             attachment.controller.moveCard(attachment, 'discard pile', { raiseEvents: false });
         });
         if(this.parent) {
@@ -298,24 +317,106 @@ class DrawCard extends BaseCard {
         super.leavesPlay();
     }
 
-    canBeAced() {
-        return this.allowGameAction('ace');
+    isAtHome() {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        return this.game.isHome(this.gamelocation, this.controller);
     }
 
-    canBeDiscarded() {
-        return this.allowGameAction('discard');
+    isAtDeed() {
+        if(this.location !== 'play area') {
+            return false;
+        }
+        return this.locationCard && this.locationCard.getType() === 'deed';
     }
 
-    canBeBooted() {
-        return this.allowGameAction('boot');
+    isGadget() {
+        return this.hasKeyword('Gadget');
     }
 
-    canBeUnbooted() {
-        return this.allowGameAction('unboot');
+    isOutOfTown() {
+        return this.hasKeyword('Out of Town');
     }
 
-    canBeCalledOut() {
-        return this.allowGameAction('callout');
+    doesNotReturnAfterJob() {
+        return this.options.contains('doesNotReturnAfterJob');
+    }
+
+    doesNotProvideBulletRatings() {
+        return this.options.contains('doesNotProvideBulletRatings');
+    }
+
+    doesNotHaveToBeInvented() {
+        return this.options.contains('doesNotHaveToBeInvented');
+    }
+
+    isSelectedAsFirstCasualty() {
+        return this.options.contains('isSelectedAsFirstCasualty', this);
+    }
+
+    calloutCannotBeRefused(opponentDude) {
+        return this.options.contains('calloutCannotBeRefused', opponentDude);
+    }
+
+    cannotRefuseCallout(opponentDude) {
+        return this.options.contains('cannotRefuseCallout', opponentDude);
+    }
+
+    cannotBePickedAsShooter() {
+        return this.options.contains('cannotBePickedAsShooter', this);
+    }
+
+    cannotInventGadgets() {
+        return this.options.contains('cannotInventGadgets', this);
+    }
+
+    cannotBeChosenAsCasualty() {
+        return this.options.contains('cannotBeChosenAsCasualty', this);
+    }
+
+    cannotBeTraded() {
+        return this.options.contains('cannotBeTraded', this);
+    }
+
+    cannotFlee() {
+        return this.options.contains('cannotFlee');
+    }
+
+    cannotAttachCards(attachment) {
+        return this.options.contains('cannotAttachCards', attachment);
+    }
+
+    canRefuseWithoutGoingHomeBooted() {
+        return this.options.contains('canRefuseWithoutGoingHomeBooted');
+    }
+
+    canUseControllerAbilities(player) {
+        return this.options.contains('canUseControllerAbilities', player);
+    }
+
+    canBeInventedWithoutBooting() {
+        return this.options.contains('canBeInventedWithoutBooting');
+    }    
+
+    canBeAced(context) {
+        return this.allowGameAction('ace', context);
+    }
+
+    canBeDiscarded(context) {
+        return this.allowGameAction('discard', context);
+    }
+
+    canBeBooted(context) {
+        return this.allowGameAction('boot', context);
+    }
+
+    canBeUnbooted(context) {
+        return this.allowGameAction('unboot', context);
+    }
+
+    canBeCalledOut(context) {
+        return this.allowGameAction('callout', context);
     }
 
     getSummary(activePlayer) {

@@ -7,6 +7,7 @@ class Pinto extends GoodsCard {
             title: 'Pinto',
             playType: 'shootout:join',     
             cost: ability.costs.bootSelf(),  
+            actionContext: { card: this.parent, gameAction: 'moveDude' },
             message: context =>
                 this.game.addMessage('{0} uses {1} with his rider {2} to join posse', context.player, this, this.parent),                
             handler: context => {

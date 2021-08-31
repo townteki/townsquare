@@ -8,6 +8,7 @@ const ActionCard = require('./actioncard.js');
 const OutfitCard = require('./outfitcard');
 const JokerCard = require('./jokercard');
 const LegendCard = require('./legendcard');
+const TechniqueCard = require('./techniquecard');
 
 class Deck {
     constructor(data) {
@@ -27,6 +28,7 @@ class Deck {
             };
         }
 
+        cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
         let cardClass = cards[cardData.code] || OutfitCard;
 
         return new cardClass(player, cardData);
@@ -43,6 +45,8 @@ class Deck {
                 wealth: this.data.legend.wealth,
                 production: this.data.legend.production
             };
+            
+            cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
             let cardClass = cards[cardData.code] || LegendCard;
 
             return new cardClass(player, cardData);
@@ -97,7 +101,9 @@ class Deck {
                 if(starting > 0) {
                     cardEntry.card.starting = true;
                     starting--;
-                }                
+                } else {
+                    cardEntry.card.starting = false;
+                }        
                 func(cardEntry.card);
             }
         }
@@ -120,12 +126,17 @@ class Deck {
             cardClass = SpellCard;
         }
         if(cardData.type_code === 'action') {
-            cardClass = ActionCard;
+            if(cardData.keywords && cardData.keywords.toLowerCase().includes('technique')) {
+                cardClass = TechniqueCard;
+            } else {
+                cardClass = ActionCard;
+            }
         }
         if(cardData.type_code === 'joker') {
             cardClass = JokerCard;
         }
 
+        cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
         cardClass = cards[cardData.code] || cardClass;
 
         return new cardClass(player, cardData);

@@ -5,7 +5,7 @@ var StandardActions = {};
 
 var defaultProperties = {
     playType: 'ability', 
-    sourceType: 'ability', 
+    abilitySourceType: 'card', 
     target: ''
 };
 
@@ -21,8 +21,8 @@ StandardActions.putIntoPlayAtLocation = function(target, callback) {
     return new PutIntoPlayCardAction(Object.assign(defaultProperties, { target: target }), callback);
 };
 
-StandardActions.putIntoPlayWithReduction = function(reduceAmount, callback) {
-    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { reduceAmount: reduceAmount }), callback);
+StandardActions.putIntoPlayWithReduction = function(reduceAmount, minimum, callback) {
+    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { reduceAmount, minimum }), callback);
 };
 
 module.exports = StandardActions;

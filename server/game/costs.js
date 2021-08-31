@@ -45,6 +45,11 @@ const Costs = {
      */
     bootMultiple: (amount, condition) => CostBuilders.boot.selectMultiple(amount, condition),
     /**
+     * Cost that requires booting a card that will lead a job and matches the passed condition
+     * predicate function.
+     */
+    bootLeader: condition => CostBuilders.bootLeader.select(condition, 'dude'),
+    /**
      * Cost that requires booting any number of cards that match the
      * passed condition predicate function.
      */
@@ -93,34 +98,63 @@ const Costs = {
      */
     revealCards: (number, condition) => CostBuilders.reveal.selectMultiple(number, condition),
     /**
-     * Cost that will stand the card that initiated the ability (e.g.,
-     * Barristan Selmy (TS)).
+     * Cost that will unboot the card that initiated the ability.
      */
-    standSelf: () => CostBuilders.stand.self(),
+    unbootSelf: () => CostBuilders.unboot.self(),
     /**
-     * Cost that will stand the parent card the current card is attached to.
+     * Cost that will unboot the parent card the current card is attached to.
      */
-    standParent: () => CostBuilders.stand.parent(),
+    unbootParent: () => CostBuilders.unboot.parent(),
     /**
-     * Cost that requires standing a card that matches the passed condition
+     * Cost that requires unbooting a card that matches the passed condition
      * predicate function.
      */
-    stand: condition => CostBuilders.stand.select(condition),
+    unboot: condition => CostBuilders.unboot.select(condition),
+    /**
+     * This cost will not boot the Kung Fu dude as it is selected later when targets are
+     * selected. It just makes sure there are available unbooted KF dudes and updates
+     * context so the KF dudes is booted once they are selected.
+     */
+    bootKfDude: function() {
+        return {
+            canPay: function(context) {
+                if(context.kfDude) {
+                    return !context.kfDude.booted;
+                }
+                const kfDudes = context.game.getAvailableKfDudes(context, true);
+                return kfDudes && kfDudes.length > 0;
+            },
+            pay: function(context) {
+                context.costs.bootKfDude = true;
+            }
+        };
+    },
     /**
      * Cost that will place the played event card in the player's discard pile.
      */
     expendAction: function() {
         return {
             canPay: function(context) {
-                return context.player.isCardInPlayableLocation(context.source, 'play') && context.player.canPlay(context.source, 'play');
+                return context.player.isCardInPlayableLocation(context.source, context.comboNumber ? 'combo' : 'play') && 
+                    context.player.canPlay(context.source, 'play');
             },
             pay: function(context) {
                 // Events become in a "state of being played" while they resolve
                 // and are not placed in discard until after resolution / cancel
                 // of their effects.
-                // Ruling: http://www.cardgamedb.com/forums/index.php?/topic/35981-the-annals-of-castle-black/
                 context.originalLocation = context.source.location;
                 context.source.controller.moveCard(context.source, 'being played');
+            }
+        };
+    },
+    pull: function() {
+        return {
+            canPay: function() {
+                return true;
+            },
+            pay: function(context) {
+                context.player.pull((pulledCard, pulledValue, pulledSuit) => 
+                    context.pull = { pulledCard, pulledValue, pulledSuit }, true);
             }
         };
     },
@@ -142,6 +176,11 @@ const Costs = {
      * Cost that requires discarding the top card from the draw deck.
      */
     discardFromDeck: () => new DiscardFromDeckCost(),
+    /**
+     * Cost that requires discarding a card from play matching the passed
+     * condition predicate function. 
+     */
+    discardFromPlay: condition => CostBuilders.discardFromPlay.select(condition),
     /**
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
@@ -236,22 +275,22 @@ const Costs = {
      * the passed maximum and either the player's or his opponent's ghostrock.
      * Used by Flame-Thrower.
      */
-    payXGhostRock: function(minFunc, maxFunc, opponentFunc) {
+    payXGhostRock: function(minFunc, maxFunc, playingType = 'play', opponentFunc) {
         return {
             canPay: function(context) {
-                let reduction = context.player.getCostReduction('play', context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source);
                 let opponentObj = opponentFunc && opponentFunc(context);
 
                 if(!opponentObj) {
-                    return context.player.getSpendableGhostRock({ playingType: 'play', context: context }) >= (minFunc(context) - reduction);
+                    return context.player.getSpendableGhostRock({ playingType: playingType, context: context }) >= (minFunc(context) - reduction);
                 }
-                return opponentObj.getSpendableGhostRock({ playingType: 'play', context: context }) >= (minFunc(context) - reduction);
+                return opponentObj.getSpendableGhostRock({ playingType: playingType, context: context }) >= (minFunc(context) - reduction);
             },
             resolve: function(context, result = { resolved: false }) {
-                let reduction = context.player.getCostReduction('play', context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source);
                 let opponentObj = opponentFunc && opponentFunc(context);
                 let player = opponentObj || context.player;
-                let ghostrock = player.getSpendableGhostRock({ playingType: 'play', context: context });
+                let ghostrock = player.getSpendableGhostRock({ playingType: playingType, context: context });
                 let max = Math.min(maxFunc(context), ghostrock + reduction);
 
                 context.game.queueStep(new XValuePrompt(minFunc(context), max, context, reduction, 'Select GR payment'));
@@ -266,10 +305,10 @@ const Costs = {
                 context.game.spendGhostRock({ 
                     player: player, 
                     amount: context.grCost, 
-                    playingType: 'play', 
+                    playingType: playingType, 
                     context: context 
                 });
-                context.player.markUsedReducers('play', context.source);
+                context.player.markUsedReducers(playingType, context.source);
             }
         };
     },

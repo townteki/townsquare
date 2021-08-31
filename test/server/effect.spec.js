@@ -34,7 +34,14 @@ describe('Effect', function() {
             effect: this.effectDefinition
         };
 
-        this.allowGameProperties = { game: this.gameSpy, source: this.sourceSpy, ability: undefined, resolutionStage: 'effect' };
+        this.allowGameProperties = { 
+            game: this.gameSpy, 
+            source: this.sourceSpy, 
+            player: undefined, 
+            ability: undefined, 
+            causedByPlayType: undefined,
+            resolutionStage: 'effect' 
+        };
         this.properties.match.and.returnValue(true);
 
         this.effect = new Effect(this.gameSpy, this.sourceSpy, this.properties);

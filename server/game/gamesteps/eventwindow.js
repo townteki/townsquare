@@ -1,7 +1,7 @@
 const BaseStep = require('./basestep.js');
 const GamePipeline = require('../gamepipeline.js');
 const SimpleStep = require('./simplestep.js');
-const InterruptWindow = require('./InterruptWindow');
+const ReactionBeforeWindow = require('./ReactionBeforeWindow');
 
 class EventWindow extends BaseStep {
     constructor(game, event, postHandlerFunc = () => true) {
@@ -10,7 +10,7 @@ class EventWindow extends BaseStep {
         this.event = event;
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
-            new InterruptWindow(game, event, postHandlerFunc),
+            new ReactionBeforeWindow(game, event, postHandlerFunc),
             new SimpleStep(game, () => this.emitBaseEvent()),
             new SimpleStep(game, () => this.openAbilityWindow('traitreaction')),
             new SimpleStep(game, () => this.openAbilityWindow('reaction')),

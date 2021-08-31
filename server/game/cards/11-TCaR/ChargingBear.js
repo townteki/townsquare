@@ -11,12 +11,14 @@ class ChargingBear extends DudeCard {
                 toAce: {
                     activePromptTitle: 'Select token dude to ace',
                     cardCondition: { location: 'play area', condition: card => card.isToken() },
-                    cardType: ['dude']
+                    cardType: ['dude'],
+                    gameAction: 'ace'
                 },
                 toBootHome: {
                     activePromptTitle: 'Select an opposing dude to send home booted',
                     cardCondition: { location: 'play area', controller: 'opponent', participating: true },
-                    cardType: ['dude']
+                    cardType: ['dude'],
+                    gameAction: ['sendHome']
                 }
             },
             message: context => {
@@ -24,7 +26,7 @@ class ChargingBear extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.aceCard({ card: context.targets.toAce }), context);
-                this.game.shootout.sendHome(context.targets.toBootHome);
+                this.game.shootout.sendHome(context.targets.toBootHome, context);
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: ability.effects.setAsStud()

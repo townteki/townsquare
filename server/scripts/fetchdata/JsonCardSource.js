@@ -30,9 +30,20 @@ class JsonCardSource {
     getCards() {
         return this.cards;
     }
+	
+    getPtCards() {
+        return this.cards.filter(card => {
+            let pack = this.packs.find(pack => pack.code === card.pack_code);
+            return pack && pack.isPt;
+        });
+    }
 
     getPacks() {
         return this.packs;
+    }
+	
+    getPtPacks() {
+        return this.packs.filter(pack => pack.isPt);
     }
 }
 

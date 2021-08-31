@@ -14,10 +14,6 @@ class NullEvent {
     emitTo() {
     }
 
-    allowAutomaticSave() {
-        return false;
-    }
-
     cancel() {
         this.cancelled = true;
     }
@@ -47,6 +43,10 @@ class NullEvent {
     }
 
     clearAttachedEvents() {
+    }
+
+    isNull() {
+        return true;
     }
 }
 

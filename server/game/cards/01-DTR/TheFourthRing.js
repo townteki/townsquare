@@ -4,9 +4,11 @@ const OutfitCard = require('../../outfitcard.js');
 class TheFourthRing extends OutfitCard {
     setupCardAbilities(ability) {
         this.reaction({
+            title: 'React: The Fourth Ring',
+            triggerBefore: true,
             when: {
-                onPullSuccess: event => 
-                    event.pullingDude && 
+                onPullSuccess: event =>
+                    event.pullingDude && event.source &&
                     event.pullingDude.controller === this.controller && 
                     !event.pullingDude.isAtHome() &&
                     event.source.getType() === 'spell'

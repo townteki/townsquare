@@ -4,15 +4,14 @@ const GameActions = require('../GameActions');
 const SingleCostReducer = require('../singlecostreducer');
 
 class PutIntoPlayCardAction extends BaseAbility {
-    constructor(properties = { playType: 'ability', sourceType: 'ability', target: '' }, callback) {
+    constructor(properties = { playType: 'ability', abilitySourceType: 'card', target: '' }, callback) {
         super({
-            abilitySourceType: properties.sourceType,
+            abilitySourceType: properties.abilitySourceType,
             cost: [
                 Costs.payReduceableGRCost(properties.playType)
             ]
         });
-        this.target = properties.target;
-        this.targetParent = properties.targetParent;
+        this.properties = properties;
         this.playType = properties.playType;
         this.reduceAmount = properties.reduceAmount;
         this.callback = callback;
@@ -23,19 +22,27 @@ class PutIntoPlayCardAction extends BaseAbility {
     }
 
     meetsRequirements(context) {
+        if(!super.meetsRequirements(context)) {
+            return false;
+        }
         var { player, source } = context;
 
         return (
             source.getType() !== 'action' &&
             player.isCardInPlayableLocation(source, this.playType) &&
-            player.canPutIntoPlay(source, this.playType)
+            player.canPutIntoPlay(source, { playingType: this.playType, context })
         );
     }
 
     resolveCosts(context) {
         var { game, player, source } = context;
         if(this.reduceAmount) {
-            this.costReducer = new SingleCostReducer(game, player, null, { card: source, amount: this.reduceAmount, playingTypes: 'any'});
+            this.costReducer = new SingleCostReducer(game, player, null, { 
+                card: source, 
+                amount: this.reduceAmount, 
+                minimum: this.properties.minimum,
+                playingTypes: 'any'
+            });
             player.addCostReducer(this.costReducer);
         }
         return super.resolveCosts(context);
@@ -46,11 +53,7 @@ class PutIntoPlayCardAction extends BaseAbility {
         game.resolveGameAction(GameActions.putIntoPlay({                        
             player: player,
             card: source, 
-            params: { 
-                playingType: this.playType, 
-                target: this.target,
-                targetParent: this.targetParent,
-                context: context }
+            params: Object.assign(this.properties, { context: context })
         })).thenExecute(event => {
             if(this.costReducer) { 
                 event.player.removeCostReducer(this.costReducer);     

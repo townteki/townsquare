@@ -3,6 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class JacquelineIsham extends DudeCard {
     setupCardAbilities() {
         this.reaction({
+            title: 'React: Jacqueline Isham',
             when: {
                 onDudeJoinedPosse: event => !event.leaderPosse && event.card === this
             },
@@ -14,7 +15,8 @@ class JacquelineIsham extends DudeCard {
                     match: this,
                     effect: ability.effects.setAsStud()
                 }));
-            }
+            },
+            source: this
         });
     }
 }

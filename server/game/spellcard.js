@@ -1,12 +1,20 @@
-const GoodsCard = require('./goodscard.js');
+const AbilityDsl = require('./abilitydsl.js');
+const HeartsCard = require('./heartscard.js');
 
-class SpellCard extends GoodsCard {
+class SpellCard extends HeartsCard {
     constructor(owner, cardData) {
         super(owner, cardData);
         this.canTrade = false;
+        if(this.isTotem()) {
+            this.persistentEffect({
+                match: this,
+                effect: AbilityDsl.effects.canUseControllerAbilities(this, () => true),
+                fromTrait: false
+            });
+        }        
     }
 
-    canAttach(player, card) {
+    canAttach(player, card, playingType) {
         if(!super.canAttach(player, card)) {
             return false;
         }
@@ -19,8 +27,17 @@ class SpellCard extends GoodsCard {
                 return true;
             }
         } else if(card.isLocationCard() && this.isTotem()) {
-            return true;
+            if(['validityCheck', 'chatcommand'].includes(playingType)) {
+                return true;
+            }
+            return card.controller === this.controller && 
+                this.game.getDudesAtLocation(card.gamelocation).find(dude => dude.hasKeyword('shaman') && !dude.booted);
         }
+        return false;
+    }
+
+    isSpell() {
+        return true;
     }
 }
 

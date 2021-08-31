@@ -8,16 +8,17 @@ class ShadowWalk extends SpellCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             difficulty: 7,
+            actionContext: { card: this.parent, gameAction: 'moveDude'},
             onSuccess: (context) => {
                 this.game.promptForLocation(context.player, {
-                    activePromptTitle: 'Select where shadow should lead ' + this.parent.title,
+                    activePromptTitle: 'Select where to move ' + this.parent.title,
                     waitingPromptTitle: 'Waiting for opponent to select location',
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: this.parent, 
                             targetUuid: location.uuid
                         }), context);   
-                        this.game.addMessage('{0} uses {1} to move {2} to {3}.', player, this, this.parent, location);                                 
+                        this.game.addMessage('{0} uses {1} to move {2} to {3}', player, this, this.parent, location);                                 
                         return true;
                     }
                 });
@@ -30,9 +31,10 @@ class ShadowWalk extends SpellCard {
             playType: 'shootout:join',
             cost: ability.costs.bootSelf(),
             difficulty: 7,
+            actionContext: { card: this.parent, gameAction: 'joinPosse'},
             onSuccess: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent })).thenExecute(() => {
-                    this.game.addMessage('{0} uses {1} to join {2} to posse.', context.player, this, this.parent); 
+                    this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent); 
                     this.game.promptWithMenu(context.player, this, {
                         activePrompt: {
                             menuTitle: 'Make shootout play',

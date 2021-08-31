@@ -43,7 +43,7 @@ class EffectEngine {
     }
 
     getTargets() {
-        const validLocations = ['being played', 'dead pile', 'discard pile', 'draw deck', 'hand', 'play area'];
+        const validLocations = ['being played', 'dead pile', 'discard pile', 'draw deck', 'hand', 'play area', 'draw hand'];
         let validTargets = this.game.allCards.filter(card => validLocations.includes(card.location));
         if(this.game.shootout) {
             validTargets = validTargets.concat([this.game.shootout]);
@@ -126,9 +126,12 @@ class EffectEngine {
     }
 
     onCardBlankToggled(event) {
-        let { card, isBlank } = event;
+        let { card, isBlank, blankType } = event;
         let targets = this.getTargets();
-        let matchingEffects = this.effects.filter(effect => effect.duration === 'persistent' && effect.source === card);
+        let matchingEffects = this.effects.filter(effect => 
+            effect.duration === 'persistent' && 
+            effect.source === card &&
+            (blankType !== 'trait' || effect.fromTrait));
         for(let effect of matchingEffects) {
             effect.setActive(!isBlank, targets);
         }
@@ -217,6 +220,14 @@ class EffectEngine {
         }
 
         this.effects = remainingEffects;
+    }
+
+    getAllEffectsOnCard(card, predicate = () => true) {
+        return this.effects.filter(effect => effect.hasTarget(card) && predicate(effect));
+    }
+
+    getAppliedEffectsOnCard(card, predicate = () => true) {
+        return this.effects.filter(effect => effect.isAppliedTo(card) && predicate(effect));
     }
 }
 

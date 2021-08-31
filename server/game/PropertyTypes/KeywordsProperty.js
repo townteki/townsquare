@@ -26,17 +26,23 @@ class KeywordsProperty {
 
         var firstLine = keywords.split('\n')[0];
 
-        firstLine.split('\u2022').forEach(keyword => this.addKeyword(keyword, true));
+        if(firstLine.indexOf('*') !== -1) {
+            firstLine.split('*').forEach(keyword => this.addKeyword(keyword, true));
+        } else {
+            firstLine.split('\u2022').forEach(keyword => this.addKeyword(keyword, true));
+        }
     }
 
     setPrintedValues(results) {
         let keywordName = results[1].toLowerCase().trim();
         this.printedData.push(keywordName);   
-        if(isNaN(results[2])) {
+        if(!results[2]) {
             return;
         }
         let value = parseInt(results[2]);
-
+        if(isNaN(results[2])) {
+            return;
+        }
         if(!this.modifiers[keywordName]) {
             this.modifiers['difficulty'].printed = value;
         } else {
@@ -45,7 +51,7 @@ class KeywordsProperty {
     }
 
     addKeyword(keyword, isPrinted = false) {
-        let results = /([a-z A-Z]+)(\d*)$/.exec(keyword.toLowerCase().trim());  
+        let results = /([a-z A-Z-]+)(\d*)$/.exec(keyword.toLowerCase().trim());  
         if(results) {
             this.add(results[1].trim());
             if(isPrinted) {
@@ -98,6 +104,9 @@ class KeywordsProperty {
     }
 
     getSkillRating(skillName, printed = false) {
+        if(!this.data.contains(skillName)) {
+            return;
+        }
         let skill = this.modifiers[skillName];
         if(!skill) {
             return;

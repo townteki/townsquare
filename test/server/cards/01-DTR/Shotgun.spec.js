@@ -2,16 +2,16 @@ describe('Shotgun', function() {
     integration({ numOfPlayers: 2 }, function() {
         describe('ability', function() {
             beforeEach(function() {
-                const deck1 = this.buildDeck('Law Dogs', [
-                    'Law Dogs',
-                    'Tommy Harden', 'Jake Smiley', 'Jacqueline Isham'
-                ], ['Tommy Harden', 'Jake Smiley', 'Jacqueline Isham']
-                );
-                const deck2 = this.buildDeck('The Sloane Gang', [
-                    'The Sloane Gang',
-                    'Allie Hensman', 'Barton Everest', 'Shotgun'
-                ], ['Allie Hensman', 'Barton Everest']
-                );
+                const deck1 = this.buildDeck({
+                    outfitTitle: 'Law Dogs',
+                    cardTitles: ['Law Dogs', 'Tommy Harden', 'Jake Smiley', 'Jacqueline Isham'],
+                    startingTitles: ['Tommy Harden', 'Jake Smiley', 'Jacqueline Isham']
+                });
+                const deck2 = this.buildDeck({
+                    outfitTitle: 'The Sloane Gang',
+                    cardTitles: ['The Sloane Gang', 'Allie Hensman', 'Barton Everest', 'Shotgun'], 
+                    startingTitles: ['Allie Hensman', 'Barton Everest']
+                });
                 this.player1.selectDeck(deck1);
                 this.player2.selectDeck(deck2);
                 this.startGame();

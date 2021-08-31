@@ -5,12 +5,14 @@ const Shuffle = require('./Shuffle');
 const Event = require('../event');
 
 class Search extends GameAction {
-    constructor({ gameAction, location, match, message, cancelMessage, topCards, numToSelect, player, searchedPlayer, title, handler }) {
+    constructor({ gameAction, location, match, message, cancelMessage, topCards, numToSelect, 
+        doNotShuffleDeck, player, searchedPlayer, title, handler }) {
         super('search');
         this.gameAction = gameAction;
         this.match = match || {};
         this.topCards = topCards;
         this.numToSelect = numToSelect;
+        this.doNotShuffleDeck = doNotShuffleDeck;
         if(player) {
             this.playerFunc = (() => player);
         } else {
@@ -54,13 +56,12 @@ class Search extends GameAction {
                     }
                     if(this.handler) {
                         let searchTargets = context.searchTarget;
-                        if(!Array.isArray(context.searchTarget)) {
-                            searchTargets = [context.searchTarget];
+                        if(this.numToSelect === 1 && context.searchTarget.length) {
+                            searchTargets = context.searchTarget[0];
                         }
-                        searchTargets.forEach(targetCard => {
-                            let thenEvent = new Event('onActionOnSearchedCard', { card: targetCard }, event => this.handler(event.card));
-                            event.thenAttachEvent(thenEvent);
-                        });
+                        let thenEvent = new Event('onActionOnSearchedCard', { cards: searchTargets, context: context }, 
+                            event => this.handler(event.cards, event.context));
+                        event.thenAttachEvent(thenEvent);
                     }
                     return true;
                 },
@@ -75,8 +76,10 @@ class Search extends GameAction {
             if(this.location.includes('draw deck')) {
                 context.game.queueSimpleStep(() => {
                     context.game.cardVisibility.removeRule(revealFunc);
-                    event.thenAttachEvent(Shuffle.createEvent({ player: event.searchedPlayer }));
-                    context.game.addMessage('{0} shuffles their deck', event.searchedPlayer);
+                    if(!this.doNotShuffleDeck) {
+                        event.thenAttachEvent(Shuffle.createEvent({ player: event.searchedPlayer }));
+                        context.game.addMessage('{0} shuffles their deck', event.searchedPlayer);
+                    }
                 });
             }
         });

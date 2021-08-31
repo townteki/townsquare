@@ -7,7 +7,7 @@ This page contains the information you need to get started with contributing.
 ## How Can I Contribute?
  * [Implementing cards](#Implementing-cards) - implement specific card scripts 
  * [Implementing engine features](#Implementing-engine-features) - implement or improve game engine features
- * [Implement unit tests](#Implement-unit-tests) - imlement unit test to provide bigger cover
+ * [Implement unit tests](#Implement-unit-tests) - implement unit test to provide bigger cover
  * [Test and report bugs](#Test-and-report-bugs) - play the game and test various parts and cards
  * [UX and client contributions](#UX-and-client-contributions) - improve user experience and front-end
 
@@ -30,7 +30,7 @@ Card script issues are divided into categories based on the difficulty:
 For the IDE setup and other development tips see [Development](#Development) section. 
 
 ### Implementing engine features
-If you want to contribute to the game engine, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general)
+If you want to contribute to the game engine, let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general) or in [Doomtown Discord](https://discord.com/channels/227387666046386176/377157824725123072).
 For the IDE setup and other development tips see [Development](#Development) section. 
 
 ### Implement unit tests
@@ -42,18 +42,12 @@ You will be testing the client on the [test server](https://doomtown.us). There 
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible. In case you do not have a github account and do not want to create one, please use [this report](https://gitreports.com/issue/townteki/townsquare).
 
 **What should be impemented and can be tested:**
- - Base game engine
-    * Setup
-    * Sequence o' Play - all phases
-    * Plays You Can Make at High Noon - Shoppin', Tradin', Movin', Callin' Out
-    * Shootout
- - Spell casting
- - Gadget inventing
+ - Game engine overall
  - Chat commands - list of chatcommands can be found in the client `Help > How To Play > Manual Commands`
  - Actin' play depends on implemented cards - see [here](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md)
 
 ### UX and client contributions
-If you want to contribute to the client, contact [me](mailto:mmeldo@gmail.com) or let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general).
+If you want to contribute to the client, let us know in [General discussion](https://github.com/townteki/townsquare/discussions/categories/general) or in [Doomtown Discord](https://discord.com/channels/227387666046386176/377157824725123072).
 You will need to checkout also [townsquare-client](https://github.com/townteki/townsquare-client) and install it. On how to install the `townsquare-client` refer to its readme.
 For the server, IDE setup and other development tips see [Development](#Development) section. 
 
@@ -79,7 +73,7 @@ For the server, IDE setup and other development tips see [Development](#Developm
 To install the server, execute these commands: 
 
 ```
-git clone https://github.com/townsquare/townsquare.git
+git clone https://github.com/townteki/townsquare.git
 cd townsquare
 git submodule init
 git submodule update

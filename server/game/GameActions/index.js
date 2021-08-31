@@ -20,6 +20,7 @@ const PlaceToken = require('./PlaceToken');
 const PutIntoPlay = require('./PutIntoPlay');
 const RemoveBounty = require('./RemoveBounty');
 const RemoveFromGame = require('./RemoveFromGame');
+const RemoveFromPosse = require('./RemoveFromPosse');
 const ReturnCardToHand = require('./ReturnCardToHand');
 const RevealCard = require('./RevealCard');
 const Search = require('./Search');
@@ -103,10 +104,10 @@ const GameActions = {
      *  - `targetUuid`: UUID of the location card (can be deed, townsquare or outfit)
      *  - `options`: {\
      *      _isCardEffect_ (true): **true** if the move comes from the effect of a card\
-     *      _needToBoot_ (null): **true** if dude has to boot to perform the move\
+     *      _needToBoot_ (false): **true** if dude has to boot to perform the move\
      *      &nbsp;&nbsp;&nbsp;**false** if dude does not boot to perform the move\
      *      &nbsp;&nbsp;&nbsp;**null** if the booting will be decided based on the game rules\
-     *      _allowBooted_ (false): **true** if even the booted dude can be moved\
+     *      _allowBooted_ (true): **true** if even the booted dude can be moved\
      *  }
      */
     moveDude: props => new AbilityAdapter(MoveDude, props),
@@ -125,6 +126,7 @@ const GameActions = {
      */
     removeBounty: props => new AbilityAdapter(RemoveBounty, props),
     removeFromGame: props => new AbilityAdapter(RemoveFromGame, props),
+    removeFromPosse: props => new AbilityAdapter(RemoveFromPosse, props),
     returnCardToHand: props => new AbilityAdapter(ReturnCardToHand, props),
     revealCard: props => new AbilityAdapter(RevealCard, props),
     /**

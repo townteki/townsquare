@@ -24,7 +24,7 @@
 			"",
 			"class ${1:DudeName} extends DudeCard {",
 			"\tsetupCardAbilities(ability) {",
-			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t\t${2|cardaction,cardreaction,persistenteffect,cardjob,traitreaction|}",
 			"\t}",
 			"}",
 			"",
@@ -44,7 +44,7 @@
 			"",
 			"class ${1:DeedName} extends DeedCard {",
 			"\tsetupCardAbilities(ability) {",
-			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t\t${2|cardaction,cardreaction,persistenteffect,cardjob,traitreaction|}",
 			"\t}",
 			"}",
 			"",
@@ -104,7 +104,7 @@
 			"",
 			"class ${1:ActionName} extends ActionCard {",
 			"\tsetupCardAbilities(ability) {",
-			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t\t${2|cardaction,cardreaction,persistenteffect,cardjob,traitreaction|}",
 			"\t}",
 			"}",
 			"",
@@ -124,7 +124,7 @@
 			"",
 			"class ${1:OutfitName} extends OutfitCard {",
 			"\tsetupCardAbilities(ability) {",
-			"\t\t${2|cardaction,cardreaction,persisteneffect,cardjob,traitreaction|}",
+			"\t\t${2|cardaction,cardreaction,persistenteffect,cardjob,traitreaction|}",
 			"\t}",
 			"}",
 			"",
@@ -171,6 +171,23 @@
 		"description": "Prompt with menu"
 	},
 
+	"Prompt For Yes/No": {
+		"scope": "javascript,typescript",
+		"prefix": "promptyesno",
+		"body": [
+			"this.game.promptForYesNo(${1:player}, {",
+			"\ttitle: '$2',",
+			"\tonYes: player => {",
+            "\t\t$3",
+			"\t},",
+			"\tonNo: player => {",
+            "\t\t$4",
+			"\t}",
+			"});"
+		],
+		"description": "Prompt for Yes or No"
+	},
+
 	"Persistent Effect": {
 		"scope": "javascript,typescript",
 		"prefix": "persistenteffect",
@@ -212,11 +229,12 @@
 		"prefix": "cardreaction",
 		"body": [
 			"this.reaction({",
+			"\ttitle: '${1:Title}',",
 			"\twhen: {",
-			"\t\t${1:onEvent}: event => ${2:true}",
+			"\t\t${2:onEvent}: event => ${3:true}",
 			"\t},",
-			"\tcost: [ ability.costs.${3:bootSelf()} ],",
-			"\ttarget: ${4:targetselect}",
+			"\tcost: [ability.costs.${4:bootSelf()}],",
+			"\ttarget: ${5:targetselect}",
 			"\tmessage: context => this.game.addMessage('{0} uses {1} to $20', context.player, this),",
 			"\thandler: context => {",
 			"\t\t$21",
@@ -233,11 +251,10 @@
 			"this.job({",
 			"\ttitle: '${1:Title}',",
 			"\tplayType: '${2:noon}',",     
-			"\tcost: ability.costs.${3:bootSelf()},",  
-			"\tbootLeader: ${4:true},",  
+			"\tcost: ability.costs.${3:bootLeader()},",  
 			"\ttarget: ${5:targetselect}",
 			"\tmessage: context => this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),",
-			"\tonSuccess: (job) => {",
+			"\tonSuccess: (job, context) => {",
 			"\t\t$21",
 			"\t},",
 			"\tonFail: (job) => {",
@@ -254,7 +271,7 @@
 		"body": [
 			"this.spellAction({",
 			"\ttitle: '${1:Title}',",
-			"\tplayType: '${2:noon}',",     
+			"\tplayType: ['${2|noon,shootout,shootout:join,resolution,cheatin resolution|}'],",     
 			"\tcost: ability.costs.${3:bootSelf()},",  
 			"\ttarget: ${5:targetselect}",
 			"\tdifficulty: ${6:numberOrFunction}",
@@ -278,7 +295,7 @@
 			"\twhen: {",
 			"\t\t${1:onEvent}: event => ${2:true}",
 			"\t},",
-			"\tcost: [ ability.costs.${3:bootSelf()} ],",
+			"\tcost: [ability.costs.${3:bootSelf()}],",
 			"\ttarget: ${4:targetselect}",
 			"\tdifficulty: ${6:numberOrFunction}",
 			"\tonSuccess: (context) => {",
@@ -291,6 +308,28 @@
 			"});"
 		],
 		"description": "Spell reaction"
+	},
+
+	"Card Technique Action": {
+		"scope": "javascript,typescript",
+		"prefix": "techniqueaction",
+		"body": [
+			"this.techniqueAction({",
+			"\ttitle: '${1:Title}',",
+			"\tplayType: ['${2|noon,shootout,shootout:join,resolution,cheatin resolution|}'],",     
+			"\tcost: ability.costs.${3:bootKfDude()},",  
+			"\ttarget: ${5:targetselect},",
+			"\tcombo: context => ${6:true},",
+			"\tonSuccess: (context) => {",
+			"\t\t$21",
+			"\t},",
+			"\tonFail: (context) => {",
+			"\t\t$22",
+            "\t},",
+			"\tsource: this",
+			"});"
+		],
+		"description": "Technique action"
 	},
 
 	"Trait Reaction": {

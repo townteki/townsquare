@@ -38,7 +38,8 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
     }
 
     filterChoicelessPlayers(players) {
-        return players.filter(player => this.cancelTimer.isEnabled(player) || this.abilityChoices.some(abilityChoice => abilityChoice.player === player));
+        return players.filter(player => this.cancelTimer.isEnabled(player) || 
+            this.abilityChoices.some(abilityChoice => abilityChoice.player === player && !abilityChoice.ability.usage.isUsed()));
     }
 
     promptPlayer(player) {
@@ -50,7 +51,7 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
             activePromptTitle: TriggeredAbilityWindowTitles.getTitle(this.abilityType, this.event.getPrimaryEvent()),
             isCardEffect: false,
             cardCondition: card => cardsForPlayer.includes(card),
-            cardType: ['dude', 'deed', 'action', 'goods', 'spell', 'outfit'],
+            cardType: ['dude', 'deed', 'action', 'goods', 'spell', 'outfit', 'legend'],
             additionalButtons: this.getButtons(player, unclickableCards),
             additionalControls: this.getAdditionalPromptControls(),
             doneButtonText: 'Pass',
@@ -98,10 +99,11 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
                     targets: event.targets.map(target => target.getShortSummary())
                 });
             } else if(event.name === 'onTargetsChosen') {
+                const targets = event.targets ? event.targets.getTargets() : event.cards;
                 controls.push({
                     type: 'targeting',
                     source: event.ability.card.getShortSummary(),
-                    targets: event.targets.getTargets().map(target => target.getShortSummary())
+                    targets: targets.map(target => target.getShortSummary())
                 });
             }
         }

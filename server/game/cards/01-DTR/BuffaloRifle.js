@@ -4,7 +4,7 @@ class BuffaloRifle extends GoodsCard {
     setupCardAbilities() {
         this.traitReaction({
             when: {
-                onDudeJoinedPosse: event => 
+                onDudeJoiningPosse: event => 
                     event.card === this.parent &&
                     this.game.shootout.shootoutLocation.isAdjacent(this.gamelocation)
             },
@@ -12,7 +12,17 @@ class BuffaloRifle extends GoodsCard {
                 context.game.promptForYesNo(context.player, {
                     title: 'Do you want to use ' + this.title + ' and snipe from distance?',
                     onYes: () => {
-                        context.game.shootout.addMoveOptions(this.parent, { moveToPosse: false });
+                        this.lastingEffect(context.ability, ability => ({
+                            until: {
+                                onShootoutPossesGathered: () => true,
+                                onShootoutPhaseFinished: () => true
+                            },
+                            match: this.parent,
+                            effect: [
+                                ability.effects.canJoinWithoutMoving(),
+                                ability.effects.canJoinWithoutBooting()
+                            ]
+                        }));
                         this.game.addMessage('{0} uses {1} to join {2} to posse from adjacent location', context.player, this, this.parent);
                     }
                 });

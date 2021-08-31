@@ -1,10 +1,20 @@
+const AbilityContext = require('./AbilityContext.js');
 const BaseAbility = require('./baseability.js');
 
 const ActionPlayTypes = ['any', 'noon', 'shootout', 'shootout:join', 'resolution', 'cheatin resolution'];
+const AllowedTypesForPhase = {
+    'high noon': ['noon'],
+    'shootout plays': ['shootout', 'shootout:join'],
+    'shootout resolution': ['resolution', 'cheatin resolution'],
+    'gambling': ['cheatin resolution']
+};
 
 class PlayTypeAbility extends BaseAbility {
-    constructor(properties) {
+    constructor(game, card, properties) {
         super(properties);
+        this.game = game;
+        this.card = card;
+        this.triggeringPlayer = properties.triggeringPlayer || 'controller';
         this.playType = this.buildPlayType(properties);
     }
 
@@ -24,13 +34,24 @@ class PlayTypeAbility extends BaseAbility {
         return result;
     }
 
-    playTypePlayed() {
+    playTypePlayed(context) {
+        // "causedByPlayType" attribute is stored in the context when effect is created.
+        // It is used because the returning the playType based on current Play Window 
+        // can be incorrect (e.g. effect created by shootout action that is checked during resolution).
+        if(context && context.causedByPlayType) {
+            return context.causedByPlayType;
+        }
+        // if there is no causedByPlayType in the context (we are not checking for effect), 
+        // return playType based on current Play Window.
         if(this.playType.includes('noon') && this.game.getCurrentPlayWindowName() === 'high noon') {
             return 'noon';
         } 
         if(this.playType.includes('shootout') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
             return 'shootout';
         } 
+        if(this.playType.includes('shootout:join') && this.game.getCurrentPlayWindowName() === 'shootout plays') {
+            return 'shootout:join';
+        }																												  
         if(this.playType.includes('resolution') && this.game.getCurrentPlayWindowName() === 'shootout resolution') {
             return 'resolution';
         } 
@@ -38,6 +59,42 @@ class PlayTypeAbility extends BaseAbility {
             (this.game.getCurrentPlayWindowName() === 'shootout resolution' || this.game.getCurrentPlayWindowName() === 'gambling')) {
             return 'cheatin resolution';
         } 
+    }
+
+    allowPlayer(player) {
+        return player.isAllowed(this.card, this.triggeringPlayer);
+    }
+
+    meetsRequirements(context) {
+        if(!super.meetsRequirements(context)) {
+            return false;
+        }
+
+        if(!this.allowPlayer(context.player)) {
+            return false;
+        }
+
+        if(this.playType !== 'any' && this.game.currentPlayWindow) {
+            let allowedTypes = AllowedTypesForPhase[this.game.getCurrentPlayWindowName()];
+            if(!allowedTypes) {
+                return false;
+            }
+            if(!this.playType.some(type => AllowedTypesForPhase[this.game.getCurrentPlayWindowName()].includes(type))) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    createContext(player) {
+        return new AbilityContext({
+            ability: this,
+            game: this.game,
+            player: player,
+            source: this.card,
+            comboNumber: this.options && this.options.comboNumber
+        });
     }
 }
 

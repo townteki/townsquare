@@ -9,8 +9,9 @@ class TheSloaneGang extends OutfitCard {
             cost: ability.costs.bootSelf(),        
             target: {
                 activePromptTitle: 'Select dude in Town Square',
-                cardCondition: { location: 'play area', condition: card => card.getGameLocation().isTownSquare() },
-                cardType: 'dude'
+                cardCondition: { location: 'play area', condition: card => this.game.isTownSquare(card.gamelocation) },
+                cardType: 'dude',
+                gameAction: 'boot'
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to assign mission of holding Town Square to {2}', context.player, this, context.target),
@@ -34,14 +35,14 @@ class TheSloaneGang extends OutfitCard {
         if(dude.location !== 'play area') {
             return;
         }
-        if(dude.getGameLocation().isTownSquare()) {
+        if(this.game.isTownSquare(dude.gamelocation)) {
             if(dude.control <= 0) {
                 this.game.promptWithMenu(player, this, {
                     activePrompt: {
                         menuTitle: 'Choose one for ' + dude.title,
                         buttons: [
-                            { text: 'Gain 1 GR', method: 'gainGR', arg: dude.uuid, card: dude },
-                            { text: 'Get 1 Control point', method: 'getControlPoint', arg: dude.uuid, card: dude }
+                            { text: 'Gain 1 Ghost Rock', method: 'gainGR', arg: dude.uuid, card: dude },
+                            { text: 'Get 1 Control Point', method: 'getControlPoint', arg: dude.uuid, card: dude }
                         ],
                         promptTitle: this.title
                     },
@@ -63,7 +64,7 @@ class TheSloaneGang extends OutfitCard {
     getControlPoint(player, dudeUuid) {
         let dude = this.dudesOnAMission.find(dude => dude.uuid === dudeUuid);
         dude.modifyControl(1);
-        this.game.addMessage('{0} gains 1 Control point because {1} held the Town Square (effect of {2})', player, dude, this);
+        this.game.addMessage('{0} gains 1 CP because {1} held the Town Square (effect of {2})', player, dude, this);
         return true;
     }
 }

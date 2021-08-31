@@ -13,9 +13,8 @@ describe('Player', function() {
         this.cardSpy.player = this.player;
         this.cardSpy.allowAttachment = jasmine.createSpy('allowAttachment');
         this.cardSpy.allowAttachment.and.returnValue(true);
-        this.cardSpy.getGameLocation = jasmine.createSpy('getGameLocation');
         this.cardSpy.location = 'play area';
-        this.attachmentSpy = jasmine.createSpyObj('goods', ['canAttach']);
+        this.attachmentSpy = jasmine.createSpyObj('goods', ['canAttach', 'getType']);
         this.attachmentSpy.canAttach.and.returnValue(true);
     });
 
@@ -38,18 +37,14 @@ describe('Player', function() {
 
         describe('when shoppin in uncontrolled location', function() {
             it('should return false', function() {
-                this.cardSpy.getGameLocation.and.callFake(function() {
-                    return { controller: this.player, determineController: () => 'other' };
-                });
+                this.cardSpy.locationCard = { controller: 'other' };
                 expect(this.player.canAttach(this.attachmentSpy, this.cardSpy, 'shoppin')).toBe(false);
             });
         });
 
         describe('when shoppin in controlled location', function() {
             beforeEach(function() {
-                this.cardSpy.getGameLocation.and.callFake(function() {
-                    return { controller: this.player, determineController: () => this.player };
-                });
+                this.cardSpy.locationCard = { controller: this.player };
             });
 
             it('should return false if parent booted', function() {

@@ -2,6 +2,7 @@ const BaseStep = require('./basestep.js');
 const Event = require('../event');
 const GamePipeline = require('../gamepipeline.js');
 const SimpleStep = require('./simplestep.js');
+const AbilityMessage = require('../AbilityMessage.js');
 
 class AbilityResolver extends BaseStep {
     constructor(game, ability, context) {
@@ -11,7 +12,9 @@ class AbilityResolver extends BaseStep {
         this.context = context;
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
+            new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionStarted', { ability: this.ability, context: this.context })),
             new SimpleStep(game, () => this.createSnapshot()),
+            new SimpleStep(game, () => this.updatePlayTypeCause()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
             new SimpleStep(game, () => this.context.resolutionStage = 'cost'),
             new SimpleStep(game, () => this.resolveCosts()),
@@ -20,13 +23,18 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.context.resolutionStage = 'effect'),
             new SimpleStep(game, () => this.choosePlayer()),
             new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
+            new SimpleStep(game, () => this.checkifCondition()),
+            new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
             new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.postResolveAbilityUpdates()),
             new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
-            new SimpleStep(game, () => this.game.popAbilityContext())
+            new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionFinished', { ability: this.ability, context: this.context })),
+            new SimpleStep(game, () => this.game.popAbilityContext()),
+            new SimpleStep(game, () => this.game.attachmentValidityCheck.enforceValidity()),
+            new SimpleStep(game, () => this.game.checkWinCondition())
         ]);
     }
 
@@ -66,6 +74,10 @@ class AbilityResolver extends BaseStep {
         }
     }
 
+    updatePlayTypeCause() {
+        this.context.causedByPlayType = this.ability.playTypePlayed();
+    }
+
     createSnapshot() {
         if(this.context.source && ['goods', 'spell', 'dude', 'action', 'deed'].includes(this.context.source.getType())) {
             this.context.cardStateWhenInitiated = this.context.source.createSnapshot();
@@ -73,7 +85,7 @@ class AbilityResolver extends BaseStep {
     }
 
     markActionAsTaken() {
-        if(this.cancelled || this.ability.options.doNotMarkActionAsTaken) {
+        if((this.cancelled && this.cancelReason !== 'ifCondition') || this.ability.options.doNotMarkActionAsTaken) {
             return;
         }
         if(this.ability.isAction()) {
@@ -135,6 +147,28 @@ class AbilityResolver extends BaseStep {
         }
     }
 
+    checkifCondition() {
+        if(this.cancelled) {
+            return;
+        }
+
+        if(this.ability.ifCondition && !this.ability.ifCondition(this.context)) {
+            this.cancelled = true;
+            this.cancelReason = 'ifCondition';
+            let formattedCancelMessage = AbilityMessage.create(this.ability.ifFailMessage || '{player} uses {source} but fails to meet requirements');
+            formattedCancelMessage.output(this.game, this.context);
+            this.ability.usage.increment();
+        }
+    }
+
+    raiseOnAbilityTargetsResolutionEvent() {
+        if(this.cancelled) {
+            return;
+        }
+
+        this.game.raiseEvent('onAbilityTargetsResolution', { player: this.context.player, source: this.context.source, ability: this.ability });
+    }
+
     resolveTargets() {
         if(this.cancelled) {
             return;
@@ -164,7 +198,7 @@ class AbilityResolver extends BaseStep {
         this.context.targets.setSelections(this.targetResults);
 
         if(this.context.targets.hasTargets()) {
-            this.game.raiseEvent('onTargetsChosen', { ability: this.ability, targets: this.context.targets }, () => {
+            this.game.raiseEvent('onTargetsChosen', { ability: this.ability, player: this.context.player, targets: this.context.targets }, () => {
                 this.context.targets.updateTargets();
                 this.context.target = this.context.targets.defaultTarget;
             });
@@ -200,15 +234,20 @@ class AbilityResolver extends BaseStep {
     }
 
     raiseOnAbilityResolvedEvent() {
-        // An event card is considered to be played even if it has been
-        // cancelled. Raising the event here will allow forced reactions and
+        // An action card is considered to be played even if it has been
+        // cancelled. Raising the event here will allow trait reactions and
         // reactions to fire with the appropriate timing. There are no cards
-        // with an interrupt to a card being played. If any are ever released,
+        // with a reaction to a card being played. If any are ever released,
         // then this event will need to wrap the execution of the entire
         // ability instead.
         if(this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
-                this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
+                if(this.context.source.isTaoTechnique && this.context.source.isTaoTechnique()) {
+                    this.context.player.handleTaoTechniques(this.context.source, this.context.kfDude, this.context.pull.isSuccessful);
+                    this.context.ability.resetKfOptions();
+                } else {
+                    this.context.source.owner.moveCard(this.context.source, this.context.source.actionPlacementLocation);
+                }
                 this.context.source.resetAbilities();
             }
 
@@ -220,6 +259,9 @@ class AbilityResolver extends BaseStep {
             });
 
             this.game.resolveEvent(event);
+        }
+        if(this.context.pull) {
+            this.context.pull.pulledCard.owner.handlePulledCard(this.context.pull.pulledCard);
         }
         if(this.ability.isCardAbility()) {
             this.game.raiseEvent('onCardAbilityResolved', { ability: this.ability, context: this.context });

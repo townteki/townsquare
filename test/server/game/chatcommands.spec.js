@@ -2,7 +2,7 @@ const ChatCommands = require('../../../server/game/chatcommands.js');
 
 describe('ChatCommands', function() {
     beforeEach(function() {
-        this.gameSpy = jasmine.createSpyObj('game', ['addMessage', 'addAlert']);
+        this.gameSpy = jasmine.createSpyObj('game', ['addMessage', 'addAlert', 'raiseEvent']);
 
         this.playerSpy = jasmine.createSpyObj('player', ['drawCardsToHand', 'discardAtRandom', 'discardFromDraw']);
         this.chatCommands = new ChatCommands(this.gameSpy);
@@ -77,10 +77,10 @@ describe('ChatCommands', function() {
             });
         });
 
-        describe('with a /discard command', function() {
+        describe('with a /discard-random command', function() {
             describe('with no arguments', function() {
                 it('should discard 1 card', function () {
-                    this.chatCommands.executeCommand(this.playerSpy, '/discard', ['/discard']);
+                    this.chatCommands.executeCommand(this.playerSpy, '/discard-random', ['/discard-random']);
 
                     expect(this.playerSpy.discardAtRandom).toHaveBeenCalledWith(1);
                 });
@@ -88,7 +88,7 @@ describe('ChatCommands', function() {
 
             describe('with a string argument', function() {
                 it('should discard 1 card', function () {
-                    this.chatCommands.executeCommand(this.playerSpy, '/discard', ['/discard', 'test']);
+                    this.chatCommands.executeCommand(this.playerSpy, '/discard-random', ['/discard-random', 'test']);
 
                     expect(this.playerSpy.discardAtRandom).toHaveBeenCalledWith(1);
                 });
@@ -96,7 +96,7 @@ describe('ChatCommands', function() {
 
             describe('with a negative argument', function() {
                 it('should discard 1 card', function () {
-                    this.chatCommands.executeCommand(this.playerSpy, '/discard', ['/discard', '-1']);
+                    this.chatCommands.executeCommand(this.playerSpy, '/discard-random', ['/discard-random', '-1']);
 
                     expect(this.playerSpy.discardAtRandom).toHaveBeenCalledWith(1);
                 });
@@ -104,7 +104,7 @@ describe('ChatCommands', function() {
 
             describe('with a valid argument', function() {
                 it('should discard the passed amount of cards', function () {
-                    this.chatCommands.executeCommand(this.playerSpy, '/discard', ['/discard', '3']);
+                    this.chatCommands.executeCommand(this.playerSpy, '/discard-random', ['/discard-random', '3']);
 
                     expect(this.playerSpy.discardAtRandom).toHaveBeenCalledWith(3);
                 });

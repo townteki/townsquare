@@ -3,12 +3,9 @@ const GoodsCard = require('../../goodscard.js');
 
 class AutoRevolver extends GoodsCard {
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.modifyBullets(this.bullets)
-        });
         this.persistentEffect({
             condition: () => this.parent && this.parent.isParticipating(),
-            match: this.controller,
+            match: player => player === this.controller,
             effect: [
                 ability.effects.addRedrawBonus(1)
             ]
@@ -16,7 +13,7 @@ class AutoRevolver extends GoodsCard {
         this.playAction({
             title: 'Shootout play: Equip',
             condition: () => this.game.shootout,
-            cost: ability.costs.payReduceableGRCost(1),
+            cost: ability.costs.payReduceableGRCost(),
             playType: 'shootout',
             target: {
                 activePromptTitle: 'Select dude to be equipped',

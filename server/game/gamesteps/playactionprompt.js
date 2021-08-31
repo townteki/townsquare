@@ -18,7 +18,7 @@ class PlayActionPrompt extends BaseStep {
 
         this.game.promptWithMenu(this.player, this, {
             activePrompt: {
-                menuTitle: 'Play ' + this.context.source.name + ':',
+                menuTitle: 'Play ' + this.context.source.title + ':',
                 buttons: buttons
             },
             source: this.context.source,

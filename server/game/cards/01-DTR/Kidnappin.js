@@ -1,14 +1,14 @@
 const ActionCard = require('../../actioncard.js');
 
 class Kidnappin extends ActionCard {
-    setupCardAbilities() {
+    setupCardAbilities(ability) {
         this.job({
             title: 'Kidnappin\'',
             playType: 'noon',
-            bootLeader: true,
+            cost: ability.costs.bootLeader(),
             target: {
                 activePromptTitle: 'Select dude to kidnap',
-                cardCondition: { location: 'play area', controller: 'opponent' },
+                cardCondition: { location: 'play area', controller: 'any' },
                 cardType: 'dude'
             },
             message: context =>

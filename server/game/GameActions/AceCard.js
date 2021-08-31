@@ -6,13 +6,13 @@ class AceCard extends GameAction {
     }
 
     canChangeGameState({ card }) {
-        return ['draw deck', 'hand', 'play area', 'draw hand'].includes(card.location);
+        return ['draw deck', 'hand', 'play area', 'draw hand', 'discard pile', 'being played'].includes(card.location);
     }
 
-    createEvent({ card, allowSave = true, options = { isCardEffect: true }, context }) {
+    createEvent({ card, canPrevent = true, options = { isCardEffect: true }, context }) {
         let params = {
             card: card,
-            allowSave: allowSave,
+            canPrevent: canPrevent,
             originalLocation: card.location,
             isCardEffect: options.isCardEffect,
             isCasualty: options.isCasualty

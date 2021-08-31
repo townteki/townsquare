@@ -15,7 +15,8 @@ class NotaryPublic extends DeedCard {
                     card.hasOneOfKeywords(['Government', 'Public']) &&
                     this.isSameStreet(card)
                 },
-                cardType: ['deed']
+                cardType: ['deed'],
+                gameAction: 'boot'
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
@@ -23,11 +24,11 @@ class NotaryPublic extends DeedCard {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to increase bounty',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: { location: 'play area' },
+                        cardCondition: card => card.location === 'play area',
                         cardType: 'dude',
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.addBounty({ card: card }), context);
-                            this.game.addMessage('{0} uses {1} to boot {2} and increase bounty on {3}.', player, this, context.target, card);
+                            this.game.addMessage('{0} uses {1} to boot {2} and increase bounty on {3}', player, this, context.target, card);
                             return true;
                         }
                     });
@@ -36,7 +37,7 @@ class NotaryPublic extends DeedCard {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a dude to move',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: { location: 'play area', controller: 'current' },
+                        cardCondition: card => card.location === 'play area' && card.controller === context.player,
                         cardType: 'dude',
                         onSelect: (player, dude) => {
                             this.game.promptForLocation(player, {
@@ -47,7 +48,7 @@ class NotaryPublic extends DeedCard {
                                         card: dude, 
                                         targetUuid: location.uuid
                                     }), context); 
-                                    this.game.addMessage('{0} uses {1} to boot {2} and move {3} to {4}.', player, this, context.target, dude, location);                                 
+                                    this.game.addMessage('{0} uses {1} to boot {2} and move {3} to {4}', player, this, context.target, dude, location);                                 
                                     return true;
                                 }
                             });

@@ -8,14 +8,14 @@ class MortimerParsons extends DudeCard {
             },
             message: context =>
                 this.game.addMessage('{0}\'s cheatin\' hand sends {1} home booted and reduces his influence to 0', context.player, this),
-            handler: () => {
+            handler: context => {
                 if(this.influence > 0) {
-                    this.untilEndOfRound(ability => ({
+                    this.untilEndOfRound(context.ability, ability => ({
                         match: this,
                         effect: ability.effects.setInfluence(0)
                     }));
                 }
-                this.game.shootout.sendHome(this);
+                this.game.shootout.sendHome(this, context);
                 if(this.game.shootout.checkEndCondition()) {
                     this.game.shootout.cancelStep();
                 }

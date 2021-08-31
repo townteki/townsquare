@@ -10,7 +10,10 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
         if(this.isComplete()) {
             return true;
         }
-        if(this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        const context = { game: this.game, player: this.currentPlayer };
+        const currentPlayerPosse = this.shootout.getPosseByPlayer(this.currentPlayer);
+        if(currentPlayerPosse.isEmpty() || this.currentPlayer.dudesCannotFlee() ||
+            currentPlayerPosse.getDudes().every(dude => (dude.cannotFlee() || !dude.allowGameAction('sendHome', context)))) {
             this.completePlayer();
             return this.continue();
         }
@@ -25,9 +28,16 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             cardCondition: card => card.controller === this.currentPlayer &&
                 card.location === 'play area' &&
                 card.getType() === 'dude' &&
-                this.shootout.isInShootout(card),
+                !card.cannotFlee() &&
+                this.shootout.isInShootout(card) &&
+                card.allowGameAction('removeFromPosse', context) &&
+                (card.isAtHome() || card.allowGameAction('moveDude', context)),
             onSelect: (player, cards) => {
-                cards.forEach(card => this.shootout.sendHome(card, { isCardEffect: false }));
+                cards.forEach(card => this.shootout.sendHome(
+                    card, 
+                    { game: this.game, player: this.currentPlayer },
+                    { isCardEffect: false }
+                ));
                 this.completePlayer();
                 return true;
             },
@@ -36,7 +46,11 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 return true;
             },
             onMenuCommand: (player) => {
-                this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(card, { isCardEffect: false }));
+                this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(
+                    card, 
+                    { game: this.game, player: this.currentPlayer },
+                    { isCardEffect: false }
+                ));
                 this.completePlayer();
                 return true;
             }

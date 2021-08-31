@@ -3,6 +3,7 @@ const DeedCard = require('../../deedcard.js');
 class PearlysPalace extends DeedCard {
     setupCardAbilities(ability) {
         this.reaction({
+            title: 'React: Pearly\'s Palace',
             when: {
                 onPlayWindowOpened: event => event.playWindow.name === 'shootout plays'
             },

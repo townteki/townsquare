@@ -2,15 +2,12 @@ const GoodsCard = require('../../goodscard.js');
 
 class LeMatRevolver extends GoodsCard {
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.modifyBullets(this.bullets)
-        });
         this.action({
             title: 'Cheatin\' Resolution',
             playType: 'cheatin resolution',
             cost: ability.costs.bootSelf(),
             handler: context => {
-                context.player.modifyRank(this.parent.bullets);
+                context.player.modifyRank(this.parent.bullets, context);
                 this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
                     context.player, this, this.parent.bullets, context.player.getTotalRank());
             }
@@ -40,7 +37,7 @@ class LeMatRevolver extends GoodsCard {
                         }
                     }
                 }
-                context.player.modifyRank(this.parent.bullets);
+                context.player.modifyRank(this.parent.bullets, context);
                 this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
                     context.player, this, this.parent.bullets, context.player.getTotalRank());
             }
