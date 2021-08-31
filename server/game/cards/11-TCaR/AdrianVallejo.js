@@ -6,7 +6,8 @@ class AdrianVallejo extends DudeCard {
         this.reaction({
             title: 'React: Adrián Vallejo',
             when: {
-                onDudeMoved: event => this.game.shootout && 
+                onDudeMoved: event => this.game.shootout && event.options.context && 
+                    event.options.context.ability && event.options.context.ability.isCardAbility() && 
                     event.card !== this &&
                     !this.isParticipating() &&
                     event.target === this.game.shootout.shootoutLocation.uuid &&
