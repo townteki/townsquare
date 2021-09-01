@@ -234,7 +234,9 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Trade',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && this.hasAttachmentForTrading(),
+            condition: () => this.game.currentPhase === 'high noon' && 
+                this.isInControlledLocation() &&
+                this.hasAttachmentForTrading(),
             target: {
                 activePromptTitle: 'Select attachment(s) to trade',
                 multiSelect: true,
