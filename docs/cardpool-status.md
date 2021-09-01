@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/411/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/413/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -807,7 +807,7 @@
 |:heavy_check_mark:   | 20047| Guiding Wind
 |:heavy_check_mark:   | 20048| Mischievous Coyote
 |                     | 20049| Murdered in Tombstone
-|                     | 20050| Hostile Takeover
+|:heavy_check_mark:   | 20050| Hostile Takeover
 |                     | 20051| Jade King Stance
 |:heavy_check_mark:   | 20052| Heist
 |:heavy_check_mark:   | 20053| I'm Your Huckleberry
@@ -934,7 +934,7 @@
 |                     | 22052| Tumblebleeds!
 |                     | 22053| Takin' Cover
 |                     | 22054| Hell's Comin' With Me!
-|                     | 22055| Frontier Feud
+|:heavy_check_mark:   | 22055| Frontier Feud
 |:heavy_check_mark:   | 22056| Seizing the Pearl of Death
 
 ## `15-W2D` Welcome to Deadwood
