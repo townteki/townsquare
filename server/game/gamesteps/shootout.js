@@ -114,8 +114,10 @@ class Shootout extends Phase {
     resetModifiers() {
         this.leaderPlayer.rankModifier = 0;
         this.leaderPlayer.casualties = 0;
-        this.opposingPlayer.rankModifier = 0;
-        this.opposingPlayer.casualties = 0;
+        if(this.opposingPlayer) {
+            this.opposingPlayer.rankModifier = 0;
+            this.opposingPlayer.casualties = 0;
+        }
     }
 
     beginShootoutRound() {
