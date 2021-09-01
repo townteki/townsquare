@@ -324,12 +324,14 @@ class DrawCard extends BaseCard {
 
     leavesPlay() {
         this.booted = false;
-        this.control = 0;
         this.attachments.forEach(attachment => {
             attachment.controller.moveCard(attachment, 'discard pile', { raiseEvents: false });
         });
         if(this.parent) {
             this.parent.removeAttachment(this);
+        }
+        if(this.getType() === 'deed') {
+            this.owner.removeDeedFromPlay(this, dude => dude.sendHome({ needToBoot: true }));
         }
         super.leavesPlay();
     }

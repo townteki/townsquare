@@ -17,8 +17,8 @@ class GamblingPhase extends Phase {
             new SimpleStep(game, () => this.game.revealHands()),
             new SimpleStep(game, () => this.cheatinResolutions()),
             new SimpleStep(game, () => this.determineWinner()),
-            new SimpleStep(game, () => this.gainLowballPot()),
-            new SimpleStep(game, () => this.game.discardDrawHands())
+            new SimpleStep(game, () => this.game.discardDrawHands()),
+            new SimpleStep(game, () => this.resetModifiers())
         ]);
     }
 
@@ -46,11 +46,6 @@ class GamblingPhase extends Phase {
         const rank0 = players[0].getTotalRank();
         const rank1 = players[1].getTotalRank();
         let winner = players[0];
-
-        const tiebreaks0 = players[0].getHandRank().tiebreaker.concat(players[0].getHandRank().tiebreakerHighCards);
-        const tiebreaks1 = players[1].getHandRank().tiebreaker.concat(players[1].getHandRank().tiebreakerHighCards);
-        this.game.addAlert('warning', 'DEBUG: {0} rank: {1}, tiebreaks: {2} | {3} rank: {4}, tiebreaks: {5}', 
-            players[0], rank0, tiebreaks0, players[1], rank1, tiebreaks1);
 
         if(rank1 < rank0) {
             winner = players[1];
@@ -101,8 +96,10 @@ class GamblingPhase extends Phase {
         winner.player.modifyGhostRock(this.lowballPot);
     }
 
-    gainLowballPot() {
-
+    resetModifiers() {
+        this.game.getPlayers().forEach(player => {
+            player.rankModifier = 0;
+        });
     }
 }
 

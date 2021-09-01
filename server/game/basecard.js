@@ -507,7 +507,7 @@ class BaseCard {
         this.clearNew();
         this.gamelocation = '';
         this.controller = this.owner;
-        this.removeSuitEffect('chatcommand');
+        this.resetStatsToPrinted();
     }
 
     clearTokens() {
@@ -677,6 +677,17 @@ class BaseCard {
             case 'upkeep': return this.cardData.upkeep;
             case 'production': return this.cardData.production;           
         }
+    }
+
+    resetStatsToPrinted() {
+        this.suitReferenceArray = [];
+        this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
+        this.rank = this.getPrintedStat('value');
+        this.bullets = this.getPrintedStat('bullets');
+        this.influence = this.getPrintedStat('influence');
+        this.control = this.getPrintedStat('control');
+        this.upkeep = this.getPrintedStat('upkeep');
+        this.production = this.getPrintedStat('production');          
     }
 
     setBlank(type) {

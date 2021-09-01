@@ -1213,33 +1213,35 @@ class Player extends Spectator {
                 gl.adjacencyMap.delete(gameLocation.uuid);
             }
         });
-        this.locations = this.locations.filter(loc => loc !== gameLocation);
-        if(!card.isOutOfTown()) {
-            const orderedLocations = this.locations.sort((a, b) => {
-                return a.order - b.order;
-            });
-            let rightOrder = 0;
-            for(let i = 0; i < orderedLocations.length; i++) {
-                if(orderedLocations[i].order === 0) {
-                    let leftOrder = 0;
-                    rightOrder = 1;
-                    for(let j = i - 1; j >= 0; j--) {
-                        leftOrder -= 1;
-                        orderedLocations[j].order = leftOrder;                     
+        this.game.queueSimpleStep(() => {
+            this.locations = this.locations.filter(loc => loc !== gameLocation);
+            if(!card.isOutOfTown()) {
+                const orderedLocations = this.locations.sort((a, b) => {
+                    return a.order - b.order;
+                });
+                let rightOrder = 0;
+                for(let i = 0; i < orderedLocations.length; i++) {
+                    if(orderedLocations[i].order === 0) {
+                        let leftOrder = 0;
+                        rightOrder = 1;
+                        for(let j = i - 1; j >= 0; j--) {
+                            leftOrder -= 1;
+                            orderedLocations[j].order = leftOrder;                     
+                        }
                     }
-                }
-                if(i < (orderedLocations.length - 1)) {
-                    const gap = Math.abs(orderedLocations[i].order - orderedLocations[i + 1].order);
-                    if(gap > 1) {
-                        orderedLocations[i].addAdjacency(orderedLocations[i + 1], 'game');
-                    }
-                    if(rightOrder > 0) {
-                        orderedLocations[i].order = rightOrder;
-                        rightOrder += 1;
+                    if(i < (orderedLocations.length - 1)) {
+                        const gap = Math.abs(orderedLocations[i].order - orderedLocations[i + 1].order);
+                        if(gap > 1) {
+                            orderedLocations[i].addAdjacency(orderedLocations[i + 1], 'game');
+                        }
+                        if(rightOrder > 0) {
+                            orderedLocations[i].order = rightOrder;
+                            rightOrder += 1;
+                        }
                     }
                 }
             }
-        }
+        });
     }
 
     promptForDeedStreetSide(card) {
@@ -1658,9 +1660,6 @@ class Player extends Spectator {
 
             if(targetLocation !== 'play area') {
                 let cardLeavePlay = () => {
-                    if(card.getType() === 'deed') {
-                        this.removeDeedFromPlay(card, dude => dude && dude.sendHome({ needToBoot: true }));
-                    }
                     card.leavesPlay();
                     card.moveTo(targetLocation);
                 };

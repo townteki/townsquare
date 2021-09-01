@@ -234,7 +234,9 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Trade',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && this.hasAttachmentForTrading(),
+            condition: () => this.game.currentPhase === 'high noon' && 
+                this.isInControlledLocation() &&
+                this.hasAttachmentForTrading(),
             target: {
                 activePromptTitle: 'Select attachment(s) to trade',
                 multiSelect: true,
@@ -613,7 +615,8 @@ class DudeCard extends DrawCard {
                 event.shootout.removeFromPosse(event.card);
             });
         }
-        this.removeStudEffect('chatcommand');
+        this.studReferenceArray = [];
+        this.studReferenceArray.unshift({ source: 'default', shooter: this.cardData.shooter});
     }
 
     getSummary(activePlayer) {
