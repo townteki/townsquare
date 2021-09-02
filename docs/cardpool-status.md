@@ -720,7 +720,7 @@
 |:heavy_check_mark:   | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
-|                     | 19013| Adrián Vallejo
+|:heavy_check_mark:   | 19013| Adrián Vallejo
 |:heavy_check_mark:   | 19014| Prof. Aloysius Roe
 |:heavy_check_mark:   | 19015| Rabid Rance Hitchcock
 |:heavy_check_mark:   | 19016| Morgan Lash
@@ -846,7 +846,7 @@
 |:heavy_check_mark:   | 21025| Sgt. Elijah Clay
 |                     | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
-|                     | 21028| Roberto Muratore
+|:heavy_check_mark:   | 21028| Roberto Muratore
 |                     | 21029| Adelaide Rose
 |:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate

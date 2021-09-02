@@ -8,6 +8,7 @@ class PickYerShooterPrompt extends PlayerOrderPrompt {
 
     continue() {
         if(!this.isComplete()) {
+            this.game.raiseEvent('onShooterToBePicked', { player: this.currentPlayer });
             this.game.promptForSelect(this.currentPlayer, {
                 activePromptTitle: 'Select Yer Shooter',
                 autoSelect: true,
