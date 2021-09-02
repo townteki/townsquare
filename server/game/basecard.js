@@ -179,6 +179,7 @@ class BaseCard {
 
     spellAction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
+        properties.triggeringPlayer = properties.triggeringPlayer || (this.hasKeyword('totem') ? 'any' : undefined);
         var spell = new SpellAction(this.game, this, properties);
         this.abilities.actions.push(spell);
     }
@@ -505,6 +506,7 @@ class BaseCard {
         this.tokens = {};        
         this.clearNew();
         this.gamelocation = '';
+        this.controller = this.owner;
         this.resetStatsToPrinted();
     }
 

@@ -352,7 +352,7 @@
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
 |                     | 08014| Stoker's Sabre
-|                     | 08015| Fate Dispenser
+|:heavy_check_mark:   | 08015| Fate Dispenser
 |:heavy_check_mark:   | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
 |:heavy_check_mark:   | 08018| Sword of the Spirit
@@ -545,7 +545,7 @@
 |                     | 14006| Constance Daughtry
 |                     | 14007| Tallulah "Lula" Morgan (Exp.1)
 |                     | 14008| Darragh Mèng
-|                     | 14009| Ol' Howard
+|:heavy_check_mark:   | 14009| Ol' Howard
 |                     | 14010| Theo Whateley-Boyer
 |                     | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
@@ -720,7 +720,7 @@
 |:heavy_check_mark:   | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
-|                     | 19013| Adrián Vallejo
+|:heavy_check_mark:   | 19013| Adrián Vallejo
 |:heavy_check_mark:   | 19014| Prof. Aloysius Roe
 |:heavy_check_mark:   | 19015| Rabid Rance Hitchcock
 |:heavy_check_mark:   | 19016| Morgan Lash
@@ -846,7 +846,7 @@
 |:heavy_check_mark:   | 21025| Sgt. Elijah Clay
 |                     | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
-|                     | 21028| Roberto Muratore
+|:heavy_check_mark:   | 21028| Roberto Muratore
 |                     | 21029| Adelaide Rose
 |:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate

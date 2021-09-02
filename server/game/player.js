@@ -933,7 +933,8 @@ class Player extends Spectator {
         if(attachment.getType() !== 'legend' && attachment.isGadget() && 
             (playingType === 'shoppin' || playingType === 'ability') &&
             !attachment.doesNotHaveToBeInvented()) {
-            let scientist = defaultScientist || (playingType === 'shoppin' ? card : null);
+            let scientist = defaultScientist || 
+                (playingType === 'shoppin' && !attachment.isImprovement() ? card : null);
             this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
         } else {
             this.performAttach(attachment, card, playingType, attachCallback);
@@ -1320,6 +1321,9 @@ class Player extends Spectator {
     }
 
     handlePulledCard(card) {
+        if(!card) {
+            return;
+        }
         if(card.getType() === 'joker') {
             this.aceCard(card);
         } else {
@@ -1356,10 +1360,14 @@ class Player extends Spectator {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
         }
-        let pulledCard = this.drawDeck[0];
+        const pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'being played');
         if(addMessage) {
             this.game.addMessage('{0} pulled {1}of{2}({3} )', this, pulledCard.getValueText(), pulledCard.suit, pulledCard);
+        }
+        if(props.context && props.context.ability) {
+            this.game.onceConditional('onCardAbilityResolved', { condition: event => event.ability === props.context.ability },
+                () => this.handlePulledCard(pulledCard));
         }
         this.game.raiseEvent('onCardPulled', { card: pulledCard, value: pulledCard.value, suit: pulledCard.suit, props }, event => {
             if(callback) {

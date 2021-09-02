@@ -16,11 +16,11 @@ class SpiritTrail extends SpellCard {
             cost: ability.costs.bootSelf(),
             difficulty: 6,
             onSuccess: context => {
-                this.game.promptForSelect(context.player, {
+                context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' && 
-                        card.controller === this.controller &&
+                        card.controller === context.player &&
                         card.gamelocation === this.gamelocation,
                     cardType: 'dude',
                     gameAction: 'moveDude',

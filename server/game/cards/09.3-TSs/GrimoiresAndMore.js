@@ -41,7 +41,7 @@ class GrimoiresAndMore extends DeedCard {
                             context
                         );                
                     }                    
-                }, true);
+                }, true, { context });
             }
         });
     }

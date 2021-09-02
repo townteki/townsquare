@@ -102,10 +102,6 @@ class LocationCard extends DrawCard {
     isLocationCard() {
         return true;
     }
-
-    isOutOfTown() {
-        return false;
-    }
 }
 
 module.exports = LocationCard;

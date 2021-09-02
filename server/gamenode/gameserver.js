@@ -122,7 +122,8 @@ class GameServer {
             });
         }
 
-        Raven.captureException(e, { extra: debugData });
+        // TODO M2 disable for now until there is time to configure Raven
+        //Raven.captureException(e, { extra: debugData });
 
         if(game) {
             game.addMessage('A Server error has occured processing your game state, apologies.  Your game may now be in an inconsistent state, or you may be able to continue.  The error has been logged.');
