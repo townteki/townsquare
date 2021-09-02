@@ -714,13 +714,21 @@ class ChatCommands {
 
         preparedCard.applyAnyLocationPersistentEffects();
 
-        if(deck.isDrawCard(card)) {
-            player.moveCard(preparedCard, 'draw deck');
+        if(preparedCard.isToken()) {
+            player.putIntoPlay(preparedCard, player.outfit.uuid);
+        } else {
+            if(deck.isDrawCard(card)) {
+                player.moveCard(preparedCard, 'draw deck');
+            }
         }
 
         this.game.allCards.push(preparedCard);
 
-        this.game.addAlert('danger', '{0} uses the /add-card command to add {1} to their deck', player, preparedCard);
+        if(preparedCard.isToken()) {
+            this.game.addAlert('danger', '{0} uses the /add-card command to put Token {1} into their outfit', player, preparedCard);
+        } else {
+            this.game.addAlert('danger', '{0} uses the /add-card command to add {1} to their deck', player, preparedCard);
+        }
 
         return true;
     }
