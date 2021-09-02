@@ -21,12 +21,13 @@ class Remedy extends SpellCard {
                     !effect.source.hasKeyword('weapon') &&
                     effect.source.parent !== context.target
                 );
+                context.target.removeStudEffect('chatcommand');
                 this.lastingEffect(context.ability, ability => ({
                     until: {
                         onShootoutPhaseFinished: () => true
                     },
-                    condition: () => this.isParticipating(),
-                    match: this,
+                    condition: () => context.target.isParticipating(),
+                    match: context.target,
                     effect: [
                         ability.effects.modifyBullets(-this.permanentBullets),
                         ability.effects.cannotLeaveShootout('any', context => context.ability && context.ability.isCardAbility())
