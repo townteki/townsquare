@@ -29,7 +29,6 @@ class BaseCard {
 
         this.uuid = uuid.v1();
         this.code = cardData.code;
-        this.name = cardData.name;
         this.title = cardData.title;
         this.gang_code = cardData.gang_code;
         this.facedown = false;
@@ -50,6 +49,7 @@ class BaseCard {
         this.wealth = cardData.wealth;
         this.permanentBullets = 0;
         this.startingSize = 1;
+        this.startingCondition = () => true;
         this.maxBullets = null;
         this.minBullets = 0;        
 
@@ -595,10 +595,6 @@ class BaseCard {
 
     cancelAbilityMenu() {
         return true;
-    }
-
-    isCopyOf(card) {
-        return this.name === card.name;
     }
 
     isToken() {
