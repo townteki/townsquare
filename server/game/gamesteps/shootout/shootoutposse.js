@@ -19,7 +19,7 @@ class ShootoutPosse {
         if(card.getType() === 'goods' || card.getType() === 'spell') {
             return this.posse.some(dudeUuid => {
                 let dude = this.player.findCardInPlayByUuid(dudeUuid);
-                return dude.hasAttachment(attachment => attachment.uuid === card.uuid);
+                return dude && dude.hasAttachment(attachment => attachment.uuid === card.uuid);
             });
         }
         return false;
@@ -44,7 +44,7 @@ class ShootoutPosse {
     }
 
     findShooter(stud = true) {
-        let dudes = this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid));
+        let dudes = this.getDudes();
         if(dudes.length === 0) {
             return 0;
         }
