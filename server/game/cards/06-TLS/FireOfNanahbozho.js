@@ -22,7 +22,7 @@ class FireOfNanahbozho extends SpellCard {
             cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Select a dude',
-                cardCondition: { location: 'play area', controller: 'current', condition: card => card.gamelocation === this.gamelocation },
+                cardCondition: { location: 'play area', controller: 'any', condition: card => card.gamelocation === this.gamelocation },
                 cardType: ['dude'],
                 gameAction: 'unboot'
             },

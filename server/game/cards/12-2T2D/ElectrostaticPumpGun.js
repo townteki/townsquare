@@ -29,7 +29,7 @@ class ElectrostaticPumpGun extends GoodsCard {
                         }));
                         this.game.addMessage('{0} uses {1} to set {2} as draw', context.player, this);
                     }                  
-                }, true);
+                }, true, { context });
             }
         });
     }

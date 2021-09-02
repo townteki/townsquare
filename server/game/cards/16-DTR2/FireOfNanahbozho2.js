@@ -25,7 +25,7 @@ class FireOfNanahbozho2 extends SpellCard {
                 activePromptTitle: 'Select a dude',
                 cardCondition: { 
                     location: 'play area', 
-                    controller: 'current', 
+                    controller: 'any', 
                     condition: card => card.isNearby(this.gamelocation) 
                 },
                 cardType: ['dude'],
