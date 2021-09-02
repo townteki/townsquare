@@ -54,7 +54,7 @@ class TrickShooting extends ActionCard {
                         this.game.addMessage('{0} uses {1} and gives {2} +1 bullets but it fails because pulled card was not Hearts or Diams', 
                             context.player, this, context.target);
                     }
-                }, true);
+                }, true, { context });
             }
         });
     }
