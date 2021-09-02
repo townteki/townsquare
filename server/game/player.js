@@ -1444,15 +1444,19 @@ class Player extends Spectator {
     }
 
     pullForSkill(difficulty, skillRating, properties, context) {
-        let props = Object.assign(properties, {
-            successCondition: pulledValue => pulledValue >= difficulty,
-            pullBonus: skillRating
+        this.game.raiseEvent('onPullForSkill', { 
+            player: this, difficulty, skillRating, properties 
+        }, event => {
+            const props = Object.assign(properties, {
+                successCondition: pulledValue => pulledValue >= event.difficulty,
+                pullBonus: event.skillRating
+            });
+            this.handlePull(props, context);
         });
-        this.handlePull(props, context);
     }
 
     pullForKungFu(difficulty, properties, context) {
-        let props = Object.assign(properties, {
+        const props = Object.assign(properties, {
             successCondition: pulledValue => pulledValue < difficulty,
             pullBonus: 0
         });

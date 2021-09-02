@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/413/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/419/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -243,7 +243,7 @@
 |--------|-----:|:------------------------:|
 |                     | 05001| Oddities of Nature
 |                     | 05002| The Arsenal
-|                     | 05003| Morgan Gadgetorium
+|:heavy_check_mark:   | 05003| Morgan Gadgetorium
 |                     | 05004| Desolation Row
 |                     | 05005| Pagliaccio
 |:heavy_check_mark:   | 05006| Valeria Batten
@@ -449,7 +449,7 @@
 |                     | 10036| A Hero's Passing
 |                     | 10037| Tummy Twister
 |                     | 10038| Backroom Deals
-|                     | 10039| Forced Quarantine
+|:heavy_check_mark:   | 10039| Forced Quarantine
 |                     | 10040| Devil's Joker (Red)
 |                     | 10041| Devil's Joker (Black)
 
