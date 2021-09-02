@@ -352,7 +352,7 @@
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
 |                     | 08014| Stoker's Sabre
-|                     | 08015| Fate Dispenser
+|:heavy_check_mark:   | 08015| Fate Dispenser
 |:heavy_check_mark:   | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
 |:heavy_check_mark:   | 08018| Sword of the Spirit
@@ -545,7 +545,7 @@
 |                     | 14006| Constance Daughtry
 |                     | 14007| Tallulah "Lula" Morgan (Exp.1)
 |                     | 14008| Darragh Mèng
-|                     | 14009| Ol' Howard
+|:heavy_check_mark:   | 14009| Ol' Howard
 |                     | 14010| Theo Whateley-Boyer
 |                     | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
