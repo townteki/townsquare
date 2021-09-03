@@ -231,7 +231,7 @@
 |:heavy_check_mark:   | 04014| The Evidence
 |                     | 04015| Teleportation Device
 |                     | 04016| Mayfair Family Deck
-|                     | 04017| Puppet
+|:heavy_check_mark:   | 04017| Puppet
 |                     | 04018| Summoning
 |                     | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
@@ -841,7 +841,7 @@
 |:heavy_check_mark:   | 21020| Lorena Corbett
 |:heavy_check_mark:   | 21021| Auntie Sinister
 |:heavy_check_mark:   | 21022| Mason Adler
-|                     | 21023| Enrique Dos Santos
+|:heavy_check_mark:   | 21023| Enrique Dos Santos
 |                     | 21024| Reverend Endicott
 |:heavy_check_mark:   | 21025| Sgt. Elijah Clay
 |                     | 21026| Wyatt Earp
