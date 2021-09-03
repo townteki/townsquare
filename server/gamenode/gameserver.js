@@ -50,7 +50,6 @@ class GameServer {
         }
 
         server.listen(process.env.PORT || config.socketioPort);
-        logger.info('== DEBUG %s is listening on port %s', this.host, process.env.PORT || config.socketioPort);
 
         var options = {
             perMessageDeflate: false
@@ -65,12 +64,10 @@ class GameServer {
         this.io.use(this.handshake.bind(this));
 
         if(process.env.NODE_ENV === 'production') {
-            //this.io.set('origins', 'http://www.dtts.online:* https://www.dtts.online:* http://www.dtts.online:* https://www.dtts.online:*');
-            this.io.set('origins', '*:*');
+            this.io.set('origins', 'http://www.doomtown.online:* https://www.doomtown.online:*');
         }
 
         this.io.on('connection', this.onConnection.bind(this));
-        logger.info('== DEBUG options.path : %s', options.path);
 
         setInterval(() => this.clearStaleAndFinishedGames(), 30 * 1000);
     }
@@ -122,8 +119,7 @@ class GameServer {
             });
         }
 
-        // TODO M2 disable for now until there is time to configure Raven
-        //Raven.captureException(e, { extra: debugData });
+        Raven.captureException(e, { extra: debugData });
 
         if(game) {
             game.addMessage('A Server error has occured processing your game state, apologies.  Your game may now be in an inconsistent state, or you may be able to continue.  The error has been logged.');

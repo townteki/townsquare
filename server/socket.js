@@ -1,6 +1,7 @@
 const logger = require('./log.js');
 const EventEmitter = require('events');
 const jwt = require('jsonwebtoken');
+const Raven = require('raven');
 
 const User = require('./models/User');
 
@@ -52,8 +53,7 @@ class Socket extends EventEmitter {
             callback(this, ...args);
         } catch(err) {
             logger.info(err);
-            // TODO M2 disable for now until there is time to configure Raven
-            //Raven.captureException(err, { extra: args });
+            Raven.captureException(err, { extra: args });
         }
     }
 
