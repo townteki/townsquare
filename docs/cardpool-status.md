@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/419/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/425/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -370,7 +370,7 @@
 |:heavy_check_mark:   | 09004| Daomei Wang
 |:heavy_check_mark:   | 09005| Randall
 |:heavy_check_mark:   | 09006| Xiaodan Li
-|                     | 09007| Longwei Fu
+|:heavy_check_mark:   | 09007| Longwei Fu
 |:heavy_check_mark:   | 09008| Natalya
 |:heavy_check_mark:   | 09009| Xui Yin Chen
 |                     | 09010| Hamshanks
@@ -784,7 +784,7 @@
 |                     | 20024| Vida Azul
 |                     | 20025| Bartholomew P. Fountain
 |:heavy_check_mark:   | 20026| Ike Clanton
-|                     | 20027| Frank Stillwell
+|:heavy_check_mark:   | 20027| Frank Stillwell
 |:heavy_check_mark:   | 20028| Silas Aims (Exp.1)
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
 |:heavy_check_mark:   | 20030| Virginia Ann Earp
