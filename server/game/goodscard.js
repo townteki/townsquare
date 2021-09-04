@@ -6,16 +6,14 @@ class GoodsCard extends HeartsCard {
             return false;
         }
 
-        if(this.isGadget() && playingType === 'shoppin' && !this.isImprovement() &&
-            (!card.hasKeyword('mad scientist') || card.cannotInventGadgets())) {
-            return false;
+        if(this.isImprovement()) {
+            return card.getType() === 'deed' || card.getType() === 'outfit';
         }
 
-        if(card.getType() === 'deed' || card.getType() === 'outfit') {
-            if(!this.isImprovement()) {
-                return false;
-            }
-        }        
+        if(this.isGadget() && playingType === 'shoppin' &&
+            (!card.hasKeyword('mad scientist') || card.cannotInventGadgets())) {
+            return false;
+        }   
 
         return true;
     }

@@ -471,7 +471,7 @@
 |                     | 11012| Doris Powell
 |                     | 11013| Rico Rodegain
 |:heavy_check_mark:   | 11014| Maza Gang Hideout
-|                     | 11015| Miasmatic Purifier
+|:heavy_check_mark:   | 11015| Miasmatic Purifier
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
 |:heavy_check_mark:   | 11018| Jael's Guile
@@ -551,7 +551,7 @@
 |                     | 14012| Travis Moone (Exp.1)
 |:heavy_check_mark:   | 14013| Henry Moran
 |                     | 14014| Gomorra Lot Commission
-|                     | 14015| Wagner Memorial Ranch
+|:heavy_check_mark:   | 14015| Wagner Memorial Ranch
 |:heavy_check_mark:   | 14016| Notary Public
 |                     | 14017| Market Street
 |                     | 14018| Companhurst's

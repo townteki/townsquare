@@ -14,11 +14,10 @@ class MorganGadgetorium extends OutfitCard {
                 this.game.addMessage('{0} uses {1} to raise difficulty of skill check by 2 to {2}', 
                     context.player, this, context.event.difficulty + 2),
             handler: context => {
-                const dudeBooted = context.event.properties.pullingDude.booted;
                 const eventHandler = event => {
                     context.player.modifyGhostRock(1);
                     let unbootText = '';
-                    if(!dudeBooted && event.pullingDude.booted) {
+                    if(context.event.properties.bootedToInvent) {
                         this.game.resolveGameAction(GameActions.unbootCard({ 
                             card: event.pullingDude
                         }), context);
