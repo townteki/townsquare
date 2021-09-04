@@ -842,14 +842,8 @@ class Player extends Spectator {
         this.gainedGhostRock = 0;
     }
 
-    hasUnmappedAttachments() {
-        return this.cardsInPlay.some(card => {
-            return card.getType() === 'attachment';
-        });
-    }
-
     inventGadget(gadget, scientist, successHandler = () => true) {
-        let getPullProperties = scientist => {
+        const getPullProperties = (scientist, bootedToInvent) => {
             return {
                 successHandler: context => {
                     this.game.addMessage('{0} successfuly invents {1} using {2} ( skill rating {3})', 
@@ -865,8 +859,20 @@ class Player extends Spectator {
                     this.moveCard(gadget, 'discard pile');
                 },
                 source: gadget,
-                pullingDude: scientist
+                pullingDude: scientist,
+                bootedToInvent
             };
+        };
+        const pullToInvent = (scientist, gadget) => {
+            let bootedToInvent = false;
+            if(!gadget.canBeInventedWithoutBooting()) {
+                this.bootCard(scientist);
+                bootedToInvent = true;
+            }
+            this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
+                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
+                    getPullProperties(event.scientist, event.bootedToInvent));
+            });
         };
         if(!scientist) {
             this.game.promptForSelect(this, {
@@ -879,24 +885,12 @@ class Player extends Spectator {
                     card.canPerformSkillOn(gadget),
                 cardType: 'dude',
                 onSelect: (player, card) => {
-                    if(!gadget.canBeInventedWithoutBooting()) {
-                        this.bootCard(card);
-                    }
-                    this.game.raiseEvent('onGadgetInventing', { gadget, scientist: card }, event => {
-                        this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
-                            getPullProperties(event.scientist));
-                    });
+                    pullToInvent(card, gadget);
                     return true;
                 }
             });
         } else {
-            if(!gadget.canBeInventedWithoutBooting()) {
-                this.bootCard(scientist);
-            }
-            this.game.raiseEvent('onGadgetInventing', { gadget, scientist }, event => {
-                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
-                    getPullProperties(event.scientist));                
-            });
+            pullToInvent(scientist, gadget);
         }
     }
 

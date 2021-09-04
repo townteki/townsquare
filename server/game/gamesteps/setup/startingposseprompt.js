@@ -48,6 +48,9 @@ class StartingPossePrompt extends AllPlayerPrompt {
             return `Starting gang cost (${posseCost}) is greater than starting GR (${player.ghostrock})`;
         }
         for(let startingCard of player.hand) {
+            if(!startingCard.startingCondition()) {
+                return `Card ${startingCard} does not match starting condition`;
+            }
             if(player.hand.find(card => card.code === startingCard.code && card !== startingCard && card.isUnique())) {
                 return 'Starting multiple copies of unique card';
             }
