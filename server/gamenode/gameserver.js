@@ -15,7 +15,10 @@ const Socket = require('../socket.js');
 const version = require('../../version.js');
 
 if(config.sentryDsn) {
-    Raven.config(config.sentryDsn, { release: version.build }).install();
+    Raven.config(config.sentryDsn, { 
+        release: version.build,
+        environment: process.env.NODE_ENV
+    }).install();
 }
 
 class GameServer {
@@ -50,7 +53,6 @@ class GameServer {
         }
 
         server.listen(process.env.PORT || config.socketioPort);
-        logger.info('== DEBUG %s is listening on port %s', this.host, process.env.PORT || config.socketioPort);
 
         var options = {
             perMessageDeflate: false
@@ -65,12 +67,10 @@ class GameServer {
         this.io.use(this.handshake.bind(this));
 
         if(process.env.NODE_ENV === 'production') {
-            //this.io.set('origins', 'http://www.dtts.online:* https://www.dtts.online:* http://www.dtts.online:* https://www.dtts.online:*');
-            this.io.set('origins', '*:*');
+            this.io.set('origins', 'http://www.doomtown.online:* https://www.doomtown.online:* http://dev.doomtown.us:* https://dev.doomtown.us:*');
         }
 
         this.io.on('connection', this.onConnection.bind(this));
-        logger.info('== DEBUG options.path : %s', options.path);
 
         setInterval(() => this.clearStaleAndFinishedGames(), 30 * 1000);
     }
@@ -105,25 +105,26 @@ class GameServer {
     handleError(game, e) {
         logger.error(e);
 
-        let gameState = game.getState();
-        let debugData = {};
+        if(config.sentryDsn) {
+            let gameState = game.getState();
+            let debugData = {};
 
-        if(e.message.includes('Maximum call stack')) {
-            debugData.badSerializaton = detectBinary(gameState);
-        } else {
-            debugData.game = gameState;
-            debugData.game.players = undefined;
+            if(e.message.includes('Maximum call stack')) {
+                debugData.badSerializaton = detectBinary(gameState);
+            } else {
+                debugData.game = gameState;
+                debugData.game.players = undefined;
 
-            debugData.messages = game.getPlainTextLog();
-            debugData.game.messages = undefined;
+                debugData.messages = game.getPlainTextLog();
+                debugData.game.messages = undefined;
 
-            _.each(game.getPlayers(), player => {
-                debugData[player.name] = player.getState(player);
-            });
+                _.each(game.getPlayers(), player => {
+                    debugData[player.name] = player.getState(player);
+                });
+            }
+
+            Raven.captureException(e, { extra: debugData });
         }
-
-        // TODO M2 disable for now until there is time to configure Raven
-        //Raven.captureException(e, { extra: debugData });
 
         if(game) {
             game.addMessage('A Server error has occured processing your game state, apologies.  Your game may now be in an inconsistent state, or you may be able to continue.  The error has been logged.');
