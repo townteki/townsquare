@@ -335,11 +335,12 @@ class Player extends Spectator {
         }), this.createContext(context));
     }
 
-    drawCardsToDrawHand(numCards = 1, context) {
+    drawCardsToDrawHand(numCards = 1, context, reason) {
         return this.game.resolveGameAction(GameActions.drawCards({
             player: this,
             amount: numCards,
-            target: 'draw hand'
+            target: 'draw hand',
+            reason
         }), this.createContext(context));
     }
 
@@ -413,14 +414,6 @@ class Player extends Spectator {
         }, options, context);
     }
 
-    moveFromTopToBottomOfDrawDeck(number) {
-        while(number > 0) {
-            this.moveCard(this.drawDeck[0], 'draw deck', { bottom: true });
-
-            number--;
-        }
-    }
-
     discardAtRandom(number, callback = () => true) {
         var toDiscard = Math.min(number, this.hand.length);
         var cards = [];
@@ -438,11 +431,6 @@ class Player extends Spectator {
             this.game.addMessage('{0} discards {1} at random', this, discarded);
             callback(discarded);
         });
-    }
-
-    // TODO M2 can be probably removed
-    canDraw() {
-        return (this.maxCardDraw.getMax() === undefined || this.drawnCards < this.maxCardDraw.getMax());
     }
 
     resetCardPile(pile) {

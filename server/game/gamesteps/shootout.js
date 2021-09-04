@@ -161,7 +161,7 @@ class Shootout extends Phase {
         for(const player of this.game.getPlayers()) {
             player.phase = this.name;
         }        
-        this.game.raiseEvent('onShootoutPhaseStarted');
+        this.game.raiseEvent('onShootoutPhaseStarted', { shootout: this });
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
         this.game.addAlert('phasestart', phaseName + ' started!');        
     }
