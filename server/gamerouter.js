@@ -51,7 +51,6 @@ class GameRouter extends EventEmitter {
 
     getNextAvailableGameNode() {
         if(Object.values(this.workers).length === 0) {
-            logger.info('== DEBUG No workers');
             return undefined;
         }
 
@@ -59,7 +58,6 @@ class GameRouter extends EventEmitter {
 
         for(const worker of Object.values(this.workers)) {
             if(worker.numGames >= worker.maxGames || worker.disabled || worker.disconnected) {
-                logger.info('== DEBUG worker: numgames: %s | maxgames: %s | disabled: %s | disconnected: %s', worker.numGames, worker.maxGames, worker.disabled, worker.disconnected);
                 continue;
             }
 
