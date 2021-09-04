@@ -231,7 +231,7 @@
 |:heavy_check_mark:   | 04014| The Evidence
 |                     | 04015| Teleportation Device
 |                     | 04016| Mayfair Family Deck
-|                     | 04017| Puppet
+|:heavy_check_mark:   | 04017| Puppet
 |                     | 04018| Summoning
 |                     | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
@@ -471,7 +471,7 @@
 |                     | 11012| Doris Powell
 |                     | 11013| Rico Rodegain
 |:heavy_check_mark:   | 11014| Maza Gang Hideout
-|                     | 11015| Miasmatic Purifier
+|:heavy_check_mark:   | 11015| Miasmatic Purifier
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
 |                     | 11017| Tlaloc's Furies
 |:heavy_check_mark:   | 11018| Jael's Guile
@@ -551,7 +551,7 @@
 |                     | 14012| Travis Moone (Exp.1)
 |:heavy_check_mark:   | 14013| Henry Moran
 |                     | 14014| Gomorra Lot Commission
-|                     | 14015| Wagner Memorial Ranch
+|:heavy_check_mark:   | 14015| Wagner Memorial Ranch
 |:heavy_check_mark:   | 14016| Notary Public
 |                     | 14017| Market Street
 |                     | 14018| Companhurst's
@@ -841,7 +841,7 @@
 |:heavy_check_mark:   | 21020| Lorena Corbett
 |:heavy_check_mark:   | 21021| Auntie Sinister
 |:heavy_check_mark:   | 21022| Mason Adler
-|                     | 21023| Enrique Dos Santos
+|:heavy_check_mark:   | 21023| Enrique Dos Santos
 |                     | 21024| Reverend Endicott
 |:heavy_check_mark:   | 21025| Sgt. Elijah Clay
 |                     | 21026| Wyatt Earp

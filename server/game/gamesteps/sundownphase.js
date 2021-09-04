@@ -7,6 +7,7 @@ class SundownPhase extends Phase {
     constructor(game) {
         super(game, 'sundown');
         this.initialise([
+            new SimpleStep(game, () => this.game.raiseEvent('onAtStartOfSundown')),
             new SimpleStep(game, () => this.checkWinCondition()),
             new DiscardPrompt(game),
             new DiscardToHandSizePrompt(game),
