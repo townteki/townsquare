@@ -430,7 +430,7 @@
 |                     | 10017| Sloane (Exp.1)
 |                     | 10018| Margaret Hagerty
 |                     | 10019| The Wretched
-|                     | 10020| The Extra Bet
+|:heavy_check_mark:   | 10020| The Extra Bet
 |                     | 10021| Morgan Mining Company
 |                     | 10022| Quarantine Tent
 |:heavy_check_mark:   | 10023| Cooke's Nightcap
@@ -690,7 +690,7 @@
 |:heavy_check_mark:   | 18027| Bowie Knife
 |:heavy_check_mark:   | 18028| Hydro-Puncher
 |                     | 18029| Rancher's Lariat
-|                     | 18030| De Annulos Mysteriis
+|:heavy_check_mark:   | 18030| De Annulos Mysteriis
 |                     | 18031| Heartseeker
 |                     | 18032| Tse-Che-Nako's Weaving
 |:heavy_check_mark:   | 18033| Amazing Grace

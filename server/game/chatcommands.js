@@ -239,7 +239,7 @@ class ChatCommands {
             activePromptTitle: 'Select a card to set production for',
             waitingPromptTitle: 'Waiting for opponent to set production',
             cardCondition: card => card.location === 'play area' && card.controller === player,
-            cardType: ['dude', 'goods', 'deed'],
+            cardType: ['dude', 'goods', 'deed', 'outfit'],
             onSelect: (p, card) => {
                 let prod = modifier.mod;
                 if(modifier.set !== undefined && modifier.set !== null) {

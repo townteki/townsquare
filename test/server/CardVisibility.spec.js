@@ -5,9 +5,11 @@ describe('CardVisibility', function() {
         this.specator = jasmine.createSpyObj('spectator', ['isSpectator']);
         this.specator.isSpectator.and.returnValue(true);
         this.controller = jasmine.createSpyObj('controller', ['isSpectator']);
+        this.controller.readyToStart = true;
         this.opponent = jasmine.createSpyObj('opponent', ['isSpectator']);
+        this.opponent.readyToStart = true;
         this.card = { location: 'play area', facedown: false, controller: this.controller };
-        this.gameSpy = { game: true };
+        this.gameSpy = { game: true, getPlayers: () => [this.controller, this.opponent] };
 
         this.visibility = new CardVisibility(this.gameSpy);
     });
