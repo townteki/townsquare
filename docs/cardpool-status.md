@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/425/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/431/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -344,7 +344,7 @@
 |:heavy_check_mark:   | 08004| Nathan Shane
 |                     | 08005| Warren Graves
 |                     | 08006| Jack O'Hara
-|                     | 08007| John "Aces" Radcliffe
+|:heavy_check_mark:   | 08007| John "Aces" Radcliffe
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
 |                     | 08009| Old Man McDroste
 |:heavy_check_mark:   | 08010| Flint's Amusements
@@ -460,7 +460,7 @@
 |                     | 11001| 108 Worldly Desires
 |                     | 11002| Beyond the Veil
 |                     | 11003| Morgan Stables
-|                     | 11004| Xiang Fang
+|:heavy_check_mark:   | 11004| Xiang Fang
 |                     | 11005| He Fang
 |                     | 11006| Kabeda Hakurei
 |:heavy_check_mark:   | 11007| Zachary Deloria
