@@ -11,6 +11,7 @@ class CardVisibility {
         this.game = game;
         this.rules = [
             (card) => this.isPublicRule(card),
+            (card) => this.isSetupRule(card),
             (card, player) => this.isControllerRule(card, player),
             (card, player) => this.isSpectatorRule(card, player),
             (card, player) => this.isDrawHandRule(card, player)
@@ -34,7 +35,9 @@ class CardVisibility {
     }
 
     isPublicRule(card) {
-        return OpenInformationLocations.includes(card.location) && !card.facedown;
+        return !card.facedown &&
+            OpenInformationLocations.includes(card.location) && 
+            this.game.currentPhase !== 'setup';
     }
 
     isControllerRule(card, player) {
@@ -45,6 +48,13 @@ class CardVisibility {
         return this.game.showHand &&
                player.isSpectator() &&
                ['hand'].includes(card.location);
+    }
+
+    isSetupRule(card) {
+        return card.location === 'play area' && this.game.currentPhase === 'setup' && 
+            (this.game.getPlayers().every(player => player.readyToStart) ||
+            card.getType() === 'outfit' ||
+            card.getType() === 'legend');
     }
 }
 
