@@ -1101,8 +1101,8 @@ class Game extends EventEmitter {
         this.getPlayers().forEach(player => player.discardDrawHand());
     }
 
-    drawHands(numberToDraw = 5) {
-        this.getPlayers().forEach(player => player.drawCardsToDrawHand(numberToDraw));
+    drawHands(numberToDraw = 5, context, reason) {
+        this.getPlayers().forEach(player => player.drawCardsToDrawHand(numberToDraw, context, reason));
     }
 
     revealHands() {

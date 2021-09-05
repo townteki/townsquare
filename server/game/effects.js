@@ -574,7 +574,7 @@ const Effects = {
             },
             unapply: function(card, context) {
                 let value = context.dynamicSkillRating[card.uuid];
-                card.modifySkillRating(type, -value);
+                card.modifySkillRating(type, -value, false);
                 delete context.dynamicSkillRating[card.uuid];
             },
             isStateDependent: true

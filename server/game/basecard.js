@@ -1018,7 +1018,19 @@ class BaseCard {
     getSummary(activePlayer) {
         let selectionState = activePlayer.getCardSelectionState(this);
         if(!this.game.isCardVisible(this, activePlayer)) {
-            return { facedown: true, uuid: this.uuid, tokens: this.tokens, ...selectionState };
+            const facedownSummary = {
+                facedown: true, 
+                uuid: this.uuid, 
+                tokens: this.tokens,
+                ...selectionState                 
+            };
+            if(this.location === 'play area') {
+                return Object.assign(facedownSummary, {
+                    gamelocation: this.gamelocation,
+                    type_code: this.cardData.type_code                
+                });
+            }
+            return facedownSummary;
         }
         const effects = this.game.effectEngine.getAppliedEffectsOnCard(this).map(effect => effect.getSummary());
 
