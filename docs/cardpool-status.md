@@ -330,7 +330,7 @@
 |                     | 07016| Vitality Tonic
 |:heavy_check_mark:   | 07017| Consecration
 |                     | 07018| Mark of Pestilence
-|                     | 07019| Cookin' Up Trouble
+|:heavy_check_mark:   | 07019| Cookin' Up Trouble
 |:heavy_check_mark:   | 07020| Ol' Fashioned Hangin'
 |:heavy_check_mark:   | 07021| No Turning Back
 
@@ -473,7 +473,7 @@
 |:heavy_check_mark:   | 11014| Maza Gang Hideout
 |:heavy_check_mark:   | 11015| Miasmatic Purifier
 |:heavy_check_mark:   | 11016| Disgenuine Currency Press
-|                     | 11017| Tlaloc's Furies
+|:heavy_check_mark:   | 11017| Tlaloc's Furies
 |:heavy_check_mark:   | 11018| Jael's Guile
 |:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled

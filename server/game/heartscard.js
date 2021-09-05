@@ -2,13 +2,16 @@ const AbilityDsl = require('./abilitydsl.js');
 const DrawCard = require('./drawcard.js');
 
 class HeartsCard extends DrawCard {
-    constructor(owner, cardData, useMeleeEffect) {
+    constructor(owner, cardData, useMeleeEffect, providesBullets) {
         super(owner, cardData);
         this.traded = false;
         this.canTrade = true;
         this.resetHandler = () => this.reset();
 
-        if(this.bullets) {
+        if(providesBullets && !this.bullets) {
+            this.bullets = 0;
+        }
+        if(this.bullets || providesBullets) {
             this.whileAttached({
                 condition: () => (!useMeleeEffect || !this.meleeWeaponCondition()) && !this.areBulletBonusesBlanked(),
                 effect: AbilityDsl.effects.dynamicBullets(() => this.bullets),
