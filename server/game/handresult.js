@@ -195,7 +195,7 @@ class FullHouse {
                             this.rank = 7;
                             this.rankName = 'Full House';
                             this.rankShortName = 'FH';
-                            this.tiebreaker = [i, j];
+                            this.tiebreaker = i > j ? [i, j] : [j, i];
                             this.cheatin = PokerHands.isCheatin(this.matches);
                             break;
                         }
@@ -294,7 +294,7 @@ class TwoPair {
                             this.rank = 3;
                             this.rankName = 'Two Pair';            
                             this.rankShortName = '2P';
-                            this.tiebreaker = [i, j];
+                            this.tiebreaker = i > j ? [i, j] : [j, i];
                             this.tiebreakerHighCards = hand.map(card => card.value).filter(value => value && value !== i && value !== j);
                             this.cheatin = PokerHands.isCheatin(this.matches);
                             break;
