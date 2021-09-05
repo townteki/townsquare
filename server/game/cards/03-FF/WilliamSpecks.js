@@ -21,8 +21,7 @@ class WilliamSpecks extends DudeCard {
                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                     playType: 'ability',
                     abilitySourceType: 'card',
-                    reduceAmount: this.getSkillRating('mad scientist'),
-                    scientist: this
+                    reduceAmount: this.getSkillRating('mad scientist')
                 }, () => {
                     this.game.addMessage('{0} uses {1} to put {2} into play', context.player, this, context.target);
                 }), context.player, context.target);  
