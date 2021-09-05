@@ -51,9 +51,10 @@ class CardVisibility {
     }
 
     isSetupRule(card) {
-        return this.game.getPlayers().every(player => player.readyToStart) ||
+        return card.location === 'play area' && this.game.currentPhase === 'setup' && 
+            (this.game.getPlayers().every(player => player.readyToStart) ||
             card.getType() === 'outfit' ||
-            card.getType() === 'legend';
+            card.getType() === 'legend');
     }
 }
 
