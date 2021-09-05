@@ -10,10 +10,11 @@ class OldMargesManor extends DeedCard {
         this.persistentEffect({
             match: this,
             effect: ability.effects.canSpendGhostRock(spendParams =>
+                this.game.shootout &&
                 spendParams.activePlayer === this.controller && 
                 spendParams.context && spendParams.context.source &&
                 (spendParams.context.source.getType() === 'action' ||
-                (spendParams.context.source.hasKeyword('gadget') && spendParams.playingType === 'ability'))
+                (spendParams.context.source.hasKeyword('gadget') && this.isCardAbility(spendParams)))
             )
         });
         this.action({
@@ -54,6 +55,13 @@ class OldMargesManor extends DeedCard {
                 this.modifyGhostRock(1);
             }
         });
+    }
+
+    isCardAbility(spendParams) {
+        if(!spendParams.context || !spendParams.context.ability) {
+            return false;
+        }
+        return spendParams.context.ability.isCardAbility();
     }
 
     done() {
