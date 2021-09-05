@@ -2,7 +2,7 @@ const DrawCards = require('../../../server/game/GameActions/DrawCards');
 
 describe('DrawCards', function() {
     beforeEach(function() {
-        this.playerSpy = jasmine.createSpyObj('player', ['canDraw', 'getNumCardsToDraw', 'placeCardInPile', 'shuffleDiscardToDrawDeck', 'drawDeckAction']);
+        this.playerSpy = jasmine.createSpyObj('player', ['getNumCardsToDraw', 'placeCardInPile', 'shuffleDiscardToDrawDeck', 'drawDeckAction']);
         this.playerSpy.getNumCardsToDraw.and.returnValue(2);
         this.playerSpy.drawDeck = ['card1', 'card2'];
         this.playerSpy.discardPile = [];
