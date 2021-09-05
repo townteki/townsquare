@@ -1,17 +1,9 @@
-const AbilityDsl = require('../../abilitydsl.js');
 const GameActions = require('../../GameActions/index.js');
 const GoodsCard = require('../../goodscard.js');
 
 class LaQuema extends GoodsCard {
     constructor(owner, cardData) {
-        super(owner, cardData);
-        if(!this.bullets) {
-            this.bullets = 0;
-        }
-        this.whileAttached({
-            condition: () => true,
-            effect: AbilityDsl.effects.dynamicBullets(() => this.bullets)
-        });
+        super(owner, cardData, false, true);
     }
 
     setupCardAbilities(ability) {
