@@ -648,7 +648,7 @@
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
 |                     | 17013| Pedro
-|                     | 17014| Aetheric Shockwave Inducer
+|:heavy_check_mark:   | 17014| Aetheric Shockwave Inducer
 |                     | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
 |:heavy_check_mark:   | 17017| Ghostly Communion
@@ -880,7 +880,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 22001| Andrew Lane
+|:heavy_check_mark:   | 22001| Andrew Lane
 |:heavy_check_mark:   | 22002| Hank Ketchum
 |:heavy_check_mark:   | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
