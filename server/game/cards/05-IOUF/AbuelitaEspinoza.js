@@ -7,7 +7,8 @@ class AbuelitaEspinoza extends DudeCard {
                 this.locationCard.owner !== this.controller,
             match: card => card !== this &&
                 card.location === 'play area' &&
-                card.controller === this.controller,
+                card.controller === this.controller &&
+                card.getType() === 'dude',
             effect: ability.effects.modifyUpkeep(-1)
         });
     }

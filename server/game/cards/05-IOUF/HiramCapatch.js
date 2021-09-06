@@ -7,6 +7,7 @@ class HiramCapatch extends DudeCard {
             match: card => card !== this &&
                 card.location === 'play area' &&
                 card.controller === this.controller &&
+                card.getType() === 'dude' &&
                 card.isNearby(this.gamelocation),
             effect: ability.effects.modifyInfluence(1)
         });
