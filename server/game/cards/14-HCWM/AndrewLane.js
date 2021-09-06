@@ -7,6 +7,7 @@ class AndrewLane extends LegendCard {
             condition: () => this.game.shootout &&
                 this.game.shootout.leaderPlayer === this.controller,
             match: card => card.controller === this.owner &&
+                card.getType() === 'dude' &&
                 card.isParticipating() &&
                 !card.hasAttachmentWithKeywords(['weapon']),
             effect: ability.effects.modifyBullets(-1)
