@@ -11,7 +11,7 @@ class BurnEmOut extends ActionCard {
                 activePromptTitle: 'Select outfit to burn',
                 cardCondition: { location: 'play area', controller: 'opponent' },
                 cardType: 'outfit',
-                sutoSelect: true
+                autoSelect: true
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} marking {2}', context.player, this, context.target),
@@ -25,10 +25,10 @@ class BurnEmOut extends ActionCard {
                     title: `Look at ${context.player.getOpponent().name}'s hand to ace a card`,
                     numToShow: context.player.getOpponent().hand.length,
                     onSelect: (player, cards) => player.aceCards(cards, false, () =>
-                        context.game.addMessage('{0} uses {1} to burn {2} from {3}\'s hand', 
+                        context.game.addMessage('{0} uses {1} to ace {2} from {3}\'s hand', 
                             context.player, this, cards, context.player.getOpponent()), {}, context),
                     onCancel: () =>
-                        context.game.addMessage('{0} uses {1}, but does not burn any card', context.player, this),
+                        context.game.addMessage('{0} uses {1}, but does not ace any card', context.player, this),
                     context,
                     source: this
                 }), context);

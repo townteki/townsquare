@@ -8,9 +8,10 @@ class TheArsenal extends OutfitCard {
             playType: ['noon'],
             repeatable: true,
             cost: ability.costs.boot(card =>
+                card.location === 'play area' &&
+                card.parent &&
                 card.controller === this.owner &&
-                (card.isGadget() || card.isSpell()) &&
-                card.isParticipating()
+                (card.isGadget() || card.isSpell())
             ),
             message: context => 
                 this.game.addMessage('{0} uses {1} to call out {2}', context.player, this, context.target),
