@@ -294,7 +294,7 @@
 |                     | 06006| Louis Pasteur
 |                     | 06007| Benny McGill
 |                     | 06008| Marion Seville (Exp.1)
-|                     | 06009| J.W. Byrne
+|:heavy_check_mark:   | 06009| J.W. Byrne
 |:heavy_check_mark:   | 06010| Shane & Graves Security
 |                     | 06011| Gomorra Jail
 |                     | 06012| Diable en Boite
@@ -679,7 +679,7 @@
 |:heavy_check_mark:   | 18016| Hattie DeLorre
 |:heavy_check_mark:   | 18017| Diego Linares
 |:heavy_check_mark:   | 18018| Post-A-Tron
-|                     | 18019| Jimmy "The Saint"
+|:heavy_check_mark:   | 18019| Jimmy "The Saint"
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
 |:heavy_check_mark:   | 18022| Nickel Night Inn
