@@ -23,7 +23,7 @@ class MorganGadgetorium extends OutfitCard {
                         }), context);
                         unbootText = ' and unboots {2}';
                     }
-                    this.game.addMessage('{0} gains 2 GR thanks to {1}' + unbootText, context.player, this, event.pullingDude);
+                    this.game.addMessage('{0} gains 1 GR thanks to {1}' + unbootText, context.player, this, event.pullingDude);
                 };
                 const saveEventHandler = context.event.handler;
                 context.replaceHandler(pullSkillEvent => {
