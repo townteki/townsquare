@@ -198,7 +198,7 @@
 |:heavy_check_mark:   | 03007| Angélica Espinosa
 |:heavy_check_mark:   | 03008| José Morales
 |                     | 03009| Genesee "Gina" Tailfeathers
-|                     | 03010| Mario Crane
+|:heavy_check_mark:   | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
 |:heavy_check_mark:   | 03012| Surveyor's Office
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
@@ -996,4 +996,4 @@
 | :heavy_check_mark:  | 23053| Fallen Star
 |                     | 23054| Masonic Augment
 |                     | 23055| Swagger
-|                     | 23056| Vamoosin'
+|:heavy_check_mark:   | 23056| Vamoosin'
