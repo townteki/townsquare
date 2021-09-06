@@ -19,7 +19,7 @@ class JimmyTheSaint extends DudeCard {
         this.persistentEffect({
             condition: () => this.isAtDeed() && 
                 this.controller === this.locationCard.controller &&
-                this.locationCard.kasKeyword('Casino'),
+                this.locationCard.hasKeyword('Casino'),
             match: card => card === this.locationCard,
             effect: ability.effects.modifyProduction(1)
         });
