@@ -242,7 +242,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 05001| Oddities of Nature
-|                     | 05002| The Arsenal
+|:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
 |                     | 05004| Desolation Row
 |                     | 05005| Pagliaccio
@@ -694,7 +694,7 @@
 |                     | 18031| Heartseeker
 |                     | 18032| Tse-Che-Nako's Weaving
 |:heavy_check_mark:   | 18033| Amazing Grace
-|                     | 18034| Burn 'Em Out
+|:heavy_check_mark:   | 18034| Burn 'Em Out
 |                     | 18035| Shiny Things
 |                     | 18036| We Got Beef!
 |:heavy_check_mark:   | 18037| Great Sage Matching Heaven
