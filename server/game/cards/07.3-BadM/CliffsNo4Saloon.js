@@ -13,7 +13,8 @@ class CliffsNo4Saloon extends DeedCard {
                     controller: 'current', 
                     condition: card => 
                         card.gamelocation === this.gamelocation ||
-                        card.isAdjacent(this.gamelocation)
+                        card.isAdjacent(this.gamelocation) &&
+                        card.isInControlledLocation()
                 },
                 cardType: ['dude']
             },
