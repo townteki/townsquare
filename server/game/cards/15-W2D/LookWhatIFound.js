@@ -3,11 +3,10 @@ const GameActions = require('../../GameActions/index.js');
 const StandardActions = require('../../PlayActions/StandardActions.js');
 
 class LookWhatIFound extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Shootout: Look What I Found!',
             playType: ['shootout'],
-            cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Choose non-Unique Weapon',
                 choosingPlayer: 'current',
@@ -31,7 +30,7 @@ class LookWhatIFound extends ActionCard {
                             targetParent: dude
                         }, () => {
                             context.ability.selectAnotherTarget(context.player, context, {
-                                activePromptTitle: 'Select a card',
+                                activePromptTitle: 'Select a card to boot',
                                 waitingPromptTitle: 'Waiting for opponent to select card',
                                 cardCondition: card => card.parent === dude &&
                                     (card === context.target || card.hasKeyword('sidekick')),
