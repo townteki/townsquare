@@ -376,12 +376,13 @@ class ChatCommands {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to ace card',
-            cardCondition: card => ['hand', 'draw hand', 'discard pile', 'play area'].includes(card.location) && card.controller === player,
+            cardCondition: card => ['hand', 'draw hand', 'discard pile', 'play area'].includes(card.location),
             cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
             onSelect: (p, card) => {
-                card.controller.aceCard(card);
-
-                this.game.addAlert('danger', '{0} uses the /ace command to ace {1}', p, card);
+                this.handleAction(p, card, 'ace', () => {
+                    card.controller.aceCard(card);
+                    this.game.addAlert('danger', '{0} uses the /ace command to ace {1}', p, card);
+                });
                 return true;
             }
         });
@@ -851,6 +852,20 @@ class ChatCommands {
         }
 
         this.game.queueStep(new RematchPrompt(this.game, player));
+    }
+
+    handleAction(player, card, action, handler) {
+        if(card.controller === player) {
+            handler();
+        } else {
+            this.game.promptForYesNo(card.controller, {
+                promptTitle: 'Chat Command',
+                title: `${player.title} wants to ${action} ${card.title}, do you allow them to continue?`,
+                onYes: () => {
+                    handler();
+                }
+            });
+        }
     }
 
     selectSkillOrFu(player, skillOrFu) {
