@@ -10,7 +10,7 @@ class NicholasKramer extends DudeCard {
     }
 
     getKramerBulletBonus() {
-        const numOfGadgets = this.controller.cardsInPlay(card => card.isGadget()).length;
+        const numOfGadgets = this.controller.cardsInPlay.filter(card => card.isGadget()).length;
         return numOfGadgets > 4 ? 4 : numOfGadgets;
     }
 }
