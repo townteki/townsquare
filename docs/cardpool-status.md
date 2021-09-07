@@ -374,9 +374,9 @@
 |:heavy_check_mark:   | 09008| Natalya
 |:heavy_check_mark:   | 09009| Xui Yin Chen
 |                     | 09010| Hamshanks
-|                     | 09011| Hiram Capatch
+|:heavy_check_mark:   | 09011| Hiram Capatch
 |:heavy_check_mark:   | 09012| Yunxu Jiang
-|                     | 09013| Abuelita Espinoza
+|:heavy_check_mark:   | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
 |                     | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
