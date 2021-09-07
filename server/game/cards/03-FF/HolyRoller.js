@@ -20,6 +20,8 @@ class HolyRoller extends SpellCard {
                     effect: ability.effects.cannotBeChosenAsCasualty(this,
                         card => card.controller.getOpponent().getTotalRank() - card.controller.getTotalRank() < 3)
                 }));
+                this.game.addMessage('{0} uses {1} to give {2} +1 bullets and they cannot be chosen as casualty unless {0} loses by 3 or more ranks', 
+                    context.player, this, this.parent);
             },
             source: this
         });
