@@ -198,7 +198,7 @@
 |:heavy_check_mark:   | 03007| Angélica Espinosa
 |:heavy_check_mark:   | 03008| José Morales
 |                     | 03009| Genesee "Gina" Tailfeathers
-|                     | 03010| Mario Crane
+|:heavy_check_mark:   | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
 |:heavy_check_mark:   | 03012| Surveyor's Office
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
@@ -294,7 +294,7 @@
 |                     | 06006| Louis Pasteur
 |                     | 06007| Benny McGill
 |                     | 06008| Marion Seville (Exp.1)
-|                     | 06009| J.W. Byrne
+|:heavy_check_mark:   | 06009| J.W. Byrne
 |:heavy_check_mark:   | 06010| Shane & Graves Security
 |                     | 06011| Gomorra Jail
 |                     | 06012| Diable en Boite
@@ -374,9 +374,9 @@
 |:heavy_check_mark:   | 09008| Natalya
 |:heavy_check_mark:   | 09009| Xui Yin Chen
 |                     | 09010| Hamshanks
-|                     | 09011| Hiram Capatch
+|:heavy_check_mark:   | 09011| Hiram Capatch
 |:heavy_check_mark:   | 09012| Yunxu Jiang
-|                     | 09013| Abuelita Espinoza
+|:heavy_check_mark:   | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
 |                     | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
@@ -679,7 +679,7 @@
 |:heavy_check_mark:   | 18016| Hattie DeLorre
 |:heavy_check_mark:   | 18017| Diego Linares
 |:heavy_check_mark:   | 18018| Post-A-Tron
-|                     | 18019| Jimmy "The Saint"
+|:heavy_check_mark:   | 18019| Jimmy "The Saint"
 |                     | 18020| Mario Crane (Exp.1)
 |                     | 18021| The Caretaker
 |:heavy_check_mark:   | 18022| Nickel Night Inn
@@ -996,4 +996,4 @@
 | :heavy_check_mark:  | 23053| Fallen Star
 |                     | 23054| Masonic Augment
 |                     | 23055| Swagger
-|                     | 23056| Vamoosin'
+|:heavy_check_mark:   | 23056| Vamoosin'
