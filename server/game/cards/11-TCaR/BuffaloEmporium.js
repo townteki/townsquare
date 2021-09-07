@@ -20,7 +20,7 @@ class BuffaloEmporium extends DeedCard {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: [
-                        ability.effects.cannotBeMovedViaCardEffects(),
+                        ability.effects.cannotBeMovedViaCardEffects('opponent'),
                         ability.effects.cannotBeBooted('opponent', context => 
                             context.ability && context.ability.isCardAbility())
                     ]

@@ -182,6 +182,10 @@ const Costs = {
      */
     discardFromPlay: condition => CostBuilders.discardFromPlay.select(condition),
     /**
+     * Cost that will discard the card that initiated the ability.
+     */
+    discardSelf: () => CostBuilders.discardFromPlay.self(),
+    /**
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
      */

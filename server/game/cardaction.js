@@ -76,6 +76,9 @@ class CardAction extends PlayTypeAbility {
             if(this.card.getType() === 'spell' && this.card.isTotem()) {
                 return this.game.shootout.shootoutLocation === this.card.getGameLocation();
             }
+            if(this.card.getType() === 'goods' && this.card.parent && this.card.parent.getType() === 'outfit') {
+                return true;
+            }
             if(CardTypesForShootout.includes(this.card.getType())) {
                 return this.game.shootout.isInShootout(this.card);
             }

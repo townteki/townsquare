@@ -621,7 +621,7 @@
 |:heavy_check_mark:   | 16010| Long Strides Ranch
 |:heavy_check_mark:   | 16011| The Gomorra Gazette
 |:heavy_check_mark:   | 16012| "Open Wound"
-|                     | 16013| Doomsday Supply
+|:heavy_check_mark:   | 16013| Doomsday Supply
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
@@ -647,7 +647,7 @@
 |                     | 17010| J.W. Byrne, P. I.
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
-|                     | 17013| Pedro
+|:heavy_check_mark:   | 17013| Pedro
 |:heavy_check_mark:   | 17014| Aetheric Shockwave Inducer
 |                     | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
