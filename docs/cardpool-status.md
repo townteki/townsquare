@@ -461,7 +461,7 @@
 |                     | 11002| Beyond the Veil
 |                     | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
-|                     | 11005| He Fang
+|:heavy_check_mark:   | 11005| He Fang
 |                     | 11006| Kabeda Hakurei
 |:heavy_check_mark:   | 11007| Zachary Deloria
 |:heavy_check_mark:   | 11008| Karl Odett
@@ -641,7 +641,7 @@
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
-|                     | 17007| Nicholas Kramer
+|:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
 |                     | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
