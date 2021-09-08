@@ -9,8 +9,7 @@ class HighStakesHaven extends DeedCard {
             handler: () => {
                 if(this.controller.getSpendableGhostRock() <= 0) {
                     this.havenRandomDiscard();
-                }
-                if(this.controller.hand.length) {
+                } else if(this.controller.hand.length) {
                     this.game.promptWithMenu(this.controller, this, {
                         activePrompt: {
                             menuTitle: 'Choose cheatin\' punishment',
