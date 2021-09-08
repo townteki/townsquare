@@ -461,7 +461,7 @@
 |                     | 11002| Beyond the Veil
 |                     | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
-|                     | 11005| He Fang
+|:heavy_check_mark:   | 11005| He Fang
 |                     | 11006| Kabeda Hakurei
 |:heavy_check_mark:   | 11007| Zachary Deloria
 |:heavy_check_mark:   | 11008| Karl Odett
@@ -641,7 +641,7 @@
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
-|                     | 17007| Nicholas Kramer
+|:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
 |                     | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
@@ -941,7 +941,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 23001| Yasmin Tian
+|:heavy_check_mark:   | 23001| Yasmin Tian
 |                     | 23002| "Dynamite" Jacc
 |:heavy_check_mark:   | 23003| Bai Yang Chen (Exp.1)
 |                     | 23004| Huang Li
@@ -988,12 +988,12 @@
 |                     | 23045| Guiding the Pack
 |                     | 23046| Elk's Protection
 |                     | 23047| Get Off My Land!
-|                     | 23048| Look What I Found!
+|:heavy_check_mark:   | 23048| Look What I Found!
 |                     | 23049| Mantis Pinch
-| :heavy_check_mark:  | 23050| As Nature and God Intended
+|:heavy_check_mark:   | 23050| As Nature and God Intended
 |                     | 23051| Play for Blood
 |                     | 23052| Bad Beat
-| :heavy_check_mark:  | 23053| Fallen Star
+|:heavy_check_mark:   | 23053| Fallen Star
 |                     | 23054| Masonic Augment
 |                     | 23055| Swagger
 |:heavy_check_mark:   | 23056| Vamoosin'

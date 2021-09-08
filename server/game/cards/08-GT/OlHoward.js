@@ -18,8 +18,6 @@ class OlHoward extends DudeCard {
         this.reaction({
             title: 'React: Ol\' Howard',
             grifter: true,
-            message: context =>
-                this.game.addMessage('{0} uses {1} to shuffle hand to draw deck and draw a new hand', context.player, this),
             handler: context => {
                 this.game.resolveGameAction(
                     GameActions.search({
@@ -38,7 +36,7 @@ class OlHoward extends DudeCard {
                                 playType: 'ability',
                                 abilitySourceType: 'card'
                             }, () => {
-                                context.player.attach(hauntedDeed, this, 'ability', () =>
+                                context.player.attach(this, hauntedDeed, 'ability', () =>
                                     this.game.addMessage('{0} sends {1} to haunt {2}', context.player, this, hauntedDeed));
                             }), context.player, hauntedDeed);
                         },
@@ -49,6 +47,14 @@ class OlHoward extends DudeCard {
             }
         });
     }
+
+    canAttach(player, card) {
+        if(this.game.currentPhase !== 'setup') {
+            return false;
+        }
+
+        return card.getType() === 'deed';
+    }    
 }
 
 OlHoward.code = '14009';

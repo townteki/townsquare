@@ -16,8 +16,8 @@ class JoanMcGruder extends DudeCard {
             match: card => card.location === 'play area' &&
                 card.bounty <= card.influence,
             effect: [
-                ability.effects.cannotBeAffected('opponent', context => 
-                    context.ability && context.ability.isCardAbility() && context.ability.card.parent === this)
+                ability.effects.cannotBeAffected('opponent', context => context.ability && context.ability.card &&
+                    context.ability.isCardAbility() && context.ability.card.parent === this)
             ]
         });
     }
