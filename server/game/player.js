@@ -120,7 +120,13 @@ class Player extends Spectator {
     getOpponent() {
         let opponents = this.game.getOpponents(this);
         if(opponents.length === 0) {
-            return { name: 'test player', isCheatin: () => false, cardsInPlay: [], drawDeck: [] };
+            return { 
+                name: 'test player', 
+                isCheatin: () => false, 
+                modifyGhostRock: () => true,
+                cardsInPlay: [], 
+                drawDeck: [] 
+            };
         }
         return opponents[0];
     }
