@@ -830,7 +830,7 @@
 |:heavy_check_mark:   | 21009| Baijiu Sue
 |                     | 21010| Reverend Bob Hungate
 |                     | 21011| Father Diamond
-|                     | 21012| Master Shou
+|:heavy_check_mark:   | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
 |                     | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
@@ -856,7 +856,7 @@
 |:heavy_check_mark:   | 21035| Byron Decker
 |:heavy_check_mark:   | 21036| Carter Richardson
 |:heavy_check_mark:   | 21037| Valeria Batten (Exp.1)
-|                     | 21038| Steph & Gertie's Tonsorium
+|:heavy_check_mark:   | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
 |                     | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
