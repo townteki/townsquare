@@ -4,6 +4,26 @@ const CardSelector = require('./CardSelector');
 const Messages = require('./Messages');
 const BaseCardSelector = require('./CardSelectors/BaseCardSelector');
 
+/** @typedef {import('./CardMatcher').CardMatcherProps} CardMatcherProps */
+
+/** 
+ * @typedef {Object} AbilityTargetProperties 
+ * Represents a spell ability provided by card text.
+ *
+ * Properties:
+ * @property {string} activePromptTitle - string that is used in prompt when asking to select the 
+ *                target card.
+ * @property {Function | string} choosingPlayer - optional function that should return player that
+ *                will choose the card.
+ * @property {CardMatcherProps} cardCondition - Properties object or function representing the cards that 
+ *                can be targeted.
+ * @property {string} cardType - type of the card (e.g. `dude`, `goods`, `joker`).
+ * @property {string | string[]} gameAction - the game action checked for immunity purposes 
+ *                on potential target cards.
+ * @property {boolean} ifAble - resolve target only if able (optional target).
+ * @property {boolean} autoSelect - in case there is only one possible target, do not ask player to select
+ *                the card but select automatically.
+ */
 class AbilityTarget {
     static create(name, properties) {
         let {message, messages, ...rest} = properties;

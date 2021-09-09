@@ -6,29 +6,36 @@ const PlayTypeAbility = require('./playTypeAbility.js');
 
 const CardTypesForShootout = ['dude', 'goods', 'spell'];
 
-/**
+/** @typedef {import('./costs')} Costs */
+/** @typedef {import('./AbilityTarget').AbilityTargetProperties} AbilityTargetProperties */
+
+/** 
+ * @typedef {Object} ActionAbilityProperties 
  * Represents an action ability provided by card text.
- *
+ * 
  * Properties:
- * title        - string that is used within the card menu associated with this
- *                action.
- * condition    - optional function that should return true when the action is
+ * @property {string} title - string that is used within the card menu associated with this action.
+ * @property {string | Array.<string>} playType - string or array of strings representing the type
+ *                of action (e.g. `noon`, `shootout`, `shootout:join`, `cheatin resolution`).
+ * @property {Function} condition - optional function that should return true when the action is
  *                allowed, false otherwise. It should generally be used to check
  *                if the action can modify game state (step #1 in ability
  *                resolution in the rules).
- * cost         - object or array of objects representing the cost required to
+ * @property {boolean} repeatable - If the react action can be repeated. 
+ * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to
  *                be paid before the action will activate. See Costs.
- * phase        - string representing which phases the action may be executed.
+ * @property {AbilityTargetProperties} target - object or array of objects representing the cost required to
+ *                be paid before the action will activate. See Costs.
+ * @property {string} phase - string representing which phases the action may be executed.
  *                Defaults to 'any' which allows the action to be executed in
  *                any phase.
- * location     - string indicating the location the card should be in in order
+ * @property {string | Array.<string>} location - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
- * limit        - the max number of uses for the repeatable action.
- * triggeringPlayer - string indicating player that can execute the action.
+ * @property {string} limit - the max number of uses for the repeatable action.
+ * @property {string} triggeringPlayer - string indicating player that can execute the action.
  *                Default is 'controller', other possible values are 'owner' or 'any'
- * clickToActivate - boolean that indicates the action should be activated when
- *                   the card is clicked.
- */
+ * @property {abilityFunc} handler
+*/
 class CardAction extends PlayTypeAbility {
     constructor(game, card, properties, isJob = false) {
         super(game, card, properties);
