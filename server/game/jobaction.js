@@ -1,28 +1,34 @@
 const CardAction = require('./cardaction.js');
 
+/** @typedef {import('./costs')} Costs */
+/** @typedef {import('./AbilityTarget').AbilityTargetProperties} AbilityTargetProperties */
+
 /**
+ * @typedef {Object} JobAbilityProperties
  * Represents a job ability provided by card text.
  *
  * Properties:
- * title        - string that is used within the card menu associated with this
+ * @property {string} title - string that is used within the card menu associated with this
  *                action.
- * condition    - optional function that should return true when the action is
+ * @property {string | Array.<string>} playType - string or array of strings representing the type
+ *                of action. For job it should always be `noon`.
+ * @property {Function} condition - optional function that should return true when the action is
  *                allowed, false otherwise. It should generally be used to check
  *                if the action can modify game state (step #1 in ability
  *                resolution in the rules).
- * cost         - object or array of objects representing the cost required to
+ * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to
  *                be paid before the action will activate. See Costs.
- * phase        - string representing which phases the action may be executed.
+ * @property {string} phase - string representing which phases the action may be executed.
  *                Defaults to 'any' which allows the action to be executed in
  *                any phase.
- * location     - string indicating the location the card should be in in order
+ * @property {string | Array.<string>} location - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
- * limit        - the max number of uses for the repeatable action.
- * clickToActivate - boolean that indicates the action should be activated when
+ * @property {number} limit - the max number of uses for the repeatable action.
+ * @property {boolean} clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
- * onSuccess    - function that will be executed if job succeeds. Uses parameters
+ * @property {jobAbilityFunc} onSuccess - function that will be executed if job succeeds. Uses parameters
  *                job (Shootout object) and context.
- * onFail       - function that will be executed if job fails. Uses parameters
+ * @property {jobAbilityFunc} onFail - function that will be executed if job fails. Uses parameters
  *                job (Shootout object) and context.
  */
 class JobAction extends CardAction {

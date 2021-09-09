@@ -1,18 +1,34 @@
 const Matcher = require('./Matcher.js');
 
+/** 
+ * @typedef {Object} CardMatcherProps
+ * Represents a properties that should match card presented to
+ * be selected.
+ *
+ * Properties:
+ * @property {string} location - string that represents card location.
+ * @property {string} controller - string that represents card controller. 
+ * @property {cardContextCondition} condition - optional condition with parameters `card` and `context`.
+ * @property {boolean} keyword - .
+ * @property {boolean} booted - .
+ * @property {boolean} unique - .
+ * @property {boolean} hasAttachments - .
+ * @property {boolean} inLeaderPosse - .
+ * @property {boolean} inOpposingPosse - .
+ * @property {boolean} participating - .
+ * @property {boolean} wanted - .
+ * @property {boolean} facedown - .
+ * @property {boolean} parent - .
+ */
 class CardMatcher {
     static isMatch(card, properties) {
         return (
             Matcher.containsValue(properties.type, card.getType()) &&
             Matcher.containsValue(properties.booted, card.booted) &&
             Matcher.containsValue(properties.location, card.location) &&
-            Matcher.containsValue(properties.name, card.name) &&
+            Matcher.containsValue(properties.title, card.title) &&
             Matcher.anyValue(properties.keyword, keyword => card.hasKeyword(keyword)) &&
             Matcher.containsValue(properties.unique, card.isUnique()) &&
-            Matcher.anyValue(properties.printedCostOrLower, amount => card.hasPrintedCost() && card.getPrintedCost() <= amount) &&
-            Matcher.anyValue(properties.printedCostOrHigher, amount => card.hasPrintedCost() && card.getPrintedCost() >= amount) &&
-            Matcher.anyValue(properties.printedStrengthOrLower, amount => card.hasPrintedStrength() && card.getPrintedStrength() <= amount) &&
-            Matcher.anyValue(properties.printedStrengthOrHigher, amount => card.hasPrintedStrength() && card.getPrintedStrength() >= amount) &&
             Matcher.anyValue(properties.hasAttachments, hasAttachments => hasAttachments === (card.attachments.length > 0)) &&
             Matcher.anyValue(properties.inLeaderPosse, inLeaderPosse => card.isInLeaderPosse() === inLeaderPosse) &&
             Matcher.anyValue(properties.inOpposingPosse, inOpposingPosse => card.isInOpposingPosse() === inOpposingPosse) &&

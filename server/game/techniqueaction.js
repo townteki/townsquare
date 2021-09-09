@@ -2,25 +2,32 @@ const CardAction = require('./cardaction.js');
 const GameActions = require('./GameActions/index.js');
 
 /**
+ * @typedef {Object} SpellReactionAbilityProperties
  * Represents a Technique ability provided by card text.
  *
  * Properties:
- * title        - string that is used within the card menu associated with this
+ * @property {string} title - string that is used within the card menu associated with this
  *                action.
- * condition    - optional function that should return true when the action is
+ * @property {string | Array.<string>} playType - string or array of strings representing the type
+ *                of action (e.g. `noon`, `shootout`, `shootout:join`, `cheatin resolution`).
+ * @property {Function} condition - optional function that should return true when the action is
  *                allowed, false otherwise. It should generally be used to check
  *                if the action can modify game state (step #1 in ability
  *                resolution in the rules).
- * cost         - object or array of objects representing the cost required to
+ * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to
  *                be paid before the action will activate. See Costs.
- * phase        - string representing which phases the action may be executed.
+ * @property {abilityFunc} combo - function that will take the `AbilityContext` and should return true 
+ *                if conditions are met to perform a combo. 
+ * @property {AbilityTargetProperties} target - object or array of objects representing the cost required to
+ *                be paid before the action will activate. See Costs.
+ * @property {string} phase - string representing which phases the action may be executed.
  *                Defaults to 'any' which allows the action to be executed in
  *                any phase.
- * location     - string indicating the location the card should be in in order
+ * @property {string | Array.<string>} location - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
- * onSuccess    - function that will be executed if technique succeeds. Takes context
+ * @property {abilityFunc} onSuccess - function that will be executed if technique succeeds. Takes context
  *                as parameter. 
- * onFail       - function that will be executed if technique fails. Takes context
+ * @property {abilityFunc} onFail - function that will be executed if technique fails. Takes context
  *                as parameter.
  */
 class TechniqueAction extends CardAction {
