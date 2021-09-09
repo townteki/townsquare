@@ -13,7 +13,7 @@ class AlexanderSequoia extends DudeCard {
             playType: 'noon',
             ifCondition: () => this.isInTownSquare(),
             ifFailMessage: context => {
-                this.game.addMessage('{0} uses {1}\'s ability but {1} does not unboot because he is not in town square', context.player, this);
+                this.game.addMessage('{0} uses {1}\'s ability but {1} does not unboot because {1} is not in town square', context.player, this);
             },
             cardCondition: this.booted,
             actionContext: { card: this, gameAction: 'unboot' },

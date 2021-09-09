@@ -28,7 +28,7 @@ class TheAngler extends DudeCard {
                     match: this,
                     effect: ability.effects.setValue(context.costs.discardFromHand.value)
                 }));                
-                this.game.addMessage('{0} uses {1} to change his value to {2}', context.player, this, context.costs.discardFromHand.value);
+                this.game.addMessage('{0} uses {1} to change {1}\'s value to {2}', context.player, this, context.costs.discardFromHand.value);
             }
         });
     }

@@ -13,7 +13,7 @@ class Unprepared extends ActionCard {
                 cardType: ['dude']
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} to catch {2} with his pants down', context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to catch {2} with their pants down', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 this.applyAbilityEffect(context.ability, ability => ({

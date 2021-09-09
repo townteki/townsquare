@@ -17,7 +17,7 @@ class EmreTheTurkishBear extends DudeCard {
                 context.replaceHandler(event => {
                     const originalCard = event.card;
                     event.card = context.player.pull(null, false, event.props);
-                    this.game.addMessage('{0} uses {1} to replace the pulled {2}of{3}({4} ) with a new pull and make him a stud', 
+                    this.game.addMessage('{0} uses {1} to replace the pulled {2}of{3}({4} ) with a new pull and make {1} a stud', 
                         context.player, this, originalCard.value, originalCard.suit, originalCard);
                     originalCard.owner.handlePulledCard(originalCard);
                     if(event.card.getType() === 'joker') {

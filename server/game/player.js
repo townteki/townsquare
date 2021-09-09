@@ -768,7 +768,7 @@ class Player extends Spectator {
             case 'deed':
                 this.addDeedToStreet(card, updatedParams.target);
                 if(updatedParams.playingType === 'shoppin') {
-                    this.game.addMessage('{0} does Shoppin\' to build {1} on his street{2}', this, card, costText);
+                    this.game.addMessage('{0} does Shoppin\' to build {1} on their street{2}', this, card, costText);
                 } else if(this.game.currentPhase !== 'setup') {
                     this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
                 }

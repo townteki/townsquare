@@ -20,7 +20,7 @@ class EveHenry extends DudeCard {
                         onYes: player => {
                             this.game.resolveGameAction(
                                 GameActions.search({
-                                    title: 'Select Dr. Dawn Edwards if you want to put her into play',
+                                    title: 'Select Dr. Dawn Edwards if you want to put them into play',
                                     match: { type: 'dude', condition: card => card.code === '01052' },
                                     location: ['draw deck'],
                                     numToSelect: 1,

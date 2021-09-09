@@ -33,11 +33,11 @@ class DrArdenGillman extends DudeCard {
                         if(context.pull.pulledCard.getType() === 'joker' || context.pull.pulledSuit === 'Spades') {
                             if(targetAced) {
                                 this.game.resolveGameAction(GameActions.aceCard({ card: this }), context)
-                                    .thenExecute(() => this.game.addMessage('{0} uses {1} to ace himself because pull was a Joker or Spades', 
+                                    .thenExecute(() => this.game.addMessage('{0} uses {1} to ace themself because the pull was a Joker or Spades', 
                                         context.player, this));
                             } else {
                                 this.game.shootout.sendHome(this, context)
-                                    .thenExecute(() => this.game.addMessage('{0} uses {1} to send himself home because pull was a Joker or Spades', 
+                                    .thenExecute(() => this.game.addMessage('{0} uses {1} to send themself home because the pull was a Joker or Spades', 
                                         context.player, this));
                             }
                         }

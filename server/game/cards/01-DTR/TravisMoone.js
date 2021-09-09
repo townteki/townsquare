@@ -7,7 +7,7 @@ class TravisMoone extends DudeCard {
             grifter: true,
             cost: [ability.costs.bootSelf()],
             message: context =>
-                this.game.addMessage('{0} uses {1} to shuffle hand to draw deck and draw a new hand', context.player, this),
+                this.game.addMessage('{0} uses {1} to shuffle their hand to their draw deck and draw a new hand', context.player, this),
             handler: context => {
                 context.player.hand.forEach(card => {
                     context.player.moveCardWithContext(card, 'draw deck', context);

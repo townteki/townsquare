@@ -7,7 +7,7 @@ class MortimerParsons extends DudeCard {
                 onDrawHandsRevealed: event => event.shootout && this.isParticipating() && this.controller.isCheatin()
             },
             message: context =>
-                this.game.addMessage('{0}\'s cheatin\' hand sends {1} home booted and reduces his influence to 0', context.player, this),
+                this.game.addMessage('{0}\'s cheatin\' hand sends {1} home booted and reduces {1}\'s influence to 0', context.player, this),
             handler: context => {
                 if(this.influence > 0) {
                     this.untilEndOfRound(context.ability, ability => ({

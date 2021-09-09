@@ -40,7 +40,7 @@ class ShadowWalk2 extends SpellCard {
                     title: `Do you want to discard ${this.title} to make another play?`,
                     onYes: player => {
                         this.game.resolveGameAction(GameActions.discardCard({ card: this })).thenExecute(() => {
-                            this.game.addMessage('{0} uses {1} and discard it to make another play', context.player, this); 
+                            this.game.addMessage('{0} uses {1} and discards it to make another play', context.player, this); 
                             this.game.promptWithMenu(player, this, {
                                 activePrompt: {
                                     menuTitle: 'Make shootout play',

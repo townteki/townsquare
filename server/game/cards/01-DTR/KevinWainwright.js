@@ -13,7 +13,7 @@ class KevinWainwright extends DudeCard {
             },
             actionContext: { card: this, gameAction: 'moveDude' },
             message: context => 
-                this.game.addMessage('{0} uses {1} to move him to {2}\'s location and make him a stud', context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to move them to {2}\'s location and make {1} a stud', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ 
                     card: this, 

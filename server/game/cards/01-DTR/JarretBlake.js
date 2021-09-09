@@ -20,9 +20,9 @@ class JarretBlake extends DudeCard {
             },
             ifCondition: () => this.hasAttachment(attachment => attachment.hasKeyword('Horse')),
             ifFailMessage: context => 
-                this.game.addMessage('{0} uses {1} but fails because he does not have a horse', context.player, this),
+                this.game.addMessage('{0} uses {1} but fails because {1} does not have a horse', context.player, this),
             message: context => 
-                this.game.addMessage('{0} uses {1} to swap him with {2}', context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to swap {1} with {2}', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.removeFromPosse({ card: context.target }), context).thenExecute(() => {
                     this.game.resolveGameAction(GameActions.moveDude({ card: context.target, targetUuid: this.gamelocation }));

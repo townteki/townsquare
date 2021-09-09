@@ -39,7 +39,7 @@ class ArnoldStewart extends DudeCard {
                                         cardType: 'deed',
                                         onSelect: (player, card) => {
                                             if(player.moveCardWithContext(card, 'hand', context)) {
-                                                this.game.addMessage('{0} uses {1}, boots him and {2} to discard 5 cards from deck and puts {3} to hand', 
+                                                this.game.addMessage('{0} uses {1}, boots {1} and {2} to discard 5 cards from deck and puts {3} to hand', 
                                                     player, this, context.target, card);
                                             } else {
                                                 this.game.addMessage('{0} uses {1}, but some effect prevents them from moving {2} to hand', 

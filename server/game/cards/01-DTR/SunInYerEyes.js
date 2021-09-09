@@ -6,7 +6,7 @@ class SunInYerEyes extends ActionCard {
             title: 'Sun in Yer Eyes',
             playType: 'shootout',
             target: {
-                activePromptTitle: 'Select dude who has sun in his eyes',
+                activePromptTitle: 'Select a dude who has sun in their eyes',
                 cardCondition: { location: 'play area', participating: true, controller: 'opponent' },
                 cardType: 'dude'
             },

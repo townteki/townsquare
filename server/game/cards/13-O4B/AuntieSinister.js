@@ -16,7 +16,7 @@ class AuntieSinister extends DudeCard {
             },
             handler: context => {
                 this.modifyBullets(2);
-                this.game.addMessage('{0} uses {1} to give her +2 bullets', context.player, this);
+                this.game.addMessage('{0} uses {1} to give {1} +2 bullets', context.player, this);
             }
         });
     }

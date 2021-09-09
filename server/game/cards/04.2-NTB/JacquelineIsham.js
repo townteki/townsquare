@@ -9,7 +9,7 @@ class JacquelineIsham extends DudeCard {
             },
             repeatable: true,
             message: context =>
-                this.game.addMessage('{0} uses {1} and makes her a stud', context.player, this),
+                this.game.addMessage('{0} uses {1} and makes {1} a stud', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,

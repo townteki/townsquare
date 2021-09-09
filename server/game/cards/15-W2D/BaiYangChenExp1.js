@@ -35,7 +35,7 @@ class BaiYangChenExp1 extends DudeCard {
             playType: ['noon'],
             ifCondition: context => context.player.ghostrock === 0,
             ifFailMessage: context => 
-                this.game.addMessage('{0} uses {1} but does not draw a card because he has {2} GR in stash', 
+                this.game.addMessage('{0} uses {1} but does not draw a card because they have {2} GR in stash', 
                     context.player, this, context.player.ghostrock),
             message: context => this.game.addMessage('{0} uses {1} to draw a card', context.player, this),
             handler: context => {

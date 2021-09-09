@@ -22,9 +22,9 @@ class Ruckus extends DudeCard {
                 return this.isParticipating() && ruckusOppPosse.getDudes().length === 1;
             },
             ifFailMessage: context =>
-                this.game.addMessage('{0} uses {1}, but it does not have any effect becaue there is not only one dude in opposing posse', 
+                this.game.addMessage('{0} uses {1}, but it does not have any effect becaue there is more than one dude in opposing posse', 
                     context.player, this),
-            message: context => this.game.addMessage('{0} uses {1} to make him a stud', context.player, this),
+            message: context => this.game.addMessage('{0} uses {1} to make {1} a stud', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,

@@ -17,7 +17,7 @@ class FasterOnTheDraw extends ActionCard {
                 }));
                 let deputyBonus = '';
                 if(context.target.hasKeyword('deputy')) {
-                    deputyBonus = ', makes him a stud';
+                    deputyBonus = ', makes them a stud';
                     this.applyAbilityEffect(context.ability, ability => ({
                         match: context.target,
                         effect: ability.effects.setAsStud()
