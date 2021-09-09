@@ -26,7 +26,7 @@ const Spell = require('./spell.js');
  * @property {string} phase - string representing which phases the action may be executed.
  *                Defaults to 'any' which allows the action to be executed in
  *                any phase.
- * @property {string | Array.<string>} location location - string indicating the location the card should be in in order
+ * @property {string | Array.<string>} location - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
  * @property {number} limit - the max number of uses for the repeatable action.
  * @property {boolean} clickToActivate - boolean that indicates the action should be activated when
