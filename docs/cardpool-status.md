@@ -500,7 +500,7 @@
 |:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
 |:heavy_check_mark:   | 12015| Guide Horse
-|                     | 12016| Marty
+|:heavy_check_mark:   | 12016| Marty
 |                     | 12017| Righteous Fury
 |:heavy_check_mark:   | 12018| Owl's Insight
 |:heavy_check_mark:   | 12019| Outgunned
@@ -592,7 +592,7 @@
 |                     | 15007| "Professor" Duncan
 |                     | 15008| The Highbinder Hotel
 |:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
-|                     | 15010| High Stakes Haven
+|:heavy_check_mark:   | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer
 |                     | 15012| Espuelas
 |                     | 15013| Rites of the Smoking Mirror
