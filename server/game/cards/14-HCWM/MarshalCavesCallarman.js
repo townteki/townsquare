@@ -16,9 +16,9 @@ class MarshalCavesCallarman extends DudeCard {
             title: 'Reduce Bounty',
             playType: 'noon',
             ifCondition: () => this.locationCard.hasKeyword('Public'),
-            ifFailMessage: context => this.game.addMessage('{0} uses {1}\'s ability, but it has no effect since {1} is not at a Public location', context.player, this),
+            ifFailMessage: context => this.game.addMessage('{0} uses {1}\'s ability, but it has no effect since he is not at a Public location', context.player, this),
             cost: ability.costs.discardFromHand(),
-            message: context => this.game.addMessage('{0} uses {1}\'s ability to discard {2} and reduce {1}\'s bounty by 1', context.player, this, context.costs.discardFromHand),
+            message: context => this.game.addMessage('{0} uses {1}\'s ability to discard {2} and reduce his bounty by 1', context.player, this, context.costs.discardFromHand),
             handler: context => {
                 this.game.resolveGameAction(GameActions.removeBounty({ card: this, amount: 1 }), context);
             }
