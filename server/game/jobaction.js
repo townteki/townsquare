@@ -2,6 +2,8 @@ const CardAction = require('./cardaction.js');
 
 /** @typedef {import('./costs')} Costs */
 /** @typedef {import('./AbilityTarget').AbilityTargetProperties} AbilityTargetProperties */
+/** @typedef {import('./AbilityContext')} AbilityContext */
+/** @typedef {import('./gamesteps/shootout')} Shootout */
 
 /**
  * @typedef {Object} JobAbilityProperties
@@ -26,9 +28,9 @@ const CardAction = require('./cardaction.js');
  * @property {number} limit - the max number of uses for the repeatable action.
  * @property {boolean} clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
- * @property {jobAbilityFunc} onSuccess - function that will be executed if job succeeds. Uses parameters
+ * @property {(job: Shootout, context: AbilityContext) => boolean} onSuccess - function that will be executed if job succeeds. Uses parameters
  *                job (Shootout object) and context.
- * @property {jobAbilityFunc} onFail - function that will be executed if job fails. Uses parameters
+ * @property {(job: Shootout, context: AbilityContext) => boolean} onFail - function that will be executed if job fails. Uses parameters
  *                job (Shootout object) and context.
  */
 class JobAction extends CardAction {

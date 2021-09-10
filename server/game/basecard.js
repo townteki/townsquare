@@ -317,7 +317,7 @@ class BaseCard {
      *  - Reacts based on the phase they were triggered
      * 
      * @param {AbilityDsl} ability
-     * @param {propertyFactory} propertyFactory
+     * @param {(ability: AbilityDsl) => void} propertyFactory
      */    
     applyAbilityEffect(ability, propertyFactory) {
         if(this.game.shootout) {
