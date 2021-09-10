@@ -20,10 +20,18 @@ const SpellBeforeReaction = require('./spellbeforereaction');
 const CardTraitBeforeReaction = require('./cardtraitbeforereaction');
 const TechniqueAction = require('./techniqueaction');
 
+/** @typedef {import('./AbilityContext')} AbilityContext */
+/** @typedef {import('./AbilityDsl')} AbilityDsl */
+/** @typedef {import('./game')} Game */
+/** @typedef {import('./player')} Player */
+
 class BaseCard {
     constructor(owner, cardData) {
+        /** @type {Player} */
         this.owner = owner;
+        /** @type {Player} */
         this.controllingPlayer = owner;
+        /** @type {Game} */
         this.game = this.owner.game;
         this.cardData = cardData;
 
@@ -165,18 +173,33 @@ class BaseCard {
     setupCardAbilities() {
     }
 
+    /**
+     * Define regular card action (`Noon:`, `Shootout:` but not jobs or spells)
+     *
+     * @param {import('./cardaction').ActionAbilityProperties} properties
+     */    
     action(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var action = new CardAction(this.game, this, properties);
         this.abilities.actions.push(action);
     }
 
+    /**
+     * Define job card action (`Noon Job:`)
+     *
+     * @param {import('./jobaction').JobAbilityProperties} properties
+     */ 
     job(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var job = new JobAction(this.game, this, properties);
         this.abilities.actions.push(job);
     }
 
+    /**
+     * Define Spell card action (e.g. `Noon Spirit:`, `Shootout Miracle:`)
+     *
+     * @param {import('./spellaction').SpellActionAbilityProperties} properties
+     */ 
     spellAction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         properties.triggeringPlayer = properties.triggeringPlayer || (this.hasKeyword('totem') ? 'any' : undefined);
@@ -184,12 +207,22 @@ class BaseCard {
         this.abilities.actions.push(spell);
     }
 
+    /**
+     * Define Technique card action (e.g. `Noon Technique:`, `Shootout Tao Technique:`)
+     *
+     * @param {import('./techniqueaction').TechniqueAbilityProperties} properties
+     */ 
     techniqueAction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var technique = new TechniqueAction(this.game, this, properties);
         this.abilities.actions.push(technique);
     }
 
+    /**
+     * Define regular card reaction (`React:` but not spell reactions)
+     *
+     * @param {import('./cardreaction').ReactionAbilityProperties} properties
+     */
     reaction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
@@ -201,6 +234,11 @@ class BaseCard {
         this.abilities.reactions.push(reaction);
     }
 
+    /**
+     * Define Spell card reaction (e.g. `React Hex:`, `React Miracle:`)
+     *
+     * @param {import('./spellreaction').SpellReactionAbilityProperties} properties
+     */ 
     spellReaction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
@@ -212,6 +250,11 @@ class BaseCard {
         this.abilities.reactions.push(reaction);
     }
 
+    /**
+     * Define card Trait reaction (Trait text on card that reacts on some event)
+     *
+     * @param {import('./traittriggeredability').TraitAbilityProperties} properties
+     */ 
     traitReaction(properties) {
         var reaction;
         if(properties.triggerBefore) {
@@ -266,6 +309,16 @@ class BaseCard {
         });
     }
 
+    /**
+     * Applies effect (described in `propertyFactory`) of the ability and sets duration
+     * based on the default rules:
+     *  - Shootout ability until end of shootout
+     *  - Noon ability until end of the round (Sundown)
+     *  - Reacts based on the phase they were triggered
+     * 
+     * @param {AbilityDsl} ability
+     * @param {propertyFactory} propertyFactory
+     */    
     applyAbilityEffect(ability, propertyFactory) {
         if(this.game.shootout) {
             this.untilEndOfShootoutPhase(ability, propertyFactory);

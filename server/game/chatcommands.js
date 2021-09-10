@@ -180,13 +180,13 @@ class ChatCommands {
     }
 
     pass(player) {
-        if(this.game.currentPlayWindow) {
+        if(this.game.currentPlayWindow && this.game.currentPlayWindow.name !== 'gambling') {
             this.game.currentPlayWindow.onPass(player);
         }
     }
 
     done(player) {
-        if(this.game.currentPlayWindow) {
+        if(this.game.currentPlayWindow && this.game.currentPlayWindow.name !== 'gambling') {
             this.game.currentPlayWindow.onDone(player);
         }
     }
