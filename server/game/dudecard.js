@@ -357,7 +357,7 @@ class DudeCard extends DrawCard {
                         { text: 'Refuse Callout', method: 'rejectCallout', arg: card.uuid }
                     ]
                 },
-                waitingPromptTitle: 'Waiting for opponent to decide if they runs or fights'
+                waitingPromptTitle: 'Waiting for opponent to decide if they run or fight'
             });
         } else {
             this.acceptCallout(card.controller, card.uuid);
