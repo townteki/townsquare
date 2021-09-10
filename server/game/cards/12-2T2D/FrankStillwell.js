@@ -11,7 +11,7 @@ class FrankStillwell extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: this }), context).thenExecute(() => {
-                    this.game.addMessage('{0} unboots {1} after {1} joined the posse', context.player, this);
+                    this.game.addMessage('{0} unboots {1} after he joins the posse', context.player, this);
                 });
             }
         });
@@ -22,7 +22,7 @@ class FrankStillwell extends DudeCard {
                 onPossesFormed: () => this.isParticipating()
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} to send {1} home booted', context.player, this),
+                this.game.addMessage('{0} uses {1} to send him home booted', context.player, this),
             handler: context => {
                 this.game.shootout.sendHome(this, context);
             }
