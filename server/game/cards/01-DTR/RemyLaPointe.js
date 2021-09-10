@@ -8,7 +8,7 @@ class RemyLaPointe extends DudeCard {
             cost: [
                 ability.costs.payXGhostRock(() => 1, () => 5 - (this.bullets < 1 ? 1 : this.bullets))
             ],
-            message: context => this.game.addMessage('{0} uses {1} to boost {1}\'s bullets by {2}', 
+            message: context => this.game.addMessage('{0} uses {1} to boost his bullets by {2}', 
                 context.player, this, context.grCost),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
