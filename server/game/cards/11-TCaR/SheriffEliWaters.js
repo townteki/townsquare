@@ -34,12 +34,12 @@ class SheriffEliWaters extends DudeCard {
                                                 });                                                
                                             },
                                             onNo: player => {
-                                                this.game.addMessage('{0} moves {1} to {2}\'s location as a result of {1}\'s trait', player, this, card);
+                                                this.game.addMessage('{0} moves {1} to {2}\'s location as a result of his trait', player, this, card);
                                             },
                                             source: this
                                         });
                                     } else {
-                                        this.game.addMessage('{0} moves {1} to {2}\'s location as a result of {1}\'s trait', player, this, card);
+                                        this.game.addMessage('{0} moves {1} to {2}\'s location as a result of his trait', player, this, card);
                                     }
                                 });
                                 return true;
