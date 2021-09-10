@@ -17,7 +17,7 @@ class FatherTolarios extends DudeCard {
                     location: 'play area', 
                     controller: 'opponent',
                     wanted: true,
-                    condition: (card) => card.isNearby()
+                    condition: (card) => card.isNearby(this.gamelocation)
                 },
                 cardType: ['dude'],
                 gameAction: 'removeBounty',
