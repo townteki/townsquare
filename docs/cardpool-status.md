@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/447/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/451/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -167,7 +167,7 @@
 |                     | 02002| Slade Lighbody
 |                     | 02003| Rafi Hamid
 |:heavy_check_mark:   | 02004| Wylie Jenks
-|                     | 02005| Kyle Wagner
+|:heavy_check_mark:   | 02005| Kyle Wagner
 |                     | 02006| Lillian Morgan
 |:heavy_check_mark:   | 02007| Ulysses Marks
 |                     | 02008| Alice Stowe
@@ -675,7 +675,7 @@
 |                     | 18012| Mick Aduladi
 |                     | 18013| Absalom Hotchkiss
 |:heavy_check_mark:   | 18014| Christine Perfect
-|                     | 18015| Father Tolarios
+|:heavy_check_mark:   | 18015| Father Tolarios
 |:heavy_check_mark:   | 18016| Hattie DeLorre
 |:heavy_check_mark:   | 18017| Diego Linares
 |:heavy_check_mark:   | 18018| Post-A-Tron

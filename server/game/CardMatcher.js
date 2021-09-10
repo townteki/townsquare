@@ -1,5 +1,8 @@
 const Matcher = require('./Matcher.js');
 
+/** @typedef {import('./AbilityContext')} AbilityContext */
+/** @typedef {import('./basecard')} BaseCard */
+
 /** 
  * @typedef {Object} CardMatcherProps
  * Represents a properties that should match card presented to
@@ -8,7 +11,8 @@ const Matcher = require('./Matcher.js');
  * Properties:
  * @property {string} location - string that represents card location.
  * @property {string} controller - string that represents card controller. 
- * @property {cardContextCondition} condition - optional condition with parameters `card` and `context`.
+ * @property {(card: BaseCard, context: AbilityContext) => boolean} condition - 
+ *          optional condition with parameters `card` and `context`.
  * @property {boolean} keyword - .
  * @property {boolean} booted - .
  * @property {boolean} unique - .

@@ -1,5 +1,7 @@
 const TriggeredAbility = require('./triggeredability.js');
 
+/** @typedef {import('./AbilityContext')} AbilityContext */
+
 /**
  * @typedef {Object} TraitAbilityProperties 
  * Represents a forced reaction ability provided by card text.
@@ -17,10 +19,10 @@ const TriggeredAbility = require('./triggeredability.js');
  * @property {boolean} triggerBefore - If the handler of this reaction should be run before the event in `when`
  *           occurs. Should be used mainly if the handler replaces the event handler (actions with instead).
  * @property {boolean} ignoreActionCosts - If the action costs should be ignored.
- * @property {abilityFunc} handler - function that will be executed if the player chooses 'Yes' when
+ * @property {(context: AbilityContext) => boolean} handler - function that will be executed if the player chooses 'Yes' when
  *           asked to trigger the reaction. If the reaction has more than one
  *           choice, use the choices sub object instead.
- * @property {number} limit   - the max number of uses for the repeatable reaction.
+ * @property {number} limit - the max number of uses for the repeatable reaction.
  * @property {string | Array.<string>} location - string or array of string  indicating the location the card should
  *            be in in order to activate the reaction. Defaults to 'play area'.
  */
