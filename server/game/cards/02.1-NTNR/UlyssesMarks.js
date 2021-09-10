@@ -14,7 +14,7 @@ class UlyssesMarks extends DudeCard {
             playType: 'noon',     
             ifCondition: () => this.locationCard.hasKeyword('Saloon'),
             ifFailMessage: context => 
-                this.game.addMessage('{0} uses {1} but fails because {1} is not in a Saloon', context.player, this),
+                this.game.addMessage('{0} uses {1} but fails because he is not in a Saloon', context.player, this),
             target: {
                 activePromptTitle: 'Select a dude to kick out of the saloon',
                 ifAble: true,
