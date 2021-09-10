@@ -30,7 +30,7 @@ class SheriffEliWaters extends DudeCard {
                                             title: `Do you want ${this.title} to join posse?`,
                                             onYes: player => {
                                                 this.game.resolveGameAction(GameActions.joinPosse({ card: this }), context).thenExecute(() => {
-                                                    this.game.addMessage('{0} moves {1} to {2}\'s location and joins the shootout as a result of {1}\'s trait', player, this, card);
+                                                    this.game.addMessage('{0} moves {1} to {2}\'s location and joins the shootout as a result of his trait', player, this, card);
                                                 });                                                
                                             },
                                             onNo: player => {
