@@ -18,6 +18,10 @@ class Scattergun extends GoodsCard {
                 },
                 gameAction: 'discard'
             },
+            ifCondition: () => this.parent && this.parent.bullets >= 1,
+            ifFailMessage: context =>
+                this.game.addMessage('{0} uses {1} to discard {2}, but it fails because {3} does not have enough bullets', 
+                    context.player, this, context.target, this.parent),
             message: context => 
                 this.game.addMessage('{0} uses {1} to discard {2}', context.player, this, context.target),
             handler: context => {

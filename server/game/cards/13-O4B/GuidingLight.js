@@ -1,8 +1,8 @@
 const GameActions = require('../../GameActions/index.js');
-const GoodsCard = require('../../goodscard.js');
+const SpellCard = require('../../spellcard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
-class GuidingLight extends GoodsCard {
+class GuidingLight extends SpellCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.spellAction({
@@ -18,7 +18,8 @@ class GuidingLight extends GoodsCard {
                     location: 'play area', 
                     controller: 'current', 
                     condition: card => this.parent &&
-                        card.isNearby(this.parent.gamelocation) 
+                        card.isNearby(this.parent.gamelocation) &&
+                        !card.isAtHome()
                 },
                 cardType: ['dude'],
                 gameAction: 'sendHome'
