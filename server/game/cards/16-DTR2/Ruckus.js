@@ -24,7 +24,7 @@ class Ruckus extends DudeCard {
             ifFailMessage: context =>
                 this.game.addMessage('{0} uses {1}, but it does not have any effect because there is more than one dude in opposing posse', 
                     context.player, this),
-            message: context => this.game.addMessage('{0} uses {1} to make {1} a stud', context.player, this),
+            message: context => this.game.addMessage('{0} uses {1} to make him a stud', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
