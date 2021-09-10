@@ -18,7 +18,7 @@ class NicodemusWhateley extends DudeCard {
                             this.control = 0;
                         }
                     } else {
-                        this.game.addMessage('{0} cannot to give {1} a CP since {1} already has 3 or more', context.player, this);
+                        this.game.addMessage('{0} cannot to give {1} a CP since he already has 3 or more', context.player, this);
                     }
                 }
             })
