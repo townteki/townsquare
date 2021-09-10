@@ -22,7 +22,7 @@ class JiaMein2 extends DudeCard {
                         match: this,
                         effect: ability.effects.setAsStud()
                     }));
-                    this.game.addMessage('{0} uses {1} to learn {2} and make {1} a stud', context.player, this, context.target);
+                    this.game.addMessage('{0} uses {1} to learn {2} and make him a stud', context.player, this, context.target);
                 }), context.player, context.target);
             }
         });
