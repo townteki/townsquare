@@ -32,7 +32,7 @@ class JohnAcesRadcliffeExp1 extends DudeCard {
                 cardType: ['goods']
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} to equip {1} with a {2}', context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to equip him with a {2}', context.player, this, context.target),
             handler: context => {
                 this.lastingEffect(context.ability, ability => ({
                     until: {
