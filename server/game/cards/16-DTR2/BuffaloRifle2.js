@@ -9,7 +9,7 @@ class BuffaloRifle2 extends GoodsCard {
             cost: ability.costs.bootSelf(),
             condition: () => this.game.shootout && this.game.shootout.shootoutLocation.isAdjacent(this.gamelocation),
             message: context => 
-                this.game.addMessage('{0} uses {1} to join {2} to join the posse from an adjacent location', context.player, this),
+                this.game.addMessage('{0} uses {1} to join {2} to their posse from an adjacent location', context.player, this, this.parent),
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ 
                     card: this.parent, 
