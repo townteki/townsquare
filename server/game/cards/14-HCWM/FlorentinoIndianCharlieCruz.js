@@ -3,7 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class FlorentinoIndianCharlieCruz extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.isWanted(),
+            condition: () => this.isWanted() && this.location === 'play area',
             match: this,
             effect: ability.effects.dynamicValue(() => this.bounty)
         });
