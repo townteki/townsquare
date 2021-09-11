@@ -692,7 +692,12 @@ class Player extends Spectator {
         }
 
         if(card.owner === this) {
-            return !this.game.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
+            return !this.game.anyCardsInPlay(c => 
+                c !== card &&
+                c.title === card.title && 
+                c.owner === this &&
+                !c.facedown
+            );
         }
 
         return true;
