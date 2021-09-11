@@ -3,8 +3,11 @@ const Deck = require('./Deck');
 const RematchPrompt = require('./gamesteps/RematchPrompt');
 const {Tokens} = require('./Constants');
 
+/** @typedef {import('./game')} Game */
+
 class ChatCommands {
     constructor(game) {
+        /** @type {Game} */
         this.game = game;
         this.commands = {
             '/ace': this.ace,
@@ -579,10 +582,38 @@ class ChatCommands {
         if(!this.game.shootout) {
             return;
         }
-        this.game.addAlert('danger', '{0} uses the /cancel-shootout to end the shootout.', player);
-        if(this.game.shootout.leaderPosse) {
-            this.game.shootout.actOnLeaderPosse(dude => this.game.shootout.removeFromPosse(dude));
-        }
+        const opp = player.getOpponent();
+        this.game.promptForYesNo(opp, {
+            title: `${opp.name} wants to cancel this Shootout. Do you agree?`,
+            onYes: oppPlayer => {
+                this.game.addAlert('danger', '{0} uses the /cancel-shootout to end the shootout.', oppPlayer);
+                this.game.queueSimpleStep(() => {
+                    if(this.game.shootout) {
+                        this.game.shootout.resetForTheRound();
+                        this.game.shootout.cancelled = true;
+                    }
+                }); 
+                this.game.queueSimpleStep(() => {
+                    if(this.game.shootout.leaderPosse) {
+                        this.game.shootout.actOnLeaderPosse(dude => this.game.shootout.removeFromPosse(dude));
+                    }
+                });
+                this.game.queueSimpleStep(() => {
+                    if(this.game.shootout && this.game.shootout.opposingPosse) {
+                        this.game.shootout.actOnOpposingPosse(dude => this.game.shootout.removeFromPosse(dude));
+                    }
+                });
+                this.game.queueSimpleStep(() => {
+                    if(this.game.shootout) {
+                        this.game.shootout.endPhase(true);
+                    }
+                });  
+            },
+            onNo: oppPlayer => {
+                this.game.addAlert('danger', '{0} uses the /cancel-shootout to end the shootout, but {1} does not agree', 
+                    player, oppPlayer);
+            }
+        });
     }
 
     setToken(player, args) {
