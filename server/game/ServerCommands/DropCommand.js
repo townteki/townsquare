@@ -22,7 +22,8 @@ class DropCommand {
         const defaultContext = { game: this.game, player: this.player };
 
         if(this.originalLocation === this.targetLocation) {
-            if(this.card.getType() === 'dude' && this.targetLocation === 'play area') {
+            if(this.card.getType() === 'dude' && this.targetLocation === 'play area' &&
+                this.card.gamelocation !== this.gamelocation) {
                 const moveActionProps = {
                     title: 'Move',
                     abilitySourceType: 'game',
