@@ -42,7 +42,8 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     }
 
     skipCondition() {
-        if(this.game.shootout && this.game.shootout.checkEndCondition()) {
+        if(this.game.shootout && 
+            (this.game.shootout.cancelled || this.game.shootout.checkEndCondition())) {
             return true;
         }
         return false; 
@@ -102,6 +103,14 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         this.game.raiseEvent('onPassAction', { playWindow: this });
         this.game.addMessage('{0} passes {1} action', player, this.name);
         super.completePlayer();
+    }
+
+    isComplete() {
+        if(this.name === 'shootout plays' && 
+            (!this.game.shootout || this.game.shootout.cancelled)) {
+            return true;
+        }
+        return super.isComplete();
     }
 }
 

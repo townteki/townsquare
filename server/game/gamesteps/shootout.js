@@ -35,6 +35,7 @@ class Shootout extends Phase {
         this.jobUnopposed = false;
         this.winningPlayer = null;
         this.headlineUsed = false;
+        this.cancelled = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
         this.abilityRestrictions = [];									  
@@ -144,7 +145,7 @@ class Shootout extends Phase {
         this.round += 1;
         this.game.raiseEvent('onShootoutRoundStarted');
         this.queueStep(new SimpleStep(this.game, () => {
-            if(!this.checkEndCondition()) {
+            if(!this.checkEndCondition() && !this.cancelled) {
                 if(this.remainingSteps.length !== 0) {
                     let step = this.remainingSteps.shift();
                     this.queueStep(step);
@@ -166,7 +167,7 @@ class Shootout extends Phase {
         this.game.addAlert('phasestart', phaseName + ' started!');        
     }
 
-    endPhase(isCancel = false) {
+    endPhase() {
         this.game.raiseEvent('onShootoutPhaseFinished', {
             phase: this.name, 
             shootout: this,
@@ -182,7 +183,7 @@ class Shootout extends Phase {
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.resetModifiers();
-        this.game.endShootout(isCancel);
+        this.game.endShootout(this.cancelled);
         if(this.isJob()) {
             this.options.jobAbility.setResult(this.jobSuccessful, this);
             this.options.jobAbility.reset();
@@ -259,7 +260,8 @@ class Shootout extends Phase {
     }
 
     checkEndCondition() {
-        return !this.leaderPosse || !this.opposingPosse || this.leaderPosse.isEmpty() || this.opposingPosse.isEmpty();
+        return this.cancelled || !this.leaderPosse || !this.opposingPosse || 
+            this.leaderPosse.isEmpty() || this.opposingPosse.isEmpty();
     }
 
     getLeaderDrawCount() {
@@ -321,6 +323,9 @@ class Shootout extends Phase {
     }
 
     pickYerShooterStep() {
+        if(this.cancelled) {
+            return;
+        }
         this.queueStep(new PickYerShooterPrompt(this.game, this.leaderOpponentOrder));
     }
 
@@ -374,14 +379,23 @@ class Shootout extends Phase {
     }
 
     draw() {
+        if(this.cancelled) {
+            return;
+        }
         this.queueStep(new DrawHandPrompt(this.game, [this.getLeaderDrawCount(), this.getOpposingDrawCount()]));
     }
 
     resolutionPlays() {
+        if(this.cancelled) {
+            return;
+        }
         this.queueStep(new PlayWindow(this.game, 'shootout resolution', 'Make Resolution plays'));
     }
 
     determineWinner() {
+        if(this.cancelled) {
+            return;
+        }
         this.shootoutLoseWinOrder = [];
         let opposingRank = this.opposingPlayer.getTotalRank();
         let leaderRank = this.leaderPlayer.getTotalRank();
@@ -414,12 +428,18 @@ class Shootout extends Phase {
     }
 
     casualtiesAndRunOrGun() {
+        if(this.cancelled) {
+            return;
+        }
         this.game.raiseEvent('onShootoutCasualtiesStepStarted', { shootoutRound: this.round });
         this.queueStep(new TakeYerLumpsPrompt(this.game, this.shootoutLoseWinOrder));
         this.queueStep(new RunOrGunPrompt(this.game, this.shootoutLoseWinOrder));
     }
 
     chamberAnotherRound() {
+        if(this.cancelled) {
+            return;
+        }
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));
         this.game.raiseEvent('onShootoutRoundFinished');
         if(!this.checkEndCondition()) {
