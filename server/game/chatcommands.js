@@ -30,6 +30,7 @@ class ChatCommands {
             '/clear-effects': this.clearEffects,
             '/cleff': this.clearEffects,
             '/control': this.control,
+            '/debug-dump': this.debugDump,
             '/done': this.done,
             '/discard-random': this.discardRandom,
             '/discard-deck': this.discardFromDeck,
@@ -882,6 +883,12 @@ class ChatCommands {
         }
 
         this.game.queueStep(new RematchPrompt(this.game, player));
+    }
+
+    debugDump(player) {
+        // Conscious TypeError to trigger error handling and reporting
+        this.debug.dumpInfo = '';
+        this.game.addAlert('danger', '{0} uses the /debug-dump command to report game debug information', player);
     }
 
     selectSkillOrFu(player, skillOrFu) {

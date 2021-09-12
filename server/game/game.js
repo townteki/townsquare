@@ -1424,7 +1424,6 @@ class Game extends EventEmitter {
 
             return {
                 id: this.id,
-                isMelee: this.isMelee,
                 name: this.name,
                 owner: this.owner,
                 players: playerState,
@@ -1437,6 +1436,7 @@ class Game extends EventEmitter {
                         name: spectator.name
                     };
                 }),
+                currentPhase: this.currentPhase,
                 started: this.started,
                 winner: this.winner ? this.winner.name : undefined,
                 cancelPromptUsed: this.cancelPromptUsed,
