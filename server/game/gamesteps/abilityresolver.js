@@ -27,8 +27,8 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
-            new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
+            new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.postResolveAbilityUpdates()),
             new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
             new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionFinished', { ability: this.ability, context: this.context })),
@@ -224,6 +224,10 @@ class AbilityResolver extends BaseStep {
             });
         } else {
             this.ability.executeHandler(this.context);
+        }
+
+        if(this.context.cancelled) {
+            this.cancelled = true;
         }
     }
 
