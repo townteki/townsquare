@@ -27,8 +27,8 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
+            new SimpleStep(game, () => this.markActionAsTaken()),            
             new SimpleStep(game, () => this.executeHandler()),
-            new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.postResolveAbilityUpdates()),
             new SimpleStep(game, () => this.raiseOnAbilityResolvedEvent()),
             new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionFinished', { ability: this.ability, context: this.context })),
@@ -188,6 +188,9 @@ class AbilityResolver extends BaseStep {
             if(this.ability.abilitySourceType !== 'game') {
                 this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
             }
+            if(this.ability.playTypePlayed() === 'shoppin') {
+                this.ability.unpayCosts(this.context);
+            }
             return;
         }
 
@@ -224,10 +227,6 @@ class AbilityResolver extends BaseStep {
             });
         } else {
             this.ability.executeHandler(this.context);
-        }
-
-        if(this.context.cancelled) {
-            this.cancelled = true;
         }
     }
 

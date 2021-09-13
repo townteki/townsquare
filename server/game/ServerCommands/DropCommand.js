@@ -66,7 +66,7 @@ class DropCommand {
                 this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
                     title: 'Are you perfoming Shoppin\' play?',
                     onYes: () => {
-                        this.game.resolveStandardAbility(StandardActions.shoppin(this.gamelocation), this.player, this.card);
+                        this.game.resolveStandardAbility(StandardActions.shoppin(this.card, this.gamelocation), this.player, this.card);
                     },
                     onNo: () => this.game.resolveGameAction(GameActions.putIntoPlay({ 
                         player: this.player,

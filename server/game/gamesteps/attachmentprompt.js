@@ -23,11 +23,11 @@ class AttachmentPrompt extends UiPrompt {
                 return true;
             },
             onCancel: () => {
-                this.context.cancelled = true;
                 if(this.context.ability) {
                     this.context.ability.unpayCosts(this.context);
                 }
-            }
+            },
+            source: this.attachmentCard
         });
     }
 }

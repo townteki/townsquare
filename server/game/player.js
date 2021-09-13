@@ -705,7 +705,7 @@ class Player extends Spectator {
         const defaultParams = {
             originalLocation: card.location,
             playingType: params.playingType || 'play',
-            target: params.target || '',
+            target: params.targetLocationUuid || '',
             context: params.context || {},
             booted: !!params.booted
         };
@@ -732,6 +732,9 @@ class Player extends Spectator {
         switch(card.getType()) {
             case 'spell':
             case 'goods':
+                if(updatedParams.playingType === 'shoppin') {
+                    updatedParams.targetParent = updatedParams.context.target;
+                }
                 if(updatedParams.targetParent && this.canAttach(card, updatedParams.targetParent, updatedParams.playingType)) {
                     this.attach(card, updatedParams.targetParent, updatedParams.playingType, (attachment, target) =>
                         onAttachCompleted(attachment, target, updatedParams), updatedParams.scientist);
