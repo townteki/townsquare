@@ -514,7 +514,9 @@ class Player extends Spectator {
     }
 
     addCostReducer(reducer) {
-        this.costReducers.push(reducer);
+        if(!this.costReducers.includes(reducer)) {
+            this.costReducers.push(reducer);
+        }
     }
 
     removeCostReducer(reducer) {
@@ -567,6 +569,7 @@ class Player extends Spectator {
                 this.removeCostReducer(reducer);
             }
         }
+        return matchingReducers;
     }
 
     isAced(card, checkSelf = true) {
