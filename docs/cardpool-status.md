@@ -110,7 +110,7 @@
 |                     | 01096| Doyle's Hoyle
 |:heavy_check_mark:   | 01097| Buffalo Rifle
 |                     | 01098| Legendary Holster
-|                     | 01099| Auto Cattle-Feeder
+|:heavy_check_mark:   | 01099| Auto Cattle-Feeder
 |:heavy_check_mark:   | 01100| Soul Blast
 |:heavy_check_mark:   | 01101| Ace in the Hole
 |:heavy_check_mark:   | 01102| Shadow Walk
