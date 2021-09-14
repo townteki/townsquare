@@ -17,15 +17,17 @@ class The108RighteousBandits extends OutfitCard {
                 gameAction: 'moveDude'
             },
             handler: context => {
-                this.game.promptForSelect(context.player, {
-                    activePromptTitle: 'Select a location to move to',
+                this.game.promptForLocation(context.player, {
+                    activePromptTitle: 'Select where to move your dude',
                     waitingPromptTitle: 'Waiting for opponent to select location',
                     cardCondition: card => card.location === 'play area' &&
                         card.uuid !== context.target.gamelocation &&
                         this.game.getDudesAtLocation(card.uuid).some(dude => dude.controller === this.owner),
-                    cardType: 'location',
                     onSelect: (player, location) => {
-                        this.game.resolveGameAction(GameActions.moveDude({ card: context.target, targetUuid: location.uuid }), context).thenExecute(() => {
+                        this.game.resolveGameAction(GameActions.moveDude({ 
+                            card: context.target, 
+                            targetUuid: location.uuid 
+                        }), context).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} to move {2} to {3}', player, this, context.target, location);                        
                         });
                         return true;
