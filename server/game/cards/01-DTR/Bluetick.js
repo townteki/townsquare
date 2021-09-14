@@ -14,7 +14,7 @@ class Bluetick extends GoodsCard {
             },
             actionContext: { card: this.parent, gameAction: 'moveDude' },
             message: context => 
-                this.game.addMessage('{0} uses {1} with it\'s master {2} to chase {3} in {4}.', context.player, this, this.parent, context.target, context.target.locationCard),
+                this.game.addMessage('{0} uses {1} with its master {2} to chase {3} in {4}', context.player, this, this.parent, context.target, context.target.locationCard),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.gamelocation, options: { removeAll: true } }), context);
             }
