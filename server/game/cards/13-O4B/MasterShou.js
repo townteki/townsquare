@@ -13,8 +13,8 @@ class MasterShou extends DudeCard {
                 card.isNearby(this.gamelocation)
             ),
             message: context => {
-                const deedOwner = context.target.locationCard.owner;
-                if(context.target.locationCard.owner === this.controller) {
+                const deedOwner = context.costs.boot.locationCard.owner;
+                if(context.costs.boot.locationCard.owner === this.controller) {
                     this.game.addMessage('{0} uses {1} and boots {2}, but they are the deed owners', 
                         context.player, this, context.costs.boot);
                 } else {
@@ -23,9 +23,9 @@ class MasterShou extends DudeCard {
                 }
             },
             handler: context => {
-                if(context.target.locationCard.owner !== this.controller) {
+                if(context.costs.boot.locationCard.owner !== this.controller) {
                     this.game.transferGhostRock({
-                        from: context.target.locationCard.owner,
+                        from: context.costs.boot.locationCard.owner,
                         to: this.controller,
                         amount: 1
                     });

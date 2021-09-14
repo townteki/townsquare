@@ -10,11 +10,11 @@ class StephGertiesTonsorium extends DeedCard {
             condition: () => this.controller.hand.length,
             target: {
                 activePromptTitle: 'Select card',
-                cardCondition: { location: 'hand', controller: 'opponent' }
+                cardCondition: { location: 'hand', controller: 'current' }
             },
             handler: context => {
                 context.player.shuffleCardIntoDeck(context.target);
-                const cardToDiscard = context.player.drawHand[0];
+                const cardToDiscard = context.player.drawDeck[0];
                 this.game.resolveGameAction(GameActions.discardCard({ 
                     card: cardToDiscard
                 }), context).thenExecute(() => {
