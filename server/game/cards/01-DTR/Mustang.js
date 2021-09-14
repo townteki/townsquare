@@ -10,7 +10,7 @@ class Mustang extends GoodsCard {
             target: { cardType: 'location' },
             actionContext: { card: this.parent, gameAction: 'moveDude' },
             message: context => 
-                this.game.addMessage('{0} uses {1} with it\'s rider {2} to move to {3}', context.player, this, this.parent, context.target.title),
+                this.game.addMessage('{0} uses {1} with its rider {2} to move to {3}', context.player, this, this.parent, context.target.title),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.uuid }), context);
             }
