@@ -558,7 +558,7 @@
 |:heavy_check_mark:   | 14019| Epidemic Laboratory
 |:heavy_check_mark:   | 14020| Walters Creek Distillery
 |:heavy_check_mark:   | 14021| Silent Sigil
-|                     | 14022| Auto-Gatling
+|:heavy_check_mark:   | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
 |:heavy_check_mark:   | 14024| Tusk
 |                     | 14025| Mountain Lion Friend
