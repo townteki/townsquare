@@ -11,7 +11,7 @@ class TakinYaWithMe extends ActionCard {
                     this.canBeTakenWithMe(event.player, event.shootout, event.casualtiesTaken)
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} to take some of {2}\'s dudes or sidekicks with him', context.player, this, context.player.getOpponent()),
+                this.game.addMessage('{0} uses {1} to take some of {2}\'s dudes or sidekicks with them', context.player, this, context.player.getOpponent()),
             handler: context => {
                 this.game.shootout.queueStep(new TakeYerLumpsPrompt(this.game, [context.player.getOpponent().name], 1, this));
             }

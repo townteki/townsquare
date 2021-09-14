@@ -13,7 +13,7 @@ class FelixAmador extends DudeCard {
                 gameAction: 'boot',
                 autoSelect: true
             },
-            message: context => this.game.addMessage('{0} uses {1} and boots {2} to look at the top card of the deck', context.player, this, context.target),
+            message: context => this.game.addMessage('{0} uses {1} and boots {2} to look at the top card of their deck', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() =>
                     this.game.resolveGameAction(
