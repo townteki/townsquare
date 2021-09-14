@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/441/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/451/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -110,7 +110,7 @@
 |                     | 01096| Doyle's Hoyle
 |:heavy_check_mark:   | 01097| Buffalo Rifle
 |                     | 01098| Legendary Holster
-|                     | 01099| Auto Cattle-Feeder
+|:heavy_check_mark:   | 01099| Auto Cattle-Feeder
 |:heavy_check_mark:   | 01100| Soul Blast
 |:heavy_check_mark:   | 01101| Ace in the Hole
 |:heavy_check_mark:   | 01102| Shadow Walk
@@ -167,7 +167,7 @@
 |                     | 02002| Slade Lighbody
 |                     | 02003| Rafi Hamid
 |:heavy_check_mark:   | 02004| Wylie Jenks
-|                     | 02005| Kyle Wagner
+|:heavy_check_mark:   | 02005| Kyle Wagner
 |                     | 02006| Lillian Morgan
 |:heavy_check_mark:   | 02007| Ulysses Marks
 |                     | 02008| Alice Stowe
@@ -461,7 +461,7 @@
 |                     | 11002| Beyond the Veil
 |                     | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
-|                     | 11005| He Fang
+|:heavy_check_mark:   | 11005| He Fang
 |                     | 11006| Kabeda Hakurei
 |:heavy_check_mark:   | 11007| Zachary Deloria
 |:heavy_check_mark:   | 11008| Karl Odett
@@ -500,7 +500,7 @@
 |:heavy_check_mark:   | 12013| Xemo's Turban
 |                     | 12014| Blight Serum
 |:heavy_check_mark:   | 12015| Guide Horse
-|                     | 12016| Marty
+|:heavy_check_mark:   | 12016| Marty
 |                     | 12017| Righteous Fury
 |:heavy_check_mark:   | 12018| Owl's Insight
 |:heavy_check_mark:   | 12019| Outgunned
@@ -592,7 +592,7 @@
 |                     | 15007| "Professor" Duncan
 |                     | 15008| The Highbinder Hotel
 |:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
-|                     | 15010| High Stakes Haven
+|:heavy_check_mark:   | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer
 |                     | 15012| Espuelas
 |                     | 15013| Rites of the Smoking Mirror
@@ -621,7 +621,7 @@
 |:heavy_check_mark:   | 16010| Long Strides Ranch
 |:heavy_check_mark:   | 16011| The Gomorra Gazette
 |:heavy_check_mark:   | 16012| "Open Wound"
-|                     | 16013| Doomsday Supply
+|:heavy_check_mark:   | 16013| Doomsday Supply
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
@@ -641,13 +641,13 @@
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
-|                     | 17007| Nicholas Kramer
+|:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
 |                     | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
-|                     | 17013| Pedro
+|:heavy_check_mark:   | 17013| Pedro
 |:heavy_check_mark:   | 17014| Aetheric Shockwave Inducer
 |                     | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
@@ -675,7 +675,7 @@
 |                     | 18012| Mick Aduladi
 |                     | 18013| Absalom Hotchkiss
 |:heavy_check_mark:   | 18014| Christine Perfect
-|                     | 18015| Father Tolarios
+|:heavy_check_mark:   | 18015| Father Tolarios
 |:heavy_check_mark:   | 18016| Hattie DeLorre
 |:heavy_check_mark:   | 18017| Diego Linares
 |:heavy_check_mark:   | 18018| Post-A-Tron
@@ -941,7 +941,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 23001| Yasmin Tian
+|:heavy_check_mark:   | 23001| Yasmin Tian
 |                     | 23002| "Dynamite" Jacc
 |:heavy_check_mark:   | 23003| Bai Yang Chen (Exp.1)
 |                     | 23004| Huang Li
@@ -988,12 +988,12 @@
 |                     | 23045| Guiding the Pack
 |                     | 23046| Elk's Protection
 |                     | 23047| Get Off My Land!
-|                     | 23048| Look What I Found!
+|:heavy_check_mark:   | 23048| Look What I Found!
 |                     | 23049| Mantis Pinch
-| :heavy_check_mark:  | 23050| As Nature and God Intended
+|:heavy_check_mark:   | 23050| As Nature and God Intended
 |                     | 23051| Play for Blood
 |                     | 23052| Bad Beat
-| :heavy_check_mark:  | 23053| Fallen Star
+|:heavy_check_mark:   | 23053| Fallen Star
 |                     | 23054| Masonic Augment
 |                     | 23055| Swagger
 |:heavy_check_mark:   | 23056| Vamoosin'

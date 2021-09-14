@@ -15,7 +15,7 @@ class GoodsCard extends HeartsCard {
             return false;
         }   
 
-        return true;
+        return card.getType() === 'dude';
     }
 }
 

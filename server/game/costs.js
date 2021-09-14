@@ -6,7 +6,6 @@ const SelfCost = require('./costs/SelfCost.js');
 const UnbootCost = require('./costs/UnbootCost.js');
 const MoveTokenFromSelfCost = require('./costs/MoveTokenFromSelfCost.js');
 const DiscardFromDeckCost = require('./costs/DiscardFromDeckCost');
-const {Tokens} = require('./Constants');
 
 const Costs = {
     /**
@@ -182,6 +181,10 @@ const Costs = {
      */
     discardFromPlay: condition => CostBuilders.discardFromPlay.select(condition),
     /**
+     * Cost that will discard the card that initiated the ability.
+     */
+    discardSelf: () => CostBuilders.discardFromPlay.self(),
+    /**
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
      */
@@ -306,30 +309,6 @@ const Costs = {
                     context: context 
                 });
                 context.player.markUsedReducers(playingType, context.source);
-            }
-        };
-    },
-    /**
-     * Cost where the player gets prompted to discard gold from the card from a passed minimum up to the lesser of two values:
-     * the passed maximum and the amount of gold on the source card.
-     * Used by The House of Black and White, Stormcrows and Devan Seaworth.
-     */
-    discardXGold: function(minFunc, maxFunc) {
-        return {
-            canPay: function(context) {
-                return context.source.tokens.gold >= minFunc(context);
-            },
-            resolve: function(context, result = { resolved: false }) {
-                let max = Math.min(maxFunc(context), context.source.tokens.gold);
-
-                context.game.queueStep(new XValuePrompt(minFunc(context), max, context));
-
-                result.value = true;
-                result.resolved = true;
-                return result;
-            },
-            pay: function(context) {
-                context.source.modifyToken(Tokens.gold, -context.xValue);
             }
         };
     }
