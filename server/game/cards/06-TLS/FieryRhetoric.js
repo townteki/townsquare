@@ -9,7 +9,7 @@ class FieryRhetoric extends SpellCard {
             playType: ['noon'],
             difficulty: 6,
             jobProperties: {
-                cost: ability.costs.bootLeader(),
+                cost: ability.costs.bootParent(),
                 target: 'townsquare',
                 message: context => this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
                 onSuccess: (job, context) => {

@@ -17,12 +17,17 @@ class DeadBillyJones extends DudeCard {
                         card.isNearby(this.gamelocation)                         
                 },
                 cardType: ['dude'],
-                gameAction: 'moveDude'
+                gameAction: 'moveDude',
+                ifAble: true
             },
             ifCondition: () => this.controller.cardsInPlay.some(card => card.hasKeyword('ranch')),
             ifFailMessage: context =>
                 this.game.addMessage('{0} uses {1} but it fails as they do not control a Ranch', context.player, this),
             handler: context => {
+                if(!context.target) {
+                    this.game.addMessage('{0} uses {1} but there is no dude with a horse', context.player, this);
+                    return;
+                }
                 this.game.promptForLocation(context.player, {
                     activePromptTitle: `Select where to move ${context.target.title}`,
                     waitingPromptTitle: 'Waiting for opponent to select location',
