@@ -3,6 +3,7 @@ const Spell = require('./spell.js');
 
 /** @typedef {import('./costs')} Costs */
 /** @typedef {import('./AbilityTarget').AbilityTargetProperties} AbilityTargetProperties */
+/** @typedef {import('./AbilityContext')} AbilityContext */
 
 /** 
  * @typedef {Object} SpellReactionAbilityProperties 
@@ -22,9 +23,8 @@ const Spell = require('./spell.js');
  *           none provided, then the title will be "Trigger {card name}?".
  * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to be
  *           paid before the action will activate. See Costs.
- * @property {AbilityTargetProperties} target - object or array of objects representing the cost required to
- *                be paid before the action will activate. See Costs.
- * @property {abilityFunc} difficulty - number or function representing the difficulty of the spell.
+ * @property {AbilityTargetProperties} target - object representing card targets for the ability.
+ * @property {(context: AbilityContext) => boolean} difficulty - number or function representing the difficulty of the spell.
  *                If it is function, it takes context as parameter 
  * @property {boolean} repeatable - If the react action can be repeated. 
  * @property {boolean} triggerBefore - If the handler of this reaction should be run before the event in `when`
@@ -40,9 +40,9 @@ const Spell = require('./spell.js');
  *            trigger.
  * @property {boolean} cannotBeCanceled - optional boolean that determines whether an ability can
  *                    be canceled using a cancel reaction.
- * @property {abilityFunc} onSuccess - function that will be executed if spell succeeds. Takes context
+ * @property {(context: AbilityContext) => boolean} onSuccess - function that will be executed if spell succeeds. Takes context
  *                as parameter. 
- * @property {abilityFunc} onFail - function that will be executed if spell fails. Takes context
+ * @property {(context: AbilityContext) => boolean} onFail - function that will be executed if spell fails. Takes context
  *                as parameter.
  */
 class SpellReaction extends CardReaction {

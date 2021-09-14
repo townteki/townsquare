@@ -692,7 +692,12 @@ class Player extends Spectator {
         }
 
         if(card.owner === this) {
-            return !this.game.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
+            return !this.game.anyCardsInPlay(c => 
+                c !== card &&
+                c.title === card.title && 
+                c.owner === this &&
+                !c.facedown
+            );
         }
 
         return true;
@@ -765,15 +770,26 @@ class Player extends Spectator {
                     }
                 }
                 break;
-            case 'deed':
-                this.addDeedToStreet(card, updatedParams.target);
-                if(updatedParams.playingType === 'shoppin') {
-                    this.game.addMessage('{0} does Shoppin\' to build {1} on their street{2}', this, card, costText);
-                } else if(this.game.currentPhase !== 'setup') {
-                    this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
-                }
-                this.entersPlay(card, updatedParams);
+            case 'deed': {
+                const putIntoPlayFunc = () => {
+                    this.addDeedToStreet(card, updatedParams.target);
+                    if(updatedParams.playingType === 'shoppin') {
+                        const suffix = (card.hasKeyword('Out of Town') ? 'at out of town location' : 'on their street') + costText;
+                        this.game.addMessage('{0} does Shoppin\' to build {1} {2}', this, card, suffix);
+                    } else if(this.game.currentPhase !== 'setup') {
+                        this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
+                    }
+                    this.entersPlay(card, updatedParams);                    
+                };              
+                if(card.isGadget()) {
+                    this.inventGadget(card, updatedParams.scientist, () => {
+                        putIntoPlayFunc();
+                    });
+                } else {
+                    putIntoPlayFunc();
+                }                
                 break;
+            }
             default:
                 //empty
         }
