@@ -49,7 +49,7 @@ class Scattergun extends GoodsCard {
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     condition: () => !this.isDudeAShooter(context.target),
-                    match: card => card === context.target,
+                    match: context.target,
                     effect: ability.effects.doesNotProvideBulletRatings()
                 }));
             }
