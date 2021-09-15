@@ -1,12 +1,17 @@
-const ShootoutOrderPrompt = require('./shootoutorderprompt.js');
+const PlayerOrderPrompt = require('../playerorderprompt.js');
 
-class RunOrGunPrompt extends ShootoutOrderPrompt {
+class RunOrGunPrompt extends PlayerOrderPrompt {
+    constructor(game, playerNameOrder) {
+        super(game, playerNameOrder);
+        this.shootout = game.shootout;
+    } 
+
     continue() {
         if(this.isComplete()) {
             return true;
         }
         const context = { game: this.game, player: this.currentPlayer };
-        const currentPlayerPosse = this.game.shootout.getPosseByPlayer(this.currentPlayer);
+        const currentPlayerPosse = this.shootout.getPosseByPlayer(this.currentPlayer);
         if(currentPlayerPosse.isEmpty() || this.currentPlayer.dudesCannotFlee() ||
             currentPlayerPosse.getDudes().every(dude => (dude.cannotFlee() || !dude.allowGameAction('sendHome', context)))) {
             this.completePlayer();
@@ -20,17 +25,15 @@ class RunOrGunPrompt extends ShootoutOrderPrompt {
             additionalButtons: [
                 { text: 'All dudes run', arg: 'allrun' }
             ],
-            cardCondition: card => 
-                this.game.shootout &&
-                card.controller === this.currentPlayer &&
+            cardCondition: card => card.controller === this.currentPlayer &&
                 card.location === 'play area' &&
                 card.getType() === 'dude' &&
                 !card.cannotFlee() &&
-                this.game.shootout.isInShootout(card) &&
+                this.shootout.isInShootout(card) &&
                 card.allowGameAction('removeFromPosse', context) &&
                 (card.isAtHome() || card.allowGameAction('moveDude', context)),
             onSelect: (player, cards) => {
-                cards.forEach(card => this.game.shootout.sendHome(
+                cards.forEach(card => this.shootout.sendHome(
                     card, 
                     { game: this.game, player: this.currentPlayer },
                     { isCardEffect: false }
@@ -43,7 +46,7 @@ class RunOrGunPrompt extends ShootoutOrderPrompt {
                 return true;
             },
             onMenuCommand: (player) => {
-                this.game.shootout.actOnPlayerPosse(player, card => this.game.shootout.sendHome(
+                this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(
                     card, 
                     { game: this.game, player: this.currentPlayer },
                     { isCardEffect: false }

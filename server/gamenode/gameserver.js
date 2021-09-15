@@ -126,7 +126,7 @@ class GameServer {
             Raven.captureException(e, { extra: debugData });
         }
 
-        if(game && !e.messages.includes('dumpInfo')) {
+        if(game) {
             game.addMessage('A Server error has occured processing your game state, apologies.  Your game may now be in an inconsistent state, or you may be able to continue.  The error has been logged.');
         }
     }
