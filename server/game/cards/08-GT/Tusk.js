@@ -6,7 +6,7 @@ class Tusk extends GoodsCard {
             when: {
                 onCardEntersPlay: event => event.card === this
             },
-            message: context => this.game.addMessage('{0} draws a card thanks to the {1}', context.player, this),
+            message: context => this.game.addMessage('{0} draws a card thanks to {1}', context.player, this),
             handler: context => {
                 context.player.drawCardsToHand(1, context);
             }

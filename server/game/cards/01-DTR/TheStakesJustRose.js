@@ -12,7 +12,7 @@ class TheStakesJustRose extends ActionCard {
                 gameAction: 'joinPosse'
             },
             message: context =>
-                this.game.addMessage('{0} plays {1} to bring {2} into posse and make them a stud', context.player, this, context.target),
+                this.game.addMessage('{0} plays {1} to bring {2} into their posse and make them a stud', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: context.target }), context);
                 this.applyAbilityEffect(context.ability, ability => ({

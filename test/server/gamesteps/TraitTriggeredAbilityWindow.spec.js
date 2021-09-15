@@ -104,7 +104,7 @@ describe('TraitTriggeredAbilityWindow', function() {
                 this.result = this.window.continue();
             });
 
-            it('should prompt the first player for order of his traits', function() {
+            it('should prompt the first player for order of their traits', function() {
                 expect(this.gameSpy.promptWithMenu).toHaveBeenCalledWith(this.player1Spy, this.window, jasmine.objectContaining({
                     activePrompt: {
                         menuTitle: jasmine.any(String),

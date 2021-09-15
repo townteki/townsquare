@@ -11,7 +11,7 @@ class RabbitTakesRevenge extends TechniqueCard {
                 cardType: ['dude']
             },
             onSuccess: (context) => {
-                this.game.addMessage('{0} uses {1} to set {2} as draw and {3} as stud. Both cannot leave this shootout', 
+                this.game.addMessage('{0} uses {1} to set {2} as draw and {3} as stud. Neither can leave this shootout', 
                     context.player, this, context.target, context.kfDude);
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,

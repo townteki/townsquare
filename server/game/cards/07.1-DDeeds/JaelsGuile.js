@@ -18,7 +18,7 @@ class JaelsGuile extends GoodsCard {
                 };
                 if(context.player.isCheatin()) {
                     if(this.parent.booted) {
-                        this.game.addMessage('{0} uses {1} but it does not have any effect because he is cheatin\' and {2} is booted',
+                        this.game.addMessage('{0} uses {1} but it does not have any effect because they are cheatin\' and {2} is booted',
                             context.player, this, this.parent);
                         return;
                     }

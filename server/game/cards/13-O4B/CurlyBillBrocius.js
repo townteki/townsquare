@@ -17,7 +17,7 @@ class CurlyBillBrocius extends DudeCard {
                     cardType: 'dude',
                     onSelect: (player, card) => {
                         this.game.resolveGameAction(GameActions.addBounty({ card }), context).thenExecute(() => {
-                            this.game.addMessage('{0} increases bounty on {1} thanks to the {2}', player, card, this);
+                            this.game.addMessage('{0} increases bounty on {1} thanks to {2}', player, card, this);
                         });
                         return true;
                     },
