@@ -1,7 +1,5 @@
-/** @typedef {import('../game')} Game */
 class BaseStep {
     constructor(game) {
-        /** @type {Game} */
         this.game = game;
     }
 
