@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/451/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/461/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -348,7 +348,7 @@
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
 |                     | 08009| Old Man McDroste
 |:heavy_check_mark:   | 08010| Flint's Amusements
-|                     | 08011| Lula's Exploit
+|:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
 |                     | 08014| Stoker's Sabre
@@ -412,7 +412,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 10001| The Sanatorium
-|                     | 10002| Abram's Crusaders
+|:heavy_check_mark:   | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
 |:heavy_check_mark:   | 10005| Emre, The Turkish Bear
