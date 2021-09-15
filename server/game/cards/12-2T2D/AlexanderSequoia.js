@@ -19,7 +19,7 @@ class AlexanderSequoia extends DudeCard {
             actionContext: { card: this, gameAction: 'unboot' },
             handler: context => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: this }), context).thenExecute(() => {
-                    this.game.addMessage('{0} uses {1} to unboot {1}', context.player, this);
+                    this.game.addMessage('{0} uses {1} to unboot himself', context.player, this);
                 });
             }
         });

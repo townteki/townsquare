@@ -5,7 +5,8 @@ class DiegoLinares extends DudeCard {
         this.traitReaction({
             triggerBefore: true,
             when: {
-                onGadgetInventing: event => event.gadget.hasOneOfKeywords(['horse', 'sidekick'])
+                onGadgetInventing: event => event.scientist === this &&
+                    event.gadget.hasOneOfKeywords(['horse', 'sidekick'])
             },
             handler: context => {
                 this.lastingEffect(context.ability, ability => ({

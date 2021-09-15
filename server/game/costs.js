@@ -6,7 +6,6 @@ const SelfCost = require('./costs/SelfCost.js');
 const UnbootCost = require('./costs/UnbootCost.js');
 const MoveTokenFromSelfCost = require('./costs/MoveTokenFromSelfCost.js');
 const DiscardFromDeckCost = require('./costs/DiscardFromDeckCost');
-const {Tokens} = require('./Constants');
 
 const Costs = {
     /**
@@ -210,19 +209,6 @@ const Costs = {
      */
     moveTokenFromSelf: (type, amount, condition) => new MoveTokenFromSelfCost(type, amount, condition),
     /**
-     * Cost that will pay the exact printed gold cost for the card.
-     */
-    payPrintedGoldCost: function() {
-        return {
-            canPay: function(context) {
-                return context.player.ghostrock >= context.source.getCost();
-            },
-            pay: function(context) {
-                context.game.spendGold({ amount: context.source.getCost(), player: context.player });
-            }
-        };
-    },
-    /**
      * Cost that will pay the printed ghostrock cost on the card minus any active
      * reducer effects the play has activated. Upon playing the card, all
      * matching reducer effects will expire, if applicable.
@@ -252,9 +238,11 @@ const Costs = {
         };
     },
     /**
-     * Cost in which the player must pay a fixed, non-reduceable amount of gold.
+     * Cost in which the player must pay a fixed, non-reduceable amount of ghost rock.
+     * @param {number} amount
+     * @param {boolean} toOpponent - Ghost rock should be played to opponent instead of bank
      */
-    payGhostRock: function(amount) {
+    payGhostRock: function(amount, toOpponent) {
         return {
             canPay: function(context) {
                 return context.player.getSpendableGhostRock({ 
@@ -265,12 +253,20 @@ const Costs = {
                 }) >= amount;
             },
             pay: function(context) {
-                context.game.spendGhostRock({ 
-                    amount: amount, 
-                    player: context.player, 
-                    source: context.source, 
-                    context: context 
-                });
+                if(toOpponent) {
+                    context.game.transferGhostRock({
+                        from: context.player,
+                        to: context.player.getOpponent(),
+                        amount: amount
+                    });                    
+                } else {
+                    context.game.spendGhostRock({ 
+                        amount: amount, 
+                        player: context.player, 
+                        source: context.source, 
+                        context: context 
+                    });
+                }
             }
         };
     },
@@ -313,30 +309,6 @@ const Costs = {
                     context: context 
                 });
                 context.player.markUsedReducers(playingType, context.source);
-            }
-        };
-    },
-    /**
-     * Cost where the player gets prompted to discard gold from the card from a passed minimum up to the lesser of two values:
-     * the passed maximum and the amount of gold on the source card.
-     * Used by The House of Black and White, Stormcrows and Devan Seaworth.
-     */
-    discardXGold: function(minFunc, maxFunc) {
-        return {
-            canPay: function(context) {
-                return context.source.tokens.gold >= minFunc(context);
-            },
-            resolve: function(context, result = { resolved: false }) {
-                let max = Math.min(maxFunc(context), context.source.tokens.gold);
-
-                context.game.queueStep(new XValuePrompt(minFunc(context), max, context));
-
-                result.value = true;
-                result.resolved = true;
-                return result;
-            },
-            pay: function(context) {
-                context.source.modifyToken(Tokens.gold, -context.xValue);
             }
         };
     }
