@@ -37,7 +37,7 @@ class BassReeves extends DudeCard {
             },
             ifCondition: () => !this.booted,
             ifFailMessage: context => 
-                this.game.addMessage('{0} uses {1} but it does not have any effect because he is booted',
+                this.game.addMessage('{0} uses {1} but it does not have any effect because {1} is booted',
                     context.player, this),
             handler: context => {
                 this.abilityContext = context;

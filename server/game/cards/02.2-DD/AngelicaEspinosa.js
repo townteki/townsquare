@@ -9,7 +9,7 @@ class AngelicaEspinosa extends DudeCard {
             condition: () => this.game.shootout &&
                 this.game.shootout.shootoutLocation.isAdjacent(this.gamelocation),
             message: context => 
-                this.game.addMessage('{0} uses {1} to join her to posse from adjacent location', context.player, this),
+                this.game.addMessage('{0} uses {1} to join {1} to their posse from an adjacent location', context.player, this),
             gameAction: GameActions.joinPosse({ card: this, options: { moveToPosse: false }})
         });
     }

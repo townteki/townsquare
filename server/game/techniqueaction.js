@@ -1,6 +1,10 @@
 const CardAction = require('./cardaction.js');
 const GameActions = require('./GameActions/index.js');
 
+/** @typedef {import('./costs')} Costs */
+/** @typedef {import('./AbilityTarget').AbilityTargetProperties} AbilityTargetProperties */
+/** @typedef {import('./AbilityContext')} AbilityContext */
+
 /**
  * @typedef {Object} SpellReactionAbilityProperties
  * Represents a Technique ability provided by card text.
@@ -16,18 +20,17 @@ const GameActions = require('./GameActions/index.js');
  *                resolution in the rules).
  * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to
  *                be paid before the action will activate. See Costs.
- * @property {abilityFunc} combo - function that will take the `AbilityContext` and should return true 
+ * @property {(context: AbilityContext) => boolean} combo - function that will take the `AbilityContext` and should return true 
  *                if conditions are met to perform a combo. 
- * @property {AbilityTargetProperties} target - object or array of objects representing the cost required to
- *                be paid before the action will activate. See Costs.
+ * @property {AbilityTargetProperties} target - object representing card targets for the ability.
  * @property {string} phase - string representing which phases the action may be executed.
  *                Defaults to 'any' which allows the action to be executed in
  *                any phase.
  * @property {string | Array.<string>} location - string indicating the location the card should be in in order
  *                to activate the action. Defaults to 'play area'.
- * @property {abilityFunc} onSuccess - function that will be executed if technique succeeds. Takes context
+ * @property {(context: AbilityContext) => boolean} onSuccess - function that will be executed if technique succeeds. Takes context
  *                as parameter. 
- * @property {abilityFunc} onFail - function that will be executed if technique fails. Takes context
+ * @property {(context: AbilityContext) => boolean} onFail - function that will be executed if technique fails. Takes context
  *                as parameter.
  */
 class TechniqueAction extends CardAction {

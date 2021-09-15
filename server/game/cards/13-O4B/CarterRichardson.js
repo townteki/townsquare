@@ -34,7 +34,7 @@ class CarterRichardson extends DudeCard {
             },
             actionContext: { card: this, gameAction: 'moveDude' },
             message: context => 
-                this.game.addMessage('{0} uses {1} to move him to {2}\'s location', context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to move {1} to {2}\'s location', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ 
                     card: this, 

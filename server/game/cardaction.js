@@ -8,6 +8,7 @@ const CardTypesForShootout = ['dude', 'goods', 'spell'];
 
 /** @typedef {import('./costs')} Costs */
 /** @typedef {import('./AbilityTarget').AbilityTargetProperties} AbilityTargetProperties */
+/** @typedef {import('./AbilityContext')} AbilityContext */
 
 /** 
  * @typedef {Object} ActionAbilityProperties 
@@ -24,8 +25,7 @@ const CardTypesForShootout = ['dude', 'goods', 'spell'];
  * @property {boolean} repeatable - If the react action can be repeated. 
  * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to
  *                be paid before the action will activate. See Costs.
- * @property {AbilityTargetProperties} target - object or array of objects representing the cost required to
- *                be paid before the action will activate. See Costs.
+ * @property {AbilityTargetProperties} target - object representing card targets for the ability.
  * @property {string} phase - string representing which phases the action may be executed.
  *                Defaults to 'any' which allows the action to be executed in
  *                any phase.
@@ -34,7 +34,7 @@ const CardTypesForShootout = ['dude', 'goods', 'spell'];
  * @property {string} limit - the max number of uses for the repeatable action.
  * @property {string} triggeringPlayer - string indicating player that can execute the action.
  *                Default is 'controller', other possible values are 'owner' or 'any'
- * @property {abilityFunc} handler
+ * @property {(context: AbilityContext) => boolean} handler
 */
 class CardAction extends PlayTypeAbility {
     constructor(game, card, properties, isJob = false) {

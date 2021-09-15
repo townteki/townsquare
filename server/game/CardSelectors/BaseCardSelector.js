@@ -43,7 +43,7 @@ class BaseCardSelector {
             this.cardCondition = CardMatcher.createMatcher({ 
                 location: 'play area', 
                 controller: properties.cardCondition.controller || 'any',
-                condition: properties.cardCondition.condition || (() => true)
+                condition: this.buildSpecialTargetCondition(properties)
             });
         } else {
             this.cardCondition = CardMatcher.createMatcher(properties.cardCondition);
@@ -71,6 +71,13 @@ class BaseCardSelector {
             this.cardCondition(card, context) &&
             this.isAllowedForGameAction(card, context)
         );
+    }
+
+    buildSpecialTargetCondition(properties) {
+        if(typeof(properties.cardCondition) === 'function') {
+            return properties.cardCondition;
+        }
+        return properties.cardCondition.condition || (() => true);
     }
 
     isSpecialTarget() {

@@ -3,6 +3,7 @@ const Spell = require('./spell.js');
 
 /** @typedef {import('./costs')} Costs */
 /** @typedef {import('./AbilityTarget').AbilityTargetProperties} AbilityTargetProperties */
+/** @typedef {import('./AbilityContext')} AbilityContext */
 
 /** 
  * @typedef {Object} SpellActionAbilityProperties 
@@ -17,12 +18,11 @@ const Spell = require('./spell.js');
  *                allowed, false otherwise. It should generally be used to check
  *                if the action can modify game state (step #1 in ability
  *                resolution in the rules).
- * @property {abilityFunc} difficulty - number or function representing the difficulty of the spell.
+ * @property {(context: AbilityContext) => boolean} difficulty - number or function representing the difficulty of the spell.
  *                If it is function, it takes context as parameter
  * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to
  *                be paid before the action will activate. See Costs.
- * @property {AbilityTargetProperties} target - object or array of objects representing the cost required to
- *                be paid before the action will activate. See Costs.* 
+ * @property {AbilityTargetProperties} target - object representing card targets for the ability. 
  * @property {string} phase - string representing which phases the action may be executed.
  *                Defaults to 'any' which allows the action to be executed in
  *                any phase.
@@ -31,9 +31,9 @@ const Spell = require('./spell.js');
  * @property {number} limit - the max number of uses for the repeatable action.
  * @property {boolean} clickToActivate - boolean that indicates the action should be activated when
  *                   the card is clicked.
- * @property {abilityFunc} onSuccess - function that will be executed if spell succeeds. Takes context
+ * @property {(context: AbilityContext) => boolean} onSuccess - function that will be executed if spell succeeds. Takes context
  *                as parameter. 
- * @property {abilityFunc} onFail - function that will be executed if spell fails. Takes context
+ * @property {(context: AbilityContext) => boolean} onFail - function that will be executed if spell fails. Takes context
  *                as parameter.
  */
 class SpellAction extends CardAction {

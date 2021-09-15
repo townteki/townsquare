@@ -6,7 +6,7 @@ class BadCompany extends ActionCard {
             title: 'Bad Company',
             playType: ['noon'],
             target: {
-                activePromptTitle: 'Choose a dude that is a really bad company',
+                activePromptTitle: 'Choose a dude',
                 cardCondition: { location: 'play area', controller: 'any', wanted: true },
                 cardType: ['dude']
             },

@@ -2,6 +2,7 @@ const AbilityUsage = require('./abilityusage.js');
 const PromptedTriggeredAbility = require('./promptedtriggeredability.js');
 
 /** @typedef {import('./costs')} Costs */
+/** @typedef {import('./AbilityContext')} AbilityContext */
 
 /** 
  * @typedef {Object} ReactionAbilityProperties 
@@ -21,12 +22,11 @@ const PromptedTriggeredAbility = require('./promptedtriggeredability.js');
  *           none provided, then the title will be "Trigger {card name}?".
  * @property {Costs | Array.<Costs>} cost - object or array of objects representing the cost required to be
  *           paid before the action will activate. See Costs.
- * @property {AbilityTargetProperties} target - object or array of objects representing the cost required to
- *                be paid before the action will activate. See Costs.
+ * @property {AbilityTargetProperties} target - object representing card targets for the ability.
  * @property {boolean} repeatable - If the react action can be repeated. 
  * @property {boolean} triggerBefore - If the handler of this reaction should be run before the event in `when`
  *           occurs. Should be used mainly if the handler replaces the event handler (actions with instead).
- * @property {abilityFunc} handler - function that will be executed if the player chooses 'Yes' when
+ * @property {(context: AbilityContext) => boolean} handler - function that will be executed if the player chooses 'Yes' when
  *           asked to trigger the reaction. If the reaction has more than one
  *           choice, use the choices sub object instead.
  * @property {Object} choices - object whose keys are text to prompt the player and whose values
