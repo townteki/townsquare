@@ -863,10 +863,10 @@
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
 |                     | 21044| Magnum Opus Tenebri
-|                     | 21045| Scattergun
+|:heavy_check_mark:   | 21045| Scattergun
 |                     | 21046| Adler's Needle
 |                     | 21047| Wrathful Spider
-|                     | 21048| Guiding Light
+|:heavy_check_mark:   | 21048| Guiding Light
 |                     | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
