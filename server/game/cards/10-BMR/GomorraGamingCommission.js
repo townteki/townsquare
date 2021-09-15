@@ -34,7 +34,7 @@ class GomorraGamingCommission extends DeedCard {
                             this.game.addMessage('{0} uses {1} to boost its production by 1 and draw a card', context.player, this);
                         });
                     }
-                }
+                });
             }
         });
     }
