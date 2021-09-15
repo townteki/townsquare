@@ -30,7 +30,7 @@ class LayOnHands extends SpellCard {
                             }));
                             this.game.addMessage('{0} uses {1} to save {2} and send them home booted instead', context.player, this, context.event.card);
                         } else {
-                            this.game.addMessage('{0} uses {1}, but {2} could not be saved because some effect prevented to send them home booted instead', 
+                            this.game.addMessage('{0} uses {1}, but {2} could not be saved because some effect prevented them from being sent home booted instead', 
                                 context.player, this, context.event.card);
                             saveEventHandler(event);
                         }

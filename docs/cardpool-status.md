@@ -364,7 +364,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 09001| The 108 Righteous Bandits
+|:heavy_check_mark:   | 09001| The 108 Righteous Bandits
 |                     | 09002| Eagle Wardens
 |                     | 09003| Benjamin Washington
 |:heavy_check_mark:   | 09004| Daomei Wang
@@ -594,7 +594,7 @@
 |:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
 |:heavy_check_mark:   | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer
-|                     | 15012| Espuelas
+|:heavy_check_mark:   | 15012| Espuelas
 |                     | 15013| Rites of the Smoking Mirror
 |                     | 15014| Essence of Armitage
 |                     | 15015| Festering Grasp
@@ -830,7 +830,7 @@
 |:heavy_check_mark:   | 21009| Baijiu Sue
 |                     | 21010| Reverend Bob Hungate
 |                     | 21011| Father Diamond
-|                     | 21012| Master Shou
+|:heavy_check_mark:   | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
 |                     | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
@@ -856,17 +856,17 @@
 |:heavy_check_mark:   | 21035| Byron Decker
 |:heavy_check_mark:   | 21036| Carter Richardson
 |:heavy_check_mark:   | 21037| Valeria Batten (Exp.1)
-|                     | 21038| Steph & Gertie's Tonsorium
+|:heavy_check_mark:   | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
 |                     | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
 |                     | 21044| Magnum Opus Tenebri
-|                     | 21045| Scattergun
+|:heavy_check_mark:   | 21045| Scattergun
 |                     | 21046| Adler's Needle
 |                     | 21047| Wrathful Spider
-|                     | 21048| Guiding Light
+|:heavy_check_mark:   | 21048| Guiding Light
 |                     | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly

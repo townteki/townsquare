@@ -14,7 +14,7 @@ class FateDispenser extends GoodsCard {
             condition: context => this.parent && this.parent.controller === context.player,
             ifCondition: context => context.player.handSize > context.player.hand.length,
             ifFailMessage: context =>
-                this.game.addMessage('{0} uses {1} but it does not have any effect because they have too much cards in hand', 
+                this.game.addMessage('{0} uses {1} but it does not have any effect because they have too many cards in hand', 
                     context.player, this),
             message: context => this.game.addMessage('{0} uses {1} to draw a card', context.player, this),
             handler: context => {
