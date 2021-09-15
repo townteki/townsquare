@@ -133,7 +133,7 @@
 |:heavy_check_mark:   | 01119| Pistol Whip
 |                     | 01120| Concealed Weapons
 |                     | 01121| Hot Lead Flyin'
-|                     | 01122| One Good Turn…
+|:heavy_check_mark:   | 01122| One Good Turn…
 |:heavy_check_mark:   | 01123| Kidnappin'
 |:heavy_check_mark:   | 01124| Pinned Down
 |:heavy_check_mark:   | 01125| Run 'Em Down!
