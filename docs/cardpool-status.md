@@ -424,7 +424,7 @@
 |:heavy_check_mark:   | 10011| Ivor Hawley (Exp.1)
 |                     | 10012| Deborah West
 |                     | 10013| Abram Grothe (Exp.2)
-|                     | 10014| "Dead" Billy Jones
+|:heavy_check_mark:   | 10014| "Dead" Billy Jones
 |                     | 10015| Lillian Morgan (Exp.1)
 |:heavy_check_mark:   | 10016| Samantha "Sammy" Cooke
 |                     | 10017| Sloane (Exp.1)
@@ -438,7 +438,7 @@
 |                     | 10025| Monte Bank
 |:heavy_check_mark:   | 10026| Wendy's Teethkickers
 |                     | 10027| Rich Man's Guard Dog
-|                     | 10028| Fiery Rhetoric
+|:heavy_check_mark:   | 10028| Fiery Rhetoric
 |:heavy_check_mark:   | 10029| Strength of the Ancestors
 |:heavy_check_mark:   | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
