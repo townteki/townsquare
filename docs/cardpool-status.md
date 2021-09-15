@@ -684,7 +684,7 @@
 |                     | 18021| The Caretaker
 |:heavy_check_mark:   | 18022| Nickel Night Inn
 |:heavy_check_mark:   | 18023| Sherman Mortgage
-|                     | 18024| Gomorra Gaming Commission
+|:heavy_check_mark:   | 18024| Gomorra Gaming Commission
 |:heavy_check_mark:   | 18025| Cliff's #4 Saloon
 |:heavy_check_mark:   | 18026| Baijiu Jar
 |:heavy_check_mark:   | 18027| Bowie Knife
