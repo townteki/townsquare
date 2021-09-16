@@ -3,7 +3,8 @@ const ActionCard = require('../../actioncard.js');
 class OneGoodTurn extends ActionCard {
     setupCardAbilities() {
         this.action({
-            title: 'noon: draw a card',
+            title: 'Noon: Draw a card',
+
             playType: ['noon'],
             message: context =>
                 this.game.addMessage('{0} uses {1} to draw a card', context.player, this),
