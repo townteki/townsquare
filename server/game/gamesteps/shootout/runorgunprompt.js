@@ -11,9 +11,10 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             return true;
         }
         const context = { game: this.game, player: this.currentPlayer };
+        const options = { isCardEffect: false };
         const currentPlayerPosse = this.shootout.getPosseByPlayer(this.currentPlayer);
         if(currentPlayerPosse.isEmpty() || this.currentPlayer.dudesCannotFlee() ||
-            currentPlayerPosse.getDudes().every(dude => (dude.cannotFlee() || !dude.allowGameAction('sendHome', context)))) {
+            currentPlayerPosse.getDudes().every(dude => (dude.cannotFlee() || !dude.allowGameAction('sendHome', context, options)))) {
             this.completePlayer();
             return this.continue();
         }
@@ -30,13 +31,13 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 card.getType() === 'dude' &&
                 !card.cannotFlee() &&
                 this.shootout.isInShootout(card) &&
-                card.allowGameAction('removeFromPosse', context) &&
-                (card.isAtHome() || card.allowGameAction('moveDude', context)),
+                card.allowGameAction('removeFromPosse', context, options) &&
+                (card.isAtHome() || card.allowGameAction('moveDude', context, options)),
             onSelect: (player, cards) => {
                 cards.forEach(card => this.shootout.sendHome(
                     card, 
-                    { game: this.game, player: this.currentPlayer },
-                    { isCardEffect: false }
+                    context,
+                    options
                 ));
                 this.completePlayer();
                 return true;
@@ -48,8 +49,8 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             onMenuCommand: (player) => {
                 this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(
                     card, 
-                    { game: this.game, player: this.currentPlayer },
-                    { isCardEffect: false }
+                    context,
+                    options
                 ));
                 this.completePlayer();
                 return true;

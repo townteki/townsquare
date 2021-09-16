@@ -9,9 +9,9 @@ class SendHome extends GameAction {
         return (
             card && card.getType() === 'dude' &&
             ['outfit', 'play area'].includes(card.location) &&
-            (options.isAfterJob || card.isAtHome() || (card.allowGameAction('moveDude', context))) &&
-            (options.isAfterJob || !options.needToBoot || card.allowGameAction('boot', context)) &&
-            (!options.fromPosse || card.allowGameAction('removeFromPosse', context))
+            (options.isAfterJob || card.isAtHome() || (card.allowGameAction('moveDude', context, options))) &&
+            (options.isAfterJob || !options.needToBoot || card.allowGameAction('boot', context, options)) &&
+            (!options.fromPosse || card.allowGameAction('removeFromPosse', context, options))
         );
     }
 

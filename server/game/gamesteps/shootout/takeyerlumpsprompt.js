@@ -62,7 +62,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         return card.controller === player && 
             card.location === 'play area' &&
             this.shootout.isInShootout(card) &&
-            card.allowGameAction(casualtyType, this.createContext(card, player)) &&
+            card.allowGameAction(casualtyType, this.createContext(card, player), { isCardEffect: false }) &&
             !card.cannotBeChosenAsCasualty() &&
             card.coversCasualties(casualtyType) > 0;
     }
