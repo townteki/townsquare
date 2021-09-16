@@ -44,8 +44,8 @@ class GameAction {
      * @param {*} props
      */
     isImmune(props) {
-        let { card, context } = props;
-        return !!card && !card.allowGameAction(this.name, context);
+        let { card, context, options } = props;
+        return !!card && !card.allowGameAction(this.name, context, options);
     }
 
     /**
