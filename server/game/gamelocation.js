@@ -77,13 +77,6 @@ class GameLocation {
                 }
             }
         });
-        if(currentController !== originalController) {
-            if(currentController !== this.locationCard.owner) {
-                this.game.addAlert('info', '{0} broke into {1} and has taken control from the {2}.', currentController, this.locationCard, originalController);
-            } else {
-                this.game.addAlert('info', '{0} has wrestled control of {1} back from {2}.', currentController, this.locationCard, originalController);
-            }
-        }
         return currentController;
     }
 

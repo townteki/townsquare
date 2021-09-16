@@ -40,8 +40,6 @@ const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 
-/** @typedef {import('./gamesteps/shootout')} Shootout */
-
 class Game extends EventEmitter {
     constructor(details, options = {}) {
         super();
@@ -76,7 +74,6 @@ class Game extends EventEmitter {
         this.beforeEventHandlers = {};
         this.password = details.password;
         this.cancelPromptUsed = false;
-        /** @type {Shootout} */
         this.shootout = null;
 
         this.cardData = options.cardData || [];
@@ -890,8 +887,7 @@ class Game extends EventEmitter {
     }
 
     isShootoutPlayWindow() {
-        return this.shootout &&
-            this.getCurrentPlayWindowName() === 'shootout plays' || this.getCurrentPlayWindowName() === 'shootout resolution';
+        return this.getCurrentPlayWindowName() === 'shootout plays' || this.getCurrentPlayWindowName() === 'shootout resolution';
     }
 
     markActionAsTaken(context) {
@@ -1221,12 +1217,13 @@ class Game extends EventEmitter {
 
     endShootout(isCancel = false) {
         if(!this.shootout) {
+            // TODO M2 info that shootout is not happening
             return;
         } 
-        if(isCancel) {
-            this.shootout.pipeline.clear();
-        }
         this.shootout = null;
+        if(isCancel) {
+            this.pipeline.cancelStep();
+        }
     }
 
     applyGameAction(actionType, cards, func, options = {}) {
@@ -1424,6 +1421,7 @@ class Game extends EventEmitter {
 
             return {
                 id: this.id,
+                isMelee: this.isMelee,
                 name: this.name,
                 owner: this.owner,
                 players: playerState,
@@ -1436,7 +1434,6 @@ class Game extends EventEmitter {
                         name: spectator.name
                     };
                 }),
-                currentPhase: this.currentPhase,
                 started: this.started,
                 winner: this.winner ? this.winner.name : undefined,
                 cancelPromptUsed: this.cancelPromptUsed,
