@@ -15,7 +15,8 @@ class Ricochet extends ActionCard {
                     });
                     if(!context.player.isCheatin()) {
                         context.player.modifyCasualties(-999);
-                        this.game.addMessage('{0} does not take any casualties this round thanks to {1}', context.player, this);
+                        context.player.drawCardsToHand(1, context);
+                        this.game.addMessage('{0} does not take any casualties this round and draws a card thanks to {1}', context.player, this);
                     }
                 }
             }

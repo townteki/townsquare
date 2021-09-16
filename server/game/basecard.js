@@ -765,8 +765,15 @@ class BaseCard {
         }
     }
 
-    allowGameAction(actionType, context) {
-        let currentAbilityContext = context || this.game.currentAbilityContext;
+    allowGameAction(actionType, context, options = {}) {
+        let currentAbilityContext = context;
+        if(!currentAbilityContext) {
+            if(options.isCardEffect !== false) {
+                currentAbilityContext = this.game.currentAbilityContext;
+            } else {
+                currentAbilityContext = { game: this.game, player: this.controller };
+            }
+        }
         if(currentAbilityContext && !currentAbilityContext.card) {
             currentAbilityContext.card = this;
         }

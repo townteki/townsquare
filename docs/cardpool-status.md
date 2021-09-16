@@ -558,7 +558,7 @@
 |:heavy_check_mark:   | 14019| Epidemic Laboratory
 |:heavy_check_mark:   | 14020| Walters Creek Distillery
 |:heavy_check_mark:   | 14021| Silent Sigil
-|                     | 14022| Auto-Gatling
+|:heavy_check_mark:   | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
 |:heavy_check_mark:   | 14024| Tusk
 |                     | 14025| Mountain Lion Friend
@@ -684,7 +684,7 @@
 |                     | 18021| The Caretaker
 |:heavy_check_mark:   | 18022| Nickel Night Inn
 |:heavy_check_mark:   | 18023| Sherman Mortgage
-|                     | 18024| Gomorra Gaming Commission
+|:heavy_check_mark:   | 18024| Gomorra Gaming Commission
 |:heavy_check_mark:   | 18025| Cliff's #4 Saloon
 |:heavy_check_mark:   | 18026| Baijiu Jar
 |:heavy_check_mark:   | 18027| Bowie Knife
