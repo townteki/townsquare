@@ -11,6 +11,7 @@ class ChooseGRSourceAmounts extends BaseStep {
         this.sources = this.player.getSpendableGhostRockSources(spendParams);
         this.spendParams = spendParams;
         this.callback = callback;
+        this.usedSources = {};
     }
 
     continue() {
@@ -48,9 +49,10 @@ class ChooseGRSourceAmounts extends BaseStep {
     payGhostRock(player, amount) {
         this.remainingAmount -= amount;
         this.currentSource.modifyGhostRock(-amount);
+        this.usedSources.push({ source: this.currentSource, amount });
 
         if(this.remainingAmount === 0) {
-            this.callback();
+            this.callback(this.usedSources);
         }
 
         return true;
