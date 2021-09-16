@@ -8,9 +8,7 @@ class CostReducer extends BaseCostReducer {
         this.usage = new AbilityUsage({ limit: properties.limit || 0, repeatable: true });
         this.match = properties.match || (() => true);
         this.isIncrease = properties.isIncrease;
-        if(this.usage) {
-            this.usage.registerEvents(game);
-        }
+        this.registerEvents();
     }
 
     canReduce(playingType, card) {
@@ -27,8 +25,20 @@ class CostReducer extends BaseCostReducer {
         }
     }
 
+    markUnused() {
+        if(this.usage) {
+            this.usage.decrement();
+        }        
+    }
+
     isExpired() {
         return !!this.usage && this.usage.isUsed() && !this.usage.isRepeatable();
+    }
+
+    registerEvents() {
+        if(this.usage) {
+            this.usage.registerEvents(this.game);
+        }
     }
 
     unregisterEvents() {

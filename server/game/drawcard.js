@@ -316,7 +316,7 @@ class DrawCard extends BaseCard {
 
     getPlayActions(type) {
         if(type === 'shoppin') {
-            return [StandardActions.shoppin()];
+            return [StandardActions.shoppin(this)];
         }
         return this.abilities.playActions
             .concat(this.abilities.actions.filter(action => !action.allowMenu()));

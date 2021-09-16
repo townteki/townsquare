@@ -188,6 +188,9 @@ class AbilityResolver extends BaseStep {
             if(this.ability.abilitySourceType !== 'game') {
                 this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
             }
+            if(this.ability.playTypePlayed() === 'shoppin') {
+                this.ability.unpayCosts(this.context);
+            }
             return;
         }
 

@@ -38,6 +38,10 @@ class AbilityUsage {
         this.useCount += 1;
     }
 
+    decrement() {
+        this.useCount -= 1;
+    }
+
     reset() {
         this.useCount = 0;
     }

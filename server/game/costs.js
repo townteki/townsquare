@@ -226,14 +226,29 @@ const Costs = {
                 if(context.cardToUpgrade) {
                     return;
                 }
+                context.usedGRSources = context.usedGRSources || {};
+                context.usedReducers = context.usedReducers || {};
                 context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
                 context.game.spendGhostRock({ 
                     amount: context.costs.ghostrock, 
                     player: context.player, 
                     playingType: playingType, 
                     context: context 
+                }, grSources => context.usedGRSources[context.source.uuid] = grSources);
+                context.usedReducers[context.source.uuid] = context.player.markUsedReducers(playingType, context.source);
+            },
+            unpay: function(context) {
+                context.usedReducers[context.source.uuid].forEach(reducer => {
+                    if(reducer.isExpired()) {
+                        context.player.addCostReducer(reducer);
+                        reducer.registerEvents();
+                    }
+                    reducer.markUnused();
                 });
-                context.player.markUsedReducers(playingType, context.source);
+                context.usedGRSources[context.source.uuid].forEach(grSource => 
+                    grSource.source.modifyGhostRock(grSource.amount));
+                delete context.usedReducers[context.source.uuid];
+                delete context.usedGRSources[context.source.uuid];
             }
         };
     },

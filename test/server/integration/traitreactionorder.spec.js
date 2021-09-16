@@ -25,6 +25,7 @@ describe('trait reaction order', function() {
                 this.player1.clickPrompt('No');
             }
 
+            this.player1.moveDude(this.philip, 'townsquare');
             this.player1.moveDude(this.tommy, 'townsquare');
             this.player2.moveDude(this.barton, 'townsquare');
 

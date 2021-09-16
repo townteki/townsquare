@@ -1,11 +1,12 @@
 const PutIntoPlayCardAction = require('./PutIntoPlayCardAction');
 
 class ShoppinCardAction extends PutIntoPlayCardAction {
-    constructor(target = '') {
+    constructor(targetLocationUuid = '', targetProperties) {
         super({ 
             playType: 'shoppin', 
             abilitySourceType: 'game', 
-            target: target 
+            targetLocationUuid,
+            targetProperties
         });
         this.title = 'Play';
     }

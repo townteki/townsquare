@@ -4,12 +4,13 @@ const GameActions = require('../GameActions');
 const SingleCostReducer = require('../singlecostreducer');
 
 class PutIntoPlayCardAction extends BaseAbility {
-    constructor(properties = { playType: 'ability', abilitySourceType: 'card', target: '' }, callback) {
+    constructor(properties = { playType: 'ability', abilitySourceType: 'card', targetLocationUuid: '' }, callback) {
         super({
             abilitySourceType: properties.abilitySourceType,
             cost: [
                 Costs.payReduceableGRCost(properties.playType)
-            ]
+            ],
+            target: properties.targetProperties
         });
         this.properties = properties;
         this.playType = properties.playType;
@@ -63,6 +64,10 @@ class PutIntoPlayCardAction extends BaseAbility {
                 this.callback(event);
             }
         });
+    }
+
+    playTypePlayed() {
+        return this.playType;
     }
 }
 
