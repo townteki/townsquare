@@ -28,7 +28,7 @@ class JoinPosse extends GameAction {
             let bootingReq = 'not-needed';
             if(event.card.game.shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot && 
                 !event.card.canJoinWithoutBooting()) {
-                if(card.allowGameAction('boot', context)) {
+                if(card.allowGameAction('boot', context, options)) {
                     bootingReq = 'do-boot';
                 } else {
                     bootingReq = 'not-met';
