@@ -11,7 +11,7 @@ class ChooseGRSourceAmounts extends BaseStep {
         this.sources = this.player.getSpendableGhostRockSources(spendParams);
         this.spendParams = spendParams;
         this.callback = callback;
-        this.usedSources = {};
+        this.usedSources = [];
     }
 
     continue() {
