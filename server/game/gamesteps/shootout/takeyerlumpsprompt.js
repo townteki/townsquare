@@ -1,13 +1,14 @@
-const ShootoutOrderPrompt = require('./shootoutorderprompt.js');
+const PlayerOrderPrompt = require('../playerorderprompt.js');
 
 /* TODO M2
     Based on the rules, we should firt choose which dudes are aced, which discarded and which sent home (e.g. harrowed)
     Then, once chosen, all the casualties are taken based on the selection order.
     For now, each casualty will be taken right after the card is selected.
 */
-class TakeYerLumpsPrompt extends ShootoutOrderPrompt {
+class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     constructor(game, playerNameOrder, numOfCasualties, source) {
         super(game, playerNameOrder);
+        this.shootout = game.shootout;
         this.numOfCasualties = numOfCasualties;
         this.source = source;
         this.casualtiesTaken = [];
@@ -17,7 +18,7 @@ class TakeYerLumpsPrompt extends ShootoutOrderPrompt {
         if(this.isComplete()) {
             return true;
         }
-        if(this.getCurrentCasualties() === 0 || this.game.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
+        if(this.getCurrentCasualties() === 0 || this.shootout.getPosseByPlayer(this.currentPlayer).isEmpty()) {
             this.completePlayer();
             return this.continue();            
         }
@@ -58,10 +59,9 @@ class TakeYerLumpsPrompt extends ShootoutOrderPrompt {
     }
 
     canCoverCasualty(card, player, casualtyType) {
-        return this.game.shootout &&
-            card.controller === player && 
+        return card.controller === player && 
             card.location === 'play area' &&
-            this.game.shootout.isInShootout(card) &&
+            this.shootout.isInShootout(card) &&
             card.allowGameAction(casualtyType, this.createContext(card, player)) &&
             !card.cannotBeChosenAsCasualty() &&
             card.coversCasualties(casualtyType) > 0;
@@ -113,7 +113,7 @@ class TakeYerLumpsPrompt extends ShootoutOrderPrompt {
             onSelect: (player, card) => {
                 let numCoveredCasualties = card.coversCasualties('sendHome');
                 if(numCoveredCasualties > 0) {
-                    this.game.shootout.sendHome(card, this.createContext(card, player), { isCardEffect: false });
+                    this.shootout.sendHome(card, this.createContext(card, player), { isCardEffect: false });
                     this.modifyCasualties(player, card, numCoveredCasualties);    
                     this.game.addMessage('{0} sends {1} home to cover {2} casualties ({3} remaining).', 
                         player, card, numCoveredCasualties, player.casualties);     
@@ -138,10 +138,7 @@ class TakeYerLumpsPrompt extends ShootoutOrderPrompt {
     }
 
     findFirstCasualties(player) {
-        if(!this.game.shootout) {
-            return [];
-        }
-        let posse = this.game.shootout.getPosseByPlayer(player);
+        let posse = this.shootout.getPosseByPlayer(player);
         return posse.getDudes(dude => dude.isSelectedAsFirstCasualty());
     }
 
@@ -156,7 +153,7 @@ class TakeYerLumpsPrompt extends ShootoutOrderPrompt {
     completePlayer() {
         this.game.raiseEvent('onTakenCasualties', { 
             player: this.currentPlayer, 
-            shootout: this.game.shootout, 
+            shootout: this.shootout, 
             casualtiesTaken: this.casualtiesTaken 
         });
         super.completePlayer();
@@ -165,7 +162,7 @@ class TakeYerLumpsPrompt extends ShootoutOrderPrompt {
     createContext(card, player) {
         return {
             game: this.game,
-            shootout: this.game.shootout,
+            shootout: this.shootout,
             player: player,
             source: this.source,
             casualty: card,

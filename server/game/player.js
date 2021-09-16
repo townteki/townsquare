@@ -120,7 +120,13 @@ class Player extends Spectator {
     getOpponent() {
         let opponents = this.game.getOpponents(this);
         if(opponents.length === 0) {
-            return { name: 'test player', isCheatin: () => false, cardsInPlay: [], drawDeck: [] };
+            return { 
+                name: 'test player', 
+                isCheatin: () => false, 
+                modifyGhostRock: () => true,
+                cardsInPlay: [], 
+                drawDeck: [] 
+            };
         }
         return opponents[0];
     }
@@ -776,15 +782,26 @@ class Player extends Spectator {
                     }
                 }
                 break;
-            case 'deed':
-                this.addDeedToStreet(card, updatedParams.target);
-                if(updatedParams.playingType === 'shoppin') {
-                    this.game.addMessage('{0} does Shoppin\' to build {1} on his street{2}', this, card, costText);
-                } else if(this.game.currentPhase !== 'setup') {
-                    this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
-                }
-                this.entersPlay(card, updatedParams);
+            case 'deed': {
+                const putIntoPlayFunc = () => {
+                    this.addDeedToStreet(card, updatedParams.target);
+                    if(updatedParams.playingType === 'shoppin') {
+                        const suffix = (card.hasKeyword('Out of Town') ? 'at out of town location' : 'on their street') + costText;
+                        this.game.addMessage('{0} does Shoppin\' to build {1} {2}', this, card, suffix);
+                    } else if(this.game.currentPhase !== 'setup') {
+                        this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
+                    }
+                    this.entersPlay(card, updatedParams);                    
+                };              
+                if(card.isGadget()) {
+                    this.inventGadget(card, updatedParams.scientist, () => {
+                        putIntoPlayFunc();
+                    });
+                } else {
+                    putIntoPlayFunc();
+                }                
                 break;
+            }
             default:
                 //empty
         }

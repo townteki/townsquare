@@ -209,19 +209,6 @@ const Costs = {
      */
     moveTokenFromSelf: (type, amount, condition) => new MoveTokenFromSelfCost(type, amount, condition),
     /**
-     * Cost that will pay the exact printed gold cost for the card.
-     */
-    payPrintedGoldCost: function() {
-        return {
-            canPay: function(context) {
-                return context.player.ghostrock >= context.source.getCost();
-            },
-            pay: function(context) {
-                context.game.spendGold({ amount: context.source.getCost(), player: context.player });
-            }
-        };
-    },
-    /**
      * Cost that will pay the printed ghostrock cost on the card minus any active
      * reducer effects the play has activated. Upon playing the card, all
      * matching reducer effects will expire, if applicable.
@@ -266,9 +253,11 @@ const Costs = {
         };
     },
     /**
-     * Cost in which the player must pay a fixed, non-reduceable amount of gold.
+     * Cost in which the player must pay a fixed, non-reduceable amount of ghost rock.
+     * @param {number} amount
+     * @param {boolean} toOpponent - Ghost rock should be played to opponent instead of bank
      */
-    payGhostRock: function(amount) {
+    payGhostRock: function(amount, toOpponent) {
         return {
             canPay: function(context) {
                 return context.player.getSpendableGhostRock({ 
@@ -279,12 +268,20 @@ const Costs = {
                 }) >= amount;
             },
             pay: function(context) {
-                context.game.spendGhostRock({ 
-                    amount: amount, 
-                    player: context.player, 
-                    source: context.source, 
-                    context: context 
-                });
+                if(toOpponent) {
+                    context.game.transferGhostRock({
+                        from: context.player,
+                        to: context.player.getOpponent(),
+                        amount: amount
+                    });                    
+                } else {
+                    context.game.spendGhostRock({ 
+                        amount: amount, 
+                        player: context.player, 
+                        source: context.source, 
+                        context: context 
+                    });
+                }
             }
         };
     },

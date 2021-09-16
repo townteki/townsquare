@@ -25,7 +25,7 @@ class RunEmDown extends ActionCard {
                     cardType: 'dude',
                     onSelect: (player, cards) => {
                         context.ability.selectAnotherTarget(player, context, {
-                            activePromptTitle: 'Select a dude to be runned down',
+                            activePromptTitle: 'Select a dude to be ran down',
                             waitingPromptTitle: 'Waiting for opponent to select dude',
                             cardCondition: card => card.location === 'play area' && card.isAdjacent(context.target.uuid) && !card.hasHorse(),
                             cardType: 'dude',

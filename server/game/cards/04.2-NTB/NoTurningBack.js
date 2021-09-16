@@ -13,7 +13,7 @@ class NoTurningBack extends ActionCard {
                 gameAction: 'ace'
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} and aces {2} to gain GR equal to his cost ({3})', context.player, this, context.target, context.target.cost),
+                this.game.addMessage('{0} uses {1} and aces {2} to gain GR equal to {2}\'s cost ({3})', context.player, this, context.target, context.target.cost),
             handler: context => {
                 this.game.resolveGameAction(GameActions.aceCard({ card: context.target }), context).thenExecute(() => {
                     context.player.modifyGhostRock(context.target.cost);

@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/451/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/461/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -110,7 +110,7 @@
 |                     | 01096| Doyle's Hoyle
 |:heavy_check_mark:   | 01097| Buffalo Rifle
 |                     | 01098| Legendary Holster
-|                     | 01099| Auto Cattle-Feeder
+|:heavy_check_mark:   | 01099| Auto Cattle-Feeder
 |:heavy_check_mark:   | 01100| Soul Blast
 |:heavy_check_mark:   | 01101| Ace in the Hole
 |:heavy_check_mark:   | 01102| Shadow Walk
@@ -348,7 +348,7 @@
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
 |                     | 08009| Old Man McDroste
 |:heavy_check_mark:   | 08010| Flint's Amusements
-|                     | 08011| Lula's Exploit
+|:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
 |                     | 08014| Stoker's Sabre
@@ -364,7 +364,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 09001| The 108 Righteous Bandits
+|:heavy_check_mark:   | 09001| The 108 Righteous Bandits
 |                     | 09002| Eagle Wardens
 |                     | 09003| Benjamin Washington
 |:heavy_check_mark:   | 09004| Daomei Wang
@@ -412,7 +412,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 10001| The Sanatorium
-|                     | 10002| Abram's Crusaders
+|:heavy_check_mark:   | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
 |:heavy_check_mark:   | 10005| Emre, The Turkish Bear
@@ -424,7 +424,7 @@
 |:heavy_check_mark:   | 10011| Ivor Hawley (Exp.1)
 |                     | 10012| Deborah West
 |                     | 10013| Abram Grothe (Exp.2)
-|                     | 10014| "Dead" Billy Jones
+|:heavy_check_mark:   | 10014| "Dead" Billy Jones
 |                     | 10015| Lillian Morgan (Exp.1)
 |:heavy_check_mark:   | 10016| Samantha "Sammy" Cooke
 |                     | 10017| Sloane (Exp.1)
@@ -438,7 +438,7 @@
 |                     | 10025| Monte Bank
 |:heavy_check_mark:   | 10026| Wendy's Teethkickers
 |                     | 10027| Rich Man's Guard Dog
-|                     | 10028| Fiery Rhetoric
+|:heavy_check_mark:   | 10028| Fiery Rhetoric
 |:heavy_check_mark:   | 10029| Strength of the Ancestors
 |:heavy_check_mark:   | 10030| Phantom Fingers
 |                     | 10031| Dumbstruck
@@ -594,7 +594,7 @@
 |:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
 |:heavy_check_mark:   | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer
-|                     | 15012| Espuelas
+|:heavy_check_mark:   | 15012| Espuelas
 |                     | 15013| Rites of the Smoking Mirror
 |                     | 15014| Essence of Armitage
 |                     | 15015| Festering Grasp
@@ -830,7 +830,7 @@
 |:heavy_check_mark:   | 21009| Baijiu Sue
 |                     | 21010| Reverend Bob Hungate
 |                     | 21011| Father Diamond
-|                     | 21012| Master Shou
+|:heavy_check_mark:   | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
 |                     | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
@@ -856,17 +856,17 @@
 |:heavy_check_mark:   | 21035| Byron Decker
 |:heavy_check_mark:   | 21036| Carter Richardson
 |:heavy_check_mark:   | 21037| Valeria Batten (Exp.1)
-|                     | 21038| Steph & Gertie's Tonsorium
+|:heavy_check_mark:   | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
 |                     | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
 |                     | 21044| Magnum Opus Tenebri
-|                     | 21045| Scattergun
+|:heavy_check_mark:   | 21045| Scattergun
 |                     | 21046| Adler's Needle
 |                     | 21047| Wrathful Spider
-|                     | 21048| Guiding Light
+|:heavy_check_mark:   | 21048| Guiding Light
 |                     | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly

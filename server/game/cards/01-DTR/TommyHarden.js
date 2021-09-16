@@ -12,7 +12,7 @@ class TommyHarden extends DudeCard {
                     rankMod = 1;
                 }
                 context.player.modifyRank(rankMod, context);
-                this.game.addMessage('{0}\'s rank is increased by {1} thanks to the {2}; Current rank is {3}', 
+                this.game.addMessage('{0}\'s rank is increased by {1} thanks to {2}; Current rank is {3}', 
                     context.player, rankMod, this, context.player.getTotalRank());
             }
         });

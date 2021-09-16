@@ -59,15 +59,7 @@ class DrawHandPrompt extends UiPrompt {
     }
 
     isComplete() {
-        return (this.game.currentPhase !== 'gambling' && (!this.game.shootout || this.game.shootout.cancelled)) || 
-            this.players.every(player => player.drawHandSelected);
-    }
-
-    onCompleted() {
-        this.players.forEach(player => {
-            player.clearSelectedCards();
-            player.clearSelectableCards(); 
-        });
+        return this.players.every(player => player.drawHandSelected);
     }
 
     continue() {

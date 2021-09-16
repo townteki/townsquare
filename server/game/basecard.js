@@ -19,6 +19,7 @@ const SpellReaction = require('./spellreaction');
 const SpellBeforeReaction = require('./spellbeforereaction');
 const CardTraitBeforeReaction = require('./cardtraitbeforereaction');
 const TechniqueAction = require('./techniqueaction');
+const SpellJobAction = require('./spelljobaction');
 
 /** @typedef {import('./AbilityContext')} AbilityContext */
 /** @typedef {import('./AbilityDsl')} AbilityDsl */
@@ -204,6 +205,19 @@ class BaseCard {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         properties.triggeringPlayer = properties.triggeringPlayer || (this.hasKeyword('totem') ? 'any' : undefined);
         var spell = new SpellAction(this.game, this, properties);
+        this.abilities.actions.push(spell);
+    }
+
+    /**
+     * Define Spell card action that starts a job (e.g. `Noon Job Miracle:`)
+     * Some cards start a job but do not have it marked before the colon (e.g. For Such a Time as This, Summoning)
+     *
+     * @param {import('./spelljobaction').SpellJobActionAbilityProperties} properties
+     */ 
+    spellJobAction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
+        properties.triggeringPlayer = properties.triggeringPlayer || (this.hasKeyword('totem') ? 'any' : undefined);
+        var spell = new SpellJobAction(this.game, this, properties);
         this.abilities.actions.push(spell);
     }
 
