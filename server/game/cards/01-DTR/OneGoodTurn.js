@@ -12,7 +12,8 @@ class OneGoodTurn extends ActionCard {
             }
         });
         this.action({
-            title: 'cheatin: gain 3 GR',
+            title: 'Cheatin\' Resolution: Gain 3 GR',
+
             playType: ['cheatin resolution'],
             message: context => 
                 this.game.addMessage('{0} uses {1} to gain 3 GR', context.player, this),
