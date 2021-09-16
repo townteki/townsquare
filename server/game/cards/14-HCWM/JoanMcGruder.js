@@ -7,7 +7,8 @@ class JoanMcGruder extends DudeCard {
             match: this,
             effect: [
                 ability.effects.dynamicBullets(() => this.dudesInJoansPosse() * -1),
-                ability.effects.cannotLeaveShootout()
+                ability.effects.cannotLeaveShootout(),
+                ability.effects.cannotBeSentHome('any', () => this.isParticipating())
             ]
         });
         this.persistentEffect({

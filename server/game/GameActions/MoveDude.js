@@ -12,10 +12,10 @@ class MoveDude extends GameAction {
             card && card.getType() === 'dude' &&
             card.gamelocation !== targetUuid &&
             ['outfit', 'play area'].includes(card.location) &&
-            card.allowGameAction('moveDude', context) &&
-            (!params.needToBoot || card.allowGameAction('boot', context) || 
+            card.allowGameAction('moveDude', context, options) &&
+            (!params.needToBoot || card.allowGameAction('boot', context, options) || 
             (params.toPosse && card.canJoinWithoutBooting())) &&
-            (!card.game.shootout || this.canLeaveShootout(card))
+            (params.toPosse || !card.game.shootout || this.canLeaveShootout(card, context, options))
         );
     }
 
@@ -45,11 +45,11 @@ class MoveDude extends GameAction {
         return options;
     }
 
-    canLeaveShootout(card, context) {
+    canLeaveShootout(card, context, options) {
         if(!card.isParticipating()) {
             return true;
         }
-        return card.allowGameAction('removeFromPosse', context);
+        return card.allowGameAction('removeFromPosse', context, options);
     }
 }
 

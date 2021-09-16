@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/461/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/464/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -133,7 +133,7 @@
 |:heavy_check_mark:   | 01119| Pistol Whip
 |                     | 01120| Concealed Weapons
 |                     | 01121| Hot Lead Flyin'
-|                     | 01122| One Good Turn…
+|:heavy_check_mark:   | 01122| One Good Turn…
 |:heavy_check_mark:   | 01123| Kidnappin'
 |:heavy_check_mark:   | 01124| Pinned Down
 |:heavy_check_mark:   | 01125| Run 'Em Down!
@@ -558,7 +558,7 @@
 |:heavy_check_mark:   | 14019| Epidemic Laboratory
 |:heavy_check_mark:   | 14020| Walters Creek Distillery
 |:heavy_check_mark:   | 14021| Silent Sigil
-|                     | 14022| Auto-Gatling
+|:heavy_check_mark:   | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
 |:heavy_check_mark:   | 14024| Tusk
 |                     | 14025| Mountain Lion Friend
@@ -684,7 +684,7 @@
 |                     | 18021| The Caretaker
 |:heavy_check_mark:   | 18022| Nickel Night Inn
 |:heavy_check_mark:   | 18023| Sherman Mortgage
-|                     | 18024| Gomorra Gaming Commission
+|:heavy_check_mark:   | 18024| Gomorra Gaming Commission
 |:heavy_check_mark:   | 18025| Cliff's #4 Saloon
 |:heavy_check_mark:   | 18026| Baijiu Jar
 |:heavy_check_mark:   | 18027| Bowie Knife
