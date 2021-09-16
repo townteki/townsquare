@@ -10,24 +10,26 @@ class ElectionDaySlaughter extends ActionCard {
             target: 'townsquare',
             message: context => this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             handler: context => {
-                const opponent = context.player.getOpponent();
-                this.game.promptForSelect(opponent, {
-                    activePromptTitle: 'Select a dude to unboot',
-                    waitingPromptTitle: 'Waiting for opponent to select dude',
-                    cardCondition: card => card.location === 'play area' && card.controller === opponent && !card.locationCard.isOutOfTown(),
-                    cardType: 'dude',
-                    gameAction: 'unboot',
-                    onSelect: (player, card) => {
-                        this.game.resolveGameAction(GameActions.unbootCard({ card }), context).thenExecute(() => {
-                            this.game.addMessage('{0} unboots {1} in town as a preparation for {2}', player, card, this);
-                        });
-                        return true;
-                    },
-                    onCancel: player => {
-                        this.game.addMessage('{0} does not unboot any dudes in town as a preparation for {1}', player, this);
-                    },
-                    source: this
-                });
+                if(this.game.getNumberOfPlayers() > 1) {
+                    const opponent = context.player.getOpponent();
+                    this.game.promptForSelect(opponent, {
+                        activePromptTitle: 'Select a dude to unboot',
+                        waitingPromptTitle: 'Waiting for opponent to select dude',
+                        cardCondition: card => card.location === 'play area' && card.controller === opponent && !card.locationCard.isOutOfTown(),
+                        cardType: 'dude',
+                        gameAction: 'unboot',
+                        onSelect: (player, card) => {
+                            this.game.resolveGameAction(GameActions.unbootCard({ card }), context).thenExecute(() => {
+                                this.game.addMessage('{0} unboots {1} in town as a preparation for {2}', player, card, this);
+                            });
+                            return true;
+                        },
+                        onCancel: player => {
+                            this.game.addMessage('{0} does not unboot any dudes in town as a preparation for {1}', player, this);
+                        },
+                        source: this
+                    });
+                }
             },
             onSuccess: (job, context) => {
                 const opponent = context.player.getOpponent();
