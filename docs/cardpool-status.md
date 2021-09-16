@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/461/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/464/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -133,7 +133,7 @@
 |:heavy_check_mark:   | 01119| Pistol Whip
 |                     | 01120| Concealed Weapons
 |                     | 01121| Hot Lead Flyin'
-|                     | 01122| One Good Turn…
+|:heavy_check_mark:   | 01122| One Good Turn…
 |:heavy_check_mark:   | 01123| Kidnappin'
 |:heavy_check_mark:   | 01124| Pinned Down
 |:heavy_check_mark:   | 01125| Run 'Em Down!
