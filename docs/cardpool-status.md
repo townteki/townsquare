@@ -47,14 +47,14 @@
 |:heavy_check_mark:   | 01033| Rémy LaPointe
 |                     | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
-|                     | 01036| Fred Aims
+|:heavy_check_mark:   | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
 |                     | 01038| Marion Seville
 |                     | 01039| Sanford Taylor
 |:heavy_check_mark:   | 01040| Barton Everest
 |:white_check_mark:   | 01041| Pancho Castillo
 |                     | 01042| Jonah Essex
-|                     | 01043| Silas Aims
+|:heavy_check_mark:   | 01043| Silas Aims
 |                     | 01044| Sloane
 |:heavy_check_mark:   | 01045| Clementine Lepp
 |:white_check_mark:   | 01046| Olivia Jenks
