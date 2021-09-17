@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/465/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/467/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -392,7 +392,7 @@
 |                     | 09026| Smiling Frog
 |                     | 09027| Laughing Crow
 |                     | 09028| Chief Stephen Seven-Eagles
-|                     | 09029| Nunchucks
+|:heavy_check_mark:   | 09029| Nunchucks
 |                     | 09030| Idol of Tlazolteotl
 |                     | 09031| Spirit Guidance
 |:heavy_check_mark:   | 09032| Spirit Dance
@@ -871,7 +871,7 @@
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
 |                     | 21052| Ten-Foot Punch
-|                     | 21053| Fleet-Footed
+|:heavy_check_mark:   | 21053| Fleet-Footed
 |:heavy_check_mark:   | 21054| You're A Daisy If You Do
 |                     | 21055| Twilight Is Upon Us
 |                     | 21056| Test of Wills
