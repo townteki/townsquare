@@ -21,7 +21,7 @@ class Nunchucks extends GoodsCard {
             cost: ability.costs.bootSelf(),
             message: context => 
                 this.game.addMessage('{0} uses {1} to reduce {2}\'s pull by {3}', 
-                    context.player, this, context.event.pullingDude, this.parent.getSkillRating('kung fu')),
+                    context.player, this, context.event.props.pullingDude, this.parent.getSkillRating('kung fu')),
             handler: context => {
                 const saveEventHandler = context.event.handler;
                 context.replaceHandler(event => {

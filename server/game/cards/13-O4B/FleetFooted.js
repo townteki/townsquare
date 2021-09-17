@@ -40,7 +40,7 @@ class FleetFooted extends ActionCard {
             },
             message: context => 
                 this.game.addMessage('{0} uses {1} to give {2} +1 bullets and {3} -1 bullets', 
-                    context.player, this, context.targets.yourDude, context.target.oppDude),
+                    context.player, this, context.targets.yourDude, context.targets.oppDude),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.targets.yourDude,
