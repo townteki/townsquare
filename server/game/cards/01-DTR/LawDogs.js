@@ -17,8 +17,11 @@ class LawDogs extends OutfitCard {
                 this.game.promptForSelect(context.player, {
                     activePromptTitle: promptTitle,
                     waitingPromptTitle: 'Waiting for opponent to select dudes',
-                    cardCondition: card => card.location === 'play area' && card.controller === context.player,
+                    cardCondition: card => card.location === 'play area' && 
+                        card.controller === context.player &&
+                        !card.booted,
                     cardType: 'dude',
+                    gameAction: 'boot',
                     multiSelect: true,
                     numCards: 0,
                     onSelect: (player, cards) => {
@@ -33,7 +36,8 @@ class LawDogs extends OutfitCard {
                             this.game.resolveGameAction(GameActions.addBounty({ card: context.target })), context);
                         this.game.addMessage('{0} uses {1} to raise bounty on {2}', player, this, context.target);
                         return true;
-                    }
+                    },
+                    source: this
                 });
             },
             source: this
