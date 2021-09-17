@@ -322,7 +322,7 @@
 |                     | 07008| El Grajo
 |:heavy_check_mark:   | 07009| Jacqueline Isham
 |:heavy_check_mark:   | 07010| Huntsmen's Society
-|                     | 07011| Secured Stockyard
+|:heavy_check_mark:   | 07011| Secured Stockyard
 |:heavy_check_mark:   | 07012| La Quema
 |                     | 07013| Asyncoil Gun
 |:heavy_check_mark:   | 07014| Scoop Hound
