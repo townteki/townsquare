@@ -832,15 +832,18 @@ class Player extends Spectator {
         if(card.getType() !== 'dude') {
             return false;
         }
-        let cardTitle = card.title.trim();
-        let pattern = '(.+)[ ]?\\(Exp\\.[0-9]\\)?';
-        let match = cardTitle.match(pattern);
-        if(match) {
-            cardTitle = match[1].trim();
-        }
+        const getTitle = rawTitle => {
+            let pattern = '(.+)[ ]?\\(Exp\\.[0-9]\\)?';
+            let match = rawTitle.match(pattern);
+            if(match) {
+                return match[1].trim();
+            }
+            return rawTitle;
+        };
+        const cardTitle = getTitle(card.title.trim());
 
         return this.cardsInPlay.find(cardInPlay => {
-            if(cardInPlay.title === cardTitle) {
+            if(getTitle(cardInPlay.title) === cardTitle) {
                 let cardInPlayExp = cardInPlay.keywords.getExperienceLevel();
                 let cardToPlayExp = card.keywords.getExperienceLevel();
                 return Math.abs(cardInPlayExp - cardToPlayExp) === 1;
@@ -1685,7 +1688,7 @@ class Player extends Spectator {
             if(targetLocation !== 'play area') {
                 let cardLeavePlay = () => {
                     card.leavesPlay();
-                    card.moveTo(targetLocation);
+                    card.moveTo(targetLocation, null, options.raiseEvents);
                 };
 
                 if(options.raiseEvents) {
@@ -1706,7 +1709,7 @@ class Player extends Spectator {
         }
 
         if(card.location !== 'play area') {
-            card.moveTo(targetLocation);
+            card.moveTo(targetLocation, null, options.raiseEvents);
         }
 
         if(['draw deck', 'discard pile', 'being played'].includes(targetLocation) && !options.bottom) {

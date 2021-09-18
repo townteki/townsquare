@@ -146,7 +146,7 @@ class DrawCard extends BaseCard {
         return this.minCost;
     }
     
-    moveTo(targetLocation, parent) {
+    moveTo(targetLocation, parent, raiseEvents = true) {
         let originalLocation = this.location;
         let originalParent = this.parent;
 
@@ -190,7 +190,7 @@ class DrawCard extends BaseCard {
             this.facedown = false;
         }
 
-        if(originalLocation !== targetLocation || originalParent !== parent) {
+        if((originalLocation !== targetLocation || originalParent !== parent) && raiseEvents) {
             this.game.raiseEvent('onCardMoved', { card: this, originalLocation: originalLocation, newLocation: targetLocation, parentChanged: originalParent !== parent });
         }
     }

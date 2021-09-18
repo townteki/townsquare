@@ -260,7 +260,9 @@ class DudeCard extends DrawCard {
 
         clone.currentUpkeep = this.currentUpkeep;
         clone.shootoutStatus = this.shootoutStatus;
-        clone.studReferenceArray = this.studReferenceArray;
+        if(cloneBaseAttributes) {
+            clone.studReferenceArray = this.studReferenceArray;
+        }
 
         return clone;
     }
@@ -299,9 +301,29 @@ class DudeCard extends DrawCard {
 
     upgrade(expDude) {
         expDude.controller.moveCard(expDude, 'play area', { raiseEvents: false });
-        expDude = this.createSnapshot(expDude, false);
+        //expDude = this.createSnapshot(expDude, false);
 
-        expDude.currentValue = this.currentValue - this.getPrintedStat('value') + expDude.getPrintedStat('value');
+        expDude.shootoutStatus = this.shootoutStatus;
+        expDude.booted = this.booted;
+        expDude.parent = this.parent;
+        expDude.location = this.location;
+        expDude.gameLoc = this.gameLoc;
+        expDude.events = this.events;
+        expDude.eventsForRegistration = this.eventsForRegistration;
+
+        const allEffects = this.game.effectEngine.getAllEffectsOnCard(this);
+        allEffects.forEach(effect => {
+            effect.removeTarget(this);
+            effect.addAndApplyTarget(expDude);
+            if(effect.match === this) {
+                effect.match = expDude;
+            }
+            if(effect.context.card === this) {
+                effect.context.card = expDude;
+            }
+        });
+
+/*         expDude.currentValue = this.currentValue - this.getPrintedStat('value') + expDude.getPrintedStat('value');
         expDude.currentBullets = this.currentBullets - this.getPrintedStat('bullets') + expDude.getPrintedStat('bullets');
         expDude.currentInfluence = this.currentInfluence - this.getPrintedStat('influence') + expDude.getPrintedStat('influence');
         expDude.currentControl = this.currentControl - this.getPrintedStat('control') + expDude.getPrintedStat('control');
@@ -316,7 +338,7 @@ class DudeCard extends DrawCard {
             });
         }
         Object.keys(this.keywords.modifiers).forEach(keywordMod => 
-            expDude.keywords.modifiers[keywordMod].modifier = this.keywords.modifiers[keywordMod].modifier);
+            expDude.keywords.modifiers[keywordMod].modifier = this.keywords.modifiers[keywordMod].modifier); */
 
         expDude.attachments = [];
         this.attachments.forEach(attachment => {
