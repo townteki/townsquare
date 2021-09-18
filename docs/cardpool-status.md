@@ -49,7 +49,7 @@
 |:heavy_check_mark:   | 01035| Allie Hensman
 |                     | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
-|                     | 01038| Marion Seville
+|:heavy_check_mark:   | 01038| Marion Seville
 |                     | 01039| Sanford Taylor
 |:heavy_check_mark:   | 01040| Barton Everest
 |:white_check_mark:   | 01041| Pancho Castillo
