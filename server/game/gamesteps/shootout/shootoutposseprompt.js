@@ -14,10 +14,15 @@ class ShootoutPossePrompt extends UiPrompt {
                 this.joinLeaderAndMark(this.player);
                 this.complete(); 
             } else {
+                const additionalButtons = [];
+                if(this.shootout.isJob() && this.shootout.options.jobAbility.posseCondition) {
+                    additionalButtons.push({ text: 'Cancel', arg: 'cancel' });
+                }
                 this.game.promptForSelect(this.player, {
                     activePromptTitle: 'Select dudes to join posse',
                     multiSelect: true,
                     numCards: 0,
+                    additionalButtons: additionalButtons,
                     cardCondition: card => card.getType() === 'dude' && 
                         card.location === 'play area' &&
                         card.controller === this.player &&
@@ -26,6 +31,9 @@ class ShootoutPossePrompt extends UiPrompt {
                         !card.isParticipating() &&
                         card.requirementsToJoinPosse().canJoin,
                     onSelect: (player, dudeSelection) => {
+                        if(!this.passesJobCondition()) {
+                            return false;
+                        }
                         this.joinLeaderAndMark(player);
                         //Do not move to posse yet, it will be done once both posses are selected (Shootout.gatherPosses())
                         dudeSelection.forEach(dude => 
@@ -45,11 +53,19 @@ class ShootoutPossePrompt extends UiPrompt {
                         return true;
                     },
                     onCancel: (player) => {
+                        if(!this.passesJobCondition()) {
+                            return false;
+                        }
                         if(this.shootout.isJob() && this.shootout.opposingPlayer === player) {
                             this.shootout.endShootout();
                         } else {
                             this.joinLeaderAndMark(player);
                         }
+                        this.complete();
+                        return true;
+                    },
+                    onMenuCommand: () => {
+                        this.shootout.cancelled = true;
                         this.complete();
                         return true;
                     }
@@ -66,6 +82,14 @@ class ShootoutPossePrompt extends UiPrompt {
         } else if(!this.shootout.isJob()) {
             this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.mark, options: { isCardEffect: false, moveToPosse: false } }));
         }
+    }
+
+    passesJobCondition() {
+        if(!this.shootout.isJob() || !this.shootout.options.jobAbility ||
+            !this.shootout.options.jobAbility.posseCondition) {
+            return true;
+        }
+        return this.shootout.options.jobAbility.posseCondition();
     }
 }
 

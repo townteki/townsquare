@@ -35,6 +35,7 @@ class Shootout extends Phase {
         this.jobUnopposed = false;
         this.winningPlayer = null;
         this.headlineUsed = false;
+        this.cancelled = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
         this.abilityRestrictions = [];									  
@@ -53,6 +54,9 @@ class Shootout extends Phase {
     }
 
     initialiseOpposingPosse() {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.isJob()) {
             this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));
         } else {
@@ -78,6 +82,9 @@ class Shootout extends Phase {
     }
 
     raisePossesFormedEvent() {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.jobUnopposed) {
             this.game.raiseEvent('onPossesFormed', { shootout: this });
         }
@@ -259,7 +266,11 @@ class Shootout extends Phase {
     }
 
     checkEndCondition() {
-        return !this.leaderPosse || !this.opposingPosse || this.leaderPosse.isEmpty() || this.opposingPosse.isEmpty();
+        return this.cancelled || 
+            !this.leaderPosse || 
+            !this.opposingPosse || 
+            this.leaderPosse.isEmpty() || 
+            this.opposingPosse.isEmpty();
     }
 
     getLeaderDrawCount() {

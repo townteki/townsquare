@@ -11,6 +11,8 @@ class Kidnappin extends ActionCard {
                 cardCondition: { location: 'play area', controller: 'any' },
                 cardType: 'dude'
             },
+            posseCondition: job =>
+                job.getPosseStat(job.leaderPlayer, 'bullets') > job.mark.bullets,
             message: context =>
                 this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             handler: () => {
