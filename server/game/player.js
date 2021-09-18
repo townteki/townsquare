@@ -193,13 +193,14 @@ class Player extends Spectator {
 
         var cardsToReturn = [];
 
-        _.each(cardList, (card) => {
-            if(predicate(card)) {
+        cardList.forEach(card => {
+            if(!cardsToReturn.includes(card) && predicate(card)) {
                 cardsToReturn.push(card);
             }
 
             if(card.attachments) {
-                cardsToReturn = cardsToReturn.concat(card.attachments.filter(predicate));
+                cardsToReturn = cardsToReturn.concat(
+                    card.attachments.filter(att => !cardsToReturn.includes(att) && predicate(att)));
             }
 
             return cardsToReturn;
