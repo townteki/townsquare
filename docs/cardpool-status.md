@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/465/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/470/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -47,14 +47,14 @@
 |:heavy_check_mark:   | 01033| Rémy LaPointe
 |                     | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
-|                     | 01036| Fred Aims
+|:heavy_check_mark:   | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
-|                     | 01038| Marion Seville
+|:heavy_check_mark:   | 01038| Marion Seville
 |                     | 01039| Sanford Taylor
 |:heavy_check_mark:   | 01040| Barton Everest
 |:white_check_mark:   | 01041| Pancho Castillo
 |                     | 01042| Jonah Essex
-|                     | 01043| Silas Aims
+|:heavy_check_mark:   | 01043| Silas Aims
 |                     | 01044| Sloane
 |:heavy_check_mark:   | 01045| Clementine Lepp
 |:white_check_mark:   | 01046| Olivia Jenks
@@ -392,7 +392,7 @@
 |                     | 09026| Smiling Frog
 |                     | 09027| Laughing Crow
 |                     | 09028| Chief Stephen Seven-Eagles
-|                     | 09029| Nunchucks
+|:heavy_check_mark:   | 09029| Nunchucks
 |                     | 09030| Idol of Tlazolteotl
 |                     | 09031| Spirit Guidance
 |:heavy_check_mark:   | 09032| Spirit Dance
@@ -871,7 +871,7 @@
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
 |                     | 21052| Ten-Foot Punch
-|                     | 21053| Fleet-Footed
+|:heavy_check_mark:   | 21053| Fleet-Footed
 |:heavy_check_mark:   | 21054| You're A Daisy If You Do
 |                     | 21055| Twilight Is Upon Us
 |                     | 21056| Test of Wills
