@@ -15,6 +15,8 @@ class Heist extends ActionCard {
                 },
                 cardType: ['deed']
             },
+            posseCondition: (job, posseSelection) =>
+                job.leader.bullets + posseSelection.reduce((agg, dude) => agg + dude.bullets, 0) >= 3,
             message: context => this.game.addMessage('{0} starts a job {1} marking {2}', context.player, this, context.target),
             onSuccess: (job, context) => {
                 context.player.modifyGhostRock(job.mark.production);
