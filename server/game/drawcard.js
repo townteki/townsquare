@@ -146,7 +146,7 @@ class DrawCard extends BaseCard {
         return this.minCost;
     }
     
-    moveTo(targetLocation, parent, raiseEvents = true) {
+    moveTo(targetLocation, raiseEvents = true, parent) {
         let originalLocation = this.location;
         let originalParent = this.parent;
 

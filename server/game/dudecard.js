@@ -301,7 +301,6 @@ class DudeCard extends DrawCard {
 
     upgrade(expDude) {
         expDude.controller.moveCard(expDude, 'play area', { raiseEvents: false });
-        //expDude = this.createSnapshot(expDude, false);
 
         expDude.shootoutStatus = this.shootoutStatus;
         expDude.booted = this.booted;
@@ -322,23 +321,6 @@ class DudeCard extends DrawCard {
                 effect.context.card = expDude;
             }
         });
-
-/*         expDude.currentValue = this.currentValue - this.getPrintedStat('value') + expDude.getPrintedStat('value');
-        expDude.currentBullets = this.currentBullets - this.getPrintedStat('bullets') + expDude.getPrintedStat('bullets');
-        expDude.currentInfluence = this.currentInfluence - this.getPrintedStat('influence') + expDude.getPrintedStat('influence');
-        expDude.currentControl = this.currentControl - this.getPrintedStat('control') + expDude.getPrintedStat('control');
-        expDude.currentUpkeep = this.currentUpkeep - this.getPrintedStat('upkeep') + expDude.getPrintedStat('upkeep');
-        expDude.currentProduction = this.currentProduction - this.getPrintedStat('production') + expDude.getPrintedStat('production');
-
-        if(this.keywords.data) {
-            this.keywords.getValues().forEach(keyword => {
-                for(let i = 1; i < this.keywords.getValue(keyword); i++) {
-                    expDude.keywords.add(keyword);
-                }
-            });
-        }
-        Object.keys(this.keywords.modifiers).forEach(keywordMod => 
-            expDude.keywords.modifiers[keywordMod].modifier = this.keywords.modifiers[keywordMod].modifier); */
 
         expDude.attachments = [];
         this.attachments.forEach(attachment => {

@@ -975,7 +975,7 @@ class Player extends Spectator {
         if(originalLocation !== 'play area') {
             attachment.owner.cardsInPlay.push(attachment);
         }
-        attachment.moveTo('play area', card);
+        attachment.moveTo('play area', true, card);
         card.attachments.push(attachment);
         if(attachCallback) {
             attachCallback(attachment, card, playingType);
@@ -1688,7 +1688,7 @@ class Player extends Spectator {
             if(targetLocation !== 'play area') {
                 let cardLeavePlay = () => {
                     card.leavesPlay();
-                    card.moveTo(targetLocation, null, options.raiseEvents);
+                    card.moveTo(targetLocation, options.raiseEvents);
                 };
 
                 if(options.raiseEvents) {
@@ -1709,7 +1709,7 @@ class Player extends Spectator {
         }
 
         if(card.location !== 'play area') {
-            card.moveTo(targetLocation, null, options.raiseEvents);
+            card.moveTo(targetLocation, options.raiseEvents);
         }
 
         if(['draw deck', 'discard pile', 'being played'].includes(targetLocation) && !options.bottom) {
