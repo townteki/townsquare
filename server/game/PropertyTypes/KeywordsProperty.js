@@ -145,7 +145,7 @@ class KeywordsProperty {
     getExperienceLevel(printed = false) {
         let experienced = this.modifiers['experienced'];
         if(!experienced) {
-            return;
+            return 0;
         }
         if(printed) {
             return experienced.printed;

@@ -120,12 +120,16 @@ class Effect {
         let newTargets = targets.filter(target => !this.targets.includes(target) && this.isValidTarget(target));
 
         for(let target of newTargets) {
-            this.targets.push(target);
+            this.addAndApplyTarget(target);
+        }
+    }
 
-            if(this.canApply(target)) {
-                this.effect.apply(target, this.context);
-                this.appliedTargets.add(target);
-            }
+    addAndApplyTarget(target) {
+        this.targets.push(target);
+
+        if(this.canApply(target)) {
+            this.effect.apply(target, this.context);
+            this.appliedTargets.add(target);
         }
     }
 
