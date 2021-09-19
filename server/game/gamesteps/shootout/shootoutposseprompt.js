@@ -6,6 +6,7 @@ class ShootoutPossePrompt extends UiPrompt {
         super(game);
         this.shootout = shootout;
         this.player = player;
+        this.activePromptTitle = 'Select dudes to join posse';
     }  
 
     continue() {
@@ -19,7 +20,7 @@ class ShootoutPossePrompt extends UiPrompt {
                     additionalButtons.push({ text: 'Cancel', arg: 'cancel' });
                 }
                 this.game.promptForSelect(this.player, {
-                    activePromptTitle: 'Select dudes to join posse',
+                    activePromptTitle: this.activePromptTitle,
                     multiSelect: true,
                     numCards: 0,
                     additionalButtons: additionalButtons,
@@ -31,8 +32,8 @@ class ShootoutPossePrompt extends UiPrompt {
                         !card.isParticipating() &&
                         card.requirementsToJoinPosse().canJoin,
                     onSelect: (player, dudeSelection) => {
-                        if(!this.passesJobCondition()) {
-                            return false;
+                        if(!this.passesJobCondition(dudeSelection)) {
+                            return true;
                         }
                         this.joinLeaderAndMark(player);
                         //Do not move to posse yet, it will be done once both posses are selected (Shootout.gatherPosses())
@@ -54,7 +55,7 @@ class ShootoutPossePrompt extends UiPrompt {
                     },
                     onCancel: (player) => {
                         if(!this.passesJobCondition()) {
-                            return false;
+                            return true;
                         }
                         if(this.shootout.isJob() && this.shootout.opposingPlayer === player) {
                             this.shootout.endShootout();
@@ -68,7 +69,8 @@ class ShootoutPossePrompt extends UiPrompt {
                         this.shootout.cancelled = true;
                         this.complete();
                         return true;
-                    }
+                    },
+                    source: this.shootout.isJob() ? this.shootout.options.jobAbility.card : undefined
                 });
             }
         }
@@ -84,12 +86,17 @@ class ShootoutPossePrompt extends UiPrompt {
         }
     }
 
-    passesJobCondition() {
+    passesJobCondition(dudeSelection = []) {
         if(!this.shootout.isJob() || !this.shootout.options.jobAbility ||
             !this.shootout.options.jobAbility.posseCondition) {
             return true;
         }
-        return this.shootout.options.jobAbility.posseCondition();
+        if(this.shootout.options.jobAbility.posseCondition(this.shootout, dudeSelection)) {
+            this.game.markActionAsTaken(this.shootout.options.jobAbility.context);
+            return true;
+        } 
+        this.activePromptTitle = 'Your posse does not pass Job condition! Select dudes to join posse';
+        return false;
     }
 }
 
