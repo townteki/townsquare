@@ -314,11 +314,13 @@ class DudeCard extends DrawCard {
         allEffects.forEach(effect => {
             effect.removeTarget(this);
             effect.addAndApplyTarget(expDude);
-            if(effect.match === this) {
+            if(Array.isArray(effect.match)) {
+                if(effect.match.includes(this)) {
+                    effect.match.filter(matchTarget => matchTarget !== this);
+                    effect.match.push(expDude);
+                }
+            } else if(effect.match === this) {
                 effect.match = expDude;
-            }
-            if(effect.context.card === this) {
-                effect.context.card = expDude;
             }
         });
 
