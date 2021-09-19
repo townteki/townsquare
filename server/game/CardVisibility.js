@@ -47,7 +47,7 @@ class CardVisibility {
     isSpectatorRule(card, player) {
         return this.game.showHand &&
                player.isSpectator() &&
-               ['hand'].includes(card.location);
+               ['hand', 'draw hand'].includes(card.location);
     }
 
     isSetupRule(card) {
