@@ -316,7 +316,7 @@ class DudeCard extends DrawCard {
             effect.addAndApplyTarget(expDude);
             if(Array.isArray(effect.match)) {
                 if(effect.match.includes(this)) {
-                    effect.match.filter(matchTarget => matchTarget !== this);
+                    effect.match = effect.match.filter(matchTarget => matchTarget !== this);
                     effect.match.push(expDude);
                 }
             } else if(effect.match === this) {
