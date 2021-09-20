@@ -35,6 +35,7 @@ class Shootout extends Phase {
         this.jobUnopposed = false;
         this.winningPlayer = null;
         this.headlineUsed = false;
+        this.cancelled = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
         this.abilityRestrictions = [];									  
@@ -53,6 +54,9 @@ class Shootout extends Phase {
     }
 
     initialiseOpposingPosse() {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.isJob()) {
             this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));
         } else {
@@ -78,6 +82,9 @@ class Shootout extends Phase {
     }
 
     raisePossesFormedEvent() {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.jobUnopposed) {
             this.game.raiseEvent('onPossesFormed', { shootout: this });
         }
@@ -181,17 +188,25 @@ class Shootout extends Phase {
         }
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
+        this.leader.shootoutStatus = ShootoutStatuses.None;
         this.resetModifiers();
         this.game.endShootout(isCancel);
         if(this.isJob()) {
             this.options.jobAbility.setResult(this.jobSuccessful, this);
             this.options.jobAbility.reset();
+            if(this.cancelled) {
+                this.options.jobAbility.unpayCosts(this.options.jobAbility.context);
+            }
         }
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
-        this.game.addAlert('phasestart', phaseName + ' ended!');        
+        let whatHappened = this.cancelled ? ' cancelled!' : ' ended!';
+        this.game.addAlert('phasestart', phaseName + whatHappened);        
     }
 
     endShootout(recordStatus = true) {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.isJob()) {
             if((!this.opposingPosse || this.opposingPosse.isEmpty()) &&
                 this.leaderPosse && !this.leaderPosse.isEmpty()) {
@@ -259,7 +274,11 @@ class Shootout extends Phase {
     }
 
     checkEndCondition() {
-        return !this.leaderPosse || !this.opposingPosse || this.leaderPosse.isEmpty() || this.opposingPosse.isEmpty();
+        return this.cancelled || 
+            !this.leaderPosse || 
+            !this.opposingPosse || 
+            this.leaderPosse.isEmpty() || 
+            this.opposingPosse.isEmpty();
     }
 
     getLeaderDrawCount() {
