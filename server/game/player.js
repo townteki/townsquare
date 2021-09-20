@@ -193,13 +193,14 @@ class Player extends Spectator {
 
         var cardsToReturn = [];
 
-        _.each(cardList, (card) => {
-            if(predicate(card)) {
+        cardList.forEach(card => {
+            if(!cardsToReturn.includes(card) && predicate(card)) {
                 cardsToReturn.push(card);
             }
 
             if(card.attachments) {
-                cardsToReturn = cardsToReturn.concat(card.attachments.filter(predicate));
+                cardsToReturn = cardsToReturn.concat(
+                    card.attachments.filter(att => !cardsToReturn.includes(att) && predicate(att)));
             }
 
             return cardsToReturn;
@@ -831,15 +832,18 @@ class Player extends Spectator {
         if(card.getType() !== 'dude') {
             return false;
         }
-        let cardTitle = card.title.trim();
-        let pattern = '(.+)[ ]?\\(Exp\\.[0-9]\\)?';
-        let match = cardTitle.match(pattern);
-        if(match) {
-            cardTitle = match[1].trim();
-        }
+        const getTitle = rawTitle => {
+            let pattern = '(.+)[ ]?\\(Exp\\.[0-9]\\)?';
+            let match = rawTitle.match(pattern);
+            if(match) {
+                return match[1].trim();
+            }
+            return rawTitle;
+        };
+        const cardTitle = getTitle(card.title.trim());
 
         return this.cardsInPlay.find(cardInPlay => {
-            if(cardInPlay.title === cardTitle) {
+            if(getTitle(cardInPlay.title) === cardTitle) {
                 let cardInPlayExp = cardInPlay.keywords.getExperienceLevel();
                 let cardToPlayExp = card.keywords.getExperienceLevel();
                 return Math.abs(cardInPlayExp - cardToPlayExp) === 1;
@@ -971,7 +975,7 @@ class Player extends Spectator {
         if(originalLocation !== 'play area') {
             attachment.owner.cardsInPlay.push(attachment);
         }
-        attachment.moveTo('play area', card);
+        attachment.moveTo('play area', true, card);
         card.attachments.push(attachment);
         if(attachCallback) {
             attachCallback(attachment, card, playingType);
@@ -1224,7 +1228,8 @@ class Player extends Spectator {
             }
         });
         this.game.queueSimpleStep(() => {
-            this.locations = this.locations.filter(loc => loc !== gameLocation);
+            const outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
+            this.locations = this.locations.filter(loc => loc !== gameLocation && !loc.isOutOfTown());
             if(!card.isOutOfTown()) {
                 const orderedLocations = this.locations.sort((a, b) => {
                     return a.order - b.order;
@@ -1251,6 +1256,7 @@ class Player extends Spectator {
                     }
                 }
             }
+            this.locations = this.locations.concat(outOfTownLocations);
         });
     }
 
@@ -1682,7 +1688,7 @@ class Player extends Spectator {
             if(targetLocation !== 'play area') {
                 let cardLeavePlay = () => {
                     card.leavesPlay();
-                    card.moveTo(targetLocation);
+                    card.moveTo(targetLocation, options.raiseEvents);
                 };
 
                 if(options.raiseEvents) {
@@ -1703,7 +1709,7 @@ class Player extends Spectator {
         }
 
         if(card.location !== 'play area') {
-            card.moveTo(targetLocation);
+            card.moveTo(targetLocation, options.raiseEvents);
         }
 
         if(['draw deck', 'discard pile', 'being played'].includes(targetLocation) && !options.bottom) {

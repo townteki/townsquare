@@ -49,7 +49,6 @@ class GameLocation {
             return;
         }
         let playersStats = new Map();
-        let originalController = this.locationCard.controllingPlayer;
         let playerWithMost = this.locationCard.owner;
         let currentController = this.locationCard.owner;
         let defaultDeterminator = this.locationCard.controlDeterminator;
@@ -109,6 +108,10 @@ class GameLocation {
 
     isHome(player) {
         return this.isOutfit() && this.locationCard.owner === player;
+    }
+
+    isOutOfTown() {
+        return this.locationCard.hasKeyword('out of town');
     }
 
     isOpponentsHome(player) {

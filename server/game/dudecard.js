@@ -260,7 +260,9 @@ class DudeCard extends DrawCard {
 
         clone.currentUpkeep = this.currentUpkeep;
         clone.shootoutStatus = this.shootoutStatus;
-        clone.studReferenceArray = this.studReferenceArray;
+        if(cloneBaseAttributes) {
+            clone.studReferenceArray = this.studReferenceArray;
+        }
 
         return clone;
     }
@@ -299,24 +301,28 @@ class DudeCard extends DrawCard {
 
     upgrade(expDude) {
         expDude.controller.moveCard(expDude, 'play area', { raiseEvents: false });
-        expDude = this.createSnapshot(expDude, false);
 
-        expDude.currentValue = this.currentValue - this.getPrintedStat('value') + expDude.getPrintedStat('value');
-        expDude.currentBullets = this.currentBullets - this.getPrintedStat('bullets') + expDude.getPrintedStat('bullets');
-        expDude.currentInfluence = this.currentInfluence - this.getPrintedStat('influence') + expDude.getPrintedStat('influence');
-        expDude.currentControl = this.currentControl - this.getPrintedStat('control') + expDude.getPrintedStat('control');
-        expDude.currentUpkeep = this.currentUpkeep - this.getPrintedStat('upkeep') + expDude.getPrintedStat('upkeep');
-        expDude.currentProduction = this.currentProduction - this.getPrintedStat('production') + expDude.getPrintedStat('production');
+        expDude.shootoutStatus = this.shootoutStatus;
+        expDude.booted = this.booted;
+        expDude.parent = this.parent;
+        expDude.location = this.location;
+        expDude.gameLoc = this.gameLoc;
+        expDude.events = this.events;
+        expDude.eventsForRegistration = this.eventsForRegistration;
 
-        if(this.keywords.data) {
-            this.keywords.getValues().forEach(keyword => {
-                for(let i = 1; i < this.keywords.getValue(keyword); i++) {
-                    expDude.keywords.add(keyword);
+        const allEffects = this.game.effectEngine.getAllEffectsOnCard(this);
+        allEffects.forEach(effect => {
+            effect.removeTarget(this);
+            effect.addAndApplyTarget(expDude);
+            if(Array.isArray(effect.match)) {
+                if(effect.match.includes(this)) {
+                    effect.match = effect.match.filter(matchTarget => matchTarget !== this);
+                    effect.match.push(expDude);
                 }
-            });
-        }
-        Object.keys(this.keywords.modifiers).forEach(keywordMod => 
-            expDude.keywords.modifiers[keywordMod].modifier = this.keywords.modifiers[keywordMod].modifier);
+            } else if(effect.match === this) {
+                effect.match = expDude;
+            }
+        });
 
         expDude.attachments = [];
         this.attachments.forEach(attachment => {
