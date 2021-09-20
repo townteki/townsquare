@@ -733,7 +733,7 @@
 |:heavy_check_mark:   | 19023| Buffalo Emporium
 |:heavy_check_mark:   | 19024| Explorer's Lodge
 |:heavy_check_mark:   | 19025| The Oriental Saloon
-|                     | 19026| Hellstromme Plant #9
+|:heavy_check_mark:   | 19026| Hellstromme Plant #9
 |:heavy_check_mark:   | 19027| Bilton Collection Agency
 |:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
@@ -789,7 +789,7 @@
 |:heavy_check_mark:   | 20029| Larry "Sevens" Swift
 |:heavy_check_mark:   | 20030| Virginia Ann Earp
 |:heavy_check_mark:   | 20031| Campbell & Hatch Billiard Parlor
-|                     | 20032| Clanton Ranch
+|:heavy_check_mark:   | 20032| Clanton Ranch
 |                     | 20033| Concordia Cemetery
 |:heavy_check_mark:   | 20034| Ike's Place
 |                     | 20035| Five Aces Gambling Hall
