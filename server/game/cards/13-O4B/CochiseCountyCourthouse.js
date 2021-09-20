@@ -8,6 +8,8 @@ class CochiseCountyCourthouse extends DeedCard {
             playType: 'noon',
             cost: ability.costs.bootLeader(),
             target: 'townsquare',
+            posseCondition: (job, posseSelection) =>
+                job.leader.bullets + posseSelection.reduce((agg, dude) => agg + dude.bullets, 0) >= 4,
             message: context => this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             onSuccess: (job, context) => {
                 context.ability.selectAnotherTarget(context.player, context, {

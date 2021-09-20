@@ -54,6 +54,7 @@ class Forget extends SpellCard {
         } else {
             this.game.addMessage('{0} uses {1} on {2} to forget "{3}" ability', player, this, this.context.target, arg);
         }
+        return true;
     }
 }
 
