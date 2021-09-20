@@ -42,7 +42,7 @@ class JonahEssexExp1 extends DudeCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
                 context.ability.selectAnotherTarget(context.player, context, {
-                    activePromptTitle: 'Select your dude',
+                    activePromptTitle: 'Select dude to raise bounty',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.gamelocation === this.gamelocation,
                     cardType: 'dude',
@@ -51,7 +51,8 @@ class JonahEssexExp1 extends DudeCard {
                             this.game.addMessage('{0} uses {1} to raise bounty on {2} by 1', player, this, card);
                         });
                         return true;
-                    }
+                    },
+                    source: this
                 });
             }
         });
@@ -60,10 +61,11 @@ class JonahEssexExp1 extends DudeCard {
     getNumOfHexes() {
         const arrayDiffHexes = [];
         this.controller.cardsInPlay.forEach(card => {
-            if(card.hasKeyword('hex') && !arrayDiffHexes.includes(card)) {
+            if(card.hasKeyword('hex') && !arrayDiffHexes.some(hex => hex.code === card.code)) {
                 arrayDiffHexes.push(card);
             } 
         });
+        return arrayDiffHexes.length;
     }
 }
 
