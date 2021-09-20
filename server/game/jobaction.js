@@ -43,6 +43,10 @@ class JobAction extends CardAction {
         this.onFail = properties.onFail || (() => true);
         this.statusRecorded = false;
         this.leaderCondition = properties.leaderCondition || (() => true);
+        this.posseCondition = properties.posseCondition;
+        if(this.posseCondition) {
+            this.options.doNotMarkActionAsTaken = true;
+        }
         this.isJob = true;
     }
 
@@ -78,11 +82,15 @@ class JobAction extends CardAction {
     setResult(isSuccessful, job) {
         if(!this.statusRecorded) {
             this.statusRecorded = true;
+            if(job.cancelled) {
+                this.game.addMessage('{0} job marking {1} was cancelled', this.card, job.mark);
+                return;
+            }
             if(isSuccessful) {
-                this.game.addMessage('{0} job marking {1} was successful.', this.card, job.mark);
+                this.game.addMessage('{0} job marking {1} was successful', this.card, job.mark);
                 this.onSuccess(job, this.context);
             } else {
-                this.game.addMessage('{0} job marking {1} has failed.', this.card, job.mark);
+                this.game.addMessage('{0} job marking {1} has failed', this.card, job.mark);
                 this.onFail(job, this.context);
             }
         }

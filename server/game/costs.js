@@ -143,6 +143,10 @@ const Costs = {
                 // of their effects.
                 context.originalLocation = context.source.location;
                 context.source.controller.moveCard(context.source, 'being played');
+            },
+            unpay: function(context) {
+                context.source.controller.moveCard(context.source, context.originalLocation, { raiseEvents: false });
+                context.source.resetAbilities();
             }
         };
     },
@@ -245,10 +249,12 @@ const Costs = {
                     }
                     reducer.markUnused();
                 });
-                context.usedGRSources[context.source.uuid].forEach(grSource => 
-                    grSource.source.modifyGhostRock(grSource.amount));
+                if(context.usedGRSources[context.source.uuid]) {
+                    context.usedGRSources[context.source.uuid].forEach(grSource => 
+                        grSource.source.modifyGhostRock(grSource.amount));
+                    delete context.usedGRSources[context.source.uuid];
+                }
                 delete context.usedReducers[context.source.uuid];
-                delete context.usedGRSources[context.source.uuid];
             }
         };
     },
