@@ -561,7 +561,7 @@
 |:heavy_check_mark:   | 14022| Auto-Gatling
 |                     | 14023| Sunday Best
 |:heavy_check_mark:   | 14024| Tusk
-|                     | 14025| Mountain Lion Friend
+|:heavy_check_mark:   | 14025| Mountain Lion Friend
 |                     | 14026| Spirit Steed
 |                     | 14027| Crafty Hare
 |:heavy_check_mark:   | 14028| Onward Christian Soldiers
@@ -858,7 +858,7 @@
 |:heavy_check_mark:   | 21037| Valeria Batten (Exp.1)
 |:heavy_check_mark:   | 21038| Steph & Gertie's Tonsorium
 |                     | 21039| Gateway Station
-|                     | 21040| Hart's Tea Shoppe
+|:heavy_check_mark:   | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
