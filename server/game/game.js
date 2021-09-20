@@ -40,6 +40,7 @@ const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 
+/** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
     constructor(details, options = {}) {
         super();
@@ -74,6 +75,7 @@ class Game extends EventEmitter {
         this.beforeEventHandlers = {};
         this.password = details.password;
         this.cancelPromptUsed = false;
+        /** @type {Shootout} */
         this.shootout = null;
 
         this.cardData = options.cardData || [];

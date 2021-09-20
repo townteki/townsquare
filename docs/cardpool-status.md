@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/470/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/476/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -844,7 +844,7 @@
 |:heavy_check_mark:   | 21023| Enrique Dos Santos
 |                     | 21024| Reverend Endicott
 |:heavy_check_mark:   | 21025| Sgt. Elijah Clay
-|                     | 21026| Wyatt Earp
+|:heavy_check_mark:   | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
 |:heavy_check_mark:   | 21028| Roberto Muratore
 |                     | 21029| Adelaide Rose
@@ -906,7 +906,7 @@
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
 |:heavy_check_mark:   | 22026| Pete Spence
-|                     | 22027| Jonah Essex (Exp.1)
+|:heavy_check_mark:   | 22027| Jonah Essex (Exp.1)
 |                     | 22028| Camillus S. Fly
 |:heavy_check_mark:   | 22029| QUATERMAN PRIME
 |                     | 22030| Winona Rein-Breaker
