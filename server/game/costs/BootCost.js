@@ -16,6 +16,14 @@ class BootCost {
             ), context
         );
     }
+
+    unpay(cards, context) {
+        context.game.resolveGameAction(
+            GameActions.simultaneously(
+                cards.map(card => GameActions.unbootCard({ card }))
+            ), context
+        );
+    }
 }
 
 module.exports = BootCost;

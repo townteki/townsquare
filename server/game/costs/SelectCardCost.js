@@ -6,6 +6,7 @@ class SelectCardCost {
         this.selector = this.createSelector(action, promptProperties);
         this.activePromptTitle = promptProperties.activePromptTitle;
         this.proceedOnCancel = promptProperties.optional;
+        this.selectedAsArray = [];
     }
 
     createSelector(action, properties) {
@@ -46,8 +47,14 @@ class SelectCardCost {
 
     pay(context) {
         let selected = context.getCostValuesFor(this.action.name);
-        let selectedAsArray = Array.isArray(selected) ? selected : [selected];
-        this.action.pay(selectedAsArray, context);
+        this.selectedAsArray = Array.isArray(selected) ? selected : [selected];
+        this.action.pay(this.selectedAsArray, context);
+    }
+
+    unpay(context) {
+        if(this.action.unpay) {
+            this.action.unpay(this.selectedAsArray, context);
+        }
     }
 }
 
