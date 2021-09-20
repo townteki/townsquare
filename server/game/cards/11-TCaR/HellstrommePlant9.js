@@ -36,7 +36,7 @@ class HellstrommePlant9 extends DeedCard {
                     });
                     this.game.promptWithMenu(context.player, this, {
                         activePrompt: {
-                            menuTitle: 'Select ability to refresh',
+                            menuTitle: `Select ${context.target.title}'s ability to refresh`,
                             buttons: buttons
                         },
                         source: this
@@ -60,6 +60,7 @@ class HellstrommePlant9 extends DeedCard {
         } else {
             this.game.addMessage('{0} uses {1} on {2} to refresh "{3}" ability', player, this, this.context.target, arg);
         }
+        return true;
     }    
 }
 
