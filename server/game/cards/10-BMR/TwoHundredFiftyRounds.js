@@ -1,15 +1,16 @@
-const ActionCard = require('../../actioncard.js');
+const TechniqueCard = require('../../techniquecard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
-class TwoHundredFiftyRounds extends ActionCard {
+class TwoHundredFiftyRounds extends TechniqueCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities() {
         this.techniqueAction({
             title: 'Shootout: Two Hundred Fifty Rounds',
             playType: ['shootout'],
-            combo: () => this.locationCard && this.locationCard.controller === this.owner,
+            combo: context => context.kfDude.locationCard && context.kfDude.locationCard.controller === this.owner,
             onSuccess: context => {
                 context.player.modifyCasualties(-1);
+                this.game.addMessage('{0} uses {1} to reduce their casualties by 1', context.player, this);
             },
             source: this
         });
