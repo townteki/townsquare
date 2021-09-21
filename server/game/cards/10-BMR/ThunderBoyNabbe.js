@@ -8,7 +8,7 @@ class ThunderBoyNabbe extends DudeCard {
             title: 'Shootout: "Thunder Boy" Nabbe',
             playType: ['shootout'],
             repeatable: true,
-            condition: () => !this.actionUsed,
+            limit: 1,
             ifCondition: () => {
                 const oppPosse = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());
                 if(!oppPosse) {
@@ -20,10 +20,9 @@ class ThunderBoyNabbe extends DudeCard {
                 this.game.addMessage('{0} uses {1} but there is no opposing wanted dude', 
                     context.player, this),
             message: context => 
-                this.game.addMessage('{0} uses {1} to get {2} bullet bonus and becomes a stud', 
+                this.game.addMessage('{0} uses {1} to get {2} bullets and becomes a stud', 
                     context.player, this, this.influence),
             handler: context => {
-                this.actionUsed = true;
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: [
@@ -31,7 +30,6 @@ class ThunderBoyNabbe extends DudeCard {
                         ability.effects.modifyBullets(this.influence)
                     ]
                 }));
-                this.game.once('onShootoutPhaseFinished', () => this.actionUsed = false);
             }
         });
     }
