@@ -1,10 +1,10 @@
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
-class NewHuckster extends DudeCard {
+class SylvesterHeath extends DudeCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'New huckster',
+            title: 'Noon/Shootout: Sylvester Heath',
             playType: ['noon', 'shootout'],
             cost: ability.costs.boot({
                 type: ['spell', 'goods'],
@@ -30,6 +30,6 @@ class NewHuckster extends DudeCard {
     }
 }
 
-NewHuckster.code = '25035';
+SylvesterHeath.code = '25035';
 
-module.exports = NewHuckster;
+module.exports = SylvesterHeath;

@@ -1,7 +1,7 @@
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
-class Coyote extends DudeCard {
+class EagleWomanThatAllLookAt extends DudeCard {
     constructor(owner, cardData) {
         super(owner, cardData);
         this.useDefaultReducer = true;
@@ -60,7 +60,7 @@ class Coyote extends DudeCard {
                 card.controller === this.controller &&
                 card.getType() === 'dude' && card.hasKeyword('shaman'),
             effect: ability.effects.addCardAction({
-                title: 'Move Coyote here',
+                title: 'Noon/Shootout: Move Eagle Woman here',
                 playType: ['noon', 'shootout'],
                 cost: ability.costs.boot((card, context) => card.location === 'play area' &&
                     card.getType() === 'spell' && card.hasKeyword('Spirit') &&
@@ -93,6 +93,6 @@ class Coyote extends DudeCard {
     }
 }
 
-Coyote.code = '25050';
+EagleWomanThatAllLookAt.code = '25050';
 
-module.exports = Coyote;
+module.exports = EagleWomanThatAllLookAt;

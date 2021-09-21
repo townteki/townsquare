@@ -1,6 +1,6 @@
 const DudeCard = require('../../dudecard.js');
 
-class Ruckus extends DudeCard {
+class RattlerYoungUn extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.isAtDeed(),
@@ -9,7 +9,7 @@ class Ruckus extends DudeCard {
         });
 
         this.action({
-            title: 'Ruckus',
+            title: 'Shootout: Rattler Young \'Un',
             playType: ['shootout'],
             ifCondition: () => {
                 if(!this.game.shootout) {
@@ -35,6 +35,6 @@ class Ruckus extends DudeCard {
     }
 }
 
-Ruckus.code = '25082';
+RattlerYoungUn.code = '25082';
 
-module.exports = Ruckus;
+module.exports = RattlerYoungUn;

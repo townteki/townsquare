@@ -1,7 +1,7 @@
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
-class JessicaPratchett extends DudeCard {
+class JessicaPatchett extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             location: 'any',
@@ -11,7 +11,7 @@ class JessicaPratchett extends DudeCard {
         });
 
         this.job({
-            title: 'Jessica Pratchett',
+            title: 'Noon: Jessica Patchett',
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
@@ -61,6 +61,6 @@ class JessicaPratchett extends DudeCard {
     }
 }
 
-JessicaPratchett.code = '25077';
+JessicaPatchett.code = '25077';
 
-module.exports = JessicaPratchett;
+module.exports = JessicaPatchett;
