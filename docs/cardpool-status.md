@@ -17,7 +17,7 @@
 |:heavy_check_mark:   | 01003| Morgan Cattle Co.
 |:heavy_check_mark:   | 01004| The Sloane Gang
 |:heavy_check_mark:   | 01005| Micah Ryse
-|                     | 01006| Mongwau the Mighty
+|:heavy_check_mark:   | 01006| Mongwau the Mighty
 |:heavy_check_mark:   | 01007| Bobo
 |                     | 01008| Arnold McCadish
 |                     | 01009| The Ghostly Gun
@@ -67,7 +67,7 @@
 |:white_check_mark:   | 01053| Clint Ramsey
 |:heavy_check_mark:   | 01054| Eve Henry
 |                     | 01055| Bank of California
-|                     | 01056| Pony Express
+|:heavy_check_mark:   | 01056| Pony Express
 |                     | 01057| Gomorra Parish
 |                     | 01058| The Town Hall
 |                     | 01059| 1st Baptist Church
