@@ -195,28 +195,6 @@ describe('Event', function() {
             });
         });
 
-        describe('when the amount is not equal to the desired amount', function() {
-            beforeEach(function() {
-                this.event.amount = 1;
-                this.event.desiredAmount = 2;
-            });
-
-            it('returns false', function() {
-                expect(this.event.resolved).toBe(false);
-            });
-        });
-
-        describe('when the amount is equal to the desired amount', function() {
-            beforeEach(function() {
-                this.event.amount = 2;
-                this.event.desiredAmount = 2;
-            });
-
-            it('returns true', function() {
-                expect(this.event.resolved).toBe(true);
-            });
-        });
-
         describe('when there are no amounts', function() {
             it('returns true', function() {
                 expect(this.event.resolved).toBe(true);
