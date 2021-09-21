@@ -6,7 +6,7 @@ const GameActions = require('./GameActions/index.js');
 /** @typedef {import('./AbilityContext')} AbilityContext */
 
 /**
- * @typedef {Object} SpellReactionAbilityProperties
+ * @typedef {Object} TechniqueAbilityProperties
  * Represents a Technique ability provided by card text.
  *
  * Properties:

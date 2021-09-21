@@ -183,7 +183,7 @@
 |:heavy_check_mark:   | 02018| Make 'em Sweat
 |                     | 02019| Back Ways
 |                     | 02020| Hired Help
-|                     | 02021| Too Much Attention
+|:heavy_check_mark:   | 02021| Too Much Attention
 
 ## `02.2-DD` Double Dealin'
 
@@ -698,7 +698,7 @@
 |                     | 18035| Shiny Things
 |                     | 18036| We Got Beef!
 |:heavy_check_mark:   | 18037| Great Sage Matching Heaven
-|                     | 18038| Two Hundred Fifty Rounds
+|:heavy_check_mark:   | 18038| Two Hundred Fifty Rounds
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
 |                     | 18041| "Thunder Boy" Nabbe
