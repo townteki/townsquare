@@ -1,9 +1,9 @@
 const GoodsCard = require('../../goodscard.js');
 
-class DecimatorArray2 extends GoodsCard {
+class SeeThroughSpectacles extends GoodsCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'Decimator Array',
+            title: 'Resolution: See-Through Spectacles',
             playType: ['resolution'],
             cost: ability.costs.bootSelf(),
             target: {
@@ -41,6 +41,6 @@ class DecimatorArray2 extends GoodsCard {
     }
 }
 
-DecimatorArray2.code = '25221';
+SeeThroughSpectacles.code = '25221';
 
-module.exports = DecimatorArray2;
+module.exports = SeeThroughSpectacles;

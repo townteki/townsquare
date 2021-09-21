@@ -1,6 +1,6 @@
 const DudeCard = require('../../dudecard.js');
 
-class MysteriousAimsSister extends DudeCard {
+class MaFlorenceAims extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => true,
@@ -10,6 +10,6 @@ class MysteriousAimsSister extends DudeCard {
     }
 }
 
-MysteriousAimsSister.code = '25078';
+MaFlorenceAims.code = '25078';
 
-module.exports = MysteriousAimsSister;
+module.exports = MaFlorenceAims;

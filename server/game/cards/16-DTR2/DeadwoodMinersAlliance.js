@@ -1,7 +1,7 @@
 const GameActions = require('../../GameActions/index.js');
 const OutfitCard = require('../../outfitcard.js');
 
-class DeadwoodsMostWanted extends OutfitCard {
+class DeadwoodMinersAlliance extends OutfitCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => true,
@@ -12,7 +12,7 @@ class DeadwoodsMostWanted extends OutfitCard {
         });
 
         this.action({
-            title: 'Deadwood\'s Most Wanted',
+            title: 'Noon: Deadwood Miner\'s Alliance',
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             target: {
@@ -46,6 +46,6 @@ class DeadwoodsMostWanted extends OutfitCard {
     }
 }
 
-DeadwoodsMostWanted.code = '25099';
+DeadwoodMinersAlliance.code = '25099';
 
-module.exports = DeadwoodsMostWanted;
+module.exports = DeadwoodMinersAlliance;
