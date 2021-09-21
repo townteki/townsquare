@@ -547,7 +547,7 @@
 |                     | 14008| Darragh Mèng
 |:heavy_check_mark:   | 14009| Ol' Howard
 |                     | 14010| Theo Whateley-Boyer
-|                     | 14011| "Mahogany" Jackson
+|:heavy_check_mark:   | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
 |:heavy_check_mark:   | 14013| Henry Moran
 |                     | 14014| Gomorra Lot Commission
@@ -701,7 +701,7 @@
 |                     | 18038| Two Hundred Fifty Rounds
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
-|                     | 18041| "Thunder Boy" Nabbe
+|:heavy_check_mark:   | 18041| "Thunder Boy" Nabbe
 |:heavy_check_mark:   | 18042| Dave "Slim" Gorman
 
 ## `11-TCaR` There Comes a Reckoning
