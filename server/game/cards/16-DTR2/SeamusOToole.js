@@ -3,7 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class SeamusOToole extends DudeCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'Shootout" Seamus O\'Toole',
+            title: 'Shootout: Seamus O\'Toole',
             playType: ['shootout'],
             cost: ability.costs.pull(),
             target: {
