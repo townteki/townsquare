@@ -1,10 +1,10 @@
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
-class Werewolf extends DudeCard {
+class AlanCampbell extends DudeCard {
     setupCardAbilities() {
         this.action({
-            title: 'Werewolf',
+            title: 'Noon: Alan Campbell',
             playType: ['noon'],
             target: {
                 activePromptTitle: 'Select a dude to callout',
@@ -26,6 +26,6 @@ class Werewolf extends DudeCard {
     }
 }
 
-Werewolf.code = '25034';
+AlanCampbell.code = '25034';
 
-module.exports = Werewolf;
+module.exports = AlanCampbell;
