@@ -54,7 +54,6 @@ describe('PlaceToken', function() {
             expect(this.event.card).toBe(this.cardSpy);
             expect(this.event.token).toBe('TOKEN_TYPE');
             expect(this.event.amount).toBe(2);
-            expect(this.event.desiredAmount).toBe(2);
         });
 
         describe('the event handler', function() {

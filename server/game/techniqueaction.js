@@ -6,7 +6,7 @@ const GameActions = require('./GameActions/index.js');
 /** @typedef {import('./AbilityContext')} AbilityContext */
 
 /**
- * @typedef {Object} SpellReactionAbilityProperties
+ * @typedef {Object} TechniqueAbilityProperties
  * Represents a Technique ability provided by card text.
  *
  * Properties:
@@ -140,7 +140,7 @@ class TechniqueAction extends CardAction {
             return;
         }
         context.comboNumber = context.comboNumber || 0;
-        if(context.comboNumber < context.kfDude.getKungFuRating()) {
+        if(context.comboNumber < context.kfDude.getKungFuRating() && this.combo(context)) {
             this.game.promptForYesNo(context.player, {
                 title: `Do you want to combo (${context.comboNumber + 1})?`,
                 onYes: player => {
