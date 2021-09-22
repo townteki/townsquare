@@ -62,7 +62,7 @@ class PlayTypeAbility extends BaseAbility {
     }
 
     allowPlayer(player) {
-        return player.isAllowed(this.card, this.triggeringPlayer);
+        return !player.isSpectator() && player.isAllowed(this.card, this.triggeringPlayer);
     }
 
     meetsRequirements(context) {

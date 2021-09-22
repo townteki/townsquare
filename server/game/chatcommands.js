@@ -821,14 +821,14 @@ class ChatCommands {
         player.shuffleDiscardToDrawDeck();
     }
 
-    getNumberOrDefault(string, defaultNumber) {
+    getNumberOrDefault(string, defaultNumber, allowNeg = false) {
         var num = parseInt(string);
 
         if(isNaN(num)) {
             num = defaultNumber;
         }
 
-        if(num < 0) {
+        if(num < 0 && !allowNeg) {
             num = defaultNumber;
         }
 
@@ -895,10 +895,10 @@ class ChatCommands {
                 return { mod: this.getNumberOrDefault(arg, 1) };
             }
             if(arg.startsWith('-')) {
-                return { mod: this.getNumberOrDefault(arg, -1) };
+                return { mod: this.getNumberOrDefault(arg, -1, true) };
             }            
         }
-        return { set: this.getNumberOrDefault(arg, 1) };
+        return { set: this.getNumberOrDefault(arg, 1, true) };
     }
 }
 

@@ -32,23 +32,25 @@ class ElectionDaySlaughter extends ActionCard {
                 }
             },
             onSuccess: (job, context) => {
-                const opponent = context.player.getOpponent();
-                this.game.promptForSelect(opponent, {
-                    activePromptTitle: 'Select a dude to ace',
-                    waitingPromptTitle: 'Waiting for opponent to select dude',
-                    cardCondition: card => card.location === 'play area' && card.controller === opponent && !card.locationCard.isOutOfTown(),
-                    cardType: 'dude',
-                    gameAction: 'ace',
-                    numCards: 1,
-                    mode: 'exactly',
-                    onSelect: (player, cards) => {
-                        this.game.resolveGameAction(GameActions.aceCard({ card: cards[0] }), context).thenExecute(() => {
-                            this.game.addMessage('{0} aces {1} in town as a result of {2}', player, cards[0], this);
-                        });
-                        return true;
-                    },
-                    source: this
-                });                
+                if(this.game.getNumberOfPlayers() > 1) {
+                    const opponent = context.player.getOpponent();
+                    this.game.promptForSelect(opponent, {
+                        activePromptTitle: 'Select a dude to ace',
+                        waitingPromptTitle: 'Waiting for opponent to select dude',
+                        cardCondition: card => card.location === 'play area' && card.controller === opponent && !card.locationCard.isOutOfTown(),
+                        cardType: 'dude',
+                        gameAction: 'ace',
+                        numCards: 1,
+                        mode: 'exactly',
+                        onSelect: (player, cards) => {
+                            this.game.resolveGameAction(GameActions.aceCard({ card: cards[0] }), context).thenExecute(() => {
+                                this.game.addMessage('{0} aces {1} in town as a result of {2}', player, cards[0], this);
+                            });
+                            return true;
+                        },
+                        source: this
+                    });
+                }           
             }
         });
     }
