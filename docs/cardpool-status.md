@@ -245,7 +245,7 @@
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
 |                     | 05004| Desolation Row
-|                     | 05005| Pagliaccio
+|:heavy_check_mark:   | 05005| Pagliaccio
 |:heavy_check_mark:   | 05006| Valeria Batten
 |:heavy_check_mark:   | 05007| Micah Ryse (Exp.1)
 |                     | 05008| Rev. Perry Inbody
@@ -389,7 +389,7 @@
 |:white_check_mark:   | 09023| Bloody Teeth
 |                     | 09024| Three-Eyed Hawk
 |                     | 09025| Sarah Meoquanee
-|                     | 09026| Smiling Frog
+|:heavy_check_mark:   | 09026| Smiling Frog
 |                     | 09027| Laughing Crow
 |                     | 09028| Chief Stephen Seven-Eagles
 |:heavy_check_mark:   | 09029| Nunchucks
