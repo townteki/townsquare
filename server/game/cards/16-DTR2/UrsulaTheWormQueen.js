@@ -35,8 +35,9 @@ class UrsulaTheWormQueen extends DudeCard {
                     if(context.target.booted) {
                         context.player.discardFromHand(1, discarded => {
                             this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context).thenExecute(() => {
-                                this.game.addMessage('{0} discards {1} to unboot {2} thanks to {3}', 
-                                    context.player, discarded, context.target, this);
+                                context.target.resetAbilities();
+                                this.game.addMessage('{0} uses {1} and discards {2} to unboot {3} and its abilities can be used another time', 
+                                    context.player, this, discarded, context.target);
                             });
                         });
                     }
