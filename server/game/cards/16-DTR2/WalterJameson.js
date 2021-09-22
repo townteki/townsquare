@@ -1,6 +1,6 @@
 const DudeCard = require('../../dudecard.js');
 
-class Bootsie extends DudeCard {
+class WalterJameson extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.location === 'play area' && this.locationCard &&
@@ -11,6 +11,6 @@ class Bootsie extends DudeCard {
     }
 }
 
-Bootsie.code = '25080';
+WalterJameson.code = '25080';
 
-module.exports = Bootsie;
+module.exports = WalterJameson;

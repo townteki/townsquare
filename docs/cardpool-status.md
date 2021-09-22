@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/476/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/480/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -183,7 +183,7 @@
 |:heavy_check_mark:   | 02018| Make 'em Sweat
 |                     | 02019| Back Ways
 |                     | 02020| Hired Help
-|                     | 02021| Too Much Attention
+|:heavy_check_mark:   | 02021| Too Much Attention
 
 ## `02.2-DD` Double Dealin'
 
@@ -215,7 +215,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 04001| The Brute
+|:heavy_check_mark:   | 04001| The Brute
 |                     | 04002| Smiling Tom
 |:heavy_check_mark:   | 04003| Philip Swinford (Exp.1)
 |:heavy_check_mark:   | 04004| Drew Beauman
@@ -262,8 +262,8 @@
 |:heavy_check_mark:   | 05019| Nicodemus Whateley
 |:heavy_check_mark:   | 05020| Pettigrew's Pawnshop
 |:heavy_check_mark:   | 05021| California Tax Office
-|                     | 05022| St. Anthony's Chapel
-|                     | 05023| The Whateley Estate
+|:heavy_check_mark:   | 05022| St. Anthony's Chapel
+|:heavy_check_mark:   | 05023| The Whateley Estate
 |                     | 05024| Outlaw Mask
 |                     | 05025| Clown Carriage
 |:heavy_check_mark:   | 05026| Bio-Charged Neutralizer
@@ -541,7 +541,7 @@
 |                     | 14002| Lucretia Fanzini
 |                     | 14003| Rhonda Sageblossom
 |:heavy_check_mark:   | 14004| Francisco Rosales
-|                     | 14005| Ambrose Douglas
+|:heavy_check_mark:   | 14005| Ambrose Douglas
 |                     | 14006| Constance Daughtry
 |                     | 14007| Tallulah "Lula" Morgan (Exp.1)
 |                     | 14008| Darragh Mèng
@@ -698,7 +698,7 @@
 |                     | 18035| Shiny Things
 |                     | 18036| We Got Beef!
 |:heavy_check_mark:   | 18037| Great Sage Matching Heaven
-|                     | 18038| Two Hundred Fifty Rounds
+|:heavy_check_mark:   | 18038| Two Hundred Fifty Rounds
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
 |:heavy_check_mark:   | 18041| "Thunder Boy" Nabbe

@@ -47,8 +47,6 @@ describe('DrawCards', function() {
                 expect(this.event.cards).toEqual([]);
                 // Amount should be the actual amount drawn, not the amount passed in
                 expect(this.event.amount).toBe(2);
-                // Desired amount should be the amount passed in
-                expect(this.event.desiredAmount).toBe(2);
             });
 
             it('passes through reason and source', function() {
@@ -81,20 +79,9 @@ describe('DrawCards', function() {
                 // Do not set the card list until the draw actually resolves
                 expect(this.event.cards).toEqual([]);
                 // Amount should be the actual amount drawn, not the amount passed in
-                expect(this.event.amount).toBe(1);
-                // Desired amount should be the amount passed in
-                expect(this.event.desiredAmount).toBe(2);
+                expect(this.event.amount).toBe(2);
             });
-    
-            it('sets a length property for legacy purposes', function() {
-                // A lot of current implementations check the current return value
-                // (an array) for its length in order to print the number of cards
-                // actually drawn. To start returning an event object from
-                // Player#drawCardsToHand without changing all such implementations
-                // requires that this property exist.
-                expect(this.event.length).toBe(1);
-            });
-    
+       
             it('passes through reason and source', function() {
                 this.props.reason = 'reason';
                 this.props.source = 'source';

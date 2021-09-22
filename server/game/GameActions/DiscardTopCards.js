@@ -11,17 +11,17 @@ class DiscardTopCards extends GameAction {
     }
 
     createEvent({ player, amount }) {
-        const actualAmount = Math.min(amount, player.drawDeck.length);
         let params = {
-            amount: actualAmount,
-            desiredAmount: amount,
-            player
+            amount,
+            player,
+            topCards: []
         };
         return this.event('onTopCardsDiscarded', params, event => {
-            event.topCards = event.player.drawDeck.slice(0, event.amount);
-            for(const card of event.topCards) {
-                event.thenAttachEvent(DiscardCard.createEvent({ card }));
-            }
+            event.topCards = event.player.drawDeckAction(event.amount, card => {
+                event.thenAttachEvent(
+                    DiscardCard.createEvent({ card })
+                );                
+            });
         });
     }
 }

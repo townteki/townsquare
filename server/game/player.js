@@ -1313,11 +1313,12 @@ class Player extends Spectator {
         return event;
     }
 
-    drawDeckAction(properties, cardCallback) {
+    drawDeckAction(amount, cardCallback) {
         let remainder = 0;
-        let cards = this.drawDeck.slice(0, properties.amount);
-        if(properties.amount < properties.desiredAmount) {
-            remainder = properties.desiredAmount - properties.amount;
+        const actualAmount = this.getNumCardsToDraw(amount);
+        let cards = this.drawDeck.slice(0, actualAmount);
+        if(actualAmount < amount) {
+            remainder = amount - actualAmount;
         }
 
         for(const card of cards) {
