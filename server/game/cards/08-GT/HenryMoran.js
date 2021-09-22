@@ -16,13 +16,8 @@ class HenryMoran extends DudeCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: this }), context);
                 context.player.discardDrawHand();
-                this.game.queueSimpleStep(() => {
-                    const actualAmount = context.player.getNumCardsToDraw(5);
-                    const props = {
-                        amount: actualAmount,
-                        desiredAmount: 5
-                    };                    
-                    context.player.drawDeckAction(props, card => context.player.moveCardWithContext(card, 'draw hand', context));
+                this.game.queueSimpleStep(() => {                 
+                    context.player.drawDeckAction(5, card => context.player.moveCardWithContext(card, 'draw hand', context));
                 });
             }
         });
