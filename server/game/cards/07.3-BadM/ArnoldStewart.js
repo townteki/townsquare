@@ -18,12 +18,7 @@ class ArnoldStewart extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
-                const actualAmount = context.player.getNumCardsToDraw(5);
-                const props = {
-                    amount: actualAmount,
-                    desiredAmount: 5
-                };
-                const cards = context.player.drawDeckAction(props, card => {
+                const cards = context.player.drawDeckAction(5, card => {
                     context.player.removeCardFromPile(card);
                 });
                 context.player.discardCards(cards, false, discardedCards => {

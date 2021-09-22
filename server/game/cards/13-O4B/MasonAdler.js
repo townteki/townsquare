@@ -53,7 +53,7 @@ class MasonAdler extends DudeCard {
             title: 'Shootout: Become Abomination',
             playType: ['shootout'],
             repeatable: true,
-            condition: () => !this.actionUsed,
+            limit: 1,
             ifCondition: context => {
                 const oppCards = this.controller.getOpponent().cardsInPlay;
                 let highestGrit = 0;
@@ -77,7 +77,6 @@ class MasonAdler extends DudeCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to gain Abomination keyword and become a stud', context.player, this),
             handler: context => {
-                this.actionUsed = true;
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: [
@@ -85,7 +84,6 @@ class MasonAdler extends DudeCard {
                         ability.effects.addKeyword('abomination')
                     ]
                 }));
-                this.game.once('onShootoutPhaseFinished', () => this.actionUsed = false);
             }
         });
     }
