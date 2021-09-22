@@ -95,10 +95,6 @@ class TriggeredAbility extends BaseAbility {
         }
         let isPlayableActionAbility = this.isPlayableActionAbility();
 
-        if(this.game.currentPhase === 'setup' && !this.card.hasKeyword('grifter')) {
-            return false;
-        }
-
         if(this.isCardAbility() && !this.isTraitAbility() && context.player && !context.player.canTrigger(this)) {
             return false;
         }
