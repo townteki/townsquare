@@ -549,10 +549,24 @@ const Effects = {
             title: `Skill Rating modified: ${value}`,
             gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
             apply: function(card) {
-                card.modifySkillRating(type, value, true);
+                if(type === 'anySkill') {
+                    card.modifySkillRating('blessed', value, true);
+                    card.modifySkillRating('shaman', value, true);
+                    card.modifySkillRating('huckster', value, true);
+                    card.modifySkillRating('mad scientist', value, true);
+                } else {
+                    card.modifySkillRating(type, value, true);
+                }
             },
             unapply: function(card) {
-                card.modifySkillRating(type, -value, false);
+                if(type === 'anySkill') {
+                    card.modifySkillRating('blessed', -value, true);
+                    card.modifySkillRating('shaman', -value, true);
+                    card.modifySkillRating('huckster', -value, true);
+                    card.modifySkillRating('mad scientist', -value, true);
+                } else {
+                    card.modifySkillRating(type, -value, true);
+                }
             }
         };
     },

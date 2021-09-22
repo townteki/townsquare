@@ -8,10 +8,10 @@ const GameActions = require('../../GameActions/index.js');
 class EveHenry extends DudeCard {
     setupCardAbilities() {
         this.traitReaction({
-            triggerBefore: true,
             when: {
                 onCardDiscarded: event => event.card === this && event.isCasualty
             },
+            location: 'discard pile',
             handler: context => {
                 // Dr. Dawn Edwards code is 01052
                 if(!this.controller.cardsInPlay.find(card => card.code === '01052')) {
