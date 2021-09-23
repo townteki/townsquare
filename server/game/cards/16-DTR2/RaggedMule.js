@@ -20,7 +20,11 @@ class RaggedMule extends GoodsCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, this.parent, context.target),
             handler: context => {
-                this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.uuid }), context); 
+                const dudeToMove = context.savedParents ? context.savedParents[0].parent : this.parent;
+                this.game.resolveGameAction(GameActions.moveDude({ 
+                    card: dudeToMove, 
+                    targetUuid: context.target.uuid 
+                }), context); 
             }
         });
 
@@ -38,7 +42,8 @@ class RaggedMule extends GoodsCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent),
             handler: context => {
-                this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }), context);
+                const dudeToMove = context.savedParents ? context.savedParents[0].parent : this.parent;
+                this.game.resolveGameAction(GameActions.joinPosse({ card: dudeToMove }), context);
             }
         });        
     }
