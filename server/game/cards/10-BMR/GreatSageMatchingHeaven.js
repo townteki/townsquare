@@ -15,6 +15,7 @@ class GreatSageMatchingHeaven extends TechniqueCard {
                         ability.effects.addKeyword('harrowed')
                     ]
                 }));
+                this.game.addMessage('{0} uses {1} to give {2} +1 influence and Harrowed keyword', context.player, this, context.kfDude);
             },
             source: this
         });

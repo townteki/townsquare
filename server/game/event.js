@@ -32,7 +32,7 @@ class Event {
     }
 
     get resolved() {
-        return !this.cancelled && this.amount === this.desiredAmount;
+        return !this.cancelled;
     }
 
     addChildEvent(event) {

@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/480/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/488/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -17,7 +17,7 @@
 |:heavy_check_mark:   | 01003| Morgan Cattle Co.
 |:heavy_check_mark:   | 01004| The Sloane Gang
 |:heavy_check_mark:   | 01005| Micah Ryse
-|                     | 01006| Mongwau the Mighty
+|:heavy_check_mark:   | 01006| Mongwau the Mighty
 |:heavy_check_mark:   | 01007| Bobo
 |                     | 01008| Arnold McCadish
 |                     | 01009| The Ghostly Gun
@@ -67,7 +67,7 @@
 |:white_check_mark:   | 01053| Clint Ramsey
 |:heavy_check_mark:   | 01054| Eve Henry
 |                     | 01055| Bank of California
-|                     | 01056| Pony Express
+|:heavy_check_mark:   | 01056| Pony Express
 |                     | 01057| Gomorra Parish
 |                     | 01058| The Town Hall
 |                     | 01059| 1st Baptist Church
@@ -183,7 +183,7 @@
 |:heavy_check_mark:   | 02018| Make 'em Sweat
 |                     | 02019| Back Ways
 |                     | 02020| Hired Help
-|                     | 02021| Too Much Attention
+|:heavy_check_mark:   | 02021| Too Much Attention
 
 ## `02.2-DD` Double Dealin'
 
@@ -245,7 +245,7 @@
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
 |                     | 05004| Desolation Row
-|                     | 05005| Pagliaccio
+|:heavy_check_mark:   | 05005| Pagliaccio
 |:heavy_check_mark:   | 05006| Valeria Batten
 |:heavy_check_mark:   | 05007| Micah Ryse (Exp.1)
 |                     | 05008| Rev. Perry Inbody
@@ -389,7 +389,7 @@
 |:white_check_mark:   | 09023| Bloody Teeth
 |                     | 09024| Three-Eyed Hawk
 |                     | 09025| Sarah Meoquanee
-|                     | 09026| Smiling Frog
+|:heavy_check_mark:   | 09026| Smiling Frog
 |                     | 09027| Laughing Crow
 |                     | 09028| Chief Stephen Seven-Eagles
 |:heavy_check_mark:   | 09029| Nunchucks
@@ -547,7 +547,7 @@
 |                     | 14008| Darragh Mèng
 |:heavy_check_mark:   | 14009| Ol' Howard
 |                     | 14010| Theo Whateley-Boyer
-|                     | 14011| "Mahogany" Jackson
+|:heavy_check_mark:   | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
 |:heavy_check_mark:   | 14013| Henry Moran
 |                     | 14014| Gomorra Lot Commission
@@ -698,10 +698,10 @@
 |                     | 18035| Shiny Things
 |                     | 18036| We Got Beef!
 |:heavy_check_mark:   | 18037| Great Sage Matching Heaven
-|                     | 18038| Two Hundred Fifty Rounds
+|:heavy_check_mark:   | 18038| Two Hundred Fifty Rounds
 |                     | 18039| Moving Forward
 |                     | 18040| The Law Goes Underground
-|                     | 18041| "Thunder Boy" Nabbe
+|:heavy_check_mark:   | 18041| "Thunder Boy" Nabbe
 |:heavy_check_mark:   | 18042| Dave "Slim" Gorman
 
 ## `11-TCaR` There Comes a Reckoning
