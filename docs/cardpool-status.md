@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/488/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/489/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -96,7 +96,7 @@
 |:heavy_check_mark:   | 01082| Bluetick
 |:heavy_check_mark:   | 01083| Peacemaker
 |:heavy_check_mark:   | 01084| Shotgun
-|                     | 01085| Whiskey Flask
+|:heavy_check_mark:   | 01085| Whiskey Flask
 |:heavy_check_mark:   | 01086| Mustang
 |:heavy_check_mark:   | 01087| Pearl-Handled Revolver
 |:heavy_check_mark:   | 01088| Roan

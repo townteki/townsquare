@@ -21,7 +21,7 @@ class HeFang extends DudeCard {
                     playType: 'ability',
                     abilitySourceType: 'card',
                     reduceAmount: 2,
-                    target: this.gamelocation
+                    targetLocationUuid: this.gamelocation
                 }, () => {
                     this.game.addMessage('{0} uses {1} to put {2} into play', context.player, this, context.target);
                 }), context.player, context.target);  

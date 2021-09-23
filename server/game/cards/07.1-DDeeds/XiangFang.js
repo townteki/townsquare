@@ -11,7 +11,7 @@ class XiangFang extends DudeCard {
                     context.player, this.locationCard.production, this),
             handler: context => {
                 context.player.modifyGhostRock(this.locationCard.production);
-                if(this.isAtHome || this.locationCard.owner !== context.player) {
+                if(this.isAtHome || (this.locationCard.getType() === 'deed' && this.locationCard.owner !== context.player)) {
                     this.untilEndOfPhase(context.ability, ability => ({
                         match: this.locationCard,
                         effect: ability.effects.setProduction(0)
