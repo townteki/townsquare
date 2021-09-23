@@ -11,13 +11,15 @@ describe('CardAction', function () {
         });
         this.gameSpy.currentPhase = 'high noon';
 
-        this.playerSpy = jasmine.createSpyObj('player', ['canTrigger', 'isAllowed']);
+        this.playerSpy = jasmine.createSpyObj('player', ['canTrigger', 'isAllowed', 'isSpectator']);
         this.playerSpy.canTrigger.and.returnValue(true);
         this.playerSpy.isAllowed.and.returnValue(true);
+        this.playerSpy.isSpectator.and.returnValue(false);
 
-        this.otherPlayerSpy = jasmine.createSpyObj('player', ['canTrigger', 'isAllowed']);
+        this.otherPlayerSpy = jasmine.createSpyObj('player', ['canTrigger', 'isAllowed', 'isSpectator']);
         this.otherPlayerSpy.canTrigger.and.returnValue(true);
         this.otherPlayerSpy.isAllowed.and.returnValue(true);
+        this.playerSpy.isSpectator.and.returnValue(false);
 
         this.cardSpy = jasmine.createSpyObj('card', ['getPrintedType', 'isAnyBlank', 'getType', 'hasKeyword', 'canUseControllerAbilities']);
         this.handlerSpy = jasmine.createSpy('handler');
