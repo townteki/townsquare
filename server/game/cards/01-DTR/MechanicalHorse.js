@@ -9,9 +9,9 @@ class MechanicalHorse extends GoodsCard {
             cost: ability.costs.payGhostRock(2),
             repeatable: true,
             target: { cardType: 'location' },
-            actionContext: { card: this.parent, gameAction: 'moveDude '},
+            actionContext: { card: this.parent, gameAction: 'moveDude'},
             message: context => 
-                this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, this.parent, context.target.title),
+                this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, this.parent, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.uuid }), context);
             }

@@ -8,6 +8,11 @@ class DiscardFromPlayCost {
     }
 
     pay(cards, context) {
+        context.savedParents = [];
+        cards.forEach(card => card.parent ? context.savedParents.push({ 
+            parent: card.parent,
+            discardedCard: card
+        }) : null);
         context.player.discardCards(cards, false);
     }
 }
