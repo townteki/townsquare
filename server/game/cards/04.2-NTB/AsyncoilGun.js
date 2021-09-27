@@ -1,7 +1,7 @@
 const GoodsCard = require('../../goodscard.js');
 const GameActions = require('../../GameActions/index.js');
 
-class AsyncoilGun extends DeedCard {
+class AsyncoilGun extends GoodsCard {
     setupCardAbilities(ability) {
         this.action({
             title: 'Asyncoil Gun',
