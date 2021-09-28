@@ -568,7 +568,7 @@
 |                     | 14029| Turtle's Guard
 |:heavy_check_mark:   | 14030| Sight Beyond Sight
 |                     | 14031| Requiem for a Good Boy
-|                     | 14032| Fool Me Once...
+|:heavy_check_mark:   | 14032| Fool Me Once...
 |                     | 14033| Fiddle Game
 |                     | 14034| Pigging Out
 |:heavy_check_mark:   | 14035| Technological Exhibition
