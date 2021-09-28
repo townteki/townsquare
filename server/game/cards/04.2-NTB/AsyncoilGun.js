@@ -6,7 +6,10 @@ class AsyncoilGun extends GoodsCard {
         this.action({
             title: 'Asyncoil Gun',
             playType: ['shootout'],
-            cost: ability.costs.bootSelf(),
+            cost: [
+                ability.costs.bootSelf(),
+                ability.costs.pull()
+            ],
             target: {
                 cardCondition: {
                     location: 'play area',
@@ -16,19 +19,17 @@ class AsyncoilGun extends GoodsCard {
                 },
                 cardType: 'dude'
             },
-            message: context => this.game.addMessage('{0} points {1}\'s {2} at {3}', context.player, this.parent, this, context.target),
             handler: context => {
-                context.player.pull((pulledCard, pulledValue, pulledSuit) => {
-                    if(pulledSuit === 'Clubs') {
-                        this.game.resolveGameAction(GameActions.discardCard({ card: this.parent }), context).thenExecute(() => {
-                            this.game.addMessage('{0} blows up due to the pull being a club', this);
-                        });
-                    } else {
-                        this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context).thenExecute(() => {
-                            this.game.addMessage('{0} works and discards {1}', this, context.target);
-                        });
-                    }
-                }, true, { context });
+                if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
+                    const saveParent = this.parent;
+                    this.game.resolveGameAction(GameActions.discardCard({ card: this.parent }), context).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} but it blows up and discards {2}', context.player, this, saveParent);
+                    });
+                } else {
+                    this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} to discard {2}', context.player, this, context.target);
+                    });
+                }
             }
         });
     }
