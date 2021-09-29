@@ -111,7 +111,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(isPlayableActionAbility && !context.player.isCardInPlayableLocation(this.card, 'play')) {
+        if(isPlayableActionAbility && !this.isConditionCardInPlay() && !context.player.isCardInPlayableLocation(this.card, 'play')) {
             return false;
         }
 
@@ -140,6 +140,10 @@ class TriggeredAbility extends BaseAbility {
 
     isPlayableActionAbility() {
         return this.card.getType() === 'action' && this.location.includes('hand');
+    }
+
+    isConditionCardInPlay() {
+        return this.card.location === 'play area' && this.card.hasKeyword('condition');
     }
 
     incrementLimit() {
