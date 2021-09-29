@@ -874,7 +874,7 @@ class BaseCard {
     }
 
     modifyValue(amount, applying = true, fromEffect = false) {
-        this.value += amount;
+        this.currentValue += amount;
         if(!fromEffect) {
             this.permanentValue += amount;
         }
