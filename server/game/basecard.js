@@ -57,6 +57,9 @@ class BaseCard {
         this.currentProduction = cardData.production;
         this.wealth = cardData.wealth;
         this.permanentBullets = 0;
+        this.permanentInfluence = 0;
+        this.permanentProduction = 0;
+        this.permanentValue = 0;
         this.startingSize = 1;
         this.startingCondition = () => true;
         this.maxBullets = null;
@@ -574,7 +577,7 @@ class BaseCard {
         this.clearNew();
         this.gamelocation = '';
         this.controller = this.owner;
-        this.resetStatsToPrinted();
+        this.resetStats();
     }
 
     clearTokens() {
@@ -742,15 +745,17 @@ class BaseCard {
         }
     }
 
-    resetStatsToPrinted() {
+    resetStats() {
         this.suitReferenceArray = [];
         this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
-        this.rank = this.getPrintedStat('value');
-        this.bullets = this.getPrintedStat('bullets');
-        this.influence = this.getPrintedStat('influence');
-        this.control = this.getPrintedStat('control');
-        this.upkeep = this.getPrintedStat('upkeep');
-        this.production = this.getPrintedStat('production');          
+        this.value = this.currentValue - this.permanentValue;
+        this.permanentValue = 0;
+        this.bullets = this.currentBullets - this.permanentBullets;
+        this.permanentBullets = 0;
+        this.influence = this.currentInfluence - this.permanentInfluence;
+        this.permanentInfluence = 0;
+        this.production = this.currentProduction - this.permanentProduction;
+        this.permanentProduction = 0;        
     }
 
     setBlank(type) {
@@ -868,8 +873,11 @@ class BaseCard {
         this.modifyToken(Tokens.ghostrock, amount);
     }
 
-    modifyValue(amount, applying = true) {
+    modifyValue(amount, applying = true, fromEffect = false) {
         this.value += amount;
+        if(!fromEffect) {
+            this.permanentValue += amount;
+        }
 
         let params = {
             card: this,
@@ -884,6 +892,7 @@ class BaseCard {
         if(!fromEffect) {
             this.permanentBullets += amount;
         }
+
         let params = {
             card: this,
             amount: amount,
@@ -893,8 +902,11 @@ class BaseCard {
         this.game.raiseEvent('onCardBulletsChanged', params);
     }
 
-    modifyInfluence(amount, applying = true) {
+    modifyInfluence(amount, applying = true, fromEffect = false) {
         this.currentInfluence += amount;
+        if(!fromEffect) {
+            this.permanentInfluence += amount;
+        }
 
         let params = {
             card: this,
@@ -904,8 +916,11 @@ class BaseCard {
         this.game.raiseEvent('onCardInfluenceChanged', params);
     }
 
-    modifyProduction(amount, applying = true) {
+    modifyProduction(amount, applying = true, fromEffect = false) {
         this.currentProduction += amount;
+        if(!fromEffect) {
+            this.permanentProduction += amount;
+        }
 
         let params = {
             card: this,
