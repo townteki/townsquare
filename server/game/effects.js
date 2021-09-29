@@ -415,10 +415,10 @@ const Effects = {
             title: `Influence modified: ${value}`,
             gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
-                card.modifyInfluence(value, true);
+                card.modifyInfluence(value, true, true);
             },
             unapply: function(card) {
-                card.modifyInfluence(-value, false);
+                card.modifyInfluence(-value, false, true);
             }
         };
     },
@@ -429,10 +429,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.influence;
-                card.modifyInfluence(context.changeAmount[card.uuid], true);
+                card.modifyInfluence(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyInfluence(context.changeAmount[card.uuid] * -1);
+                card.modifyInfluence(context.changeAmount[card.uuid] * -1, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -454,10 +454,10 @@ const Effects = {
             title: `Control modified: ${value}`,
             gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
-                card.modifyControl(value, true);
+                card.modifyControl(value, true, true);
             },
             unapply: function(card) {
-                card.modifyControl(-value, false);
+                card.modifyControl(-value, false, true);
             }
         };
     },
@@ -468,10 +468,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.control;
-                card.modifyControl(context.changeAmount[card.uuid], true);
+                card.modifyControl(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyControl(context.changeAmount[card.uuid] * -1, false);
+                card.modifyControl(context.changeAmount[card.uuid] * -1, false, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -481,10 +481,10 @@ const Effects = {
             title: `Value modified: ${value}`,
             gameAction: value < 0 ? 'decreaseValue' : 'increaseValue',
             apply: function(card) {
-                card.modifyValue(value, true);
+                card.modifyValue(value, true, true);
             },
             unapply: function(card) {
-                card.modifyValue(-value, false);
+                card.modifyValue(-value, false, true);
             }
         };
     },
@@ -495,10 +495,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.value;
-                card.modifyValue(context.changeAmount[card.uuid], true);
+                card.modifyValue(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyValue(context.changeAmount[card.uuid] * -1);
+                card.modifyValue(context.changeAmount[card.uuid] * -1, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -508,10 +508,10 @@ const Effects = {
             title: `Production modified: ${value}`,
             gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
             apply: function(card) {
-                card.modifyProduction(value, true);
+                card.modifyProduction(value, true, true);
             },
             unapply: function(card) {
-                card.modifyProduction(-value, false);
+                card.modifyProduction(-value, false, true);
             }
         };
     },
@@ -523,10 +523,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.production;
-                card.modifyProduction(context.changeAmount[card.uuid], true);
+                card.modifyProduction(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyProduction(context.changeAmount[card.uuid] * -1, false);
+                card.modifyProduction(context.changeAmount[card.uuid] * -1, false, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -537,10 +537,10 @@ const Effects = {
             title: `Upkeep modified: ${value}`,
             gameAction: value < 0 ? 'decreaseUpkeep' : 'increaseUpkeep',
             apply: function(card) {
-                card.modifyUpkeep(value, true);
+                card.modifyUpkeep(value, true, true);
             },
             unapply: function(card) {
-                card.modifyUpkeep(-value, false);
+                card.modifyUpkeep(-value, false, true);
             }
         };
     },

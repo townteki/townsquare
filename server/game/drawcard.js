@@ -15,6 +15,7 @@ class DrawCard extends BaseCard {
         this.minCost = 0;
         this.difficultyMod = 0;
         this.currentControl = this.cardData.control || 0;
+        this.permanentControl = 0;
         if(!this.hasKeyword('rowdy')) {
             this.controlDeterminator = 'influence:deed';
         } else {
@@ -71,8 +72,11 @@ class DrawCard extends BaseCard {
         }
     }
 
-    modifyControl(amount, applying = true) {
+    modifyControl(amount, applying = true, fromEffect = false) {
         this.currentControl += amount;
+        if(!fromEffect) {
+            this.permanentControl += amount;
+        }
 
         let params = {
             card: this,
@@ -333,6 +337,8 @@ class DrawCard extends BaseCard {
         if(this.getType() === 'deed') {
             this.owner.removeDeedFromPlay(this, dude => dude.sendHome({ needToBoot: true }));
         }
+        this.control = this.currentControl - this.permanentControl;
+        this.permanentControl = 0;
         super.leavesPlay();
     }
 
