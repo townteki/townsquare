@@ -324,7 +324,7 @@
 |:heavy_check_mark:   | 07010| Huntsmen's Society
 |:heavy_check_mark:   | 07011| Secured Stockyard
 |:heavy_check_mark:   | 07012| La Quema
-|                     | 07013| Asyncoil Gun
+|:heavy_check_mark:   | 07013| Asyncoil Gun
 |:heavy_check_mark:   | 07014| Scoop Hound
 |:heavy_check_mark:   | 07015| Rapier
 |                     | 07016| Vitality Tonic
