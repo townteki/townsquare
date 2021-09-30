@@ -11,12 +11,12 @@ class CostReducer extends BaseCostReducer {
         this.registerEvents();
     }
 
-    canReduce(playingType, card) {
+    canReduce(playingType, card, context) {
         if(this.usage && this.usage.isUsed()) {
             return false;
         }
 
-        return (this.playingTypes.includes(playingType) || this.playingTypes.includes('any')) && !!this.match(card);
+        return (this.playingTypes.includes(playingType) || this.playingTypes.includes('any')) && !!this.match(card, context);
     }
 
     markUsed() {
