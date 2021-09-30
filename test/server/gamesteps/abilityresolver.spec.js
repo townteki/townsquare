@@ -49,6 +49,10 @@ describe('AbilityResolver', function() {
                 this.resolver.continue();
             });
 
+            it('should resolve targets', function() {
+                expect(this.ability.resolveTargets).toHaveBeenCalled();
+            });
+
             it('should pay the costs', function() {
                 expect(this.ability.payCosts).toHaveBeenCalledWith(this.context);
             });
@@ -124,6 +128,10 @@ describe('AbilityResolver', function() {
                 this.resolver.continue();
             });
 
+            it('should resolve targets', function() {
+                expect(this.ability.resolveTargets).toHaveBeenCalled();
+            });
+
             it('should not pay the costs', function() {
                 expect(this.ability.payCosts).not.toHaveBeenCalled();
             });
@@ -192,8 +200,8 @@ describe('AbilityResolver', function() {
                 this.resolver.continue();
             });
 
-            it('should pay the costs', function() {
-                expect(this.ability.payCosts).toHaveBeenCalled();
+            it('should not pay the costs yet', function() {
+                expect(this.ability.payCosts).not.toHaveBeenCalled();
             });
 
             it('should not execute the handler', function() {
@@ -282,7 +290,7 @@ describe('AbilityResolver', function() {
                 });
             });
 
-            it('should not propogate the error', function() {
+            it('should not propagate the error', function() {
                 expect(() => this.resolver.continue()).not.toThrow();
             });
 
