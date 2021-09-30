@@ -53,7 +53,7 @@ class Socket extends EventEmitter {
             callback(this, ...args);
         } catch(err) {
             logger.info(err);
-            if(this.configService.getValue('sentryDsn')) {
+            if(this.configService && this.configService.getValue('sentryDsn')) {
                 Raven.captureException(err, { extra: args });
             }
         }
