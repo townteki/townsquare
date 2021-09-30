@@ -4,7 +4,6 @@ const CardTextDefinition = require('./CardTextDefinition');
 const CostReducer = require('./costreducer.js');
 const PlayableLocation = require('./playablelocation.js');
 const CannotRestriction = require('./cannotrestriction.js');
-const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
 
@@ -867,21 +866,6 @@ const Effects = {
                     context.game.addMessage('{0} is put into play because of {1}', card, context.source);
                     delete context.removeFromGame[card.uuid];
                 }
-            }
-        };
-    },
-    immuneTo: function(cardCondition) {
-        return {
-            apply: function(card, context) {
-                let restriction = new ImmunityRestriction(cardCondition, context.source);
-                context.immuneTo = context.immuneTo || {};
-                context.immuneTo[card.uuid] = restriction;
-                card.addAbilityRestriction(restriction);
-            },
-            unapply: function(card, context) {
-                let restriction = context.immuneTo[card.uuid];
-                card.removeAbilityRestriction(restriction);
-                delete context.immuneTo[card.uuid];
             }
         };
     },
