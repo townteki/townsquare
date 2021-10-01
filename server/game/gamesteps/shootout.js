@@ -44,7 +44,6 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
             new SimpleStep(this.game, () => this.raisePossesFormedEvent()),
             new SimpleStep(this.game, () => this.gatherPosses()),
-            new SimpleStep(this.game, () => this.breakinAndEnterin()),
             new SimpleStep(this.game, () => this.beginShootoutRound())
         ]);
     }
@@ -378,18 +377,15 @@ class Shootout extends Phase {
         this.actOnOpposingPosse(action);
     }
 
-    breakinAndEnterin() {
+    isBreakinAndEnterin(dude) {
         if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
-            return;
+            return false;
         }
         let locationCard = this.shootoutLocation.locationCard;
         if(locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
-            if(locationCard.owner !== this.leaderPlayer) {
-                this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
-            } else {
-                this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
-            }
+            return !dude.options.contains('doesNotGetBountyOnJoin') && locationCard.owner !== dude.controller;
         }
+        return false;
     }
 
     draw() {

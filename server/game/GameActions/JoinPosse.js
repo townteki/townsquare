@@ -26,7 +26,8 @@ class JoinPosse extends GameAction {
 
         return this.event('_DO_NOT_USE_', { card, leaderPosse: toLeaderPosse, options: params }, event => {
             let bootingReq = 'not-needed';
-            if(event.card.game.shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot && 
+            const shootout = event.card.game.shootout;
+            if(shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot && 
                 !event.card.canJoinWithoutBooting()) {
                 if(card.allowGameAction('boot', context, options)) {
                     bootingReq = 'do-boot';
@@ -35,15 +36,18 @@ class JoinPosse extends GameAction {
                 } 
             }
             if(bootingReq === 'not-needed' || bootingReq === 'do-boot') {
-                event.card.game.shootout.addToPosse(event.card);
+                shootout.addToPosse(event.card);
                 if(bootingReq === 'do-boot') {
                     event.card.controller.bootCard(event.card);
                 }
                 if(event.options.moveToPosse) {
                     if(!event.card.moveToShootoutLocation(event.options)) {
-                        event.card.game.shootout.removeFromPosse(event.card);
+                        shootout.removeFromPosse(event.card);
                         return;
                     }
+                }
+                if(shootout.isBreakinAndEnterin(event.card)) {
+                    event.card.increaseBounty();
                 }
                 card.game.raiseEvent('onDudeJoinedPosse', { card: event.card, leaderPosse: event.leaderPosse, options: event.options });
             }
