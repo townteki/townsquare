@@ -945,7 +945,7 @@ class Player extends Spectator {
         }
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && 
-            (playingType === 'shoppin' || playingType === 'ability') &&
+            ['shoppin', 'ability', 'play'].includes(playingType) &&
             !attachment.doesNotHaveToBeInvented()) {
             let scientist = defaultScientist || 
                 (playingType === 'shoppin' && !attachment.isImprovement() ? card : null);
