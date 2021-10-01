@@ -428,7 +428,7 @@
 |                     | 10015| Lillian Morgan (Exp.1)
 |:heavy_check_mark:   | 10016| Samantha "Sammy" Cooke
 |                     | 10017| Sloane (Exp.1)
-|                     | 10018| Margaret Hagerty
+|:heavy_check_mark:   | 10018| Margaret Hagerty
 |                     | 10019| The Wretched
 |:heavy_check_mark:   | 10020| The Extra Bet
 |                     | 10021| Morgan Mining Company
