@@ -148,6 +148,24 @@
 		"description": "Template for new Outfit card"
 	},
 
+	"Select Another Target": {
+		"scope": "javascript,typescript",
+		"prefix": "selecttarget",
+		"body": [
+			"context.ability.selectAnotherTarget(${1:context.player}, context, {",
+			"\tactivePromptTitle: 'Select a ${2:card}',",
+			"\twaitingPromptTitle: 'Waiting for opponent to select ${3:card}',",
+			"\tcardCondition: card => ${4:true},",
+			"\tcardType: '${5|location,dude,deed,goods,spell,action,outfit|}',",
+			"\tonSelect: (player, card) => {",
+			"\t\t$6",
+			"\t\treturn true;",
+			"\t}",
+			"});"
+		],
+		"description": "Select another target"
+	},
+
 	"Prompt For Select": {
 		"scope": "javascript,typescript",
 		"prefix": "promptselect",
@@ -156,7 +174,7 @@
 			"\tactivePromptTitle: 'Select a ${2:card}',",
 			"\twaitingPromptTitle: 'Waiting for opponent to select ${3:card}',",
 			"\tcardCondition: card => ${4:true},",
-			"\tcardType: '${5:dude}',",
+			"\tcardType: '${5|location,dude,deed,goods,spell,action,outfit|}',",
 			"\tonSelect: (player, card) => {",
 			"\t\t$6",
 			"\t\treturn true;",

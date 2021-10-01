@@ -23,6 +23,7 @@ class Deck {
                 type_code: 'outfit',
                 gang_code: this.data.outfit.gang_code,
                 title: this.data.outfit.title,
+                keywords: this.data.outfit.keywords,
                 wealth: this.data.outfit.wealth,
                 production: this.data.outfit.production
             };
