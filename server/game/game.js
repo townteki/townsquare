@@ -537,19 +537,24 @@ class Game extends EventEmitter {
     }
 
     resolveTiebreaker(player1, player2, isForLowball = false) {
-        if(player1.rankModifier < 0) {
-            if(player2.rankModifier < 0) {
-                return { decision: 'exact tie' };
-            }
-            return isForLowball ? { winner: player2, loser: player1, decision: 'rank modifier' } : { winner: player1, loser: player2, decision: 'rank modifier' };
+        if((player1.rankModifier < 0 && player2.rankModifier < 0) ||
+            (player1.rankModifier > 0 && player2.rankModifier > 0)) {
+            return { decision: 'exact tie' };
         }
-        if(player1.rankModifier > 0) {
-            if(player2.rankModifier > 0) {
-                return { decision: 'exact tie' };
-            }
-            return isForLowball ? { winner: player1, loser: player2, decision: 'rank modifier' } : { winner: player2, loser: player1, decision: 'rank modifier' };
+        if(player1.rankModifier || player2.rankModifier) {
+            let playerLowerMod = player1.rankModifier < player2.rankModifier ? player1 : player2;
+            let playerHigherMod = player1.rankModifier < player2.rankModifier ? player2 : player1;
+            return isForLowball ? { 
+                winner: playerHigherMod, 
+                loser: playerLowerMod, 
+                decision: 'rank modifier' 
+            } : { 
+                winner: playerLowerMod, 
+                loser: playerHigherMod, 
+                decision: 'rank modifier' 
+            };
         }
-        if(!player1.getHandRank().tiebreaker) {
+        if(!player1.getHandRank().tiebreaker || !player2.getHandRank().tiebreaker) {
             return { decision: 'exact tie' };
         }
         for(let i = 0; i < player1.getHandRank().tiebreaker.length; i++) {
