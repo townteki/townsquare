@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/491/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/492/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -70,7 +70,7 @@
 |:heavy_check_mark:   | 01056| Pony Express
 |                     | 01057| Gomorra Parish
 |                     | 01058| The Town Hall
-|                     | 01059| 1st Baptist Church
+|:heavy_check_mark:   | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
 |:heavy_check_mark:   | 01061| B & B Attorneys
 |:heavy_check_mark:   | 01062| Dead Dog Tavern
