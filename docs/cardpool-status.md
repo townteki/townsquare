@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/492/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/493/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -428,7 +428,7 @@
 |                     | 10015| Lillian Morgan (Exp.1)
 |:heavy_check_mark:   | 10016| Samantha "Sammy" Cooke
 |                     | 10017| Sloane (Exp.1)
-|                     | 10018| Margaret Hagerty
+|:heavy_check_mark:   | 10018| Margaret Hagerty
 |                     | 10019| The Wretched
 |:heavy_check_mark:   | 10020| The Extra Bet
 |                     | 10021| Morgan Mining Company
