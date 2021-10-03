@@ -25,7 +25,7 @@ class SilasAimsExp1 extends DudeCard {
                     condition: card => card.bullets < this.bounty
                 },
                 cardType: ['dude'],
-                gameAction: 'sendHome'
+                gameAction: ['sendHome', 'boot']
             },
             message: context => 
                 this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, context.target),

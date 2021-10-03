@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/493/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/496/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -233,7 +233,7 @@
 |                     | 04016| Mayfair Family Deck
 |:heavy_check_mark:   | 04017| Puppet
 |                     | 04018| Summoning
-|                     | 04019| Ridden Down
+|:heavy_check_mark:   | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
 |:heavy_check_mark:   | 04021| Election Day Slaughter
 
@@ -244,7 +244,7 @@
 |                     | 05001| Oddities of Nature
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
-|                     | 05004| Desolation Row
+|:heavy_check_mark:   | 05004| Desolation Row
 |:heavy_check_mark:   | 05005| Pagliaccio
 |:heavy_check_mark:   | 05006| Valeria Batten
 |:heavy_check_mark:   | 05007| Micah Ryse (Exp.1)
@@ -590,7 +590,7 @@
 |:heavy_check_mark:   | 15005| Maggie Harris
 |                     | 15006| Emilia Vivirias
 |                     | 15007| "Professor" Duncan
-|                     | 15008| The Highbinder Hotel
+|:heavy_check_mark:   | 15008| The Highbinder Hotel
 |:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
 |:heavy_check_mark:   | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer

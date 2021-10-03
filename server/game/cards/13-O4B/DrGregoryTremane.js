@@ -28,7 +28,7 @@ class DrGregoryTremane extends DudeCard {
                     condition: card => !card.hasAttachment(att => att.isGadget()) 
                 },
                 cardType: ['dude'],
-                gameAction: ['sendHome']
+                gameAction: ['sendHome', 'boot']
             },
             message: context => 
                 this.game.addMessage('{0} uses {1} and boots {2} to send {3} home booted', 
