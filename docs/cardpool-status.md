@@ -590,7 +590,7 @@
 |:heavy_check_mark:   | 15005| Maggie Harris
 |                     | 15006| Emilia Vivirias
 |                     | 15007| "Professor" Duncan
-|                     | 15008| The Highbinder Hotel
+|:heavy_check_mark:   | 15008| The Highbinder Hotel
 |:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
 |:heavy_check_mark:   | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer
