@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const { ShootoutStatuses } = require('../../Constants/index.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
@@ -9,7 +10,7 @@ class WyattEarp extends DudeCard {
         this.persistentEffect({
             location: 'any',
             targetController: 'current',
-            condition: () => this.controller.outfit.gang_code === 'lawdogs', 
+            condition: () => this.controller.getFaction() === Factions.LawDogs, 
             effect: ability.effects.reduceSelfCost('any', 
                 () => this.controller.deadPile.reduce((agg, card) => card.getType() === 'dude' ? agg + 1 : agg, 0) * 2)
         });

@@ -1,15 +1,16 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 
 class ZebWhateleyDupont extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.controller.outfit.gang_code === 'fearmongers',
+            condition: () => this.controller.getFaction() === Factions.Fearmongers,
             match: this,
             effect: ability.effects.setAsStud()
         });
 
         this.persistentEffect({
-            condition: () => this.controller.outfit.gang_code === 'fearmongers' && this.opposingHighGritDude(),
+            condition: () => this.controller.getFaction() === Factions.Fearmongers && this.opposingHighGritDude(),
             match: this,
             effect: [
                 ability.effects.setMinBullets(2),

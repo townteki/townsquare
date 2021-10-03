@@ -1,9 +1,10 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 
 class ZacharyDeloria extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.controller.outfit.gang_code === '1stpeoples',
+            condition: () => this.controller.getFaction() === Factions.FirstPeoples,
             match: this,
             effect: ability.effects.dynamicBullets(() => this.getHighestInfluenceHere())
         });

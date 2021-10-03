@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
@@ -8,7 +9,7 @@ class JonahEssexExp1 extends DudeCard {
         this.persistentEffect({
             location: 'any',
             targetController: 'current',
-            condition: () => this.controller.outfit.gang_code === 'outlaws', 
+            condition: () => this.controller.getFaction() === Factions.Outlaws, 
             effect: ability.effects.reduceSelfCost('any', () => this.getNumOfHexes())
         });
 
