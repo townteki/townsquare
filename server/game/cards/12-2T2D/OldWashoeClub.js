@@ -17,7 +17,7 @@ class OldWashoeClub extends DeedCard {
                     condition: card => card.value === 1
                 },
                 cardType: ['dude'],
-                gameAction: 'sendHome'
+                gameAction: ['sendHome', 'boot']
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.sendHome({ card: context.target }), context);

@@ -14,7 +14,7 @@ class SeizingThePearlOfDeath extends TechniqueCard {
                     cardCondition: card => card.location === 'play area' &&
                         card.gamelocation === context.kfDude.gamelocation,
                     cardType: 'dude',
-                    gameAction: 'sendHome',
+                    gameAction: ['sendHome', 'boot'],
                     onSelect: (player, card) => {
                         this.game.resolveGameAction(GameActions.sendHome({ card }), context).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} to send {2} home booted', player, this, card);

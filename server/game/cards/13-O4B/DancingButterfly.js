@@ -20,7 +20,7 @@ class DancingButterfly extends SpellCard {
                                     card.controller === player &&
                                     card.isParticipating(),
                                 cardType: 'dude',
-                                gameAction: 'sendHome',
+                                gameAction: ['sendHome', 'boot'],
                                 onSelect: (p1, dude) => {
                                     this.game.resolveGameAction(GameActions.sendHome({ card: dude }), context);
                                     this.game.promptForSelect(p1, {
