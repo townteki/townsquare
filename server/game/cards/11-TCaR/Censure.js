@@ -43,7 +43,7 @@ class Censure extends SpellCard {
                                 waitingPromptTitle: 'Waiting for opponent to select dude',
                                 cardCondition: card => card.location === 'play area' && card.isOpposing(this.controller),
                                 cardType: 'dude',
-                                gameAction: 'sendHome',
+                                gameAction: ['sendHome', 'boot'],
                                 onSelect: (player, card) => {
                                     this.game.addMessage('{0} uses {1} to reduce their casualties by 3 this round and to send {2} home booted', 
                                         player, this, card);

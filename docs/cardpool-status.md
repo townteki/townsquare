@@ -233,7 +233,7 @@
 |                     | 04016| Mayfair Family Deck
 |:heavy_check_mark:   | 04017| Puppet
 |                     | 04018| Summoning
-|                     | 04019| Ridden Down
+|:heavy_check_mark:   | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
 |:heavy_check_mark:   | 04021| Election Day Slaughter
 

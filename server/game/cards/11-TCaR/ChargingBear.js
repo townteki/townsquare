@@ -18,7 +18,7 @@ class ChargingBear extends DudeCard {
                     activePromptTitle: 'Select an opposing dude to send home booted',
                     cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                     cardType: ['dude'],
-                    gameAction: ['sendHome']
+                    gameAction: ['sendHome', 'boot']
                 }
             },
             message: context => {
