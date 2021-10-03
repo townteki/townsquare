@@ -400,8 +400,9 @@ class Player extends Spectator {
             promptTitle: updatedOptions.title,
             numCards: number,
             multiSelect: true,
-            activePromptTitle: updatedOptions.activePromptTitle || 'Select a card to discard',
-            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
+            activePromptTitle: updatedOptions.activePromptTitle || 
+                number > 1 ? 'Select cards to discard' : 'Select a card to discard',
+            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
             cardCondition: card => card.location === 'hand' && card.controller === this,
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
