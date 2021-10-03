@@ -1,7 +1,7 @@
 const GameActions = require('../../GameActions/index.js');
 const OutfitCard = require('../../outfitcard.js');
 
-class SpiritualSociety extends OutfitCard {
+class TheSpiritualSociety extends OutfitCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
@@ -61,6 +61,6 @@ class SpiritualSociety extends OutfitCard {
     }
 }
 
-SpiritualSociety.code = '20003';
+TheSpiritualSociety.code = '20003';
 
-module.exports = SpiritualSociety;
+module.exports = TheSpiritualSociety;
