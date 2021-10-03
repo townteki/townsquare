@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/495/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/496/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -244,7 +244,7 @@
 |                     | 05001| Oddities of Nature
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
-|                     | 05004| Desolation Row
+|:heavy_check_mark:   | 05004| Desolation Row
 |:heavy_check_mark:   | 05005| Pagliaccio
 |:heavy_check_mark:   | 05006| Valeria Batten
 |:heavy_check_mark:   | 05007| Micah Ryse (Exp.1)

@@ -189,14 +189,22 @@ class Shootout extends Phase {
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.leader.shootoutStatus = ShootoutStatuses.None;
         this.resetModifiers();
-        this.game.endShootout(isCancel);
         if(this.isJob()) {
             this.options.jobAbility.setResult(this.jobSuccessful, this);
             this.options.jobAbility.reset();
             if(this.cancelled) {
                 this.options.jobAbility.unpayCosts(this.options.jobAbility.context);
+            } else {
+                this.game.raiseEvent('onDudesReturnAfterJob', { job: this }, event => {
+                    event.job.actOnLeaderPosse(card => {
+                        if(!card.doesNotReturnAfterJob()) {
+                            event.job.sendHome(card, { isCardEffect: false, isAfterJob: true });
+                        }
+                    });
+                });
             }
         }
+        this.game.endShootout(isCancel);
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
         let whatHappened = this.cancelled ? ' cancelled!' : ' ended!';
         this.game.addAlert('phasestart', phaseName + whatHappened);        
@@ -220,13 +228,6 @@ class Shootout extends Phase {
         if(recordStatus) {
             this.recordJobStatus();
         }
-        this.game.raiseEvent('onDudesReturnAfterJob', { job: this }, event => {
-            event.job.actOnLeaderPosse(card => {
-                if(!card.doesNotReturnAfterJob()) {
-                    event.job.sendHome(card, { isCardEffect: false, isAfterJob: true });
-                }
-            });
-        });
     }
 
     queueStep(step) {
