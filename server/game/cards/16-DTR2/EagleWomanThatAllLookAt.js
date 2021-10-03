@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
@@ -21,7 +22,7 @@ class EagleWomanThatAllLookAt extends DudeCard {
                             until: {
                                 onAbilityResolutionFinished: () => true
                             },
-                            condition: () => this.controller.outfit.gang_code === '1stpeoples', 
+                            condition: () => this.controller.getFaction() === Factions.FirstPeoples, 
                             effect: ability.effects.reduceSelfCost('any', () => dude.influence)
                         }));
                         this.game.promptForYesNo(player, {
@@ -50,7 +51,7 @@ class EagleWomanThatAllLookAt extends DudeCard {
         this.persistentEffect({
             location: 'any',
             targetController: 'current',
-            condition: () => this.useDefaultReducer && this.controller.outfit.gang_code === '1stpeoples', 
+            condition: () => this.useDefaultReducer && this.controller.getFaction() === Factions.FirstPeoples, 
             effect: ability.effects.reduceSelfCost('any', () => this.getHighestInfluence())
         });
 

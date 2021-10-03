@@ -1,10 +1,11 @@
+const Factions = require('../../Constants/Factions.js');
 const DeedCard = require('../../deedcard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class WagnerMemorialRanch extends DeedCard {
     constructor(owner, cardData) {
         super(owner, cardData);
-        this.startingCondition = () => this.owner.outfit.gang_code === 'entrepreneurs';
+        this.startingCondition = () => this.owner.getFaction() === Factions.Entrepreneurs;
     }
 
     setupCardAbilities(ability) {

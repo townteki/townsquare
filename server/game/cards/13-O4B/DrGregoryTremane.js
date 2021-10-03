@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 
 class DrGregoryTremane extends DudeCard {
@@ -5,7 +6,7 @@ class DrGregoryTremane extends DudeCard {
         this.persistentEffect({
             location: 'any',
             targetController: 'current',
-            condition: () => this.controller.outfit.gang_code === 'entrepreneurs', 
+            condition: () => this.controller.getFaction() === Factions.Entrepreneurs, 
             effect: ability.effects.reduceSelfCost('any', () => 
                 this.controller.cardsInPlay.filter(card => card.isGadget()).length)
         });
