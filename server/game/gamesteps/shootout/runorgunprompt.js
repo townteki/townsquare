@@ -47,11 +47,11 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 return true;
             },
             onMenuCommand: (player) => {
-                this.shootout.actOnPlayerPosse(player, card => this.shootout.sendHome(
-                    card, 
-                    context,
-                    options
-                ));
+                this.shootout.actOnPlayerPosse(player, card => {
+                    if(!card.cannotFlee()) {
+                        this.shootout.sendHome(card, context, options);
+                    }
+                });
                 this.completePlayer();
                 return true;
             }

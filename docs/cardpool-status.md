@@ -737,13 +737,13 @@
 |:heavy_check_mark:   | 19027| Bilton Collection Agency
 |:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
-|                     | 19030| Forsaken Hound
+|:heavy_check_mark:   | 19030| Forsaken Hound
 |:heavy_check_mark:   | 19031| The Bloody Star
 |                     | 19032| Cavalry Escort
 |                     | 19033| Nightmare Realm
 |:heavy_check_mark:   | 19034| Sentinel
 |:heavy_check_mark:   | 19035| Censure
-|                     | 19036| Raven's Ruin
+|:heavy_check_mark:   | 19036| Raven's Ruin
 |:heavy_check_mark:   | 19037| Remedy
 |:heavy_check_mark:   | 19038| Intercession
 |:heavy_check_mark:   | 19039| Disarm
