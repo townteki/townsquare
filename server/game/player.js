@@ -80,6 +80,13 @@ class Player extends Spectator {
         this.currentCasualties = value;
     }
 
+    getFaction() {
+        if(!this.outfit) {
+            return '';
+        }
+        return this.outfit.gang_code;
+    }
+
     modifyCasualties(amount) {
         this.currentCasualties += amount;
     }
@@ -1740,11 +1747,17 @@ class Player extends Spectator {
         return this.game.resolveGameAction(GameActions.bootCard({ card }), this.createContext(context));
     }
 
-    bootCards(cards, context) {
+    bootCards(cards, context, callback = () => true) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.bootCard({ card }))
         );
-        return this.game.resolveGameAction(action, this.createContext(context));
+        let event = this.game.resolveGameAction(action, this.createContext(context));
+        event.thenExecute(() => {
+            let cards = event.childEvents.map(childEvent => childEvent.card);
+            callback(cards);
+        });
+
+        return event;
     }
 
     unbootCard(card, options = {}, context) {

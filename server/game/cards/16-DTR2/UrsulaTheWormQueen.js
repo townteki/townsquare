@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
@@ -8,7 +9,7 @@ class UrsulaTheWormQueen extends DudeCard {
         this.persistentEffect({
             location: 'any',
             targetController: 'current',
-            condition: () => this.controller.outfit.gang_code === 'fearmongers', 
+            condition: () => this.controller.getFaction() === Factions.Fearmongers, 
             effect: ability.effects.reduceSelfCost('any', () => this.getNumOfHucksters())
         });
 
