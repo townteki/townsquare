@@ -93,11 +93,11 @@ class ShootoutPosse {
                 return 0;
             }
         }
-        if(tempShooter.isStud()) {
+        if(tempShooter.isStud() && !tempShooter.doesNotProvideBulletRatings()) {
             shooterBonus = this.shootout.useInfluence ? tempShooter.influence : tempShooter.bullets;
         }
         if(this.player.onlyShooterContributes()) {
-            return !tempShooter.doesNotProvideBulletRatings() ? shooterBonus : 0;
+            return shooterBonus;
         }
 
         let baseBonus = this.studBonus + shooterBonus;
@@ -123,11 +123,11 @@ class ShootoutPosse {
                 return 0;
             }
         }
-        if(tempShooter.isDraw()) {
+        if(tempShooter.isDraw() && !tempShooter.doesNotProvideBulletRatings()) {
             shooterBonus = this.shootout.useInfluence ? tempShooter.influence : tempShooter.bullets;
         }
         if(this.player.onlyShooterContributes()) {
-            return !tempShooter.doesNotProvideBulletRatings() ? shooterBonus : 0;
+            return shooterBonus;
         }
 
         let baseBonus = this.drawBonus + shooterBonus;

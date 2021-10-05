@@ -33,12 +33,10 @@ class RabbitTakesRevenge extends TechniqueCard {
                     if(context.target.attachments.length > 0) {
                         context.player.bootCards(context.target.attachments, context);                
                     }
-                    this.applyAbilityEffect(context.ability, ability => ({
+                    this.untilEndOfShootoutRound(context.ability, ability => ({
                         match: context.target,
-                        effect: [
-                            ability.effects.selectAsFirstCasualty()
-                        ]
-                    }));                    
+                        effect: ability.effects.selectAsFirstCasualty()
+                    }));                 
                 }
             },
             source: this
