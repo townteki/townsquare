@@ -2,6 +2,7 @@ class PlayerPromptState {
     constructor() {
         this.selectCard = false;
         this.selectOrder = false;
+        this.popupStayOpen = false;
         this.menuTitle = '';
         this.promptTitle = '';
         this.buttons = [];
@@ -30,6 +31,7 @@ class PlayerPromptState {
     setPrompt(prompt) {
         this.selectCard = prompt.selectCard || false;
         this.selectOrder = prompt.selectOrder || false;
+        this.popupStayOpen = prompt.popupStayOpen || false;
         this.menuTitle = prompt.menuTitle || '';
         this.promptTitle = prompt.promptTitle;
         this.buttons = (prompt.buttons || []).map(button => {
@@ -74,6 +76,7 @@ class PlayerPromptState {
         return {
             selectCard: this.selectCard,
             selectOrder: this.selectOrder,
+            popupStayOpen: this.popupStayOpen,
             menuTitle: this.menuTitle,
             promptTitle: this.promptTitle,
             buttons: this.buttons.map(button => this.getButtonState(button)),

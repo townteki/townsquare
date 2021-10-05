@@ -43,7 +43,8 @@ class DrawHandPrompt extends UiPrompt {
                 buttons: [
                     { arg: 'redraw', text: 'Done' }
                 ],
-                selectCard: true
+                selectCard: true,
+                popupStayOpen: true
             };
         } 
         return {
