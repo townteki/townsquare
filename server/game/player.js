@@ -1236,7 +1236,7 @@ class Player extends Spectator {
             }
         });
         this.game.queueSimpleStep(() => {
-            const outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
+            let outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
             this.locations = this.locations.filter(loc => loc !== gameLocation && !loc.isOutOfTown());
             if(!card.isOutOfTown()) {
                 const orderedLocations = this.locations.sort((a, b) => {
@@ -1263,6 +1263,8 @@ class Player extends Spectator {
                         }
                     }
                 }
+            } else {
+                outOfTownLocations = outOfTownLocations.filter(ootLoc => ootLoc !== gameLocation);
             }
             this.locations = this.locations.concat(outOfTownLocations);
         });
