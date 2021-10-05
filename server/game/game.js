@@ -31,7 +31,6 @@ const ChooseGRSourceAmounts = require('./gamesteps/ChooseGRSourceAmounts.js');
 const DropCommand = require('./ServerCommands/DropCommand');
 const CardVisibility = require('./CardVisibility');
 const PlainTextGameChatFormatter = require('./PlainTextGameChatFormatter');
-const GameActions = require('./GameActions');
 const TimeLimit = require('./timeLimit.js');
 const Location = require('./gamelocation.js');
 const Shootout = require('./gamesteps/shootout.js');
@@ -350,28 +349,7 @@ class Game extends EventEmitter {
             return;
         }
 
-        if(card.onClick(player)) {
-            return;
-        } 
-
-        this.defaultCardClick(player, card);
-    }
-
-    defaultCardClick(player, card) {
-        if(card.facedown || card.controller !== player) {
-            return;
-        }
-
-        let action = card.booted ?
-            GameActions.unbootCard({ card, force: true }) :
-            GameActions.bootCard({ card, force: true });
-
-        this.resolveGameAction(action).thenExecute(() => {
-            let bootStatus = card.booted ? 'boots' : 'unboots';
-            let cardFragment = card.getType() === 'outfit' ? 'their outfit card' : card;
-
-            this.addAlert('danger', '{0} {1} {2}', player, bootStatus, cardFragment);
-        });
+        card.onClick(player);
     }
 
     cardHasMenuItem(card, player, menuItem) {
