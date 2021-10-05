@@ -591,13 +591,13 @@ class BaseCard {
 
         let menu = [];
         let menuActionItems = this.getActionMenuItems(player);
-        if(menuActionItems.filter(menuItem => 
-            menuItem.action.allowPlayer(player) && !menuItem.action.isClickToActivate() && menuItem.action.allowMenu()).length === 0) {
-            return;
-        }
 
         if(this.location === 'play area' && player === this.controller) {
-            menu = [{ command: 'click', text: 'Boot / Unboot' }];
+            menu = [{ method: 'toggleUnBoot', text: 'Boot / Unboot' }];
+        }
+        if(!menu.length && menuActionItems.filter(menuItem => 
+            menuItem.action.allowPlayer(player) && !menuItem.action.isClickToActivate() && menuItem.action.allowMenu()).length === 0) {
+            return;
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
         if(menuCardActionItems.length > 0) {
@@ -640,6 +640,17 @@ class BaseCard {
                 item: action.getMenuItem(index, player)
             }; 
         });
+    }
+
+    toggleUnBoot(player) {
+        if(this.facedown || this.controller !== player) {
+            return;
+        }
+
+        this.booted = !this.booted;
+        let bootStatus = this.booted ? 'boots' : 'unboots';
+
+        this.game.addAlert('danger', '{0} {1} {2}', player, bootStatus, this);  
     }
 
     useAbility(player, options = {}) {
