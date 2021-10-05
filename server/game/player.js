@@ -407,8 +407,9 @@ class Player extends Spectator {
             promptTitle: updatedOptions.title,
             numCards: number,
             multiSelect: true,
-            activePromptTitle: updatedOptions.activePromptTitle || 'Select a card to discard',
-            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
+            activePromptTitle: updatedOptions.activePromptTitle || 
+                number > 1 ? 'Select cards to discard' : 'Select a card to discard',
+            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
             cardCondition: card => card.location === 'hand' && card.controller === this,
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
@@ -1235,7 +1236,7 @@ class Player extends Spectator {
             }
         });
         this.game.queueSimpleStep(() => {
-            const outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
+            let outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
             this.locations = this.locations.filter(loc => loc !== gameLocation && !loc.isOutOfTown());
             if(!card.isOutOfTown()) {
                 const orderedLocations = this.locations.sort((a, b) => {
@@ -1262,6 +1263,8 @@ class Player extends Spectator {
                         }
                     }
                 }
+            } else {
+                outOfTownLocations = outOfTownLocations.filter(ootLoc => ootLoc !== gameLocation);
             }
             this.locations = this.locations.concat(outOfTownLocations);
         });

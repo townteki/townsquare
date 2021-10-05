@@ -39,9 +39,26 @@ class StartingPossePrompt extends AllPlayerPrompt {
     }
 
     validateStartingPosse(player) {
-        const startingSize = player.hand.reduce((size, card) => size + card.startingSize, 0);
-        if(startingSize > 5) {
-            return `Too many cards in (${startingSize}) in starting gang`;
+        const startingDudesSize = player.hand.reduce((size, card) => {
+            if(card.getType() === 'dude') {
+                return size + card.startingSize;
+            }
+            return size;
+        }, 0);
+        if(startingDudesSize > 5) {
+            return `Too many cards in (${startingDudesSize}) in starting gang`;
+        }
+        if(player.hand.some(card => card.getType() === 'deed' && !card.hasKeyword('core'))) {
+            return 'Only Core deeds can be in the starting gang';
+        }
+        const startingCoreSize = player.hand.reduce((size, card) => {
+            if(card.getType() === 'deed' && card.hasKeyword('core')) {
+                return size + card.startingSize;
+            }
+            return size;
+        }, 0);
+        if(startingCoreSize > 1) {
+            return `Too many Core deeds in (${startingCoreSize}) in starting gang`;
         }
         const posseCost = player.hand.reduce((aggregator, card) => aggregator + card.cost, 0);
         if(posseCost > player.ghostrock) {
