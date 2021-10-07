@@ -24,7 +24,9 @@ class GameAction {
      * @param {*} props
      */
     allow(props) {
-        return this.canChangeGameState(props) && (!this.isImmune(props) || !!props.force);
+        let { card, context, options } = props;
+        return this.canChangeGameState(props) && 
+            !!card && !card.allowGameAction(this.name, context, options);
     }
 
     /**
@@ -36,16 +38,6 @@ class GameAction {
      */
     canChangeGameState() {
         return true;
-    }
-
-    /**
-     * Returns whether the target is immune to the action being applied.
-     *
-     * @param {*} props
-     */
-    isImmune(props) {
-        let { card, context, options } = props;
-        return !!card && !card.allowGameAction(this.name, context, options);
     }
 
     /**
