@@ -1,5 +1,6 @@
 const SpellCard = require('../../spellcard.js');
 const StandardActions = require('../../PlayActions/StandardActions.js');
+const GameActions = require('../../GameActions/index.js');
 
 class OwlsInsight2 extends SpellCard {
     setupCardAbilities(ability) {
@@ -12,8 +13,12 @@ class OwlsInsight2 extends SpellCard {
                 this.doneSelecting = false;
                 this.owlAction(context);
                 if(this.game.shootout) {
-                    context.player.modifyCasualties(-2);
-                    this.game.addMessage('{0} uses {1} to suffer 2 less casualties', context.player, this);
+                    this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                        player: context.player, 
+                        amount: 2 
+                    }), context).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} to suffer 2 less casualties', context.player, this);
+                    });                       
                 }
             }
         });

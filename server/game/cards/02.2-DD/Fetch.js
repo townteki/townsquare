@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const SpellCard = require('../../spellcard.js');
 
 class Fetch extends SpellCard {
@@ -9,8 +10,12 @@ class Fetch extends SpellCard {
             difficulty: 5,
             onSuccess: (context) => {
                 if(this.game.shootout) {
-                    context.player.modifyCasualties(-3);
-                    this.game.addMessage('{0} uses {1} to suffer 3 less casualties', context.player, this);
+                    this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                        player: context.player, 
+                        amount: 3 
+                    }), context).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} to suffer 3 less casualties', context.player, this);
+                    });                   
                 }
                 this.game.before('onDrawHandDiscarded', event => {
                     this.game.promptForSelect(event.player, {

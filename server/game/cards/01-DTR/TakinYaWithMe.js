@@ -1,4 +1,5 @@
 const ActionCard = require('../../actioncard.js');
+const GameActions = require('../../GameActions/index.js');
 const TakeYerLumpsPrompt = require('../../gamesteps/shootout/takeyerlumpsprompt.js');
 
 class TakinYaWithMe extends ActionCard {
@@ -10,10 +11,14 @@ class TakinYaWithMe extends ActionCard {
                     event.player === this.controller &&
                     this.canBeTakenWithMe(event.player, event.shootout, event.casualtiesTaken)
             },
-            message: context => 
-                this.game.addMessage('{0} uses {1} to take some of {2}\'s dudes or sidekicks with them', context.player, this, context.player.getOpponent()),
             handler: context => {
-                this.game.shootout.queueStep(new TakeYerLumpsPrompt(this.game, [context.player.getOpponent().name], 1, this));
+                this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                    player: context.player.getOpponent(), 
+                    amount: 1
+                }), context).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to take some of {2}\'s dudes or sidekicks with them', context.player, this, context.player.getOpponent());
+                    this.game.shootout.queueStep(new TakeYerLumpsPrompt(this.game, [context.player.getOpponent().name], this));
+                }); 
             }
         });
     }

@@ -1,4 +1,5 @@
 const ActionCard = require('../../actioncard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class YouHadOneJob extends ActionCard {
     setupCardAbilities() {
@@ -36,14 +37,18 @@ class YouHadOneJob extends ActionCard {
         this.action({
             title: 'Resolution: Reduce Casualties',
             playType: 'resolution',
-            handler: () => {
+            handler: context => {
                 this.game.getPlayers().forEach(p => {
                     if(!p.isCheatin()) {
                         this.game.promptForYesNo(p, {
                             title: 'Reduce your casualties by 2?',
                             onYes: player => {
-                                player.modifyCasualties(-2);
-                                this.game.addMessage('{0} uses {1} to reduce their casualties by 2', player, this);
+                                this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                                    player: player, 
+                                    amount: 2 
+                                }), context).thenExecute(() => {
+                                    this.game.addMessage('{0} uses {1} to reduce their casualties by 2', player, this);
+                                });                                 
                             }
                         });
                     }

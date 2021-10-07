@@ -19,9 +19,10 @@ class RedRiverRoulette extends DeedCard {
                         gameAction: 'boot',
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.bootCard({ card }), context).thenExecute(() => {
-                                this.game.getPlayers().forEach(player => player.modifyCasualties(-999));
-                                this.game.addMessage('{0} uses {1} and boots {2} to prevent all casualties', 
-                                    player, this, card);
+                                this.game.getPlayers().forEach(player =>
+                                    this.game.resolveGameAction(GameActions.decreaseCasualties({ player: player }), context)
+                                );
+                                this.game.addMessage('{0} uses {1} and boots {2} to prevent all casualties', player, this, card);
                             });
                             return true;
                         }
@@ -39,7 +40,12 @@ class RedRiverRoulette extends DeedCard {
                     effect: ability.effects.cannotFlee()
                 }));
                 const eventHandler = () => {
-                    this.game.getPlayers().forEach(player => player.modifyCasualties(player.casualties));
+                    this.game.getPlayers().forEach(player =>
+                        this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                            player: player,
+                            amount: player.casualties
+                        }), context)
+                    );                    
                 };
                 const currentShootoutRound = this.game.shootout.round;
                 this.game.onceConditional('onShootoutCasualtiesStepStarted', { 
