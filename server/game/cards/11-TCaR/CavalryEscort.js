@@ -18,6 +18,11 @@ class CavalryEscort extends GoodsCard {
                     card: this.parent,
                     options: { needToBoot: true }
                 }), context);
+                this.untilEndOfShootoutRound(context.ability, ability => ({
+                    match: this.game.getPlayers(),
+                    effect: ability.effects.cannotIncreaseCasualties(this, context => context.ability && 
+                        context.ability.playTypePlayed(context) === 'react')
+                }));   
             }
         });
     }
