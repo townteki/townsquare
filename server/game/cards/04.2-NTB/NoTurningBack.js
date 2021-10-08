@@ -34,7 +34,7 @@ class NoTurningBack extends ActionCard {
                     onSelect: (player, card) => {
                         this.game.resolveGameAction(GameActions.aceCard({ card }), context).thenExecute(() => {
                             this.game.resolveGameAction(GameActions.decreaseCasualties({ 
-                                player: context.player
+                                player: player
                             }), context).thenExecute(() => {
                                 this.game.addMessage('{0} uses {1} and aces {2} to reduce casualties to 0', player, this, card);
                             });
