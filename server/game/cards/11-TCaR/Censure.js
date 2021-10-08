@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const SpellCard = require('../../spellcard.js');
 
 class Censure extends SpellCard {
@@ -34,7 +35,10 @@ class Censure extends SpellCard {
                 
                 /* Check if this is a shootout and if so, reduce casualties */
                 if(this.game.shootout) {
-                    context.player.modifyCasualties(-3);                   
+                    this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                        player: context.player,
+                        amount: 3
+                    }), context);               
                     context.game.promptForYesNo(this.controller, {
                         title: 'Send dude home booted?',
                         onYes: () => {

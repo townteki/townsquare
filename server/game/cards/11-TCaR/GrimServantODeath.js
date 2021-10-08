@@ -50,9 +50,13 @@ class GrimServantODeath extends ActionCard {
                             until: 'onShootoutRoundFinished',
                             condition: event => event.player === context.player.getOpponent() && context.player.getOpponent().isCheatin()
                         }, event => {
-                            event.player.modifyCasualties(2);
-                            this.game.addMessage('{0} will take 2 extra casualties as a punishment due to {1} for their cheatin\' hand', 
-                                event.player, this);
+                            this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                                player: event.player, 
+                                amount: 2
+                            }), context).thenExecute(() => {
+                                this.game.addMessage('{0} will take 2 extra casualties as a punishment due to {1} for their cheatin\' hand', 
+                                    event.player, this);
+                            });
                         });
                     },
                     source: this

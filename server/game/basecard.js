@@ -907,7 +907,7 @@ class BaseCard {
         let params = {
             card: this,
             amount: amount,
-            applying: applying.player,
+            applying: applying,
             fromEffect
         };
         this.game.raiseEvent('onCardBulletsChanged', params);
