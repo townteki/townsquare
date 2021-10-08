@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const SpellCard = require('../../spellcard.js');
 
 class Consecration extends SpellCard {
@@ -24,8 +25,12 @@ class Consecration extends SpellCard {
                 this.game.addMessage('{0} uses {1} to increase {2}\'s bullets and influence by 2 and make them a stud', context.player, this, context.target);
                 /* Check if this is a shootout and if so, reduce casualties */
                 if(this.game.shootout) {
-                    context.player.modifyCasualties(-3);
-                    this.game.addMessage('{0} also uses {1} to reduce their casualties by 3 this round', context.player, this);
+                    this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                        player: context.player, 
+                        amount: 3
+                    }), context).thenExecute(() => {
+                        this.game.addMessage('{0} also uses {1} to reduce their casualties by 3 this round', context.player, this);
+                    }); 
                 }
             },
             source: this

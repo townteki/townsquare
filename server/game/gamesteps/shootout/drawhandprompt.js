@@ -51,7 +51,8 @@ class DrawHandPrompt extends UiPrompt {
             menuTitle: 'Reveal draw hand?',
             buttons: [
                 { arg: 'revealdraw', text: 'Ready' }
-            ]
+            ],
+            popupStayOpen: true
         };
     }
 
