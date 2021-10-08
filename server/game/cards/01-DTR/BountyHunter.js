@@ -2,11 +2,10 @@ const ActionCard = require('../../actioncard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class BountyHunter extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Bounty Hunter',
             playType: ['noon'],
-            cost: ability.costs.payReduceableGRCost(),
             target: {
                 activePromptTitle: 'Select wanted dude to hunt',
                 cardCondition: { location: 'play area', controller: 'opponent', wanted: true },
