@@ -718,7 +718,7 @@
 |                     | 19008| Black Owl
 |:heavy_check_mark:   | 19009| Zeb Whateley-Dupont
 |:heavy_check_mark:   | 19010| Rosenbaum's Golem
-|                     | 19011| Stewart Davidson
+|:heavy_check_mark:   | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
 |:heavy_check_mark:   | 19013| Adrián Vallejo
 |:heavy_check_mark:   | 19014| Prof. Aloysius Roe
@@ -926,7 +926,7 @@
 |                     | 22044| Bolts o' Doom
 |                     | 22045| Lethargy
 |                     | 22046| Mind Twist
-|                     | 22047| Dies Irae
+|:heavy_check_mark:   | 22047| Dies Irae
 |                     | 22048| Babble On
 |                     | 22049| Ancestor's Reproach
 |                     | 22050| Secret Paths
