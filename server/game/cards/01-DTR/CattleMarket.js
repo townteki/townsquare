@@ -13,6 +13,7 @@ class CattleMarket extends DeedCard {
             ]
         });
         this.persistentEffect({
+            targetController: 'any',
             condition: () => true,
             match: card => card.getType() === 'dude' && card.locationCard === this,
             effect: [
