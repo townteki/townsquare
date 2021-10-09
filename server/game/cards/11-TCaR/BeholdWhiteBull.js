@@ -21,8 +21,8 @@ class BeholdWhiteBull extends TechniqueCard {
                 this.game.promptForYesNo(context.player.getOpponent(), {
                     title: 'Do you want to send your Dudes home booted?',
                     onYes: player => {
-                        this.shootout.actOnPlayerPosse(player, card => {
-                            this.shootout.sendHome(card, context);
+                        this.game.shootout.actOnPlayerPosse(player, card => {
+                            this.game.shootout.sendHome(card, context);
                         });
                         context.kfDude.modifyControl(2);
                         this.game.resolveGameAction(GameActions.unbootCard({ card: context.kfDude }), context);
