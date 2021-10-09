@@ -6,7 +6,8 @@ const StandardActions = require('../../PlayActions/StandardActions.js');
 class F1Burch extends DudeCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities() {
-        this.traitReaction({
+        this.reaction({
+            title: 'React: F1 Burch',
             when: {
                 onCardEntersPlay: event => event.card === this
             },
@@ -27,7 +28,10 @@ class F1Burch extends DudeCard {
                             this.game.resolveGameAction(
                                 GameActions.search({
                                     title: 'Select a Non-Unique and Non-Gadget goods',
-                                    match: { condition: card => !card.hasKeyword('gadget') && !card.isUnique() },
+                                    match: { 
+                                        type: 'goods', 
+                                        condition: card => !card.hasKeyword('gadget') && !card.isUnique() 
+                                    },
                                     location: ['discard pile', 'hand'],
                                     numToSelect: 1,
                                     message: {
