@@ -5,12 +5,13 @@ class IncreaseCasualties extends GameAction {
         super('increaseCasualties');
     }
 
-    canChangeGameState({ player }) {
-        return !!player.game.shootout;
+    canChangeGameState({ player, context }) {
+        return !!player.game.shootout &&
+            !player.cannotIncreaseCasualties(context);
     }
 
-    createEvent({ player, amount = 1 }) {
-        return this.event('onPlayerCasualtiesIncreased', { player, amount }, event => {
+    createEvent({ player, amount = 1, context }) {
+        return this.event('onPlayerCasualtiesIncreased', { player, amount, context }, event => {
             event.player.modifyCasualties(event.amount);
         });
     }

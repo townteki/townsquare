@@ -1870,6 +1870,14 @@ class Player extends Spectator {
         return this.options.contains('cannotModifyHandRanks', context);
     }
 
+    cannotIncreaseCasualties(context = {}) {
+        return this.options.contains('cannotIncreaseCasualties', context);
+    }
+
+    cannotDecreaseCasualties(context = {}) {
+        return this.options.contains('cannotDecreaseCasualties', context);
+    }    
+
     cardsCannotLeaveDiscard(context = {}) {
         return this.options.contains('cardsCannotLeaveDiscard', context);
     }
