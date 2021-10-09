@@ -177,7 +177,7 @@
 |:heavy_check_mark:   | 02012| The R&D Ranch
 |                     | 02013| Telepathy Helmet
 |:heavy_check_mark:   | 02014| Faithful Hound
-|                     | 02015| Plasma Drill
+|:heavy_check_mark:   | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
 |:heavy_check_mark:   | 02017| Forget
 |:heavy_check_mark:   | 02018| Make 'em Sweat
