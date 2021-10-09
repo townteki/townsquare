@@ -44,6 +44,7 @@ class Shootout extends Phase {
             new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
             new SimpleStep(this.game, () => this.raisePossesFormedEvent()),
             new SimpleStep(this.game, () => this.gatherPosses()),
+            new SimpleStep(this.game, () => this.breakinAndEnterin()),
             new SimpleStep(this.game, () => this.beginShootoutRound())
         ]);
     }
@@ -378,16 +379,28 @@ class Shootout extends Phase {
         this.actOnOpposingPosse(action);
     }
 
-    isBreakinAndEnterin(dude) {
+    isBreakinAndEnterin(dude, locationCard) {
         if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
             return false;
         }
-        let locationCard = this.shootoutLocation.locationCard;
-        if(locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
-            return !dude.options.contains('doesNotGetBountyOnJoin') && locationCard.owner !== dude.controller;
+        const shootoutLocCard = locationCard || this.shootoutLocation.locationCard;
+        if(shootoutLocCard && (shootoutLocCard.getType() === 'outfit' || shootoutLocCard.hasKeyword('private'))) {
+            return !dude.options.contains('doesNotGetBountyOnJoin') && shootoutLocCard.owner !== dude.controller;
         }
         return false;
     }
+
+    breakinAndEnterin() {
+        if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
+            return;
+        }
+        const locationCard = this.shootoutLocation.locationCard;
+        if(locationCard.owner !== this.leaderPlayer) {
+            this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
+        } else {
+            this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
+        }
+    } 
 
     draw() {
         this.queueStep(new DrawHandPrompt(this.game, [this.getLeaderDrawCount(), this.getOpposingDrawCount()]));
