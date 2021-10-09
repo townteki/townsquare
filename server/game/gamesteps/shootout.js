@@ -392,7 +392,7 @@ class Shootout extends Phase {
 
     breakinAndEnterin() {
         if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
-            return false;
+            return;
         }
         const locationCard = this.shootoutLocation.locationCard;
         if(locationCard.owner !== this.leaderPlayer) {
@@ -400,7 +400,7 @@ class Shootout extends Phase {
         } else {
             this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
         }
-    }
+    } 
 
     draw() {
         this.queueStep(new DrawHandPrompt(this.game, [this.getLeaderDrawCount(), this.getOpposingDrawCount()]));
