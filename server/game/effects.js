@@ -1014,6 +1014,10 @@ const Effects = {
     },
     cannotModifyHandRanks: 
         playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified'),
+    cannotIncreaseCasualties: 
+        playerOptionEffect('cannotIncreaseCasualties', 'Casualties cannot be increased'),
+    cannotDecreaseCasualties: 
+        playerOptionEffect('cannotDecreaseCasualties', 'Casualties cannot be decreased'),        
     cardsCannotLeaveDiscard:
         playerOptionEffect('cardsCannotLeaveDiscard', 'Cards cannot leave discard'),
     switchBulletBonuses:
