@@ -12,7 +12,9 @@ class CavalryEscort extends GoodsCard {
             },
             cost: ability.costs.bootSelf(),
             actionContext: { card: this.parent, gameAction: 'joinPosse' },
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
+            message: context => 
+                this.game.addMessage('{0} uses {1} to join {2} to posse booted. React abilities cannot increase casualties this round', 
+                    context.player, this, this.parent),
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ 
                     card: this.parent,
