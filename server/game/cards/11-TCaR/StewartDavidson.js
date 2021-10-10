@@ -11,7 +11,8 @@ class StewartDavidson extends DudeCard {
             cost: [
                 ability.costs.bootSelf(),
                 ability.costs.discardFromHand(),
-                ability.costs.payGhostRock(context => context.target.influence)
+                ability.costs.payGhostRock(context => context.target.influence, false, 
+                    context => this.minInfNotWanted(context))
             ],
             target: {
                 activePromptTitle: 'Choose a dude to get bounty',
@@ -33,6 +34,18 @@ class StewartDavidson extends DudeCard {
                 this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
             }
         });
+    }
+
+    minInfNotWanted(context) {
+        if(this.game.getNumberOfPlayers() === 1) {
+            return 0;
+        }
+        return this.game.getDudesInPlay(context.player.getOpponent()).reduce((minInf, dude) => {
+            if(dude.isWanted() || dude.influence > minInf) {
+                return minInf;
+            }
+            return dude.influence;
+        }, 999);
     }
 }
 

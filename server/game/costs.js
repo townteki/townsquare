@@ -264,13 +264,14 @@ const Costs = {
     },
     /**
      * Cost in which the player must pay a fixed, non-reduceable amount of ghost rock.
-     * @param {number} amount
-     * @param {boolean} toOpponent - Ghost rock should be played to opponent instead of bank
+     * @param {number | Function} amountOrFunc - amount of ghost rock that must be paid
+     * @param {boolean} toOpponent - Ghost rock should be paid to opponent instead of bank
+     * @param {number | Function} minAmount - minimum amount that will be required to pay this cost
      */
     payGhostRock: function(amountOrFunc, toOpponent, minAmount) {
         return {
             canPay: function(context) {
-                let amount = minAmount;
+                let amount = typeof(minAmount) === 'function' ? minAmount(context) : minAmount;
                 if(amount === null || amount === undefined) {
                     amount = typeof(amountOrFunc) === 'function' ? amountOrFunc(context) : amountOrFunc;
                 }

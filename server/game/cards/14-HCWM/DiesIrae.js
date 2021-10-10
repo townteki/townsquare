@@ -40,8 +40,8 @@ class DiesIrae extends SpellCard {
                     match: context.player,
                     effect: ability.effects.dudesCannotFlee()
                 }));
-                this.game.addMessage('{0} uses {1} to choose 4 dudes from Boot Hill once they pick their shooter. Their dudes cannot flee shootout this round', 
-                    context.player, this);                                             
+                this.game.addMessage('{0} uses {1} to choose 4 dudes from Boot Hill to contribute once they pick their shooter. ' +
+                    'Their dudes cannot flee shootout this round', context.player, this);                                             
             },
             source: this
         });
@@ -54,7 +54,7 @@ class DiesIrae extends SpellCard {
             if(card.isDraw()) {
                 drawBonus += 1;
             }
-            if(card.isDraw()) {
+            if(card.isStud()) {
                 studBonus += 1;
             }
         });
