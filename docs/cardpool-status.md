@@ -714,8 +714,8 @@
 |:heavy_check_mark:   | 19004| Raven
 |:heavy_check_mark:   | 19005| Wang Men Wu
 |:heavy_check_mark:   | 19006| Charging Bear
-|                     | 19007| Fears No Owls
-|                     | 19008| Black Owl
+|:heavy_check_mark:   | 19007| Fears No Owls
+|:heavy_check_mark:   | 19008| Black Owl
 |:heavy_check_mark:   | 19009| Zeb Whateley-Dupont
 |:heavy_check_mark:   | 19010| Rosenbaum's Golem
 |                     | 19011| Stewart Davidson

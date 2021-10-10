@@ -1,22 +1,27 @@
-const DeedCard = require('../../deedcard.js');
+const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
+/** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
-class RailroadStation extends DeedCard {
-    setupCardAbilities(ability) {
+class FearsNoOwls extends DudeCard {
+    /** @param {AbilityDsl} ability */
+    setupCardAbilities() {
         this.action({
-            title: 'Railroad Station',
+            title: 'Noon: Fears No Owls',
             playType: ['noon'],
-            cost: ability.costs.bootSelf(),
-            target:{
-                activePromptTitle: 'Select dude to move from this location',
-                cardCondition: { location: 'play area', controller: 'current', condition: card => card.locationCard === this },
-                cardType: ['dude'],
-                gameAction: 'moveDude'
+            target: {
+                activePromptTitle: 'Choose your dude to move',
+                cardCondition: { location: 'play area', controller: 'current' },
+                cardType: ['dude']
             },
             handler: context => {
                 this.game.promptForLocation(context.player, {
                     activePromptTitle: 'Select destination',
                     waitingPromptTitle: 'Waiting for opponent to select location',
+                    cardCondition: { 
+                        location: 'play area', 
+                        condition: card => card.hasKeyword('holy ground') ||
+                            (card.getType() === 'deed' && card.hasAttachmentWithKeywords(['totem']))
+                    },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 
@@ -26,13 +31,12 @@ class RailroadStation extends DeedCard {
                         return true;
                     },
                     source: this
-                });
+                });                
             }
-
         });
     }
 }
 
-RailroadStation.code = '01079';
+FearsNoOwls.code = '19007';
 
-module.exports = RailroadStation;
+module.exports = FearsNoOwls;
