@@ -31,7 +31,8 @@ class The108RighteousBandits extends OutfitCard {
                             this.game.addMessage('{0} uses {1} to move {2} to {3}', player, this, context.target, location);                        
                         });
                         return true;
-                    }
+                    },
+                    source: this
                 });
             }
         });
