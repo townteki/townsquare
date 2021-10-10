@@ -6,18 +6,19 @@ class MechanicalHorse2 extends GoodsCard {
         this.action({
             title: 'Noon: Move dude',
             playType: ['noon'],
-            cost: ability.costs.payXGhostRock(() => this.isAnyLocationAdjacent() ? 1 : 2, () => 2, 'ability'),
+            cost: ability.costs.payGhostRock(
+                context => context.target.isAdjacent(this.gamelocation) ? 1 : 2, false, 1),
             repeatable: true,
             target: {
                 activePromptTitle: 'Choose location to move to',
                 cardCondition: { 
                     location: 'play area', 
-                    controller: 'any', 
+                    controller: 'any',
                     condition: (card, context) => {
                         if(card.gamelocation === this.gamelocation) {
                             return false;
                         }
-                        if(context.grCost === 1) {
+                        if(this.getGRForContext(context) === 1) {
                             return card.isAdjacent(this.parent.gamelocation);
                         }
                         return true;
@@ -25,13 +26,14 @@ class MechanicalHorse2 extends GoodsCard {
                 },
                 cardType: ['location']
             },
-            actionContext: { card: this.parent, gameAction: 'moveDude '},
+            actionContext: { card: this.parent, gameAction: 'moveDude'},
             message: context => 
                 this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, this.parent, context.target.title),
             handler: context => {
                 this.game.resolveGameAction(GameActions.moveDude({ card: this.parent, targetUuid: context.target.uuid }), context);
             }
         });
+
         this.reaction({
             title: 'React: Prevent booting',
             when: {
@@ -58,6 +60,15 @@ class MechanicalHorse2 extends GoodsCard {
     isAnyLocationAdjacent() {
         const adjLocationCards = this.game.filterCardsInPlay(card => ['deed', 'outfit'].includes(card.getType()) && card.isAdjacent(this.gamelocation));
         return (adjLocationCards && adjLocationCards.length > 0) || this.game.townsquare.isAdjacent(this.gamelocation);
+    }
+
+    getGRForContext(context) {
+        return context.player.getSpendableGhostRock({ 
+            player: context.player, 
+            playingType: 'ability', 
+            source: context.source,
+            context: context
+        });
     }
 }
 
