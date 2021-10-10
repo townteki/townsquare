@@ -55,6 +55,7 @@ class ChatCommands {
             '/reset-abilities': this.resetAbilities,
             '/resab': this.resetAbilities,
             '/reset-stats': this.resetStats,
+            '/reset-punish': this.resetPunish,
             '/reveal-hand': this.revealHand,
             '/reveal-deck': this.revealDeck,
             '/shooter': this.shooter,
@@ -899,6 +900,13 @@ class ChatCommands {
             }            
         }
         return { set: this.getNumberOrDefault(arg, 1, true) };
+    }
+
+    resetPunish(player) {
+        const nCP = player.numCheatinPlayed;
+        const mAC = player.maxAllowedCheatin;
+        player.resetCheatinResInfo();
+        this.game.addAlert('danger', '{0} uses the /reset-punish command to reset their Cheatin\' Resolution play info (was {1}/{2})', player, nCP, mAC);
     }
 }
 
