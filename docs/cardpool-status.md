@@ -726,7 +726,7 @@
 |:heavy_check_mark:   | 19016| Morgan Lash
 |:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
-|                     | 19019| F1 Burch
+|:heavy_check_mark:   | 19019| F1 Burch
 |:heavy_check_mark:   | 19020| Taff's Distillery
 |:heavy_check_mark:   | 19021| Mausoleum
 |:heavy_check_mark:   | 19022| Epitaph Branch Office
@@ -740,7 +740,7 @@
 |:heavy_check_mark:   | 19030| Forsaken Hound
 |:heavy_check_mark:   | 19031| The Bloody Star
 |:heavy_check_mark:   | 19032| Cavalry Escort
-|                     | 19033| Nightmare Realm
+|:heavy_check_mark:   | 19033| Nightmare Realm
 |:heavy_check_mark:   | 19034| Sentinel
 |:heavy_check_mark:   | 19035| Censure
 |:heavy_check_mark:   | 19036| Raven's Ruin

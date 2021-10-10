@@ -4,11 +4,16 @@ const GamePipeline = require('../gamepipeline.js');
 const SimpleStep = require('./simplestep.js');
 const AbilityMessage = require('../AbilityMessage.js');
 
+/** @typedef {import('../baseability')} BaseAbility */
+/** @typedef {import('../AbilityContext')} AbilityContext */
+
 class AbilityResolver extends BaseStep {
     constructor(game, ability, context) {
         super(game);
 
+        /** @type {BaseAbility} */
         this.ability = ability;
+        /** @type {AbilityContext} */
         this.context = context;
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
@@ -16,17 +21,18 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.createSnapshot()),
             new SimpleStep(game, () => this.updatePlayTypeCause()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
-            new SimpleStep(game, () => this.context.resolutionStage = 'cost'),
-            new SimpleStep(game, () => this.resolveCosts()),
-            new SimpleStep(game, () => this.waitForCostResolution()),
-            new SimpleStep(game, () => this.payCosts()),
-            new SimpleStep(game, () => this.context.resolutionStage = 'effect'),
+            new SimpleStep(game, () => this.context.resolutionStage = 'target'),
             new SimpleStep(game, () => this.choosePlayer()),
             new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
             new SimpleStep(game, () => this.checkifCondition()),
             new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
             new SimpleStep(game, () => this.resolveTargets()),
             new SimpleStep(game, () => this.waitForTargetResolution()),
+            new SimpleStep(game, () => this.context.resolutionStage = 'cost'),
+            new SimpleStep(game, () => this.resolveCosts()),
+            new SimpleStep(game, () => this.waitForCostResolution()),
+            new SimpleStep(game, () => this.payCosts()),
+            new SimpleStep(game, () => this.context.resolutionStage = 'effect'),     
             new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.postResolveAbilityUpdates()),
@@ -187,9 +193,6 @@ class AbilityResolver extends BaseStep {
             this.cancelled = true;
             if(this.ability.abilitySourceType !== 'game') {
                 this.game.addAlert('danger', '{0} cancels the resolution of {1} (costs were still paid)', this.context.player, this.context.source);
-            }
-            if(this.ability.playTypePlayed() === 'shoppin') {
-                this.ability.unpayCosts(this.context);
             }
             return;
         }
