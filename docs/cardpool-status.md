@@ -203,7 +203,7 @@
 |:heavy_check_mark:   | 03012| Surveyor's Office
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
-|                     | 03015| Holy Wheel Gun
+|:heavy_check_mark:   | 03015| Holy Wheel Gun
 |                     | 03016| Stone Idol
 |:heavy_check_mark:   | 03017| Corporeal Twist
 |:heavy_check_mark:   | 03018| Fetch
