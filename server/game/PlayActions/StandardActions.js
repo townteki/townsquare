@@ -20,7 +20,7 @@ StandardActions.putIntoPlay = function(properties, callback) {
 };
 
 StandardActions.putIntoPlayAtLocation = function(targetLocationUuid, callback) {
-    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { target: targetLocationUuid }), callback);
+    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { targetLocationUuid }), callback);
 };
 
 StandardActions.putIntoPlayWithReduction = function(reduceAmount, minimum, callback) {
