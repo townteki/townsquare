@@ -13,7 +13,7 @@ class WagnerMemorialRanch extends DeedCard {
             title: 'React: Wagner Memorial Ranch',
             triggerBefore: true,
             when: {
-                onPullForSkill: event => event.player === this.owner &&
+                onPullForSkill: event => event.player === this.controller &&
                     event.properties.source && event.properties.source.hasKeyword('gadget') &&
                     event.properties.pullingDude.gamelocation === this.uuid
             },

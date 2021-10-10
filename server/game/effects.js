@@ -4,7 +4,6 @@ const CardTextDefinition = require('./CardTextDefinition');
 const CostReducer = require('./costreducer.js');
 const PlayableLocation = require('./playablelocation.js');
 const CannotRestriction = require('./cannotrestriction.js');
-const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
 
@@ -870,21 +869,6 @@ const Effects = {
             }
         };
     },
-    immuneTo: function(cardCondition) {
-        return {
-            apply: function(card, context) {
-                let restriction = new ImmunityRestriction(cardCondition, context.source);
-                context.immuneTo = context.immuneTo || {};
-                context.immuneTo[card.uuid] = restriction;
-                card.addAbilityRestriction(restriction);
-            },
-            unapply: function(card, context) {
-                let restriction = context.immuneTo[card.uuid];
-                card.removeAbilityRestriction(restriction);
-                delete context.immuneTo[card.uuid];
-            }
-        };
-    },
     takeControl: function(newController) {
         return {
             title: `Control taken by: ${newController.name}`,
@@ -1014,6 +998,10 @@ const Effects = {
     },
     cannotModifyHandRanks: 
         playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified'),
+    cannotIncreaseCasualties: 
+        playerOptionEffect('cannotIncreaseCasualties', 'Casualties cannot be increased'),
+    cannotDecreaseCasualties: 
+        playerOptionEffect('cannotDecreaseCasualties', 'Casualties cannot be decreased'),        
     cardsCannotLeaveDiscard:
         playerOptionEffect('cardsCannotLeaveDiscard', 'Cards cannot leave discard'),
     switchBulletBonuses:

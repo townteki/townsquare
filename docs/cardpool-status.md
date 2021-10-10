@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/498/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/500/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -727,7 +727,7 @@
 |:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
 |:heavy_check_mark:   | 19019| F1 Burch
-|                     | 19020| Taff's Distillery
+|:heavy_check_mark:   | 19020| Taff's Distillery
 |:heavy_check_mark:   | 19021| Mausoleum
 |:heavy_check_mark:   | 19022| Epitaph Branch Office
 |:heavy_check_mark:   | 19023| Buffalo Emporium
@@ -739,7 +739,7 @@
 |:heavy_check_mark:   | 19029| Devil's Six Gun
 |:heavy_check_mark:   | 19030| Forsaken Hound
 |:heavy_check_mark:   | 19031| The Bloody Star
-|                     | 19032| Cavalry Escort
+|:heavy_check_mark:   | 19032| Cavalry Escort
 |:heavy_check_mark:   | 19033| Nightmare Realm
 |:heavy_check_mark:   | 19034| Sentinel
 |:heavy_check_mark:   | 19035| Censure

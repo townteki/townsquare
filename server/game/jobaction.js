@@ -87,11 +87,23 @@ class JobAction extends CardAction {
                 return;
             }
             if(isSuccessful) {
-                this.game.addMessage('{0} job marking {1} was successful', this.card, job.mark);
-                this.onSuccess(job, this.context);
+                this.game.raiseEvent('onJobSuccessful', { 
+                    job, 
+                    ability: this, 
+                    context: this.context 
+                }, event => {
+                    this.game.addMessage('{0} job marking {1} was successful', event.ability.card, event.job.mark);
+                    event.ability.onSuccess(event.job, event.context);
+                });
             } else {
-                this.game.addMessage('{0} job marking {1} has failed', this.card, job.mark);
-                this.onFail(job, this.context);
+                this.game.raiseEvent('onJobFailed', { 
+                    job, 
+                    ability: this, 
+                    context: this.context 
+                }, event => {
+                    this.game.addMessage('{0} job marking {1} has failed', event.ability.card, event.job.mark);
+                    event.ability.onFail(event.job, event.context);
+                });
             }
         }
     }
