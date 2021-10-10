@@ -34,10 +34,13 @@ class CurlyBillBrocius extends DudeCard {
                     this.game.shootout.getPosseStat(this.controller, 'bounty') > this.game.shootout.getPosseStat(this.controller.getOpponent(), 'bounty')
             },
             cost: ability.costs.bootSelf(),
-            message: context => 
-                this.game.addMessage('{0} uses {1} to increase {2}\'s casualties by 2', context.player, this, context.player.getOpponent()),
             handler: context => {
-                context.player.getOpponent().modifyCasualties(2);
+                this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                    player: context.player.getOpponent(), 
+                    amount: 2
+                }), context).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to increase {2}\'s casualties by 2', context.player, this, context.player.getOpponent());
+                });                   
             }
         });
     }

@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
@@ -6,7 +7,7 @@ class BassReeves extends DudeCard {
         this.persistentEffect({
             location: 'any',
             targetController: 'current',
-            condition: () => this.controller.outfit.gang_code === 'lawdogs', 
+            condition: () => this.controller.getFaction() === Factions.LawDogs, 
             effect: ability.effects.reduceSelfCost('any', () => this.getNumOfWantedDudes())
         });
 

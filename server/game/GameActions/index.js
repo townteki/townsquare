@@ -6,10 +6,12 @@ const BootCard = require('./BootCard');
 const CallOut = require('./CallOut');
 const CancelEffects = require('./CancelEffects');
 const ChooseGameAction = require('./ChooseGameAction');
+const DecreaseCasualties = require('./DecreaseCasualties');
 const DiscardCard = require('./DiscardCard');
 const DiscardTopCards = require('./DiscardTopCards');
 const DrawCards = require('./DrawCards');
 const GainGhostRock = require('./GainGhostRock');
+const IncreaseCasualties = require('./IncreaseCasualties');
 const JoinPosse = require('./JoinPosse');
 const LookAtDeck = require('./LookAtDeck');
 const LookAtHand = require('./LookAtHand');
@@ -67,6 +69,15 @@ const GameActions = {
         context => context
     ),
     /**
+     * Decreases player casualties.
+     * 
+     * @param {*} props properties: 
+     *  - `player`: player for which casualties should be decreased
+     *  - `amount` (999): amount of casualties to be prevented (decreased). 
+     *      Default is 999 which basically means all casualties are prevented.
+     */    
+    decreaseCasualties: props => new AbilityAdapter(DecreaseCasualties, props),
+    /**
      * Discards card.
      * 
      * @param {*} props properties:
@@ -78,6 +89,14 @@ const GameActions = {
     discardTopCards: props => new AbilityAdapter(DiscardTopCards, props),
     drawCards: props => new AbilityAdapter(DrawCards, props),
     gainGhostRock: props => new AbilityAdapter(GainGhostRock, props),
+    /**
+     * Increases player casualties.
+     * 
+     * @param {*} props properties: 
+     *  - `player`: player for which casualties should be increased
+     *  - `amount` (1): amount of casualties to be increased
+     */      
+    increaseCasualties: props => new AbilityAdapter(IncreaseCasualties, props),
     /**
      * Adds dude to posse, and optionally also moves them into the shootout location.
      * 

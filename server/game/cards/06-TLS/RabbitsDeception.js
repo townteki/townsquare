@@ -20,7 +20,7 @@ class RabbitsDeception extends TechniqueCard {
                         waitingPromptTitle: 'Waiting for opponent to select dude',
                         cardCondition: card => card.controller !== this.controller && card.isParticipating(),
                         cardType: 'dude',
-                        gameAction: 'sendHome',
+                        gameAction: ['sendHome', 'boot'],
                         onSelect: (player, card) => {
                             this.game.shootout.sendHome(card, context).thenExecute(() => {
                                 this.game.addMessage('{0} uses {1} to send {2} home booted because {3} was not booted', 

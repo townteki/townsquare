@@ -189,6 +189,15 @@ const Costs = {
      */
     discardSelf: () => CostBuilders.discardFromPlay.self(),
     /**
+     * Cost that requires raising bounty on a card that matches the passed condition
+     * predicate function.
+     */
+    raiseBounty: (condition, gameAction) => CostBuilders.raiseBounty.select(condition, 'dude', gameAction),
+    /**
+     * Cost that will raise bounty on the card that initiated the ability.
+     */
+    raiseBountySelf: () => CostBuilders.raiseBounty.self(),
+    /**
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
      */
@@ -198,11 +207,6 @@ const Costs = {
             Costs.expendAction()
         ];
     },
-    /**
-     * Cost that will discard a gold from the card. Used mainly by cards
-     * having the bestow keyword.
-     */
-    discardGold: amount => CostBuilders.discardToken('gold', amount).self(),
     /**
      * Cost that will discard a fixed amount of a passed type token from the current card.
      */

@@ -35,7 +35,7 @@ class Disarm extends ActionCard {
                                     context.player, this, context.target, att);
                             });
                         }
-                        context.player.modifyCasualties(-999);
+                        this.game.resolveGameAction(GameActions.decreaseCasualties({ player: context.player }), context); 
                         if(!context.player.isCheatin()) {
                             context.ability.selectAnotherTarget(context.player, context, {
                                 activePromptTitle: 'Select your dude',

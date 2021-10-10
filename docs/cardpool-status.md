@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/491/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/500/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -70,7 +70,7 @@
 |:heavy_check_mark:   | 01056| Pony Express
 |                     | 01057| Gomorra Parish
 |                     | 01058| The Town Hall
-|                     | 01059| 1st Baptist Church
+|:heavy_check_mark:   | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
 |:heavy_check_mark:   | 01061| B & B Attorneys
 |:heavy_check_mark:   | 01062| Dead Dog Tavern
@@ -233,7 +233,7 @@
 |                     | 04016| Mayfair Family Deck
 |:heavy_check_mark:   | 04017| Puppet
 |                     | 04018| Summoning
-|                     | 04019| Ridden Down
+|:heavy_check_mark:   | 04019| Ridden Down
 |                     | 04020| Tail Between Yer Legs
 |:heavy_check_mark:   | 04021| Election Day Slaughter
 
@@ -244,7 +244,7 @@
 |                     | 05001| Oddities of Nature
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
-|                     | 05004| Desolation Row
+|:heavy_check_mark:   | 05004| Desolation Row
 |:heavy_check_mark:   | 05005| Pagliaccio
 |:heavy_check_mark:   | 05006| Valeria Batten
 |:heavy_check_mark:   | 05007| Micah Ryse (Exp.1)
@@ -428,7 +428,7 @@
 |                     | 10015| Lillian Morgan (Exp.1)
 |:heavy_check_mark:   | 10016| Samantha "Sammy" Cooke
 |                     | 10017| Sloane (Exp.1)
-|                     | 10018| Margaret Hagerty
+|:heavy_check_mark:   | 10018| Margaret Hagerty
 |                     | 10019| The Wretched
 |:heavy_check_mark:   | 10020| The Extra Bet
 |                     | 10021| Morgan Mining Company
@@ -590,7 +590,7 @@
 |:heavy_check_mark:   | 15005| Maggie Harris
 |                     | 15006| Emilia Vivirias
 |                     | 15007| "Professor" Duncan
-|                     | 15008| The Highbinder Hotel
+|:heavy_check_mark:   | 15008| The Highbinder Hotel
 |:heavy_check_mark:   | 15009| 2nd Bank Of Gomorra
 |:heavy_check_mark:   | 15010| High Stakes Haven
 |:heavy_check_mark:   | 15011| Culpability Scientizer
@@ -727,7 +727,7 @@
 |:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
 |                     | 19019| F1 Burch
-|                     | 19020| Taff's Distillery
+|:heavy_check_mark:   | 19020| Taff's Distillery
 |:heavy_check_mark:   | 19021| Mausoleum
 |:heavy_check_mark:   | 19022| Epitaph Branch Office
 |:heavy_check_mark:   | 19023| Buffalo Emporium
@@ -737,13 +737,13 @@
 |:heavy_check_mark:   | 19027| Bilton Collection Agency
 |:heavy_check_mark:   | 19028| Decimator Array
 |:heavy_check_mark:   | 19029| Devil's Six Gun
-|                     | 19030| Forsaken Hound
+|:heavy_check_mark:   | 19030| Forsaken Hound
 |:heavy_check_mark:   | 19031| The Bloody Star
-|                     | 19032| Cavalry Escort
+|:heavy_check_mark:   | 19032| Cavalry Escort
 |                     | 19033| Nightmare Realm
 |:heavy_check_mark:   | 19034| Sentinel
 |:heavy_check_mark:   | 19035| Censure
-|                     | 19036| Raven's Ruin
+|:heavy_check_mark:   | 19036| Raven's Ruin
 |:heavy_check_mark:   | 19037| Remedy
 |:heavy_check_mark:   | 19038| Intercession
 |:heavy_check_mark:   | 19039| Disarm

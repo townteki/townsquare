@@ -80,6 +80,13 @@ class Player extends Spectator {
         this.currentCasualties = value;
     }
 
+    getFaction() {
+        if(!this.outfit) {
+            return '';
+        }
+        return this.outfit.gang_code;
+    }
+
     modifyCasualties(amount) {
         this.currentCasualties += amount;
     }
@@ -400,8 +407,9 @@ class Player extends Spectator {
             promptTitle: updatedOptions.title,
             numCards: number,
             multiSelect: true,
-            activePromptTitle: updatedOptions.activePromptTitle || 'Select a card to discard',
-            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
+            activePromptTitle: updatedOptions.activePromptTitle || 
+                number > 1 ? 'Select cards to discard' : 'Select a card to discard',
+            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
             cardCondition: card => card.location === 'hand' && card.controller === this,
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
@@ -945,7 +953,7 @@ class Player extends Spectator {
         }
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && 
-            (playingType === 'shoppin' || playingType === 'ability') &&
+            ['shoppin', 'ability', 'play'].includes(playingType) &&
             !attachment.doesNotHaveToBeInvented()) {
             let scientist = defaultScientist || 
                 (playingType === 'shoppin' && !attachment.isImprovement() ? card : null);
@@ -1228,7 +1236,7 @@ class Player extends Spectator {
             }
         });
         this.game.queueSimpleStep(() => {
-            const outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
+            let outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
             this.locations = this.locations.filter(loc => loc !== gameLocation && !loc.isOutOfTown());
             if(!card.isOutOfTown()) {
                 const orderedLocations = this.locations.sort((a, b) => {
@@ -1255,6 +1263,8 @@ class Player extends Spectator {
                         }
                     }
                 }
+            } else {
+                outOfTownLocations = outOfTownLocations.filter(ootLoc => ootLoc !== gameLocation);
             }
             this.locations = this.locations.concat(outOfTownLocations);
         });
@@ -1739,11 +1749,17 @@ class Player extends Spectator {
         return this.game.resolveGameAction(GameActions.bootCard({ card }), this.createContext(context));
     }
 
-    bootCards(cards, context) {
+    bootCards(cards, context, callback = () => true) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.bootCard({ card }))
         );
-        return this.game.resolveGameAction(action, this.createContext(context));
+        let event = this.game.resolveGameAction(action, this.createContext(context));
+        event.thenExecute(() => {
+            let cards = event.childEvents.map(childEvent => childEvent.card);
+            callback(cards);
+        });
+
+        return event;
     }
 
     unbootCard(card, options = {}, context) {
@@ -1853,6 +1869,14 @@ class Player extends Spectator {
     cannotModifyHandRanks(context = {}) {
         return this.options.contains('cannotModifyHandRanks', context);
     }
+
+    cannotIncreaseCasualties(context = {}) {
+        return this.options.contains('cannotIncreaseCasualties', context);
+    }
+
+    cannotDecreaseCasualties(context = {}) {
+        return this.options.contains('cannotDecreaseCasualties', context);
+    }    
 
     cardsCannotLeaveDiscard(context = {}) {
         return this.options.contains('cardsCannotLeaveDiscard', context);

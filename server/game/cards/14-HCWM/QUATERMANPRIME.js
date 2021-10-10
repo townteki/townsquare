@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class QUATERMANPRIME extends DudeCard {
     setupCardAbilities(ability) {
@@ -17,11 +18,15 @@ class QUATERMANPRIME extends DudeCard {
             when: {
                 onDrawHandsRevealed: event => event.shootout && this.isParticipating()
             },
-            handler: () => {
+            handler: context => {
                 this.game.getPlayers().forEach(player => {
                     if(player.isCheatin()) {
-                        player.modifyCasualties(1);
-                        this.game.addMessage('{0} will suffer additional casualty thanks to {1}', player, this);
+                        this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                            player: player, 
+                            amount: 1
+                        }), context).thenExecute(() => {
+                            this.game.addMessage('{0} will suffer additional casualty thanks to {1}', player, this);
+                        });                        
                     }
                 });
             }

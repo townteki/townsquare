@@ -43,14 +43,16 @@ class DrawHandPrompt extends UiPrompt {
                 buttons: [
                     { arg: 'redraw', text: 'Done' }
                 ],
-                selectCard: true
+                selectCard: true,
+                popupStayOpen: true
             };
         } 
         return {
             menuTitle: 'Reveal draw hand?',
             buttons: [
                 { arg: 'revealdraw', text: 'Ready' }
-            ]
+            ],
+            popupStayOpen: true
         };
     }
 

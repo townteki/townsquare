@@ -1,10 +1,11 @@
+const Factions = require('../../Constants/Factions.js');
 const DeedCard = require('../../deedcard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class WagnerMemorialRanch extends DeedCard {
     constructor(owner, cardData) {
         super(owner, cardData);
-        this.startingCondition = () => this.owner.outfit.gang_code === 'entrepreneurs';
+        this.startingCondition = () => this.owner.getFaction() === Factions.Entrepreneurs;
     }
 
     setupCardAbilities(ability) {
@@ -12,7 +13,7 @@ class WagnerMemorialRanch extends DeedCard {
             title: 'React: Wagner Memorial Ranch',
             triggerBefore: true,
             when: {
-                onPullForSkill: event => event.player === this.owner &&
+                onPullForSkill: event => event.player === this.controller &&
                     event.properties.source && event.properties.source.hasKeyword('gadget') &&
                     event.properties.pullingDude.gamelocation === this.uuid
             },

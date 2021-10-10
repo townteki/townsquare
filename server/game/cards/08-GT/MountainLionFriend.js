@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const GoodsCard = require('../../goodscard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
@@ -16,10 +17,13 @@ class MountainLionFriend extends GoodsCard {
                 onShootoutCasualtiesStepStarted: () => this.isParticipating()
             },
             cost: ability.costs.aceSelf(),
-            message: context => 
-                this.game.addMessage('{0} aces {1} to reduce casualties by 2', context.player, this),
             handler: context => {
-                context.player.modifyCasualties(-2);
+                this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                    player: context.player,
+                    amount: 2
+                }), context).thenExecute(() => {
+                    this.game.addMessage('{0} aces {1} to reduce casualties by 2', context.player, this);
+                });
             }
         });
     }

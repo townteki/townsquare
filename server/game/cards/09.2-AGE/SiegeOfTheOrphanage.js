@@ -1,4 +1,5 @@
 const ActionCard = require('../../actioncard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class SiegeOfTheOrphanage extends ActionCard {
     setupCardAbilities() {
@@ -28,7 +29,10 @@ class SiegeOfTheOrphanage extends ActionCard {
                     ]
                 }));
                 const eventHandler = () => {
-                    this.owner.modifyCasualties(-1);
+                    this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                        player: this.owner,
+                        amount: 1
+                    }), context);
                 };
                 this.game.on('onShootoutCasualtiesStepStarted', eventHandler);
                 this.game.once('onShootoutPhaseFinished', () => {

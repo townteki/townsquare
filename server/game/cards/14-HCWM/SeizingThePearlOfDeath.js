@@ -14,7 +14,7 @@ class SeizingThePearlOfDeath extends TechniqueCard {
                     cardCondition: card => card.location === 'play area' &&
                         card.gamelocation === context.kfDude.gamelocation,
                     cardType: 'dude',
-                    gameAction: 'sendHome',
+                    gameAction: ['sendHome', 'boot'],
                     onSelect: (player, card) => {
                         this.game.resolveGameAction(GameActions.sendHome({ card }), context).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} to send {2} home booted', player, this, card);
@@ -24,10 +24,18 @@ class SeizingThePearlOfDeath extends TechniqueCard {
                     source: this
                 });
                 if(this.game.shootout) {
-                    context.player.modifyCasualties(-1);
-                    context.player.getOpponent().modifyCasualties(1);
-                    this.game.addMessage('{0} uses {1} to reduce their casualties by 1 and increase {2}\'s casualties by 1', 
-                        context.player, this, context.player.getOpponent());
+                    this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                        player: context.player, 
+                        amount: 1
+                    }), context).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} to reduce their casualties by 1', context.player, this);
+                    });                     
+                    this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                        player: context.player.getOpponent(), 
+                        amount: 1
+                    }), context).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} to increase {2}\'s casualties by 1', context.player, this, context.player.getOpponent());
+                    });                      
                 }
                 if(!context.player.isCheatin()) {
                     this.untilEndOfRound(context.ability, ability => ({

@@ -31,7 +31,6 @@ const ChooseGRSourceAmounts = require('./gamesteps/ChooseGRSourceAmounts.js');
 const DropCommand = require('./ServerCommands/DropCommand');
 const CardVisibility = require('./CardVisibility');
 const PlainTextGameChatFormatter = require('./PlainTextGameChatFormatter');
-const GameActions = require('./GameActions');
 const TimeLimit = require('./timeLimit.js');
 const Location = require('./gamelocation.js');
 const Shootout = require('./gamesteps/shootout.js');
@@ -350,28 +349,7 @@ class Game extends EventEmitter {
             return;
         }
 
-        if(card.onClick(player)) {
-            return;
-        } 
-
-        this.defaultCardClick(player, card);
-    }
-
-    defaultCardClick(player, card) {
-        if(card.facedown || card.controller !== player) {
-            return;
-        }
-
-        let action = card.booted ?
-            GameActions.unbootCard({ card, force: true }) :
-            GameActions.bootCard({ card, force: true });
-
-        this.resolveGameAction(action).thenExecute(() => {
-            let bootStatus = card.booted ? 'boots' : 'unboots';
-            let cardFragment = card.getType() === 'outfit' ? 'their outfit card' : card;
-
-            this.addAlert('danger', '{0} {1} {2}', player, bootStatus, cardFragment);
-        });
+        card.onClick(player);
     }
 
     cardHasMenuItem(card, player, menuItem) {
@@ -537,19 +515,24 @@ class Game extends EventEmitter {
     }
 
     resolveTiebreaker(player1, player2, isForLowball = false) {
-        if(player1.rankModifier < 0) {
-            if(player2.rankModifier < 0) {
-                return { decision: 'exact tie' };
-            }
-            return isForLowball ? { winner: player2, loser: player1, decision: 'rank modifier' } : { winner: player1, loser: player2, decision: 'rank modifier' };
+        if((player1.rankModifier < 0 && player2.rankModifier < 0) ||
+            (player1.rankModifier > 0 && player2.rankModifier > 0)) {
+            return { decision: 'exact tie' };
         }
-        if(player1.rankModifier > 0) {
-            if(player2.rankModifier > 0) {
-                return { decision: 'exact tie' };
-            }
-            return isForLowball ? { winner: player1, loser: player2, decision: 'rank modifier' } : { winner: player2, loser: player1, decision: 'rank modifier' };
+        if(player1.rankModifier || player2.rankModifier) {
+            let playerLowerMod = player1.rankModifier < player2.rankModifier ? player1 : player2;
+            let playerHigherMod = player1.rankModifier < player2.rankModifier ? player2 : player1;
+            return isForLowball ? { 
+                winner: playerHigherMod, 
+                loser: playerLowerMod, 
+                decision: 'rank modifier' 
+            } : { 
+                winner: playerLowerMod, 
+                loser: playerHigherMod, 
+                decision: 'rank modifier' 
+            };
         }
-        if(!player1.getHandRank().tiebreaker) {
+        if(!player1.getHandRank().tiebreaker || !player2.getHandRank().tiebreaker) {
             return { decision: 'exact tie' };
         }
         for(let i = 0; i < player1.getHandRank().tiebreaker.length; i++) {
