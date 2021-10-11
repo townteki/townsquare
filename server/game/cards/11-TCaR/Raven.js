@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const LegendCard = require('../../legendcard.js');
 
 class Raven extends LegendCard {
@@ -12,7 +13,7 @@ class Raven extends LegendCard {
         });
 
         this.persistentEffect({
-            condition: () => this.game.currentPhase === 'sundown' &&
+            condition: () => this.game.currentPhase === PhaseNames.Sundown &&
                 this.ravenHasEnoughOccupiedDeeds(),
             match: this.owner,
             effect: ability.effects.modifyPlayerControl(1)

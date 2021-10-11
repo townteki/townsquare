@@ -12,7 +12,7 @@ const TriggeredAbility = require('./triggeredability.js');
  *           trigger the reaction when that event is fired. For example, to
  *           trigger only at the end of the shootout phase, you would do:
  *           when: {
- *               onPhaseEnded: event => event.phase === 'shootout'
+ *               onPhaseEnded: event => event.phase === PhaseNames.Shootout
  *           }
  *           Multiple events may be specified for cards that have multiple
  *           possible triggers for the same reaction.

@@ -9,7 +9,7 @@ class GatewayStation extends DeedCard {
             title: 'React: Gateway Station',
             triggerBefore: true,
             when: {
-                onDrawHandDiscarded: event => event.player === this.controller && this.game.currentPhase === PhaseNames.Gamblin
+                onDrawHandDiscarded: event => event.player === this.controller && this.game.currentPhase === PhaseNames.Gambling
             },
             cost: [
                 ability.costs.bootSelf(),

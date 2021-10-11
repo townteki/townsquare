@@ -1,4 +1,5 @@
 const ActionCard = require('../../actioncard.js');
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const GameActions = require('../../GameActions/index.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
@@ -24,7 +25,7 @@ class Belligerence extends ActionCard {
                         ability.effects.modifyInfluence(1)
                         
                     ]
-                }), 'upkeep'
+                }), PhaseNames.Upkeep
                 );
             }
         });

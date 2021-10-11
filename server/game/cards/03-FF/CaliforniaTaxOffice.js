@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DeedCard = require('../../deedcard.js');
 const GameActions = require('../../GameActions/index.js');
 
@@ -28,7 +29,7 @@ class CaliforniaTaxOffice extends DeedCard {
                                 condition: () => true,
                                 match: context.target,
                                 effect: ability.effects.modifyUpkeep(-1 * context.target.upkeep)
-                            }), 'upkeep'
+                            }), PhaseNames.Upkeep
                             );
                             this.game.addMessage('{0} decided to pay upkeep for {1} to {2}', player, context.target, this);
                         },

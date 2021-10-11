@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DeedCard = require('../../deedcard.js');
 
 class IkesPlace extends DeedCard {
@@ -24,7 +25,7 @@ class IkesPlace extends DeedCard {
                         ability.effects.setControl(0)
                         
                     ]
-                }), 'upkeep');
+                }), PhaseNames.Upkeep);
             }
         });
     }

@@ -1,4 +1,5 @@
 const ActionCard = require('../../actioncard.js');
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const GameActions = require('../../GameActions/index.js');
 
 class Coachwhip extends ActionCard {
@@ -22,7 +23,7 @@ class Coachwhip extends ActionCard {
                 if(this.game.shootout) {
                     action = 'ace';
                     this.game.resolveGameAction(GameActions.aceCard({ card: context.target }), context);
-                } else if(this.game.currentPhase === 'gambling') {
+                } else if(this.game.currentPhase === PhaseNames.Gambling) {
                     action = 'boot';
                     this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 }
