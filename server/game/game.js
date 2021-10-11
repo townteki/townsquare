@@ -156,6 +156,11 @@ class Game extends EventEmitter {
         return this.playersAndSpectators[playerName] && !this.playersAndSpectators[playerName].left;
     }
 
+    /**
+     * Returns all players in the game (not Spectators).
+     *
+     * @returns {Array.<Player>} - array of Players.
+     */    
     getPlayers() {
         return Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
     }

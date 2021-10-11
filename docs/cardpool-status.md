@@ -851,13 +851,13 @@
 |:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
-|                     | 21033| Violet Esperanza
+|:heavy_check_mark:   | 21033| Violet Esperanza
 |:heavy_check_mark:   | 21034| Curly Bill Brocius
 |:heavy_check_mark:   | 21035| Byron Decker
 |:heavy_check_mark:   | 21036| Carter Richardson
 |:heavy_check_mark:   | 21037| Valeria Batten (Exp.1)
 |:heavy_check_mark:   | 21038| Steph & Gertie's Tonsorium
-|                     | 21039| Gateway Station
+|:heavy_check_mark:   | 21039| Gateway Station
 |:heavy_check_mark:   | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
