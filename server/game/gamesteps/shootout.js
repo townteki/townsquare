@@ -192,8 +192,6 @@ class Shootout extends Phase {
         this.leader.shootoutStatus = ShootoutStatuses.None;
         this.resetModifiers();
         if(this.isJob()) {
-            this.options.jobAbility.setResult(this.jobSuccessful, this);
-            this.options.jobAbility.reset();
             if(this.cancelled) {
                 this.options.jobAbility.unpayCosts(this.options.jobAbility.context);
             } else {
@@ -205,6 +203,8 @@ class Shootout extends Phase {
                     });
                 });
             }
+            this.options.jobAbility.setResult(this.jobSuccessful, this);
+            this.options.jobAbility.reset();
         }
         this.game.endShootout(isCancel);
         let phaseName = this.isJob() ? 'Job' : 'Shootout';

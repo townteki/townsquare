@@ -286,7 +286,7 @@ class DudeCard extends DrawCard {
             this.game.resolveGameAction(GameActions.bootCard({ card: this }), context);
         }
         this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.controller.outfit.uuid, options }), context);
-        if(options.fromPosse && this.game.shootout) {
+        if(options.fromPosse && this.game.shootout && !options.isAfterJob) {
             this.game.resolveGameAction(GameActions.removeFromPosse({ card: this }), context);
         } 
     }
