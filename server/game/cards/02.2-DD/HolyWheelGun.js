@@ -3,7 +3,7 @@ const GoodsCard = require('../../goodscard.js');
 class HolyWheelGun extends GoodsCard {
     setupCardAbilities(ability) {
         this.action({
-            title: 'Holy Wheel Gun',
+            title: 'Shootout: Holy Wheel Gun',
             playType: ['shootout'],
             cost: ability.costs.bootSelf(),
             target: {
@@ -11,7 +11,13 @@ class HolyWheelGun extends GoodsCard {
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude']
             },
-            message: context => this.game.addMessage('{0} uses {1} on {2}', context.player, this, context.target),
+            message: context => {
+                let text = '{0} uses {1} to give {2} -1 bullets';
+                if(context.target.hasKeyword('abomination')) {
+                    text += ' and they have to be selected as first casualty';
+                } 
+                this.game.addMessage(text, context.player, this, context.target);
+            },
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
