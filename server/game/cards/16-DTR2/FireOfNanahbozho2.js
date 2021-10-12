@@ -36,16 +36,7 @@ class FireOfNanahbozho2 extends SpellCard {
             onSuccess: (context) => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context);
                 if(context.target.gamelocation === this.gamelocation) {
-                    this.game.promptWithMenu(context.player, this, {
-                        activePrompt: {
-                            menuTitle: 'Make another play',
-                            buttons: [
-                                { text: 'Done', method: 'done' }
-                            ],
-                            promptTitle: this.title
-                        },
-                        source: this
-                    });
+                    this.game.makePlayOutOfOrder(context.player, this, 'Make another play');
                 }
             },
             source: this
@@ -55,10 +46,6 @@ class FireOfNanahbozho2 extends SpellCard {
     isAffectedByFire(card) {
         const effects = this.game.effectEngine.getAppliedEffectsOnCard(card);
         return effects && effects.some(effect => effect.source && ['25257', '10033'].includes(effect.source.code));
-    }
-
-    done() {
-        return true;
     }
 }
 

@@ -875,13 +875,23 @@ class Game extends EventEmitter {
         return this.getCurrentPlayWindowName() === 'shootout plays' || this.getCurrentPlayWindowName() === 'shootout resolution';
     }
 
+    makePlayOutOfOrder(player, card, title) {
+        if(this.currentPlayWindow) {
+            this.currentPlayWindow.makePlayOutOfOrder(player, card, title);
+        }        
+    }
+
     markActionAsTaken(context) {
         if(this.currentPlayWindow) {
-            if(this.currentPlayWindow.currentPlayer !== context.player) {
-                this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.getCurrentPlayWindowName());
-            }
-            if(context.ability) {
-                this.currentPlayWindow.markActionAsTaken(context.player);
+            if(!this.currentPlayWindow.doNotMarkActionAsTaken) {
+                if(this.currentPlayWindow.currentPlayer !== context.player) {
+                    this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.getCurrentPlayWindowName());
+                }
+                if(context.ability) {
+                    this.currentPlayWindow.markActionAsTaken(context.player);
+                }
+            } else {
+                this.currentPlayWindow.onMakePlayDone();
             }
         } else if(this.currentPhase !== 'setup' || this.hasOpenReactionWindow()) {
             this.addAlert('danger', '{0} uses {1} outside of a play window', context.player, context.source);
