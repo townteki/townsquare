@@ -6,6 +6,7 @@ const NullEvent = require('./NullEvent.js');
 const SpellCard = require('./spellcard.js');
 const ActionCard = require('./actioncard.js');
 const AbilityDsl = require('./abilitydsl.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -194,7 +195,7 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Move',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && !this.booted,
+            condition: () => this.game.currentPhase === PhaseNames.HighNoon && !this.booted,
             target: { cardType: 'location' },
             targetController: 'current',
             actionContext: { card: this, gameAction: 'moveDude' },
@@ -213,7 +214,7 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Call Out',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && !this.booted,
+            condition: () => this.game.currentPhase === PhaseNames.HighNoon && !this.booted,
             target: {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && this.gamelocation &&
@@ -238,7 +239,7 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Trade',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && 
+            condition: () => this.game.currentPhase === PhaseNames.HighNoon && 
                 this.isInControlledLocation() &&
                 this.hasAttachmentForTrading(),
             target: {

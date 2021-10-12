@@ -1,10 +1,11 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DudeCard = require('../../dudecard.js');
 
 class JimmyTheSaint extends DudeCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onPhaseStarted: event => event.phase === 'upkeep' &&
+                onPhaseStarted: event => event.phase === PhaseNames.Upkeep &&
                     this.isAtDeed() && 
                     this.controller === this.locationCard.controller
             },
@@ -12,7 +13,7 @@ class JimmyTheSaint extends DudeCard {
                 this.untilEndOfPhase(context.ability, ability => ({
                     match: this.locationCard,
                     effect: ability.effects.productionToBeReceivedBy(context.player)
-                }), 'upkeep');             
+                }), PhaseNames.Upkeep);             
             }
         });
 

@@ -1,3 +1,4 @@
+const PhaseNames = require('../Constants/PhaseNames');
 const PutIntoPlayCardAction = require('./PutIntoPlayCardAction');
 
 class ShoppinCardAction extends PutIntoPlayCardAction {
@@ -19,7 +20,7 @@ class ShoppinCardAction extends PutIntoPlayCardAction {
         if(!super.meetsRequirements(context)) {
             return false;
         }
-        return context.game.currentPhase === 'high noon';
+        return context.game.currentPhase === PhaseNames.HighNoon;
     }
 }
 

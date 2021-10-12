@@ -1,5 +1,6 @@
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
@@ -113,7 +114,7 @@ class DrawCard extends BaseCard {
                 if(this.getType() === 'action') {
                     return menu.concat(discardItem);
                 }
-                if(this.game.currentPhase === 'high noon') {
+                if(this.game.currentPhase === PhaseNames.HighNoon) {
                     menu = menu.concat({ method: 'playCard', text: 'Shoppin\' play', arg: 'shoppin' });
                 }
                 if(this.abilities.playActions.length > 0) {

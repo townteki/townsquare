@@ -1,10 +1,11 @@
+const PhaseNames = require('../Constants/PhaseNames.js');
 const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const UpkeepPrompt = require('./upkeep/upkeepprompt.js');
 
 class UpkeepPhase extends Phase {
     constructor(game) {
-        super(game, 'upkeep');
+        super(game, PhaseNames.Upkeep);
         this.initialise([
             new SimpleStep(game, () => this.receiveProduction()),
             new SimpleStep(game, () => game.raiseEvent('onProductionReceived')),
