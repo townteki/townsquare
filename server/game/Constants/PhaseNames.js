@@ -1,5 +1,5 @@
 const PhaseNames = {
-    Gamblin: 'gambling',
+    Gambling: 'gambling',
     Upkeep: 'upkeep',
     HighNoon: 'high noon',
     Sundown: 'sundown',

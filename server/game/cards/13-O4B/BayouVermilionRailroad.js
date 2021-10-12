@@ -1,5 +1,6 @@
 const OutfitCard = require('../../outfitcard.js');
 const GameActions = require('../../GameActions/index.js');
+const PhaseNames = require('../../Constants/PhaseNames.js');
 
 class BayouVermilionRailroad extends OutfitCard {
     setupCardAbilities(ability) {
@@ -32,7 +33,7 @@ class BayouVermilionRailroad extends OutfitCard {
                                 ability.effects.setProduction(0),
                                 ability.effects.setControl(0)
                             ]
-                        }), 'upkeep');
+                        }), PhaseNames.Upkeep);
                         this.game.addMessage('{0} uses {1} to reduce {2}\'s CP and production to 0 until after Upkeep', context.player, this, context.target.locationCard);
                     }
                 });
