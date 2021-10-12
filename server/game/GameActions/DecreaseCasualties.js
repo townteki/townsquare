@@ -5,12 +5,13 @@ class DecreaseCasualties extends GameAction {
         super('decreaseCasualties');
     }
 
-    canChangeGameState({ player }) {
-        return !!player.game.shootout;
+    canChangeGameState({ player, context }) {
+        return !!player.game.shootout &&
+            !player.cannotDecreaseCasualties(context);
     }
 
-    createEvent({ player, amount = 999 }) {
-        return this.event('onPlayerCasualtiesDecreased', { player, amount }, event => {
+    createEvent({ player, amount = 999, context }) {
+        return this.event('onPlayerCasualtiesDecreased', { player, amount, context }, event => {
             event.player.modifyCasualties(-event.amount);
         });
     }

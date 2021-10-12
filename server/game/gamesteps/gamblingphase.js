@@ -2,10 +2,11 @@ const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const CheatingResolutionPrompt = require('./gambling/cheatingresolutionprompt.js');
 const DrawHandPrompt = require('./shootout/drawhandprompt.js');
+const PhaseNames = require('../Constants/PhaseNames.js');
 
 class GamblingPhase extends Phase {
     constructor(game) {
-        super(game, 'gambling');
+        super(game, PhaseNames.Gambling);
 
         this.lowballPot = 0;
 

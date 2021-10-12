@@ -21,6 +21,7 @@ const GhostRockSource = require('./GhostRockSource.js');
 const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -317,7 +318,7 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult('reveals', this.game.currentPhase === 'gambling');
+        this.determineHandResult('reveals', this.game.currentPhase === PhaseNames.Gambling);
     }
 
     determineHandResult(handResultText = 'reveals', doLowest = false) {
@@ -541,15 +542,15 @@ class Player extends Spectator {
         }
     }
 
-    getCostReduction(playingType, card) {
-        let matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card));
+    getCostReduction(playingType, card, context) {
+        let matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card, context));
         let reduction = matchingReducers.reduce((memo, reducer) => reducer.getAmount(card) + memo, 0);
         return reduction;
     }
 
-    getReducedCost(playingType, card) {
+    getReducedCost(playingType, card, context) {
         let baseCost = this.getBaseCost(playingType, card);
-        let reducedCost = baseCost - this.getCostReduction(playingType, card);
+        let reducedCost = baseCost - this.getCostReduction(playingType, card, context);
         return Math.max(reducedCost, card.getMinCost());
     }
 
@@ -576,8 +577,8 @@ class Player extends Spectator {
         return validSources.reduce((sum, source) => sum + source.ghostrock, 0);
     }
 
-    markUsedReducers(playingType, card) {
-        var matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card));
+    markUsedReducers(playingType, card, context) {
+        var matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card, context));
         for(let reducer of matchingReducers) {
             reducer.markUsed();
             if(reducer.isExpired()) {
@@ -1869,6 +1870,14 @@ class Player extends Spectator {
     cannotModifyHandRanks(context = {}) {
         return this.options.contains('cannotModifyHandRanks', context);
     }
+
+    cannotIncreaseCasualties(context = {}) {
+        return this.options.contains('cannotIncreaseCasualties', context);
+    }
+
+    cannotDecreaseCasualties(context = {}) {
+        return this.options.contains('cannotDecreaseCasualties', context);
+    }    
 
     cardsCannotLeaveDiscard(context = {}) {
         return this.options.contains('cardsCannotLeaveDiscard', context);

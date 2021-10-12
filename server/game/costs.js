@@ -227,7 +227,7 @@ const Costs = {
                 if(context.cardToUpgrade) {
                     return true;
                 }
-                let reducedCost = context.player.getReducedCost(playingType, context.source);
+                let reducedCost = context.player.getReducedCost(playingType, context.source, context);
                 return context.player.getSpendableGhostRock({ playingType: playingType, context: context }) >= reducedCost;
             },
             pay: function(context) {
@@ -236,14 +236,14 @@ const Costs = {
                 }
                 context.usedGRSources = context.usedGRSources || {};
                 context.usedReducers = context.usedReducers || {};
-                context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
+                context.costs.ghostrock = context.player.getReducedCost(playingType, context.source, context);
                 context.game.spendGhostRock({ 
                     amount: context.costs.ghostrock, 
                     player: context.player, 
                     playingType: playingType, 
                     context: context 
                 }, grSources => context.usedGRSources[context.source.uuid] = grSources);
-                context.usedReducers[context.source.uuid] = context.player.markUsedReducers(playingType, context.source);
+                context.usedReducers[context.source.uuid] = context.player.markUsedReducers(playingType, context.source, context);
             },
             unpay: function(context) {
                 context.usedReducers[context.source.uuid].forEach(reducer => {
@@ -264,12 +264,20 @@ const Costs = {
     },
     /**
      * Cost in which the player must pay a fixed, non-reduceable amount of ghost rock.
-     * @param {number} amount
-     * @param {boolean} toOpponent - Ghost rock should be played to opponent instead of bank
+     * @param {number | Function} amountOrFunc - amount of ghost rock that must be paid
+     * @param {boolean} toOpponent - Ghost rock should be paid to opponent instead of bank
+     * @param {number | Function} minAmount - minimum amount that will be required to pay this cost
      */
-    payGhostRock: function(amount, toOpponent) {
+    payGhostRock: function(amountOrFunc, toOpponent, minAmount) {
         return {
             canPay: function(context) {
+                let amount = typeof(minAmount) === 'function' ? minAmount(context) : minAmount;
+                if(amount === null || amount === undefined) {
+                    amount = typeof(amountOrFunc) === 'function' ? amountOrFunc(context) : amountOrFunc;
+                }
+                if(isNaN(amount)) {
+                    return false;
+                }
                 return context.player.getSpendableGhostRock({ 
                     player: context.player, 
                     playingType: 'ability', 
@@ -278,6 +286,9 @@ const Costs = {
                 }) >= amount;
             },
             pay: function(context) {
+                context.usedGRSources = context.usedGRSources || {};
+                const amount = typeof(amountOrFunc) === 'function' ? amountOrFunc(context) : amountOrFunc;
+                context.grCost = amount;
                 if(toOpponent) {
                     context.game.transferGhostRock({
                         from: context.player,
@@ -286,11 +297,26 @@ const Costs = {
                     });                    
                 } else {
                     context.game.spendGhostRock({ 
-                        amount: amount, 
+                        amount: amount,
                         player: context.player, 
                         source: context.source, 
-                        context: context 
-                    });
+                        context: context
+                    }, grSources => context.usedGRSources[context.source.uuid] = grSources);
+                }
+            },
+            unpay: function(context) {
+                if(toOpponent) {
+                    context.game.transferGhostRock({
+                        from: context.player.getOpponent(),
+                        to: context.player,
+                        amount: context.grCost
+                    });                    
+                } else {
+                    if(context.usedGRSources[context.source.uuid]) {
+                        context.usedGRSources[context.source.uuid].forEach(grSource => 
+                            grSource.source.modifyGhostRock(grSource.amount));
+                        delete context.usedGRSources[context.source.uuid];
+                    }
                 }
             }
         };
@@ -303,7 +329,7 @@ const Costs = {
     payXGhostRock: function(minFunc, maxFunc, playingType = 'play', opponentFunc) {
         return {
             canPay: function(context) {
-                let reduction = context.player.getCostReduction(playingType, context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source, context);
                 let opponentObj = opponentFunc && opponentFunc(context);
 
                 if(!opponentObj) {
@@ -312,7 +338,7 @@ const Costs = {
                 return opponentObj.getSpendableGhostRock({ playingType: playingType, context: context }) >= (minFunc(context) - reduction);
             },
             resolve: function(context, result = { resolved: false }) {
-                let reduction = context.player.getCostReduction(playingType, context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source, context);
                 let opponentObj = opponentFunc && opponentFunc(context);
                 let player = opponentObj || context.player;
                 let ghostrock = player.getSpendableGhostRock({ playingType: playingType, context: context });
@@ -333,7 +359,7 @@ const Costs = {
                     playingType: playingType, 
                     context: context 
                 });
-                context.player.markUsedReducers(playingType, context.source);
+                context.player.markUsedReducers(playingType, context.source, context);
             }
         };
     }

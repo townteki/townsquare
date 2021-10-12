@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/498/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/509/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -203,7 +203,7 @@
 |:heavy_check_mark:   | 03012| Surveyor's Office
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
-|                     | 03015| Holy Wheel Gun
+|:heavy_check_mark:   | 03015| Holy Wheel Gun
 |                     | 03016| Stone Idol
 |:heavy_check_mark:   | 03017| Corporeal Twist
 |:heavy_check_mark:   | 03018| Fetch
@@ -714,11 +714,11 @@
 |:heavy_check_mark:   | 19004| Raven
 |:heavy_check_mark:   | 19005| Wang Men Wu
 |:heavy_check_mark:   | 19006| Charging Bear
-|                     | 19007| Fears No Owls
-|                     | 19008| Black Owl
+|:heavy_check_mark:   | 19007| Fears No Owls
+|:heavy_check_mark:   | 19008| Black Owl
 |:heavy_check_mark:   | 19009| Zeb Whateley-Dupont
 |:heavy_check_mark:   | 19010| Rosenbaum's Golem
-|                     | 19011| Stewart Davidson
+|:heavy_check_mark:   | 19011| Stewart Davidson
 |:heavy_check_mark:   | 19012| Sheriff Eli Waters
 |:heavy_check_mark:   | 19013| Adrián Vallejo
 |:heavy_check_mark:   | 19014| Prof. Aloysius Roe
@@ -726,8 +726,8 @@
 |:heavy_check_mark:   | 19016| Morgan Lash
 |:heavy_check_mark:   | 19017| Johnny Brocklehurst
 |:heavy_check_mark:   | 19018| Agent Provocateur
-|                     | 19019| F1 Burch
-|                     | 19020| Taff's Distillery
+|:heavy_check_mark:   | 19019| F1 Burch
+|:heavy_check_mark:   | 19020| Taff's Distillery
 |:heavy_check_mark:   | 19021| Mausoleum
 |:heavy_check_mark:   | 19022| Epitaph Branch Office
 |:heavy_check_mark:   | 19023| Buffalo Emporium
@@ -739,8 +739,8 @@
 |:heavy_check_mark:   | 19029| Devil's Six Gun
 |:heavy_check_mark:   | 19030| Forsaken Hound
 |:heavy_check_mark:   | 19031| The Bloody Star
-|                     | 19032| Cavalry Escort
-|                     | 19033| Nightmare Realm
+|:heavy_check_mark:   | 19032| Cavalry Escort
+|:heavy_check_mark:   | 19033| Nightmare Realm
 |:heavy_check_mark:   | 19034| Sentinel
 |:heavy_check_mark:   | 19035| Censure
 |:heavy_check_mark:   | 19036| Raven's Ruin
@@ -748,10 +748,10 @@
 |:heavy_check_mark:   | 19038| Intercession
 |:heavy_check_mark:   | 19039| Disarm
 |:heavy_check_mark:   | 19040| Grim Servant O' Death
-|                     | 19041| Behold White Bull
+|:heavy_check_mark:   | 19041| Behold White Bull
 |:heavy_check_mark:   | 19042| You Had ONE Job!
 |:heavy_check_mark:   | 19043| Friends in High Places
-|                     | 19044| Shan Fan Showdown!
+|:heavy_check_mark:   | 19044| Shan Fan Showdown!
 |:heavy_check_mark:   | 19045| The Winning Agenda
 
 ## `12-2T2D` Too Tough to Die
@@ -851,13 +851,13 @@
 |:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
-|                     | 21033| Violet Esperanza
+|:heavy_check_mark:   | 21033| Violet Esperanza
 |:heavy_check_mark:   | 21034| Curly Bill Brocius
 |:heavy_check_mark:   | 21035| Byron Decker
 |:heavy_check_mark:   | 21036| Carter Richardson
 |:heavy_check_mark:   | 21037| Valeria Batten (Exp.1)
 |:heavy_check_mark:   | 21038| Steph & Gertie's Tonsorium
-|                     | 21039| Gateway Station
+|:heavy_check_mark:   | 21039| Gateway Station
 |:heavy_check_mark:   | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
@@ -926,7 +926,7 @@
 |                     | 22044| Bolts o' Doom
 |                     | 22045| Lethargy
 |                     | 22046| Mind Twist
-|                     | 22047| Dies Irae
+|:heavy_check_mark:   | 22047| Dies Irae
 |                     | 22048| Babble On
 |                     | 22049| Ancestor's Reproach
 |                     | 22050| Secret Paths

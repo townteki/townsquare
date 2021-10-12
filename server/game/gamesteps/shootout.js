@@ -10,11 +10,12 @@ const ShootoutPosse = require('./shootout/shootoutposse.js');
 const GameActions = require('../GameActions/index.js');
 const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 const PlayWindow = require('./playwindow.js');
+const PhaseNames = require('../Constants/PhaseNames.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
     constructor(game, phase, leader, mark, options = { isJob: false }) {
-        super(game, 'Shootout');
+        super(game, PhaseNames.Shootout);
         this.round = 0;
         this.highNoonPhase = phase;
         this.options = options;
@@ -191,8 +192,6 @@ class Shootout extends Phase {
         this.leader.shootoutStatus = ShootoutStatuses.None;
         this.resetModifiers();
         if(this.isJob()) {
-            this.options.jobAbility.setResult(this.jobSuccessful, this);
-            this.options.jobAbility.reset();
             if(this.cancelled) {
                 this.options.jobAbility.unpayCosts(this.options.jobAbility.context);
             } else {
@@ -204,6 +203,8 @@ class Shootout extends Phase {
                     });
                 });
             }
+            this.options.jobAbility.setResult(this.jobSuccessful, this);
+            this.options.jobAbility.reset();
         }
         this.game.endShootout(isCancel);
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
