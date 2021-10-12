@@ -7,13 +7,11 @@ class JoinPosse extends GameAction {
 
     canChangeGameState({ card, options = {} }) {
         let params = this.getDefaultOptions(options);
-        const reqsToJoin = card.requirementsToJoinPosse(params.allowBooted);
         return (
             card.game.shootout &&
             card.getType() === 'dude' &&
             ['outfit', 'play area'].includes(card.location) &&
-            (params.isCardEffect || !params.moveToPosse || reqsToJoin.canJoin) &&
-            (!reqsToJoin.fromAdjacent || !reqsToJoin.needToBoot || !card.cannotBootToJoin())
+            (params.isCardEffect || !params.moveToPosse || card.requirementsToJoinPosse(params.allowBooted).canJoin)
         );
     }
 

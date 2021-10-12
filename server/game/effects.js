@@ -1104,8 +1104,8 @@ const Effects = {
         optionEffect('canMoveWithoutBooting', 'Can Move without Booting'),
     canJoinWithoutBooting:
         optionEffect('canJoinWithoutBooting', 'Can Join without Booting'),
-    cannotBootToJoin:
-        optionEffect('cannotBootToJoin', 'Cannot Join when Booting is required'),        
+    cannotBootToJoinFromAdjacent:
+        optionEffect('cannotBootToJoinFromAdjacent', 'Cannot Join when Booting is required'),        
     canJoinWithoutMoving:
         optionEffect('canJoinWithoutMoving', 'Can Join without Moving'),
     canJoinWhileBooted:

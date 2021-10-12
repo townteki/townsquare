@@ -6,7 +6,7 @@ class BulletproofVest extends GoodsCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.whileAttached({
-            effect: ability.effects.cannotBootToJoin()
+            effect: ability.effects.cannotBootToJoinFromAdjacent()
         });
         
         this.action({

@@ -6,6 +6,7 @@ class MagnumOpusTenebri extends GoodsCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.persistentEffect({
+            location: 'any',
             condition: () => true,
             match: card => card.location === 'play area' && card.hasKeyword('huckster'),
             effect: ability.effects.canPerformSkillUsing('huckster', card => card === this)
@@ -25,12 +26,12 @@ class MagnumOpusTenebri extends GoodsCard {
                     location: 'play area', 
                     controller: 'opponent', 
                     condition: (card, context) => 
-                        card.bullets < this.game.shootout.getPosseStat(context.player, 'bullets') 
+                        card.value < this.game.shootout.getPosseStat(context.player, 'bullets') 
                 },
                 cardType: ['dude']
             },
             handler: context => {
-                const difference = this.game.shootout.getPosseStat(context.player, 'bullets') - context.target.bullets;
+                const difference = this.game.shootout.getPosseStat(context.player, 'bullets') - context.target.value;
                 if(difference < 4) {
                     this.game.shootout.sendHome(context.target, context, () => {
                         this.game.addMessage('{0} uses {1} and boots {2} to send {3} home booted', 
