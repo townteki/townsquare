@@ -443,6 +443,10 @@ class DudeCard extends DrawCard {
         return this.options.contains('canJoinWithoutMoving', this);
     }
 
+    cannotBootToJoin() {
+        return this.options.contains('cannotBootToJoin', this);
+    }
+
     canJoinWithoutBooting() {
         return this.options.contains('canJoinWithoutBooting', this);
     }
@@ -477,22 +481,22 @@ class DudeCard extends DrawCard {
 
     requirementsToJoinPosse(allowBooted = false) {
         if(!this.needToMoveToJoinPosse()) {
-            return { canJoin: true, needToBoot: false };
+            return { canJoin: true, needToBoot: false, fromAdjacent: false };
         }
         let shootout = this.game.shootout;
         if(!shootout) {
             return { canJoin: false };
         } 
         if(this.isAdjacent(shootout.gamelocation) && (!this.booted || allowBooted)) {
-            return { canJoin: true, needToBoot: true };
+            return { canJoin: true, needToBoot: true, fromAdjacent: true };
         }
 
         if(shootout.isJob() && shootout.belongsToLeaderPlayer(this) && (!this.booted || allowBooted)) {
             if(this.gamelocation === shootout.leader.gamelocation) {
-                return { canJoin: true, needToBoot: true };
+                return { canJoin: true, needToBoot: true, fromAdjacent: false };
             } 
             if(this.isAdjacent(shootout.leader.gamelocation)) {
-                return { canJoin: true, needToBoot: true };
+                return { canJoin: true, needToBoot: true, fromAdjacent: true };
             }         
         }
 
