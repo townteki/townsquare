@@ -38,6 +38,7 @@ const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
 const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -156,6 +157,11 @@ class Game extends EventEmitter {
         return this.playersAndSpectators[playerName] && !this.playersAndSpectators[playerName].left;
     }
 
+    /**
+     * Returns all players in the game (not Spectators).
+     *
+     * @returns {Array.<Player>} - array of Players.
+     */    
     getPlayers() {
         return Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
     }
@@ -1359,7 +1365,7 @@ class Game extends EventEmitter {
     }
 
     passToNextPlayer() {
-        if(this.currentPhase === 'high noon') {
+        if(this.currentPhase === PhaseNames.HighNoon) {
             this.pipeline.getCurrentStep().passToNextPlayer();
         }
     }

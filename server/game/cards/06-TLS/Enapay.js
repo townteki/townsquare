@@ -1,10 +1,11 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DudeCard = require('../../dudecard.js');
 
 class Enapay extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.game.currentPhase === 'high noon' ||
-                this.game.currentPhase === 'shootout',
+            condition: () => this.game.currentPhase === PhaseNames.HighNoon ||
+                this.game.currentPhase === PhaseNames.Shootout,
             match: this,
             effect: ability.effects.modifyInfluence(2)
         });
