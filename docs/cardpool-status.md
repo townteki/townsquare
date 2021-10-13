@@ -447,7 +447,7 @@
 |                     | 10034| Civil War
 |:heavy_check_mark:   | 10035| Rabbit's Deception
 |                     | 10036| A Hero's Passing
-|                     | 10037| Tummy Twister
+|:heavy_check_mark:   | 10037| Tummy Twister
 |                     | 10038| Backroom Deals
 |:heavy_check_mark:   | 10039| Forced Quarantine
 |                     | 10040| Devil's Joker (Red)
