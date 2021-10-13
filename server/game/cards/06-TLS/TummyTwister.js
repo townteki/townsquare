@@ -14,8 +14,8 @@ class TummyTwister extends ActionCard {
             },
             handler: context => {
                 const saveDeed = this.parent;
-                context.player.attach(this, event.card, 'ability', () => {
-                    this.game.addMessage('{0} contracts {1} at {2}', event.card, this, saveDeed);
+                context.player.attach(this, context.event.card, 'ability', () => {
+                    this.game.addMessage('{0} contracts {1} at {2}', context.event.card, this, saveDeed);
                 });
             }
         });
