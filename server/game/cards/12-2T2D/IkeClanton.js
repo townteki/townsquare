@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DudeCard = require('../../dudecard.js');
 
 class IkeClanton extends DudeCard {
@@ -17,7 +18,7 @@ class IkeClanton extends DudeCard {
                     condition: () => true,
                     match: context.target,
                     effect: ability.effects.addKeyword('rowdy')
-                }), 'upkeep'
+                }), PhaseNames.Upkeep
                 );
             }
         });

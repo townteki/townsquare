@@ -21,6 +21,7 @@ const GhostRockSource = require('./GhostRockSource.js');
 const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
@@ -317,7 +318,7 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult('reveals', this.game.currentPhase === 'gambling');
+        this.determineHandResult('reveals', this.game.currentPhase === PhaseNames.Gambling);
     }
 
     determineHandResult(handResultText = 'reveals', doLowest = false) {

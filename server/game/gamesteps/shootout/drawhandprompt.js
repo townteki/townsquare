@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames');
 const UiPrompt = require('../uiprompt');
 
 class DrawHandPrompt extends UiPrompt {
@@ -65,7 +66,7 @@ class DrawHandPrompt extends UiPrompt {
     }
 
     continue() {
-        if(this.game.currentPhase === 'gambling') {
+        if(this.game.currentPhase === PhaseNames.Gambling) {
             // in gambling phase hands are drawn in separate step before this prompt
             this.drawCounts.forEach(drawCount => {
                 drawCount.handDrawn = true;
