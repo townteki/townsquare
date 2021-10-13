@@ -33,16 +33,7 @@ class JohnnyBrocklehurst extends DudeCard {
                     },
                     source: this
                 });
-                this.game.promptWithMenu(context.player, this, {
-                    activePrompt: {
-                        menuTitle: 'Make a play',
-                        buttons: [
-                            { text: 'Done', method: 'done' }
-                        ],
-                        promptTitle: this.title
-                    },
-                    source: this
-                });   
+                this.game.makePlayOutOfOrder(context.player, this, 'Make a play');  
             }
         });
     }
@@ -54,10 +45,6 @@ class JohnnyBrocklehurst extends DudeCard {
 
     lower(player) {
         this.applyInfEffect(player, -1);
-        return true;
-    }
-
-    done() {
         return true;
     }
 

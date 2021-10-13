@@ -34,16 +34,7 @@ class OldMargesManor extends DeedCard {
                     context.player, this),
             handler: context => {
                 this.game.transferGhostRock({ from: context.target, to: this, amount: context.target.ghostrock });
-                this.game.promptWithMenu(context.player, this, {
-                    activePrompt: {
-                        menuTitle: 'Make a play',
-                        buttons: [
-                            { text: 'Done', method: 'done' }
-                        ],
-                        promptTitle: this.title
-                    },
-                    source: this
-                });                
+                this.game.makePlayOutOfOrder(context.player, this, 'Make a play');               
             }
         });
         this.action({
@@ -62,10 +53,6 @@ class OldMargesManor extends DeedCard {
             return false;
         }
         return spendParams.context.ability.isCardAbility();
-    }
-
-    done() {
-        return true;
     }
 }
 
