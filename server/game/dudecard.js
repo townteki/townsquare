@@ -444,6 +444,10 @@ class DudeCard extends DrawCard {
         return this.options.contains('canJoinWithoutMoving', this);
     }
 
+    cannotBootToJoinFromAdjacent() {
+        return this.options.contains('cannotBootToJoinFromAdjacent', this);
+    }
+
     canJoinWithoutBooting() {
         return this.options.contains('canJoinWithoutBooting', this);
     }
@@ -485,6 +489,9 @@ class DudeCard extends DrawCard {
             return { canJoin: false };
         } 
         if(this.isAdjacent(shootout.gamelocation) && (!this.booted || allowBooted)) {
+            if(this.cannotBootToJoinFromAdjacent()) {
+                return { canJoin: false };
+            }
             return { canJoin: true, needToBoot: true };
         }
 
@@ -493,6 +500,9 @@ class DudeCard extends DrawCard {
                 return { canJoin: true, needToBoot: true };
             } 
             if(this.isAdjacent(shootout.leader.gamelocation)) {
+                if(this.cannotBootToJoinFromAdjacent()) {
+                    return { canJoin: false };
+                }
                 return { canJoin: true, needToBoot: true };
             }         
         }

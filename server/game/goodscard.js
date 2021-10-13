@@ -10,12 +10,16 @@ class GoodsCard extends HeartsCard {
             return card.getType() === 'deed' || card.getType() === 'outfit';
         }
 
-        if(this.isGadget() && playingType === 'shoppin' &&
-            (!card.hasKeyword('mad scientist') || card.cannotInventGadgets())) {
+        if(card.getType() !== 'dude') {
             return false;
-        }   
+        }
 
-        return card.getType() === 'dude';
+        if(this.isGadget() && playingType === 'shoppin' &&
+            (!card.canPerformSkillOn(this) || card.cannotInventGadgets())) {
+            return false;
+        }
+
+        return true;
     }
 }
 

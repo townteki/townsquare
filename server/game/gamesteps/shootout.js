@@ -299,9 +299,9 @@ class Shootout extends Phase {
         };
     }
 
-    sendHome(card, context, options = {}) {
+    sendHome(card, context, options = {}, callback = () => true) {
         let updatedOptions = Object.assign(options, { fromPosse: true });
-        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: updatedOptions }), context);
+        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: updatedOptions }), context).thenExecute(() => callback());
     }
 
     addToPosse(dude) {

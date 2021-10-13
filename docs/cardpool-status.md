@@ -862,7 +862,7 @@
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
 |                     | 21043| Gage Export Co.
-|                     | 21044| Magnum Opus Tenebri
+|:heavy_check_mark:   | 21044| Magnum Opus Tenebri
 |:heavy_check_mark:   | 21045| Scattergun
 |                     | 21046| Adler's Needle
 |                     | 21047| Wrathful Spider
@@ -927,13 +927,13 @@
 |                     | 22045| Lethargy
 |                     | 22046| Mind Twist
 |:heavy_check_mark:   | 22047| Dies Irae
-|                     | 22048| Babble On
+|:heavy_check_mark:   | 22048| Babble On
 |                     | 22049| Ancestor's Reproach
 |                     | 22050| Secret Paths
 |:heavy_check_mark:   | 22051| Fannin' the Hammer
 |                     | 22052| Tumblebleeds!
 |                     | 22053| Takin' Cover
-|                     | 22054| Hell's Comin' With Me!
+|:heavy_check_mark:   | 22054| Hell's Comin' With Me!
 |:heavy_check_mark:   | 22055| Frontier Feud
 |:heavy_check_mark:   | 22056| Seizing the Pearl of Death
 
@@ -978,7 +978,7 @@
 |                     | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
-|                     | 23038| Bulletproof Vest
+|:heavy_check_mark:   | 23038| Bulletproof Vest
 |                     | 23039| Pale Horse
 |                     | 23040| Kinetic Accretion Actualizer
 |                     | 23041| Missed Me!
