@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DeedCard = require('../../deedcard.js');
 const GameActions = require('../../GameActions/index.js');
 
@@ -6,7 +7,7 @@ class JokersSmile extends DeedCard {
         this.traitReaction({
             when: {
                 onCardAced: event => event.card.getType() === 'joker' && 
-                    this.game.currentPhase === 'gambling' &&
+                    this.game.currentPhase === PhaseNames.Gambling &&
                     event.originalLocation === 'draw hand'
             },
             message: context =>

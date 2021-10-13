@@ -1,5 +1,6 @@
 const PublicLocations = new Set(['dead pile', 'discard pile', 'out of game', 'play area']);
 const CardAction = require('../cardaction');
+const PhaseNames = require('../Constants/PhaseNames');
 const GameActions = require('../GameActions');
 const DiscardCard = require('../GameActions/DiscardCard');
 const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
@@ -27,7 +28,7 @@ class DropCommand {
                 const moveActionProps = {
                     title: 'Move',
                     abilitySourceType: 'game',
-                    condition: () => this.game.currentPhase === 'high noon' && !this.card.booted,
+                    condition: () => this.game.currentPhase === PhaseNames.HighNoon && !this.card.booted,
                     target: {
                         cardCondition: { 
                             location: 'play area',

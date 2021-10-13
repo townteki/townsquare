@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 const HandResult = require('../../handresult.js');
@@ -7,7 +8,7 @@ class HenryMoran extends DudeCard {
         this.traitReaction({
             triggerBefore: true,
             when: {
-                onDrawHandsRevealed: () => !this.booted && this.game.currentPhase === 'gambling' &&
+                onDrawHandsRevealed: () => !this.booted && this.game.currentPhase === PhaseNames.Gambling &&
                     this.checkIfIllegal()
             },
             message: context => 

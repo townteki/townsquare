@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DudeCard = require('../../dudecard.js');
 
 class XiangFang extends DudeCard {
@@ -15,7 +16,7 @@ class XiangFang extends DudeCard {
                     this.untilEndOfPhase(context.ability, ability => ({
                         match: this.locationCard,
                         effect: ability.effects.setProduction(0)
-                    }), 'upkeep'
+                    }), PhaseNames.Upkeep
                     );
                     this.game.addMessage('{0} uses {1} to set {2}\'s production to 0', 
                         context.player, this, this.locationCard);

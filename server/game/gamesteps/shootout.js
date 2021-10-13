@@ -10,11 +10,12 @@ const ShootoutPosse = require('./shootout/shootoutposse.js');
 const GameActions = require('../GameActions/index.js');
 const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 const PlayWindow = require('./playwindow.js');
+const PhaseNames = require('../Constants/PhaseNames.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
     constructor(game, phase, leader, mark, options = { isJob: false }) {
-        super(game, 'Shootout');
+        super(game, PhaseNames.Shootout);
         this.round = 0;
         this.highNoonPhase = phase;
         this.options = options;

@@ -1,9 +1,10 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DudeCard = require('../../dudecard.js');
 
 class HiramCapatch extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.game.currentPhase === 'upkeep',
+            condition: () => this.game.currentPhase === PhaseNames.Upkeep,
             match: card => card !== this &&
                 card.location === 'play area' &&
                 card.controller === this.controller &&
