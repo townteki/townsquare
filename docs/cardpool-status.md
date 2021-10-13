@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/510/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/518/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -947,7 +947,7 @@
 |                     | 23004| Huang Li
 |                     | 23005| Arthur Dingler
 |                     | 23006| Deadwood Dick
-|                     | 23007| Al Swearengen
+|:heavy_check_mark:   | 23007| Al Swearengen
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
 |                     | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
@@ -961,7 +961,7 @@
 |                     | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
 |                     | 23020| Mimi "The Nun" O'Brien
-|                     | 23021| Sam Bass
+|:heavy_check_mark:   | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
