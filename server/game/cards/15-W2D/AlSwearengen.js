@@ -1,4 +1,4 @@
-const AbilityDsl = require('../../AbilityDsl');
+const AbilityDsl = require('../../abilitydsl');
 const DudeCard = require('../../dudecard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
