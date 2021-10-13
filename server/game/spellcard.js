@@ -19,19 +19,15 @@ class SpellCard extends HeartsCard {
             return false;
         }
         if(card.getType() === 'dude') {
-            if(card.hasKeyword('Huckster') && this.isHex()) {
-                return true;
-            } else if(card.hasKeyword('Blessed') && this.isMiracle()) {
-                return true;
-            } else if(card.hasKeyword('Shaman') && this.isSpirit()) {
-                return true;
-            }
+            return card.canPerformSkillOn(this) && !this.isTotem();
         } else if(card.isLocationCard() && this.isTotem()) {
             if(['validityCheck', 'chatcommand'].includes(playingType)) {
                 return true;
             }
             return card.controller === this.controller && 
-                this.game.getDudesAtLocation(card.gamelocation).find(dude => dude.hasKeyword('shaman') && !dude.booted);
+                this.game.getDudesAtLocation(card.gamelocation).find(dude => 
+                    dude.canPerformSkillOn(this) && !dude.booted
+                );
         }
         return false;
     }
