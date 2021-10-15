@@ -780,8 +780,8 @@
 |                     | 20020| Quincy Washburne
 |:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
 |:heavy_check_mark:   | 20022| Takahashi Jinrai
-|                     | 20023| "Handsome" Dan Deeds
-|                     | 20024| Vida Azul
+|:heavy_check_mark:   | 20023| "Handsome" Dan Deeds
+|:heavy_check_mark:   | 20024| Vida Azul
 |                     | 20025| Bartholomew P. Fountain
 |:heavy_check_mark:   | 20026| Ike Clanton
 |:heavy_check_mark:   | 20027| Frank Stillwell
