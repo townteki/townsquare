@@ -127,7 +127,7 @@
 |:heavy_check_mark:   | 01113| Sun in Yer Eyes
 |:heavy_check_mark:   | 01114| Ambush
 |:heavy_check_mark:   | 01115| Coachwhip!
-|                     | 01116| War Paint
+|:heavy_check_mark:   | 01116| War Paint
 |:heavy_check_mark:   | 01117| Bad Company
 |:heavy_check_mark:   | 01118| Hiding in the Shadows
 |:heavy_check_mark:   | 01119| Pistol Whip
