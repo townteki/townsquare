@@ -790,7 +790,7 @@
 |:heavy_check_mark:   | 20030| Virginia Ann Earp
 |:heavy_check_mark:   | 20031| Campbell & Hatch Billiard Parlor
 |:heavy_check_mark:   | 20032| Clanton Ranch
-|                     | 20033| Concordia Cemetery
+|:heavy_check_mark:   | 20033| Concordia Cemetery
 |:heavy_check_mark:   | 20034| Ike's Place
 |                     | 20035| Five Aces Gambling Hall
 |:heavy_check_mark:   | 20036| Old Washoe Club
@@ -801,7 +801,7 @@
 |                     | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
 |                     | 20043| Bedazzle
-|                     | 20044| Exultant Translocation
+|:heavy_check_mark:   | 20044| Exultant Translocation
 |:heavy_check_mark:   | 20045| Retribution
 |                     | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
