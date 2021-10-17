@@ -806,12 +806,12 @@
 |                     | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
 |:heavy_check_mark:   | 20048| Mischievous Coyote
-|                     | 20049| Murdered in Tombstone
+|:heavy_check_mark:   | 20049| Murdered in Tombstone
 |:heavy_check_mark:   | 20050| Hostile Takeover
 |                     | 20051| Jade King Stance
 |:heavy_check_mark:   | 20052| Heist
 |:heavy_check_mark:   | 20053| I'm Your Huckleberry
-|                     | 20054| Monkey Goes to the Mountain
+|:heavy_check_mark:   | 20054| Monkey Goes to the Mountain
 |:heavy_check_mark:   | 20055| Curse of Failure
 |:heavy_check_mark:   | 20056| Ricochet
 
