@@ -1581,8 +1581,10 @@ class Player extends Spectator {
         return this.locations.find(location => location.uuid === locationUuid);
     }
 
-    getDudesInLocation(locationUuid) {
-        return this.cardsInPlay.filter(card => card.getType() === 'dude' && card.gamelocation === locationUuid);
+    getDudesAtLocation(locationUuid, condition) {
+        return this.cardsInPlay.filter(card => card.getType() === 'dude' && 
+            card.gamelocation === locationUuid &&
+            condition(card));
     }
 
     createContext(context) {
