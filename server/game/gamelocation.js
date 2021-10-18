@@ -79,8 +79,9 @@ class GameLocation {
         return currentController;
     }
 
-    getDudes() {
-        return this.occupants.map(dudeUuid => this.game.findCardInPlayByUuid(dudeUuid)).filter(dude => dude);
+    getDudes(condition = () => true) {
+        return this.occupants.map(dudeUuid => 
+            this.game.findCardInPlayByUuid(dudeUuid)).filter(dude => dude && condition(dude));
     }
 
     isAdjacent(uuid) {

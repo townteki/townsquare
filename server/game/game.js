@@ -315,12 +315,12 @@ class Game extends EventEmitter {
         return gameLocation ? gameLocation.isOpponentsHome(player) : false;
     }
 
-    getDudesAtLocation(locationUuid) {
+    getDudesAtLocation(locationUuid, condition) {
         let gameLocation = this.findLocation(locationUuid);
         if(!gameLocation) {
             return [];
         }
-        return gameLocation.getDudes();
+        return gameLocation.getDudes(condition);
     }
 
     getDudesInPlay(player) {

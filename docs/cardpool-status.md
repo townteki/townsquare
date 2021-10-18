@@ -774,7 +774,7 @@
 |:heavy_check_mark:   | 20014| Papa Marias
 |                     | 20015| Skinwalker
 |                     | 20016| Tonton Macoute
-|                     | 20017| Kevin Wainwright (Exp.1)
+|:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
 |                     | 20020| Quincy Washburne
@@ -792,7 +792,7 @@
 |:heavy_check_mark:   | 20032| Clanton Ranch
 |:heavy_check_mark:   | 20033| Concordia Cemetery
 |:heavy_check_mark:   | 20034| Ike's Place
-|                     | 20035| Five Aces Gambling Hall
+|:heavy_check_mark:   | 20035| Five Aces Gambling Hall
 |:heavy_check_mark:   | 20036| Old Washoe Club
 |:heavy_check_mark:   | 20037| Quarter Horse
 |:heavy_check_mark:   | 20038| Electrostatic Pump Gun
