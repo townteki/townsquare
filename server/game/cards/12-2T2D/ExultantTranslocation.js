@@ -23,16 +23,23 @@ class ExultantTranslocation extends SpellCard {
             difficulty: 6,
             onSuccess: (context) => {
                 const originalLocation = this.gamelocation;
-                this.game.resolveGameAction(GameActions.moveDude({ 
-                    card: this.parent,
-                    targetUuid: context.target.gamelocation
-                }), context);
-                this.game.resolveGameAction(GameActions.moveDude({ 
-                    card: context.target,
-                    targetUuid: originalLocation
-                }), context);
-                this.game.addMessage('{0} uses {1} to swap locations of {2} and {3}', 
-                    context.player, this, this.parent, context.target);
+                let action = GameActions.simultaneously(
+                    [
+                        GameActions.moveDude({ 
+                            card: this.parent,
+                            targetUuid: context.target.gamelocation
+                        }),
+                        GameActions.moveDude({ 
+                            card: context.target,
+                            targetUuid: originalLocation
+                        })
+                    ]
+                );
+                this.game.resolveGameAction(action).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to swap locations of {2} and {3}', 
+                        context.player, this, this.parent, context.target);
+                });   
+                    
                 if((this.parent.booted || context.target.booted) && 
                     context.totalPullValue - 6 >= context.difficulty) {
                     context.ability.selectAnotherTarget(context.player, context, {

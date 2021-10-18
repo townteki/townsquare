@@ -5,6 +5,7 @@ class RabbitsDeception extends TechniqueCard {
         this.techniqueAction({
             title: 'Rabbit\'s Deception',
             playType: ['shootout'],
+            actionContext: { gameAction: ['sendHome', 'boot'] },
             combo: context => {
                 const oppPosse = this.game.shootout.getPosseByPlayer(context.player.getOpponent());
                 return oppPosse.getDudes(dude => dude.isStud()).length > 0;
