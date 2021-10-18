@@ -761,7 +761,7 @@
 |:heavy_check_mark:   | 20001| 108 Gracious Gifts
 |:heavy_check_mark:   | 20002| Property Is Theft
 |:heavy_check_mark:   | 20003| The Spiritual Society
-|                     | 20004| Joe Vermilion
+|:heavy_check_mark:   | 20004| Joe Vermilion
 |                     | 20005| Ying-Ssi Chieh T'ang
 |                     | 20006| E Gui
 |                     | 20007| Buskers
@@ -806,12 +806,12 @@
 |                     | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
 |:heavy_check_mark:   | 20048| Mischievous Coyote
-|                     | 20049| Murdered in Tombstone
+|:heavy_check_mark:   | 20049| Murdered in Tombstone
 |:heavy_check_mark:   | 20050| Hostile Takeover
-|                     | 20051| Jade King Stance
+|:heavy_check_mark:   | 20051| Jade King Stance
 |:heavy_check_mark:   | 20052| Heist
 |:heavy_check_mark:   | 20053| I'm Your Huckleberry
-|                     | 20054| Monkey Goes to the Mountain
+|:heavy_check_mark:   | 20054| Monkey Goes to the Mountain
 |:heavy_check_mark:   | 20055| Curse of Failure
 |:heavy_check_mark:   | 20056| Ricochet
 
