@@ -12,10 +12,11 @@ class KevinWainwrightExp1 extends DudeCard {
                 activePromptTitle: 'Select location for Kevin to move to',
                 cardCondition: { 
                     location: 'play area', 
-                    controller: 'current', 
-                    condition: card => (!this.game.shootout || this.game.shootout.shootoutLocation.uuid === card.uuid) &&
+                    controller: 'any', 
+                    condition: card => card.uuid !== this.gamelocation &&
+                        (!this.game.shootout || this.game.shootout.shootoutLocation.uuid === card.uuid) &&
                         this.game.getDudesAtLocation(card.uuid,
-                            dude => dude.hasOneOfKeywords(['abomination', 'huckster']))
+                            dude => dude.hasOneOfKeywords(['abomination', 'huckster'])).length
                 },
                 cardType: ['location']
             },
