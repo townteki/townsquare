@@ -269,7 +269,7 @@ class Shootout extends Phase {
 
     isPosseSize(player, predicate = () => false) {
         const posse = this.getPosseByPlayer(player);
-        return posse && predicate(posse.length);
+        return posse && predicate(posse.posse.length);
     }
 
     belongsToLeaderPlayer(dude) {
