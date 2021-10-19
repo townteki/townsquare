@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class NathanielTuwikaa extends DudeCard {
@@ -32,7 +33,8 @@ class NathanielTuwikaa extends DudeCard {
                 };
                 this.game.once('onShootoutPhaseStarted', eventHandler);
                 this.game.onceConditional('onCardAbilityResolved', { condition: event => event.ability === context.ability },
-                    () => this.game.removeListener('onShootoutPhaseStarted', eventHandler));            
+                    () => this.game.removeListener('onShootoutPhaseStarted', eventHandler));
+                this.game.resolveGameAction(GameActions.callOut({ caller: this, callee: context.target }), context);       
             }
         });
     }
