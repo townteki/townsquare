@@ -832,11 +832,11 @@
 |                     | 21011| Father Diamond
 |:heavy_check_mark:   | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
-|                     | 21014| Leychaa'i Youngheart
+|:heavy_check_mark:   | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
 |                     | 21016| Klah
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
-|                     | 21018| Nathaniel Tuwikaa
+|:heavy_check_mark:   | 21018| Nathaniel Tuwikaa
 |:heavy_check_mark:   | 21019| The Faceless One
 |:heavy_check_mark:   | 21020| Lorena Corbett
 |:heavy_check_mark:   | 21021| Auntie Sinister
@@ -954,7 +954,7 @@
 |                     | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
 |                     | 23013| Sifting Squirrel
-|                     | 23014| Lewis "Grizzly" Evans
+|:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
 |                     | 23015| "Professor" Duncan (Exp.1)
 |                     | 23016| Yiska
 |                     | 23017| Dr. JT Goodenough
@@ -965,7 +965,7 @@
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
-|                     | 23025| Alferd Packer
+|:heavy_check_mark:   | 23025| Alferd Packer
 |:heavy_check_mark:   | 23026| John "Aces" Radcliffe (Exp.1)
 |                     | 23027| Willa Mae MacGowan (Exp.1)
 |                     | 23028| New Varney Nosferatu
