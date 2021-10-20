@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/531/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/539/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -828,8 +828,8 @@
 |:heavy_check_mark:   | 21007| Doc Holliday
 |                     | 21008| Ke Wang
 |:heavy_check_mark:   | 21009| Baijiu Sue
-|                     | 21010| Reverend Bob Hungate
-|                     | 21011| Father Diamond
+|:heavy_check_mark:   | 21010| Reverend Bob Hungate
+|:heavy_check_mark:   | 21011| Father Diamond
 |:heavy_check_mark:   | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
 |:heavy_check_mark:   | 21014| Leychaa'i Youngheart
