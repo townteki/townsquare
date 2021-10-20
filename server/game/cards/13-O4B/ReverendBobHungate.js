@@ -43,9 +43,13 @@ class ReverendBobHungate extends DudeCard {
                             match: oppDude,
                             effect: ability.effects.cannotBeChosenAsCasualty()
                         }));
-                        this.game.addMessage('{0} uses {1} and pays {2} GR to {3} to prevent {4} and {5} from being chosen as casualty', 
+                        this.game.addMessage('{0} uses {1} and pays {2} GR to {3} to prevent {4} and {5} from being chosen as casualties', 
                             context.player, this, context.target.influence, player, context.target, oppDude);
                         return true;
+                    },
+                    onCancel: player => {
+                        this.game.addMessage('{0} uses {1} and pays {2} GR to {3} to prevent {4} from being chosen as casualty, ' +
+                            'but {3} cancelled their selection', context.player, this, context.target.influence, player, context.target);
                     },
                     source: this
                 });
