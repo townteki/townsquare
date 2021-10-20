@@ -837,12 +837,12 @@
 |                     | 21016| Klah
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
 |:heavy_check_mark:   | 21018| Nathaniel Tuwikaa
-|                     | 21019| The Faceless One
+|:heavy_check_mark:   | 21019| The Faceless One
 |:heavy_check_mark:   | 21020| Lorena Corbett
 |:heavy_check_mark:   | 21021| Auntie Sinister
 |:heavy_check_mark:   | 21022| Mason Adler
 |:heavy_check_mark:   | 21023| Enrique Dos Santos
-|                     | 21024| Reverend Endicott
+|:heavy_check_mark:   | 21024| Reverend Endicott
 |:heavy_check_mark:   | 21025| Sgt. Elijah Clay
 |:heavy_check_mark:   | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
