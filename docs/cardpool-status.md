@@ -832,11 +832,11 @@
 |                     | 21011| Father Diamond
 |:heavy_check_mark:   | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
-|                     | 21014| Leychaa'i Youngheart
+|:heavy_check_mark:   | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
 |                     | 21016| Klah
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
-|                     | 21018| Nathaniel Tuwikaa
+|:heavy_check_mark:   | 21018| Nathaniel Tuwikaa
 |                     | 21019| The Faceless One
 |:heavy_check_mark:   | 21020| Lorena Corbett
 |:heavy_check_mark:   | 21021| Auntie Sinister
