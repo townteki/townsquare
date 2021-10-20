@@ -954,7 +954,7 @@
 |                     | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
 |                     | 23013| Sifting Squirrel
-|                     | 23014| Lewis "Grizzly" Evans
+|:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
 |                     | 23015| "Professor" Duncan (Exp.1)
 |                     | 23016| Yiska
 |                     | 23017| Dr. JT Goodenough
@@ -965,7 +965,7 @@
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
-|                     | 23025| Alferd Packer
+|:heavy_check_mark:   | 23025| Alferd Packer
 |:heavy_check_mark:   | 23026| John "Aces" Radcliffe (Exp.1)
 |                     | 23027| Willa Mae MacGowan (Exp.1)
 |                     | 23028| New Varney Nosferatu
