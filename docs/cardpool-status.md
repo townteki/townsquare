@@ -319,7 +319,7 @@
 |                     | 07005| Antheia Pansofia
 |                     | 07006| Harry Highbinder
 |                     | 07007| Max Baine (Exp.1)
-|                     | 07008| El Grajo
+|:heavy_check_mark:   | 07008| El Grajo
 |:heavy_check_mark:   | 07009| Jacqueline Isham
 |:heavy_check_mark:   | 07010| Huntsmen's Society
 |:heavy_check_mark:   | 07011| Secured Stockyard
