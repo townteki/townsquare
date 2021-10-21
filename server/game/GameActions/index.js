@@ -24,7 +24,7 @@ const RemoveBounty = require('./RemoveBounty');
 const RemoveFromGame = require('./RemoveFromGame');
 const RemoveFromPosse = require('./RemoveFromPosse');
 const ReturnCardToHand = require('./ReturnCardToHand');
-const RevealCard = require('./RevealCard');
+const RevealTopCards = require('./RevealTopCards');
 const Search = require('./Search');
 const SendHome = require('./SendHome');
 const Shuffle = require('./Shuffle');
@@ -147,7 +147,7 @@ const GameActions = {
     removeFromGame: props => new AbilityAdapter(RemoveFromGame, props),
     removeFromPosse: props => new AbilityAdapter(RemoveFromPosse, props),
     returnCardToHand: props => new AbilityAdapter(ReturnCardToHand, props),
-    revealCard: props => new AbilityAdapter(RevealCard, props),
+    revealTopCards: props => new AbilityAdapter(RevealTopCards, props),
     /**
      * Searches specific location for a card(s).
      * 
