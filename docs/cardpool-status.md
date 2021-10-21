@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/540/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/548/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -896,12 +896,12 @@
 |:heavy_check_mark:   | 22014| Bogie Man
 |                     | 22015| Evan Lucas
 |:heavy_check_mark:   | 22016| Tawodi
-|                     | 22017| Tsintah
+|:heavy_check_mark:   | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
 |                     | 22020| Judge Wells Spicer
 |:heavy_check_mark:   | 22021| Joan McGruder
-|                     | 22022| Virgil Earp
+|:heavy_check_mark:   | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
 |                     | 22025| Tomas Ramirez
