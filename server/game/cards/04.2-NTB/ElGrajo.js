@@ -7,12 +7,10 @@ class ElGrajo extends DudeCard {
             playType: ['shootout'],
             cost: ability.costs.boot({
                 type: 'goods',
-                condition: card => card.parent === this && card.hasKeyword('melee') && card.hasKeyword('weapon')
+                condition: card => card.parent === this && card.hasAllOfKeywords(['melee', 'weapon'])
             }),
             handler: context => {
-                let elBonus = 4 - this.bullets;
-                if(elBonus < 0) {elBonus = 0;}
-                if(elBonus > 2) {elBonus = 2;}
+                const elBonus = Math.max(this.bullets + 2 > 4 ? 4 - this.bullets : 2, 0);
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: [
