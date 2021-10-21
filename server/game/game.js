@@ -1125,7 +1125,10 @@ class Game extends EventEmitter {
             (!needUnbooted || !card.booted) &&
             (!context.ability.actionContext || card.allowGameAction(context.ability.actionContext.gameAction, context))
         );
-        if(this.shootout && context.ability.playTypePlayed(context) !== 'shootout:join') {
+        if(this.shootout) {
+            if(context.ability.playTypePlayed(context) === 'shootout:join') {
+                return kfDudes.filter(dude => !dude.isParticipating());
+            }
             return kfDudes.filter(dude => dude.isParticipating());
         }
         return kfDudes;
