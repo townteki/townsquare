@@ -826,7 +826,7 @@
 |:heavy_check_mark:   | 21005| Smith & Robards Trade Show
 |:heavy_check_mark:   | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
-|                     | 21008| Ke Wang
+|:heavy_check_mark:   | 21008| Ke Wang
 |:heavy_check_mark:   | 21009| Baijiu Sue
 |:heavy_check_mark:   | 21010| Reverend Bob Hungate
 |:heavy_check_mark:   | 21011| Father Diamond
@@ -864,17 +864,17 @@
 |                     | 21043| Gage Export Co.
 |:heavy_check_mark:   | 21044| Magnum Opus Tenebri
 |:heavy_check_mark:   | 21045| Scattergun
-|                     | 21046| Adler's Needle
+|:heavy_check_mark:   | 21046| Adler's Needle
 |                     | 21047| Wrathful Spider
 |:heavy_check_mark:   | 21048| Guiding Light
 |                     | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
-|                     | 21052| Ten-Foot Punch
+|:heavy_check_mark:   | 21052| Ten-Foot Punch
 |:heavy_check_mark:   | 21053| Fleet-Footed
 |:heavy_check_mark:   | 21054| You're A Daisy If You Do
 |                     | 21055| Twilight Is Upon Us
-|                     | 21056| Test of Wills
+|:heavy_check_mark:   | 21056| Test of Wills
 
 ## `14-HCWM` Hell's Comin' With Me
 
@@ -885,12 +885,12 @@
 |:heavy_check_mark:   | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
 |                     | 22005| Rock Woofstone
-|                     | 22006| Arielle Moriah
+|:heavy_check_mark:   | 22006| Arielle Moriah
 |:heavy_check_mark:   | 22007| Gabriel Prior
 |                     | 22008| Mr. Baird
 |                     | 22009| Harlan Stanton
 |:heavy_check_mark:   | 22010| Dr. Delphi Wallis
-|                     | 22011| Cooper Grannon
+|:heavy_check_mark:   | 22011| Cooper Grannon
 |                     | 22012| Vivene Goldsun
 |                     | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
