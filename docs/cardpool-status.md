@@ -283,7 +283,7 @@
 |:heavy_check_mark:   | 05040| Meet The New Boss
 |:heavy_check_mark:   | 06001| Funtime Freddy
 
-## `04.1-FJ` Final Justice
+## `04.1-FJ` Frontier Justice
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -305,7 +305,7 @@
 |:heavy_check_mark:   | 06017| Confession
 |:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
-|                     | 06020| Incubation
+|:heavy_check_mark:   | 06020| Incubation
 |:heavy_check_mark:   | 06021| Flight of the Lepus
 
 ## `04.2-NTB` No Turning Back
