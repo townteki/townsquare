@@ -870,11 +870,11 @@
 |                     | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
-|                     | 21052| Ten-Foot Punch
+|:heavy_check_mark:   | 21052| Ten-Foot Punch
 |:heavy_check_mark:   | 21053| Fleet-Footed
 |:heavy_check_mark:   | 21054| You're A Daisy If You Do
 |                     | 21055| Twilight Is Upon Us
-|                     | 21056| Test of Wills
+|:heavy_check_mark:   | 21056| Test of Wills
 
 ## `14-HCWM` Hell's Comin' With Me
 
