@@ -38,7 +38,14 @@ class ShootoutPossePrompt extends UiPrompt {
                         this.joinLeaderAndMark(player);
                         //Do not move to posse yet, it will be done once both posses are selected (Shootout.gatherPosses())
                         dudeSelection.forEach(dude => 
-                            this.game.resolveGameAction(GameActions.joinPosse({ card: dude, options: { isCardEffect: false, moveToPosse: false } }))
+                            this.game.resolveGameAction(GameActions.joinPosse({ 
+                                card: dude, 
+                                options: { 
+                                    isCardEffect: false, 
+                                    moveToPosse: false,
+                                    doNotPutBounty: true
+                                } 
+                            }))
                         );
                         if(this.shootout.leaderPlayer === player) {
                             this.game.raiseEvent('onLeaderPosseFormed', { shootout: this.shootout });
@@ -80,9 +87,23 @@ class ShootoutPossePrompt extends UiPrompt {
     joinLeaderAndMark(player) {
         //Leader and mark (if not job because in job mark does not have to be in posse) join posses first.
         if(this.shootout.leaderPlayer === player) {
-            this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.leader, options: { isCardEffect: false, moveToPosse: false } }));
+            this.game.resolveGameAction(GameActions.joinPosse({ 
+                card: this.shootout.leader, 
+                options: { 
+                    isCardEffect: false, 
+                    moveToPosse: false,
+                    doNotPutBounty: true
+                } 
+            }));
         } else if(!this.shootout.isJob()) {
-            this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.mark, options: { isCardEffect: false, moveToPosse: false } }));
+            this.game.resolveGameAction(GameActions.joinPosse({ 
+                card: this.shootout.mark, 
+                options: { 
+                    isCardEffect: false, 
+                    moveToPosse: false,
+                    doNotPutBounty: true
+                } 
+            }));
         }
     }
 
