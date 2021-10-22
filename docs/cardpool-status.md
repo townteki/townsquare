@@ -949,7 +949,7 @@
 |                     | 23006| Deadwood Dick
 |:heavy_check_mark:   | 23007| Al Swearengen
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
-|                     | 23009| Lew Esquilin
+|:heavy_check_mark:   | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
 |                     | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
@@ -958,7 +958,7 @@
 |                     | 23015| "Professor" Duncan (Exp.1)
 |                     | 23016| Yiska
 |                     | 23017| Dr. JT Goodenough
-|                     | 23018| Seth Bullock
+|:heavy_check_mark:   | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
 |                     | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
