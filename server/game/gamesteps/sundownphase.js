@@ -42,6 +42,7 @@ class SundownPhase extends Phase {
     }
 
     unbootCards() {
+        this.game.raiseEvent('onSundownUnbooting');
         this.game.getPlayers().forEach(player => {
             player.cardsInPlay.forEach(card => {
                 if(!card.options.contains('doesNotUnbootAtSundown')) {
