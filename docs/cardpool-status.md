@@ -661,9 +661,9 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 18001| 108 Drunken Masters
+|:heavy_check_mark:   | 18001| 108 Drunken Masters
 |                     | 18002| Gateway To Beyond
-|                     | 18003| Full Moon Brotherhood
+|:heavy_check_mark:   | 18003| Full Moon Brotherhood
 |                     | 18004| Justice In Exile
 |:heavy_check_mark:   | 18005| Morgan Regulators
 |:heavy_check_mark:   | 18006| Protection Racket
