@@ -197,7 +197,7 @@
 |                     | 03006| Dr. Emanuel Ashbel
 |:heavy_check_mark:   | 03007| Angélica Espinosa
 |:heavy_check_mark:   | 03008| José Morales
-|                     | 03009| Genesee "Gina" Tailfeathers
+|:heavy_check_mark:   | 03009| Genesee "Gina" Tailfeathers
 |:heavy_check_mark:   | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
 |:heavy_check_mark:   | 03012| Surveyor's Office
