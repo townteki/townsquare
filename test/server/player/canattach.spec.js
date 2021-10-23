@@ -10,12 +10,12 @@ describe('Player', function() {
         this.player.initialise();
 
         this.cardSpy = jasmine.createSpyObj('card', ['allowAttachment, getGameLocation']);
-        this.cardSpy.player = this.player;
         this.cardSpy.allowAttachment = jasmine.createSpy('allowAttachment');
         this.cardSpy.allowAttachment.and.returnValue(true);
         this.cardSpy.location = 'play area';
         this.attachmentSpy = jasmine.createSpyObj('goods', ['canAttach', 'getType']);
         this.attachmentSpy.canAttach.and.returnValue(true);
+        this.attachmentSpy.controller = this.player;
     });
 
     describe('canAttach()', function() {
