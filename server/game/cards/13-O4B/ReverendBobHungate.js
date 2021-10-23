@@ -58,6 +58,9 @@ class ReverendBobHungate extends DudeCard {
     }
 
     minInfInPosse(context) {
+        if(!this.game.shootout) {
+            return 0;
+        }
         const posse = this.game.shootout.getPosseByPlayer(context.player);
         if(!posse) {
             return 0;

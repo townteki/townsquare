@@ -937,7 +937,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(!card.locationCard || card.locationCard.controller !== this) {
+            if(!card.locationCard || card.locationCard.controller !== attachment.controller) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
