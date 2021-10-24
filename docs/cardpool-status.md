@@ -1,12 +1,14 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/548/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/550/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
 :heavy_check_mark: - implemented cards using own script
 
 :white_check_mark: - cards that do not need own implementation
+
+:heavy_multiplication_x: - banned cards that will not be implemented
 
 ## `01-DTR` Base set
 
@@ -457,7 +459,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 11001| 108 Worldly Desires
+|:heavy_multiplication_x:| 11001| 108 Worldly Desires
 |                     | 11002| Beyond the Veil
 |                     | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
@@ -654,7 +656,7 @@
 |:heavy_check_mark:   | 17017| Ghostly Communion
 |:heavy_check_mark:   | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
-|                     | 17020| Showboating
+|:heavy_multiplication_x:| 17020| Showboating
 |                     | 17021| All Or Nothing
 
 ## `10-BMR` Blood Moon Rising
