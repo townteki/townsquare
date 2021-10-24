@@ -920,9 +920,9 @@
 |                     | 22036| Jonah's Retreat
 |                     | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
-|                     | 22039| Magnum Rounds
+|:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
-|                     | 22041| Net Gun
+|:heavy_check_mark:   | 22041| Net Gun
 |                     | 22042| Scratch
 |                     | 22043| Battered Banjo
 |                     | 22044| Bolts o' Doom
