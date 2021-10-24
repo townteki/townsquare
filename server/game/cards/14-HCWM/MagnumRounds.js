@@ -8,7 +8,6 @@ class MagnumRounds extends GoodsCard {
         this.action({
             title: 'Shootout: Magnum Rounds',
             playType: ['shootout'],
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this.parent,

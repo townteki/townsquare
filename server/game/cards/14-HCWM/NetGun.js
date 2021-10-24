@@ -26,7 +26,7 @@ class NetGun extends GoodsCard {
                             match: context.target,
                             effect: ability.effects.setAsDraw()
                         }));
-                        this.game.addMessage('{0} uses {1} and discards itself to make {2} a draw', 
+                        this.game.addMessage('{0} uses {1} and discards it to make {2} a draw', 
                             context.player, this, context.target);
                     });
                 } else {
