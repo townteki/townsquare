@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/550/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/552/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -663,9 +663,9 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 18001| 108 Drunken Masters
+|:heavy_check_mark:   | 18001| 108 Drunken Masters
 |                     | 18002| Gateway To Beyond
-|                     | 18003| Full Moon Brotherhood
+|:heavy_check_mark:   | 18003| Full Moon Brotherhood
 |                     | 18004| Justice In Exile
 |:heavy_check_mark:   | 18005| Morgan Regulators
 |:heavy_check_mark:   | 18006| Protection Racket
