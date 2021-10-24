@@ -906,7 +906,7 @@
 |:heavy_check_mark:   | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
-|                     | 22025| Tomas Ramirez
+|:heavy_check_mark:   | 22025| Tomas Ramirez
 |:heavy_check_mark:   | 22026| Pete Spence
 |:heavy_check_mark:   | 22027| Jonah Essex (Exp.1)
 |                     | 22028| Camillus S. Fly
@@ -917,7 +917,7 @@
 |                     | 22033| Kiva of Fathomless Reach
 |:heavy_check_mark:   | 22034| Crystal Palace
 |:heavy_check_mark:   | 22035| Rham's Readings
-|                     | 22036| Jonah's Retreat
+|:heavy_check_mark:   | 22036| Jonah's Retreat
 |                     | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
 |:heavy_check_mark:   | 22039| Magnum Rounds

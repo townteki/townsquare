@@ -617,16 +617,18 @@ const Effects = {
         };
     },
     productionToBeReceivedBy: function(player) {
+        const isStateDependent = (typeof player === 'function');
         return {
             title: `Production to be received by: ${player.name}`,
             apply: function(card) {
                 if(card.getType() === 'deed') {
-                    card.productionToBeReceivedBy = player;
+                    card.productionToBeReceivedBy = isStateDependent ? player() : player;
                 }
             },
             unapply: function(card) {
                 card.productionToBeReceivedBy = null;
-            }
+            },
+            isStateDependent
         };
     },
     additionalDynamicAdjacency: conditionalAdjacency('adjacent'),
