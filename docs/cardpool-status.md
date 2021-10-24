@@ -926,8 +926,8 @@
 |                     | 22042| Scratch
 |                     | 22043| Battered Banjo
 |                     | 22044| Bolts o' Doom
-|                     | 22045| Lethargy
-|                     | 22046| Mind Twist
+|:heavy_check_mark:   | 22045| Lethargy
+|:heavy_check_mark:   | 22046| Mind Twist
 |:heavy_check_mark:   | 22047| Dies Irae
 |:heavy_check_mark:   | 22048| Babble On
 |                     | 22049| Ancestor's Reproach
