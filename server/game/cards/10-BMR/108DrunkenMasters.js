@@ -25,15 +25,21 @@ class DrunkenMasters extends OutfitCard {
             cost: ability.costs.bootSelf(),
             handler: context => {
                 const eventHandler = event => {
-                    // set to null to prevent discarding of pulled card in abilityresolver
-                    event.context.pull = null;
-                    this.game.before('onPulledCardHandled', handleEvent => {
-                        handleEvent.replaceHandler(() => true);
-                    }, true, handleEvent => 
-                        handleEvent.card === event.pulledCard && handleEvent.player === context.player);
-                    context.player.moveCardWithContext(event.pulledCard, 'hand', context);
-                    this.game.addMessage('{0} uses {1} to put pulled card {2} to their hand', 
-                        context.player, this, event.pulledCard);
+                    this.game.promptForYesNo(context.player, {
+                        title: `Do you want to put ${event.pulledCard.title} into your hand?`,
+                        onYes: player => {
+                            // set to null to prevent discarding of pulled card in abilityresolver
+                            event.context.pull = null;
+                            this.game.before('onPulledCardHandled', handleEvent => {
+                                handleEvent.replaceHandler(() => true);
+                            }, true, handleEvent => 
+                                handleEvent.card === event.pulledCard && handleEvent.player === player);
+                            player.moveCardWithContext(event.pulledCard, 'hand', context);
+                            this.game.addMessage('{0} uses {1} to put pulled card {2} to their hand', 
+                                player, this, event.pulledCard);    
+                        },
+                        source: this
+                    });
                 };
                 const saveEventHandler = context.event.handler;
                 context.replaceHandler(cardPullEvent => {
