@@ -36,6 +36,9 @@ class KeWang extends DudeCard {
     }
 
     minUpkeepInPosse(context) {
+        if(!this.game.shootout) {
+            return 0;
+        }
         const oppPosse = this.game.shootout.getPosseByPlayer(context.player.getOpponent());
         if(!oppPosse) {
             return 0;

@@ -1,12 +1,14 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/548/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/554/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
 :heavy_check_mark: - implemented cards using own script
 
 :white_check_mark: - cards that do not need own implementation
+
+:heavy_multiplication_x: - banned cards that will not be implemented
 
 ## `01-DTR` Base set
 
@@ -241,7 +243,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 05001| Oddities of Nature
+|:heavy_check_mark:   | 05001| Oddities of Nature
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
 |:heavy_check_mark:   | 05004| Desolation Row
@@ -411,7 +413,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 10001| The Sanatorium
+|:heavy_check_mark:   | 10001| The Sanatorium
 |:heavy_check_mark:   | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
@@ -457,7 +459,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 11001| 108 Worldly Desires
+|:heavy_multiplication_x:| 11001| 108 Worldly Desires
 |                     | 11002| Beyond the Veil
 |                     | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
@@ -654,16 +656,16 @@
 |:heavy_check_mark:   | 17017| Ghostly Communion
 |:heavy_check_mark:   | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
-|                     | 17020| Showboating
+|:heavy_multiplication_x:| 17020| Showboating
 |                     | 17021| All Or Nothing
 
 ## `10-BMR` Blood Moon Rising
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 18001| 108 Drunken Masters
+|:heavy_check_mark:   | 18001| 108 Drunken Masters
 |                     | 18002| Gateway To Beyond
-|                     | 18003| Full Moon Brotherhood
+|:heavy_check_mark:   | 18003| Full Moon Brotherhood
 |                     | 18004| Justice In Exile
 |:heavy_check_mark:   | 18005| Morgan Regulators
 |:heavy_check_mark:   | 18006| Protection Racket
@@ -918,9 +920,9 @@
 |                     | 22036| Jonah's Retreat
 |                     | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
-|                     | 22039| Magnum Rounds
+|:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
-|                     | 22041| Net Gun
+|:heavy_check_mark:   | 22041| Net Gun
 |                     | 22042| Scratch
 |                     | 22043| Battered Banjo
 |                     | 22044| Bolts o' Doom
