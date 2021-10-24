@@ -7,7 +7,7 @@ class JonahsRetreat extends DeedCard {
         this.persistentEffect({
             targetController: 'any',
             match: this,
-            effect: ability.effects.productionToBeReceivedBy(this.controller)
+            effect: ability.effects.productionToBeReceivedBy(() => this.controller)
         });
     }
 }

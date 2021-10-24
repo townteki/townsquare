@@ -8,15 +8,11 @@ class TomasRamirez extends DudeCard {
         this.action({
             title: 'Shootout: Tomas Ramirez',
             playType: ['shootout'],
-            cost: [
-                ability.costs.bootSelf(),
-                ability.costs.boot(card => card.parent &&
+            cost: ability.costs.boot(card => card.parent &&
                     card.parent === this &&
-                    card.hasKeyword('hex'), 'discard')
-            ],
+                    card.hasKeyword('hex'), 'discard'),
             target: {
                 activePromptTitle: 'Choose a weapon to discard',
-                choosingPlayer: 'current',
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'opponent',
