@@ -962,7 +962,7 @@
 |                     | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
-|                     | 23020| Mimi "The Nun" O'Brien
+|:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
@@ -973,7 +973,7 @@
 |                     | 23028| New Varney Nosferatu
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
-|                     | 23031| Heath's Curiosity Shoppe
+|:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
 |                     | 23032| The Gem Theater
 |                     | 23033| Baird's Debt Collections
 |                     | 23034| Cheyenne Club
