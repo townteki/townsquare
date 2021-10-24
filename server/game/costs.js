@@ -37,7 +37,7 @@ const Costs = {
      * Cost that requires booting a card that matches the passed condition
      * predicate function.
      */
-    boot: condition => CostBuilders.boot.select(condition),
+    boot: (condition, gameAction) => CostBuilders.boot.select(condition, null, gameAction),
     /**
      * Cost that requires booting a certain number of cards that match the
      * passed condition predicate function.
@@ -203,7 +203,7 @@ const Costs = {
      */
     playAction: function() {
         return [
-            Costs.payReduceableGRCost('play'),
+            Costs.payReduceableGRCost('play', true),
             Costs.expendAction()
         ];
     },
@@ -221,7 +221,7 @@ const Costs = {
      * reducer effects the play has activated. Upon playing the card, all
      * matching reducer effects will expire, if applicable.
      */
-    payReduceableGRCost: function(playingType) {
+    payReduceableGRCost: function(playingType, addCostMessage = false) {
         return {
             canPay: function(context) {
                 if(context.cardToUpgrade) {
@@ -243,6 +243,15 @@ const Costs = {
                     playingType: playingType, 
                     context: context 
                 }, grSources => context.usedGRSources[context.source.uuid] = grSources);
+                const reduction = context.costs.ghostrock - context.source.cost;
+                if(addCostMessage && (reduction || context.source.cost)) {
+                    let redText = '';
+                    if(reduction) {
+                        redText = reduction < 0 ? `(reduced by ${reduction})` : `(increased by ${reduction})`;
+                    }
+                    context.game.addMessage('{0} pays {1} GR to {2} {3} {4}', 
+                        context.player, context.costs.ghostrock, playingType, context.source, redText);
+                }
                 context.usedReducers[context.source.uuid] = context.player.markUsedReducers(playingType, context.source, context);
             },
             unpay: function(context) {

@@ -100,7 +100,7 @@ class AbilityResolver extends BaseStep {
     }
 
     resolveCosts() {
-        if(this.cancelled) {
+        if(this.cancelled && this.cancelReason !== 'ifCondition') {
             return;
         }
 
@@ -108,11 +108,11 @@ class AbilityResolver extends BaseStep {
     }
 
     waitForCostResolution() {
-        if(this.cancelled) {
+        if(this.cancelled && this.cancelReason !== 'ifCondition') {
             return;
         }
 
-        this.cancelled = this.canPayResults.some(result => result.resolved && !result.value);
+        this.cancelled = this.cancelled || this.canPayResults.some(result => result.resolved && !result.value);
 
         if(!this.canPayResults.every(result => result.resolved)) {
             return false;
@@ -120,7 +120,7 @@ class AbilityResolver extends BaseStep {
     }
 
     payCosts() {
-        if(this.cancelled) {
+        if(this.cancelled && this.cancelReason !== 'ifCondition') {
             return;
         }
 

@@ -6,6 +6,7 @@ const NullEvent = require('./NullEvent.js');
 const SpellCard = require('./spellcard.js');
 const ActionCard = require('./actioncard.js');
 const AbilityDsl = require('./abilitydsl.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -19,6 +20,7 @@ class DudeCard extends DrawCard {
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
         this.skillKfBonuses = [];
+        this.skillKfConditions = [];
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: 'default', shooter: this.cardData.shooter});
         this.spellFunc = spell => {
@@ -126,6 +128,10 @@ class DudeCard extends DrawCard {
     }
 
     getSkillRatingForCard(spellOrGadget) {
+        const condObj = this.skillKfConditions.find(condObj => condObj.condition(spellOrGadget));
+        if(condObj) {
+            return this.getSkillRating(condObj.skillnameOrKF);
+        }
         if(spellOrGadget.isGadget()) {
             return this.getSkillRating('mad scientist');
         }
@@ -194,7 +200,7 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Move',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && !this.booted,
+            condition: () => this.game.currentPhase === PhaseNames.HighNoon && !this.booted,
             target: { cardType: 'location' },
             targetController: 'current',
             actionContext: { card: this, gameAction: 'moveDude' },
@@ -213,7 +219,7 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Call Out',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && !this.booted,
+            condition: () => this.game.currentPhase === PhaseNames.HighNoon && !this.booted,
             target: {
                 activePromptTitle: 'Select dude to call out',
                 cardCondition: card => card.getType() === 'dude' && this.gamelocation &&
@@ -238,7 +244,7 @@ class DudeCard extends DrawCard {
         this.action({
             title: 'Trade',
             abilitySourceType: 'game',
-            condition: () => this.game.currentPhase === 'high noon' && 
+            condition: () => this.game.currentPhase === PhaseNames.HighNoon && 
                 this.isInControlledLocation() &&
                 this.hasAttachmentForTrading(),
             target: {
@@ -285,7 +291,7 @@ class DudeCard extends DrawCard {
             this.game.resolveGameAction(GameActions.bootCard({ card: this }), context);
         }
         this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.controller.outfit.uuid, options }), context);
-        if(options.fromPosse && this.game.shootout) {
+        if(options.fromPosse && this.game.shootout && !options.isAfterJob) {
             this.game.resolveGameAction(GameActions.removeFromPosse({ card: this }), context);
         } 
     }
@@ -443,6 +449,10 @@ class DudeCard extends DrawCard {
         return this.options.contains('canJoinWithoutMoving', this);
     }
 
+    cannotBootToJoinFromAdjacent() {
+        return this.options.contains('cannotBootToJoinFromAdjacent', this);
+    }
+
     canJoinWithoutBooting() {
         return this.options.contains('canJoinWithoutBooting', this);
     }
@@ -484,6 +494,9 @@ class DudeCard extends DrawCard {
             return { canJoin: false };
         } 
         if(this.isAdjacent(shootout.gamelocation) && (!this.booted || allowBooted)) {
+            if(this.cannotBootToJoinFromAdjacent()) {
+                return { canJoin: false };
+            }
             return { canJoin: true, needToBoot: true };
         }
 
@@ -492,6 +505,9 @@ class DudeCard extends DrawCard {
                 return { canJoin: true, needToBoot: true };
             } 
             if(this.isAdjacent(shootout.leader.gamelocation)) {
+                if(this.cannotBootToJoinFromAdjacent()) {
+                    return { canJoin: false };
+                }
                 return { canJoin: true, needToBoot: true };
             }         
         }

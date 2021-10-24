@@ -1,5 +1,6 @@
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
@@ -113,7 +114,7 @@ class DrawCard extends BaseCard {
                 if(this.getType() === 'action') {
                     return menu.concat(discardItem);
                 }
-                if(this.game.currentPhase === 'high noon') {
+                if(this.game.currentPhase === PhaseNames.HighNoon) {
                     menu = menu.concat({ method: 'playCard', text: 'Shoppin\' play', arg: 'shoppin' });
                 }
                 if(this.abilities.playActions.length > 0) {
@@ -349,12 +350,33 @@ class DrawCard extends BaseCard {
         return this.game.isHome(this.gamelocation, this.controller);
     }
 
-    isAtDeed() {
+    /**
+     * Checks if card is at a deed, or specific type of deed depending on the
+     * parameter.
+     *
+     * @param {Object} deedType - type of deed that should be checked.\
+     * `any` (default) - Check if the card is at deed of any type.\
+     * `in-town` - check if the card is at in-town deed.\
+     * `out-town` - check if the card is at out of town deed.\
+     * @return {Boolean} - returns true if card is at specified type of deed, 
+     * false otherwise.
+     */
+    isAtDeed(deedType = 'any') {
         if(this.location !== 'play area') {
             return false;
         }
-        return this.locationCard && this.locationCard.getType() === 'deed';
-    }
+        const thisLocationCard = this.locationCard;
+        if(!thisLocationCard || thisLocationCard.getType() !== 'deed') {
+            return false;
+        }
+        if(deedType === 'in-town') {
+            return !thisLocationCard.isOutOfTown();
+        }
+        if(deedType === 'out-town') {
+            return thisLocationCard.isOutOfTown();
+        }
+        return true;     
+    }  
 
     isGadget() {
         return this.hasKeyword('Gadget');

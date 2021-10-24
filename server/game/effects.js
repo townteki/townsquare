@@ -617,16 +617,18 @@ const Effects = {
         };
     },
     productionToBeReceivedBy: function(player) {
+        const isStateDependent = (typeof player === 'function');
         return {
             title: `Production to be received by: ${player.name}`,
             apply: function(card) {
                 if(card.getType() === 'deed') {
-                    card.productionToBeReceivedBy = player;
+                    card.productionToBeReceivedBy = isStateDependent ? player() : player;
                 }
             },
             unapply: function(card) {
                 card.productionToBeReceivedBy = null;
-            }
+            },
+            isStateDependent
         };
     },
     additionalDynamicAdjacency: conditionalAdjacency('adjacent'),
@@ -1104,6 +1106,8 @@ const Effects = {
         optionEffect('canMoveWithoutBooting', 'Can Move without Booting'),
     canJoinWithoutBooting:
         optionEffect('canJoinWithoutBooting', 'Can Join without Booting'),
+    cannotBootToJoinFromAdjacent:
+        optionEffect('cannotBootToJoinFromAdjacent', 'Cannot Join when Booting is required'),        
     canJoinWithoutMoving:
         optionEffect('canJoinWithoutMoving', 'Can Join without Moving'),
     canJoinWhileBooted:
@@ -1117,19 +1121,23 @@ const Effects = {
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
     canPerformSkillUsing: function(skillnameOrKF, condition) {
-        var getSkillRatingFunc;
         return {
             title: `Can perform other skills using ${skillnameOrKF}`,
-            apply: function(card) {
-                getSkillRatingFunc = card.getSkillRatingForCard;
-                card.getSkillRatingForCard = spellOrGadget => {
-                    if(condition(spellOrGadget)) {
-                        return card.getSkillRating(skillnameOrKF);
-                    }
-                };
+            apply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions.push({
+                    condition,
+                    skillnameOrKF,
+                    source: context.source
+                });
             },
-            unapply: function(card) {
-                card.getSkillRatingForCard = getSkillRatingFunc;
+            unapply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions = card.skillKfConditions.filter(condObj => condObj.source !== context.source);
             }
         };
     },

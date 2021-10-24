@@ -28,7 +28,7 @@ class ElanderBoldman extends DudeCard {
             },
             handler: context => {
                 if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
-                    this.game.resolveGameAction(GameActions.discardCard({ card: context.target }));
+                    this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
                 } else {
                     let weapons = context.target.getAttachmentsByKeywords(['Gadget', 'Weapon']);
                     if(weapons.length > 1) {

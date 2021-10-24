@@ -14,7 +14,7 @@ const PromptedTriggeredAbility = require('./promptedtriggeredability.js');
  *           trigger the reaction when that event is fired. For example, to
  *           trigger only at the end of the sundown phase, you would do:
  *           when: {
- *               onPhaseEnded: event => event.phase === 'sundown'
+ *               onPhaseEnded: event => event.phase === PhaseNames.Sundown
  *           }
  *           Multiple events may be specified for cards that have multiple
  *           possible triggers for the same reaction.

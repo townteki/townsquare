@@ -54,6 +54,9 @@ class SheriffEliWaters extends DudeCard {
     }
 
     getEliBonus() {
+        if(!this.game.shootout) {
+            return 0;
+        }
         const oppPosse = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());
         if(!oppPosse) {
             return 0;

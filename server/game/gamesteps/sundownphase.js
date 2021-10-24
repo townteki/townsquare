@@ -3,15 +3,17 @@ const SimpleStep = require('./simplestep.js');
 const DiscardPrompt = require('./sundown/discardprompt.js');
 const SundownPrompt = require('./sundown/sundownprompt.js');
 const DiscardToHandSizePrompt = require('./sundown/discardtohandsizeprompt');
+const PhaseNames = require('../Constants/PhaseNames.js');
 class SundownPhase extends Phase {
     constructor(game) {
-        super(game, 'sundown');
+        super(game, PhaseNames.Sundown);
         this.initialise([
             new SimpleStep(game, () => this.game.raiseEvent('onAtStartOfSundown')),
             new SimpleStep(game, () => this.checkWinCondition()),
             new DiscardPrompt(game),
             new DiscardToHandSizePrompt(game),
             new SimpleStep(game, () => this.sundownRedraw()),
+            new SimpleStep(game, () => this.game.raiseEvent('onSundownUnbooting')),
             new SimpleStep(game, () => this.unbootCards()),
             new SimpleStep(game, () => this.roundEnded()),
             new SundownPrompt(game)
@@ -20,7 +22,7 @@ class SundownPhase extends Phase {
 
     sundownRedraw() {
         this.game.getPlayers().forEach(player => {
-            player.redrawToHandSize('sundown');
+            player.redrawToHandSize(PhaseNames.Sundown);
             this.game.raiseEvent('onAfterHandRefill', { player });
         });
     }
