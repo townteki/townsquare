@@ -1139,14 +1139,6 @@ class Player extends Spectator {
         return totalRank;
     }
 
-    addHandRankMessage(showHand = true) {
-        if(showHand) {
-            let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
-            this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
-        }
-        this.game.addMessage('{0}\'s Total rank: {1} (modifier {2})', this, this.getTotalRank(), this.rankModifier);
-    }
-
     modifyRank(amount, context, applying = true) {
         if(!this.cannotModifyHandRanks(context) || !applying) {
             this.rankModifier += amount;
