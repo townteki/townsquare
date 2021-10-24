@@ -20,6 +20,8 @@ class Lethargy extends SpellCard {
             },
             difficulty: context => context.target.getGrit(),
             onSuccess: (context) => {
+                this.game.addMessage('{0} uses {1} to prevent {2}\'s unboot at Sundown unless their controller pays 1 GR', 
+                    context.player, this, context.target);
                 this.game.once('onSundownUnbooting', () => {
                     if(context.target.booted && context.target.controller !== context.player) {
                         if(context.target.controller.getSpendableGhostRock() > 0) {
@@ -27,7 +29,7 @@ class Lethargy extends SpellCard {
                                 title: `Do you want to pay 1 GR to have ${context.target.title} unbooted?`,
                                 onYes: player => {
                                     player.spendGhostRock(1);
-                                    this.game.addMessage('{0} pays 1 GR to remove {2} from {3} who can unboot at Sundown', 
+                                    this.game.addMessage('{0} pays 1 GR to remove {1} from {2} who can unboot at Sundown', 
                                         context.target.controller, this, context.target);
                                 },
                                 onNo: player => {
@@ -35,8 +37,8 @@ class Lethargy extends SpellCard {
                                         match: context.target,
                                         effect: ability.effects.doesNotUnbootAtSundown()
                                     }));
-                                    this.game.addMessage('{0} does not want to pay 1 GR, therefore {2} does not unboot at Sundown due to {3}', 
-                                        player, context.target, this);
+                                    this.game.addMessage('{0} does not want to pay 1 GR to remove {1}, therefore {2} does not unboot at Sundown', 
+                                        player, this, context.target);
                                 }
                             });
                         } else {
