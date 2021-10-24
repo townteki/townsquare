@@ -42,6 +42,6 @@ class LewEsquilin extends DudeCard {
     }
 }
 
-LewEsquilin.code = 'code';
+LewEsquilin.code = '23009';
 
 module.exports = LewEsquilin;
