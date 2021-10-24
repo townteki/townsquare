@@ -9,7 +9,7 @@ class Vamoosin extends ActionCard {
                 activePromptTitle: 'Choose dude to send home',
                 cardCondition: { 
                     location: 'play area', 
-                    controller: 'opponent', 
+                    controller: 'any', 
                     participating: true,
                     wanted: true,
                     condition: (card, context) => 
