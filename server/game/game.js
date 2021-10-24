@@ -991,6 +991,14 @@ class Game extends EventEmitter {
         }
     }
 
+    removeBefore(eventName, handler) {
+        this.beforeEventHandlers[eventName] = this.beforeEventHandlers[eventName].filter(beforeHandler => 
+            beforeHandler.handler !== handler);
+        if(!this.beforeEventHandlers[eventName].length) {
+            delete this.beforeEventHandlers[eventName];
+        }
+    }
+
     onceConditional(eventName, params, handler) {
         let updatedParams = Object.assign({ condition: () => true, until: 'onRoundEnded'}, params);
         let conditionalHandler = event => {

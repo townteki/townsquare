@@ -13,10 +13,10 @@ class AsakichiCooke extends DudeCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'current', 
-                    condition: card => card.locationCard === this.locationCard && card !== this,
-                    gameAction: 'moveDude',
-                    cardType: 'dude'
-                }
+                    condition: card => card.locationCard === this.locationCard && card !== this
+                },
+                gameAction: 'moveDude',
+                cardType: 'dude'
             },
             handler: context => {
                 this.game.promptForLocation(context.player, {

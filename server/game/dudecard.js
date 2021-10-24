@@ -20,6 +20,7 @@ class DudeCard extends DrawCard {
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
         this.skillKfBonuses = [];
+        this.skillKfConditions = [];
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: 'default', shooter: this.cardData.shooter});
         this.spellFunc = spell => {
@@ -127,6 +128,10 @@ class DudeCard extends DrawCard {
     }
 
     getSkillRatingForCard(spellOrGadget) {
+        const condObj = this.skillKfConditions.find(condObj => condObj.condition(spellOrGadget));
+        if(condObj) {
+            return this.getSkillRating(condObj.skillnameOrKF);
+        }
         if(spellOrGadget.isGadget()) {
             return this.getSkillRating('mad scientist');
         }

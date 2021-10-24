@@ -937,7 +937,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(!card.locationCard || card.locationCard.controller !== this) {
+            if(!card.locationCard || card.locationCard.controller !== attachment.controller) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
@@ -1352,11 +1352,13 @@ class Player extends Spectator {
         if(!card) {
             return;
         }
-        if(card.getType() === 'joker') {
-            this.aceCard(card);
-        } else {
-            this.moveCard(card, 'discard pile', { isPull: true });
-        }
+        this.game.raiseEvent('onPulledCardHandled', { player: this, card }, event => {
+            if(event.card.getType() === 'joker') {
+                event.player.aceCard(event.card);
+            } else {
+                event.player.moveCard(event.card, 'discard pile', { isPull: true });
+            }
+        });
     }
 
     handleTaoTechniques(technique, kfDude, isSuccessful) {
@@ -1416,6 +1418,7 @@ class Player extends Spectator {
             failHandler: properties.failHandler || (() => true),
             pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
+            difficulty: properties.difficulty,
             source: properties.source,
             player: this,
             chatCommandDiff: properties.chatCommandDiff,
@@ -1477,7 +1480,8 @@ class Player extends Spectator {
         }, event => {
             const props = Object.assign(properties, {
                 successCondition: pulledValue => pulledValue >= event.difficulty,
-                pullBonus: event.skillRating
+                pullBonus: event.skillRating,
+                difficulty
             });
             this.handlePull(props, context);
         });
@@ -1486,7 +1490,8 @@ class Player extends Spectator {
     pullForKungFu(difficulty, properties, context) {
         const props = Object.assign(properties, {
             successCondition: pulledValue => pulledValue < difficulty,
-            pullBonus: 0
+            pullBonus: 0,
+            difficulty
         });
         this.handlePull(props, context);
     }
