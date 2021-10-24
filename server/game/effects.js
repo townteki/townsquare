@@ -1121,19 +1121,23 @@ const Effects = {
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
     canPerformSkillUsing: function(skillnameOrKF, condition) {
-        var getSkillRatingFunc;
         return {
             title: `Can perform other skills using ${skillnameOrKF}`,
-            apply: function(card) {
-                getSkillRatingFunc = card.getSkillRatingForCard;
-                card.getSkillRatingForCard = spellOrGadget => {
-                    if(condition(spellOrGadget)) {
-                        return card.getSkillRating(skillnameOrKF);
-                    }
-                };
+            apply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions.push({
+                    condition,
+                    skillnameOrKF,
+                    source: context.source
+                });
             },
-            unapply: function(card) {
-                card.getSkillRatingForCard = getSkillRatingFunc;
+            unapply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions = card.skillKfConditions.filter(condObj => condObj.source !== context.source);
             }
         };
     },
