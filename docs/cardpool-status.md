@@ -986,8 +986,8 @@
 |                     | 23041| Missed Me!
 |                     | 23042| Mark of War
 |                     | 23043| We Stand Amazed
-|                     | 23044| Benediction
-|                     | 23045| Guiding the Pack
+|:heavy_check_mark:   | 23044| Benediction
+|:heavy_check_mark:   | 23045| Guiding the Pack
 |                     | 23046| Elk's Protection
 |:heavy_check_mark:   | 23047| Get Off My Land!
 |:heavy_check_mark:   | 23048| Look What I Found!
