@@ -836,7 +836,7 @@
 |:heavy_check_mark:   | 21013| Brother Petrovic
 |:heavy_check_mark:   | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
-|                     | 21016| Klah
+|:heavy_check_mark:   | 21016| Klah
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
 |:heavy_check_mark:   | 21018| Nathaniel Tuwikaa
 |:heavy_check_mark:   | 21019| The Faceless One
@@ -849,7 +849,7 @@
 |:heavy_check_mark:   | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
 |:heavy_check_mark:   | 21028| Roberto Muratore
-|                     | 21029| Adelaide Rose
+|:heavy_check_mark:   | 21029| Adelaide Rose
 |:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
