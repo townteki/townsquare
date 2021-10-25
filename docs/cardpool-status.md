@@ -962,7 +962,7 @@
 |                     | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
-|                     | 23020| Mimi "The Nun" O'Brien
+|:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
@@ -973,7 +973,7 @@
 |                     | 23028| New Varney Nosferatu
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
-|                     | 23031| Heath's Curiosity Shoppe
+|:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
 |                     | 23032| The Gem Theater
 |                     | 23033| Baird's Debt Collections
 |                     | 23034| Cheyenne Club
@@ -981,15 +981,15 @@
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest
-|                     | 23039| Pale Horse
+|:heavy_check_mark:   | 23039| Pale Horse
 |                     | 23040| Kinetic Accretion Actualizer
 |                     | 23041| Missed Me!
 |                     | 23042| Mark of War
 |                     | 23043| We Stand Amazed
-|                     | 23044| Benediction
-|                     | 23045| Guiding the Pack
+|:heavy_check_mark:   | 23044| Benediction
+|:heavy_check_mark:   | 23045| Guiding the Pack
 |                     | 23046| Elk's Protection
-|                     | 23047| Get Off My Land!
+|:heavy_check_mark:   | 23047| Get Off My Land!
 |:heavy_check_mark:   | 23048| Look What I Found!
 |:heavy_check_mark:   | 23049| Mantis Pinch
 |:heavy_check_mark:   | 23050| As Nature and God Intended
