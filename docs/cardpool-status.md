@@ -981,7 +981,7 @@
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest
-|                     | 23039| Pale Horse
+|:heavy_check_mark:   | 23039| Pale Horse
 |                     | 23040| Kinetic Accretion Actualizer
 |                     | 23041| Missed Me!
 |                     | 23042| Mark of War
@@ -989,7 +989,7 @@
 |                     | 23044| Benediction
 |                     | 23045| Guiding the Pack
 |                     | 23046| Elk's Protection
-|                     | 23047| Get Off My Land!
+|:heavy_check_mark:   | 23047| Get Off My Land!
 |:heavy_check_mark:   | 23048| Look What I Found!
 |:heavy_check_mark:   | 23049| Mantis Pinch
 |:heavy_check_mark:   | 23050| As Nature and God Intended
