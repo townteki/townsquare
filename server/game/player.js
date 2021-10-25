@@ -411,7 +411,8 @@ class Player extends Spectator {
             activePromptTitle: updatedOptions.activePromptTitle || 
                 number > 1 ? 'Select cards to discard' : 'Select a card to discard',
             waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
-            cardCondition: card => card.location === 'hand' && card.controller === this,
+            cardCondition: card => card.location === 'hand' && card.controller === this &&
+                (!options.condition || options.condition(card)),
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
                     return false;
@@ -420,7 +421,8 @@ class Player extends Spectator {
                     callback(discarded);
                 }, updatedOptions, context);
                 return true;
-            }
+            },
+            source: updatedOptions.source
         });
     }
 
@@ -1223,7 +1225,7 @@ class Player extends Spectator {
         }
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
-            const gl = this.findLocation(key);
+            const gl = key === TownSquareUUID ? this.game.townsquare : this.findLocation(key);
             if(gl.adjacencyMap.has(gameLocation.uuid)) {
                 gl.adjacencyMap.delete(gameLocation.uuid);
             }
@@ -1572,9 +1574,6 @@ class Player extends Spectator {
     }
 
     findLocation(locationUuid) {
-        if(locationUuid === TownSquareUUID) {
-            return this.game.townsquare;
-        }
         return this.locations.find(location => location.uuid === locationUuid);
     }
 
