@@ -3,7 +3,7 @@ const Spell = require('./spell.js');
 
 class SpellBeforeReaction extends PromptedTriggeredAbility {
     constructor(game, card, properties) {
-        super(game, card, properties.canCancel ? 'cancelreaction' : 'beforereaction', properties);
+        super(game, card, 'beforereaction', properties);
         this.spell = new Spell(this, properties);
     }
 

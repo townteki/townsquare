@@ -1,19 +1,19 @@
 const uuid = require('uuid');
 
 const BaseAbilityWindow = require('./BaseAbilityWindow');
-const CancelTimer = require('./CancelTimer');
+const ReactTimer = require('./ReactTimer');
 const TriggeredAbilityWindowTitles = require('./TriggeredAbilityWindowTitles');
 
 class TriggeredAbilityWindow extends BaseAbilityWindow {
     constructor(game, properties) {
         super(game, properties);
 
-        this.cancelTimer = new CancelTimer(this.event, this.abilityType);
-        this.forceWindowPerPlayer = {};
+        this.reactTimer = new ReactTimer(this.event, this.abilityType);
+        this.forceReactPerPlayer = {};
 
         for(let player of game.getPlayersInFirstPlayerOrder()) {
-            if(this.cancelTimer.isEnabled(player)) {
-                this.forceWindowPerPlayer[player.name] = true;
+            if(this.reactTimer.isActionEligibleForEvent(player)) {
+                this.forceReactPerPlayer[player.name] = true;
             }
         }
     }
@@ -28,7 +28,7 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
 
         this.players = this.filterChoicelessPlayers(this.players || this.game.getPlayersInFirstPlayerOrder());
 
-        if(this.players.length === 0 || this.abilityChoices.length === 0 && !this.forceWindowPerPlayer[this.players[0].name]) {
+        if(this.players.length === 0 || this.abilityChoices.length === 0 && !this.forceReactPerPlayer[this.players[0].name]) {
             return true;
         }
 
@@ -38,21 +38,19 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
     }
 
     filterChoicelessPlayers(players) {
-        return players.filter(player => this.cancelTimer.isEnabled(player) || 
+        return players.filter(player => this.reactTimer.isActionEligibleForEvent(player) ||
             this.abilityChoices.some(abilityChoice => abilityChoice.player === player && !abilityChoice.ability.usage.isUsed()));
     }
 
     promptPlayer(player) {
         let cardsForPlayer = this.abilityChoices.filter(choice => choice.player === player).map(choice => choice.card);
 
-        let unclickableCards = cardsForPlayer.filter(card => card.location === 'draw deck');
-
         this.game.promptForSelect(player, {
             activePromptTitle: TriggeredAbilityWindowTitles.getTitle(this.abilityType, this.event.getPrimaryEvent()),
             isCardEffect: false,
             cardCondition: card => cardsForPlayer.includes(card),
             cardType: ['dude', 'deed', 'action', 'goods', 'spell', 'outfit', 'legend'],
-            additionalButtons: this.getButtons(player, unclickableCards),
+            additionalButtons: this.getButtons(player),
             additionalControls: this.getAdditionalPromptControls(),
             doneButtonText: 'Pass',
             onSelect: (player, card) => this.chooseCardToTrigger(player, card),
@@ -72,15 +70,13 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
             }
         });
 
-        this.forceWindowPerPlayer[player.name] = false;
+        this.forceReactPerPlayer[player.name] = false;
     }
 
-    getButtons(player, unclickableCards) {
-        let buttons = unclickableCards.map(card => {
-            return { text: `${card.name} (${card.location})`, card: card, mapCard: true };
-        });
+    getButtons(player) {
+        const buttons = [];
 
-        if(this.cancelTimer.isEnabled(player)) {
+        if(this.reactTimer.isEnabled(player)) {
             buttons.push({ timer: true, arg: 'pass', id: uuid.v1() });
             buttons.push({ text: 'I need more time', timerCancel: true });
             buttons.push({ text: 'Don\'t ask again until end of round', timerCancel: true, arg: 'passAndPauseForRound' });
@@ -126,7 +122,7 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
         }
 
         this.game.promptForSelect(player, {
-            activePromptTitle: `Choose triggering card for ${card.name}`,
+            activePromptTitle: `Choose triggering card for ${card.title}`,
             isCardEffect: false,
             cardCondition: card => availableTargets.includes(card),
             onSelect: (player, selectedCard) => {

@@ -236,14 +236,6 @@ class PlayerInteractionWrapper {
         this.player.drawHand.forEach(card => this.dragCard(card, 'discard pile'));
     }
 
-    togglePromptedActionWindow(window, value) {
-        this.player.promptedActionWindows[window] = value;
-    }
-
-    toggleKeywordSettings(setting, value) {
-        this.player.keywordSettings[setting] = value;
-    }
-
     reconnect() {
         let newSocket = { id: uuid.v1() };
         this.game.reconnect(newSocket, this.player.name);
