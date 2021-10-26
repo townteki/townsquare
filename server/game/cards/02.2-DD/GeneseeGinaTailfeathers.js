@@ -3,7 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class GeneseeGinaTailfeathers extends DudeCard {
     setupCardAbilities(ability) {
         this.reaction({
-            title: 'React: Genesse Tailfeathers',
+            title: 'React: Genesee "Gina" Tailfeathers',
             grifter: true,
             cost: [
                 ability.costs.bootSelf(),
