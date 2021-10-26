@@ -39,6 +39,7 @@ const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+const { TownSquareUUID } = require('./Constants/index.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -278,6 +279,9 @@ class Game extends EventEmitter {
         if(!uuid) {
             return;
         }
+        if(uuid === TownSquareUUID) {
+            return this.townsquare;
+        }        
         for(let player of this.getPlayers()) {
             let foundLocation = player.findLocation(uuid); 
             if(foundLocation) {
@@ -988,6 +992,14 @@ class Game extends EventEmitter {
             this.beforeEventHandlers[eventName] = [beforeHandler];
         } else {
             this.beforeEventHandlers[eventName].push(beforeHandler);
+        }
+    }
+
+    removeBefore(eventName, handler) {
+        this.beforeEventHandlers[eventName] = this.beforeEventHandlers[eventName].filter(beforeHandler => 
+            beforeHandler.handler !== handler);
+        if(!this.beforeEventHandlers[eventName].length) {
+            delete this.beforeEventHandlers[eventName];
         }
     }
 

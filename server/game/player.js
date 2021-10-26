@@ -411,7 +411,8 @@ class Player extends Spectator {
             activePromptTitle: updatedOptions.activePromptTitle || 
                 number > 1 ? 'Select cards to discard' : 'Select a card to discard',
             waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
-            cardCondition: card => card.location === 'hand' && card.controller === this,
+            cardCondition: card => card.location === 'hand' && card.controller === this &&
+                (!options.condition || options.condition(card)),
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
                     return false;
@@ -420,7 +421,8 @@ class Player extends Spectator {
                     callback(discarded);
                 }, updatedOptions, context);
                 return true;
-            }
+            },
+            source: updatedOptions.source
         });
     }
 
@@ -937,7 +939,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(!card.locationCard || card.locationCard.controller !== this) {
+            if(!card.locationCard || card.locationCard.controller !== attachment.controller) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
@@ -1140,14 +1142,6 @@ class Player extends Spectator {
         return totalRank;
     }
 
-    addHandRankMessage(showHand = true) {
-        if(showHand) {
-            let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
-            this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
-        }
-        this.game.addMessage('{0}\'s Total rank: {1} (modifier {2})', this, this.getTotalRank(), this.rankModifier);
-    }
-
     modifyRank(amount, context, applying = true) {
         if(!this.cannotModifyHandRanks(context) || !applying) {
             this.rankModifier += amount;
@@ -1231,7 +1225,7 @@ class Player extends Spectator {
         }
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
-            const gl = this.findLocation(key);
+            const gl = key === TownSquareUUID ? this.game.townsquare : this.findLocation(key);
             if(gl.adjacencyMap.has(gameLocation.uuid)) {
                 gl.adjacencyMap.delete(gameLocation.uuid);
             }
@@ -1352,11 +1346,13 @@ class Player extends Spectator {
         if(!card) {
             return;
         }
-        if(card.getType() === 'joker') {
-            this.aceCard(card);
-        } else {
-            this.moveCard(card, 'discard pile', { isPull: true });
-        }
+        this.game.raiseEvent('onPulledCardHandled', { player: this, card }, event => {
+            if(event.card.getType() === 'joker') {
+                event.player.aceCard(event.card);
+            } else {
+                event.player.moveCard(event.card, 'discard pile', { isPull: true });
+            }
+        });
     }
 
     handleTaoTechniques(technique, kfDude, isSuccessful) {
@@ -1416,6 +1412,7 @@ class Player extends Spectator {
             failHandler: properties.failHandler || (() => true),
             pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
+            difficulty: properties.difficulty,
             source: properties.source,
             player: this,
             chatCommandDiff: properties.chatCommandDiff,
@@ -1477,7 +1474,8 @@ class Player extends Spectator {
         }, event => {
             const props = Object.assign(properties, {
                 successCondition: pulledValue => pulledValue >= event.difficulty,
-                pullBonus: event.skillRating
+                pullBonus: event.skillRating,
+                difficulty
             });
             this.handlePull(props, context);
         });
@@ -1486,7 +1484,8 @@ class Player extends Spectator {
     pullForKungFu(difficulty, properties, context) {
         const props = Object.assign(properties, {
             successCondition: pulledValue => pulledValue < difficulty,
-            pullBonus: 0
+            pullBonus: 0,
+            difficulty
         });
         this.handlePull(props, context);
     }
@@ -1575,9 +1574,6 @@ class Player extends Spectator {
     }
 
     findLocation(locationUuid) {
-        if(locationUuid === TownSquareUUID) {
-            return this.game.townsquare;
-        }
         return this.locations.find(location => location.uuid === locationUuid);
     }
 
