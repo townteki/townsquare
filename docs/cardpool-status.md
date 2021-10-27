@@ -802,7 +802,7 @@
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
 |                     | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
-|                     | 20043| Bedazzle
+|:heavy_check_mark:   | 20043| Bedazzle
 |:heavy_check_mark:   | 20044| Exultant Translocation
 |:heavy_check_mark:   | 20045| Retribution
 |                     | 20046| Gateway
