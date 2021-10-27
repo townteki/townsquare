@@ -24,7 +24,7 @@ class Bedazzle extends SpellCard {
                         onSelect: (p, dazzlee) => {
                             const dazzleAmount = Math.max(dazzlee.bullets, 0);
                             ability.effects.modifyBullets(0-dazzleAmount);
-                            this.game.addMessage({0} gets -{1} bullets due to the {2}, dazzlee, dazzleAmount, this);
+                            this.game.addMessage('{0} gets -{1} bullets due to the {2}', dazzlee, dazzleAmount, this);
                         }
                     });
                 }
