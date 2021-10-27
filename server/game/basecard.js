@@ -328,7 +328,7 @@ class BaseCard {
 
     hasReactionFor(event, abilityType) {
         return this.abilities.reactions.some(reaction => 
-            reaction.triggerBefore ? abilityType === 'beforereaction' : abilityType === 'reaction' &&
+            reaction.eventType === abilityType &&
             reaction.when[event.name] && reaction.when[event.name](event));
     }
 

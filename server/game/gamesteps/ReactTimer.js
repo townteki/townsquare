@@ -13,17 +13,20 @@ class ReactTimer {
             return (
                 !event.cancelled &&
                 event.name === this.event.name &&
-                (player.timerSettings.abilities ||
-                this.isActionEligibleForEvent(player))
+                this.isActionEligibleForEvent(player)
             );
         });
     }
 
     isActionEligibleForEvent(player) {
-        if(!player.timerSettings.actions || player.noTimer || !player.hand.length) {
+        if(player.noTimer || !player.hand.length) {
             return false;
         }
-        return player.allCards.some(card => 
+        let cardPool = [];
+        if(player.timerSettings.actions) {
+            cardPool = player.timerSettings.actionsInHand ? player.hand : player.allCards;
+        }
+        return cardPool.some(card => 
             card.getType() === 'action' && card.hasReactionFor(this.event, this.abilityType));
     }
 }

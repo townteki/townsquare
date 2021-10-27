@@ -12,7 +12,7 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
         this.forceReactPerPlayer = {};
 
         for(let player of game.getPlayersInFirstPlayerOrder()) {
-            if(this.reactTimer.isActionEligibleForEvent(player)) {
+            if(this.reactTimer.isEnabled(player)) {
                 this.forceReactPerPlayer[player.name] = true;
             }
         }
@@ -38,7 +38,7 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
     }
 
     filterChoicelessPlayers(players) {
-        return players.filter(player => this.reactTimer.isActionEligibleForEvent(player) ||
+        return players.filter(player => this.reactTimer.isEnabled(player) ||
             this.abilityChoices.some(abilityChoice => abilityChoice.player === player && !abilityChoice.ability.usage.isUsed()));
     }
 
