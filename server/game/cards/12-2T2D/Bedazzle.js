@@ -1,5 +1,4 @@
 const SpellCard = require('../../spellcard.js');
-const GameActions = require('../../GameActions/index.js');
 
 class Bedazzle extends SpellCard {
     setupCardAbilities(ability) {
@@ -23,7 +22,7 @@ class Bedazzle extends SpellCard {
                         cardType: 'dude',
                         onSelect: (p, dazzlee) => {
                             const dazzleAmount = Math.max(dazzlee.bullets, 0);
-                            ability.effects.modifyBullets(0-dazzleAmount);
+                            ability.effects.modifyBullets(0 - dazzleAmount);
                             this.game.addMessage('{0} gets -{1} bullets due to the {2}', dazzlee, dazzleAmount, this);
                         }
                     });
