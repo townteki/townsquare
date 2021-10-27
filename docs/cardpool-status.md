@@ -1,12 +1,14 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/548/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/571/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
 :heavy_check_mark: - implemented cards using own script
 
 :white_check_mark: - cards that do not need own implementation
+
+:heavy_multiplication_x: - banned cards that will not be implemented
 
 ## `01-DTR` Base set
 
@@ -197,7 +199,7 @@
 |                     | 03006| Dr. Emanuel Ashbel
 |:heavy_check_mark:   | 03007| Angélica Espinosa
 |:heavy_check_mark:   | 03008| José Morales
-|                     | 03009| Genesee "Gina" Tailfeathers
+|:heavy_check_mark:   | 03009| Genesee "Gina" Tailfeathers
 |:heavy_check_mark:   | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
 |:heavy_check_mark:   | 03012| Surveyor's Office
@@ -241,7 +243,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 05001| Oddities of Nature
+|:heavy_check_mark:   | 05001| Oddities of Nature
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
 |:heavy_check_mark:   | 05004| Desolation Row
@@ -411,7 +413,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 10001| The Sanatorium
+|:heavy_check_mark:   | 10001| The Sanatorium
 |:heavy_check_mark:   | 10002| Abram's Crusaders
 |                     | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
@@ -457,7 +459,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 11001| 108 Worldly Desires
+|:heavy_multiplication_x:| 11001| 108 Worldly Desires
 |                     | 11002| Beyond the Veil
 |                     | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
@@ -654,16 +656,16 @@
 |:heavy_check_mark:   | 17017| Ghostly Communion
 |:heavy_check_mark:   | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
-|                     | 17020| Showboating
+|:heavy_multiplication_x:| 17020| Showboating
 |                     | 17021| All Or Nothing
 
 ## `10-BMR` Blood Moon Rising
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 18001| 108 Drunken Masters
+|:heavy_check_mark:   | 18001| 108 Drunken Masters
 |                     | 18002| Gateway To Beyond
-|                     | 18003| Full Moon Brotherhood
+|:heavy_check_mark:   | 18003| Full Moon Brotherhood
 |                     | 18004| Justice In Exile
 |:heavy_check_mark:   | 18005| Morgan Regulators
 |:heavy_check_mark:   | 18006| Protection Racket
@@ -834,7 +836,7 @@
 |:heavy_check_mark:   | 21013| Brother Petrovic
 |:heavy_check_mark:   | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
-|                     | 21016| Klah
+|:heavy_check_mark:   | 21016| Klah
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
 |:heavy_check_mark:   | 21018| Nathaniel Tuwikaa
 |:heavy_check_mark:   | 21019| The Faceless One
@@ -847,7 +849,7 @@
 |:heavy_check_mark:   | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
 |:heavy_check_mark:   | 21028| Roberto Muratore
-|                     | 21029| Adelaide Rose
+|:heavy_check_mark:   | 21029| Adelaide Rose
 |:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
@@ -904,7 +906,7 @@
 |:heavy_check_mark:   | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
-|                     | 22025| Tomas Ramirez
+|:heavy_check_mark:   | 22025| Tomas Ramirez
 |:heavy_check_mark:   | 22026| Pete Spence
 |:heavy_check_mark:   | 22027| Jonah Essex (Exp.1)
 |                     | 22028| Camillus S. Fly
@@ -915,17 +917,17 @@
 |                     | 22033| Kiva of Fathomless Reach
 |:heavy_check_mark:   | 22034| Crystal Palace
 |:heavy_check_mark:   | 22035| Rham's Readings
-|                     | 22036| Jonah's Retreat
+|:heavy_check_mark:   | 22036| Jonah's Retreat
 |                     | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
-|                     | 22039| Magnum Rounds
+|:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
-|                     | 22041| Net Gun
+|:heavy_check_mark:   | 22041| Net Gun
 |                     | 22042| Scratch
 |                     | 22043| Battered Banjo
 |                     | 22044| Bolts o' Doom
-|                     | 22045| Lethargy
-|                     | 22046| Mind Twist
+|:heavy_check_mark:   | 22045| Lethargy
+|:heavy_check_mark:   | 22046| Mind Twist
 |:heavy_check_mark:   | 22047| Dies Irae
 |:heavy_check_mark:   | 22048| Babble On
 |                     | 22049| Ancestor's Reproach
@@ -949,7 +951,7 @@
 |                     | 23006| Deadwood Dick
 |:heavy_check_mark:   | 23007| Al Swearengen
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
-|                     | 23009| Lew Esquilin
+|:heavy_check_mark:   | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
 |                     | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
@@ -958,9 +960,9 @@
 |                     | 23015| "Professor" Duncan (Exp.1)
 |                     | 23016| Yiska
 |                     | 23017| Dr. JT Goodenough
-|                     | 23018| Seth Bullock
+|:heavy_check_mark:   | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
-|                     | 23020| Mimi "The Nun" O'Brien
+|:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
 |                     | 23023| Jack McCall
@@ -971,7 +973,7 @@
 |                     | 23028| New Varney Nosferatu
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
-|                     | 23031| Heath's Curiosity Shoppe
+|:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
 |                     | 23032| The Gem Theater
 |                     | 23033| Baird's Debt Collections
 |                     | 23034| Cheyenne Club
@@ -979,15 +981,15 @@
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest
-|                     | 23039| Pale Horse
+|:heavy_check_mark:   | 23039| Pale Horse
 |                     | 23040| Kinetic Accretion Actualizer
 |                     | 23041| Missed Me!
 |                     | 23042| Mark of War
 |                     | 23043| We Stand Amazed
-|                     | 23044| Benediction
-|                     | 23045| Guiding the Pack
+|:heavy_check_mark:   | 23044| Benediction
+|:heavy_check_mark:   | 23045| Guiding the Pack
 |                     | 23046| Elk's Protection
-|                     | 23047| Get Off My Land!
+|:heavy_check_mark:   | 23047| Get Off My Land!
 |:heavy_check_mark:   | 23048| Look What I Found!
 |:heavy_check_mark:   | 23049| Mantis Pinch
 |:heavy_check_mark:   | 23050| As Nature and God Intended

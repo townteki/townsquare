@@ -8,7 +8,7 @@ class KevinWainwright extends DudeCard {
             playType: ['noon'],
             target: {
                 activePromptTitle: 'Select huckster for Kevin to move to',
-                cardCondition: { location: 'play area', controller: 'current', condition: card => card.hasKeyword('huckster') },
+                cardCondition: { location: 'play area', controller: 'any', condition: card => card.hasKeyword('huckster') },
                 cardType: ['dude']
             },
             actionContext: { card: this, gameAction: 'moveDude' },
