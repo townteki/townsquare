@@ -976,7 +976,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(playingType !== 'trading') {
+        if(playingType !== 'trading' && playingType !== 'upgrade') {
             attachment.owner.removeCardFromPile(attachment);
         }
 
