@@ -20,7 +20,7 @@ class Incubation extends ActionCard {
         });
 
         this.action({
-            title: 'Attach Incubation',
+            title: 'Noon: Incubation',
             playType: 'noon',
             condition: () => !this.parent,
             target: {
