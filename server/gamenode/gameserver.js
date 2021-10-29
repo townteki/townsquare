@@ -62,6 +62,14 @@ class GameServer {
             options.path = '/' + (process.env.SERVER || config.nodeIdentity) + '/socket.io';
         }
 
+        // ignore CORS in dev mode
+        // @link https://socket.io/docs/v2/handling-cors/
+        if(process.env.NODE_ENV === 'development') {
+            options.allowRequest = (req, callback) => {
+                callback(null, true);
+            };
+        }
+
         this.io = socketio(server, options);
         this.io.set('heartbeat timeout', 30000);
         this.io.use(this.handshake.bind(this));
