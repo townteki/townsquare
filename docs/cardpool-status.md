@@ -70,7 +70,7 @@
 |:heavy_check_mark:   | 01054| Eve Henry
 |                     | 01055| Bank of California
 |:heavy_check_mark:   | 01056| Pony Express
-|                     | 01057| Gomorra Parish
+|:heavy_check_mark:   | 01057| Gomorra Parish
 |                     | 01058| The Town Hall
 |:heavy_check_mark:   | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
