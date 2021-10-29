@@ -6,7 +6,7 @@ class WrathfulSpider extends SpellCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.spellAction({
-            title: 'Cheatin\' Resolution: Wrathful Spider',
+            title: 'Cheatin\' Resolution: Send shooter home',
             playType: ['cheatin resolution'],
             cost: ability.costs.bootSelf(),
             actionContext: { card: this.getOpposingShooter(), gameAction: ['sendHome', 'boot']},
@@ -23,7 +23,7 @@ class WrathfulSpider extends SpellCard {
         });
 
         this.spellAction({
-            title: 'Shootout: Wrathful Spider',
+            title: 'Shootout: Give dude -1 bullets',
             playType: ['shootout'],
             cost: ability.costs.bootSelf(),
             target: {
