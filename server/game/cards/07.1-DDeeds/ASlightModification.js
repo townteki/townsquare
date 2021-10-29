@@ -8,7 +8,7 @@ class ASlightModification extends ActionCard {
             title: 'React: A Slight Modification',
             triggerBefore: true,
             when: {
-                onCardAbilityInitiated: event => event.player !== this.controller &&
+                onAbilityResolutionStarted: event => event.context.player !== this.controller &&
                     ['shootout', 'shootout:join', 'resolution'].includes(event.ability.playTypePlayed())
             },
             cost: ability.costs.boot(card => card.isParticipating() &&
@@ -16,7 +16,7 @@ class ASlightModification extends ActionCard {
                 card.hasKeyword('gadget')),
             message: context => 
                 this.game.addMessage('{0} uses {1} and boots {2} to prevent any effect of a {3}', 
-                    context.player, this, context.costs.boot, context.event.source),
+                    context.player, this, context.costs.boot, context.event.ability.card),
             handler: context => {
                 context.replaceHandler(event => event.ability.incrementLimit());  
             }

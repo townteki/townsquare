@@ -1,4 +1,5 @@
 const EventToTitleFunc = {
+    onAbilityResolutionStarted: event => `the use of ${event.ability.card} being declared`,
     onCardAbilityInitiated: event => `the effects of ${event.source.title}`,
     onCardEntersPlay: event => `${event.card.title} entering play`,
     onPhaseEnded: event => `${event.phase} phase ending`,
@@ -11,7 +12,7 @@ const EventToTitleFunc = {
         return `${event.card.title} moving${locCardTitle}`;
     },
     onDrawHandsRevealed: () => 'draw hands being revealed',
-    onTargetsChosen: () => 'targets being chosen'
+    onTargetsChosen: event => `targets being chosen by ${event.ability.card}`
 };
 
 const AbilityTypeToWord = {
