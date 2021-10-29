@@ -7,7 +7,7 @@ class SchieffelinHall extends DeedCard {
         this.persistentEffect({
             targetController: 'any',
             condition: () => this.game.shootout && this.game.shootout.shootoutLocation.uuid === this.gamelocation,
-            match: this,
+            match: this.game.shootout,
             effect: ability.effects.useInfluenceForShootout()
         });
     }
