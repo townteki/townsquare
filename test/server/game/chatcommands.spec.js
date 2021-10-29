@@ -4,7 +4,7 @@ describe('ChatCommands', function() {
     beforeEach(function() {
         this.gameSpy = jasmine.createSpyObj('game', ['addMessage', 'addAlert', 'raiseEvent']);
 
-        this.playerSpy = jasmine.createSpyObj('player', ['drawCardsToHand', 'discardAtRandom', 'discardFromDraw']);
+        this.playerSpy = jasmine.createSpyObj('player', ['drawCardsToHand', 'discardAtRandom', 'discardFromDrawDeck']);
         this.chatCommands = new ChatCommands(this.gameSpy);
     });
 
