@@ -51,6 +51,9 @@ class WrathfulSpider extends SpellCard {
     }
 
     getOpposingShooter() {
+        if(!this.game.shootout) {
+            return;
+        }
         const opponentPosse = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());
         if(!opponentPosse) {
             return null;
