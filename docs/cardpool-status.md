@@ -226,7 +226,7 @@
 |                     | 04007| Allie Hensman (Exp.1)
 |:heavy_check_mark:   | 04008| Milt Clemons
 |:heavy_check_mark:   | 04009| Jake Smiley
-|                     | 04010| QUATERMAN
+|:heavy_check_mark:   | 04010| QUATERMAN
 |:heavy_check_mark:   | 04011| Angela Payne
 |:heavy_check_mark:   | 04012| The Mayor's Office
 |:heavy_check_mark:   | 04013| Hunter Protections
