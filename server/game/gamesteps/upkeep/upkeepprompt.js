@@ -1,14 +1,20 @@
-const AllPlayerPrompt = require('../allplayerprompt.js');
+const PlayerOrderPrompt = require('../playerorderprompt.js');
 
-class UpkeepPrompt extends AllPlayerPrompt {
+class UpkeepPrompt extends PlayerOrderPrompt {
     constructor(game) {
         super(game);
         this.title = 'Select Dudes to fire' ;
         this.selectedCards = [];
+        this.firstUpkeepMessage = true;
     }
 
-    completionCondition(player) {
-        return player.upkeepPaid;
+    activeCondition(player) {
+        return super.activeCondition(player) && 
+            !player.upkeepPaid && this.getDudesWithUpkeep(player).length > 0;
+    }
+
+    skipCondition(player) {
+        return player.upkeepPaid || this.getDudesWithUpkeep(player).length === 0;
     }
 
     activePrompt(player) {
@@ -30,11 +36,14 @@ class UpkeepPrompt extends AllPlayerPrompt {
     }
 
     continue() {
-        for(let player of this.game.getPlayers()) {
-            if(!this.completionCondition(player)) {
-                this.highlightSelectableCards(player);
-            }
+        if(this.firstUpkeepMessage && this.getDudesWithUpkeep(this.currentPlayer).length === 0) {
+            this.game.addMessage('{0} does not pay any upkeep', this.currentPlayer);
+            this.firstUpkeepMessage = false;
         }
+        if(this.isComplete()) {
+            return true;
+        }
+        this.highlightSelectableCards(this.currentPlayer);
 
         return super.continue();
     }
@@ -75,18 +84,23 @@ class UpkeepPrompt extends AllPlayerPrompt {
     }
 
     payUpkeepAndComplete(player, upkeep) {
-        player.payUpkeep(upkeep);
-        this.game.addMessage('{0} has paid upkeep of {1} GR', player, upkeep);
+        if(upkeep === 0) {
+            this.game.addMessage('{0} does not pay any upkeep', this.currentPlayer);
+        } else {
+            player.payUpkeep(upkeep);
+            this.game.addMessage('{0} has paid upkeep of {1} GR', player, upkeep);
+        }
+        this.firstUpkeepMessage = false;
         this.selectedCards = [];
         player.clearSelectedCards();
         player.clearSelectableCards();
-        super.complete(player);
+        super.completePlayer(player);
     }
 
     discardCards(player, cards, callback) {
         if(cards.length > 0) {
             player.discardCards(cards, false, callback, { isUpkeep: true });
-            this.game.addMessage('{0} does not pay upkeep for {1} and discards them', player, cards);
+            this.game.addMessage('{0} discards {1} so that they do not have to pay upkeep for them', player, cards);
         }
     }
 
