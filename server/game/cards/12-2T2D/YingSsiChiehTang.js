@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class YingSsiChiehTang extends DudeCard {
@@ -9,14 +10,17 @@ class YingSsiChiehTang extends DudeCard {
             playType: ['resolution'],
             cost: ability.costs.payGhostRock(1, true),
             handler: context => {
-                context.player.drawCardsToDrawHand(1, context).thenExecute(() => {
+                context.player.drawCardsToDrawHand(1, context).thenExecute(event => {
                     this.game.promptForSelect(context.player, {
                         activePromptTitle: 'Select a card to discard',
                         cardCondition: { location: 'draw hand', controller: 'current' },
                         onSelect: (player, card) => {
-                            player.discardCard(card, false, {}, context).thenExecute(() => {
-                                this.game.addMessage('{0} uses {1} to draw a card to their draw hand and discard {2}', 
-                                    context.player, this, card);
+                            this.game.resolveGameAction(GameActions.discardCard({ card }), context).thenExecute(() => {
+                                this.game.addMessage('{0} uses {1} to draw {2} to their draw hand and discard {2}', 
+                                    player, this, event.cards, card);
+                                if(!event.cards.includes(card)) {
+                                    player.determineHandResult('\'s hand has been changed to');
+                                }
                             });
                             return true;
                         },
@@ -26,6 +30,7 @@ class YingSsiChiehTang extends DudeCard {
                             }
                             return true;
                         },
+                        context,
                         source: this
                     });
                 });
