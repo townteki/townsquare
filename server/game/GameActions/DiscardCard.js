@@ -16,7 +16,8 @@ class DiscardCard extends GameAction {
             originalLocation: card.location,
             originalGameLocation: card.gamelocation,
             isCardEffect: options.isCardEffect,
-            isCasualty: options.isCasualty
+            isCasualty: options.isCasualty,
+            isUpkeep: options.isUpkeep
         };
         if(context) {
             params.isFromOpponent = context.player !== card.controller;
