@@ -13,7 +13,8 @@ class Bedazzle extends SpellCard {
                 this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 2 ranks; Current rank is {3}',
                     context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
                 if(this.game.shootout) {
-                    this.game.promptForSelect(context.player, {
+                    context.ability.selectAnotherTarget(context.player, context, {
+
                         activePromptTitle: 'Choose opposing dude to bedazzle',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
                         cardCondition: card => card.location === 'play area' &&
@@ -24,7 +25,8 @@ class Bedazzle extends SpellCard {
                             const dazzleAmount = Math.max(dazzlee.bullets, 0);
                             ability.effects.modifyBullets(0 - dazzleAmount);
                             this.game.addMessage('{0} gets -{1} bullets due to the {2}', dazzlee, dazzleAmount, this);
-                        }
+                        },
+                        source: this
                     });
                 }
             },
