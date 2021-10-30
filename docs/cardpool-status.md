@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/572/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/579/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -863,7 +863,7 @@
 |:heavy_check_mark:   | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
-|                     | 21043| Gage Export Co.
+|:heavy_check_mark:   | 21043| Gage Export Co.
 |:heavy_check_mark:   | 21044| Magnum Opus Tenebri
 |:heavy_check_mark:   | 21045| Scattergun
 |:heavy_check_mark:   | 21046| Adler's Needle
@@ -875,7 +875,7 @@
 |:heavy_check_mark:   | 21052| Ten-Foot Punch
 |:heavy_check_mark:   | 21053| Fleet-Footed
 |:heavy_check_mark:   | 21054| You're A Daisy If You Do
-|                     | 21055| Twilight Is Upon Us
+|:heavy_check_mark:   | 21055| Twilight Is Upon Us
 |:heavy_check_mark:   | 21056| Test of Wills
 
 ## `14-HCWM` Hell's Comin' With Me
