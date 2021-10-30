@@ -867,9 +867,9 @@
 |:heavy_check_mark:   | 21044| Magnum Opus Tenebri
 |:heavy_check_mark:   | 21045| Scattergun
 |:heavy_check_mark:   | 21046| Adler's Needle
-|                     | 21047| Wrathful Spider
+|:heavy_check_mark:   | 21047| Wrathful Spider
 |:heavy_check_mark:   | 21048| Guiding Light
-|                     | 21049| Champion
+|:heavy_check_mark:   | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
 |:heavy_check_mark:   | 21052| Ten-Foot Punch
@@ -914,11 +914,11 @@
 |                     | 22030| Winona Rein-Breaker
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
-|                     | 22033| Kiva of Fathomless Reach
+|:heavy_check_mark:   | 22033| Kiva of Fathomless Reach
 |:heavy_check_mark:   | 22034| Crystal Palace
 |:heavy_check_mark:   | 22035| Rham's Readings
 |:heavy_check_mark:   | 22036| Jonah's Retreat
-|                     | 22037| Schieffelin Hall
+|:heavy_check_mark:   | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
 |:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
