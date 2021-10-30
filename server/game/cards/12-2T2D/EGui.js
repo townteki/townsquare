@@ -4,7 +4,7 @@ const DudeCard = require('../../dudecard.js');
 class EGui extends DudeCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
-        cardaction
+        //cardaction
     }
 }
 
