@@ -764,8 +764,8 @@
 |:heavy_check_mark:   | 20002| Property Is Theft
 |:heavy_check_mark:   | 20003| The Spiritual Society
 |:heavy_check_mark:   | 20004| Joe Vermilion
-|                     | 20005| Ying-Ssi Chieh T'ang
-|                     | 20006| E Gui
+|:heavy_check_mark:   | 20005| Ying-Ssi Chieh T'ang
+|:heavy_check_mark:   | 20006| E Gui
 |                     | 20007| Buskers
 |:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
