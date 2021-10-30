@@ -36,6 +36,7 @@ class DevilsSixGun extends GoodsCard {
                                         });
                                         return true;
                                     },
+                                    context,
                                     source: this                
                                 });
                                 this.game.before('onDrawHandDiscarded', event => {
