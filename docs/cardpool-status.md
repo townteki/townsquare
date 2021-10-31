@@ -766,7 +766,7 @@
 |:heavy_check_mark:   | 20004| Joe Vermilion
 |                     | 20005| Ying-Ssi Chieh T'ang
 |                     | 20006| E Gui
-|                     | 20007| Buskers
+|:heavy_check_mark:   | 20007| Buskers
 |:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
@@ -775,7 +775,7 @@
 |                     | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
 |                     | 20015| Skinwalker
-|                     | 20016| Tonton Macoute
+|:heavy_check_mark:   | 20016| Tonton Macoute
 |:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
