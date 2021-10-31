@@ -784,7 +784,7 @@
 |:heavy_check_mark:   | 20022| Takahashi Jinrai
 |:heavy_check_mark:   | 20023| "Handsome" Dan Deeds
 |:heavy_check_mark:   | 20024| Vida Azul
-|                     | 20025| Bartholomew P. Fountain
+|:heavy_check_mark:   | 20025| Bartholomew P. Fountain
 |:heavy_check_mark:   | 20026| Ike Clanton
 |:heavy_check_mark:   | 20027| Frank Stillwell
 |:heavy_check_mark:   | 20028| Silas Aims (Exp.1)
@@ -890,7 +890,7 @@
 |:heavy_check_mark:   | 22006| Arielle Moriah
 |:heavy_check_mark:   | 22007| Gabriel Prior
 |                     | 22008| Mr. Baird
-|                     | 22009| Harlan Stanton
+|:heavy_check_mark:   | 22009| Harlan Stanton
 |:heavy_check_mark:   | 22010| Dr. Delphi Wallis
 |:heavy_check_mark:   | 22011| Cooper Grannon
 |                     | 22012| Vivene Goldsun
