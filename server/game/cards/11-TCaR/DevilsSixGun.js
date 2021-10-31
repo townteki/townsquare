@@ -26,8 +26,7 @@ class DevilsSixGun extends GoodsCard {
                             if(context.player.moveCardWithContext(jokerCard, 'draw hand', context)) {
                                 this.game.promptForSelect(context.player, {
                                     activePromptTitle: 'Select a card from your draw hand to discard',
-                                    waitingPromptTitle: 'Waiting for opponent to discard a card from their draw hand',
-                                    cardCondition: { location: 'draw hand' },
+                                    cardCondition: { location: 'draw hand', controller: 'current' },
                                     onSelect: (player, cardToDiscard) => {
                                         this.game.resolveGameAction(GameActions.discardCard({card: cardToDiscard}), context).thenExecute(() => {
                                         /* Reset hand rank modifiers since we're making a new hand to check */
@@ -36,7 +35,9 @@ class DevilsSixGun extends GoodsCard {
                                             this.game.addMessage('{0} uses {1} to discard a card from their draw hand. Their hand rank is now {2}', player, this, player.getTotalRank());
                                         });
                                         return true;
-                                    }                   
+                                    },
+                                    context,
+                                    source: this                
                                 });
                                 this.game.before('onDrawHandDiscarded', event => {
                                     event.player.moveCardWithContext(jokerCard, 'draw deck', context);
