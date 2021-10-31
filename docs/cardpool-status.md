@@ -778,8 +778,8 @@
 |:heavy_check_mark:   | 20016| Tonton Macoute
 |:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
-|                     | 20019| Dr. Erik Yaple
-|                     | 20020| Quincy Washburne
+|:heavy_check_mark:   | 20019| Dr. Erik Yaple
+|:heavy_check_mark:   | 20020| Quincy Washburne
 |:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
 |:heavy_check_mark:   | 20022| Takahashi Jinrai
 |:heavy_check_mark:   | 20023| "Handsome" Dan Deeds
