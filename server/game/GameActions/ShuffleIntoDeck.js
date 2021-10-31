@@ -7,15 +7,15 @@ class ShuffleIntoDeck extends GameAction {
     }
 
     canChangeGameState({ cards }) {
-        return cards.some(card => card.location !== 'draw deck');
+        return this.makeCardArray(cards).some(card => card.location !== 'draw deck');
     }
 
-    createEvent({ cards, allowSave = true }) {
-        return this.event('onCardsShuffledIntoDeck', { cards }, event => {
+    createEvent({ cards }) {
+        return this.event('onCardsShuffledIntoDeck', { cards: this.makeCardArray(cards) }, event => {
             const players = new Set();
 
             for(const card of event.cards) {
-                card.owner.moveCard(card, 'draw deck', { allowSave });
+                card.owner.moveCard(card, 'draw deck');
                 players.add(card.owner);
             }
 
@@ -23,6 +23,13 @@ class ShuffleIntoDeck extends GameAction {
                 event.thenAttachEvent(Shuffle.createEvent({ player }));
             }
         });
+    }
+
+    makeCardArray(cards) {
+        if(!Array.isArray(cards)) {
+            return [cards];
+        }
+        return cards;
     }
 }
 
