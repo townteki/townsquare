@@ -764,15 +764,15 @@
 |:heavy_check_mark:   | 20002| Property Is Theft
 |:heavy_check_mark:   | 20003| The Spiritual Society
 |:heavy_check_mark:   | 20004| Joe Vermilion
-|                     | 20005| Ying-Ssi Chieh T'ang
-|                     | 20006| E Gui
+|:heavy_check_mark:   | 20005| Ying-Ssi Chieh T'ang
+|:heavy_check_mark:   | 20006| E Gui
 |:heavy_check_mark:   | 20007| Buskers
 |:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20011| Matthew Rising Sun
-|                     | 20012| Feichi "Suitcase" Lee
-|                     | 20013| Geronimo
+|:heavy_check_mark:   | 20012| Feichi "Suitcase" Lee
+|:heavy_check_mark:   | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
 |                     | 20015| Skinwalker
 |:heavy_check_mark:   | 20016| Tonton Macoute
@@ -800,12 +800,12 @@
 |:heavy_check_mark:   | 20038| Electrostatic Pump Gun
 |:heavy_check_mark:   | 20039| Claws
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
-|                     | 20041| Ranger's Bible
+|:heavy_check_mark:   | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
 |                     | 20043| Bedazzle
 |:heavy_check_mark:   | 20044| Exultant Translocation
 |:heavy_check_mark:   | 20045| Retribution
-|                     | 20046| Gateway
+|:heavy_check_mark:   | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
 |:heavy_check_mark:   | 20048| Mischievous Coyote
 |:heavy_check_mark:   | 20049| Murdered in Tombstone
