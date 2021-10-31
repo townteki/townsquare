@@ -800,12 +800,12 @@
 |:heavy_check_mark:   | 20038| Electrostatic Pump Gun
 |:heavy_check_mark:   | 20039| Claws
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
-|                     | 20041| Ranger's Bible
+|:heavy_check_mark:   | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
 |                     | 20043| Bedazzle
 |:heavy_check_mark:   | 20044| Exultant Translocation
 |:heavy_check_mark:   | 20045| Retribution
-|                     | 20046| Gateway
+|:heavy_check_mark:   | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
 |:heavy_check_mark:   | 20048| Mischievous Coyote
 |:heavy_check_mark:   | 20049| Murdered in Tombstone
