@@ -771,8 +771,8 @@
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20011| Matthew Rising Sun
-|                     | 20012| Feichi "Suitcase" Lee
-|                     | 20013| Geronimo
+|:heavy_check_mark:   | 20012| Feichi "Suitcase" Lee
+|:heavy_check_mark:   | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
 |                     | 20015| Skinwalker
 |                     | 20016| Tonton Macoute
