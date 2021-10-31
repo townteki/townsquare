@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/580/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/588/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -766,7 +766,7 @@
 |:heavy_check_mark:   | 20004| Joe Vermilion
 |:heavy_check_mark:   | 20005| Ying-Ssi Chieh T'ang
 |:heavy_check_mark:   | 20006| E Gui
-|                     | 20007| Buskers
+|:heavy_check_mark:   | 20007| Buskers
 |:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
@@ -775,7 +775,7 @@
 |:heavy_check_mark:   | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
 |                     | 20015| Skinwalker
-|                     | 20016| Tonton Macoute
+|:heavy_check_mark:   | 20016| Tonton Macoute
 |:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
