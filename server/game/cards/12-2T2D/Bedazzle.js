@@ -14,17 +14,15 @@ class Bedazzle extends SpellCard {
                     context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
                 if(this.game.shootout) {
                     context.ability.selectAnotherTarget(context.player, context, {
-
                         activePromptTitle: 'Choose opposing dude to bedazzle',
-                        waitingPromptTitle: 'Waiting for opponent to select dude',
                         cardCondition: card => card.location === 'play area' &&
                             card.controller === context.player.getOpponent() &&
                             card.isParticipating(),
                         cardType: 'dude',
                         onSelect: (p, dazzlee) => {
-                            const dazzleAmount = Math.max(dazzlee.bullets, 0);
-                            ability.effects.modifyBullets(0 - dazzleAmount);
-                            this.game.addMessage('{0} gets -{1} bullets due to the {2}', dazzlee, dazzleAmount, this);
+                            const dazzleAmount = dazzlee.bullets;
+                            ability.effects.modifyBullets(-dazzleAmount);
+                            this.game.addMessage('{0} gives {1} -{2} bullets with the {3}', context.player, dazzlee, dazzleAmount, this);
                         },
                         source: this
                     });
