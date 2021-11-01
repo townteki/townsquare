@@ -21,7 +21,10 @@ class Bedazzle extends SpellCard {
                         cardType: 'dude',
                         onSelect: (p, dazzlee) => {
                             const dazzleAmount = dazzlee.bullets;
-                            ability.effects.modifyBullets(-dazzleAmount);
+                            this.applyAbilityEffect(context.ability, ability => ({
+                                match: dazzlee,
+                                effect: ability.effects.modifyBullets(-dazzleAmount)
+                            }));
                             this.game.addMessage('{0} gives {1} -{2} bullets with the {3}', context.player, dazzlee, dazzleAmount, this);
                         },
                         source: this
