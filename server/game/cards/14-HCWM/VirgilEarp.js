@@ -32,7 +32,8 @@ class VirgilEarp extends DudeCard {
     chooseWantedDude() {
         if(this.isWantedDudeOpposing()) {
             this.game.promptForSelect(this.abilityContext.player, {
-                activePromptTitle: `Select a dude with bounty (${this.currentBounties} left)`,
+                activePromptTitle: 'Select a dude with bounty',
+                promptInfo: { type: 'info', message: `${this.currentBounties} bounties left` },
                 waitingPromptTitle: 'Waiting for opponent to select bounty',
                 cardCondition: card => card.location === 'play area' &&
                         card.controller !== this.abilityContext.player &&
@@ -59,7 +60,8 @@ class VirgilEarp extends DudeCard {
                         buttons.push({ text: 'Reset', method: 'assignBountyChoices'});
                         this.game.promptWithMenu(player, this, {
                             activePrompt: {
-                                menuTitle: `How much bounty from ${wantedDude.title}? (${this.currentBounties} left)`,
+                                menuTitle: `How much bounty from ${wantedDude.title}?`,
+                                promptInfo: { type: 'info', message: `${this.currentBounties} bounties left` },
                                 buttons
                             },
                             source: this
