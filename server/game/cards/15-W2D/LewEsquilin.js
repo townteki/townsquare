@@ -29,9 +29,10 @@ class LewEsquilin extends DudeCard {
                         },
                         handler: (card, searchContext) => {
                             context.player.discardFromHand(1, discarded => {
-                                context.player.moveCardWithContext(card, 'hand', searchContext);
-                                this.game.addMessage('{0} uses {1} and discard {2} from hand to put {3} in their hand', 
-                                    context.player, this, discarded, card);
+                                if(context.player.moveCardWithContext(card, 'hand', searchContext, true)) {
+                                    this.game.addMessage('{0} uses {1} and discard {2} from hand to put {3} in their hand', 
+                                        context.player, this, discarded, card);
+                                }
                             }, {}, searchContext);
                         }
                     }),

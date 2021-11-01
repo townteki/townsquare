@@ -1654,8 +1654,11 @@ class Player extends Spectator {
         }
     }
 
-    moveCardWithContext(card, targetLocation, context) {
+    moveCardWithContext(card, targetLocation, context, showMessage = false) {
         if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
+            if(showMessage) {
+                this.game.addMessage('{0} cannot put {1} into their hand because cards cannot leave discard pile', this, card);
+            }
             return false;
         }        
         this.moveCard(card, targetLocation, {}, null);

@@ -31,7 +31,7 @@ class HeathsCuriosityShoppe extends DeedCard {
                                 args: { discarded: () => discarded }
                             },
                             handler: card => {
-                                context.player.moveCardWithContext(card, 'hand', context);
+                                context.player.moveCardWithContext(card, 'hand', context, true);
                             },
                             source: this
                         }), context);
