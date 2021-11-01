@@ -894,9 +894,9 @@
 |:heavy_check_mark:   | 22010| Dr. Delphi Wallis
 |:heavy_check_mark:   | 22011| Cooper Grannon
 |                     | 22012| Vivene Goldsun
-|                     | 22013| Maurice Croker
+|:heavy_check_mark:   | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
-|                     | 22015| Evan Lucas
+|:heavy_check_mark:   | 22015| Evan Lucas
 |:heavy_check_mark:   | 22016| Tawodi
 |:heavy_check_mark:   | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
