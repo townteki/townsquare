@@ -889,11 +889,11 @@
 |                     | 22005| Rock Woofstone
 |:heavy_check_mark:   | 22006| Arielle Moriah
 |:heavy_check_mark:   | 22007| Gabriel Prior
-|                     | 22008| Mr. Baird
+|:heavy_check_mark:   | 22008| Mr. Baird
 |:heavy_check_mark:   | 22009| Harlan Stanton
 |:heavy_check_mark:   | 22010| Dr. Delphi Wallis
 |:heavy_check_mark:   | 22011| Cooper Grannon
-|                     | 22012| Vivene Goldsun
+|:heavy_check_mark:   | 22012| Vivene Goldsun
 |                     | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
 |                     | 22015| Evan Lucas
