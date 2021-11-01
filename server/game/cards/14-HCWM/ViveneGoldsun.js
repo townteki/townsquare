@@ -19,7 +19,7 @@ class ViveneGoldsun extends DudeCard {
                 ability.costs.discardFromPlay((card, context) => card.parent === this &&
                     card.getType() === 'goods' &&
                     card.hasKeyword('mystical') &&
-                    card.value > context.target.getGrit())
+                    this.hasUsefulMystical(card, context))
             ],
             target: {
                 activePromptTitle: 'Choose Mystical to boot',
@@ -41,11 +41,28 @@ class ViveneGoldsun extends DudeCard {
                 gameAction: ['sendHome', 'boot']
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} and discards {2} to send {3} home booted', context.player, this),
+                this.game.addMessage('{0} uses {1} and discards {2} to send {3} home booted', 
+                    context.player, this, context.costs.discardFromPlay, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.sendHome({ card: context.target }), context);
             }
         });
+    }
+
+    hasUsefulMystical(card, context) {
+        if(!this.game.shootout) {
+            return false;
+        }
+        if(context.target) {
+            return card.value > context.target.getGrit();
+        }
+        const oppPosse = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());
+        if(!oppPosse) {
+            return false;
+        }
+        const minGrit = oppPosse.getDudes().reduce((min, dude) =>
+            dude.getGrit() < min ? dude.getGrit() : min, 999);
+        return card.value < minGrit;
     }
 }
 
