@@ -23,11 +23,14 @@ const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 
+/** @typedef {import('./game')} Game */
+
 class Player extends Spectator {
     constructor(id, user, owner, game) {
         super(id, user);
 
         // Ensure game is set before any cards have been created.
+        /** @type {Game} */
         this.game = game;
 
         //DTR specific
@@ -390,7 +393,7 @@ class Player extends Spectator {
         }
     }
 
-    discardFromDraw(number, callback = () => true, options = {}) {
+    discardFromDrawDeck(number, callback = () => true, options = {}) {
         number = Math.min(number, this.drawDeck.length);
 
         var cards = this.drawDeck.slice(0, number);
@@ -976,7 +979,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(playingType !== 'trading') {
+        if(playingType !== 'trading' && playingType !== 'upgrade') {
             attachment.owner.removeCardFromPile(attachment);
         }
 
@@ -1098,9 +1101,9 @@ class Player extends Spectator {
         return production;
     }
 
-    determineUpkeep() {
+    determineUpkeep(selectedCards = []) {
         let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
-            card.upkeep > 0);
+            card.upkeep > 0 && !selectedCards.includes(card));
         let upkeep = upkeepCards.reduce((memo, card) => {
             return memo + card.upkeep;
         }, 0);

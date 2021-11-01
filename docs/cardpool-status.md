@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/571/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/588/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -70,7 +70,7 @@
 |:heavy_check_mark:   | 01054| Eve Henry
 |                     | 01055| Bank of California
 |:heavy_check_mark:   | 01056| Pony Express
-|                     | 01057| Gomorra Parish
+|:heavy_check_mark:   | 01057| Gomorra Parish
 |                     | 01058| The Town Hall
 |:heavy_check_mark:   | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
@@ -226,7 +226,7 @@
 |                     | 04007| Allie Hensman (Exp.1)
 |:heavy_check_mark:   | 04008| Milt Clemons
 |:heavy_check_mark:   | 04009| Jake Smiley
-|                     | 04010| QUATERMAN
+|:heavy_check_mark:   | 04010| QUATERMAN
 |:heavy_check_mark:   | 04011| Angela Payne
 |:heavy_check_mark:   | 04012| The Mayor's Office
 |:heavy_check_mark:   | 04013| Hunter Protections
@@ -285,7 +285,7 @@
 |:heavy_check_mark:   | 05040| Meet The New Boss
 |:heavy_check_mark:   | 06001| Funtime Freddy
 
-## `04.1-FJ` Final Justice
+## `04.1-FJ` Frontier Justice
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -307,7 +307,7 @@
 |:heavy_check_mark:   | 06017| Confession
 |:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
-|                     | 06020| Incubation
+|:heavy_check_mark:   | 06020| Incubation
 |:heavy_check_mark:   | 06021| Flight of the Lepus
 
 ## `04.2-NTB` No Turning Back
@@ -764,18 +764,18 @@
 |:heavy_check_mark:   | 20002| Property Is Theft
 |:heavy_check_mark:   | 20003| The Spiritual Society
 |:heavy_check_mark:   | 20004| Joe Vermilion
-|                     | 20005| Ying-Ssi Chieh T'ang
-|                     | 20006| E Gui
-|                     | 20007| Buskers
+|:heavy_check_mark:   | 20005| Ying-Ssi Chieh T'ang
+|:heavy_check_mark:   | 20006| E Gui
+|:heavy_check_mark:   | 20007| Buskers
 |:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20011| Matthew Rising Sun
-|                     | 20012| Feichi "Suitcase" Lee
-|                     | 20013| Geronimo
+|:heavy_check_mark:   | 20012| Feichi "Suitcase" Lee
+|:heavy_check_mark:   | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
 |                     | 20015| Skinwalker
-|                     | 20016| Tonton Macoute
+|:heavy_check_mark:   | 20016| Tonton Macoute
 |:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
 |                     | 20019| Dr. Erik Yaple
@@ -800,12 +800,12 @@
 |:heavy_check_mark:   | 20038| Electrostatic Pump Gun
 |:heavy_check_mark:   | 20039| Claws
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
-|                     | 20041| Ranger's Bible
+|:heavy_check_mark:   | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
 |:heavy_check_mark:   | 20043| Bedazzle
 |:heavy_check_mark:   | 20044| Exultant Translocation
 |:heavy_check_mark:   | 20045| Retribution
-|                     | 20046| Gateway
+|:heavy_check_mark:   | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
 |:heavy_check_mark:   | 20048| Mischievous Coyote
 |:heavy_check_mark:   | 20049| Murdered in Tombstone
@@ -863,19 +863,19 @@
 |:heavy_check_mark:   | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
-|                     | 21043| Gage Export Co.
+|:heavy_check_mark:   | 21043| Gage Export Co.
 |:heavy_check_mark:   | 21044| Magnum Opus Tenebri
 |:heavy_check_mark:   | 21045| Scattergun
 |:heavy_check_mark:   | 21046| Adler's Needle
-|                     | 21047| Wrathful Spider
+|:heavy_check_mark:   | 21047| Wrathful Spider
 |:heavy_check_mark:   | 21048| Guiding Light
-|                     | 21049| Champion
+|:heavy_check_mark:   | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
 |:heavy_check_mark:   | 21052| Ten-Foot Punch
 |:heavy_check_mark:   | 21053| Fleet-Footed
 |:heavy_check_mark:   | 21054| You're A Daisy If You Do
-|                     | 21055| Twilight Is Upon Us
+|:heavy_check_mark:   | 21055| Twilight Is Upon Us
 |:heavy_check_mark:   | 21056| Test of Wills
 
 ## `14-HCWM` Hell's Comin' With Me
@@ -914,11 +914,11 @@
 |                     | 22030| Winona Rein-Breaker
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
-|                     | 22033| Kiva of Fathomless Reach
+|:heavy_check_mark:   | 22033| Kiva of Fathomless Reach
 |:heavy_check_mark:   | 22034| Crystal Palace
 |:heavy_check_mark:   | 22035| Rham's Readings
 |:heavy_check_mark:   | 22036| Jonah's Retreat
-|                     | 22037| Schieffelin Hall
+|:heavy_check_mark:   | 22037| Schieffelin Hall
 |                     | 22038| Blue Lightnin'
 |:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
