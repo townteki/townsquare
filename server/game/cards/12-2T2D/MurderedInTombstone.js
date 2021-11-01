@@ -38,7 +38,7 @@ class MurderedInTombstone extends ActionCard {
                                 format: '{player} plays {source} and searches their draw deck and discard pile, but does not find a anything'
                             },
                             handler: card => {
-                                player.moveCardWithContext(card, 'hand', context);
+                                player.moveCardWithContext(card, 'hand', context, true);
                                 player.discardFromHand(1, discarded => 
                                     this.game.addMessage('{0} uses {1} to discard {2} from their hand', context.player, this, discarded),
                                 {}, context);

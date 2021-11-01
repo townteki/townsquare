@@ -778,13 +778,13 @@
 |:heavy_check_mark:   | 20016| Tonton Macoute
 |:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
-|                     | 20019| Dr. Erik Yaple
-|                     | 20020| Quincy Washburne
+|:heavy_check_mark:   | 20019| Dr. Erik Yaple
+|:heavy_check_mark:   | 20020| Quincy Washburne
 |:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
 |:heavy_check_mark:   | 20022| Takahashi Jinrai
 |:heavy_check_mark:   | 20023| "Handsome" Dan Deeds
 |:heavy_check_mark:   | 20024| Vida Azul
-|                     | 20025| Bartholomew P. Fountain
+|:heavy_check_mark:   | 20025| Bartholomew P. Fountain
 |:heavy_check_mark:   | 20026| Ike Clanton
 |:heavy_check_mark:   | 20027| Frank Stillwell
 |:heavy_check_mark:   | 20028| Silas Aims (Exp.1)
@@ -889,11 +889,11 @@
 |                     | 22005| Rock Woofstone
 |:heavy_check_mark:   | 22006| Arielle Moriah
 |:heavy_check_mark:   | 22007| Gabriel Prior
-|                     | 22008| Mr. Baird
-|                     | 22009| Harlan Stanton
+|:heavy_check_mark:   | 22008| Mr. Baird
+|:heavy_check_mark:   | 22009| Harlan Stanton
 |:heavy_check_mark:   | 22010| Dr. Delphi Wallis
 |:heavy_check_mark:   | 22011| Cooper Grannon
-|                     | 22012| Vivene Goldsun
+|:heavy_check_mark:   | 22012| Vivene Goldsun
 |:heavy_check_mark:   | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
 |:heavy_check_mark:   | 22015| Evan Lucas
