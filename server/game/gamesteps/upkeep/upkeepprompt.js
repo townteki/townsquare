@@ -20,10 +20,11 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     activePrompt(player) {
         let upkeep = player.determineUpkeep(this.selectedCards);
         let requiredGR = this.getRequiredUpkeep(player, upkeep);
-        let remainingText = requiredGR > 0 ? ` (${requiredGR} GR required)` : '';
+        let promptInfo = requiredGR > 0 ? { type: 'danger', message: `${requiredGR} GR missing`} : {};
         return {
             promptTitle: 'Payday',
-            menuTitle: this.title + remainingText,
+            menuTitle: this.title,
+            promptInfo,
             buttons: [
                 { arg: 'selected', text: 'Done' }
             ],
