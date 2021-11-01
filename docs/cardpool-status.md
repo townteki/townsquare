@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/589/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/597/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -894,9 +894,9 @@
 |:heavy_check_mark:   | 22010| Dr. Delphi Wallis
 |:heavy_check_mark:   | 22011| Cooper Grannon
 |:heavy_check_mark:   | 22012| Vivene Goldsun
-|                     | 22013| Maurice Croker
+|:heavy_check_mark:   | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
-|                     | 22015| Evan Lucas
+|:heavy_check_mark:   | 22015| Evan Lucas
 |:heavy_check_mark:   | 22016| Tawodi
 |:heavy_check_mark:   | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
