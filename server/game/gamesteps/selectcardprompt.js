@@ -60,6 +60,7 @@ class SelectCardPrompt extends UiPrompt {
 
         this.properties = properties;
         this.promptTitle = properties.promptTitle;
+        this.promptInfo = properties.promptInfo || {};
         this.context = properties.context;
         this.selector = properties.selector || CardSelector.for(properties);
         this.selectedCards = [];
@@ -134,7 +135,8 @@ class SelectCardPrompt extends UiPrompt {
                 { text: this.properties.doneButtonText || 'Done', arg: 'done' }
             ]),
             controls: this.properties.additionalControls,
-            promptTitle: this.properties.source ? this.properties.source.title : this.promptTitle
+            promptTitle: this.properties.source ? this.properties.source.title : this.promptTitle,
+            promptInfo: this.promptInfo
         };
     }
 

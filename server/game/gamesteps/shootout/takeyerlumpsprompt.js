@@ -30,7 +30,8 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         this.game.promptWithMenu(this.currentPlayer, this, {
             activePrompt: {
                 promptTitle: this.source ? this.source.title : 'Take Yer Lumps',
-                menuTitle: 'Select casualty type (' + this.getCurrentCasualties() + ' remaining)',
+                promptInfo: { type: 'info', message: `Remaining: ${this.getCurrentCasualties()}`},
+                menuTitle: 'Select casualty type',
                 buttons: [
                     { text: 'Ace', method: 'coverCasualty', arg: 'ace' },
                     { text: 'Discard', method: 'coverCasualty', arg: 'discard' },
