@@ -901,7 +901,7 @@
 |:heavy_check_mark:   | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
-|                     | 22020| Judge Wells Spicer
+|:heavy_check_mark:   | 22020| Judge Wells Spicer
 |:heavy_check_mark:   | 22021| Joan McGruder
 |:heavy_check_mark:   | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
@@ -909,9 +909,9 @@
 |:heavy_check_mark:   | 22025| Tomas Ramirez
 |:heavy_check_mark:   | 22026| Pete Spence
 |:heavy_check_mark:   | 22027| Jonah Essex (Exp.1)
-|                     | 22028| Camillus S. Fly
+|:heavy_check_mark:   | 22028| Camillus S. Fly
 |:heavy_check_mark:   | 22029| QUATERMAN PRIME
-|                     | 22030| Winona Rein-Breaker
+|:heavy_check_mark:   | 22030| Winona Rein-Breaker
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
 |:heavy_check_mark:   | 22033| Kiva of Fathomless Reach
@@ -919,7 +919,7 @@
 |:heavy_check_mark:   | 22035| Rham's Readings
 |:heavy_check_mark:   | 22036| Jonah's Retreat
 |:heavy_check_mark:   | 22037| Schieffelin Hall
-|                     | 22038| Blue Lightnin'
+|:heavy_check_mark:   | 22038| Blue Lightnin'
 |:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
 |:heavy_check_mark:   | 22041| Net Gun
@@ -955,10 +955,10 @@
 |                     | 23010| Mourning Mist
 |                     | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
-|                     | 23013| Sifting Squirrel
+|:heavy_check_mark:   | 23013| Sifting Squirrel
 |:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
 |                     | 23015| "Professor" Duncan (Exp.1)
-|                     | 23016| Yiska
+|:heavy_check_mark:   | 23016| Yiska
 |                     | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
