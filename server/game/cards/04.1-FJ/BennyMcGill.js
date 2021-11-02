@@ -2,7 +2,7 @@ const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class BennyMcGill extends DudeCard {
-    setupCardAbilities() {
+    setupCardAbilities(ability) {
         this.action({
             title: 'Benny McGill',
             playType: 'noon',
