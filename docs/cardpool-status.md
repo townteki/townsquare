@@ -909,9 +909,9 @@
 |:heavy_check_mark:   | 22025| Tomas Ramirez
 |:heavy_check_mark:   | 22026| Pete Spence
 |:heavy_check_mark:   | 22027| Jonah Essex (Exp.1)
-|                     | 22028| Camillus S. Fly
+|:heavy_check_mark:   | 22028| Camillus S. Fly
 |:heavy_check_mark:   | 22029| QUATERMAN PRIME
-|                     | 22030| Winona Rein-Breaker
+|:heavy_check_mark:   | 22030| Winona Rein-Breaker
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
 |:heavy_check_mark:   | 22033| Kiva of Fathomless Reach
