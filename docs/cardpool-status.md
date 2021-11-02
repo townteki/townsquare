@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/597/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/605/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -923,8 +923,8 @@
 |:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
 |:heavy_check_mark:   | 22041| Net Gun
-|                     | 22042| Scratch
-|                     | 22043| Battered Banjo
+|:heavy_check_mark:   | 22042| Scratch
+|:heavy_check_mark:   | 22043| Battered Banjo
 |                     | 22044| Bolts o' Doom
 |:heavy_check_mark:   | 22045| Lethargy
 |:heavy_check_mark:   | 22046| Mind Twist
