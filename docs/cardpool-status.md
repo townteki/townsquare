@@ -901,7 +901,7 @@
 |:heavy_check_mark:   | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
-|                     | 22020| Judge Wells Spicer
+|:heavy_check_mark:   | 22020| Judge Wells Spicer
 |:heavy_check_mark:   | 22021| Joan McGruder
 |:heavy_check_mark:   | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
@@ -919,7 +919,7 @@
 |:heavy_check_mark:   | 22035| Rham's Readings
 |:heavy_check_mark:   | 22036| Jonah's Retreat
 |:heavy_check_mark:   | 22037| Schieffelin Hall
-|                     | 22038| Blue Lightnin'
+|:heavy_check_mark:   | 22038| Blue Lightnin'
 |:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
 |:heavy_check_mark:   | 22041| Net Gun
