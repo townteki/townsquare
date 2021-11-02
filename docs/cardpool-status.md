@@ -955,10 +955,10 @@
 |                     | 23010| Mourning Mist
 |                     | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
-|                     | 23013| Sifting Squirrel
+|:heavy_check_mark:   | 23013| Sifting Squirrel
 |:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
 |                     | 23015| "Professor" Duncan (Exp.1)
-|                     | 23016| Yiska
+|:heavy_check_mark:   | 23016| Yiska
 |                     | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
