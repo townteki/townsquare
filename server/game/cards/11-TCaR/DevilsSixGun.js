@@ -29,8 +29,6 @@ class DevilsSixGun extends GoodsCard {
                                     cardCondition: { location: 'draw hand', controller: 'current' },
                                     onSelect: (player, cardToDiscard) => {
                                         this.game.resolveGameAction(GameActions.discardCard({card: cardToDiscard}), context).thenExecute(() => {
-                                        /* Reset hand rank modifiers since we're making a new hand to check */
-                                            player.rankModifier = 0;
                                             player.determineHandResult();
                                             this.game.addMessage('{0} uses {1} to discard a card from their draw hand. Their hand rank is now {2}', player, this, player.getTotalRank());
                                         });

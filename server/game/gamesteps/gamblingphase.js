@@ -100,7 +100,7 @@ class GamblingPhase extends Phase {
 
     resetModifiers() {
         this.game.getPlayers().forEach(player => {
-            player.rankModifier = 0;
+            player.rankModifier = player.persistentRankModifier;
         });
     }
 }
