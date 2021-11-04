@@ -327,10 +327,11 @@ class Game extends EventEmitter {
         return gameLocation.getDudes(condition);
     }
 
-    getDudesInPlay(player) {
+    getDudesInPlay(player, condition = () => true) {
         return this.filterCardsInPlay(card => 
             card.getType() === 'dude' &&
-            (!player || player === card.controller)
+            (!player || player === card.controller) &&
+            condition(card)
         );
     }
 
