@@ -1644,7 +1644,7 @@ class Player extends Spectator {
             moveMessage = '{0} boots {1} to move them to {2}';
         }
 
-        dude.moveToLocation(destination.uuid);
+        dude.moveToLocation(destination.uuid, options);
         if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
         }
