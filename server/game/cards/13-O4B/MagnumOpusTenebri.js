@@ -25,7 +25,7 @@ class MagnumOpusTenebri extends GoodsCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'opponent', 
-                    condition: (card, context) => 
+                    condition: (card, context) => this.game.shootout &&
                         card.value < this.game.shootout.getPosseStat(context.player, 'bullets') 
                 },
                 cardType: ['dude']
