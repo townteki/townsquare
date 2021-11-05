@@ -34,7 +34,7 @@
 |:heavy_check_mark:   | 01018| Tommy Harden
 |:heavy_check_mark:   | 01019| Prescott Utter
 |:white_check_mark:   | 01020| Andreas Andregg
-|                     | 01021| Xiong "Wendy" Cheng
+|:heavy_check_mark:   | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
@@ -294,7 +294,7 @@
 |                     | 06004| Elmore Rhine
 |                     | 06005| Howard Aswell
 |                     | 06006| Louis Pasteur
-|                     | 06007| Benny McGill
+|:heavy_check_mark:   | 06007| Benny McGill
 |                     | 06008| Marion Seville (Exp.1)
 |:heavy_check_mark:   | 06009| J.W. Byrne
 |:heavy_check_mark:   | 06010| Shane & Graves Security
