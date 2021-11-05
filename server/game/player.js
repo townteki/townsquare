@@ -52,6 +52,7 @@ class Player extends Spectator {
         this.keywordSettings = user.settings.keywordSettings;
 
         this.rankModifier = 0;
+        this.persistentRankModifier = 0;
         this.currentCasualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
@@ -1145,9 +1146,12 @@ class Player extends Spectator {
         return totalRank;
     }
 
-    modifyRank(amount, context, applying = true) {
+    modifyRank(amount, context, applying = true, fromEffect = false) {
         if(!this.cannotModifyHandRanks(context) || !applying) {
             this.rankModifier += amount;
+            if(fromEffect) {
+                this.persistentRankModifier += amount;
+            }
             this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
         }
     }
