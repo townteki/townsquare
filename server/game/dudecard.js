@@ -296,16 +296,16 @@ class DudeCard extends DrawCard {
         } 
     }
 
-    moveToLocation(destinationUuid) {
+    moveToLocation(destinationUuid, options = {}) {
         let origin = this.getGameLocation();
         if(origin) {
             origin.removeDude(this);
-            this.game.raiseEvent('onDudeLeftLocation', { card: this, gameLocation: origin });
+            this.game.raiseEvent('onDudeLeftLocation', { card: this, gameLocation: origin, options });
         }
         let destination = this.game.findLocation(destinationUuid);
         if(destination && this.location !== 'out of game') {
             destination.addDude(this);
-            this.game.raiseEvent('onDudeEnteredLocation', { card: this, gameLocation: destination });
+            this.game.raiseEvent('onDudeEnteredLocation', { card: this, gameLocation: destination, options });
         }
     }
 

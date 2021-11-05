@@ -671,10 +671,10 @@ const Effects = {
             targetType: 'player',
             gameAction: 'modifyHandRank',
             apply: function(player, context) {
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
-                player.modifyRank(-value, context, false);
+                player.modifyRank(-value, context, false, true);
             }
         };
     },
@@ -690,18 +690,18 @@ const Effects = {
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
                 let value = context.dynamicHandRank[player.name];
                 this.title = `Hand Rank modified: ${value}`;
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             reapply: function(player, context) {
                 let currentProperty = context.dynamicHandRank[player.name];
                 let newProperty = calculate(player, context) || 0;
                 context.dynamicHandRank[player.name] = newProperty;
                 let value = newProperty - currentProperty;
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
                 let value = context.dynamicHandRank[player.name];
-                player.modifyRank(-value, context, false);
+                player.modifyRank(-value, context, false, true);
                 delete context.dynamicHandRank[player.name];
             },
             isStateDependent

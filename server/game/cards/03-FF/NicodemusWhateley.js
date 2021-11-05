@@ -15,7 +15,7 @@ class NicodemusWhateley extends DudeCard {
                     if(this.control < 3) {
                         this.modifyControl(1);
                         if(this.isAtHome()) {
-                            this.control = 0;
+                            this.removeAllControl();
                         }
                     } else {
                         this.game.addMessage('{0} cannot to give {1} a CP since he already has 3 or more', context.player, this);
@@ -28,7 +28,7 @@ class NicodemusWhateley extends DudeCard {
                 onRoundEnded: () => this.location === 'play area',
                 onDudeEnteredLocation: event => event.card === this && event.gameLocation.isHome(this.controller)
             },
-            handler: () => this.control = 0
+            handler: () => this.removeAllControl()
         });
     }
 }
