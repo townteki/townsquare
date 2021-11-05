@@ -34,7 +34,7 @@
 |:heavy_check_mark:   | 01018| Tommy Harden
 |:heavy_check_mark:   | 01019| Prescott Utter
 |:white_check_mark:   | 01020| Andreas Andregg
-|                     | 01021| Xiong "Wendy" Cheng
+|:heavy_check_mark:   | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
