@@ -959,7 +959,7 @@
 |:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
 |                     | 23015| "Professor" Duncan (Exp.1)
 |:heavy_check_mark:   | 23016| Yiska
-|                     | 23017| Dr. JT Goodenough
+|:heavy_check_mark:   | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
 |                     | 23019| Clint Ramsey (Exp.1)
 |:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
@@ -975,7 +975,7 @@
 |:heavy_check_mark:   | 23030| Land Purchase
 |:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
 |                     | 23032| The Gem Theater
-|                     | 23033| Baird's Debt Collections
+|:heavy_check_mark:   | 23033| Baird's Debt Collections
 |                     | 23034| Cheyenne Club
 |                     | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
