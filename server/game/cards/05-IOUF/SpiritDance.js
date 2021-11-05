@@ -10,8 +10,10 @@ class SpiritDance extends SpellCard {
             difficulty: 10,
             onSuccess: (context) => {
                 let naturespirit = context.player.placeToken('09042', this.parent.gamelocation);
-                this.game.resolveGameAction(GameActions.joinPosse({ card: naturespirit }), context);
-                this.game.addMessage('{0} uses {1} to bring a Nature Spirit into their posse', context.player, this);
+                this.game.resolveGameAction(GameActions.joinPosse({ card: naturespirit }), context).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to bring a {2} into their posse', 
+                        context.player, this, naturespirit);  
+                });              
             }
         });
     }

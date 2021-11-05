@@ -925,12 +925,12 @@
 |:heavy_check_mark:   | 22041| Net Gun
 |:heavy_check_mark:   | 22042| Scratch
 |:heavy_check_mark:   | 22043| Battered Banjo
-|                     | 22044| Bolts o' Doom
+|:heavy_check_mark:   | 22044| Bolts o' Doom
 |:heavy_check_mark:   | 22045| Lethargy
 |:heavy_check_mark:   | 22046| Mind Twist
 |:heavy_check_mark:   | 22047| Dies Irae
 |:heavy_check_mark:   | 22048| Babble On
-|                     | 22049| Ancestor's Reproach
+|:heavy_check_mark:   | 22049| Ancestor's Reproach
 |                     | 22050| Secret Paths
 |:heavy_check_mark:   | 22051| Fannin' the Hammer
 |                     | 22052| Tumblebleeds!
