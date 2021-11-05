@@ -15,7 +15,7 @@ class DrJTGoodenough extends DudeCard {
                     GameActions.search({
                         title: 'Select 2 different Weapons',
                         match: { 
-                            allkeywords: ['gadget', 'weapon'], 
+                            allKeywords: ['gadget', 'weapon'], 
                             not: { keyword: 'unique' },
                             condition: (card, context) => this.isNotAlreadySelected(card, context)
                         },

@@ -8,7 +8,8 @@ class QuincyWashburne extends DudeCard {
         this.reaction({
             title: 'React: Quincy Washburne',
             when: {
-                onGadgetInvented: event => event.scientist === this && event.gadget.hasKeyword('weapon')
+                onGadgetInvented: event => event.scientist === this && this.booted &&
+                    event.gadget.hasKeyword('weapon')
             },
             message: context => this.game.addMessage('{0} uses {1} to unboot him', context.player, this),
             handler: context => {
