@@ -294,7 +294,7 @@
 |                     | 06004| Elmore Rhine
 |                     | 06005| Howard Aswell
 |                     | 06006| Louis Pasteur
-|                     | 06007| Benny McGill
+|:heavy_check_mark:   | 06007| Benny McGill
 |                     | 06008| Marion Seville (Exp.1)
 |:heavy_check_mark:   | 06009| J.W. Byrne
 |:heavy_check_mark:   | 06010| Shane & Graves Security
