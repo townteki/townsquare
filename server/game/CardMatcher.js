@@ -32,6 +32,7 @@ class CardMatcher {
             Matcher.containsValue(properties.location, card.location) &&
             Matcher.containsValue(properties.title, card.title) &&
             Matcher.anyValue(properties.keyword, keyword => card.hasKeyword(keyword)) &&
+            Matcher.allValues(properties.allKeywords, keyword => card.hasKeyword(keyword)) &&
             Matcher.containsValue(properties.unique, card.isUnique()) &&
             Matcher.anyValue(properties.hasAttachments, hasAttachments => hasAttachments === (card.attachments.length > 0)) &&
             Matcher.anyValue(properties.inLeaderPosse, inLeaderPosse => card.isInLeaderPosse() === inLeaderPosse) &&

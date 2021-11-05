@@ -32,6 +32,23 @@ class Matcher {
 
         return predicate(expected);
     }
+
+    /**
+     * Returns true if the expected value exists and matches the passed
+     * predicate function. If the expected value is an array, it returns true if
+     * all values in the array matches the passed predicate function.
+     */
+    static allValues(expected, predicate) {
+        if(expected === undefined) {
+            return true;
+        }
+
+        if(Array.isArray(expected)) {
+            return expected.every(value => predicate(value));
+        }
+
+        return predicate(expected);
+    }    
 }
 
 module.exports = Matcher;
