@@ -98,7 +98,7 @@ class DudeCard extends DrawCard {
             case 'bullets':
                 return this.bullets;
             case 'bounty':
-                return this.bullets;
+                return this.bounty;
         }
     }
 
