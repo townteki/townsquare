@@ -953,11 +953,11 @@
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
 |:heavy_check_mark:   | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
-|                     | 23011| Victor "Nines" de Boré
+|:heavy_check_mark:   | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
 |:heavy_check_mark:   | 23013| Sifting Squirrel
 |:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
-|                     | 23015| "Professor" Duncan (Exp.1)
+|:heavy_check_mark:   | 23015| "Professor" Duncan (Exp.1)
 |:heavy_check_mark:   | 23016| Yiska
 |:heavy_check_mark:   | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
