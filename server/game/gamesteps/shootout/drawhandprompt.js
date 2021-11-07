@@ -17,6 +17,7 @@ class DrawHandPrompt extends UiPrompt {
             this.selectedCards[player.name] = [];
             this.updateDrawCount(player);
         });
+        this.promptInfo = {};
     }
 
     activeCondition(player) {
@@ -50,6 +51,7 @@ class DrawHandPrompt extends UiPrompt {
         } 
         return {
             menuTitle: 'Reveal draw hand?',
+            promptInfo: this.promptInfo,
             buttons: [
                 { arg: 'revealdraw', text: 'Ready' }
             ],
@@ -147,8 +149,11 @@ class DrawHandPrompt extends UiPrompt {
         if(arg === 'revealdraw') {
             if(player.drawHand.length !== 5) {
                 player.drawHandSelected = false;
+                this.promptInfo.type = 'danger';
+                this.promptInfo.message = `Number of cards in draw hand (${player.drawHand.length}) is not 5!`;
                 return false;
             }
+            this.promptInfo = {};
             player.drawHandSelected = true;   
             this.game.addMessage('{0} is ready to reveal their draw hand', player);
             return true;

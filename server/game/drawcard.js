@@ -87,6 +87,14 @@ class DrawCard extends BaseCard {
         this.game.raiseEvent('onCardControlChanged', params);
     }
 
+    removeAllControl() {
+        this.currentControl -= this.permanentControl;
+        this.permanentControl = 0;
+        this.game.effectEngine.getAllEffectsOnCard(this, effect => 
+            ['increaseControl', 'decreaseControl'].includes(effect.gameAction)).forEach(effect => effect.cancel());
+        this.control = 0;
+    }
+
     createSnapshot(clone, cloneBaseAttributes = true) {
         if(!clone) {
             clone = new DrawCard(this.owner, this.cardData);

@@ -23,7 +23,7 @@ class FoolMeOnce extends ActionCard {
                 const theirhome = context.player.getOpponent().getOutfitCard();
                 context.player.attach(this, theirhome, 'ability', () => {
                     this.game.resolveGameAction(GameActions.drawCards({ player: context.player, amount: 3 }), context).thenExecute(() => {
-                        this.game.addMessage('{0} uses {1}, attaches it to {2}\'s home and draws 3 cards', 
+                        this.game.addMessage('{0} uses {1}, attaches it to {2} and draws 3 cards', 
                             context.player, this, theirhome);
                     });
                 });

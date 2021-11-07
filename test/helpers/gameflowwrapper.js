@@ -113,8 +113,16 @@ class GameFlowWrapper {
     }
 
     completeUpkeepPhase() {
-        this.guardCurrentPhase('upkeep');
-        this.allPlayers.forEach(player => player.clickPrompt('Done'));
+        if(this.game.currentPhase !== 'upkeep') {
+            return;
+        }
+        let promptedPlayer = this.allPlayers.find(player => player.hasPromptButton('Done'));
+        promptedPlayer.clickPrompt('Done');
+        this.allPlayers.forEach(player => {
+            if(player.hasPromptButton('Done')) {
+                player.clickPrompt('Done');
+            }
+        });
     }
 
     completeSundownPhase() {

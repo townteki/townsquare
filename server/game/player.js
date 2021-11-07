@@ -23,11 +23,14 @@ const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 
+/** @typedef {import('./game')} Game */
+
 class Player extends Spectator {
     constructor(id, user, owner, game) {
         super(id, user);
 
         // Ensure game is set before any cards have been created.
+        /** @type {Game} */
         this.game = game;
 
         //DTR specific
@@ -46,6 +49,7 @@ class Player extends Spectator {
 
         this.owner = owner;
         this.rankModifier = 0;
+        this.persistentRankModifier = 0;
         this.currentCasualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
@@ -377,7 +381,7 @@ class Player extends Spectator {
         }
     }
 
-    discardFromDraw(number, callback = () => true, options = {}) {
+    discardFromDrawDeck(number, callback = () => true, options = {}) {
         number = Math.min(number, this.drawDeck.length);
 
         var cards = this.drawDeck.slice(0, number);
@@ -953,7 +957,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(playingType !== 'trading') {
+        if(playingType !== 'trading' && playingType !== 'upgrade') {
             attachment.owner.removeCardFromPile(attachment);
         }
 
@@ -1075,9 +1079,9 @@ class Player extends Spectator {
         return production;
     }
 
-    determineUpkeep() {
+    determineUpkeep(selectedCards = []) {
         let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
-            card.upkeep > 0);
+            card.upkeep > 0 && !selectedCards.includes(card));
         let upkeep = upkeepCards.reduce((memo, card) => {
             return memo + card.upkeep;
         }, 0);
@@ -1123,9 +1127,12 @@ class Player extends Spectator {
         return totalRank;
     }
 
-    modifyRank(amount, context, applying = true) {
+    modifyRank(amount, context, applying = true, fromEffect = false) {
         if(!this.cannotModifyHandRanks(context) || !applying) {
             this.rankModifier += amount;
+            if(fromEffect) {
+                this.persistentRankModifier += amount;
+            }
             this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
         }
     }
@@ -1622,7 +1629,7 @@ class Player extends Spectator {
             moveMessage = '{0} boots {1} to move them to {2}';
         }
 
-        dude.moveToLocation(destination.uuid);
+        dude.moveToLocation(destination.uuid, options);
         if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
         }
@@ -1632,8 +1639,11 @@ class Player extends Spectator {
         }
     }
 
-    moveCardWithContext(card, targetLocation, context) {
+    moveCardWithContext(card, targetLocation, context, showMessage = false) {
         if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
+            if(showMessage) {
+                this.game.addMessage('{0} cannot put {1} into their hand because cards cannot leave discard pile', this, card);
+            }
             return false;
         }        
         this.moveCard(card, targetLocation, {}, null);

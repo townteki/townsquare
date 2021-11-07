@@ -540,7 +540,7 @@ class ChatCommands {
 
         this.game.addAlert('danger', '{0} uses the /discard-deck command to discard {1} from deck', player, TextHelper.count(num, 'card'));
         
-        player.discardFromDraw(num);
+        player.discardFromDrawDeck(num);
     }
 
     discardRandom(player, args) {
