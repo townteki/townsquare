@@ -18,7 +18,7 @@ class ASlightModification extends ActionCard {
                 this.game.addMessage('{0} uses {1} and boots {2} to prevent any effect of a {3}', 
                     context.player, this, context.costs.boot, context.event.ability.card),
             handler: context => {
-                context.replaceHandler(event => event.ability.incrementLimit());  
+                context.event.ability.cancel(true); 
             }
         });
     }

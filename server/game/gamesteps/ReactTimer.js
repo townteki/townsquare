@@ -13,21 +13,24 @@ class ReactTimer {
             return (
                 !event.cancelled &&
                 event.name === this.event.name &&
-                this.isActionEligibleForEvent(player)
+                this.isActionEligibleForEvent(player, event)
             );
         });
     }
 
-    isActionEligibleForEvent(player) {
+    isActionEligibleForEvent(player, event) {
         if(player.noTimer || !player.hand.length) {
             return false;
         }
-        let cardPool = [];
-        if(player.timerSettings.actions) {
-            cardPool = player.timerSettings.actionsInHand ? player.hand : player.allCards;
-        }
-        return cardPool.some(card => 
+        const actionsEnabled = player.timerSettings.actions && player.allCards.some(card => 
             card.getType() === 'action' && card.hasReactionFor(this.event, this.abilityType));
+        const shootoutAbilitiesEnabled = event.name === 'onAbilityResolutionStarted' && 
+            this.abilityType === 'beforereaction' &&
+            event.context.player !== player &&
+            player.timerSettings.shootoutAbilities && 
+            ['shootout', 'shootout:join', 'resolution'].includes(event.ability.playTypePlayed());
+
+        return actionsEnabled || shootoutAbilitiesEnabled;
     }
 }
 

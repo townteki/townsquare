@@ -61,9 +61,6 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
                 } else if(arg === 'passAndPauseForRound') {
                     player.disableTimerForRound();
                     this.pass();
-                } else {
-                    let card = cardsForPlayer.find(c => c.uuid === arg);
-                    this.chooseCardToTrigger(player, card);
                 }
 
                 return true;

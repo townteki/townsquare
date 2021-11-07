@@ -1,5 +1,5 @@
 const EventToTitleFunc = {
-    onAbilityResolutionStarted: event => `the use of ${event.ability.card} being declared`,
+    onAbilityResolutionStarted: event => `the use of ${event.ability.card.title} being declared`,
     onCardAbilityInitiated: event => `the effects of ${event.source.title}`,
     onCardEntersPlay: event => `${event.card.title} entering play`,
     onPhaseEnded: event => `${event.phase} phase ending`,
