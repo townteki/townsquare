@@ -28,7 +28,10 @@ class DrunkenMasters extends OutfitCard {
                     this.game.promptForYesNo(context.player, {
                         title: `Do you want to put ${event.pulledCard.title} into your hand?`,
                         onYes: player => {
-                            event.context.pull.doNotHandlePulledCard = true;
+                            if(event.context.pull) {
+                                // set the flag to prevent discarding of pulled card in abilityresolver
+                                event.context.pull.doNotHandlePulledCard = true;
+                            }
                             this.game.before('onPulledCardHandled', handleEvent => {
                                 handleEvent.replaceHandler(() => true);
                             }, true, handleEvent => 
