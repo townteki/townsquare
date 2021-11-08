@@ -11,7 +11,6 @@ class WillaMaeMacGowanExp1 extends DudeCard {
             cost: ability.costs.discardSelf(),
             target: {
                 activePromptTitle: 'Choose dude to send home',
-                choosingPlayer: 'current',
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'current', 
