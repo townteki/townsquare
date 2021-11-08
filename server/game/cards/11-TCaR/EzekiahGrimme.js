@@ -26,8 +26,10 @@ class EzekiahGrimme extends LegendCard {
             },
             cost: [ability.costs.bootSelf()],
             handler: context => {
-                // set to null to prevent discarding of pulled card in abilityresolver
-                context.event.context.pull = null;
+                if(context.event.context.pull) {
+                    // set the flag to prevent discarding of pulled card in abilityresolver
+                    context.event.context.pull.doNotHandlePulledCard = true;
+                }
                 this.game.promptForYesNo(context.player, {
                     title: 'Do you want to attach pulled Spell?',
                     onYes: player => {
@@ -42,7 +44,8 @@ class EzekiahGrimme extends LegendCard {
                     },
                     onNo: player => {
                         player.handlePulledCard(context.event.pulledCard);
-                    }
+                    },
+                    source: this
                 });
             }
         });
