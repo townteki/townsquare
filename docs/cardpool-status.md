@@ -974,9 +974,9 @@
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
 |:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
-|                     | 23032| The Gem Theater
+|:heavy_check_mark:   | 23032| The Gem Theater
 |:heavy_check_mark:   | 23033| Baird's Debt Collections
-|                     | 23034| Cheyenne Club
+|:heavy_check_mark:   | 23034| Cheyenne Club
 |                     | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
