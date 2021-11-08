@@ -16,7 +16,7 @@ class TheGemTheater extends DeedCard {
                 context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
-                    match: this.shootout.getParticipants(),
+                    match: this.game.shootout.getParticipants(),
                     effect: ability.effects.setAsDraw()
                 }));
             }
