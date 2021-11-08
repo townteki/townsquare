@@ -969,8 +969,8 @@
 |:heavy_check_mark:   | 23024| Reggie Mallard
 |:heavy_check_mark:   | 23025| Alferd Packer
 |:heavy_check_mark:   | 23026| John "Aces" Radcliffe (Exp.1)
-|                     | 23027| Willa Mae MacGowan (Exp.1)
-|                     | 23028| New Varney Nosferatu
+|:heavy_check_mark:   | 23027| Willa Mae MacGowan (Exp.1)
+|:heavy_check_mark:   | 23028| New Varney Nosferatu
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
 |:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
