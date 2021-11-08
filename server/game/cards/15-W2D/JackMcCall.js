@@ -12,7 +12,7 @@ class JackMcCall extends DudeCard {
                 if(!this.game.shootout) {
                     return false;
                 }
-                return this.game.shootout.getPosseSize(context.player) > this.game.shootout.getPosseSize(context.player.getOpponent);
+                return this.game.shootout.getPosseSize(context.player) > this.game.shootout.getPosseSize(context.player.getOpponent());
             },
             ifFailMessage: context =>
                 this.game.addMessage('{0} uses {1} but nothing happens because he is a coward and his posse does not have more dudes', 
