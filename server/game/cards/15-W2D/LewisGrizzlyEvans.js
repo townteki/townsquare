@@ -13,7 +13,7 @@ class LewisGrizzlyEvans extends DudeCard {
 
         this.persistentEffect({
             condition: () => this.game.shootout && 
-                this.game.shootout.isPosseSize(this.controller, size => size > 1),
+                this.game.shootout.getPosseSize(this.controller) > 1,
             match: this,
             effect: ability.effects.addCardAction({
                 title: 'Shootout: Lewis "Grizzly" Evans',
@@ -37,13 +37,13 @@ class LewisGrizzlyEvans extends DudeCard {
                     this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                     this.applyAbilityEffect(context.ability, ability => ({
                         condition: () => this.game.shootout && 
-                            this.game.shootout.isPosseSize(context.player, size => size > 1),
+                            this.game.shootout.getPosseSize(context.player) > 1,
                         match: this,
                         effect: ability.effects.doesNotProvideBulletRatings()
                     }));
                     this.applyAbilityEffect(context.ability, ability => ({
                         condition: () => this.game.shootout && 
-                            this.game.shootout.isPosseSize(context.target.controller, size => size > 1),                    
+                            this.game.shootout.getPosseSize(context.target.controller) > 1,
                         match: context.target,
                         effect: ability.effects.doesNotProvideBulletRatings()
                     }));                    

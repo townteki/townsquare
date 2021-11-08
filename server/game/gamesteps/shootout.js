@@ -277,9 +277,9 @@ class Shootout extends Phase {
         return this.isInLeaderPosse(card) || this.isInOpposingPosse(card);
     }
 
-    isPosseSize(player, predicate = () => false) {
+    getPosseSize(player) {
         const posse = this.getPosseByPlayer(player);
-        return posse && predicate(posse.posse.length);
+        return posse ? posse.posse.length : 0;
     }
 
     belongsToLeaderPlayer(dude) {
