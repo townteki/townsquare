@@ -25,11 +25,11 @@ class NuttalMannsNo10Saloon extends DeedCard {
             handler: context => {
                 if(context.target.booted) {
                     this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context).thenExecute(() => {
-                        this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.target);
+                        this.game.addMessage('{0} uses {1} and pays 1 GR to unboot {2}', context.player, this, context.target);
                     });
                 } else {
                     this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
-                        this.game.addMessage('{0} uses {1} to boot {2}', context.player, this, context.target);
+                        this.game.addMessage('{0} uses {1} and pays 1 GR to boot {2}', context.player, this, context.target);
                     });                    
                 }
             }
