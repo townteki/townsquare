@@ -14,22 +14,35 @@ class Skinwalker extends DudeCard {
             ),
             handler: context => {
                 this.abilityContext = context;
-                this.game.promptWithMenu(context.player, this, {
-                    activePrompt: {
-                        menuTitle: 'Boot opposing attachment at this location or give +2 bullets to Skinwalker?',
-                        buttons: [
-                            { text: 'Boot attachment', method: 'bootAttachment' },
-                            { text: 'Give bullets', method: 'giveBullets' }
-                        ]
-                    },
-                    source: this
-                });
+                // check if opponent's posse has any bootable attachments
+                const opposingDudeWithBootableAttachment = 
+                    this.game.shootout
+                        .getPosseByPlayer(this.controller.getOpponent())
+                        .findInPosse(dude => {
+                            const hasAttachment = dude.attachments.filter(attachment => !attachment.booted).length > 0;
+                            return hasAttachment;
+                        });
+                if(opposingDudeWithBootableAttachment) {
+                    this.game.promptWithMenu(context.player, this, {
+                        activePrompt: {
+                            menuTitle: 'Boot opposing attachment at this location or give +2 bullets to Skinwalker?',
+                            buttons: [
+                                { text: 'Boot attachment', method: 'bootAttachment' },
+                                { text: 'Give bullets', method: 'giveBullets' }
+                            ]
+                        },
+                        source: this
+                    });
+                } else {
+                    this.giveBullets(context.player);
+                }
             }
         });
     }
 
     bootAttachment() {
         // @todo implement [ST 2021/10/26]
+
     }
 
     giveBullets(player) {
