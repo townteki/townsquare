@@ -4,6 +4,8 @@ const SpellCard = require('../../spellcard.js');
 class ElksProtection extends SpellCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
+        this.attachmentRestriction({ type: 'deed'});
+        
         this.spellAction({
             title: 'Noon: Elk\'s Protection',
             playType: ['noon'],
