@@ -10,7 +10,7 @@ class WeStandAmazed extends SpellCard {
             triggerBefore: true,
             when: {
                 onCardDiscarded: event => event.card.isParticipating() &&
-                    event.getType() === 'dude' &&
+                    event.card.getType() === 'dude' &&
                     event.isCasualty
             },
             cost: ability.costs.bootSelf(),

@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const SpellCard = require('../../spellcard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
@@ -14,8 +15,9 @@ class MarkOfWar extends SpellCard {
                     match: this.parent,
                     effect: ability.effects.calloutCannotBeRefused()
                 }));
-                this.game.addMessage('{0} uses {1} on {2} to prevent other dudes from refusing their call outs', 
-                    context.player, this, context.event.card);  
+                this.game.resolveGameAction(GameActions.discardCard({ card: this }), context);
+                this.game.addMessage('{0} uses {1} to prevent other dudes from refusing {2}\'s call outs', 
+                    context.player, this, this.parent); 
             },
             source: this
         });
