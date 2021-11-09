@@ -886,7 +886,7 @@
 |:heavy_check_mark:   | 22002| Hank Ketchum
 |:heavy_check_mark:   | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
-|                     | 22005| Rock Woofstone
+|:heavy_check_mark:   | 22005| Rock Woofstone
 |:heavy_check_mark:   | 22006| Arielle Moriah
 |:heavy_check_mark:   | 22007| Gabriel Prior
 |:heavy_check_mark:   | 22008| Mr. Baird
@@ -953,11 +953,11 @@
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
 |:heavy_check_mark:   | 23009| Lew Esquilin
 |                     | 23010| Mourning Mist
-|                     | 23011| Victor "Nines" de Boré
+|:heavy_check_mark:   | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
 |:heavy_check_mark:   | 23013| Sifting Squirrel
 |:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
-|                     | 23015| "Professor" Duncan (Exp.1)
+|:heavy_check_mark:   | 23015| "Professor" Duncan (Exp.1)
 |:heavy_check_mark:   | 23016| Yiska
 |:heavy_check_mark:   | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
@@ -965,12 +965,12 @@
 |:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
-|                     | 23023| Jack McCall
+|:heavy_check_mark:   | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
 |:heavy_check_mark:   | 23025| Alferd Packer
 |:heavy_check_mark:   | 23026| John "Aces" Radcliffe (Exp.1)
-|                     | 23027| Willa Mae MacGowan (Exp.1)
-|                     | 23028| New Varney Nosferatu
+|:heavy_check_mark:   | 23027| Willa Mae MacGowan (Exp.1)
+|:heavy_check_mark:   | 23028| New Varney Nosferatu
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
 |:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
