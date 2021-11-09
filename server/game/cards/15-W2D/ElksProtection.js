@@ -34,7 +34,8 @@ class ElksProtection extends SpellCard {
                 activePromptTitle: 'Choose a dude',
                 cardCondition: { 
                     location: 'play area', 
-                    controller: 'any', 
+                    controller: 'any',
+                    participating: true,
                     condition: card => !card.hasWeapon()
                 },
                 cardType: ['dude']
@@ -48,13 +49,13 @@ class ElksProtection extends SpellCard {
     }
 
     applyElksEffect(context) {
-        if(this.getPrintedStat('production')) {
+        if(this.parent.getPrintedStat('production')) {
             this.applyAbilityEffect(context.ability, ability => ({
                 match: context.target,
-                effect: ability.effects.modifyBullets(this.getPrintedStat('production'))
+                effect: ability.effects.modifyBullets(this.parent.getPrintedStat('production'))
             }));
             this.game.addMessage('{0} uses {1} to give {2} {3} bullets', 
-                context.player, this, context.target, this.getPrintedStat('production'));
+                context.player, this, context.target, this.parent.getPrintedStat('production'));
         } else {
             this.game.addMessage('{0} uses {1}, but {2} does not receive any bullets', 
                 context.player, this, context.target);
