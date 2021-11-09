@@ -23,8 +23,7 @@ class TseCheNakosWeaving extends SpellCard {
                     activePromptTitle: 'Choose dude to move',
                     cardCondition: { 
                         location: 'play area', 
-                        controller: 'current', 
-                        condition: card => card.isAdjacent(context.caster.gamelocation) 
+                        controller: 'current'
                     },
                     cardType: ['dude'],
                     gameAction: 'moveDude',
@@ -47,11 +46,11 @@ class TseCheNakosWeaving extends SpellCard {
                             source: this,
                             context
                         });
-                        if(context.caster.booted) {
+                        if(this.parent.booted) {
                             this.game.promptForYesNo(player, {
-                                title: `Do you want to unboot ${context.caster.title} ?`,
+                                title: `Do you want to unboot ${this.parent.title} ?`,
                                 onYes: player => {
-                                    this.game.resolveGameAction(GameActions.unbootCard({ card: context.caster }), context).thenExecute(() => {
+                                    this.game.resolveGameAction(GameActions.unbootCard({ card: this.parent }), context).thenExecute(() => {
                                         this.lastingEffect(context.ability, ability => ({
                                             until: {
                                                 onRoundEnded: () => true,
@@ -60,8 +59,8 @@ class TseCheNakosWeaving extends SpellCard {
                                             match: context.caster,
                                             effect: ability.effects.modifyControl(1)
                                         }));
-                                        this.game.addMessage('{0} uses {1} to unboot {2} and gives them 1 CP until they move (or until end of turn)', 
-                                            player, this, context.caster);                                 
+                                        this.game.addMessage('{0} uses {1} to unboot {2} and to give {3} +1 CP until they move (or until end of turn)', 
+                                            player, this, this.parent, context.caster);                                 
                                     });
                                 },
                                 source: this
