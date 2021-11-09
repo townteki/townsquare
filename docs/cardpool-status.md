@@ -886,7 +886,7 @@
 |:heavy_check_mark:   | 22002| Hank Ketchum
 |:heavy_check_mark:   | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
-|                     | 22005| Rock Woofstone
+|:heavy_check_mark:   | 22005| Rock Woofstone
 |:heavy_check_mark:   | 22006| Arielle Moriah
 |:heavy_check_mark:   | 22007| Gabriel Prior
 |:heavy_check_mark:   | 22008| Mr. Baird
@@ -965,7 +965,7 @@
 |:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
 |                     | 23022| Rosaleen Byrne
-|                     | 23023| Jack McCall
+|:heavy_check_mark:   | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
 |:heavy_check_mark:   | 23025| Alferd Packer
 |:heavy_check_mark:   | 23026| John "Aces" Radcliffe (Exp.1)
