@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/617/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/625/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -974,9 +974,9 @@
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
 |:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
-|                     | 23032| The Gem Theater
+|:heavy_check_mark:   | 23032| The Gem Theater
 |:heavy_check_mark:   | 23033| Baird's Debt Collections
-|                     | 23034| Cheyenne Club
+|:heavy_check_mark:   | 23034| Cheyenne Club
 |                     | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |                     | 23037| Feathered Friend
