@@ -979,7 +979,7 @@
 |:heavy_check_mark:   | 23034| Cheyenne Club
 |                     | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
-|                     | 23037| Feathered Friend
+|:heavy_check_mark:   | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest
 |:heavy_check_mark:   | 23039| Pale Horse
 |                     | 23040| Kinetic Accretion Actualizer
@@ -988,7 +988,7 @@
 |                     | 23043| We Stand Amazed
 |:heavy_check_mark:   | 23044| Benediction
 |:heavy_check_mark:   | 23045| Guiding the Pack
-|                     | 23046| Elk's Protection
+|:heavy_check_mark:   | 23046| Elk's Protection
 |:heavy_check_mark:   | 23047| Get Off My Land!
 |:heavy_check_mark:   | 23048| Look What I Found!
 |:heavy_check_mark:   | 23049| Mantis Pinch
