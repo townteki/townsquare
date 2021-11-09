@@ -9,10 +9,12 @@ class Skinwalker extends DudeCard {
                 card.location === 'play area' &&
                 card.getType() === 'dude' &&
                 card.hasKeyword('abomination') &&
+                this.game.shootout &&
                 this.game.shootout.getPosseByPlayer(this.controller).isInPosse(card)
             ),
-            handler() {
-                this.game.promptWithMenu(this.controller, this, {
+            handler: context => {
+                this.abilityContext = context;
+                this.game.promptWithMenu(context.player, this, {
                     activePrompt: {
                         menuTitle: 'Boot opposing attachment at this location or give +2 bullets to Skinwalker?',
                         buttons: [
@@ -30,12 +32,13 @@ class Skinwalker extends DudeCard {
         // @todo implement [ST 2021/10/26]
     }
 
-    giveBullets() {
-        this.applyAbilityEffect(this.context.ability, ability => ({
+    giveBullets(player) {
+        this.applyAbilityEffect(this.abilityContext.ability, ability => ({
             match: this,
-            effect: ability.effects.modifyBullets(2)
+            effect: ability.effects.modifyBullets(1)
         }));
-        this.game.addMessage('{0} boots {1} to give {1} +2 bullets.', player, this.context.costs.boot, this);
+        this.game.addMessage('{0} uses {1} and boots {2} to give {3} +2 bullets', player, this, this.abilityContext.costs.boot, this);
+        return true;
     }
 }
 
