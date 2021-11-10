@@ -993,8 +993,8 @@
 |:heavy_check_mark:   | 23048| Look What I Found!
 |:heavy_check_mark:   | 23049| Mantis Pinch
 |:heavy_check_mark:   | 23050| As Nature and God Intended
-|                     | 23051| Play for Blood
-|                     | 23052| Bad Beat
+|:heavy_check_mark:   | 23051| Play for Blood
+|:heavy_check_mark:   | 23052| Bad Beat
 |:heavy_check_mark:   | 23053| Fallen Star
 |                     | 23054| Masonic Augment
 |                     | 23055| Swagger
