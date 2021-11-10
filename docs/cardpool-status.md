@@ -480,7 +480,7 @@
 |:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
-|                     | 11022| A Slight Modification
+|:heavy_check_mark:   | 11022| A Slight Modification
 |:heavy_check_mark:   | 11023| Rabbit Takes Revenge
 
 ## `07.2-FP` Foul Play
@@ -944,7 +944,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 23001| Yasmin Tian
-|                     | 23002| "Dynamite" Jacc
+|:heavy_check_mark:   | 23002| "Dynamite" Jacc
 |:heavy_check_mark:   | 23003| Bai Yang Chen (Exp.1)
 |                     | 23004| Huang Li
 |:heavy_check_mark:   | 23005| Arthur Dingler
@@ -977,18 +977,18 @@
 |:heavy_check_mark:   | 23032| The Gem Theater
 |:heavy_check_mark:   | 23033| Baird's Debt Collections
 |:heavy_check_mark:   | 23034| Cheyenne Club
-|                     | 23035| Nuttal & Mann's No. 10 Saloon
+|:heavy_check_mark:   | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
-|                     | 23037| Feathered Friend
+|:heavy_check_mark:   | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest
 |:heavy_check_mark:   | 23039| Pale Horse
 |                     | 23040| Kinetic Accretion Actualizer
 |                     | 23041| Missed Me!
-|                     | 23042| Mark of War
-|                     | 23043| We Stand Amazed
+|:heavy_check_mark:   | 23042| Mark of War
+|:heavy_check_mark:   | 23043| We Stand Amazed
 |:heavy_check_mark:   | 23044| Benediction
 |:heavy_check_mark:   | 23045| Guiding the Pack
-|                     | 23046| Elk's Protection
+|:heavy_check_mark:   | 23046| Elk's Protection
 |:heavy_check_mark:   | 23047| Get Off My Land!
 |:heavy_check_mark:   | 23048| Look What I Found!
 |:heavy_check_mark:   | 23049| Mantis Pinch

@@ -551,7 +551,6 @@ module.exports.init = function(server, options) {
 
         user.email = userToSet.email;
         user.settings = userToSet.settings;
-        user.promptedActionWindows = userToSet.promptedActionWindows;
 
         if(userToSet.password && userToSet.password !== '') {
             user.password = await hashPassword(userToSet.password, 10);

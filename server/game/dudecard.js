@@ -407,6 +407,10 @@ class DudeCard extends DrawCard {
         return this.hasAttachment(att => att.hasKeyword('Horse'));
     }
 
+    hasWeapon() {
+        return this.hasAttachment(att => att.hasKeyword('Weapon'));
+    }    
+
     checkWeaponLimit() {
         let weapons = this.getAttachmentsByKeywords(['weapon']);
         if(weapons && weapons.length > 1) {
