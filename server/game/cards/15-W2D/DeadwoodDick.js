@@ -23,10 +23,10 @@ class DeadwoodDick extends DudeCard {
                     condition: card => card.hasHorse() 
                 },
                 cardType: ['dude'],
-                multiSelect: true,                
+                multiSelect: true,
+                numCards: 0,         
                 gameAction: () => this.controller.isCheatin() ? ['sendHome', 'boot'] : 'sendHome'
             },
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 const movedDudes = [];
                 let action = GameActions.simultaneously(
