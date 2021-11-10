@@ -48,9 +48,6 @@ class Player extends Spectator {
         this.playCardRestrictions = [];
 
         this.owner = owner;
-        this.promptedActionWindows = user.promptedActionWindows;
-        this.keywordSettings = user.settings.keywordSettings;
-
         this.rankModifier = 0;
         this.persistentRankModifier = 0;
         this.currentCasualties = 0;
@@ -153,12 +150,6 @@ class Player extends Spectator {
         });
     }
 
-    isCardNameInList(list, card) {
-        return list.any(c => {
-            return c.name === card.name;
-        });
-    }
-
     areCardsSelected() {
         return this.cardsInPlay.any(card => {
             return card.selected;
@@ -171,10 +162,6 @@ class Player extends Spectator {
 
     addLocation(location) {
         this.locations.push(location);
-    }
-
-    findCardByName(list, name) {
-        return this.findCard(list, card => card.name === name);
     }
 
     findCardByUuidInAnyList(uuid) {
@@ -867,16 +854,6 @@ class Player extends Spectator {
         });
     }
 
-    resetForStartOfRound() {
-        this.firstPlayer = false;
-
-        if(this.resetTimerAtEndOfRound) {
-            this.noTimer = false;
-        }
-
-        this.gainedGhostRock = 0;
-    }
-
     inventGadget(gadget, scientist, successHandler = () => true) {
         const getPullProperties = (scientist, bootedToInvent) => {
             return {
@@ -1129,6 +1106,10 @@ class Player extends Spectator {
         this.sundownDiscardDone = false;
         this.passTurn = false;
         this.cardsInPlay.forEach(card => card.resetForRound());
+        this.firstPlayer = false;
+        if(this.resetTimerAtEndOfRound) {
+            this.noTimer = false;
+        }
     }
 
     getHandRank() {
@@ -1941,9 +1922,7 @@ class Player extends Spectator {
             numDrawCards: this.drawDeck.length,
             name: this.name,
             phase: this.game.currentPhase,
-            promptedActionWindows: this.promptedActionWindows,
             stats: this.getStats(isActivePlayer),
-            keywordSettings: this.keywordSettings,
             timerSettings: this.timerSettings,
             totalControl: this.getTotalControl(),
             totalInfluence: this.getTotalInfluence(),

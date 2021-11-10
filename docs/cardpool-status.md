@@ -480,7 +480,7 @@
 |:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
-|                     | 11022| A Slight Modification
+|:heavy_check_mark:   | 11022| A Slight Modification
 |:heavy_check_mark:   | 11023| Rabbit Takes Revenge
 
 ## `07.2-FP` Foul Play
