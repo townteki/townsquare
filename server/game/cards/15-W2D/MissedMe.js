@@ -10,13 +10,17 @@ class MissedMe extends SpellCard {
             cost: ability.costs.bootSelf(),
             difficulty: 5,
             onSuccess: (context) => {
-                const oppPosse = this.game.shootout.getPosseByPlayer(context.player.getOpponent());
+                const opponent = context.player.getOpponent();
+                const oppPosse = this.game.shootout.getPosseByPlayer(opponent);
                 if(!oppPosse) {
                     return;
                 }
                 const totalDudesAndSK = oppPosse.getDudes().reduce((total, dude) => 
                     total + dude.getAttachmentsByKeywords(['sidekick']).length + 1, 0);
-                context.player.getOpponent().modifyRank(totalDudesAndSK > 4 ? -4 : -totalDudesAndSK);
+                const rankMod = totalDudesAndSK > 4 ? -4 : -totalDudesAndSK;
+                opponent.modifyRank(rankMod);
+                this.game.addMessage('{0} uses {1} to decrease {2}\'s rank by {3}; Current rank is {4}', 
+                    context.player, this, opponent, rankMod, opponent.getTotalRank());
             },
             source: this
         });
