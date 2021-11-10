@@ -243,7 +243,7 @@ class BaseCard {
     reaction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
-        if(properties.triggerBefore || properties.canCancel) {
+        if(properties.triggerBefore) {
             reaction = new CardBeforeReaction(this.game, this, properties);            
         } else {
             reaction = new CardReaction(this.game, this, properties);
@@ -259,7 +259,7 @@ class BaseCard {
     spellReaction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
-        if(properties.triggerBefore || properties.canCancel) {
+        if(properties.triggerBefore) {
             reaction = new SpellBeforeReaction(this.game, this, properties);            
         } else {
             reaction = new SpellReaction(this.game, this, properties);
@@ -324,6 +324,12 @@ class BaseCard {
                 ability.cannotBeUsed = cannotBeUsed;
             }
         });
+    }
+
+    hasReactionFor(event, abilityType) {
+        return this.abilities.reactions.some(reaction => 
+            reaction.eventType === abilityType &&
+            reaction.when[event.name] && reaction.when[event.name](event));
     }
 
     /**

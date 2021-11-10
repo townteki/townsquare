@@ -59,14 +59,6 @@ xdescribe('shootout phase', function() {
                 this.player1.clickPrompt('Intrigue');
                 this.player1.clickCard('Steward at the Wall', 'play area');
                 this.player1.clickPrompt('Done');
-
-                // Skip attackers declared window
-                this.skipActionWindow();
-
-                this.player2.clickPrompt('Done');
-
-                // Skip defenders declared window
-                this.skipActionWindow();
             });
 
             it('should not trigger any win reactions for the defender', function() {
@@ -188,13 +180,6 @@ xdescribe('shootout phase', function() {
                 this.player1.clickCard(this.brienne);
                 this.player1.clickCard(this.garlan);
                 this.player1.clickPrompt('Done');
-
-                this.skipActionWindow();
-
-                // No defenders
-                this.player2.clickPrompt('Done');
-
-                this.skipActionWindow();
             });
 
             describe('when no settings are set', function() {
@@ -206,58 +191,6 @@ xdescribe('shootout phase', function() {
                     expect(this.chud.location).toBe('hand');
                     expect(this.renly.power).toBe(1);
                     expect(this.brienne.power).toBe(1);
-                    expect(this.garlan.power).toBe(1);
-                });
-            });
-
-            describe('and the first player wants to choose keyword order', function() {
-                beforeEach(function() {
-                    this.player2.toggleKeywordSettings('chooseOrder', true);
-
-                    this.player1.clickPrompt('Apply Claim');
-                });
-
-                it('should allow the first player to choose the order', function() {
-                    this.player2.clickPrompt('Insight');
-
-                    expect(this.chud.location).toBe('hand');
-                    // No Renown power yet
-                    expect(this.player2).toHavePromptButton('Renown');
-                    expect(this.renly.power).toBe(0);
-                    expect(this.brienne.power).toBe(0);
-                    expect(this.garlan.power).toBe(0);
-                });
-
-                it('should allow the first player to process all keywords automatically', function() {
-                    this.player2.clickPrompt('Automatic');
-
-                    expect(this.chud.location).toBe('hand');
-                    expect(this.renly.power).toBe(1);
-                    expect(this.brienne.power).toBe(1);
-                    expect(this.garlan.power).toBe(1);
-                });
-            });
-
-            describe('and the winner wants to choose which cards', function() {
-                beforeEach(function() {
-                    this.player1.toggleKeywordSettings('chooseCards', true);
-
-                    this.player1.clickPrompt('Apply Claim');
-                });
-
-                it('should allow the winner to choose cards', function() {
-                    expect(this.player1).toHavePrompt('Select insight cards');
-                    this.player1.clickPrompt('Done');
-
-                    expect(this.chud.location).toBe('draw deck');
-
-                    expect(this.player1).toHavePrompt('Select renown cards');
-                    this.player1.clickCard(this.renly);
-                    this.player1.clickCard(this.garlan);
-                    this.player1.clickPrompt('Done');
-
-                    expect(this.renly.power).toBe(1);
-                    expect(this.brienne.power).toBe(0);
                     expect(this.garlan.power).toBe(1);
                 });
             });
@@ -284,10 +217,6 @@ xdescribe('shootout phase', function() {
                 this.player1.clickPrompt('Power');
                 this.player1.clickCard('Winterfell Steward', 'play area');
                 this.player1.clickPrompt('Done');
-                this.skipActionWindow();
-                this.player2.clickPrompt('Done');
-                this.skipActionWindow();
-                this.player1.clickPrompt('Apply Claim');
             });
 
             it('should disable the used challenge for the current player', function() {
