@@ -24,7 +24,7 @@ class PlayForBlood extends ActionCard {
                 context.player.drawCardsToHand(1, context);
                 context.player.discardFromHand(1, discarded => 
                     this.game.addMessage('{0} uses {1} to draw a card and discard {2}', context.player, this, discarded), 
-                {}, context);
+                { source: this }, context);
             }
         });
     }
