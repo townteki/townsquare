@@ -480,7 +480,7 @@
 |:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
-|                     | 11022| A Slight Modification
+|:heavy_check_mark:   | 11022| A Slight Modification
 |:heavy_check_mark:   | 11023| Rabbit Takes Revenge
 
 ## `07.2-FP` Foul Play
@@ -944,7 +944,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 23001| Yasmin Tian
-|                     | 23002| "Dynamite" Jacc
+|:heavy_check_mark:   | 23002| "Dynamite" Jacc
 |:heavy_check_mark:   | 23003| Bai Yang Chen (Exp.1)
 |                     | 23004| Huang Li
 |:heavy_check_mark:   | 23005| Arthur Dingler
@@ -977,7 +977,7 @@
 |:heavy_check_mark:   | 23032| The Gem Theater
 |:heavy_check_mark:   | 23033| Baird's Debt Collections
 |:heavy_check_mark:   | 23034| Cheyenne Club
-|                     | 23035| Nuttal & Mann's No. 10 Saloon
+|:heavy_check_mark:   | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
 |:heavy_check_mark:   | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest

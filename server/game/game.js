@@ -764,15 +764,6 @@ class Game extends EventEmitter {
         }
     }
 
-    togglePromptedActionWindow(playerName, windowName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.promptedActionWindows[windowName] = toggle;
-    }
-
     toggleTimerSetting(playerName, settingName, toggle) {
         var player = this.getPlayerByName(playerName);
         if(!player) {
@@ -780,24 +771,6 @@ class Game extends EventEmitter {
         }
 
         player.timerSettings[settingName] = toggle;
-    }
-
-    toggleKeywordSetting(playerName, settingName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.keywordSettings[settingName] = toggle;
-    }
-
-    toggleDupes(playerName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.promptDupes = toggle;
     }
 
     initialise() {

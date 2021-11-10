@@ -82,10 +82,6 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelreaction') {
-            return;
-        }
-
         return listener(event);
     }
 

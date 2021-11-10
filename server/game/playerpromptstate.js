@@ -50,7 +50,7 @@ class PlayerPromptState {
                 let card = button.card;
                 let properties = Object.assign({}, button);
                 delete properties['card'];
-                return Object.assign({ text: card.name, arg: card.uuid, card: card.getShortSummary() }, properties);
+                return Object.assign({ text: card.title, arg: card.uuid, card: card.getShortSummary() }, properties);
             }
 
             return button;

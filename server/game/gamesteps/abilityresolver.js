@@ -17,7 +17,7 @@ class AbilityResolver extends BaseStep {
         this.context = context;
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
-            new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionStarted', { ability: this.ability, context: this.context })),
+            new SimpleStep(game, () => this.raiseOnAbilityResolutionStartedEvent()),
             new SimpleStep(game, () => this.createSnapshot()),
             new SimpleStep(game, () => this.updatePlayTypeCause()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
@@ -42,6 +42,16 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.game.attachmentValidityCheck.enforceValidity()),
             new SimpleStep(game, () => this.game.checkWinCondition())
         ]);
+    }
+
+    raiseOnAbilityResolutionStartedEvent() {
+        this.game.raiseEvent('onAbilityResolutionStarted', { 
+            ability: this.ability, 
+            context: this.context 
+        }, event => {
+            this.cancelled = !!event.ability.cancelled;
+            this.cancelReason = event.ability.cancelReason;
+        });
     }
 
     queueStep(step) {
@@ -91,7 +101,8 @@ class AbilityResolver extends BaseStep {
     }
 
     markActionAsTaken() {
-        if((this.cancelled && this.cancelReason !== 'ifCondition') || this.ability.options.doNotMarkActionAsTaken) {
+        if((this.cancelled && !['ifCondition', 'abilityCancel'].includes(this.cancelReason)) || 
+            this.ability.options.doNotMarkActionAsTaken) {
             return;
         }
         if(this.ability.isAction()) {
@@ -120,11 +131,11 @@ class AbilityResolver extends BaseStep {
     }
 
     payCosts() {
-        if(this.cancelled && this.cancelReason !== 'ifCondition') {
+        if(this.cancelled && !['ifCondition', 'abilityCancel'].includes(this.cancelReason)) {
             return;
         }
 
-        this.ability.payCosts(this.context);
+        this.ability.payCosts(this.context, this.cancelReason === 'abilityCancel');
     }
 
     choosePlayer() {
