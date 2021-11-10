@@ -18,8 +18,6 @@ class BloodCurse extends SpellCard {
                 cardType: ['dude']
             },
             difficulty: 9,
-            message: context => 
-                this.game.addMessage('{0} cursed {1} using {2} who gets -1 influence and -1 bullets', context.player, context.target, this),
             onSuccess: (context) => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
@@ -27,7 +25,8 @@ class BloodCurse extends SpellCard {
                         ability.effects.modifyBullets(-1),
                         ability.effects.modifyInfluence(-1)
                     ]
-                }));              
+                }));
+                this.game.addMessage('{0} cursed {1} using {2} who gets -1 influence and -1 bullets', context.player, context.target, this);         
             },
             source: this
         });
@@ -54,7 +53,7 @@ class BloodCurse extends SpellCard {
                         ability.effects.modifyBullets(-2)
                     ]
                 }));    
-                this.game.addMessage('{0} cursed {1} using {2} who gets -2 bullets.', context.player, context.target, this);            
+                this.game.addMessage('{0} cursed {1} using {2} who gets -2 bullets', context.player, context.target, this);            
             },
             source: this
         });

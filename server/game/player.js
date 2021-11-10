@@ -1349,11 +1349,9 @@ class Player extends Spectator {
                 technique.owner.moveCard(technique, technique.actionPlacementLocation);
             }
         };
-        this.attach(technique, kfDude, 'technique', () => {
-            if(!isSuccessful) {
-                this.bootCard(technique);
-            }
-        });
+        if(isSuccessful) {
+            this.attach(technique, kfDude, 'technique');
+        }
         if(this.game.shootout) {
             this.game.once('onPlayWindowClosed', eventHandler);
             this.game.once('onShootoutPhaseFinished', () => {

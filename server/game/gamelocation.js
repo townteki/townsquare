@@ -186,6 +186,7 @@ class TownSquare extends GameLocation {
             isOutOfTown: () => false,
             hasKeyword: () => false,
             hasAttachment: () => false,
+            hasAttachmentWithKeywords: () => false,
             adjacentLocations: () => 
                 this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation()),
             getShortSummary: () => {
