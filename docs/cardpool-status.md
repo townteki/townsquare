@@ -571,7 +571,7 @@
 |:heavy_check_mark:   | 14030| Sight Beyond Sight
 |                     | 14031| Requiem for a Good Boy
 |:heavy_check_mark:   | 14032| Fool Me Once...
-|                     | 14033| Fiddle Game
+|:heavy_check_mark:   | 14033| Fiddle Game
 |                     | 14034| Pigging Out
 |:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
@@ -600,10 +600,10 @@
 |                     | 15013| Rites of the Smoking Mirror
 |                     | 15014| Essence of Armitage
 |                     | 15015| Festering Grasp
-|                     | 15016| Silver Pheasant's Bounty
+|:heavy_check_mark:   | 15016| Silver Pheasant's Bounty
 |:heavy_check_mark:   | 15017| Comin' Up Roses
 |                     | 15018| Run Rabbit Run
-|                     | 15019| Putting The Pieces Together
+|:heavy_check_mark:   | 15019| Putting The Pieces Together
 |                     | 15020| Someone Else's Problem
 |                     | 15021| Lost to the Plague
 
@@ -694,7 +694,7 @@
 |                     | 18029| Rancher's Lariat
 |:heavy_check_mark:   | 18030| De Annulos Mysteriis
 |                     | 18031| Heartseeker
-|                     | 18032| Tse-Che-Nako's Weaving
+|:heavy_check_mark:   | 18032| Tse-Che-Nako's Weaving
 |:heavy_check_mark:   | 18033| Amazing Grace
 |:heavy_check_mark:   | 18034| Burn 'Em Out
 |                     | 18035| Shiny Things
