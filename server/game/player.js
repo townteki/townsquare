@@ -134,7 +134,8 @@ class Player extends Spectator {
                 isCheatin: () => false, 
                 modifyGhostRock: () => true,
                 cardsInPlay: [], 
-                drawDeck: [] 
+                drawDeck: [],
+                hand: []
             };
         }
         return opponents[0];
