@@ -961,10 +961,10 @@
 |:heavy_check_mark:   | 23016| Yiska
 |:heavy_check_mark:   | 23017| Dr. JT Goodenough
 |:heavy_check_mark:   | 23018| Seth Bullock
-|                     | 23019| Clint Ramsey (Exp.1)
+|:heavy_check_mark:   | 23019| Clint Ramsey (Exp.1)
 |:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
-|                     | 23022| Rosaleen Byrne
+|:heavy_check_mark:   | 23022| Rosaleen Byrne
 |:heavy_check_mark:   | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
 |:heavy_check_mark:   | 23025| Alferd Packer
