@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/636/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/644/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -946,9 +946,9 @@
 |:heavy_check_mark:   | 23001| Yasmin Tian
 |:heavy_check_mark:   | 23002| "Dynamite" Jacc
 |:heavy_check_mark:   | 23003| Bai Yang Chen (Exp.1)
-|                     | 23004| Huang Li
+|:heavy_check_mark:   | 23004| Huang Li
 |:heavy_check_mark:   | 23005| Arthur Dingler
-|                     | 23006| Deadwood Dick
+|:heavy_check_mark:   | 23006| Deadwood Dick
 |:heavy_check_mark:   | 23007| Al Swearengen
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
 |:heavy_check_mark:   | 23009| Lew Esquilin
