@@ -1,5 +1,6 @@
 const TriggeredAbilityWindow = require('../../../server/game/gamesteps/TriggeredAbilityWindow');
 
+// M2 TODO add timer tests
 describe('TriggeredAbilityWindow', function() {
     beforeEach(function() {
         this.player1Spy = jasmine.createSpyObj('player', ['setPrompt', 'cancelPrompt', 'user', 'isTimerEnabled']);
@@ -7,6 +8,8 @@ describe('TriggeredAbilityWindow', function() {
 
         this.player1Spy.noTimer = true;
         this.player2Spy.noTimer = true;
+        this.player1Spy.timerSettings = { actions: false, abilities: false };
+        this.player2Spy.timerSettings = { actions: false, abilities: false };
 
         this.gameSpy = jasmine.createSpyObj('game', ['getPlayersInFirstPlayerOrder', 'promptForSelect', 'resolveAbility']);
         this.gameSpy.getPlayersInFirstPlayerOrder.and.returnValue([this.player1Spy, this.player2Spy]);
