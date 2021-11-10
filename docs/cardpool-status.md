@@ -982,8 +982,8 @@
 |:heavy_check_mark:   | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest
 |:heavy_check_mark:   | 23039| Pale Horse
-|                     | 23040| Kinetic Accretion Actualizer
-|                     | 23041| Missed Me!
+|:heavy_check_mark:   | 23040| Kinetic Accretion Actualizer
+|:heavy_check_mark:   | 23041| Missed Me!
 |:heavy_check_mark:   | 23042| Mark of War
 |:heavy_check_mark:   | 23043| We Stand Amazed
 |:heavy_check_mark:   | 23044| Benediction
