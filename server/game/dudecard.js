@@ -614,7 +614,9 @@ class DudeCard extends DrawCard {
         if(!(spell instanceof SpellCard)) {
             return false;
         }
-        return this.canPerformSkillOn(spell) && this.spellFunc(spell);
+        return !this.cannotCastSpell(spell) && 
+            this.canPerformSkillOn(spell) && 
+            this.spellFunc(spell);
     }
 
     canPerformTechnique(card) {
@@ -623,6 +625,10 @@ class DudeCard extends DrawCard {
         }
         const kfRating = this.getKungFuRating(card);
         return kfRating !== null && kfRating !== undefined;    
+    }
+
+    cannotCastSpell(spell) {
+        return this.options.contains('cannotCastSpell', spell);
     }
 
     addSkillKfBonus(bonus, source) {

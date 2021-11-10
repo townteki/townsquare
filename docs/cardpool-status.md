@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/625/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/636/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -672,8 +672,8 @@
 |                     | 18007| Zui Waidan
 |                     | 18008| Mr. Outang
 |:heavy_check_mark:   | 18009| Stevie Lyndon
-|                     | 18010| Wei Xu
-|                     | 18011| Eva Bright Eyes
+|:heavy_check_mark:   | 18010| Wei Xu
+|:heavy_check_mark:   | 18011| Eva Bright Eyes
 |                     | 18012| Mick Aduladi
 |                     | 18013| Absalom Hotchkiss
 |:heavy_check_mark:   | 18014| Christine Perfect
