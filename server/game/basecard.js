@@ -758,7 +758,8 @@ class BaseCard {
             case 'influence': return this.cardData.influence;
             case 'control': return this.cardData.control;
             case 'upkeep': return this.cardData.upkeep;
-            case 'production': return this.cardData.production;           
+            case 'production': return this.cardData.production;
+            case 'cost': return this.cardData.cost;
         }
     }
 
