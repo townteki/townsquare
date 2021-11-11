@@ -18,7 +18,7 @@ class Skinwalker extends DudeCard {
                 if(this.bootableAttachments.length) {
                     this.game.promptWithMenu(context.player, this, {
                         activePrompt: {
-                            menuTitle: 'Choose one for ' + this.title,
+                            menuTitle: 'Choose one',
                             buttons: [
                                 { text: 'Boot attachment', method: 'bootAttachment' },
                                 { text: 'Give +2 bullets', method: 'giveBullets' }
