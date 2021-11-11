@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class Skinwalker extends DudeCard {
     setupCardAbilities(ability) {
@@ -14,21 +15,14 @@ class Skinwalker extends DudeCard {
             ),
             handler: context => {
                 this.abilityContext = context;
-                // check if opponent's posse has any bootable attachments
-                const opposingDudeWithBootableAttachment = 
-                    this.game.shootout
-                        .getPosseByPlayer(this.controller.getOpponent())
-                        .findInPosse(dude => {
-                            const hasAttachment = dude.attachments.filter(attachment => !attachment.booted).length > 0;
-                            return hasAttachment;
-                        });
-                if(opposingDudeWithBootableAttachment) {
+                this.bootableAttachments = this.game.shootout.getPosseByPlayer(this.controller.getOpponent()).getAttachments(card => !card.booted);
+                if(this.bootableAttachments.length) {
                     this.game.promptWithMenu(context.player, this, {
                         activePrompt: {
-                            menuTitle: 'Boot opposing attachment at this location or give +2 bullets to Skinwalker?',
+                            menuTitle: 'Choose one for ' + this.title,
                             buttons: [
                                 { text: 'Boot attachment', method: 'bootAttachment' },
-                                { text: 'Give bullets', method: 'giveBullets' }
+                                { text: 'Give +2 bullets', method: 'giveBullets' }
                             ]
                         },
                         source: this
@@ -40,9 +34,19 @@ class Skinwalker extends DudeCard {
         });
     }
 
-    bootAttachment() {
-        // @todo implement [ST 2021/10/26]
-
+    bootAttachment(player) {
+        this.game.promptForSelect(player, {
+            activePromptTitle: 'Select an attachment to boot',
+            waitingPromptTitle: 'Waiting for opponent to select an attachment to boot',
+            cardCondition: card => this.bootableAttachments.includes(card),
+            gameAction: 'boot',
+            onSelect: (player, attachment) => {
+                this.game.resolveGameAction(GameActions.bootCard({ card: attachment }), this.abilityContext.context);
+                this.game.addMessage('{0} uses {1} and boots {2} to boot {3}', player, this, this.abilityContext.costs.boot, attachment);
+                return true;
+            }
+        });
+        return true;
     }
 
     giveBullets(player) {
