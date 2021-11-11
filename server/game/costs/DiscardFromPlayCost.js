@@ -8,7 +8,7 @@ class DiscardFromPlayCost {
     }
 
     pay(cards, context) {
-        context.saveCostCardsInfo(this.name, cards);
+        context.saveCostCardsInfo(cards);
         context.player.discardCards(cards, false);
     }
 }
