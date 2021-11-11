@@ -10,8 +10,7 @@ class Skinwalker extends DudeCard {
                 card.location === 'play area' &&
                 card.getType() === 'dude' &&
                 card.hasKeyword('abomination') &&
-                this.game.shootout &&
-                this.game.shootout.getPosseByPlayer(this.controller).isInPosse(card)
+                card.isParticipating()
             ),
             handler: context => {
                 this.abilityContext = context;
@@ -35,16 +34,16 @@ class Skinwalker extends DudeCard {
     }
 
     bootAttachment(player) {
-        this.game.promptForSelect(player, {
+        this.abilityContext.ability.selectAnotherTarget(player, this.abilityContext, {
             activePromptTitle: 'Select an attachment to boot',
-            waitingPromptTitle: 'Waiting for opponent to select an attachment to boot',
             cardCondition: card => this.bootableAttachments.includes(card),
             gameAction: 'boot',
             onSelect: (player, attachment) => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: attachment }), this.abilityContext.context);
                 this.game.addMessage('{0} uses {1} and boots {2} to boot {3}', player, this, this.abilityContext.costs.boot, attachment);
                 return true;
-            }
+            },
+            source: this
         });
         return true;
     }
@@ -52,7 +51,7 @@ class Skinwalker extends DudeCard {
     giveBullets(player) {
         this.applyAbilityEffect(this.abilityContext.ability, ability => ({
             match: this,
-            effect: ability.effects.modifyBullets(1)
+            effect: ability.effects.modifyBullets(2)
         }));
         this.game.addMessage('{0} uses {1} and boots {2} to give {3} +2 bullets', player, this, this.abilityContext.costs.boot, this);
         return true;
