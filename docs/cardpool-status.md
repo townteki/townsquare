@@ -996,6 +996,6 @@
 |:heavy_check_mark:   | 23051| Play for Blood
 |:heavy_check_mark:   | 23052| Bad Beat
 |:heavy_check_mark:   | 23053| Fallen Star
-|                     | 23054| Masonic Augment
-|                     | 23055| Swagger
+|:heavy_check_mark:   | 23054| Masonic Augment
+|:heavy_check_mark:   | 23055| Swagger
 |:heavy_check_mark:   | 23056| Vamoosin'

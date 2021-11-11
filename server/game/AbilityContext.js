@@ -36,6 +36,18 @@ class AbilityContext {
     getCostValuesFor(name) {
         return this.costValues[name] || [];
     }
+
+    saveCostCardsInfo(cards) {
+        this.costs.savedCardsInfo = [];
+        cards.forEach(card => {
+            const cardInfo = {
+                card,
+                booted: card.booted,
+                parent: card.parent
+            };
+            this.costs.savedCardsInfo.push(cardInfo);
+        });        
+    }
 }
 
 module.exports = AbilityContext;
