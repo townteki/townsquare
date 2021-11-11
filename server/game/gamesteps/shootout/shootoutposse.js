@@ -177,6 +177,17 @@ class ShootoutPosse {
     }
 
     /**
+     * Returns attachments on dudes in the posse matching the `condition`.
+     *
+     * @param {(dude: DudeCard) => boolean} condition - condition that the attachment should match.
+     * @returns {Array.<DrawCard>} - array of attachments matching condition.
+     */
+    getAttachments(condition = () => true) {
+        const attachments = this.getDudes().map(dude => dude.attachments);
+        return [].concat(...attachments).filter(card => card && condition(card));
+    }
+
+    /**
      * Returns true if there is dude matching the `predicate`.
      *
      * @param {(dude: DudeCard) => boolean} predicate - predicate that the dude should match.
