@@ -145,7 +145,7 @@
 |:heavy_check_mark:   | 01129| Cheatin' Varmint
 |                     | 01130| Fresh Horses
 |:heavy_check_mark:   | 01131| Magical Distraction
-|                     | 01132| Extortion
+|:heavy_check_mark:   | 01132| Extortion
 |:heavy_check_mark:   | 01133| Recruitment Drive
 |:heavy_check_mark:   | 01134| Unprepared
 |:heavy_check_mark:   | 01135| A Coach Comes to Town
@@ -952,7 +952,7 @@
 |:heavy_check_mark:   | 23007| Al Swearengen
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
 |:heavy_check_mark:   | 23009| Lew Esquilin
-|                     | 23010| Mourning Mist
+|:heavy_check_mark:   | 23010| Mourning Mist
 |:heavy_check_mark:   | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
 |:heavy_check_mark:   | 23013| Sifting Squirrel
