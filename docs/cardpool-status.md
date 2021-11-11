@@ -774,7 +774,7 @@
 |:heavy_check_mark:   | 20012| Feichi "Suitcase" Lee
 |:heavy_check_mark:   | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
-|                     | 20015| Skinwalker
+|:heavy_check_mark:   | 20015| Skinwalker
 |:heavy_check_mark:   | 20016| Tonton Macoute
 |:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
