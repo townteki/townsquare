@@ -50,7 +50,7 @@
     "raven": "^1.2.1",
     "socket.io": "^2.4.0",
     "townsquare-deck-helper": "^1.0.9",
-    "underscore": "^1.8.3",
+    "underscore": "^1.12.1",
     "uuid": "^3.1.0",
     "winston": "^2.2.0",
     "winston-daily-rotate-file": "^1.7.2",
