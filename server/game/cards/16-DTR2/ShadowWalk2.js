@@ -12,7 +12,7 @@ class ShadowWalk2 extends SpellCard {
             onSuccess: (context) => {
                 this.game.promptForLocation(context.player, {
                     activePromptTitle: 'Select where to move ' + this.parent.title,
-                    waitingPromptTitle: 'Waiting for opponent to select location',
+                    cardCondition: { condition: card => card.gamelocation !== this.parent.gamelocation },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: this.parent, 
@@ -20,7 +20,8 @@ class ShadowWalk2 extends SpellCard {
                         }), context);   
                         this.game.addMessage('{0} uses {1} to move {2} to {3}', player, this, this.parent, location);                                 
                         return true;
-                    }
+                    },
+                    source: this
                 });
             },
             source: this
