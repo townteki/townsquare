@@ -28,25 +28,25 @@ function fetchFile(url, options = {}) {
 
 async function fetchClient() {
     console.info('Fetching vendor file information...');
-    let vendorAssets = await fetchFile('https://dtts.online/vendor-assets.json', { json: true });
+    let vendorAssets = await fetchFile('https://doomtown.online/vendor-assets.json', { json: true });
     await writeFile('./vendor-assets.json', JSON.stringify(vendorAssets));
 
     console.info('Fetching vendor javascript files...');
-    let vendorJs = await fetchFile('https://dtts.online${vendorAssets.vendor.js}');
+    let vendorJs = await fetchFile('https://doomtown.online${vendorAssets.vendor.js}');
     await writeFile('./public/${vendorAssets.vendor.js}', vendorJs);
-    let vendorMap = await fetchFile('https://dtts.online${vendorAssets.vendor.js}.map');
+    let vendorMap = await fetchFile('https://doomtown.online${vendorAssets.vendor.js}.map');
     await writeFile('./public/${vendorAssets.vendor.js}.map', vendorMap);
 
     console.info('Fetching bundle information...');
-    let assets = await fetchFile('https://dtts.online/assets.json', { json: true });
+    let assets = await fetchFile('https://doomtown.online/assets.json', { json: true });
     await writeFile('./assets.json', JSON.stringify(assets));
 
     console.info('Fetching main bundle files...');
-    let js = await fetchFile('https://dtts.online${assets.bundle.js}');
+    let js = await fetchFile('https://doomtown.online${assets.bundle.js}');
     await writeFile('./public/${assets.bundle.js}', js);
-    let css = await fetchFile('https://dtts.online${assets.bundle.css}');
+    let css = await fetchFile('https://doomtown.online${assets.bundle.css}');
     await writeFile('./public/${assets.bundle.css}', css);
-    let map = await fetchFile('https://dtts.online${assets.bundle.js}.map');
+    let map = await fetchFile('https://doomtown.online${assets.bundle.js}.map');
     await writeFile('./public/${assets.bundle.js}.map', map);
 
     console.info('Done!');
