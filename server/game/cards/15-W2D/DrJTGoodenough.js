@@ -38,6 +38,9 @@ class DrJTGoodenough extends DudeCard {
                                     const weaponToAttach = selectedWeapons.reduce((keep, weapon) => {
                                         return weapon !== weaponToDiscard ? weapon : keep;
                                     });
+                                    this.game.resolveGameAction(GameActions.discardCard({ card: weaponToDiscard }), context).thenExecute(() => {
+                                        this.game.addMessage('{0} chooses to discard {1} as a result of {2}\'s ability', player, weaponToDiscard, this);
+                                    });
                                     this.game.promptForSelect(context.player, {
                                         activePromptTitle: 'Select a dude for Weapon',
                                         cardCondition: card => card.location === 'play area' &&
@@ -50,7 +53,7 @@ class DrJTGoodenough extends DudeCard {
                                                 },
                                                 match: weaponToAttach,
                                                 targetLocation: weaponToAttach.location,
-                                                effect: ability.effects.canBeInventedWithoutBooting()
+                                                effect: ability.effects.doesNotHaveToBeInvented()
                                             }));                                                  
                                             this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                                                 playType: 'ability',
