@@ -135,9 +135,11 @@ class Deck {
         }
         if(cardData.type_code === 'joker') {
             cardClass = JokerCard;
+            cardData.scripted = true;
+        } else {
+            cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
         }
 
-        cardData.scripted = cards[cardData.code] !== undefined || cardData.text === '';
         cardClass = cards[cardData.code] || cardClass;
 
         return new cardClass(player, cardData);
