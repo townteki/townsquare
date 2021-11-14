@@ -6,6 +6,8 @@ module.exports = {
     TownSquareUUID: 'townsquare',
     StartingHandSize: 5,
     StartingDiscardNumber: 1,
+    DevilJokerCodes: ['10040', '10041'],
+    HereticJokerCodes: ['14040', '14041'],
     Tokens,
     ShootoutStatuses
 };

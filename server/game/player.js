@@ -18,7 +18,7 @@ const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
 const GhostRockSource = require('./GhostRockSource.js');
 
-const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
+const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber, HereticJokerCodes } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
@@ -287,12 +287,13 @@ class Player extends Spectator {
         this.game.raiseEvent('onDrawHandDiscarded', { player: this }, () => {
             if(this.drawHandRevealed) {
                 this.drawHand.forEach(card => {
-                    if(card.getType() === 'joker') {
+                    if(card.getType() === 'joker' && !HereticJokerCodes.includes(card.code)) {
                         this.game.resolveGameAction(GameActions.aceCard({ card: card }));
                     }
                 });
             }
-            let handToDiscard = this.drawHand.filter(card => card.getType() !== 'joker');
+            let handToDiscard = this.drawHand.filter(card => 
+                card.getType() !== 'joker' || HereticJokerCodes.includes(card.code));
             this.discardCards(handToDiscard, discardedCards => {
                 this.game.raiseEvent('onAfterDrawHandDiscarded', { discardedCards: discardedCards });
             });
@@ -328,8 +329,12 @@ class Player extends Spectator {
                 return handText + `${card.getValueText()} of ${card.suit} | `;
             }, '');
         }
-        this.game.addMessage('{0} {1} {2}{3} (Rank {4}){5}', 
-            this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank, handText);
+        let specialJokerText = this.getHandRank().jokerMod > 0 ? '+' : '';
+        if(this.getHandRank().specialJoker) {
+            specialJokerText += `${this.getHandRank().jokerMod} ${this.getHandRank().specialJoker.title}`;
+        }
+        this.game.addMessage('{0} {1} {2}{3} (Rank {4}{5}){6}', this, handResultText, cheatin, 
+            this.getHandRank().rankName, this.getHandRank().rank, specialJokerText, handText);
         this.game.raiseEvent('onHandResultDetermined', { player: this });
     }
 
@@ -1117,7 +1122,7 @@ class Player extends Spectator {
     }
 
     getTotalRank() {
-        let totalRank = this.getHandRank().rank + this.rankModifier;
+        let totalRank = this.getHandRank().rank + this.getHandRank().jokerMod + this.rankModifier;
         if(totalRank < 1) {
             return 1;
         }
@@ -1335,7 +1340,7 @@ class Player extends Spectator {
             return;
         }
         this.game.raiseEvent('onPulledCardHandled', { player: this, card }, event => {
-            if(event.card.getType() === 'joker') {
+            if(event.card.getType() === 'joker' && !HereticJokerCodes.includes(event.card.code)) {
                 event.player.aceCard(event.card);
             } else {
                 event.player.moveCard(event.card, 'discard pile', { isPull: true });
