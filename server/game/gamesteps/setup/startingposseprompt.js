@@ -62,7 +62,19 @@ class StartingPossePrompt extends AllPlayerPrompt {
         if(startingCoreSize > 1) {
             return `Too many Core deeds (${startingCoreSize}) in starting gang`;
         }
-        const posseCost = player.hand.reduce((aggregator, card) => aggregator + card.cost, 0);
+        const startingGrifterSize = player.hand.reduce((size, card) => {
+            if(card.getType() === 'dude' && card.hasKeyword('grifter')) {
+                return size + card.startingSize;
+            }
+            return size;    
+        }, 0);
+        if(startingGrifterSize > player.availableGrifterActions) {
+            return `Too many Grifters (${startingGrifterSize}) in starting gang`;
+        }
+        const posseCost = player.hand.reduce((aggregator, card) => {
+            let reducedCost = player.getReducedCost('setup', card, player.createContext());
+            aggregator + reducedCost;
+        }, 0);
         if(posseCost > player.ghostrock) {
             return `Starting gang cost (${posseCost}) is greater than starting GR (${player.ghostrock})`;
         }
