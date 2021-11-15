@@ -64,7 +64,7 @@ class JusticeInExile extends OutfitCard {
     }
 
     jieReactCondition(event) {
-        return [PhaseNames.HighNoon, PhaseNames.Shootout].includes(this.game.currentPhase)  &&
+        return [PhaseNames.HighNoon, PhaseNames.Shootout].includes(this.game.currentPhase) &&
             event.card.controller !== this.owner &&
             event.card.getType() === 'dude' &&
             event.card.isWanted() &&
