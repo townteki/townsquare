@@ -13,7 +13,7 @@ class GatewayToBeyond extends OutfitCard {
                 const controlledHolyGrounds = context.player.cardsInPlay.reduce((total, card) => 
                     card.hasKeyword('holy ground') ? total + 1 : total, 0);
                 context.ability.selectAnotherTarget(context.player, context, {
-                    activePromptTitle: 'Choose spirits to unboot',
+                    activePromptTitle: `Choose up to ${controlledHolyGrounds} spirits`,
                     cardCondition: { 
                         location: 'play area', 
                         controller: 'current', 

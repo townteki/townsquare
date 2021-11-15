@@ -37,7 +37,7 @@ class JusticeInExile extends OutfitCard {
             triggerBefore: true,
             when: {
                 onCardDiscarded: event => this.jieReactCondition(event),
-                onCardLeavesPlay: event => event.targetLocation !== 'discardPile' &&
+                onCardLeftPlay: event => event.targetLocation !== 'discard pile' &&
                     this.jieReactCondition(event)
             },
             cost: ability.costs.bootSelf(),
@@ -64,11 +64,11 @@ class JusticeInExile extends OutfitCard {
     }
 
     jieReactCondition(event) {
-        return this.game.currentPhase === PhaseNames.HighNoon &&
+        return [PhaseNames.HighNoon, PhaseNames.Shootout].includes(this.game.currentPhase)  &&
             event.card.controller !== this.owner &&
             event.card.getType() === 'dude' &&
             event.card.isWanted() &&
-            this.game.getDudesAtLocation(event.originalGamelocation, dude => 
+            this.game.getDudesAtLocation(event.originalGameLocation, dude => 
                 dude.controller === this.owner && dude.hasKeyword('deputy')).length;
     }
 }
