@@ -34,7 +34,7 @@ class OldMargesManor extends DeedCard {
                     context.player, this, context.target),
             handler: context => {
                 this.game.transferGhostRock({ from: context.target, to: this, amount: context.target.ghostrock });
-                this.game.makePlayOutOfOrder(context.player, this, 'Make a play');               
+                this.game.makePlayOutOfOrder(context.player, this);               
             }
         });
         this.action({

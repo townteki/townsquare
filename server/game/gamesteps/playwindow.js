@@ -106,14 +106,16 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         super.completePlayer();
     }
 
-    makePlayOutOfOrder(player, card, title) {
+    makePlayOutOfOrder(player, card, properties = {}) {
         this.doNotMarkActionAsTaken = true;
+        const buttons = properties.buttons || [];
+        if(!properties.noCancelButton) {
+            buttons.push({ text: 'Cancel', method: 'onMakePlayDone' });
+        }
         this.outOfOrderMenuPrompt = new MenuPrompt(this.game, player, this, {
             activePrompt: {
-                menuTitle: title,
-                buttons: [
-                    { text: 'Cancel', method: 'onMakePlayDone' }
-                ],
+                menuTitle: properties.title || 'Make a play',
+                buttons,
                 promptTitle: card.title
             },
             source: card

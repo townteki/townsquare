@@ -33,7 +33,7 @@ class JohnnyBrocklehurst extends DudeCard {
                     },
                     source: this
                 });
-                this.game.makePlayOutOfOrder(context.player, this, 'Make a play');  
+                this.game.makePlayOutOfOrder(context.player, this);  
             }
         });
     }
