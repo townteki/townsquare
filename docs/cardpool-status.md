@@ -664,9 +664,9 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 18001| 108 Drunken Masters
-|                     | 18002| Gateway To Beyond
+|:heavy_check_mark:   | 18002| Gateway To Beyond
 |:heavy_check_mark:   | 18003| Full Moon Brotherhood
-|                     | 18004| Justice In Exile
+|:heavy_check_mark:   | 18004| Justice In Exile
 |:heavy_check_mark:   | 18005| Morgan Regulators
 |:heavy_check_mark:   | 18006| Protection Racket
 |                     | 18007| Zui Waidan
