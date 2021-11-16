@@ -27,8 +27,10 @@ class GamblingPhase extends Phase {
         this.game.getPlayers().forEach(player => {
             if(player.getSpendableGhostRock() <= 0) {
                 player.debtor = true;
+                this.game.addMessage('{0} borrows 1 GR from bank and antes for lowball', player);
             } else {
                 player.modifyGhostRock(-1);
+                this.game.addMessage('{0} antes 1 GR for lowball', player);
             }
             this.lowballPot++;
         });
