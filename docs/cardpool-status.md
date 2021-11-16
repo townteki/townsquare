@@ -367,7 +367,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 09001| The 108 Righteous Bandits
-|                     | 09002| Eagle Wardens
+|:heavy_check_mark:   | 09002| Eagle Wardens
 |                     | 09003| Benjamin Washington
 |:heavy_check_mark:   | 09004| Daomei Wang
 |:heavy_check_mark:   | 09005| Randall
@@ -415,7 +415,7 @@
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 10001| The Sanatorium
 |:heavy_check_mark:   | 10002| Abram's Crusaders
-|                     | 10003| Den of Thieves
+|:heavy_check_mark:   | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
 |:heavy_check_mark:   | 10005| Emre, The Turkish Bear
 |                     | 10006| Michael "The Badger" Dodge
