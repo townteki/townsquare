@@ -69,14 +69,16 @@ class Censure extends SpellCard {
     }
 
     chooseMe(player) {
-        player.modifyRank(2, this.abilityContext);
-        this.game.addMessage('{0} uses {1} to raise their hand rank by 2', player, this);
+        if(player.modifyRank(2, this.abilityContext)) {
+            this.game.addMessage('{0} uses {1} to raise their hand rank by 2', player, this);
+        }
         return true;
     }
 
     chooseOpponent(player) {
-        player.getOpponent().modifyRank(2, this.abilitycontext);
-        this.game.addMessage('{0} uses {1} to raise {2}\'s hand rank by 2', player, this, player.getOpponent());
+        if(player.getOpponent().modifyRank(2, this.abilitycontext)) {
+            this.game.addMessage('{0} uses {1} to raise {2}\'s hand rank by 2', player, this, player.getOpponent());
+        }
         return true;
     }
 }

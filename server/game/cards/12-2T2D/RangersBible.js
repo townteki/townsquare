@@ -13,12 +13,12 @@ class RangersBible extends GoodsCard {
             ifFailMessage: context =>
                 this.game.addMessage('{0} uses {1}, but it does not have any effect because {0} is cheatin\'', 
                     context.player, this),
-            message: context => 
-                this.game.addMessage('{0} uses {1} to lower {2}\'s hand rank by {3}', 
-                    context.player, this, context.chosenPlayer, this.parent.influence > 4 ? 4 : this.parent.influence),
             handler: context => {
                 const parentInf = this.parent.influence > 4 ? 4 : this.parent.influence;
-                context.chosenPlayer.modifyRank(-1 * parentInf, context);
+                if(context.chosenPlayer.modifyRank(-1 * parentInf, context)) {
+                    this.game.addMessage('{0} uses {1} to lower {2}\'s hand rank by {3}', 
+                        context.player, this, context.chosenPlayer, this.parent.influence > 4 ? 4 : this.parent.influence);
+                }
             }
         });
     }

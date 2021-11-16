@@ -16,9 +16,10 @@ class Outgunned extends ActionCard {
                 const shooter = this.game.shootout.getPosseByPlayer(context.player).shooter;
                 if(!shooter.booted) {
                     const event = this.game.resolveGameAction(GameActions.bootCard({ card: shooter }), context).thenExecute(() => {
-                        context.player.modifyRank(2, context);
-                        this.game.addMessage('{0} uses {1} and boots their shooter {2} to increase hand rank by 2; Current hand rank is {3}', 
-                            context.player, this, shooter, context.player.getTotalRank());
+                        if(context.player.modifyRank(2, context)) {
+                            this.game.addMessage('{0} uses {1} and boots their shooter {2} to increase hand rank by 2; Current hand rank is {3}', 
+                                context.player, this, shooter, context.player.getTotalRank());
+                        }
                     });
                     if(event.isNull()) {
                         this.game.addMessage('{0} uses {1} it does not have any effect because their shooter {2} cannot be booted', 
