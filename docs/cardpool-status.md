@@ -460,8 +460,8 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_multiplication_x:| 11001| 108 Worldly Desires
-|                     | 11002| Beyond the Veil
-|                     | 11003| Morgan Stables
+|:heavy_check_mark:   | 11002| Beyond the Veil
+|:heavy_check_mark:   | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
 |:heavy_check_mark:   | 11005| He Fang
 |                     | 11006| Kabeda Hakurei

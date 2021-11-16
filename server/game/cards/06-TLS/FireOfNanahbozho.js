@@ -30,7 +30,7 @@ class FireOfNanahbozho extends SpellCard {
             message: context => this.game.addMessage('{0} uses {1} to unboot {2} and make another play', context.player, this, context.target),
             onSuccess: (context) => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context);
-                this.game.makePlayOutOfOrder(context.player, this, 'Make another play');
+                this.game.makePlayOutOfOrder(context.player, this, { title: 'Make another play' });
             },
             source: this
         });
