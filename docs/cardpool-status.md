@@ -359,7 +359,7 @@
 |                     | 08017| For Such a Time as This
 |:heavy_check_mark:   | 08018| Sword of the Spirit
 |                     | 08019| A Fight They'll Never Forget
-|                     | 08020| Buried Treasure
+|:heavy_check_mark:   | 08020| Buried Treasure
 |:heavy_check_mark:   | 08021| Nightmare at Noon
 
 ## `05-IOUF` Immovable Object, Unstoppable Force
@@ -368,7 +368,7 @@
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 09001| The 108 Righteous Bandits
 |:heavy_check_mark:   | 09002| Eagle Wardens
-|                     | 09003| Benjamin Washington
+|:heavy_check_mark:   | 09003| Benjamin Washington
 |:heavy_check_mark:   | 09004| Daomei Wang
 |:heavy_check_mark:   | 09005| Randall
 |:heavy_check_mark:   | 09006| Xiaodan Li
