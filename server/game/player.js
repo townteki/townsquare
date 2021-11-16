@@ -1059,7 +1059,8 @@ class Player extends Spectator {
         this.hand.forEach(card => {
             if(!['goods', 'spell', 'action', 'joker'].includes(card.getType())) {
                 this.game.drop(this.name, card.uuid, 'play area', this.outfit.uuid);
-                this.ghostrock -= card.cost;
+                let reducedCost = this.getReducedCost('setup', card, this.createContext());
+                this.ghostrock -= reducedCost;
             }
         });
 

@@ -50,7 +50,7 @@ class CulpabilityScientizer extends GoodsCard {
                         onSelect: (player, card) => {
                             let eventHandler = () => {
                                 this.game.once('onPlayWindowOpened', () => {
-                                    this.game.makePlayOutOfOrder(player, this, 'Make shootout play');
+                                    this.game.makePlayOutOfOrder(player, this, { title: 'Make shootout play' });
                                 });
                             };
                             this.game.once('onDudeAcceptedCallOut', eventHandler);

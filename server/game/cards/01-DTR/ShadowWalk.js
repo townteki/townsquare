@@ -36,7 +36,7 @@ class ShadowWalk extends SpellCard {
             onSuccess: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent })).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent);
-                    this.game.makePlayOutOfOrder(context.player, this, 'Make shootout play');
+                    this.game.makePlayOutOfOrder(context.player, this, { title: 'Make shootout play' });
                 });
             },
             source: this
