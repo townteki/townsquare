@@ -123,6 +123,14 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         this.game.queueStep(this.outOfOrderMenuPrompt);
     }
 
+    onPassOutOfOrder(player) {
+        if(player !== this.currentPlayer) {
+            this.nextPlayer();
+        }
+        this.onPass(player);
+        return true;
+    }
+
     onMakePlayDone() {
         if(this.outOfOrderMenuPrompt) {
             this.outOfOrderMenuPrompt.complete();

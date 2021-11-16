@@ -35,7 +35,7 @@ class MorganStables extends OutfitCard {
                             title,
                             noCancelButton: true,
                             buttons: [
-                                { text: 'Pass', method: 'onPass' }
+                                { text: 'Pass', method: 'onPassOutOfOrder' }
                             ]
                         });
                     }, {}, context);
