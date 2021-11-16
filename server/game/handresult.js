@@ -1,13 +1,15 @@
 const _ = require('lodash');
+const { DevilJokerCodes, HereticJokerCodes } = require('./Constants');
 
 const Suits = ['Clubs', 'Diams', 'Hearts', 'Spades'];
+const defaultHandRank = {rank : 0, rankName: '', jokerMod: 0 };
 
 /**
  * Class to evaluate hand rank from a hand of cards.
  */
 class HandResult {
     constructor(hand, doLowest) {
-        this.handRank = {rank : 0, rankName: ''};
+        this.handRank = defaultHandRank;
         if(!hand || !_.isArray(hand)) {
             return;
         }
@@ -15,7 +17,7 @@ class HandResult {
         this.pokerHands = new PokerHands(hand, doLowest);
         this.possibleHands = _.filter(this.pokerHands.allHandRanks, (hr) => (hr.rank !== undefined));
         let bestRank = _.orderBy(this.possibleHands, 'rank', 'desc');
-        this.handRank = (bestRank[0] ? bestRank[0] : {rank : 0, rankName: ''});
+        this.handRank = (bestRank[0] ? bestRank[0] : defaultHandRank);
         if(this.handRank.tiebreakerHighCards) {
             if(doLowest && this.pokerHands.jokers > 0) {
                 for(let i = 1; i <= 13; i++) {
@@ -32,10 +34,27 @@ class HandResult {
         } else {
             this.handRank.tiebreakerHighCards = [];
         }
+        this.checkSpecialJokers(hand);
     }
 
     getHandRank() {
         return this.handRank;
+    }
+
+    checkSpecialJokers(hand) {
+        this.handRank.jokerMod = 0;
+        hand.forEach(card => {
+            if(DevilJokerCodes.includes(card.code)) {
+                this.handRank.specialJoker = card;
+                this.handRank.jokerMod += 2;
+                this.handRank.cheatin = true;
+            }
+            if(HereticJokerCodes.includes(card.code)) {
+                this.handRank.specialJoker = card;
+                this.handRank.jokerMod -= 3;
+                this.handRank.cheatin = false;
+            }
+        });
     }
 }
 
