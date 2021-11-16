@@ -8,7 +8,6 @@ class MorganStables extends OutfitCard {
             targetController: 'current',
             effect: [
                 ability.effects.reduceFirstCardCostEachRound(1, card => 
-                    card.location === 'hand' &&
                     card.hasKeyword('horse'))
             ]
         });
