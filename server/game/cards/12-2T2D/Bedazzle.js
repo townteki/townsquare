@@ -9,9 +9,10 @@ class Bedazzle extends SpellCard {
             difficulty: 3,
             choosePlayer: true,
             onSuccess: (context) => {
-                context.chosenPlayer.modifyRank(-2, context);
-                this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 2 ranks; Current rank is {3}',
-                    context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
+                if(context.chosenPlayer.modifyRank(-2, context)) {
+                    this.game.addMessage('{0} uses {1} to lower {2}\'s draw hand by 2 ranks; Current rank is {3}',
+                        context.player, this, context.chosenPlayer, context.chosenPlayer.getTotalRank());
+                }
                 if(this.game.shootout) {
                     context.ability.selectAnotherTarget(context.player, context, {
                         activePromptTitle: 'Choose opposing dude to bedazzle',

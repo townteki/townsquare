@@ -11,9 +11,10 @@ class PlayForBlood extends ActionCard {
             ifFailMessage: context =>
                 this.game.addMessage('{0} uses {1}, but it does not have any effect because players\' hand ranks are not tied', 
                     context.player, this),
-            message: context => this.game.addMessage('{0} uses {1} to increase their hand rank by 1', context.player, this),
             handler: context => {
-                context.player.modifyRank(1);
+                if(context.player.modifyRank(1, context)) {
+                    this.game.addMessage('{0} uses {1} to increase their hand rank by 1', context.player, this);
+                }
             }
         });
 

@@ -1134,13 +1134,23 @@ class Player extends Spectator {
     }
 
     modifyRank(amount, context, applying = true, fromEffect = false) {
-        if(!this.cannotModifyHandRanks(context) || !applying) {
-            this.rankModifier += amount;
-            if(fromEffect) {
-                this.persistentRankModifier += amount;
+        if(applying && this.cannotModifyHandRanks(context)) {
+            if(!fromEffect) {
+                let modifyText = '{0}\'s rank could not be modified';
+                if(context) {
+                    modifyText += ' by {1}';
+                }
+                this.game.addMessage(modifyText, this, context.source);
             }
-            this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+            return false;
         }
+
+        this.rankModifier += amount;
+        if(fromEffect) {
+            this.persistentRankModifier += amount;
+        }
+        this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+        return true;
     }
 
     modifyPosseBonus(amount, type = 'stud') {
