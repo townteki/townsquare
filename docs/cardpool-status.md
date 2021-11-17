@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/661/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/662/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
@@ -449,7 +449,7 @@
 |                     | 10034| Civil War
 |:heavy_check_mark:   | 10035| Rabbit's Deception
 |                     | 10036| A Hero's Passing
-|                     | 10037| Tummy Twister
+|:heavy_check_mark:   | 10037| Tummy Twister
 |                     | 10038| Backroom Deals
 |:heavy_check_mark:   | 10039| Forced Quarantine
 |:white_check_mark:   | 10040| Devil's Joker (Red)
