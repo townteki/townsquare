@@ -65,18 +65,28 @@ class Shootout extends Phase {
             if(this.game.getNumberOfPlayers() < 2) {
                 this.endShootout();
             } else {
-                this.opposingPlayerName = opponent.name;
-                this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
-                    title: 'Do you want to oppose?',
-                    onYes: () => {
-                        this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
-                        this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
-                    },
-                    onNo: () => {
-                        this.jobUnopposed = true;
-                        this.endShootout();
-                    }
-                }));
+                if(this.game.getDudesInPlay(opponent, card => card.requirementsToJoinPosse().canJoin).length) {
+                    this.opposingPlayerName = opponent.name;
+                    this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
+                        title: 'Do you want to oppose?',
+                        onYes: () => {
+                            this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
+                            this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
+                        },
+                        onNo: () => {
+                            this.game.addAlert('info', '{0} decides to not oppose job {1}', 
+                                opponent, this.options.jobAbility.card);
+                            this.jobUnopposed = true;
+                            this.endShootout();
+                        },
+                        source: this.options.jobAbility.card
+                    }));
+                } else {
+                    this.game.addAlert('info', '{0} does not have any available dudes to oppose job {2}', 
+                        opponent, this.options.jobAbility.card);
+                    this.jobUnopposed = true;
+                    this.endShootout();
+                }
             }
         }
         this.leaderOpponentOrder = [this.leader.controller.name, this.opposingPlayerName];
@@ -126,10 +136,10 @@ class Shootout extends Phase {
     }
 
     resetModifiers() {
-        this.leaderPlayer.rankModifier = 0;
+        this.leaderPlayer.rankModifier = this.leaderPlayer.persistentRankModifier;
         this.leaderPlayer.casualties = 0;
         if(this.opposingPlayer) {
-            this.opposingPlayer.rankModifier = 0;
+            this.opposingPlayer.rankModifier = this.opposingPlayer.persistentRankModifier;
             this.opposingPlayer.casualties = 0;
         }
     }
@@ -265,6 +275,11 @@ class Shootout extends Phase {
 
     isInShootout(card) {
         return this.isInLeaderPosse(card) || this.isInOpposingPosse(card);
+    }
+
+    getPosseSize(player) {
+        const posse = this.getPosseByPlayer(player);
+        return posse ? posse.posse.length : 0;
     }
 
     belongsToLeaderPlayer(dude) {

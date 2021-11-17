@@ -1,4 +1,5 @@
 const ShootoutStatuses = require('../../Constants/ShootoutStatuses');
+/** @typedef {import('../../dudecard')} DudeCard */
 
 class ShootoutPosse {
     constructor(shootout, player, isLeading) {
@@ -165,10 +166,33 @@ class ShootoutPosse {
         this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(dude => dude && !exception(dude)).forEach(dude => action(dude));
     }
     
+    /**
+     * Returns dudes in the posse matching the `condition`.
+     *
+     * @param {(dude: DudeCard) => boolean} condition - condition that the dude should match.
+     * @returns {Array.<DudeCard>} - array of dudes matching condition.
+     */    
     getDudes(condition = () => true) {
         return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).filter(card => card && condition(card));
     }
 
+    /**
+     * Returns attachments on dudes in the posse matching the `condition`.
+     *
+     * @param {(dude: DudeCard) => boolean} condition - condition that the attachment should match.
+     * @returns {Array.<DrawCard>} - array of attachments matching condition.
+     */
+    getAttachments(condition = () => true) {
+        const attachments = this.getDudes().map(dude => dude.attachments);
+        return [].concat(...attachments).filter(card => card && condition(card));
+    }
+
+    /**
+     * Returns true if there is dude matching the `predicate`.
+     *
+     * @param {(dude: DudeCard) => boolean} predicate - predicate that the dude should match.
+     * @returns {boolean} - true if there is dude matchinf the `predicate`, false otherwise.
+     */       
     findInPosse(predicate = () => true) {
         return this.posse.map(dudeUuid => this.player.findCardInPlayByUuid(dudeUuid)).find(card => card && predicate(card));
     }

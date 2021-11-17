@@ -54,7 +54,7 @@ describe('AbilityResolver', function() {
             });
 
             it('should pay the costs', function() {
-                expect(this.ability.payCosts).toHaveBeenCalledWith(this.context);
+                expect(this.ability.payCosts).toHaveBeenCalledWith(this.context, false);
             });
 
             it('should execute the handler', function() {
@@ -168,7 +168,7 @@ describe('AbilityResolver', function() {
                     });
 
                     it('should pay the costs', function() {
-                        expect(this.ability.payCosts).toHaveBeenCalledWith(this.context);
+                        expect(this.ability.payCosts).toHaveBeenCalledWith(this.context, false);
                     });
 
                     it('should execute the handler', function() {

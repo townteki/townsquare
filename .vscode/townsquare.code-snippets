@@ -154,13 +154,13 @@
 		"body": [
 			"context.ability.selectAnotherTarget(${1:context.player}, context, {",
 			"\tactivePromptTitle: 'Select a ${2:card}',",
-			"\twaitingPromptTitle: 'Waiting for opponent to select ${3:card}',",
 			"\tcardCondition: card => ${4:true},",
 			"\tcardType: '${5|location,dude,deed,goods,spell,action,outfit|}',",
 			"\tonSelect: (player, card) => {",
 			"\t\t$6",
 			"\t\treturn true;",
-			"\t}",
+			"\t},",
+			"\tsource: ${7:this}",		
 			"});"
 		],
 		"description": "Select another target"
@@ -172,13 +172,13 @@
 		"body": [
 			"this.game.promptForSelect(${1:player}, {",
 			"\tactivePromptTitle: 'Select a ${2:card}',",
-			"\twaitingPromptTitle: 'Waiting for opponent to select ${3:card}',",
 			"\tcardCondition: card => ${4:true},",
 			"\tcardType: '${5|location,dude,deed,goods,spell,action,outfit|}',",
 			"\tonSelect: (player, card) => {",
 			"\t\t$6",
 			"\t\treturn true;",
-			"\t}",
+			"\t},",
+			"\tsource: ${7:this}",			
 			"});"
 		],
 		"description": "Prompt for select"
@@ -212,7 +212,8 @@
 			"\t},",
 			"\tonNo: player => {",
             "\t\t$4",
-			"\t}",
+			"\t},",
+			"\tsource: ${7:this}",			
 			"});"
 		],
 		"description": "Prompt for Yes or No"

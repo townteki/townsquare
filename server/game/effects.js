@@ -374,6 +374,7 @@ const Effects = {
     cannotRefuseCallout: optionEffect('cannotRefuseCallout', 'Cannot refuse callouts'),
     cannotBePickedAsShooter: optionEffect('cannotBePickedAsShooter', 'Cannot be picked Shooter'),
     cannotInventGadgets: optionEffect('cannotInventGadgets', 'Cannot invent Gadgets'),
+    cannotCastSpell: optionEffect('cannotCastSpell', 'Cannot cast some spells'),
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin', 'Does not get Bounty on Join'),
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown', 'Does not Unboot at Sundown'),
     doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings', 'Does not provide Bullets'),
@@ -617,16 +618,18 @@ const Effects = {
         };
     },
     productionToBeReceivedBy: function(player) {
+        const isStateDependent = (typeof player === 'function');
         return {
             title: `Production to be received by: ${player.name}`,
             apply: function(card) {
                 if(card.getType() === 'deed') {
-                    card.productionToBeReceivedBy = player;
+                    card.productionToBeReceivedBy = isStateDependent ? player() : player;
                 }
             },
             unapply: function(card) {
                 card.productionToBeReceivedBy = null;
-            }
+            },
+            isStateDependent
         };
     },
     additionalDynamicAdjacency: conditionalAdjacency('adjacent'),
@@ -669,10 +672,10 @@ const Effects = {
             targetType: 'player',
             gameAction: 'modifyHandRank',
             apply: function(player, context) {
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
-                player.modifyRank(-value, context, false);
+                player.modifyRank(-value, context, false, true);
             }
         };
     },
@@ -688,18 +691,18 @@ const Effects = {
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
                 let value = context.dynamicHandRank[player.name];
                 this.title = `Hand Rank modified: ${value}`;
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             reapply: function(player, context) {
                 let currentProperty = context.dynamicHandRank[player.name];
                 let newProperty = calculate(player, context) || 0;
                 context.dynamicHandRank[player.name] = newProperty;
                 let value = newProperty - currentProperty;
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
                 let value = context.dynamicHandRank[player.name];
-                player.modifyRank(-value, context, false);
+                player.modifyRank(-value, context, false, true);
                 delete context.dynamicHandRank[player.name];
             },
             isStateDependent
@@ -1119,19 +1122,23 @@ const Effects = {
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
     canPerformSkillUsing: function(skillnameOrKF, condition) {
-        var getSkillRatingFunc;
         return {
             title: `Can perform other skills using ${skillnameOrKF}`,
-            apply: function(card) {
-                getSkillRatingFunc = card.getSkillRatingForCard;
-                card.getSkillRatingForCard = spellOrGadget => {
-                    if(condition(spellOrGadget)) {
-                        return card.getSkillRating(skillnameOrKF);
-                    }
-                };
+            apply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions.push({
+                    condition,
+                    skillnameOrKF,
+                    source: context.source
+                });
             },
-            unapply: function(card) {
-                card.getSkillRatingForCard = getSkillRatingFunc;
+            unapply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions = card.skillKfConditions.filter(condObj => condObj.source !== context.source);
             }
         };
     },

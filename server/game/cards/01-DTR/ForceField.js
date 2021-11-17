@@ -9,9 +9,10 @@ class ForceField extends GoodsCard {
             cost: ability.costs.payXGhostRock(() => 1, () => this.getDiffInRanks()),
             repeatable: true,
             handler: context => {
-                context.player.modifyRank(context.grCost, context);
-                this.game.addMessage('{0} uses {1} to raise their hand rank by {2}; Current rank is {3}', 
-                    context.player, this, context.grCost, this.controller.getTotalRank());
+                if(context.player.modifyRank(context.grCost, context)) {
+                    this.game.addMessage('{0} uses {1} to raise their hand rank by {2}; Current rank is {3}', 
+                        context.player, this, context.grCost, this.controller.getTotalRank());
+                }
             }
         });
     }

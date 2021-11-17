@@ -1,12 +1,14 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/518/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/661/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
 
 **Legend**
 
 :heavy_check_mark: - implemented cards using own script
 
 :white_check_mark: - cards that do not need own implementation
+
+:heavy_multiplication_x: - banned cards that will not be implemented
 
 ## `01-DTR` Base set
 
@@ -32,7 +34,7 @@
 |:heavy_check_mark:   | 01018| Tommy Harden
 |:heavy_check_mark:   | 01019| Prescott Utter
 |:white_check_mark:   | 01020| Andreas Andregg
-|                     | 01021| Xiong "Wendy" Cheng
+|:heavy_check_mark:   | 01021| Xiong "Wendy" Cheng
 |:heavy_check_mark:   | 01022| Clyde Owens
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
@@ -68,7 +70,7 @@
 |:heavy_check_mark:   | 01054| Eve Henry
 |                     | 01055| Bank of California
 |:heavy_check_mark:   | 01056| Pony Express
-|                     | 01057| Gomorra Parish
+|:heavy_check_mark:   | 01057| Gomorra Parish
 |                     | 01058| The Town Hall
 |:heavy_check_mark:   | 01059| 1st Baptist Church
 |:heavy_check_mark:   | 01060| Yan Li's Tailoring
@@ -127,7 +129,7 @@
 |:heavy_check_mark:   | 01113| Sun in Yer Eyes
 |:heavy_check_mark:   | 01114| Ambush
 |:heavy_check_mark:   | 01115| Coachwhip!
-|                     | 01116| War Paint
+|:heavy_check_mark:   | 01116| War Paint
 |:heavy_check_mark:   | 01117| Bad Company
 |:heavy_check_mark:   | 01118| Hiding in the Shadows
 |:heavy_check_mark:   | 01119| Pistol Whip
@@ -143,7 +145,7 @@
 |:heavy_check_mark:   | 01129| Cheatin' Varmint
 |                     | 01130| Fresh Horses
 |:heavy_check_mark:   | 01131| Magical Distraction
-|                     | 01132| Extortion
+|:heavy_check_mark:   | 01132| Extortion
 |:heavy_check_mark:   | 01133| Recruitment Drive
 |:heavy_check_mark:   | 01134| Unprepared
 |:heavy_check_mark:   | 01135| A Coach Comes to Town
@@ -197,7 +199,7 @@
 |                     | 03006| Dr. Emanuel Ashbel
 |:heavy_check_mark:   | 03007| Angélica Espinosa
 |:heavy_check_mark:   | 03008| José Morales
-|                     | 03009| Genesee "Gina" Tailfeathers
+|:heavy_check_mark:   | 03009| Genesee "Gina" Tailfeathers
 |:heavy_check_mark:   | 03010| Mario Crane
 |:heavy_check_mark:   | 03011| Hustings
 |:heavy_check_mark:   | 03012| Surveyor's Office
@@ -224,7 +226,7 @@
 |                     | 04007| Allie Hensman (Exp.1)
 |:heavy_check_mark:   | 04008| Milt Clemons
 |:heavy_check_mark:   | 04009| Jake Smiley
-|                     | 04010| QUATERMAN
+|:heavy_check_mark:   | 04010| QUATERMAN
 |:heavy_check_mark:   | 04011| Angela Payne
 |:heavy_check_mark:   | 04012| The Mayor's Office
 |:heavy_check_mark:   | 04013| Hunter Protections
@@ -241,7 +243,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 05001| Oddities of Nature
+|:heavy_check_mark:   | 05001| Oddities of Nature
 |:heavy_check_mark:   | 05002| The Arsenal
 |:heavy_check_mark:   | 05003| Morgan Gadgetorium
 |:heavy_check_mark:   | 05004| Desolation Row
@@ -283,7 +285,7 @@
 |:heavy_check_mark:   | 05040| Meet The New Boss
 |:heavy_check_mark:   | 06001| Funtime Freddy
 
-## `04.1-FJ` Final Justice
+## `04.1-FJ` Frontier Justice
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
@@ -292,7 +294,7 @@
 |                     | 06004| Elmore Rhine
 |                     | 06005| Howard Aswell
 |                     | 06006| Louis Pasteur
-|                     | 06007| Benny McGill
+|:heavy_check_mark:   | 06007| Benny McGill
 |                     | 06008| Marion Seville (Exp.1)
 |:heavy_check_mark:   | 06009| J.W. Byrne
 |:heavy_check_mark:   | 06010| Shane & Graves Security
@@ -305,7 +307,7 @@
 |:heavy_check_mark:   | 06017| Confession
 |:heavy_check_mark:   | 06018| Shield of Faith
 |                     | 06019| Rope and Ride
-|                     | 06020| Incubation
+|:heavy_check_mark:   | 06020| Incubation
 |:heavy_check_mark:   | 06021| Flight of the Lepus
 
 ## `04.2-NTB` No Turning Back
@@ -319,7 +321,7 @@
 |                     | 07005| Antheia Pansofia
 |                     | 07006| Harry Highbinder
 |                     | 07007| Max Baine (Exp.1)
-|                     | 07008| El Grajo
+|:heavy_check_mark:   | 07008| El Grajo
 |:heavy_check_mark:   | 07009| Jacqueline Isham
 |:heavy_check_mark:   | 07010| Huntsmen's Society
 |:heavy_check_mark:   | 07011| Secured Stockyard
@@ -357,7 +359,7 @@
 |                     | 08017| For Such a Time as This
 |:heavy_check_mark:   | 08018| Sword of the Spirit
 |                     | 08019| A Fight They'll Never Forget
-|                     | 08020| Buried Treasure
+|:heavy_check_mark:   | 08020| Buried Treasure
 |:heavy_check_mark:   | 08021| Nightmare at Noon
 
 ## `05-IOUF` Immovable Object, Unstoppable Force
@@ -365,8 +367,8 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 09001| The 108 Righteous Bandits
-|                     | 09002| Eagle Wardens
-|                     | 09003| Benjamin Washington
+|:heavy_check_mark:   | 09002| Eagle Wardens
+|:heavy_check_mark:   | 09003| Benjamin Washington
 |:heavy_check_mark:   | 09004| Daomei Wang
 |:heavy_check_mark:   | 09005| Randall
 |:heavy_check_mark:   | 09006| Xiaodan Li
@@ -411,9 +413,9 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 10001| The Sanatorium
+|:heavy_check_mark:   | 10001| The Sanatorium
 |:heavy_check_mark:   | 10002| Abram's Crusaders
-|                     | 10003| Den of Thieves
+|:heavy_check_mark:   | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
 |:heavy_check_mark:   | 10005| Emre, The Turkish Bear
 |                     | 10006| Michael "The Badger" Dodge
@@ -450,16 +452,16 @@
 |:heavy_check_mark:   | 10037| Tummy Twister
 |                     | 10038| Backroom Deals
 |:heavy_check_mark:   | 10039| Forced Quarantine
-|                     | 10040| Devil's Joker (Red)
-|                     | 10041| Devil's Joker (Black)
+|:white_check_mark:   | 10040| Devil's Joker (Red)
+|:white_check_mark:   | 10041| Devil's Joker (Black)
 
 ## `07.1-DDeeds` Dirty Deeds
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 11001| 108 Worldly Desires
-|                     | 11002| Beyond the Veil
-|                     | 11003| Morgan Stables
+|:heavy_multiplication_x:| 11001| 108 Worldly Desires
+|:heavy_check_mark:   | 11002| Beyond the Veil
+|:heavy_check_mark:   | 11003| Morgan Stables
 |:heavy_check_mark:   | 11004| Xiang Fang
 |:heavy_check_mark:   | 11005| He Fang
 |                     | 11006| Kabeda Hakurei
@@ -468,7 +470,7 @@
 |:heavy_check_mark:   | 11009| Erik Samson
 |                     | 11010| Dr. Brian Foxworth
 |:heavy_check_mark:   | 11011| Buford Hurley
-|                     | 11012| Doris Powell
+|:heavy_check_mark:   | 11012| Doris Powell
 |                     | 11013| Rico Rodegain
 |:heavy_check_mark:   | 11014| Maza Gang Hideout
 |:heavy_check_mark:   | 11015| Miasmatic Purifier
@@ -478,7 +480,7 @@
 |:heavy_check_mark:   | 11019| Personal Ornithopter
 |                     | 11020| Hustled
 |                     | 11021| An Accidental Reunion
-|                     | 11022| A Slight Modification
+|:heavy_check_mark:   | 11022| A Slight Modification
 |:heavy_check_mark:   | 11023| Rabbit Takes Revenge
 
 ## `07.2-FP` Foul Play
@@ -528,7 +530,7 @@
 |:heavy_check_mark:   | 13015| Yagn's Mechanical Skeleton
 |                     | 13016| Fool's Gold
 |:heavy_check_mark:   | 13017| Mother Bear's Rage
-|                     | 13018| Focusing Chi
+|:heavy_check_mark:   | 13018| Focusing Chi
 |:heavy_check_mark:   | 13019| Mugging
 |                     | 13020| Signing Over the Stores
 |                     | 13021| No Funny Stuff
@@ -569,15 +571,15 @@
 |:heavy_check_mark:   | 14030| Sight Beyond Sight
 |                     | 14031| Requiem for a Good Boy
 |:heavy_check_mark:   | 14032| Fool Me Once...
-|                     | 14033| Fiddle Game
+|:heavy_check_mark:   | 14033| Fiddle Game
 |                     | 14034| Pigging Out
 |:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
 |                     | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
 |                     | 14039| Foreboding Glance
-|                     | 14040| Heretic Joker (Red)
-|                     | 14041| Heretic Joker (Black)
+|:white_check_mark:   | 14040| Heretic Joker (Red)
+|:white_check_mark:   | 14041| Heretic Joker (Black)
 
 ## `09.1-TCR` The Curtain Rises
 
@@ -598,10 +600,10 @@
 |                     | 15013| Rites of the Smoking Mirror
 |                     | 15014| Essence of Armitage
 |                     | 15015| Festering Grasp
-|                     | 15016| Silver Pheasant's Bounty
+|:heavy_check_mark:   | 15016| Silver Pheasant's Bounty
 |:heavy_check_mark:   | 15017| Comin' Up Roses
 |                     | 15018| Run Rabbit Run
-|                     | 15019| Putting The Pieces Together
+|:heavy_check_mark:   | 15019| Putting The Pieces Together
 |                     | 15020| Someone Else's Problem
 |                     | 15021| Lost to the Plague
 
@@ -654,24 +656,24 @@
 |:heavy_check_mark:   | 17017| Ghostly Communion
 |:heavy_check_mark:   | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
-|                     | 17020| Showboating
+|:heavy_multiplication_x:| 17020| Showboating
 |                     | 17021| All Or Nothing
 
 ## `10-BMR` Blood Moon Rising
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 18001| 108 Drunken Masters
-|                     | 18002| Gateway To Beyond
-|                     | 18003| Full Moon Brotherhood
-|                     | 18004| Justice In Exile
+|:heavy_check_mark:   | 18001| 108 Drunken Masters
+|:heavy_check_mark:   | 18002| Gateway To Beyond
+|:heavy_check_mark:   | 18003| Full Moon Brotherhood
+|:heavy_check_mark:   | 18004| Justice In Exile
 |:heavy_check_mark:   | 18005| Morgan Regulators
 |:heavy_check_mark:   | 18006| Protection Racket
 |                     | 18007| Zui Waidan
 |                     | 18008| Mr. Outang
 |:heavy_check_mark:   | 18009| Stevie Lyndon
-|                     | 18010| Wei Xu
-|                     | 18011| Eva Bright Eyes
+|:heavy_check_mark:   | 18010| Wei Xu
+|:heavy_check_mark:   | 18011| Eva Bright Eyes
 |                     | 18012| Mick Aduladi
 |                     | 18013| Absalom Hotchkiss
 |:heavy_check_mark:   | 18014| Christine Perfect
@@ -692,7 +694,7 @@
 |                     | 18029| Rancher's Lariat
 |:heavy_check_mark:   | 18030| De Annulos Mysteriis
 |                     | 18031| Heartseeker
-|                     | 18032| Tse-Che-Nako's Weaving
+|:heavy_check_mark:   | 18032| Tse-Che-Nako's Weaving
 |:heavy_check_mark:   | 18033| Amazing Grace
 |:heavy_check_mark:   | 18034| Burn 'Em Out
 |                     | 18035| Shiny Things
@@ -761,28 +763,28 @@
 |:heavy_check_mark:   | 20001| 108 Gracious Gifts
 |:heavy_check_mark:   | 20002| Property Is Theft
 |:heavy_check_mark:   | 20003| The Spiritual Society
-|                     | 20004| Joe Vermilion
-|                     | 20005| Ying-Ssi Chieh T'ang
-|                     | 20006| E Gui
-|                     | 20007| Buskers
+|:heavy_check_mark:   | 20004| Joe Vermilion
+|:heavy_check_mark:   | 20005| Ying-Ssi Chieh T'ang
+|:heavy_check_mark:   | 20006| E Gui
+|:heavy_check_mark:   | 20007| Buskers
 |:heavy_check_mark:   | 20008| Taiyari
 |:white_check_mark:   | 20009| Matilda Loomis
 |:heavy_check_mark:   | 20010| Alexander Sequoia
 |:heavy_check_mark:   | 20011| Matthew Rising Sun
-|                     | 20012| Feichi "Suitcase" Lee
-|                     | 20013| Geronimo
+|:heavy_check_mark:   | 20012| Feichi "Suitcase" Lee
+|:heavy_check_mark:   | 20013| Geronimo
 |:heavy_check_mark:   | 20014| Papa Marias
-|                     | 20015| Skinwalker
-|                     | 20016| Tonton Macoute
-|                     | 20017| Kevin Wainwright (Exp.1)
+|:heavy_check_mark:   | 20015| Skinwalker
+|:heavy_check_mark:   | 20016| Tonton Macoute
+|:heavy_check_mark:   | 20017| Kevin Wainwright (Exp.1)
 |:heavy_check_mark:   | 20018| Padre Ernesto de Diaz
-|                     | 20019| Dr. Erik Yaple
-|                     | 20020| Quincy Washburne
+|:heavy_check_mark:   | 20019| Dr. Erik Yaple
+|:heavy_check_mark:   | 20020| Quincy Washburne
 |:heavy_check_mark:   | 20021| Xiong "Wendy" Cheng (Exp.1)
 |:heavy_check_mark:   | 20022| Takahashi Jinrai
-|                     | 20023| "Handsome" Dan Deeds
-|                     | 20024| Vida Azul
-|                     | 20025| Bartholomew P. Fountain
+|:heavy_check_mark:   | 20023| "Handsome" Dan Deeds
+|:heavy_check_mark:   | 20024| Vida Azul
+|:heavy_check_mark:   | 20025| Bartholomew P. Fountain
 |:heavy_check_mark:   | 20026| Ike Clanton
 |:heavy_check_mark:   | 20027| Frank Stillwell
 |:heavy_check_mark:   | 20028| Silas Aims (Exp.1)
@@ -790,28 +792,28 @@
 |:heavy_check_mark:   | 20030| Virginia Ann Earp
 |:heavy_check_mark:   | 20031| Campbell & Hatch Billiard Parlor
 |:heavy_check_mark:   | 20032| Clanton Ranch
-|                     | 20033| Concordia Cemetery
+|:heavy_check_mark:   | 20033| Concordia Cemetery
 |:heavy_check_mark:   | 20034| Ike's Place
-|                     | 20035| Five Aces Gambling Hall
+|:heavy_check_mark:   | 20035| Five Aces Gambling Hall
 |:heavy_check_mark:   | 20036| Old Washoe Club
 |:heavy_check_mark:   | 20037| Quarter Horse
 |:heavy_check_mark:   | 20038| Electrostatic Pump Gun
 |:heavy_check_mark:   | 20039| Claws
 |:heavy_check_mark:   | 20040| Analytical Cognisizer
-|                     | 20041| Ranger's Bible
+|:heavy_check_mark:   | 20041| Ranger's Bible
 |:heavy_check_mark:   | 20042| Stone's Colt Dragoons
-|                     | 20043| Bedazzle
-|                     | 20044| Exultant Translocation
+|:heavy_check_mark:   | 20043| Bedazzle
+|:heavy_check_mark:   | 20044| Exultant Translocation
 |:heavy_check_mark:   | 20045| Retribution
-|                     | 20046| Gateway
+|:heavy_check_mark:   | 20046| Gateway
 |:heavy_check_mark:   | 20047| Guiding Wind
 |:heavy_check_mark:   | 20048| Mischievous Coyote
-|                     | 20049| Murdered in Tombstone
+|:heavy_check_mark:   | 20049| Murdered in Tombstone
 |:heavy_check_mark:   | 20050| Hostile Takeover
-|                     | 20051| Jade King Stance
+|:heavy_check_mark:   | 20051| Jade King Stance
 |:heavy_check_mark:   | 20052| Heist
 |:heavy_check_mark:   | 20053| I'm Your Huckleberry
-|                     | 20054| Monkey Goes to the Mountain
+|:heavy_check_mark:   | 20054| Monkey Goes to the Mountain
 |:heavy_check_mark:   | 20055| Curse of Failure
 |:heavy_check_mark:   | 20056| Ricochet
 
@@ -826,28 +828,28 @@
 |:heavy_check_mark:   | 21005| Smith & Robards Trade Show
 |:heavy_check_mark:   | 21006| Jonah's Alliance
 |:heavy_check_mark:   | 21007| Doc Holliday
-|                     | 21008| Ke Wang
+|:heavy_check_mark:   | 21008| Ke Wang
 |:heavy_check_mark:   | 21009| Baijiu Sue
-|                     | 21010| Reverend Bob Hungate
-|                     | 21011| Father Diamond
+|:heavy_check_mark:   | 21010| Reverend Bob Hungate
+|:heavy_check_mark:   | 21011| Father Diamond
 |:heavy_check_mark:   | 21012| Master Shou
 |:heavy_check_mark:   | 21013| Brother Petrovic
-|                     | 21014| Leychaa'i Youngheart
+|:heavy_check_mark:   | 21014| Leychaa'i Youngheart
 |:heavy_check_mark:   | 21015| Monomi Miles
-|                     | 21016| Klah
+|:heavy_check_mark:   | 21016| Klah
 |:heavy_check_mark:   | 21017| Black Elk (Exp.1)
-|                     | 21018| Nathaniel Tuwikaa
-|                     | 21019| The Faceless One
+|:heavy_check_mark:   | 21018| Nathaniel Tuwikaa
+|:heavy_check_mark:   | 21019| The Faceless One
 |:heavy_check_mark:   | 21020| Lorena Corbett
 |:heavy_check_mark:   | 21021| Auntie Sinister
 |:heavy_check_mark:   | 21022| Mason Adler
 |:heavy_check_mark:   | 21023| Enrique Dos Santos
-|                     | 21024| Reverend Endicott
+|:heavy_check_mark:   | 21024| Reverend Endicott
 |:heavy_check_mark:   | 21025| Sgt. Elijah Clay
 |:heavy_check_mark:   | 21026| Wyatt Earp
 |:white_check_mark:   | 21027| Eli Leatherwood
 |:heavy_check_mark:   | 21028| Roberto Muratore
-|                     | 21029| Adelaide Rose
+|:heavy_check_mark:   | 21029| Adelaide Rose
 |:heavy_check_mark:   | 21030| Dr. Gregory Tremane
 |:heavy_check_mark:   | 21031| Big Nose Kate
 |:heavy_check_mark:   | 21032| Johnny Ringo
@@ -861,20 +863,20 @@
 |:heavy_check_mark:   | 21040| Hart's Tea Shoppe
 |:heavy_check_mark:   | 21041| Bird Cage Theater
 |:heavy_check_mark:   | 21042| Cochise County Courthouse
-|                     | 21043| Gage Export Co.
+|:heavy_check_mark:   | 21043| Gage Export Co.
 |:heavy_check_mark:   | 21044| Magnum Opus Tenebri
 |:heavy_check_mark:   | 21045| Scattergun
-|                     | 21046| Adler's Needle
-|                     | 21047| Wrathful Spider
+|:heavy_check_mark:   | 21046| Adler's Needle
+|:heavy_check_mark:   | 21047| Wrathful Spider
 |:heavy_check_mark:   | 21048| Guiding Light
-|                     | 21049| Champion
+|:heavy_check_mark:   | 21049| Champion
 |:heavy_check_mark:   | 21050| Malison
 |:heavy_check_mark:   | 21051| Dancing Butterfly
-|                     | 21052| Ten-Foot Punch
+|:heavy_check_mark:   | 21052| Ten-Foot Punch
 |:heavy_check_mark:   | 21053| Fleet-Footed
 |:heavy_check_mark:   | 21054| You're A Daisy If You Do
-|                     | 21055| Twilight Is Upon Us
-|                     | 21056| Test of Wills
+|:heavy_check_mark:   | 21055| Twilight Is Upon Us
+|:heavy_check_mark:   | 21056| Test of Wills
 
 ## `14-HCWM` Hell's Comin' With Me
 
@@ -884,55 +886,55 @@
 |:heavy_check_mark:   | 22002| Hank Ketchum
 |:heavy_check_mark:   | 22003| Lacy O'Malley
 |:heavy_check_mark:   | 22004| The Tombstone Haint
-|                     | 22005| Rock Woofstone
-|                     | 22006| Arielle Moriah
+|:heavy_check_mark:   | 22005| Rock Woofstone
+|:heavy_check_mark:   | 22006| Arielle Moriah
 |:heavy_check_mark:   | 22007| Gabriel Prior
-|                     | 22008| Mr. Baird
-|                     | 22009| Harlan Stanton
+|:heavy_check_mark:   | 22008| Mr. Baird
+|:heavy_check_mark:   | 22009| Harlan Stanton
 |:heavy_check_mark:   | 22010| Dr. Delphi Wallis
-|                     | 22011| Cooper Grannon
-|                     | 22012| Vivene Goldsun
-|                     | 22013| Maurice Croker
+|:heavy_check_mark:   | 22011| Cooper Grannon
+|:heavy_check_mark:   | 22012| Vivene Goldsun
+|:heavy_check_mark:   | 22013| Maurice Croker
 |:heavy_check_mark:   | 22014| Bogie Man
-|                     | 22015| Evan Lucas
+|:heavy_check_mark:   | 22015| Evan Lucas
 |:heavy_check_mark:   | 22016| Tawodi
-|                     | 22017| Tsintah
+|:heavy_check_mark:   | 22017| Tsintah
 |:heavy_check_mark:   | 22018| Jackie Sanjuro
 |:heavy_check_mark:   | 22019| Speaks-with-Buffalo
-|                     | 22020| Judge Wells Spicer
+|:heavy_check_mark:   | 22020| Judge Wells Spicer
 |:heavy_check_mark:   | 22021| Joan McGruder
-|                     | 22022| Virgil Earp
+|:heavy_check_mark:   | 22022| Virgil Earp
 |:heavy_check_mark:   | 22023| Marshal Caves Callarman
 |:heavy_check_mark:   | 22024| Florentino "Indian Charlie" Cruz
-|                     | 22025| Tomas Ramirez
+|:heavy_check_mark:   | 22025| Tomas Ramirez
 |:heavy_check_mark:   | 22026| Pete Spence
 |:heavy_check_mark:   | 22027| Jonah Essex (Exp.1)
-|                     | 22028| Camillus S. Fly
+|:heavy_check_mark:   | 22028| Camillus S. Fly
 |:heavy_check_mark:   | 22029| QUATERMAN PRIME
-|                     | 22030| Winona Rein-Breaker
+|:heavy_check_mark:   | 22030| Winona Rein-Breaker
 |:heavy_check_mark:   | 22031| Nicole Sumner
 |:heavy_check_mark:   | 22032| Red River Roulette
-|                     | 22033| Kiva of Fathomless Reach
+|:heavy_check_mark:   | 22033| Kiva of Fathomless Reach
 |:heavy_check_mark:   | 22034| Crystal Palace
 |:heavy_check_mark:   | 22035| Rham's Readings
-|                     | 22036| Jonah's Retreat
-|                     | 22037| Schieffelin Hall
-|                     | 22038| Blue Lightnin'
-|                     | 22039| Magnum Rounds
+|:heavy_check_mark:   | 22036| Jonah's Retreat
+|:heavy_check_mark:   | 22037| Schieffelin Hall
+|:heavy_check_mark:   | 22038| Blue Lightnin'
+|:heavy_check_mark:   | 22039| Magnum Rounds
 |:heavy_check_mark:   | 22040| Iron Mole
-|                     | 22041| Net Gun
-|                     | 22042| Scratch
-|                     | 22043| Battered Banjo
-|                     | 22044| Bolts o' Doom
-|                     | 22045| Lethargy
-|                     | 22046| Mind Twist
+|:heavy_check_mark:   | 22041| Net Gun
+|:heavy_check_mark:   | 22042| Scratch
+|:heavy_check_mark:   | 22043| Battered Banjo
+|:heavy_check_mark:   | 22044| Bolts o' Doom
+|:heavy_check_mark:   | 22045| Lethargy
+|:heavy_check_mark:   | 22046| Mind Twist
 |:heavy_check_mark:   | 22047| Dies Irae
 |:heavy_check_mark:   | 22048| Babble On
-|                     | 22049| Ancestor's Reproach
-|                     | 22050| Secret Paths
+|:heavy_check_mark:   | 22049| Ancestor's Reproach
+|:heavy_check_mark:   | 22050| Secret Paths
 |:heavy_check_mark:   | 22051| Fannin' the Hammer
 |                     | 22052| Tumblebleeds!
-|                     | 22053| Takin' Cover
+|:heavy_check_mark:   | 22053| Takin' Cover
 |:heavy_check_mark:   | 22054| Hell's Comin' With Me!
 |:heavy_check_mark:   | 22055| Frontier Feud
 |:heavy_check_mark:   | 22056| Seizing the Pearl of Death
@@ -942,58 +944,58 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 23001| Yasmin Tian
-|                     | 23002| "Dynamite" Jacc
+|:heavy_check_mark:   | 23002| "Dynamite" Jacc
 |:heavy_check_mark:   | 23003| Bai Yang Chen (Exp.1)
-|                     | 23004| Huang Li
-|                     | 23005| Arthur Dingler
-|                     | 23006| Deadwood Dick
+|:heavy_check_mark:   | 23004| Huang Li
+|:heavy_check_mark:   | 23005| Arthur Dingler
+|:heavy_check_mark:   | 23006| Deadwood Dick
 |:heavy_check_mark:   | 23007| Al Swearengen
 |:heavy_check_mark:   | 23008| Aunt Lou Marchbanks
-|                     | 23009| Lew Esquilin
-|                     | 23010| Mourning Mist
-|                     | 23011| Victor "Nines" de Boré
+|:heavy_check_mark:   | 23009| Lew Esquilin
+|:heavy_check_mark:   | 23010| Mourning Mist
+|:heavy_check_mark:   | 23011| Victor "Nines" de Boré
 |:heavy_check_mark:   | 23012| The Angler
-|                     | 23013| Sifting Squirrel
-|                     | 23014| Lewis "Grizzly" Evans
-|                     | 23015| "Professor" Duncan (Exp.1)
-|                     | 23016| Yiska
-|                     | 23017| Dr. JT Goodenough
-|                     | 23018| Seth Bullock
-|                     | 23019| Clint Ramsey (Exp.1)
-|                     | 23020| Mimi "The Nun" O'Brien
+|:heavy_check_mark:   | 23013| Sifting Squirrel
+|:heavy_check_mark:   | 23014| Lewis "Grizzly" Evans
+|:heavy_check_mark:   | 23015| "Professor" Duncan (Exp.1)
+|:heavy_check_mark:   | 23016| Yiska
+|:heavy_check_mark:   | 23017| Dr. JT Goodenough
+|:heavy_check_mark:   | 23018| Seth Bullock
+|:heavy_check_mark:   | 23019| Clint Ramsey (Exp.1)
+|:heavy_check_mark:   | 23020| Mimi "The Nun" O'Brien
 |:heavy_check_mark:   | 23021| Sam Bass
-|                     | 23022| Rosaleen Byrne
-|                     | 23023| Jack McCall
+|:heavy_check_mark:   | 23022| Rosaleen Byrne
+|:heavy_check_mark:   | 23023| Jack McCall
 |:heavy_check_mark:   | 23024| Reggie Mallard
-|                     | 23025| Alferd Packer
+|:heavy_check_mark:   | 23025| Alferd Packer
 |:heavy_check_mark:   | 23026| John "Aces" Radcliffe (Exp.1)
-|                     | 23027| Willa Mae MacGowan (Exp.1)
-|                     | 23028| New Varney Nosferatu
+|:heavy_check_mark:   | 23027| Willa Mae MacGowan (Exp.1)
+|:heavy_check_mark:   | 23028| New Varney Nosferatu
 |:heavy_check_mark:   | 23029| Carmichael's Livery
 |:heavy_check_mark:   | 23030| Land Purchase
-|                     | 23031| Heath's Curiosity Shoppe
-|                     | 23032| The Gem Theater
-|                     | 23033| Baird's Debt Collections
-|                     | 23034| Cheyenne Club
-|                     | 23035| Nuttal & Mann's No. 10 Saloon
+|:heavy_check_mark:   | 23031| Heath's Curiosity Shoppe
+|:heavy_check_mark:   | 23032| The Gem Theater
+|:heavy_check_mark:   | 23033| Baird's Debt Collections
+|:heavy_check_mark:   | 23034| Cheyenne Club
+|:heavy_check_mark:   | 23035| Nuttal & Mann's No. 10 Saloon
 |:heavy_check_mark:   | 23036| Winner's Circle Auction House
-|                     | 23037| Feathered Friend
+|:heavy_check_mark:   | 23037| Feathered Friend
 |:heavy_check_mark:   | 23038| Bulletproof Vest
-|                     | 23039| Pale Horse
-|                     | 23040| Kinetic Accretion Actualizer
-|                     | 23041| Missed Me!
-|                     | 23042| Mark of War
-|                     | 23043| We Stand Amazed
-|                     | 23044| Benediction
-|                     | 23045| Guiding the Pack
-|                     | 23046| Elk's Protection
-|                     | 23047| Get Off My Land!
+|:heavy_check_mark:   | 23039| Pale Horse
+|:heavy_check_mark:   | 23040| Kinetic Accretion Actualizer
+|:heavy_check_mark:   | 23041| Missed Me!
+|:heavy_check_mark:   | 23042| Mark of War
+|:heavy_check_mark:   | 23043| We Stand Amazed
+|:heavy_check_mark:   | 23044| Benediction
+|:heavy_check_mark:   | 23045| Guiding the Pack
+|:heavy_check_mark:   | 23046| Elk's Protection
+|:heavy_check_mark:   | 23047| Get Off My Land!
 |:heavy_check_mark:   | 23048| Look What I Found!
-|                     | 23049| Mantis Pinch
+|:heavy_check_mark:   | 23049| Mantis Pinch
 |:heavy_check_mark:   | 23050| As Nature and God Intended
-|                     | 23051| Play for Blood
-|                     | 23052| Bad Beat
+|:heavy_check_mark:   | 23051| Play for Blood
+|:heavy_check_mark:   | 23052| Bad Beat
 |:heavy_check_mark:   | 23053| Fallen Star
-|                     | 23054| Masonic Augment
-|                     | 23055| Swagger
+|:heavy_check_mark:   | 23054| Masonic Augment
+|:heavy_check_mark:   | 23055| Swagger
 |:heavy_check_mark:   | 23056| Vamoosin'

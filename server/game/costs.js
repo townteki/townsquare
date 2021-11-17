@@ -37,7 +37,7 @@ const Costs = {
      * Cost that requires booting a card that matches the passed condition
      * predicate function.
      */
-    boot: condition => CostBuilders.boot.select(condition),
+    boot: (condition, gameAction) => CostBuilders.boot.select(condition, null, gameAction),
     /**
      * Cost that requires booting a certain number of cards that match the
      * passed condition predicate function.
@@ -133,6 +133,7 @@ const Costs = {
      */
     expendAction: function() {
         return {
+            name: 'expendAction',
             canPay: function(context) {
                 return context.player.isCardInPlayableLocation(context.source, context.comboNumber ? 'combo' : 'play') && 
                     context.player.canPlay(context.source, 'play');

@@ -13,6 +13,7 @@ class SundownPhase extends Phase {
             new DiscardPrompt(game),
             new DiscardToHandSizePrompt(game),
             new SimpleStep(game, () => this.sundownRedraw()),
+            new SimpleStep(game, () => this.game.raiseEvent('onSundownUnbooting')),
             new SimpleStep(game, () => this.unbootCards()),
             new SimpleStep(game, () => this.roundEnded()),
             new SundownPrompt(game)

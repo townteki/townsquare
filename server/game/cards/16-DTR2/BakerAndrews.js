@@ -12,9 +12,10 @@ class BakerAndrews extends DudeCard {
                 this.game.addMessage('{0} uses {1} but it fails because their hand is legal', context.player, this),
             cost: ability.costs.raiseBountySelf(),
             handler: context => {
-                context.player.modifyRank(1, context);
-                this.game.addMessage('{0} uses {1} and adds 1 bounty to him to increase their hand rank by 1; Current rank is {2}', 
-                    context.player, this, context.player.getTotalRank());
+                if(context.player.modifyRank(1, context)) {
+                    this.game.addMessage('{0} uses {1} and adds 1 bounty to him to increase their hand rank by 1; Current rank is {2}', 
+                        context.player, this, context.player.getTotalRank());
+                }
             }
         });
     }

@@ -7,9 +7,10 @@ class LeMatRevolver2 extends GoodsCard {
             playType: 'cheatin resolution',
             cost: ability.costs.bootSelf(),
             handler: context => {
-                context.player.modifyRank(this.parent.bullets, context);
-                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
-                    context.player, this, this.parent.bullets, context.player.getTotalRank());
+                if(context.player.modifyRank(this.parent.bullets, context)) {
+                    this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
+                        context.player, this, this.parent.bullets, context.player.getTotalRank());
+                }
             }
         });
         this.action({
@@ -38,9 +39,10 @@ class LeMatRevolver2 extends GoodsCard {
                         }
                     }
                 }
-                context.player.modifyRank(this.parent.bullets, context);
-                this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
-                    context.player, this, this.parent.bullets, context.player.getTotalRank());
+                if(context.player.modifyRank(this.parent.bullets, context)) {
+                    this.game.addMessage('{0} uses {1} to increase their hand rank by {2}; Current hand rank is {3}', 
+                        context.player, this, this.parent.bullets, context.player.getTotalRank());
+                }
             }
         });
     }

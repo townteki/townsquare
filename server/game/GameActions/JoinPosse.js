@@ -46,7 +46,7 @@ class JoinPosse extends GameAction {
                         return;
                     }
                 }
-                if(shootout.isBreakinAndEnterin(event.card)) {
+                if(!event.options.doNotPutBounty && shootout.isBreakinAndEnterin(event.card)) {
                     event.card.increaseBounty();
                 }
                 card.game.raiseEvent('onDudeJoinedPosse', { card: event.card, leaderPosse: event.leaderPosse, options: event.options });

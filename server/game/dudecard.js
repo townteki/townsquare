@@ -20,6 +20,7 @@ class DudeCard extends DrawCard {
         this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
         this.skillKfBonuses = [];
+        this.skillKfConditions = [];
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: 'default', shooter: this.cardData.shooter});
         this.spellFunc = spell => {
@@ -97,7 +98,7 @@ class DudeCard extends DrawCard {
             case 'bullets':
                 return this.bullets;
             case 'bounty':
-                return this.bullets;
+                return this.bounty;
         }
     }
 
@@ -127,6 +128,10 @@ class DudeCard extends DrawCard {
     }
 
     getSkillRatingForCard(spellOrGadget) {
+        const condObj = this.skillKfConditions.find(condObj => condObj.condition(spellOrGadget));
+        if(condObj) {
+            return this.getSkillRating(condObj.skillnameOrKF);
+        }
         if(spellOrGadget.isGadget()) {
             return this.getSkillRating('mad scientist');
         }
@@ -291,16 +296,16 @@ class DudeCard extends DrawCard {
         } 
     }
 
-    moveToLocation(destinationUuid) {
+    moveToLocation(destinationUuid, options = {}) {
         let origin = this.getGameLocation();
         if(origin) {
             origin.removeDude(this);
-            this.game.raiseEvent('onDudeLeftLocation', { card: this, gameLocation: origin });
+            this.game.raiseEvent('onDudeLeftLocation', { card: this, gameLocation: origin, options });
         }
         let destination = this.game.findLocation(destinationUuid);
         if(destination && this.location !== 'out of game') {
             destination.addDude(this);
-            this.game.raiseEvent('onDudeEnteredLocation', { card: this, gameLocation: destination });
+            this.game.raiseEvent('onDudeEnteredLocation', { card: this, gameLocation: destination, options });
         }
     }
 
@@ -401,6 +406,10 @@ class DudeCard extends DrawCard {
     hasHorse() {
         return this.hasAttachment(att => att.hasKeyword('Horse'));
     }
+
+    hasWeapon() {
+        return this.hasAttachment(att => att.hasKeyword('Weapon'));
+    }    
 
     checkWeaponLimit() {
         let weapons = this.getAttachmentsByKeywords(['weapon']);
@@ -605,7 +614,9 @@ class DudeCard extends DrawCard {
         if(!(spell instanceof SpellCard)) {
             return false;
         }
-        return this.canPerformSkillOn(spell) && this.spellFunc(spell);
+        return !this.cannotCastSpell(spell) && 
+            this.canPerformSkillOn(spell) && 
+            this.spellFunc(spell);
     }
 
     canPerformTechnique(card) {
@@ -614,6 +625,10 @@ class DudeCard extends DrawCard {
         }
         const kfRating = this.getKungFuRating(card);
         return kfRating !== null && kfRating !== undefined;    
+    }
+
+    cannotCastSpell(spell) {
+        return this.options.contains('cannotCastSpell', spell);
     }
 
     addSkillKfBonus(bonus, source) {

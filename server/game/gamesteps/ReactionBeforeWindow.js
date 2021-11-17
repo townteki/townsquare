@@ -15,7 +15,6 @@ class ReactionBeforeWindow extends BaseStep {
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
             new SimpleStep(game, () => this.executeBeforeHandlers()),
-            new SimpleStep(game, () => this.openAbilityWindow('cancelreaction')),
             new SimpleStep(game, () => this.openAbilityWindow('traitbeforereaction')), // Traits with "instead" go here
             new SimpleStep(game, () => this.openAbilityWindow('beforereaction')), // Reacts with "instead" go here
             new SimpleStep(game, () => this.executeHandler()),

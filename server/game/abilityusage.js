@@ -15,11 +15,14 @@ class AbilityUsage {
         }
         this.useCount = 0;
         this.resetHandler = () => this.reset();
+        this.eventName = 'onRoundEnded';
         var isShootoutType = ['shootout', 'shootout:join', 'resolution'].some(type => playType.includes(type));
         if(isShootoutType && this.repeatable) {
-            this.eventName = 'onShootoutPhaseFinished';
-        } else {
-            this.eventName = 'onRoundEnded';
+            if(properties.isLimitForRound) {
+                this.eventName = 'onShootoutRoundFinished';
+            } else {
+                this.eventName = 'onShootoutPhaseFinished';
+            }
         }
     }
 

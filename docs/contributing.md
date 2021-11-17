@@ -56,13 +56,9 @@ For the server, IDE setup and other development tips see [Development](#Developm
 **Requirements:**
 - [Node.js](https://nodejs.org/en/download/) - 
   * Linux 
-     - Recommended 14.x, working also on 12.x and 10.x
-     - use Python 2.7
+     - Recommended 14.x, working also on 12.x
   * Windows
-     - Recommended 10.x, that is the only version we made it to work so far
-     - use Python 2.7 (if you have more Python version, use `npm config set python <path/to/python27>`
-     - use Visual Studio 2015 build tools: `npm config set msvs_version 2015`
-     - to compile native Node modules, you will also need the build tools: `npm install --global --production windows-build-tools`
+     - Recommended 14.x, working also on 12.x
 - [MongoDB](https://www.mongodb.com/) - used as storage so you'll need that installed and running
 
 **Recommended:**

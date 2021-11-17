@@ -39,6 +39,7 @@ const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+const { TownSquareUUID } = require('./Constants/index.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -278,6 +279,9 @@ class Game extends EventEmitter {
         if(!uuid) {
             return;
         }
+        if(uuid === TownSquareUUID) {
+            return this.townsquare;
+        }        
         for(let player of this.getPlayers()) {
             let foundLocation = player.findLocation(uuid); 
             if(foundLocation) {
@@ -315,18 +319,19 @@ class Game extends EventEmitter {
         return gameLocation ? gameLocation.isOpponentsHome(player) : false;
     }
 
-    getDudesAtLocation(locationUuid) {
+    getDudesAtLocation(locationUuid, condition) {
         let gameLocation = this.findLocation(locationUuid);
         if(!gameLocation) {
             return [];
         }
-        return gameLocation.getDudes();
+        return gameLocation.getDudes(condition);
     }
 
-    getDudesInPlay(player) {
+    getDudesInPlay(player, condition = () => true) {
         return this.filterCardsInPlay(card => 
             card.getType() === 'dude' &&
-            (!player || player === card.controller)
+            (!player || player === card.controller) &&
+            condition(card)
         );
     }
 
@@ -759,15 +764,6 @@ class Game extends EventEmitter {
         }
     }
 
-    togglePromptedActionWindow(playerName, windowName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.promptedActionWindows[windowName] = toggle;
-    }
-
     toggleTimerSetting(playerName, settingName, toggle) {
         var player = this.getPlayerByName(playerName);
         if(!player) {
@@ -775,24 +771,6 @@ class Game extends EventEmitter {
         }
 
         player.timerSettings[settingName] = toggle;
-    }
-
-    toggleKeywordSetting(playerName, settingName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.keywordSettings[settingName] = toggle;
-    }
-
-    toggleDupes(playerName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.promptDupes = toggle;
     }
 
     initialise() {
@@ -881,9 +859,9 @@ class Game extends EventEmitter {
         return this.getCurrentPlayWindowName() === 'shootout plays' || this.getCurrentPlayWindowName() === 'shootout resolution';
     }
 
-    makePlayOutOfOrder(player, card, title) {
+    makePlayOutOfOrder(player, card, properties) {
         if(this.currentPlayWindow) {
-            this.currentPlayWindow.makePlayOutOfOrder(player, card, title);
+            this.currentPlayWindow.makePlayOutOfOrder(player, card, properties);
         }        
     }
 
@@ -988,6 +966,14 @@ class Game extends EventEmitter {
             this.beforeEventHandlers[eventName] = [beforeHandler];
         } else {
             this.beforeEventHandlers[eventName].push(beforeHandler);
+        }
+    }
+
+    removeBefore(eventName, handler) {
+        this.beforeEventHandlers[eventName] = this.beforeEventHandlers[eventName].filter(beforeHandler => 
+            beforeHandler.handler !== handler);
+        if(!this.beforeEventHandlers[eventName].length) {
+            delete this.beforeEventHandlers[eventName];
         }
     }
 
@@ -1125,7 +1111,10 @@ class Game extends EventEmitter {
             (!needUnbooted || !card.booted) &&
             (!context.ability.actionContext || card.allowGameAction(context.ability.actionContext.gameAction, context))
         );
-        if(this.shootout && context.ability.playTypePlayed(context) !== 'shootout:join') {
+        if(this.shootout) {
+            if(context.ability.playTypePlayed(context) === 'shootout:join') {
+                return kfDudes.filter(dude => !dude.isParticipating());
+            }
             return kfDudes.filter(dude => dude.isParticipating());
         }
         return kfDudes;

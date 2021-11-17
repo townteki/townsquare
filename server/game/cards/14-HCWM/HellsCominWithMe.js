@@ -16,7 +16,9 @@ class HellsCominWithMe extends ActionCard {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: context.target })).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, context.target); 
                     if(context.target.hasAttachmentWithKeywords(['sidekick'])) {
-                        this.game.makePlayOutOfOrder(context.player, this, `Make shootout play with a card attached to ${context.target.title}`);
+                        this.game.makePlayOutOfOrder(context.player, this, { 
+                            title: `Make shootout play with a card attached to ${context.target.title}`
+                        });
                     }
                 });                
             }

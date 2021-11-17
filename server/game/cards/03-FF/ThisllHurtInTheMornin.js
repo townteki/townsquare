@@ -9,7 +9,6 @@ class ThisllHurtInTheMornin extends ActionCard {
             target: {
                 activePromptTitle: 'Choose up to 2 cards',
                 cardCondition: { location: 'draw hand', controller: 'opponent' },
-                cardType: ['dude', 'deed', 'goods', 'spell', 'action', 'joker'],
                 numCards: 2
             },
             message: context => 
@@ -18,8 +17,8 @@ class ThisllHurtInTheMornin extends ActionCard {
             handler: context => {
                 context.player.discardCards(context.target, false, (discardedCards) => {
                     const opponent = context.player.getOpponent();
-                    const topCards = opponent.drawDeck.slice(0, discardedCards.length);
-                    topCards.forEach(card => opponent.moveCardWithContext(card, 'draw hand', context));
+                    opponent.drawDeckAction(discardedCards.length, 
+                        card => opponent.moveCardWithContext(card, 'draw hand', context));
                     if(!context.player.isCheatin()) {
                         discardedCards.forEach(card => {
                             this.game.queueSimpleStep(() => {

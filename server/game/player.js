@@ -18,16 +18,19 @@ const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
 const GhostRockSource = require('./GhostRockSource.js');
 
-const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
+const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber, HereticJokerCodes } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+
+/** @typedef {import('./game')} Game */
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
         super(id, user);
 
         // Ensure game is set before any cards have been created.
+        /** @type {Game} */
         this.game = game;
 
         //DTR specific
@@ -45,10 +48,8 @@ class Player extends Spectator {
         this.playCardRestrictions = [];
 
         this.owner = owner;
-        this.promptedActionWindows = user.promptedActionWindows;
-        this.keywordSettings = user.settings.keywordSettings;
-
         this.rankModifier = 0;
+        this.persistentRankModifier = 0;
         this.currentCasualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
@@ -133,7 +134,8 @@ class Player extends Spectator {
                 isCheatin: () => false, 
                 modifyGhostRock: () => true,
                 cardsInPlay: [], 
-                drawDeck: [] 
+                drawDeck: [],
+                hand: []
             };
         }
         return opponents[0];
@@ -149,12 +151,6 @@ class Player extends Spectator {
         });
     }
 
-    isCardNameInList(list, card) {
-        return list.any(c => {
-            return c.name === card.name;
-        });
-    }
-
     areCardsSelected() {
         return this.cardsInPlay.any(card => {
             return card.selected;
@@ -167,10 +163,6 @@ class Player extends Spectator {
 
     addLocation(location) {
         this.locations.push(location);
-    }
-
-    findCardByName(list, name) {
-        return this.findCard(list, card => card.name === name);
     }
 
     findCardByUuidInAnyList(uuid) {
@@ -295,12 +287,13 @@ class Player extends Spectator {
         this.game.raiseEvent('onDrawHandDiscarded', { player: this }, () => {
             if(this.drawHandRevealed) {
                 this.drawHand.forEach(card => {
-                    if(card.getType() === 'joker') {
+                    if(card.getType() === 'joker' && !HereticJokerCodes.includes(card.code)) {
                         this.game.resolveGameAction(GameActions.aceCard({ card: card }));
                     }
                 });
             }
-            let handToDiscard = this.drawHand.filter(card => card.getType() !== 'joker');
+            let handToDiscard = this.drawHand.filter(card => 
+                card.getType() !== 'joker' || HereticJokerCodes.includes(card.code));
             this.discardCards(handToDiscard, discardedCards => {
                 this.game.raiseEvent('onAfterDrawHandDiscarded', { discardedCards: discardedCards });
             });
@@ -336,8 +329,12 @@ class Player extends Spectator {
                 return handText + `${card.getValueText()} of ${card.suit} | `;
             }, '');
         }
-        this.game.addMessage('{0} {1} {2}{3} (Rank {4}){5}', 
-            this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank, handText);
+        let specialJokerText = this.getHandRank().jokerMod > 0 ? '+' : '';
+        if(this.getHandRank().specialJoker) {
+            specialJokerText += `${this.getHandRank().jokerMod} ${this.getHandRank().specialJoker.title}`;
+        }
+        this.game.addMessage('{0} {1} {2}{3} (Rank {4}{5}){6}', this, handResultText, cheatin, 
+            this.getHandRank().rankName, this.getHandRank().rank, specialJokerText, handText);
         this.game.raiseEvent('onHandResultDetermined', { player: this });
     }
 
@@ -390,7 +387,7 @@ class Player extends Spectator {
         }
     }
 
-    discardFromDraw(number, callback = () => true, options = {}) {
+    discardFromDrawDeck(number, callback = () => true, options = {}) {
         number = Math.min(number, this.drawDeck.length);
 
         var cards = this.drawDeck.slice(0, number);
@@ -411,7 +408,8 @@ class Player extends Spectator {
             activePromptTitle: updatedOptions.activePromptTitle || 
                 number > 1 ? 'Select cards to discard' : 'Select a card to discard',
             waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
-            cardCondition: card => card.location === 'hand' && card.controller === this,
+            cardCondition: card => card.location === 'hand' && card.controller === this &&
+                (!options.condition || options.condition(card)),
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
                     return false;
@@ -420,7 +418,8 @@ class Player extends Spectator {
                     callback(discarded);
                 }, updatedOptions, context);
                 return true;
-            }
+            },
+            source: updatedOptions.source
         });
     }
 
@@ -861,16 +860,6 @@ class Player extends Spectator {
         });
     }
 
-    resetForStartOfRound() {
-        this.firstPlayer = false;
-
-        if(this.resetTimerAtEndOfRound) {
-            this.noTimer = false;
-        }
-
-        this.gainedGhostRock = 0;
-    }
-
     inventGadget(gadget, scientist, successHandler = () => true) {
         const getPullProperties = (scientist, bootedToInvent) => {
             return {
@@ -937,7 +926,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(!card.locationCard || card.locationCard.controller !== this) {
+            if(!card.locationCard || card.locationCard.controller !== attachment.controller) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
@@ -974,7 +963,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(playingType !== 'trading') {
+        if(playingType !== 'trading' && playingType !== 'upgrade') {
             attachment.owner.removeCardFromPile(attachment);
         }
 
@@ -1070,7 +1059,8 @@ class Player extends Spectator {
         this.hand.forEach(card => {
             if(!['goods', 'spell', 'action', 'joker'].includes(card.getType())) {
                 this.game.drop(this.name, card.uuid, 'play area', this.outfit.uuid);
-                this.ghostrock -= card.cost;
+                let reducedCost = this.getReducedCost('setup', card, this.createContext());
+                this.ghostrock -= reducedCost;
             }
         });
 
@@ -1096,9 +1086,9 @@ class Player extends Spectator {
         return production;
     }
 
-    determineUpkeep() {
+    determineUpkeep(selectedCards = []) {
         let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
-            card.upkeep > 0);
+            card.upkeep > 0 && !selectedCards.includes(card));
         let upkeep = upkeepCards.reduce((memo, card) => {
             return memo + card.upkeep;
         }, 0);
@@ -1123,6 +1113,9 @@ class Player extends Spectator {
         this.sundownDiscardDone = false;
         this.passTurn = false;
         this.cardsInPlay.forEach(card => card.resetForRound());
+        if(this.resetTimerAtEndOfRound) {
+            this.noTimer = false;
+        }
     }
 
     getHandRank() {
@@ -1130,7 +1123,7 @@ class Player extends Spectator {
     }
 
     getTotalRank() {
-        let totalRank = this.getHandRank().rank + this.rankModifier;
+        let totalRank = this.getHandRank().rank + this.getHandRank().jokerMod + this.rankModifier;
         if(totalRank < 1) {
             return 1;
         }
@@ -1140,19 +1133,24 @@ class Player extends Spectator {
         return totalRank;
     }
 
-    addHandRankMessage(showHand = true) {
-        if(showHand) {
-            let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
-            this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
+    modifyRank(amount, context, applying = true, fromEffect = false) {
+        if(applying && this.cannotModifyHandRanks(context)) {
+            if(!fromEffect) {
+                let modifyText = '{0}\'s rank could not be modified';
+                if(context) {
+                    modifyText += ' by {1}';
+                }
+                this.game.addMessage(modifyText, this, context.source);
+            }
+            return false;
         }
-        this.game.addMessage('{0}\'s Total rank: {1} (modifier {2})', this, this.getTotalRank(), this.rankModifier);
-    }
 
-    modifyRank(amount, context, applying = true) {
-        if(!this.cannotModifyHandRanks(context) || !applying) {
-            this.rankModifier += amount;
-            this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+        this.rankModifier += amount;
+        if(fromEffect) {
+            this.persistentRankModifier += amount;
         }
+        this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+        return true;
     }
 
     modifyPosseBonus(amount, type = 'stud') {
@@ -1231,7 +1229,7 @@ class Player extends Spectator {
         }
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
-            const gl = this.findLocation(key);
+            const gl = key === TownSquareUUID ? this.game.townsquare : this.findLocation(key);
             if(gl.adjacencyMap.has(gameLocation.uuid)) {
                 gl.adjacencyMap.delete(gameLocation.uuid);
             }
@@ -1352,11 +1350,13 @@ class Player extends Spectator {
         if(!card) {
             return;
         }
-        if(card.getType() === 'joker') {
-            this.aceCard(card);
-        } else {
-            this.moveCard(card, 'discard pile', { isPull: true });
-        }
+        this.game.raiseEvent('onPulledCardHandled', { player: this, card }, event => {
+            if(event.card.getType() === 'joker' && !HereticJokerCodes.includes(event.card.code)) {
+                event.player.aceCard(event.card);
+            } else {
+                event.player.moveCard(event.card, 'discard pile', { isPull: true });
+            }
+        });
     }
 
     handleTaoTechniques(technique, kfDude, isSuccessful) {
@@ -1365,11 +1365,9 @@ class Player extends Spectator {
                 technique.owner.moveCard(technique, technique.actionPlacementLocation);
             }
         };
-        this.attach(technique, kfDude, 'technique', () => {
-            if(!isSuccessful) {
-                this.bootCard(technique);
-            }
-        });
+        if(isSuccessful) {
+            this.attach(technique, kfDude, 'technique');
+        }
         if(this.game.shootout) {
             this.game.once('onPlayWindowClosed', eventHandler);
             this.game.once('onShootoutPhaseFinished', () => {
@@ -1416,6 +1414,7 @@ class Player extends Spectator {
             failHandler: properties.failHandler || (() => true),
             pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
+            difficulty: properties.difficulty,
             source: properties.source,
             player: this,
             chatCommandDiff: properties.chatCommandDiff,
@@ -1477,7 +1476,8 @@ class Player extends Spectator {
         }, event => {
             const props = Object.assign(properties, {
                 successCondition: pulledValue => pulledValue >= event.difficulty,
-                pullBonus: event.skillRating
+                pullBonus: event.skillRating,
+                difficulty
             });
             this.handlePull(props, context);
         });
@@ -1486,7 +1486,8 @@ class Player extends Spectator {
     pullForKungFu(difficulty, properties, context) {
         const props = Object.assign(properties, {
             successCondition: pulledValue => pulledValue < difficulty,
-            pullBonus: 0
+            pullBonus: 0,
+            difficulty
         });
         this.handlePull(props, context);
     }
@@ -1575,14 +1576,13 @@ class Player extends Spectator {
     }
 
     findLocation(locationUuid) {
-        if(locationUuid === TownSquareUUID) {
-            return this.game.townsquare;
-        }
         return this.locations.find(location => location.uuid === locationUuid);
     }
 
-    getDudesInLocation(locationUuid) {
-        return this.cardsInPlay.filter(card => card.getType() === 'dude' && card.gamelocation === locationUuid);
+    getDudesAtLocation(locationUuid, condition) {
+        return this.cardsInPlay.filter(card => card.getType() === 'dude' && 
+            card.gamelocation === locationUuid &&
+            condition(card));
     }
 
     createContext(context) {
@@ -1643,7 +1643,7 @@ class Player extends Spectator {
             moveMessage = '{0} boots {1} to move them to {2}';
         }
 
-        dude.moveToLocation(destination.uuid);
+        dude.moveToLocation(destination.uuid, options);
         if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
         }
@@ -1653,8 +1653,11 @@ class Player extends Spectator {
         }
     }
 
-    moveCardWithContext(card, targetLocation, context) {
+    moveCardWithContext(card, targetLocation, context, showMessage = false) {
         if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
+            if(showMessage) {
+                this.game.addMessage('{0} cannot put {1} into their hand because cards cannot leave discard pile', this, card);
+            }
             return false;
         }        
         this.moveCard(card, targetLocation, {}, null);
@@ -1688,7 +1691,8 @@ class Player extends Spectator {
         var params = {
             player: this,
             card: card,
-            targetLocation
+            targetLocation,
+            originalGameLocation: card.gamelocation
         };
 
         if(card.location === 'play area') {
@@ -1935,9 +1939,7 @@ class Player extends Spectator {
             numDrawCards: this.drawDeck.length,
             name: this.name,
             phase: this.game.currentPhase,
-            promptedActionWindows: this.promptedActionWindows,
             stats: this.getStats(isActivePlayer),
-            keywordSettings: this.keywordSettings,
             timerSettings: this.timerSettings,
             totalControl: this.getTotalControl(),
             totalInfluence: this.getTotalInfluence(),

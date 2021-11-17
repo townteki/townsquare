@@ -8,6 +8,10 @@ class JaelsGuile extends GoodsCard {
             playType: ['cheatin resolution'],
             cost: ability.costs.bootSelf(),
             handler: context => {
+                if(!this.game.shootout) {
+                    this.game.addMessage('{0} uses {1} but it does not have any effect because this is not shootout',
+                        context.player, this);
+                }
                 const jaelsGuileFunc = (player, context) => {
                     this.game.queueSimpleStep(() => { 
                         this.useJaelsGuile(player.getOpponent(), context, 'first');
