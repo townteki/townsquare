@@ -5,6 +5,7 @@ describe('All Cards', function() {
         this.gameSpy = jasmine.createSpyObj('game', ['on', 'removeListener', 'addPower', 'addMessage', 'addEffect', 'onceConditional', 'once', 'getPlayers', 'isLegacy']);
         this.playerSpy = jasmine.createSpyObj('player', ['registerAbilityMax']);
         this.playerSpy.game = this.gameSpy;
+        this.gameSpy.getPlayers.and.returnValue([]);
         this.hasAncestor = (cardClass, ancestorClassName) => {
             let prot = Object.getPrototypeOf(cardClass);
             while(prot && prot.name !== cardClass.name && prot.name !== ancestorClassName) {
