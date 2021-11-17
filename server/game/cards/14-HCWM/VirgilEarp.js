@@ -104,9 +104,10 @@ class VirgilEarp extends DudeCard {
     virgilBountyHandler() {
         const opponent = this.abilityContext.player.getOpponent();
         const rankChange = this.currentBounties - this.maxBountyToChoose;
-        opponent.modifyRank(rankChange);
-        this.game.addMessage('{0} uses {1} and chooses bounties on {2} to lower {3}\'s rank by {4}; Current rank is {5}', 
-            this.abilityContext.player, this, this.chosenBounty.map(bounty => bounty.dude), opponent, -1 * rankChange, opponent.getTotalRank());
+        if(opponent.modifyRank(rankChange, this.abilityContext)) {
+            this.game.addMessage('{0} uses {1} and chooses bounties on {2} to lower {3}\'s rank by {4}; Current rank is {5}', 
+                this.abilityContext.player, this, this.chosenBounty.map(bounty => bounty.dude), opponent, -1 * rankChange, opponent.getTotalRank());
+        }
         this.game.promptForYesNo(opponent, {
             title: 'Do you want to remove chosen bounty?',
             onYes: player => {
