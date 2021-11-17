@@ -11,7 +11,7 @@ class PearlysPalace extends DeedCard {
             message: context =>
                 this.game.addMessage('{0} uses {1} to make a shootout play before any other player', context.player, this),
             handler: (context) => {
-                context.event.playWindow.makePlayOutOfOrder(context.player, this, 'Make shootout play');
+                context.event.playWindow.makePlayOutOfOrder(context.player, this, { title: 'Make shootout play' });
             }
         });
     }

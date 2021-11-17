@@ -42,7 +42,7 @@ class ShadowWalk2 extends SpellCard {
                     onYes: player => {
                         this.game.resolveGameAction(GameActions.discardCard({ card: this })).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} and discards it to make another play', player, this); 
-                            this.game.makePlayOutOfOrder(player, this, 'Make shootout play');
+                            this.game.makePlayOutOfOrder(player, this, { title: 'Make shootout play' });
                         });
                     },
                     source: this

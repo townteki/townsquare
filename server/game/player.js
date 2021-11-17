@@ -1059,7 +1059,8 @@ class Player extends Spectator {
         this.hand.forEach(card => {
             if(!['goods', 'spell', 'action', 'joker'].includes(card.getType())) {
                 this.game.drop(this.name, card.uuid, 'play area', this.outfit.uuid);
-                this.ghostrock -= card.cost;
+                let reducedCost = this.getReducedCost('setup', card, this.createContext());
+                this.ghostrock -= reducedCost;
             }
         });
 
@@ -1690,7 +1691,8 @@ class Player extends Spectator {
         var params = {
             player: this,
             card: card,
-            targetLocation
+            targetLocation,
+            originalGameLocation: card.gamelocation
         };
 
         if(card.location === 'play area') {

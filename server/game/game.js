@@ -859,9 +859,9 @@ class Game extends EventEmitter {
         return this.getCurrentPlayWindowName() === 'shootout plays' || this.getCurrentPlayWindowName() === 'shootout resolution';
     }
 
-    makePlayOutOfOrder(player, card, title) {
+    makePlayOutOfOrder(player, card, properties) {
         if(this.currentPlayWindow) {
-            this.currentPlayWindow.makePlayOutOfOrder(player, card, title);
+            this.currentPlayWindow.makePlayOutOfOrder(player, card, properties);
         }        
     }
 
