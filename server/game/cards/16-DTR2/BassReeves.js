@@ -16,9 +16,10 @@ class BassReeves extends DudeCard {
                 onDrawHandsRevealed: event => event.shootout && this.isParticipating() && this.controller.getOpponent().isCheatin()
             },
             handler: context => {
-                context.player.modifyRank(1, context);
-                this.game.addMessage('{0}\'s rank is increased by 1 thanks to the {2}; Current rank is {3}', 
-                    context.player, this, context.player.getTotalRank());
+                if(context.player.modifyRank(1, context)) {
+                    this.game.addMessage('{0}\'s rank is increased by 1 thanks to the {2}; Current rank is {3}', 
+                        context.player, this, context.player.getTotalRank());
+                }
             }
         });
 

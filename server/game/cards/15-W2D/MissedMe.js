@@ -18,9 +18,10 @@ class MissedMe extends SpellCard {
                 const totalDudesAndSK = oppPosse.getDudes().reduce((total, dude) => 
                     total + dude.getAttachmentsByKeywords(['sidekick']).length + 1, 0);
                 const rankMod = totalDudesAndSK > 4 ? -4 : -totalDudesAndSK;
-                opponent.modifyRank(rankMod);
-                this.game.addMessage('{0} uses {1} to decrease {2}\'s rank by {3}; Current rank is {4}', 
-                    context.player, this, opponent, rankMod, opponent.getTotalRank());
+                if(opponent.modifyRank(rankMod, context)) {
+                    this.game.addMessage('{0} uses {1} to decrease {2}\'s rank by {3}; Current rank is {4}', 
+                        context.player, this, opponent, rankMod, opponent.getTotalRank());
+                }
             },
             source: this
         });
