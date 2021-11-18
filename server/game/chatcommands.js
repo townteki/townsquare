@@ -95,7 +95,7 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area',
             cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
-                this.handleAction(p, card, 'modify bullets (' + modifier + ')', () => {
+                this.handleAction(p, card, 'modify bullets (' + modifier.text + ')', () => {
                     let bullets = modifier.mod;
                     if(modifier.set !== undefined && modifier.set !== null) {
                         bullets = modifier.set - card.bullets;
@@ -116,7 +116,7 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area',
             cardType: ['dude'],
             onSelect: (p, card) => {
-                this.handleAction(p, card, 'modify bounty (' + modifier + ')', () => {
+                this.handleAction(p, card, 'modify bounty (' + modifier.text + ')', () => {
                     let change = modifier.mod;
                     if(modifier.set !== undefined && modifier.set !== null) {
                         change = modifier.set - card.bounty;
@@ -143,7 +143,7 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area',
             cardType: ['dude', 'goods'],
             onSelect: (p, card) => {
-                this.handleAction(p, card, 'modify influence (' + modifier + ')', () => {
+                this.handleAction(p, card, 'modify influence (' + modifier.text + ')', () => {
                     // TODO M2 so far we only use standard influence, no influence:deed
                     let influence = modifier.mod;
                     if(modifier.set !== undefined && modifier.set !== null) {
@@ -165,7 +165,7 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area',
             cardType: ['dude', 'deed', 'goods', 'spell', 'outfit'],
             onSelect: (p, card) => {
-                this.handleAction(p, card, 'modify control points (' + modifier + ')', () => {
+                this.handleAction(p, card, 'modify control points (' + modifier.text + ')', () => {
                     let control = modifier.mod;
                     if(modifier.set !== undefined && modifier.set !== null) {
                         control = modifier.set - card.control;
@@ -249,7 +249,7 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area',
             cardType: ['dude', 'goods', 'deed', 'outfit'],
             onSelect: (p, card) => {
-                this.handleAction(p, card, 'modify production (' + modifier + ')', () => {
+                this.handleAction(p, card, 'modify production (' + modifier.text + ')', () => {
                     let prod = modifier.mod;
                     if(modifier.set !== undefined && modifier.set !== null) {
                         prod = modifier.set - card.production;
@@ -292,7 +292,7 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area',
             cardType: ['dude'],
             onSelect: (p, card) => {
-                this.handleAction(p, card, `modify ${skillName} rating (${modifier})`, () => {
+                this.handleAction(p, card, `modify ${skillName} rating (${modifier.text})`, () => {
                     const currentRating = card.keywords.getSkillRating(skillName);
                     if(currentRating === null || currentRating === undefined) {
                         this.game.addAlert('danger', '{0} uses the /skill-rating or /kung-fu, but {1} is missing {2}. First add it using /add-keyword', 
@@ -709,7 +709,7 @@ class ChatCommands {
             cardCondition: card => card.location === 'play area',
             cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
             onSelect: (p, card) => {
-                this.handleAction(p, card, 'modify value (' + modifier + ')', () => {
+                this.handleAction(p, card, 'modify value (' + modifier.text + ')', () => {
                     let value = modifier.mod;
                     if(modifier.set !== undefined && modifier.set !== null) {
                         value = modifier.set - card.value;
@@ -908,7 +908,7 @@ class ChatCommands {
         } else {
             this.game.promptForYesNo(card.controller, {
                 promptTitle: 'Chat Command',
-                title: `${player.name} wants to ${action} ${card.title}, do you allow them to continue?`,
+                title: `${player.name} wants to ${action} for ${card.title}, do you allow them to continue?`,
                 onYes: () => {
                     handler();
                 },
@@ -953,19 +953,19 @@ class ChatCommands {
     determineModifier(arg) {
         if(typeof(arg) === 'string') {
             if(arg === '+') {
-                return { mod: 1 };
+                return { mod: 1, text: '+1' };
             }
             if(arg === '-') {
-                return { mod: -1 };
+                return { mod: -1, text: '-1' };
             }
             if(arg.startsWith('+')) {
-                return { mod: this.getNumberOrDefault(arg, 1) };
+                return { mod: this.getNumberOrDefault(arg, 1), text: arg };
             }
             if(arg.startsWith('-')) {
-                return { mod: this.getNumberOrDefault(arg, -1, true) };
+                return { mod: this.getNumberOrDefault(arg, -1, true), text: arg };
             }            
         }
-        return { set: this.getNumberOrDefault(arg, 1, true) };
+        return { set: this.getNumberOrDefault(arg, 1, true), text: arg };
     }
 }
 
