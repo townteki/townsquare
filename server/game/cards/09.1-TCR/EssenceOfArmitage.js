@@ -17,7 +17,7 @@ class EssenceOfArmitage extends GoodsCard {
             title: 'React: Essence of Armitage',
             when: {
                 onDudeSentHome: event => this.isParticipating() && 
-                    event.card.controller !== this.controller && event.params.isFleeing
+                    event.card.controller !== this.controller && event.params.options.isFleeing
             },
             cost: ability.costs.bootSelf(),
             message: context => 
