@@ -101,12 +101,6 @@ class ChatCommands {
                         bullets = modifier.set - card.bullets;
                     }
                     card.bullets += bullets;
-/*                     this.game.onceConditional('onPhaseEnded', { condition: event => event.phase === 'sundown'}, () => {
-                        card.bullets -= bullets;
-                    }); */
-                    this.game.once('onRoundEnded', () => {
-                        card.bullets -= bullets;
-                    });
                     this.game.addAlert('danger', '{0} uses the /bullets command to set the bullets of {1} to {2}', p, card, card.bullets);
                 });
                 return true;
