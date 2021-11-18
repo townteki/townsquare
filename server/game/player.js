@@ -1868,7 +1868,7 @@ class Player extends Spectator {
     }
 
     isTimerEnabled() {
-        return !this.noTimer && this.user.settings.windowTimer !== 0;
+        return !this.noTimer && this.timerSettings.windowTimer !== 0;
     }
 
     cannotModifyHandRanks(context = {}) {

@@ -15,6 +15,10 @@ class Spectator {
     isSpectator() {
         return true;
     }
+
+    isAutomaton() {
+        return false;
+    }    
 }
 
 module.exports = Spectator;
