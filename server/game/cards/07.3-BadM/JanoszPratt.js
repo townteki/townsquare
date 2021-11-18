@@ -29,7 +29,7 @@ class JanoszPratt extends DudeCard {
                 }));
 
                 this.game.once('onRoundEnded', () => {
-                    if(context.target.locaiton === 'play area') {
+                    if(context.target.location === 'play area') {
                         this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context).thenExecute(() => {
                             this.game.addMessage('{0} discards {1} at the end of a turn because it was invented by {2}', 
                                 context.player, context.target, this);
@@ -52,9 +52,7 @@ class JanoszPratt extends DudeCard {
                             scientist: this,
                             targetParent: dude,
                             reduceAmount: 2
-                        }, () => {
-                            this.game.addMessage('{0} invents {1} without booting thanks to {2}', player, dude, this);
-                        }), player, dude);                        
+                        }), player, context.target);                        
                         return true;
                     },
                     source: this,
