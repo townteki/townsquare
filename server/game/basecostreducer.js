@@ -34,7 +34,13 @@ class BaseCostReducer {
     markUsed() {
     }
 
+    markUnused() {
+    }
+
     isExpired() {
+    }
+
+    registerEvents() {
     }
 
     unregisterEvents() {

@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 
 class MonomiMiles extends DudeCard {
     setupCardAbilities(ability) {
@@ -32,12 +33,22 @@ class MonomiMiles extends DudeCard {
                         context.player, this);
                 }
             },
-            message: context => 
-                this.game.addMessage('{0} uses {1} to increase casualties of both posses by {2}', 
-                    context.player, this, this.getKungFuRating()),
             handler: context => {
-                context.player.modifyCasualties(this.getKungFuRating());
-                context.player.getOpponent().modifyCasualties(this.getKungFuRating());
+                const kfRating = this.getKungFuRating();
+                this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                    player: context.player, 
+                    amount: kfRating
+                }), context).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to increase casualties of their posse by {2}', 
+                        context.player, this, kfRating);
+                });
+                this.game.resolveGameAction(GameActions.increaseCasualties({ 
+                    player: context.player.getOpponent(), 
+                    amount: kfRating
+                }), context).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to increase casualties of {2}\'s posse by {3}', 
+                        context.player, this, context.player.getOpponent(), kfRating);
+                });                           
             }
         });
     }

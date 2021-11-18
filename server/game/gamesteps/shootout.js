@@ -10,11 +10,12 @@ const ShootoutPosse = require('./shootout/shootoutposse.js');
 const GameActions = require('../GameActions/index.js');
 const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 const PlayWindow = require('./playwindow.js');
+const PhaseNames = require('../Constants/PhaseNames.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
     constructor(game, phase, leader, mark, options = { isJob: false }) {
-        super(game, 'Shootout');
+        super(game, PhaseNames.Shootout);
         this.round = 0;
         this.highNoonPhase = phase;
         this.options = options;
@@ -35,6 +36,7 @@ class Shootout extends Phase {
         this.jobUnopposed = false;
         this.winningPlayer = null;
         this.headlineUsed = false;
+        this.cancelled = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
         this.abilityRestrictions = [];									  
@@ -53,6 +55,9 @@ class Shootout extends Phase {
     }
 
     initialiseOpposingPosse() {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.isJob()) {
             this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));
         } else {
@@ -60,24 +65,37 @@ class Shootout extends Phase {
             if(this.game.getNumberOfPlayers() < 2) {
                 this.endShootout();
             } else {
-                this.opposingPlayerName = opponent.name;
-                this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
-                    title: 'Do you want to oppose?',
-                    onYes: () => {
-                        this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
-                        this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
-                    },
-                    onNo: () => {
-                        this.jobUnopposed = true;
-                        this.endShootout();
-                    }
-                }));
+                if(this.game.getDudesInPlay(opponent, card => card.requirementsToJoinPosse().canJoin).length) {
+                    this.opposingPlayerName = opponent.name;
+                    this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
+                        title: 'Do you want to oppose?',
+                        onYes: () => {
+                            this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
+                            this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
+                        },
+                        onNo: () => {
+                            this.game.addAlert('info', '{0} decides to not oppose job {1}', 
+                                opponent, this.options.jobAbility.card);
+                            this.jobUnopposed = true;
+                            this.endShootout();
+                        },
+                        source: this.options.jobAbility.card
+                    }));
+                } else {
+                    this.game.addAlert('info', '{0} does not have any available dudes to oppose job {2}', 
+                        opponent, this.options.jobAbility.card);
+                    this.jobUnopposed = true;
+                    this.endShootout();
+                }
             }
         }
         this.leaderOpponentOrder = [this.leader.controller.name, this.opposingPlayerName];
     }
 
     raisePossesFormedEvent() {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.jobUnopposed) {
             this.game.raiseEvent('onPossesFormed', { shootout: this });
         }
@@ -118,10 +136,10 @@ class Shootout extends Phase {
     }
 
     resetModifiers() {
-        this.leaderPlayer.rankModifier = 0;
+        this.leaderPlayer.rankModifier = this.leaderPlayer.persistentRankModifier;
         this.leaderPlayer.casualties = 0;
         if(this.opposingPlayer) {
-            this.opposingPlayer.rankModifier = 0;
+            this.opposingPlayer.rankModifier = this.opposingPlayer.persistentRankModifier;
             this.opposingPlayer.casualties = 0;
         }
     }
@@ -181,17 +199,33 @@ class Shootout extends Phase {
         }
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
+        this.leader.shootoutStatus = ShootoutStatuses.None;
         this.resetModifiers();
-        this.game.endShootout(isCancel);
         if(this.isJob()) {
+            if(this.cancelled) {
+                this.options.jobAbility.unpayCosts(this.options.jobAbility.context);
+            } else {
+                this.game.raiseEvent('onDudesReturnAfterJob', { job: this }, event => {
+                    event.job.actOnLeaderPosse(card => {
+                        if(!card.doesNotReturnAfterJob()) {
+                            event.job.sendHome(card, { isCardEffect: false, isAfterJob: true });
+                        }
+                    });
+                });
+            }
             this.options.jobAbility.setResult(this.jobSuccessful, this);
             this.options.jobAbility.reset();
         }
+        this.game.endShootout(isCancel);
         let phaseName = this.isJob() ? 'Job' : 'Shootout';
-        this.game.addAlert('phasestart', phaseName + ' ended!');        
+        let whatHappened = this.cancelled ? ' cancelled!' : ' ended!';
+        this.game.addAlert('phasestart', phaseName + whatHappened);        
     }
 
     endShootout(recordStatus = true) {
+        if(this.cancelled) {
+            return;
+        }
         if(!this.isJob()) {
             if((!this.opposingPosse || this.opposingPosse.isEmpty()) &&
                 this.leaderPosse && !this.leaderPosse.isEmpty()) {
@@ -206,13 +240,6 @@ class Shootout extends Phase {
         if(recordStatus) {
             this.recordJobStatus();
         }
-        this.game.raiseEvent('onDudesReturnAfterJob', { job: this }, event => {
-            event.job.actOnLeaderPosse(card => {
-                if(!card.doesNotReturnAfterJob()) {
-                    event.job.sendHome(card, { isCardEffect: false, isAfterJob: true });
-                }
-            });
-        });
     }
 
     queueStep(step) {
@@ -250,6 +277,11 @@ class Shootout extends Phase {
         return this.isInLeaderPosse(card) || this.isInOpposingPosse(card);
     }
 
+    getPosseSize(player) {
+        const posse = this.getPosseByPlayer(player);
+        return posse ? posse.posse.length : 0;
+    }
+
     belongsToLeaderPlayer(dude) {
         return dude.controller.name === this.leaderPlayerName;
     }
@@ -259,7 +291,11 @@ class Shootout extends Phase {
     }
 
     checkEndCondition() {
-        return !this.leaderPosse || !this.opposingPosse || this.leaderPosse.isEmpty() || this.opposingPosse.isEmpty();
+        return this.cancelled || 
+            !this.leaderPosse || 
+            !this.opposingPosse || 
+            this.leaderPosse.isEmpty() || 
+            this.opposingPosse.isEmpty();
     }
 
     getLeaderDrawCount() {
@@ -278,9 +314,9 @@ class Shootout extends Phase {
         };
     }
 
-    sendHome(card, context, options = {}) {
+    sendHome(card, context, options = {}, callback = () => true) {
         let updatedOptions = Object.assign(options, { fromPosse: true });
-        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: updatedOptions }), context);
+        return this.game.resolveGameAction(GameActions.sendHome({ card: card, options: updatedOptions }), context).thenExecute(() => callback());
     }
 
     addToPosse(dude) {
@@ -359,19 +395,28 @@ class Shootout extends Phase {
         this.actOnOpposingPosse(action);
     }
 
+    isBreakinAndEnterin(dude, locationCard) {
+        if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
+            return false;
+        }
+        const shootoutLocCard = locationCard || this.shootoutLocation.locationCard;
+        if(shootoutLocCard && (shootoutLocCard.getType() === 'outfit' || shootoutLocCard.hasKeyword('private'))) {
+            return !dude.options.contains('doesNotGetBountyOnJoin') && shootoutLocCard.owner !== dude.controller;
+        }
+        return false;
+    }
+
     breakinAndEnterin() {
         if(this.checkEndCondition() || this.shootoutLocation.isTownSquare()) {
             return;
         }
-        let locationCard = this.shootoutLocation.locationCard;
-        if(locationCard && (locationCard.getType() === 'outfit' || locationCard.hasKeyword('private'))) {
-            if(locationCard.owner !== this.leaderPlayer) {
-                this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
-            } else {
-                this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => dude.options.contains('doesNotGetBountyOnJoin'));
-            }
+        const locationCard = this.shootoutLocation.locationCard;
+        if(locationCard.owner !== this.leaderPlayer) {
+            this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
+        } else {
+            this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
         }
-    }
+    } 
 
     draw() {
         this.queueStep(new DrawHandPrompt(this.game, [this.getLeaderDrawCount(), this.getOpposingDrawCount()]));

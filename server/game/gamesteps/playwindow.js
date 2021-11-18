@@ -1,4 +1,5 @@
 const ContinuousPlayerOrderPrompt = require('./continuousplayerorderprompt.js');
+const MenuPrompt = require('./menuprompt.js');
 
 class PlayWindow extends ContinuousPlayerOrderPrompt {
     constructor(game, name, activePromptTitle, playerNameOrder = []) {
@@ -6,6 +7,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         this.name = name;
         this.playWindowOpened = false;
         this.orderPassed = true;
+        this.doNotMarkActionAsTaken = false;
         this.onDone = (player) => {
             if(player !== this.currentPlayer) {
                 return false;
@@ -103,6 +105,40 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         this.game.addMessage('{0} passes {1} action', player, this.name);
         super.completePlayer();
     }
+
+    makePlayOutOfOrder(player, card, properties = {}) {
+        this.doNotMarkActionAsTaken = true;
+        const buttons = properties.buttons || [];
+        if(!properties.noCancelButton) {
+            buttons.push({ text: 'Cancel', method: 'onMakePlayDone' });
+        }
+        this.outOfOrderMenuPrompt = new MenuPrompt(this.game, player, this, {
+            activePrompt: {
+                menuTitle: properties.title || 'Make a play',
+                buttons,
+                promptTitle: card.title
+            },
+            source: card
+        });
+        this.game.queueStep(this.outOfOrderMenuPrompt);
+    }
+
+    onPassOutOfOrder(player) {
+        if(player !== this.currentPlayer) {
+            this.nextPlayer();
+        }
+        this.onPass(player);
+        return true;
+    }
+
+    onMakePlayDone() {
+        if(this.outOfOrderMenuPrompt) {
+            this.outOfOrderMenuPrompt.complete();
+        }
+        this.doNotMarkActionAsTaken = false;
+        this.outOfOrderMenuPrompt = null;
+        return true;
+    }    
 }
 
 module.exports = PlayWindow;

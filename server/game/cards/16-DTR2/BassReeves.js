@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
@@ -6,7 +7,7 @@ class BassReeves extends DudeCard {
         this.persistentEffect({
             location: 'any',
             targetController: 'current',
-            condition: () => this.controller.outfit.gang_code === 'lawdogs', 
+            condition: () => this.controller.getFaction() === Factions.LawDogs, 
             effect: ability.effects.reduceSelfCost('any', () => this.getNumOfWantedDudes())
         });
 
@@ -15,9 +16,10 @@ class BassReeves extends DudeCard {
                 onDrawHandsRevealed: event => event.shootout && this.isParticipating() && this.controller.getOpponent().isCheatin()
             },
             handler: context => {
-                context.player.modifyRank(1, context);
-                this.game.addMessage('{0}\'s rank is increased by 1 thanks to the {2}; Current rank is {3}', 
-                    context.player, this, context.player.getTotalRank());
+                if(context.player.modifyRank(1, context)) {
+                    this.game.addMessage('{0}\'s rank is increased by 1 thanks to the {2}; Current rank is {3}', 
+                        context.player, this, context.player.getTotalRank());
+                }
             }
         });
 
@@ -37,7 +39,7 @@ class BassReeves extends DudeCard {
             },
             ifCondition: () => !this.booted,
             ifFailMessage: context => 
-                this.game.addMessage('{0} uses {1} but it does not have any effect because he is booted',
+                this.game.addMessage('{0} uses {1} but it does not have any effect because {1} is booted',
                     context.player, this),
             handler: context => {
                 this.abilityContext = context;

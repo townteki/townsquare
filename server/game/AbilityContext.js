@@ -1,10 +1,19 @@
 const ResolvedTargets = require('./gamesteps/ResolvedTargets.js');
 
+/** @typedef {import('./baseability')} BaseAbility */
+/** @typedef {import('./basecard')} BaseCard */
+/** @typedef {import('./game')} Game */
+/** @typedef {import('./player')} Player */
+
 class AbilityContext {
     constructor(properties) {
+        /** @type {BaseAbility} */
         this.ability = properties.ability;
+        /** @type {Game} */
         this.game = properties.game;
+        /** @type {BaseCard} */
         this.source = properties.source;
+        /** @type {Player} */
         this.player = properties.player;
         this.costs = {};
         this.costValues = {};
@@ -26,6 +35,18 @@ class AbilityContext {
 
     getCostValuesFor(name) {
         return this.costValues[name] || [];
+    }
+
+    saveCostCardsInfo(cards) {
+        this.costs.savedCardsInfo = [];
+        cards.forEach(card => {
+            const cardInfo = {
+                card,
+                booted: card.booted,
+                parent: card.parent
+            };
+            this.costs.savedCardsInfo.push(cardInfo);
+        });        
     }
 }
 

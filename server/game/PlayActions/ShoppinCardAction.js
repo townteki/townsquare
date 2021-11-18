@@ -1,11 +1,13 @@
+const PhaseNames = require('../Constants/PhaseNames');
 const PutIntoPlayCardAction = require('./PutIntoPlayCardAction');
 
 class ShoppinCardAction extends PutIntoPlayCardAction {
-    constructor(target = '') {
+    constructor(targetLocationUuid = '', targetProperties) {
         super({ 
             playType: 'shoppin', 
             abilitySourceType: 'game', 
-            target: target 
+            targetLocationUuid,
+            targetProperties
         });
         this.title = 'Play';
     }
@@ -18,7 +20,7 @@ class ShoppinCardAction extends PutIntoPlayCardAction {
         if(!super.meetsRequirements(context)) {
             return false;
         }
-        return context.game.currentPhase === 'high noon';
+        return context.game.currentPhase === PhaseNames.HighNoon;
     }
 }
 

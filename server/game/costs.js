@@ -6,7 +6,6 @@ const SelfCost = require('./costs/SelfCost.js');
 const UnbootCost = require('./costs/UnbootCost.js');
 const MoveTokenFromSelfCost = require('./costs/MoveTokenFromSelfCost.js');
 const DiscardFromDeckCost = require('./costs/DiscardFromDeckCost');
-const {Tokens} = require('./Constants');
 
 const Costs = {
     /**
@@ -38,7 +37,7 @@ const Costs = {
      * Cost that requires booting a card that matches the passed condition
      * predicate function.
      */
-    boot: condition => CostBuilders.boot.select(condition),
+    boot: (condition, gameAction) => CostBuilders.boot.select(condition, null, gameAction),
     /**
      * Cost that requires booting a certain number of cards that match the
      * passed condition predicate function.
@@ -134,6 +133,7 @@ const Costs = {
      */
     expendAction: function() {
         return {
+            name: 'expendAction',
             canPay: function(context) {
                 return context.player.isCardInPlayableLocation(context.source, context.comboNumber ? 'combo' : 'play') && 
                     context.player.canPlay(context.source, 'play');
@@ -144,6 +144,10 @@ const Costs = {
                 // of their effects.
                 context.originalLocation = context.source.location;
                 context.source.controller.moveCard(context.source, 'being played');
+            },
+            unpay: function(context) {
+                context.source.controller.moveCard(context.source, context.originalLocation, { raiseEvents: false });
+                context.source.resetAbilities();
             }
         };
     },
@@ -182,20 +186,28 @@ const Costs = {
      */
     discardFromPlay: condition => CostBuilders.discardFromPlay.select(condition),
     /**
+     * Cost that will discard the card that initiated the ability.
+     */
+    discardSelf: () => CostBuilders.discardFromPlay.self(),
+    /**
+     * Cost that requires raising bounty on a card that matches the passed condition
+     * predicate function.
+     */
+    raiseBounty: (condition, gameAction) => CostBuilders.raiseBounty.select(condition, 'dude', gameAction),
+    /**
+     * Cost that will raise bounty on the card that initiated the ability.
+     */
+    raiseBountySelf: () => CostBuilders.raiseBounty.self(),
+    /**
      * Cost that will pay the reduceable gold cost associated with an event card
      * and place it in discard.
      */
     playAction: function() {
         return [
-            Costs.payReduceableGRCost('play'),
+            Costs.payReduceableGRCost('play', true),
             Costs.expendAction()
         ];
     },
-    /**
-     * Cost that will discard a gold from the card. Used mainly by cards
-     * having the bestow keyword.
-     */
-    discardGold: amount => CostBuilders.discardToken('gold', amount).self(),
     /**
      * Cost that will discard a fixed amount of a passed type token from the current card.
      */
@@ -206,53 +218,76 @@ const Costs = {
      */
     moveTokenFromSelf: (type, amount, condition) => new MoveTokenFromSelfCost(type, amount, condition),
     /**
-     * Cost that will pay the exact printed gold cost for the card.
-     */
-    payPrintedGoldCost: function() {
-        return {
-            canPay: function(context) {
-                return context.player.ghostrock >= context.source.getCost();
-            },
-            pay: function(context) {
-                context.game.spendGold({ amount: context.source.getCost(), player: context.player });
-            }
-        };
-    },
-    /**
      * Cost that will pay the printed ghostrock cost on the card minus any active
      * reducer effects the play has activated. Upon playing the card, all
      * matching reducer effects will expire, if applicable.
      */
-    payReduceableGRCost: function(playingType) {
+    payReduceableGRCost: function(playingType, addCostMessage = false) {
         return {
             canPay: function(context) {
                 if(context.cardToUpgrade) {
                     return true;
                 }
-                let reducedCost = context.player.getReducedCost(playingType, context.source);
+                let reducedCost = context.player.getReducedCost(playingType, context.source, context);
                 return context.player.getSpendableGhostRock({ playingType: playingType, context: context }) >= reducedCost;
             },
             pay: function(context) {
                 if(context.cardToUpgrade) {
                     return;
                 }
-                context.costs.ghostrock = context.player.getReducedCost(playingType, context.source);
+                context.usedGRSources = context.usedGRSources || {};
+                context.usedReducers = context.usedReducers || {};
+                context.costs.ghostrock = context.player.getReducedCost(playingType, context.source, context);
                 context.game.spendGhostRock({ 
                     amount: context.costs.ghostrock, 
                     player: context.player, 
                     playingType: playingType, 
                     context: context 
+                }, grSources => context.usedGRSources[context.source.uuid] = grSources);
+                const reduction = context.costs.ghostrock - context.source.cost;
+                if(addCostMessage && (reduction || context.source.cost)) {
+                    let redText = '';
+                    if(reduction) {
+                        redText = reduction < 0 ? `(reduced by ${reduction})` : `(increased by ${reduction})`;
+                    }
+                    context.game.addMessage('{0} pays {1} GR to {2} {3} {4}', 
+                        context.player, context.costs.ghostrock, playingType, context.source, redText);
+                }
+                context.usedReducers[context.source.uuid] = context.player.markUsedReducers(playingType, context.source, context);
+            },
+            unpay: function(context) {
+                context.usedReducers[context.source.uuid].forEach(reducer => {
+                    if(reducer.isExpired()) {
+                        context.player.addCostReducer(reducer);
+                        reducer.registerEvents();
+                    }
+                    reducer.markUnused();
                 });
-                context.player.markUsedReducers(playingType, context.source);
+                if(context.usedGRSources[context.source.uuid]) {
+                    context.usedGRSources[context.source.uuid].forEach(grSource => 
+                        grSource.source.modifyGhostRock(grSource.amount));
+                    delete context.usedGRSources[context.source.uuid];
+                }
+                delete context.usedReducers[context.source.uuid];
             }
         };
     },
     /**
-     * Cost in which the player must pay a fixed, non-reduceable amount of gold.
+     * Cost in which the player must pay a fixed, non-reduceable amount of ghost rock.
+     * @param {number | Function} amountOrFunc - amount of ghost rock that must be paid
+     * @param {boolean} toOpponent - Ghost rock should be paid to opponent instead of bank
+     * @param {number | Function} minAmount - minimum amount that will be required to pay this cost
      */
-    payGhostRock: function(amount) {
+    payGhostRock: function(amountOrFunc, toOpponent, minAmount) {
         return {
             canPay: function(context) {
+                let amount = typeof(minAmount) === 'function' ? minAmount(context) : minAmount;
+                if(amount === null || amount === undefined) {
+                    amount = typeof(amountOrFunc) === 'function' ? amountOrFunc(context) : amountOrFunc;
+                }
+                if(isNaN(amount)) {
+                    return false;
+                }
                 return context.player.getSpendableGhostRock({ 
                     player: context.player, 
                     playingType: 'ability', 
@@ -261,12 +296,38 @@ const Costs = {
                 }) >= amount;
             },
             pay: function(context) {
-                context.game.spendGhostRock({ 
-                    amount: amount, 
-                    player: context.player, 
-                    source: context.source, 
-                    context: context 
-                });
+                context.usedGRSources = context.usedGRSources || {};
+                const amount = typeof(amountOrFunc) === 'function' ? amountOrFunc(context) : amountOrFunc;
+                context.grCost = amount;
+                if(toOpponent) {
+                    context.game.transferGhostRock({
+                        from: context.player,
+                        to: context.player.getOpponent(),
+                        amount: amount
+                    });                    
+                } else {
+                    context.game.spendGhostRock({ 
+                        amount: amount,
+                        player: context.player, 
+                        source: context.source, 
+                        context: context
+                    }, grSources => context.usedGRSources[context.source.uuid] = grSources);
+                }
+            },
+            unpay: function(context) {
+                if(toOpponent) {
+                    context.game.transferGhostRock({
+                        from: context.player.getOpponent(),
+                        to: context.player,
+                        amount: context.grCost
+                    });                    
+                } else {
+                    if(context.usedGRSources[context.source.uuid]) {
+                        context.usedGRSources[context.source.uuid].forEach(grSource => 
+                            grSource.source.modifyGhostRock(grSource.amount));
+                        delete context.usedGRSources[context.source.uuid];
+                    }
+                }
             }
         };
     },
@@ -278,7 +339,7 @@ const Costs = {
     payXGhostRock: function(minFunc, maxFunc, playingType = 'play', opponentFunc) {
         return {
             canPay: function(context) {
-                let reduction = context.player.getCostReduction(playingType, context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source, context);
                 let opponentObj = opponentFunc && opponentFunc(context);
 
                 if(!opponentObj) {
@@ -287,7 +348,7 @@ const Costs = {
                 return opponentObj.getSpendableGhostRock({ playingType: playingType, context: context }) >= (minFunc(context) - reduction);
             },
             resolve: function(context, result = { resolved: false }) {
-                let reduction = context.player.getCostReduction(playingType, context.source);
+                let reduction = context.player.getCostReduction(playingType, context.source, context);
                 let opponentObj = opponentFunc && opponentFunc(context);
                 let player = opponentObj || context.player;
                 let ghostrock = player.getSpendableGhostRock({ playingType: playingType, context: context });
@@ -308,31 +369,7 @@ const Costs = {
                     playingType: playingType, 
                     context: context 
                 });
-                context.player.markUsedReducers(playingType, context.source);
-            }
-        };
-    },
-    /**
-     * Cost where the player gets prompted to discard gold from the card from a passed minimum up to the lesser of two values:
-     * the passed maximum and the amount of gold on the source card.
-     * Used by The House of Black and White, Stormcrows and Devan Seaworth.
-     */
-    discardXGold: function(minFunc, maxFunc) {
-        return {
-            canPay: function(context) {
-                return context.source.tokens.gold >= minFunc(context);
-            },
-            resolve: function(context, result = { resolved: false }) {
-                let max = Math.min(maxFunc(context), context.source.tokens.gold);
-
-                context.game.queueStep(new XValuePrompt(minFunc(context), max, context));
-
-                result.value = true;
-                result.resolved = true;
-                return result;
-            },
-            pay: function(context) {
-                context.source.modifyToken(Tokens.gold, -context.xValue);
+                context.player.markUsedReducers(playingType, context.source, context);
             }
         };
     }

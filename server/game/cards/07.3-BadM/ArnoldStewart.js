@@ -18,12 +18,7 @@ class ArnoldStewart extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
-                const actualAmount = context.player.getNumCardsToDraw(5);
-                const props = {
-                    amount: actualAmount,
-                    desiredAmount: 5
-                };
-                const cards = context.player.drawDeckAction(props, card => {
+                const cards = context.player.drawDeckAction(5, card => {
                     context.player.removeCardFromPile(card);
                 });
                 context.player.discardCards(cards, false, discardedCards => {
@@ -39,10 +34,10 @@ class ArnoldStewart extends DudeCard {
                                         cardType: 'deed',
                                         onSelect: (player, card) => {
                                             if(player.moveCardWithContext(card, 'hand', context)) {
-                                                this.game.addMessage('{0} uses {1}, boots him and {2} to discard 5 cards from deck and puts {3} to hand', 
+                                                this.game.addMessage('{0} uses {1} to boot him and {2}, to discard 5 cards from deck and puts {3} in their hand', 
                                                     player, this, context.target, card);
                                             } else {
-                                                this.game.addMessage('{0} uses {1}, but some effect prevents them from moving {2} to hand', 
+                                                this.game.addMessage('{0} uses {1}, but some effect prevents them from moving {2} to their hand', 
                                                     player, this, card);                                                
                                             }
                                             return true;

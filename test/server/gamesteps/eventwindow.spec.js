@@ -17,7 +17,6 @@ describe('EventWindow', function() {
             });
 
             it('should emit all of the reaction events', function() {
-                expect(this.gameSpy.openAbilityWindow).toHaveBeenCalledWith({ abilityType: 'cancelreaction', event: this.eventSpy });
                 expect(this.gameSpy.openAbilityWindow).toHaveBeenCalledWith({ abilityType: 'traitbeforereaction', event: this.eventSpy });
                 expect(this.gameSpy.openAbilityWindow).toHaveBeenCalledWith({ abilityType: 'beforereaction', event: this.eventSpy });
                 expect(this.eventSpy.emitTo).toHaveBeenCalledWith(this.gameSpy);
@@ -96,7 +95,6 @@ describe('EventWindow', function() {
             });
 
             it('should emit all of the reactions(before) events', function() {
-                expect(this.gameSpy.openAbilityWindow).toHaveBeenCalledWith({ abilityType: 'cancelreaction', event: this.eventSpy });
                 expect(this.gameSpy.openAbilityWindow).toHaveBeenCalledWith({ abilityType: 'traitbeforereaction', event: this.eventSpy });
                 expect(this.gameSpy.openAbilityWindow).toHaveBeenCalledWith({ abilityType: 'beforereaction', event: this.eventSpy });
             });

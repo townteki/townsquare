@@ -6,6 +6,7 @@ class ShootoutPossePrompt extends UiPrompt {
         super(game);
         this.shootout = shootout;
         this.player = player;
+        this.activePromptTitle = 'Select dudes to join posse';
     }  
 
     continue() {
@@ -14,10 +15,15 @@ class ShootoutPossePrompt extends UiPrompt {
                 this.joinLeaderAndMark(this.player);
                 this.complete(); 
             } else {
+                const additionalButtons = [];
+                if(this.shootout.isJob() && this.shootout.options.jobAbility.posseCondition) {
+                    additionalButtons.push({ text: 'Cancel', arg: 'cancel' });
+                }
                 this.game.promptForSelect(this.player, {
-                    activePromptTitle: 'Select dudes to join posse',
+                    activePromptTitle: this.activePromptTitle,
                     multiSelect: true,
                     numCards: 0,
+                    additionalButtons: additionalButtons,
                     cardCondition: card => card.getType() === 'dude' && 
                         card.location === 'play area' &&
                         card.controller === this.player &&
@@ -26,10 +32,20 @@ class ShootoutPossePrompt extends UiPrompt {
                         !card.isParticipating() &&
                         card.requirementsToJoinPosse().canJoin,
                     onSelect: (player, dudeSelection) => {
+                        if(!this.passesJobCondition(dudeSelection)) {
+                            return true;
+                        }
                         this.joinLeaderAndMark(player);
                         //Do not move to posse yet, it will be done once both posses are selected (Shootout.gatherPosses())
                         dudeSelection.forEach(dude => 
-                            this.game.resolveGameAction(GameActions.joinPosse({ card: dude, options: { isCardEffect: false, moveToPosse: false } }))
+                            this.game.resolveGameAction(GameActions.joinPosse({ 
+                                card: dude, 
+                                options: { 
+                                    isCardEffect: false, 
+                                    moveToPosse: false,
+                                    doNotPutBounty: true
+                                } 
+                            }))
                         );
                         if(this.shootout.leaderPlayer === player) {
                             this.game.raiseEvent('onLeaderPosseFormed', { shootout: this.shootout });
@@ -45,6 +61,9 @@ class ShootoutPossePrompt extends UiPrompt {
                         return true;
                     },
                     onCancel: (player) => {
+                        if(!this.passesJobCondition()) {
+                            return true;
+                        }
                         if(this.shootout.isJob() && this.shootout.opposingPlayer === player) {
                             this.shootout.endShootout();
                         } else {
@@ -52,7 +71,13 @@ class ShootoutPossePrompt extends UiPrompt {
                         }
                         this.complete();
                         return true;
-                    }
+                    },
+                    onMenuCommand: () => {
+                        this.shootout.cancelled = true;
+                        this.complete();
+                        return true;
+                    },
+                    source: this.shootout.isJob() ? this.shootout.options.jobAbility.card : undefined
                 });
             }
         }
@@ -62,10 +87,37 @@ class ShootoutPossePrompt extends UiPrompt {
     joinLeaderAndMark(player) {
         //Leader and mark (if not job because in job mark does not have to be in posse) join posses first.
         if(this.shootout.leaderPlayer === player) {
-            this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.leader, options: { isCardEffect: false, moveToPosse: false } }));
+            this.game.resolveGameAction(GameActions.joinPosse({ 
+                card: this.shootout.leader, 
+                options: { 
+                    isCardEffect: false, 
+                    moveToPosse: false,
+                    doNotPutBounty: true
+                } 
+            }));
         } else if(!this.shootout.isJob()) {
-            this.game.resolveGameAction(GameActions.joinPosse({ card: this.shootout.mark, options: { isCardEffect: false, moveToPosse: false } }));
+            this.game.resolveGameAction(GameActions.joinPosse({ 
+                card: this.shootout.mark, 
+                options: { 
+                    isCardEffect: false, 
+                    moveToPosse: false,
+                    doNotPutBounty: true
+                } 
+            }));
         }
+    }
+
+    passesJobCondition(dudeSelection = []) {
+        if(!this.shootout.isJob() || !this.shootout.options.jobAbility ||
+            !this.shootout.options.jobAbility.posseCondition) {
+            return true;
+        }
+        if(this.shootout.options.jobAbility.posseCondition(this.shootout, dudeSelection)) {
+            this.game.markActionAsTaken(this.shootout.options.jobAbility.context);
+            return true;
+        } 
+        this.activePromptTitle = 'Your posse does not pass Job condition! Select dudes to join posse';
+        return false;
     }
 }
 

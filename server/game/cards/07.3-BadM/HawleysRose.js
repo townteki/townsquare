@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const GoodsCard = require('../../goodscard.js');
 
 class HawleysRose extends GoodsCard {
@@ -6,11 +7,11 @@ class HawleysRose extends GoodsCard {
             effect: ability.effects.addKeyword('abomination')
         });
         this.whileAttached({
-            condition: () => this.game.currentPhase === 'sundown',
+            condition: () => this.game.currentPhase === PhaseNames.Sundown,
             effect: ability.effects.modifyInfluence(1)
         });
         this.whileAttached({
-            condition: () => this.game.currentPhase === 'sundown' && this.areOpposingDudesAtDeed(),
+            condition: () => this.game.currentPhase === PhaseNames.Sundown && this.areOpposingDudesAtDeed(),
             effect: ability.effects.modifyInfluence(1)
         });
     }

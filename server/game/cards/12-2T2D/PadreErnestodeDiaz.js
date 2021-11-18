@@ -5,11 +5,12 @@ class PadreErnestodeDiaz extends DudeCard {
     setupCardAbilities() {
         this.traitReaction({
             when: {
-                onDrawHandsRevealed: () => this.controller.getOpponent().isCheatin()
+                onDrawHandsRevealed: () => this.controller.getOpponent().isCheatin() &&
+                    this.hasAttachment(att => att.hasKeyword('Miracle') && !att.booted)
             },
             handler: context => {
                 context.game.promptForYesNo(context.player, {
-                    title: 'Do you want to discard a card?',
+                    title: 'Do you want to boot a Miracle?',
                     onYes: () => {
                         context.ability.selectAnotherTarget(context.player, context, {
                             promptTitle: this.title,

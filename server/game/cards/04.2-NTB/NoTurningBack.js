@@ -13,7 +13,7 @@ class NoTurningBack extends ActionCard {
                 gameAction: 'ace'
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} and aces {2} to gain GR equal to his cost ({3})', context.player, this, context.target, context.target.cost),
+                this.game.addMessage('{0} uses {1} and aces {2} to gain GR equal to {2}\'s cost ({3})', context.player, this, context.target, context.target.cost),
             handler: context => {
                 this.game.resolveGameAction(GameActions.aceCard({ card: context.target }), context).thenExecute(() => {
                     context.player.modifyGhostRock(context.target.cost);
@@ -33,8 +33,11 @@ class NoTurningBack extends ActionCard {
                     gameAction: 'ace',
                     onSelect: (player, card) => {
                         this.game.resolveGameAction(GameActions.aceCard({ card }), context).thenExecute(() => {
-                            player.modifyCasualties(-999);
-                            this.game.addMessage('{0} uses {1} and aces {2} to reduce casualties to 0', player, this, card);
+                            this.game.resolveGameAction(GameActions.decreaseCasualties({ 
+                                player: player
+                            }), context).thenExecute(() => {
+                                this.game.addMessage('{0} uses {1} and aces {2} to reduce casualties to 0', player, this, card);
+                            });
                         });           
                         return true;
                     },

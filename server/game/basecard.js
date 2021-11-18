@@ -19,11 +19,20 @@ const SpellReaction = require('./spellreaction');
 const SpellBeforeReaction = require('./spellbeforereaction');
 const CardTraitBeforeReaction = require('./cardtraitbeforereaction');
 const TechniqueAction = require('./techniqueaction');
+const SpellJobAction = require('./spelljobaction');
+
+/** @typedef {import('./AbilityContext')} AbilityContext */
+/** @typedef {import('./AbilityDsl')} AbilityDsl */
+/** @typedef {import('./game')} Game */
+/** @typedef {import('./player')} Player */
 
 class BaseCard {
     constructor(owner, cardData) {
+        /** @type {Player} */
         this.owner = owner;
+        /** @type {Player} */
         this.controllingPlayer = owner;
+        /** @type {Game} */
         this.game = this.owner.game;
         this.cardData = cardData;
 
@@ -48,6 +57,9 @@ class BaseCard {
         this.currentProduction = cardData.production;
         this.wealth = cardData.wealth;
         this.permanentBullets = 0;
+        this.permanentInfluence = 0;
+        this.permanentProduction = 0;
+        this.permanentValue = 0;
         this.startingSize = 1;
         this.startingCondition = () => true;
         this.maxBullets = null;
@@ -165,18 +177,33 @@ class BaseCard {
     setupCardAbilities() {
     }
 
+    /**
+     * Define regular card action (`Noon:`, `Shootout:` but not jobs or spells)
+     *
+     * @param {import('./cardaction').ActionAbilityProperties} properties
+     */    
     action(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var action = new CardAction(this.game, this, properties);
         this.abilities.actions.push(action);
     }
 
+    /**
+     * Define job card action (`Noon Job:`)
+     *
+     * @param {import('./jobaction').JobAbilityProperties} properties
+     */ 
     job(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var job = new JobAction(this.game, this, properties);
         this.abilities.actions.push(job);
     }
 
+    /**
+     * Define Spell card action (e.g. `Noon Spirit:`, `Shootout Miracle:`)
+     *
+     * @param {import('./spellaction').SpellActionAbilityProperties} properties
+     */ 
     spellAction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         properties.triggeringPlayer = properties.triggeringPlayer || (this.hasKeyword('totem') ? 'any' : undefined);
@@ -184,16 +211,39 @@ class BaseCard {
         this.abilities.actions.push(spell);
     }
 
+    /**
+     * Define Spell card action that starts a job (e.g. `Noon Job Miracle:`)
+     * Some cards start a job but do not have it marked before the colon (e.g. For Such a Time as This, Summoning)
+     *
+     * @param {import('./spelljobaction').SpellJobActionAbilityProperties} properties
+     */ 
+    spellJobAction(properties) {
+        properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
+        properties.triggeringPlayer = properties.triggeringPlayer || (this.hasKeyword('totem') ? 'any' : undefined);
+        var spell = new SpellJobAction(this.game, this, properties);
+        this.abilities.actions.push(spell);
+    }
+
+    /**
+     * Define Technique card action (e.g. `Noon Technique:`, `Shootout Tao Technique:`)
+     *
+     * @param {import('./techniqueaction').TechniqueAbilityProperties} properties
+     */ 
     techniqueAction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var technique = new TechniqueAction(this.game, this, properties);
         this.abilities.actions.push(technique);
     }
 
+    /**
+     * Define regular card reaction (`React:` but not spell reactions)
+     *
+     * @param {import('./cardreaction').ReactionAbilityProperties} properties
+     */
     reaction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
-        if(properties.triggerBefore || properties.canCancel) {
+        if(properties.triggerBefore) {
             reaction = new CardBeforeReaction(this.game, this, properties);            
         } else {
             reaction = new CardReaction(this.game, this, properties);
@@ -201,10 +251,15 @@ class BaseCard {
         this.abilities.reactions.push(reaction);
     }
 
+    /**
+     * Define Spell card reaction (e.g. `React Hex:`, `React Miracle:`)
+     *
+     * @param {import('./spellreaction').SpellReactionAbilityProperties} properties
+     */ 
     spellReaction(properties) {
         properties.printed = properties.printed || properties.printed === false ? properties.printed : true;
         var reaction;
-        if(properties.triggerBefore || properties.canCancel) {
+        if(properties.triggerBefore) {
             reaction = new SpellBeforeReaction(this.game, this, properties);            
         } else {
             reaction = new SpellReaction(this.game, this, properties);
@@ -212,6 +267,11 @@ class BaseCard {
         this.abilities.reactions.push(reaction);
     }
 
+    /**
+     * Define card Trait reaction (Trait text on card that reacts on some event)
+     *
+     * @param {import('./traittriggeredability').TraitAbilityProperties} properties
+     */ 
     traitReaction(properties) {
         var reaction;
         if(properties.triggerBefore) {
@@ -266,6 +326,22 @@ class BaseCard {
         });
     }
 
+    hasReactionFor(event, abilityType) {
+        return this.abilities.reactions.some(reaction => 
+            reaction.eventType === abilityType &&
+            reaction.when[event.name] && reaction.when[event.name](event));
+    }
+
+    /**
+     * Applies effect (described in `propertyFactory`) of the ability and sets duration
+     * based on the default rules:
+     *  - Shootout ability until end of shootout
+     *  - Noon ability until end of the round (Sundown)
+     *  - Reacts based on the phase they were triggered
+     * 
+     * @param {AbilityDsl} ability
+     * @param {(ability: AbilityDsl) => void} propertyFactory
+     */    
     applyAbilityEffect(ability, propertyFactory) {
         if(this.game.shootout) {
             this.untilEndOfShootoutPhase(ability, propertyFactory);
@@ -507,7 +583,7 @@ class BaseCard {
         this.clearNew();
         this.gamelocation = '';
         this.controller = this.owner;
-        this.resetStatsToPrinted();
+        this.resetStats();
     }
 
     clearTokens() {
@@ -521,13 +597,13 @@ class BaseCard {
 
         let menu = [];
         let menuActionItems = this.getActionMenuItems(player);
-        if(menuActionItems.filter(menuItem => 
-            menuItem.action.allowPlayer(player) && !menuItem.action.isClickToActivate() && menuItem.action.allowMenu()).length === 0) {
-            return;
-        }
 
         if(this.location === 'play area' && player === this.controller) {
-            menu = [{ command: 'click', text: 'Boot / Unboot' }];
+            menu = [{ method: 'toggleUnBoot', text: 'Boot / Unboot' }];
+        }
+        if(!menu.length && menuActionItems.filter(menuItem => 
+            menuItem.action.allowPlayer(player) && !menuItem.action.isClickToActivate() && menuItem.action.allowMenu()).length === 0) {
+            return;
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
         if(menuCardActionItems.length > 0) {
@@ -570,6 +646,17 @@ class BaseCard {
                 item: action.getMenuItem(index, player)
             }; 
         });
+    }
+
+    toggleUnBoot(player) {
+        if(this.facedown || this.controller !== player) {
+            return;
+        }
+
+        this.booted = !this.booted;
+        let bootStatus = this.booted ? 'boots' : 'unboots';
+
+        this.game.addAlert('danger', '{0} {1} {2}', player, bootStatus, this);  
     }
 
     useAbility(player, options = {}) {
@@ -671,19 +758,22 @@ class BaseCard {
             case 'influence': return this.cardData.influence;
             case 'control': return this.cardData.control;
             case 'upkeep': return this.cardData.upkeep;
-            case 'production': return this.cardData.production;           
+            case 'production': return this.cardData.production;
+            case 'cost': return this.cardData.cost;
         }
     }
 
-    resetStatsToPrinted() {
+    resetStats() {
         this.suitReferenceArray = [];
         this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
-        this.rank = this.getPrintedStat('value');
-        this.bullets = this.getPrintedStat('bullets');
-        this.influence = this.getPrintedStat('influence');
-        this.control = this.getPrintedStat('control');
-        this.upkeep = this.getPrintedStat('upkeep');
-        this.production = this.getPrintedStat('production');          
+        this.value = this.currentValue - this.permanentValue;
+        this.permanentValue = 0;
+        this.bullets = this.currentBullets - this.permanentBullets;
+        this.permanentBullets = 0;
+        this.influence = this.currentInfluence - this.permanentInfluence;
+        this.permanentInfluence = 0;
+        this.production = this.currentProduction - this.permanentProduction;
+        this.permanentProduction = 0;        
     }
 
     setBlank(type) {
@@ -698,8 +788,15 @@ class BaseCard {
         }
     }
 
-    allowGameAction(actionType, context) {
-        let currentAbilityContext = context || this.game.currentAbilityContext;
+    allowGameAction(actionType, context, options = {}) {
+        let currentAbilityContext = context;
+        if(!currentAbilityContext) {
+            if(options.isCardEffect !== false) {
+                currentAbilityContext = this.game.currentAbilityContext;
+            } else {
+                currentAbilityContext = { game: this.game, player: this.controller };
+            }
+        }
         if(currentAbilityContext && !currentAbilityContext.card) {
             currentAbilityContext.card = this;
         }
@@ -794,8 +891,11 @@ class BaseCard {
         this.modifyToken(Tokens.ghostrock, amount);
     }
 
-    modifyValue(amount, applying = true) {
-        this.value += amount;
+    modifyValue(amount, applying = true, fromEffect = false) {
+        this.currentValue += amount;
+        if(!fromEffect) {
+            this.permanentValue += amount;
+        }
 
         let params = {
             card: this,
@@ -810,17 +910,21 @@ class BaseCard {
         if(!fromEffect) {
             this.permanentBullets += amount;
         }
+
         let params = {
             card: this,
             amount: amount,
-            applying: applying.player,
+            applying: applying,
             fromEffect
         };
         this.game.raiseEvent('onCardBulletsChanged', params);
     }
 
-    modifyInfluence(amount, applying = true) {
+    modifyInfluence(amount, applying = true, fromEffect = false) {
         this.currentInfluence += amount;
+        if(!fromEffect) {
+            this.permanentInfluence += amount;
+        }
 
         let params = {
             card: this,
@@ -830,8 +934,11 @@ class BaseCard {
         this.game.raiseEvent('onCardInfluenceChanged', params);
     }
 
-    modifyProduction(amount, applying = true) {
+    modifyProduction(amount, applying = true, fromEffect = false) {
         this.currentProduction += amount;
+        if(!fromEffect) {
+            this.permanentProduction += amount;
+        }
 
         let params = {
             card: this,

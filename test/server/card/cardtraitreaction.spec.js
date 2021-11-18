@@ -87,8 +87,8 @@ describe('CardForcedReaction', function () {
                 this.gameSpy.currentPhase = 'setup';
             });
 
-            it('should return false', function() {
-                expect(this.meetsRequirements()).toBe(false);
+            it('should return true', function() {
+                expect(this.meetsRequirements()).toBe(true);
             });
         });
 

@@ -12,8 +12,8 @@ class PersonalOrnithopter extends GoodsCard {
             repeatable: true,
             message: context =>
                 this.game.addMessage('{0} uses {1} to have {2} soar into their posse', context.player, this, this.parent),
-            handler: () => {
-                this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }));
+            handler: context => {
+                this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }), context);
             }
         });
 
@@ -21,7 +21,7 @@ class PersonalOrnithopter extends GoodsCard {
             title: 'Shootout: Flee',
             playType: 'shootout',
             cost: ability.costs.bootSelf(),
-            actionContext: { card: this.parent, gameAction: 'sendHome'},
+            actionContext: { card: this.parent, gameAction: ['sendHome', 'boot']},
             message: context => this.game.addMessage('{0} uses {1} to send {2} home booted', context.player, this, this.parent),
             handler: context => {
                 this.game.shootout.sendHome(this.parent, context);

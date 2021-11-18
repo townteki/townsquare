@@ -23,8 +23,11 @@ class AttachmentPrompt extends UiPrompt {
                 return true;
             },
             onCancel: () => {
-                // TODO M2 implement unpaying of costs in case this is cancelled
-            }
+                if(this.context.ability) {
+                    this.context.ability.unpayCosts(this.context);
+                }
+            },
+            source: this.attachmentCard
         });
     }
 }

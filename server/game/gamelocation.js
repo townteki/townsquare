@@ -49,7 +49,6 @@ class GameLocation {
             return;
         }
         let playersStats = new Map();
-        let originalController = this.locationCard.controllingPlayer;
         let playerWithMost = this.locationCard.owner;
         let currentController = this.locationCard.owner;
         let defaultDeterminator = this.locationCard.controlDeterminator;
@@ -77,18 +76,12 @@ class GameLocation {
                 }
             }
         });
-        if(currentController !== originalController) {
-            if(currentController !== this.locationCard.owner) {
-                this.game.addAlert('info', '{0} broke into {1} and has taken control from the {2}.', currentController, this.locationCard, originalController);
-            } else {
-                this.game.addAlert('info', '{0} has wrestled control of {1} back from {2}.', currentController, this.locationCard, originalController);
-            }
-        }
         return currentController;
     }
 
-    getDudes() {
-        return this.occupants.map(dudeUuid => this.game.findCardInPlayByUuid(dudeUuid)).filter(dude => dude);
+    getDudes(condition = () => true) {
+        return this.occupants.map(dudeUuid => 
+            this.game.findCardInPlayByUuid(dudeUuid)).filter(dude => dude && condition(dude));
     }
 
     isAdjacent(uuid) {
@@ -116,6 +109,10 @@ class GameLocation {
 
     isHome(player) {
         return this.isOutfit() && this.locationCard.owner === player;
+    }
+
+    isOutOfTown() {
+        return this.locationCard.hasKeyword('out of town');
     }
 
     isOpponentsHome(player) {
@@ -189,6 +186,7 @@ class TownSquare extends GameLocation {
             isOutOfTown: () => false,
             hasKeyword: () => false,
             hasAttachment: () => false,
+            hasAttachmentWithKeywords: () => false,
             adjacentLocations: () => 
                 this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation()),
             getShortSummary: () => {

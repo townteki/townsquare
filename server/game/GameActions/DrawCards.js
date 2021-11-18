@@ -21,12 +21,9 @@ class DrawCards extends GameAction {
     }
 
     createEvent({ player, amount, reason = 'ability', source, target = 'hand' }) {
-        const actualAmount = player.getNumCardsToDraw(amount);
         const eventProps = {
-            amount: actualAmount,
+            amount,
             cards: [],
-            desiredAmount: amount,
-            length: actualAmount, // Needed for legacy reason
             player,
             reason,
             source,
@@ -34,7 +31,7 @@ class DrawCards extends GameAction {
         };
 
         return this.event('onCardsDrawn', eventProps, event => {
-            event.cards = event.player.drawDeckAction(event, card => {
+            event.cards = event.player.drawDeckAction(event.amount, card => {
                 event.thenAttachEvent(
                     this.event('onCardDrawn', { 
                         card, 

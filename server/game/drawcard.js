@@ -1,5 +1,6 @@
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
@@ -15,6 +16,7 @@ class DrawCard extends BaseCard {
         this.minCost = 0;
         this.difficultyMod = 0;
         this.currentControl = this.cardData.control || 0;
+        this.permanentControl = 0;
         if(!this.hasKeyword('rowdy')) {
             this.controlDeterminator = 'influence:deed';
         } else {
@@ -71,8 +73,11 @@ class DrawCard extends BaseCard {
         }
     }
 
-    modifyControl(amount, applying = true) {
+    modifyControl(amount, applying = true, fromEffect = false) {
         this.currentControl += amount;
+        if(!fromEffect) {
+            this.permanentControl += amount;
+        }
 
         let params = {
             card: this,
@@ -80,6 +85,14 @@ class DrawCard extends BaseCard {
             applying: applying
         };
         this.game.raiseEvent('onCardControlChanged', params);
+    }
+
+    removeAllControl() {
+        this.currentControl -= this.permanentControl;
+        this.permanentControl = 0;
+        this.game.effectEngine.getAllEffectsOnCard(this, effect => 
+            ['increaseControl', 'decreaseControl'].includes(effect.gameAction)).forEach(effect => effect.cancel());
+        this.control = 0;
     }
 
     createSnapshot(clone, cloneBaseAttributes = true) {
@@ -109,7 +122,7 @@ class DrawCard extends BaseCard {
                 if(this.getType() === 'action') {
                     return menu.concat(discardItem);
                 }
-                if(this.game.currentPhase === 'high noon') {
+                if(this.game.currentPhase === PhaseNames.HighNoon) {
                     menu = menu.concat({ method: 'playCard', text: 'Shoppin\' play', arg: 'shoppin' });
                 }
                 if(this.abilities.playActions.length > 0) {
@@ -146,7 +159,7 @@ class DrawCard extends BaseCard {
         return this.minCost;
     }
     
-    moveTo(targetLocation, parent) {
+    moveTo(targetLocation, raiseEvents = true, parent) {
         let originalLocation = this.location;
         let originalParent = this.parent;
 
@@ -190,7 +203,7 @@ class DrawCard extends BaseCard {
             this.facedown = false;
         }
 
-        if(originalLocation !== targetLocation || originalParent !== parent) {
+        if((originalLocation !== targetLocation || originalParent !== parent) && raiseEvents) {
             this.game.raiseEvent('onCardMoved', { card: this, originalLocation: originalLocation, newLocation: targetLocation, parentChanged: originalParent !== parent });
         }
     }
@@ -316,7 +329,7 @@ class DrawCard extends BaseCard {
 
     getPlayActions(type) {
         if(type === 'shoppin') {
-            return [StandardActions.shoppin()];
+            return [StandardActions.shoppin(this)];
         }
         return this.abilities.playActions
             .concat(this.abilities.actions.filter(action => !action.allowMenu()));
@@ -333,6 +346,8 @@ class DrawCard extends BaseCard {
         if(this.getType() === 'deed') {
             this.owner.removeDeedFromPlay(this, dude => dude.sendHome({ needToBoot: true }));
         }
+        this.control = this.currentControl - this.permanentControl;
+        this.permanentControl = 0;
         super.leavesPlay();
     }
 
@@ -343,12 +358,33 @@ class DrawCard extends BaseCard {
         return this.game.isHome(this.gamelocation, this.controller);
     }
 
-    isAtDeed() {
+    /**
+     * Checks if card is at a deed, or specific type of deed depending on the
+     * parameter.
+     *
+     * @param {Object} deedType - type of deed that should be checked.\
+     * `any` (default) - Check if the card is at deed of any type.\
+     * `in-town` - check if the card is at in-town deed.\
+     * `out-town` - check if the card is at out of town deed.\
+     * @return {Boolean} - returns true if card is at specified type of deed, 
+     * false otherwise.
+     */
+    isAtDeed(deedType = 'any') {
         if(this.location !== 'play area') {
             return false;
         }
-        return this.locationCard && this.locationCard.getType() === 'deed';
-    }
+        const thisLocationCard = this.locationCard;
+        if(!thisLocationCard || thisLocationCard.getType() !== 'deed') {
+            return false;
+        }
+        if(deedType === 'in-town') {
+            return !thisLocationCard.isOutOfTown();
+        }
+        if(deedType === 'out-town') {
+            return thisLocationCard.isOutOfTown();
+        }
+        return true;     
+    }  
 
     isGadget() {
         return this.hasKeyword('Gadget');

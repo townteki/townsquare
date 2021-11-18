@@ -2,10 +2,12 @@ class PlayerPromptState {
     constructor() {
         this.selectCard = false;
         this.selectOrder = false;
+        this.popupStayOpen = false;
         this.menuTitle = '';
         this.promptTitle = '';
         this.buttons = [];
         this.controls = [];
+        this.promptInfo = {};
 
         this.selectableCards = [];
         this.selectedCards = [];
@@ -27,17 +29,28 @@ class PlayerPromptState {
         this.selectableCards = [];
     }
 
+    setPromptInfo(type, message) {
+        this.promptInfo.type = type;
+        this.promptInfo.message = message;
+    }
+
+    clearPromptInfo() {
+        this.promptInfo = {};
+    }    
+
     setPrompt(prompt) {
         this.selectCard = prompt.selectCard || false;
         this.selectOrder = prompt.selectOrder || false;
+        this.popupStayOpen = prompt.popupStayOpen || false;
         this.menuTitle = prompt.menuTitle || '';
         this.promptTitle = prompt.promptTitle;
+        this.promptInfo = prompt.promptInfo;
         this.buttons = (prompt.buttons || []).map(button => {
             if(button.card) {
                 let card = button.card;
                 let properties = Object.assign({}, button);
                 delete properties['card'];
-                return Object.assign({ text: card.name, arg: card.uuid, card: card.getShortSummary() }, properties);
+                return Object.assign({ text: card.title, arg: card.uuid, card: card.getShortSummary() }, properties);
             }
 
             return button;
@@ -50,6 +63,7 @@ class PlayerPromptState {
         this.menuTitle = '';
         this.buttons = [];
         this.controls = [];
+        this.clearPromptInfo();
     }
 
     getCardSelectionState(card) {
@@ -74,8 +88,10 @@ class PlayerPromptState {
         return {
             selectCard: this.selectCard,
             selectOrder: this.selectOrder,
+            popupStayOpen: this.popupStayOpen,
             menuTitle: this.menuTitle,
             promptTitle: this.promptTitle,
+            promptInfo: this.promptInfo,
             buttons: this.buttons.map(button => this.getButtonState(button)),
             controls: this.controls
         };

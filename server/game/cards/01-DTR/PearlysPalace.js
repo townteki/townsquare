@@ -9,24 +9,11 @@ class PearlysPalace extends DeedCard {
             },
             cost: ability.costs.bootSelf(),
             message: context =>
-                this.game.addMessage('{0} uses {1} to make shootout play before any player', context.player, this),
+                this.game.addMessage('{0} uses {1} to make a shootout play before any other player', context.player, this),
             handler: (context) => {
-                this.game.promptWithMenu(context.player, this, {
-                    activePrompt: {
-                        menuTitle: 'Make shootout play',
-                        buttons: [
-                            { text: 'Done', method: 'done' }
-                        ],
-                        promptTitle: this.title
-                    },
-                    source: this
-                });
+                context.event.playWindow.makePlayOutOfOrder(context.player, this, { title: 'Make shootout play' });
             }
         });
-    }
-
-    done() {
-        return true;
     }
 }
 

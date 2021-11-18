@@ -17,7 +17,7 @@ class TheRDRanch extends DeedCard {
                             context.player.discardCards(dudesHere, false);
                         }
                         this.game.resolveGameAction(GameActions.discardCard({ card: this }), context);
-                        this.game.addMessage('{0} uses {1}, but the experiment fails and {1} is discarded with all cards there ', context.player, this);
+                        this.game.addMessage('{0} uses {1}, but the experiment fails and {1} is discarded as well as all cards there ', context.player, this);
                     }
                 }, true, { context });
             }

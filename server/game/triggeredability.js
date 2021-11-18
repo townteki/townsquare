@@ -82,10 +82,6 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(event.ability && !!event.ability.cannotBeCanceled && this.eventType === 'cancelreaction') {
-            return;
-        }
-
         return listener(event);
     }
 
@@ -94,10 +90,6 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
         let isPlayableActionAbility = this.isPlayableActionAbility();
-
-        if(this.game.currentPhase === 'setup' && !this.card.hasKeyword('grifter')) {
-            return false;
-        }
 
         if(this.isCardAbility() && !this.isTraitAbility() && context.player && !context.player.canTrigger(this)) {
             return false;
@@ -115,7 +107,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(isPlayableActionAbility && !context.player.isCardInPlayableLocation(this.card, 'play')) {
+        if(isPlayableActionAbility && !this.isConditionCardInPlay() && !context.player.isCardInPlayableLocation(this.card, 'play')) {
             return false;
         }
 
@@ -144,6 +136,10 @@ class TriggeredAbility extends BaseAbility {
 
     isPlayableActionAbility() {
         return this.card.getType() === 'action' && this.location.includes('hand');
+    }
+
+    isConditionCardInPlay() {
+        return this.card.location === 'play area' && this.card.hasKeyword('condition');
     }
 
     incrementLimit() {

@@ -17,10 +17,10 @@ class SightBeyondSight extends SpellCard {
                     condition: card => !card.isUnique(),
                     onSelect: (player, cards) => this.game.resolveGameAction(GameActions.aceCard({ card: this, allowSave: false }), context).thenExecute(() => {
                         player.aceCards(cards, false, () => 
-                            context.game.addMessage('{0} uses {1} to look at opponent\' hand and ace itself to ace {2}', player, this, cards), {}, context);
+                            context.game.addMessage('{0} uses {1} to look at opponent\'s hand and ace itself to ace {2}', player, this, cards), {}, context);
                     }),
                     onCancel: player => 
-                        context.game.addMessage('{0} uses {1} to look at opponent\' hand but did not ace any card', player, this),
+                        context.game.addMessage('{0} uses {1} to look at opponent\'s hand but did not ace any card', player, this),
                     context
                 }), context);
             }

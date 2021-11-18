@@ -25,7 +25,7 @@ class XiongWendyChengExp1 extends DudeCard {
                     participating: true 
                 },
                 cardType: ['dude'],
-                gameAction: 'sendHome'
+                gameAction: ['sendHome', 'boot']
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.sendHome({ card: context.target }), context);

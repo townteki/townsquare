@@ -12,7 +12,7 @@ class MorganRegulators2 extends OutfitCard {
         });
 
         this.action({
-            title: 'Morgan Regulators',
+            title: 'Noon: Morgan Regulators',
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             target: {

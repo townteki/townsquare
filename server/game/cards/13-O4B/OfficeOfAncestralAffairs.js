@@ -17,6 +17,8 @@ class OfficeOfAncestralAffairs extends OutfitCard {
                 },
                 cardType: ['deed']
             },
+            posseCondition: (job, posseSelection) =>
+                job.leader.bullets + posseSelection.reduce((agg, dude) => agg + dude.bullets, 0) >= 3,
             message: context => this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             onSuccess: (job, context) => {
                 if(job.mark.location !== 'play area') {

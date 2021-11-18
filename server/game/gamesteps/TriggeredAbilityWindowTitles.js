@@ -1,16 +1,18 @@
 const EventToTitleFunc = {
+    onAbilityResolutionStarted: event => `the use of ${event.ability.card.title} being declared`,
     onCardAbilityInitiated: event => `the effects of ${event.source.title}`,
     onCardEntersPlay: event => `${event.card.title} entering play`,
     onPhaseEnded: event => `${event.phase} phase ending`,
     onPhaseStarted: event => `${event.phase} phase starting`,
-    onDudeJoinedPosse: event => `${event.card.title} joining posse`,
+    onDudeJoinedPosse: event => `${event.card.title} joined posse`,
+    onDudeJoiningPosse: event => `${event.card.title} joining posse`,
     onDudeMoved: event => {
         const location = event.card.game.findLocation(event.target);
         const locCardTitle = location ? ` to ${location.locationCard.title}` : '';
         return `${event.card.title} moving${locCardTitle}`;
     },
     onDrawHandsRevealed: () => 'draw hands being revealed',
-    onTargetsChosen: () => 'targets being chosen'
+    onTargetsChosen: event => `targets being chosen by ${event.ability.card}`
 };
 
 const AbilityTypeToWord = {

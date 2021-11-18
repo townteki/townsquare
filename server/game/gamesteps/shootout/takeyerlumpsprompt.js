@@ -6,10 +6,9 @@ const PlayerOrderPrompt = require('../playerorderprompt.js');
     For now, each casualty will be taken right after the card is selected.
 */
 class TakeYerLumpsPrompt extends PlayerOrderPrompt {
-    constructor(game, playerNameOrder, numOfCasualties, source) {
+    constructor(game, playerNameOrder, source) {
         super(game, playerNameOrder);
         this.shootout = game.shootout;
-        this.numOfCasualties = numOfCasualties;
         this.source = source;
         this.casualtiesTaken = [];
     } 
@@ -31,7 +30,8 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         this.game.promptWithMenu(this.currentPlayer, this, {
             activePrompt: {
                 promptTitle: this.source ? this.source.title : 'Take Yer Lumps',
-                menuTitle: 'Select casualty type (' + this.getCurrentCasualties() + ' remaining)',
+                promptInfo: { type: 'info', message: `Remaining: ${this.getCurrentCasualties()}`},
+                menuTitle: 'Select casualty type',
                 buttons: [
                     { text: 'Ace', method: 'coverCasualty', arg: 'ace' },
                     { text: 'Discard', method: 'coverCasualty', arg: 'discard' },
@@ -45,9 +45,6 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     }
 
     getCurrentCasualties() {
-        if(this.numOfCasualties !== null && this.numOfCasualties !== undefined) {
-            return this.numOfCasualties;
-        }
         return this.currentPlayer.casualties;
     }
 
@@ -62,7 +59,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         return card.controller === player && 
             card.location === 'play area' &&
             this.shootout.isInShootout(card) &&
-            card.allowGameAction(casualtyType, this.createContext(card, player)) &&
+            card.allowGameAction(casualtyType, this.createContext(card, player), { isCardEffect: false }) &&
             !card.cannotBeChosenAsCasualty() &&
             card.coversCasualties(casualtyType) > 0;
     }
@@ -126,14 +123,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     }
 
     modifyCasualties(player, card, numCoveredCasualties) {
-        if(this.numOfCasualties !== null && this.numOfCasualties !== undefined) {
-            this.numOfCasualties -= numCoveredCasualties;
-            if(this.numOfCasualties < 0) {
-                this.numOfCasualties = 0;
-            }
-        } else {
-            player.coverCasualties(numCoveredCasualties);
-        }
+        player.coverCasualties(numCoveredCasualties);
         this.casualtiesTaken.push(card);
     }
 

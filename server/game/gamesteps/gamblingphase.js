@@ -2,10 +2,11 @@ const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const CheatingResolutionPrompt = require('./gambling/cheatingresolutionprompt.js');
 const DrawHandPrompt = require('./shootout/drawhandprompt.js');
+const PhaseNames = require('../Constants/PhaseNames.js');
 
 class GamblingPhase extends Phase {
     constructor(game) {
-        super(game, 'gambling');
+        super(game, PhaseNames.Gambling);
 
         this.lowballPot = 0;
 
@@ -26,8 +27,10 @@ class GamblingPhase extends Phase {
         this.game.getPlayers().forEach(player => {
             if(player.getSpendableGhostRock() <= 0) {
                 player.debtor = true;
+                this.game.addMessage('{0} borrows 1 GR from bank and antes for lowball', player);
             } else {
                 player.modifyGhostRock(-1);
+                this.game.addMessage('{0} antes 1 GR for lowball', player);
             }
             this.lowballPot++;
         });
@@ -99,7 +102,7 @@ class GamblingPhase extends Phase {
 
     resetModifiers() {
         this.game.getPlayers().forEach(player => {
-            player.rankModifier = 0;
+            player.rankModifier = player.persistentRankModifier;
         });
     }
 }

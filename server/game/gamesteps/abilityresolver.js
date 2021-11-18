@@ -4,29 +4,35 @@ const GamePipeline = require('../gamepipeline.js');
 const SimpleStep = require('./simplestep.js');
 const AbilityMessage = require('../AbilityMessage.js');
 
+/** @typedef {import('../baseability')} BaseAbility */
+/** @typedef {import('../AbilityContext')} AbilityContext */
+
 class AbilityResolver extends BaseStep {
     constructor(game, ability, context) {
         super(game);
 
+        /** @type {BaseAbility} */
         this.ability = ability;
+        /** @type {AbilityContext} */
         this.context = context;
         this.pipeline = new GamePipeline();
         this.pipeline.initialise([
-            new SimpleStep(game, () => this.game.raiseEvent('onAbilityResolutionStarted', { ability: this.ability, context: this.context })),
+            new SimpleStep(game, () => this.raiseOnAbilityResolutionStartedEvent()),
             new SimpleStep(game, () => this.createSnapshot()),
             new SimpleStep(game, () => this.updatePlayTypeCause()),
             new SimpleStep(game, () => this.game.pushAbilityContext(this.context)),
+            new SimpleStep(game, () => this.context.resolutionStage = 'target'),
+            new SimpleStep(game, () => this.checkifCondition()),
+            new SimpleStep(game, () => this.choosePlayer()),
+            new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
+            new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
+            new SimpleStep(game, () => this.resolveTargets()),
+            new SimpleStep(game, () => this.waitForTargetResolution()),
             new SimpleStep(game, () => this.context.resolutionStage = 'cost'),
             new SimpleStep(game, () => this.resolveCosts()),
             new SimpleStep(game, () => this.waitForCostResolution()),
             new SimpleStep(game, () => this.payCosts()),
-            new SimpleStep(game, () => this.context.resolutionStage = 'effect'),
-            new SimpleStep(game, () => this.choosePlayer()),
-            new SimpleStep(game, () => this.waitForChoosePlayerResolution()),
-            new SimpleStep(game, () => this.checkifCondition()),
-            new SimpleStep(game, () => this.raiseOnAbilityTargetsResolutionEvent()),
-            new SimpleStep(game, () => this.resolveTargets()),
-            new SimpleStep(game, () => this.waitForTargetResolution()),
+            new SimpleStep(game, () => this.context.resolutionStage = 'effect'),     
             new SimpleStep(game, () => this.markActionAsTaken()),
             new SimpleStep(game, () => this.executeHandler()),
             new SimpleStep(game, () => this.postResolveAbilityUpdates()),
@@ -36,6 +42,16 @@ class AbilityResolver extends BaseStep {
             new SimpleStep(game, () => this.game.attachmentValidityCheck.enforceValidity()),
             new SimpleStep(game, () => this.game.checkWinCondition())
         ]);
+    }
+
+    raiseOnAbilityResolutionStartedEvent() {
+        this.game.raiseEvent('onAbilityResolutionStarted', { 
+            ability: this.ability, 
+            context: this.context 
+        }, event => {
+            this.cancelled = !!event.ability.cancelled;
+            this.cancelReason = event.ability.cancelReason;
+        });
     }
 
     queueStep(step) {
@@ -85,7 +101,8 @@ class AbilityResolver extends BaseStep {
     }
 
     markActionAsTaken() {
-        if((this.cancelled && this.cancelReason !== 'ifCondition') || this.ability.options.doNotMarkActionAsTaken) {
+        if((this.cancelled && !['ifCondition', 'abilityCancel'].includes(this.cancelReason)) || 
+            this.ability.options.doNotMarkActionAsTaken) {
             return;
         }
         if(this.ability.isAction()) {
@@ -94,7 +111,7 @@ class AbilityResolver extends BaseStep {
     }
 
     resolveCosts() {
-        if(this.cancelled) {
+        if(this.cancelled && this.cancelReason !== 'ifCondition') {
             return;
         }
 
@@ -102,11 +119,11 @@ class AbilityResolver extends BaseStep {
     }
 
     waitForCostResolution() {
-        if(this.cancelled) {
+        if(this.cancelled && this.cancelReason !== 'ifCondition') {
             return;
         }
 
-        this.cancelled = this.canPayResults.some(result => result.resolved && !result.value);
+        this.cancelled = this.cancelled || this.canPayResults.some(result => result.resolved && !result.value);
 
         if(!this.canPayResults.every(result => result.resolved)) {
             return false;
@@ -114,11 +131,11 @@ class AbilityResolver extends BaseStep {
     }
 
     payCosts() {
-        if(this.cancelled) {
+        if(this.cancelled && !['ifCondition', 'abilityCancel'].includes(this.cancelReason)) {
             return;
         }
 
-        this.ability.payCosts(this.context);
+        this.ability.payCosts(this.context, this.cancelReason === 'abilityCancel');
     }
 
     choosePlayer() {
@@ -260,7 +277,7 @@ class AbilityResolver extends BaseStep {
 
             this.game.resolveEvent(event);
         }
-        if(this.context.pull) {
+        if(this.context.pull && !this.context.pull.doNotHandlePulledCard) {
             this.context.pull.pulledCard.owner.handlePulledCard(this.context.pull.pulledCard);
         }
         if(this.ability.isCardAbility()) {

@@ -16,7 +16,7 @@ class AdrianVallejo extends DudeCard {
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this }), context).thenExecute(() => {
-                    this.game.addMessage('{0} uses {1} to have him join posse', context.player, this);
+                    this.game.addMessage('{0} uses {1} to have him join their posse', context.player, this);
                 });
             }
         });

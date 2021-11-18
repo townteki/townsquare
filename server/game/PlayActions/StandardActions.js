@@ -6,23 +6,33 @@ var StandardActions = {};
 var defaultProperties = {
     playType: 'ability', 
     abilitySourceType: 'card', 
-    target: ''
+    targetLocationUuid: ''
 };
 
-StandardActions.shoppin = function(target) {
-    return new ShoppinCardAction(target);
+StandardActions.shoppin = function(card, targetLocationUuid) {
+    const targetProperties = ['goods', 'spell'].includes(card.getType()) ? 
+        attTargetProperties(card, targetLocationUuid, 'shoppin') : undefined;
+    return new ShoppinCardAction(targetLocationUuid, targetProperties);
 };
 
 StandardActions.putIntoPlay = function(properties, callback) {
     return new PutIntoPlayCardAction(properties, callback);
 };
 
-StandardActions.putIntoPlayAtLocation = function(target, callback) {
-    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { target: target }), callback);
+StandardActions.putIntoPlayAtLocation = function(targetLocationUuid, callback) {
+    return new PutIntoPlayCardAction(Object.assign(defaultProperties, { targetLocationUuid }), callback);
 };
 
 StandardActions.putIntoPlayWithReduction = function(reduceAmount, minimum, callback) {
     return new PutIntoPlayCardAction(Object.assign(defaultProperties, { reduceAmount, minimum }), callback);
 };
+
+function attTargetProperties(attachment, targetLocationUuid, playingType) {
+    return {
+        activePromptTitle: 'Select target for attachment',
+        cardCondition: card => card.controller.canAttach(attachment, card, playingType) &&
+            (!targetLocationUuid || targetLocationUuid === card.gamelocation)
+    };
+}
 
 module.exports = StandardActions;

@@ -7,7 +7,7 @@ class LucindaLucyClover extends DudeCard {
             when: {
                 onDrawHandsRevealed: event => event.shootout && this.isParticipating() && this.controller.getOpponent().isCheatin()
             },
-            message: context => this.game.addMessage('{0}\'s dudes in posse have their bounty increased thanks to the {1}', 
+            message: context => this.game.addMessage('{0}\'s dudes in posse have their bounty increased thanks to {1}', 
                 context.player.getOpponent(), this),
             handler: context => {
                 let posseOpposingLucy = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());

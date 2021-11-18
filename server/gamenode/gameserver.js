@@ -62,6 +62,13 @@ class GameServer {
             options.path = '/' + (process.env.SERVER || config.nodeIdentity) + '/socket.io';
         }
 
+        // ignore CORS 
+        // @link https://socket.io/docs/v2/handling-cors/
+        // TODO update is to it is not disabled completely if possible
+        options.allowRequest = (req, callback) => {
+            callback(null, true);
+        };
+
         this.io = socketio(server, options);
         this.io.set('heartbeat timeout', 30000);
         this.io.use(this.handshake.bind(this));

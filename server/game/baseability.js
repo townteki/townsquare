@@ -181,9 +181,10 @@ class BaseAbility {
     /**
      * Pays all costs for the ability simultaneously.
      */
-    payCosts(context) {
+    payCosts(context, onlyExpendAction = false) {
         for(let cost of this.cost) {
-            if(!this.options.skipCost || !this.options.skipCost(cost)) {
+            if(!this.options.skipCost || !this.options.skipCost(cost) &&
+                (!onlyExpendAction || cost.name === 'expendAction')) {
                 cost.pay(context);
             }
         }
@@ -311,6 +312,14 @@ class BaseAbility {
             }
             this.resetOptions();
         });
+    }
+
+    cancel(markAsUsed = false) {
+        if(markAsUsed) {
+            this.incrementLimit();
+            this.cancelReason = 'abilityCancel';
+        }
+        this.cancelled = true;
     }
 
     isAction() {

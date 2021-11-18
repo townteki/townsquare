@@ -18,15 +18,19 @@ const GameActions = require('./GameActions');
 const RemoveFromGame = require('./GameActions/RemoveFromGame');
 const GhostRockSource = require('./GhostRockSource.js');
 
-const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber } = require('./Constants');
+const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber, HereticJokerCodes } = require('./Constants');
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
+
+/** @typedef {import('./game')} Game */
 
 class Player extends Spectator {
     constructor(id, user, owner, game) {
         super(id, user);
 
         // Ensure game is set before any cards have been created.
+        /** @type {Game} */
         this.game = game;
 
         //DTR specific
@@ -44,10 +48,8 @@ class Player extends Spectator {
         this.playCardRestrictions = [];
 
         this.owner = owner;
-        this.promptedActionWindows = user.promptedActionWindows;
-        this.keywordSettings = user.settings.keywordSettings;
-
         this.rankModifier = 0;
+        this.persistentRankModifier = 0;
         this.currentCasualties = 0;
         this.deck = {};
         this.handSize = StartingHandSize;
@@ -78,6 +80,13 @@ class Player extends Spectator {
 
     set casualties(value) {
         this.currentCasualties = value;
+    }
+
+    getFaction() {
+        if(!this.outfit) {
+            return '';
+        }
+        return this.outfit.gang_code;
     }
 
     modifyCasualties(amount) {
@@ -120,7 +129,14 @@ class Player extends Spectator {
     getOpponent() {
         let opponents = this.game.getOpponents(this);
         if(opponents.length === 0) {
-            return { name: 'test player', isCheatin: () => false, cardsInPlay: [], drawDeck: [] };
+            return { 
+                name: 'test player', 
+                isCheatin: () => false, 
+                modifyGhostRock: () => true,
+                cardsInPlay: [], 
+                drawDeck: [],
+                hand: []
+            };
         }
         return opponents[0];
     }
@@ -132,12 +148,6 @@ class Player extends Spectator {
     isCardUuidInList(list, card) {
         return list.any(c => {
             return c.uuid === card.uuid;
-        });
-    }
-
-    isCardNameInList(list, card) {
-        return list.any(c => {
-            return c.name === card.name;
         });
     }
 
@@ -153,10 +163,6 @@ class Player extends Spectator {
 
     addLocation(location) {
         this.locations.push(location);
-    }
-
-    findCardByName(list, name) {
-        return this.findCard(list, card => card.name === name);
     }
 
     findCardByUuidInAnyList(uuid) {
@@ -187,13 +193,14 @@ class Player extends Spectator {
 
         var cardsToReturn = [];
 
-        _.each(cardList, (card) => {
-            if(predicate(card)) {
+        cardList.forEach(card => {
+            if(!cardsToReturn.includes(card) && predicate(card)) {
                 cardsToReturn.push(card);
             }
 
             if(card.attachments) {
-                cardsToReturn = cardsToReturn.concat(card.attachments.filter(predicate));
+                cardsToReturn = cardsToReturn.concat(
+                    card.attachments.filter(att => !cardsToReturn.includes(att) && predicate(att)));
             }
 
             return cardsToReturn;
@@ -280,12 +287,13 @@ class Player extends Spectator {
         this.game.raiseEvent('onDrawHandDiscarded', { player: this }, () => {
             if(this.drawHandRevealed) {
                 this.drawHand.forEach(card => {
-                    if(card.getType() === 'joker') {
+                    if(card.getType() === 'joker' && !HereticJokerCodes.includes(card.code)) {
                         this.game.resolveGameAction(GameActions.aceCard({ card: card }));
                     }
                 });
             }
-            let handToDiscard = this.drawHand.filter(card => card.getType() !== 'joker');
+            let handToDiscard = this.drawHand.filter(card => 
+                card.getType() !== 'joker' || HereticJokerCodes.includes(card.code));
             this.discardCards(handToDiscard, discardedCards => {
                 this.game.raiseEvent('onAfterDrawHandDiscarded', { discardedCards: discardedCards });
             });
@@ -303,7 +311,7 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult('reveals', this.game.currentPhase === 'gambling');
+        this.determineHandResult('reveals', this.game.currentPhase === PhaseNames.Gambling);
     }
 
     determineHandResult(handResultText = 'reveals', doLowest = false) {
@@ -321,8 +329,12 @@ class Player extends Spectator {
                 return handText + `${card.getValueText()} of ${card.suit} | `;
             }, '');
         }
-        this.game.addMessage('{0} {1} {2}{3} (Rank {4}){5}', 
-            this, handResultText, cheatin, this.getHandRank().rankName, this.getHandRank().rank, handText);
+        let specialJokerText = this.getHandRank().jokerMod > 0 ? '+' : '';
+        if(this.getHandRank().specialJoker) {
+            specialJokerText += `${this.getHandRank().jokerMod} ${this.getHandRank().specialJoker.title}`;
+        }
+        this.game.addMessage('{0} {1} {2}{3} (Rank {4}{5}){6}', this, handResultText, cheatin, 
+            this.getHandRank().rankName, this.getHandRank().rank, specialJokerText, handText);
         this.game.raiseEvent('onHandResultDetermined', { player: this });
     }
 
@@ -375,7 +387,7 @@ class Player extends Spectator {
         }
     }
 
-    discardFromDraw(number, callback = () => true, options = {}) {
+    discardFromDrawDeck(number, callback = () => true, options = {}) {
         number = Math.min(number, this.drawDeck.length);
 
         var cards = this.drawDeck.slice(0, number);
@@ -393,9 +405,11 @@ class Player extends Spectator {
             promptTitle: updatedOptions.title,
             numCards: number,
             multiSelect: true,
-            activePromptTitle: updatedOptions.activePromptTitle || 'Select a card to discard',
-            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard their card(s)',
-            cardCondition: card => card.location === 'hand' && card.controller === this,
+            activePromptTitle: updatedOptions.activePromptTitle || 
+                number > 1 ? 'Select cards to discard' : 'Select a card to discard',
+            waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
+            cardCondition: card => card.location === 'hand' && card.controller === this &&
+                (!options.condition || options.condition(card)),
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
                     return false;
@@ -404,7 +418,8 @@ class Player extends Spectator {
                     callback(discarded);
                 }, updatedOptions, context);
                 return true;
-            }
+            },
+            source: updatedOptions.source
         });
     }
 
@@ -514,7 +529,9 @@ class Player extends Spectator {
     }
 
     addCostReducer(reducer) {
-        this.costReducers.push(reducer);
+        if(!this.costReducers.includes(reducer)) {
+            this.costReducers.push(reducer);
+        }
     }
 
     removeCostReducer(reducer) {
@@ -524,15 +541,15 @@ class Player extends Spectator {
         }
     }
 
-    getCostReduction(playingType, card) {
-        let matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card));
+    getCostReduction(playingType, card, context) {
+        let matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card, context));
         let reduction = matchingReducers.reduce((memo, reducer) => reducer.getAmount(card) + memo, 0);
         return reduction;
     }
 
-    getReducedCost(playingType, card) {
+    getReducedCost(playingType, card, context) {
         let baseCost = this.getBaseCost(playingType, card);
-        let reducedCost = baseCost - this.getCostReduction(playingType, card);
+        let reducedCost = baseCost - this.getCostReduction(playingType, card, context);
         return Math.max(reducedCost, card.getMinCost());
     }
 
@@ -559,14 +576,15 @@ class Player extends Spectator {
         return validSources.reduce((sum, source) => sum + source.ghostrock, 0);
     }
 
-    markUsedReducers(playingType, card) {
-        var matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card));
+    markUsedReducers(playingType, card, context) {
+        var matchingReducers = this.costReducers.filter(reducer => reducer.canReduce(playingType, card, context));
         for(let reducer of matchingReducers) {
             reducer.markUsed();
             if(reducer.isExpired()) {
                 this.removeCostReducer(reducer);
             }
         }
+        return matchingReducers;
     }
 
     isAced(card, checkSelf = true) {
@@ -692,7 +710,12 @@ class Player extends Spectator {
         }
 
         if(card.owner === this) {
-            return !this.game.anyCardsInPlay(c => c.title === card.title && c.owner === this && !c.facedown);
+            return !this.game.anyCardsInPlay(c => 
+                c !== card &&
+                c.title === card.title && 
+                c.owner === this &&
+                !c.facedown
+            );
         }
 
         return true;
@@ -702,7 +725,7 @@ class Player extends Spectator {
         const defaultParams = {
             originalLocation: card.location,
             playingType: params.playingType || 'play',
-            target: params.target || '',
+            target: params.targetLocationUuid || '',
             context: params.context || {},
             booted: !!params.booted
         };
@@ -729,6 +752,9 @@ class Player extends Spectator {
         switch(card.getType()) {
             case 'spell':
             case 'goods':
+                if(updatedParams.playingType === 'shoppin') {
+                    updatedParams.targetParent = updatedParams.context.target;
+                }
                 if(updatedParams.targetParent && this.canAttach(card, updatedParams.targetParent, updatedParams.playingType)) {
                     this.attach(card, updatedParams.targetParent, updatedParams.playingType, (attachment, target) =>
                         onAttachCompleted(attachment, target, updatedParams), updatedParams.scientist);
@@ -765,15 +791,26 @@ class Player extends Spectator {
                     }
                 }
                 break;
-            case 'deed':
-                this.addDeedToStreet(card, updatedParams.target);
-                if(updatedParams.playingType === 'shoppin') {
-                    this.game.addMessage('{0} does Shoppin\' to build {1} on his street{2}', this, card, costText);
-                } else if(this.game.currentPhase !== 'setup') {
-                    this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
-                }
-                this.entersPlay(card, updatedParams);
+            case 'deed': {
+                const putIntoPlayFunc = () => {
+                    this.addDeedToStreet(card, updatedParams.target);
+                    if(updatedParams.playingType === 'shoppin') {
+                        const suffix = (card.hasKeyword('Out of Town') ? 'at out of town location' : 'on their street') + costText;
+                        this.game.addMessage('{0} does Shoppin\' to build {1} {2}', this, card, suffix);
+                    } else if(this.game.currentPhase !== 'setup') {
+                        this.game.addMessage('{0} brings into play deed {1}{2}', this, card, costText);
+                    }
+                    this.entersPlay(card, updatedParams);                    
+                };              
+                if(card.isGadget()) {
+                    this.inventGadget(card, updatedParams.scientist, () => {
+                        putIntoPlayFunc();
+                    });
+                } else {
+                    putIntoPlayFunc();
+                }                
                 break;
+            }
             default:
                 //empty
         }
@@ -803,31 +840,24 @@ class Player extends Spectator {
         if(card.getType() !== 'dude') {
             return false;
         }
-        let cardTitle = card.title.trim();
-        let pattern = '(.+)[ ]?\\(Exp\\.[0-9]\\)?';
-        let match = cardTitle.match(pattern);
-        if(match) {
-            cardTitle = match[1].trim();
-        }
+        const getTitle = rawTitle => {
+            let pattern = '(.+)[ ]?\\(Exp\\.[0-9]\\)?';
+            let match = rawTitle.match(pattern);
+            if(match) {
+                return match[1].trim();
+            }
+            return rawTitle;
+        };
+        const cardTitle = getTitle(card.title.trim());
 
         return this.cardsInPlay.find(cardInPlay => {
-            if(cardInPlay.title === cardTitle) {
+            if(getTitle(cardInPlay.title) === cardTitle) {
                 let cardInPlayExp = cardInPlay.keywords.getExperienceLevel();
                 let cardToPlayExp = card.keywords.getExperienceLevel();
                 return Math.abs(cardInPlayExp - cardToPlayExp) === 1;
             }
             return false;
         });
-    }
-
-    resetForStartOfRound() {
-        this.firstPlayer = false;
-
-        if(this.resetTimerAtEndOfRound) {
-            this.noTimer = false;
-        }
-
-        this.gainedGhostRock = 0;
     }
 
     inventGadget(gadget, scientist, successHandler = () => true) {
@@ -896,7 +926,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(!card.locationCard || card.locationCard.controller !== this) {
+            if(!card.locationCard || card.locationCard.controller !== attachment.controller) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
@@ -913,7 +943,7 @@ class Player extends Spectator {
         }
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && 
-            (playingType === 'shoppin' || playingType === 'ability') &&
+            ['shoppin', 'ability', 'play'].includes(playingType) &&
             !attachment.doesNotHaveToBeInvented()) {
             let scientist = defaultScientist || 
                 (playingType === 'shoppin' && !attachment.isImprovement() ? card : null);
@@ -933,7 +963,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(playingType !== 'trading') {
+        if(playingType !== 'trading' && playingType !== 'upgrade') {
             attachment.owner.removeCardFromPile(attachment);
         }
 
@@ -943,7 +973,7 @@ class Player extends Spectator {
         if(originalLocation !== 'play area') {
             attachment.owner.cardsInPlay.push(attachment);
         }
-        attachment.moveTo('play area', card);
+        attachment.moveTo('play area', true, card);
         card.attachments.push(attachment);
         if(attachCallback) {
             attachCallback(attachment, card, playingType);
@@ -1029,7 +1059,8 @@ class Player extends Spectator {
         this.hand.forEach(card => {
             if(!['goods', 'spell', 'action', 'joker'].includes(card.getType())) {
                 this.game.drop(this.name, card.uuid, 'play area', this.outfit.uuid);
-                this.ghostrock -= card.cost;
+                let reducedCost = this.getReducedCost('setup', card, this.createContext());
+                this.ghostrock -= reducedCost;
             }
         });
 
@@ -1055,9 +1086,9 @@ class Player extends Spectator {
         return production;
     }
 
-    determineUpkeep() {
+    determineUpkeep(selectedCards = []) {
         let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
-            card.upkeep > 0);
+            card.upkeep > 0 && !selectedCards.includes(card));
         let upkeep = upkeepCards.reduce((memo, card) => {
             return memo + card.upkeep;
         }, 0);
@@ -1082,6 +1113,9 @@ class Player extends Spectator {
         this.sundownDiscardDone = false;
         this.passTurn = false;
         this.cardsInPlay.forEach(card => card.resetForRound());
+        if(this.resetTimerAtEndOfRound) {
+            this.noTimer = false;
+        }
     }
 
     getHandRank() {
@@ -1089,7 +1123,7 @@ class Player extends Spectator {
     }
 
     getTotalRank() {
-        let totalRank = this.getHandRank().rank + this.rankModifier;
+        let totalRank = this.getHandRank().rank + this.getHandRank().jokerMod + this.rankModifier;
         if(totalRank < 1) {
             return 1;
         }
@@ -1099,19 +1133,24 @@ class Player extends Spectator {
         return totalRank;
     }
 
-    addHandRankMessage(showHand = true) {
-        if(showHand) {
-            let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
-            this.game.addMessage('{0}\' hand is: {1}{2} (Rank {3})', this, cheatin, this.getHandRank().rankName, this.getHandRank().rank);
+    modifyRank(amount, context, applying = true, fromEffect = false) {
+        if(applying && this.cannotModifyHandRanks(context)) {
+            if(!fromEffect) {
+                let modifyText = '{0}\'s rank could not be modified';
+                if(context) {
+                    modifyText += ' by {1}';
+                }
+                this.game.addMessage(modifyText, this, context.source);
+            }
+            return false;
         }
-        this.game.addMessage('{0}\'s Total rank: {1} (modifier {2})', this, this.getTotalRank(), this.rankModifier);
-    }
 
-    modifyRank(amount, context, applying = true) {
-        if(!this.cannotModifyHandRanks(context) || !applying) {
-            this.rankModifier += amount;
-            this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+        this.rankModifier += amount;
+        if(fromEffect) {
+            this.persistentRankModifier += amount;
         }
+        this.game.raiseEvent('onHandRankModified', { player: this, amount: amount});
+        return true;
     }
 
     modifyPosseBonus(amount, type = 'stud') {
@@ -1190,13 +1229,14 @@ class Player extends Spectator {
         }
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
-            const gl = this.findLocation(key);
+            const gl = key === TownSquareUUID ? this.game.townsquare : this.findLocation(key);
             if(gl.adjacencyMap.has(gameLocation.uuid)) {
                 gl.adjacencyMap.delete(gameLocation.uuid);
             }
         });
         this.game.queueSimpleStep(() => {
-            this.locations = this.locations.filter(loc => loc !== gameLocation);
+            let outOfTownLocations = this.locations.filter(loc => loc.isOutOfTown());
+            this.locations = this.locations.filter(loc => loc !== gameLocation && !loc.isOutOfTown());
             if(!card.isOutOfTown()) {
                 const orderedLocations = this.locations.sort((a, b) => {
                     return a.order - b.order;
@@ -1222,7 +1262,10 @@ class Player extends Spectator {
                         }
                     }
                 }
+            } else {
+                outOfTownLocations = outOfTownLocations.filter(ootLoc => ootLoc !== gameLocation);
             }
+            this.locations = this.locations.concat(outOfTownLocations);
         });
     }
 
@@ -1279,11 +1322,12 @@ class Player extends Spectator {
         return event;
     }
 
-    drawDeckAction(properties, cardCallback) {
+    drawDeckAction(amount, cardCallback) {
         let remainder = 0;
-        let cards = this.drawDeck.slice(0, properties.amount);
-        if(properties.amount < properties.desiredAmount) {
-            remainder = properties.desiredAmount - properties.amount;
+        const actualAmount = this.getNumCardsToDraw(amount);
+        let cards = this.drawDeck.slice(0, actualAmount);
+        if(actualAmount < amount) {
+            remainder = amount - actualAmount;
         }
 
         for(const card of cards) {
@@ -1306,11 +1350,13 @@ class Player extends Spectator {
         if(!card) {
             return;
         }
-        if(card.getType() === 'joker') {
-            this.aceCard(card);
-        } else {
-            this.moveCard(card, 'discard pile', { isPull: true });
-        }
+        this.game.raiseEvent('onPulledCardHandled', { player: this, card }, event => {
+            if(event.card.getType() === 'joker' && !HereticJokerCodes.includes(event.card.code)) {
+                event.player.aceCard(event.card);
+            } else {
+                event.player.moveCard(event.card, 'discard pile', { isPull: true });
+            }
+        });
     }
 
     handleTaoTechniques(technique, kfDude, isSuccessful) {
@@ -1319,11 +1365,9 @@ class Player extends Spectator {
                 technique.owner.moveCard(technique, technique.actionPlacementLocation);
             }
         };
-        this.attach(technique, kfDude, 'technique', () => {
-            if(!isSuccessful) {
-                this.bootCard(technique);
-            }
-        });
+        if(isSuccessful) {
+            this.attach(technique, kfDude, 'technique');
+        }
         if(this.game.shootout) {
             this.game.once('onPlayWindowClosed', eventHandler);
             this.game.once('onShootoutPhaseFinished', () => {
@@ -1370,6 +1414,7 @@ class Player extends Spectator {
             failHandler: properties.failHandler || (() => true),
             pullingDude: properties.pullingDude,
             pullBonus: properties.pullBonus || 0,
+            difficulty: properties.difficulty,
             source: properties.source,
             player: this,
             chatCommandDiff: properties.chatCommandDiff,
@@ -1431,7 +1476,8 @@ class Player extends Spectator {
         }, event => {
             const props = Object.assign(properties, {
                 successCondition: pulledValue => pulledValue >= event.difficulty,
-                pullBonus: event.skillRating
+                pullBonus: event.skillRating,
+                difficulty
             });
             this.handlePull(props, context);
         });
@@ -1440,7 +1486,8 @@ class Player extends Spectator {
     pullForKungFu(difficulty, properties, context) {
         const props = Object.assign(properties, {
             successCondition: pulledValue => pulledValue < difficulty,
-            pullBonus: 0
+            pullBonus: 0,
+            difficulty
         });
         this.handlePull(props, context);
     }
@@ -1529,14 +1576,13 @@ class Player extends Spectator {
     }
 
     findLocation(locationUuid) {
-        if(locationUuid === TownSquareUUID) {
-            return this.game.townsquare;
-        }
         return this.locations.find(location => location.uuid === locationUuid);
     }
 
-    getDudesInLocation(locationUuid) {
-        return this.cardsInPlay.filter(card => card.getType() === 'dude' && card.gamelocation === locationUuid);
+    getDudesAtLocation(locationUuid, condition) {
+        return this.cardsInPlay.filter(card => card.getType() === 'dude' && 
+            card.gamelocation === locationUuid &&
+            condition(card));
     }
 
     createContext(context) {
@@ -1597,7 +1643,7 @@ class Player extends Spectator {
             moveMessage = '{0} boots {1} to move them to {2}';
         }
 
-        dude.moveToLocation(destination.uuid);
+        dude.moveToLocation(destination.uuid, options);
         if(!options.isCardEffect && !dude.isToken()) {
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
         }
@@ -1607,8 +1653,11 @@ class Player extends Spectator {
         }
     }
 
-    moveCardWithContext(card, targetLocation, context) {
+    moveCardWithContext(card, targetLocation, context, showMessage = false) {
         if(card.location === 'discard pile' && this.cardsCannotLeaveDiscard(context)) {
+            if(showMessage) {
+                this.game.addMessage('{0} cannot put {1} into their hand because cards cannot leave discard pile', this, card);
+            }
             return false;
         }        
         this.moveCard(card, targetLocation, {}, null);
@@ -1642,7 +1691,8 @@ class Player extends Spectator {
         var params = {
             player: this,
             card: card,
-            targetLocation
+            targetLocation,
+            originalGameLocation: card.gamelocation
         };
 
         if(card.location === 'play area') {
@@ -1654,7 +1704,7 @@ class Player extends Spectator {
             if(targetLocation !== 'play area') {
                 let cardLeavePlay = () => {
                     card.leavesPlay();
-                    card.moveTo(targetLocation);
+                    card.moveTo(targetLocation, options.raiseEvents);
                 };
 
                 if(options.raiseEvents) {
@@ -1675,7 +1725,7 @@ class Player extends Spectator {
         }
 
         if(card.location !== 'play area') {
-            card.moveTo(targetLocation);
+            card.moveTo(targetLocation, options.raiseEvents);
         }
 
         if(['draw deck', 'discard pile', 'being played'].includes(targetLocation) && !options.bottom) {
@@ -1704,11 +1754,17 @@ class Player extends Spectator {
         return this.game.resolveGameAction(GameActions.bootCard({ card }), this.createContext(context));
     }
 
-    bootCards(cards, context) {
+    bootCards(cards, context, callback = () => true) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.bootCard({ card }))
         );
-        return this.game.resolveGameAction(action, this.createContext(context));
+        let event = this.game.resolveGameAction(action, this.createContext(context));
+        event.thenExecute(() => {
+            let cards = event.childEvents.map(childEvent => childEvent.card);
+            callback(cards);
+        });
+
+        return event;
     }
 
     unbootCard(card, options = {}, context) {
@@ -1819,6 +1875,14 @@ class Player extends Spectator {
         return this.options.contains('cannotModifyHandRanks', context);
     }
 
+    cannotIncreaseCasualties(context = {}) {
+        return this.options.contains('cannotIncreaseCasualties', context);
+    }
+
+    cannotDecreaseCasualties(context = {}) {
+        return this.options.contains('cannotDecreaseCasualties', context);
+    }    
+
     cardsCannotLeaveDiscard(context = {}) {
         return this.options.contains('cardsCannotLeaveDiscard', context);
     }
@@ -1875,9 +1939,7 @@ class Player extends Spectator {
             numDrawCards: this.drawDeck.length,
             name: this.name,
             phase: this.game.currentPhase,
-            promptedActionWindows: this.promptedActionWindows,
             stats: this.getStats(isActivePlayer),
-            keywordSettings: this.keywordSettings,
             timerSettings: this.timerSettings,
             totalControl: this.getTotalControl(),
             totalInfluence: this.getTotalInfluence(),

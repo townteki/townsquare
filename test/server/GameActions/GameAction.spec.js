@@ -10,7 +10,8 @@ describe('GameAction', function() {
             this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction']);
             this.cardSpy.allowGameAction.and.returnValue(true);
             this.context = { context: 1 };
-            this.props = { card: this.cardSpy, context: this.context };
+            this.options = { isCardEffect: true };
+            this.props = { card: this.cardSpy, context: this.context, options: this.options };
 
             // Inheritors should override canChangeGameState, so explicitly spy
             // on it in these tests to simulate that.
@@ -27,7 +28,7 @@ describe('GameAction', function() {
             it('should check the card for immunity', function() {
                 this.action.allow(this.props);
 
-                expect(this.cardSpy.allowGameAction).toHaveBeenCalledWith('actionName', this.context);
+                expect(this.cardSpy.allowGameAction).toHaveBeenCalledWith('actionName', this.context, this.options);
             });
 
             it('should return true', function() {

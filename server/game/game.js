@@ -31,7 +31,6 @@ const ChooseGRSourceAmounts = require('./gamesteps/ChooseGRSourceAmounts.js');
 const DropCommand = require('./ServerCommands/DropCommand');
 const CardVisibility = require('./CardVisibility');
 const PlainTextGameChatFormatter = require('./PlainTextGameChatFormatter');
-const GameActions = require('./GameActions');
 const TimeLimit = require('./timeLimit.js');
 const Location = require('./gamelocation.js');
 const Shootout = require('./gamesteps/shootout.js');
@@ -39,7 +38,10 @@ const ChooseYesNoPrompt = require('./gamesteps/ChooseYesNoPrompt.js');
 const SelectLocationPrompt = require('./gamesteps/selectlocationprompt.js');
 const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
+const PhaseNames = require('./Constants/PhaseNames.js');
+const { TownSquareUUID } = require('./Constants/index.js');
 
+/** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
     constructor(details, options = {}) {
         super();
@@ -74,6 +76,7 @@ class Game extends EventEmitter {
         this.beforeEventHandlers = {};
         this.password = details.password;
         this.cancelPromptUsed = false;
+        /** @type {Shootout} */
         this.shootout = null;
 
         this.cardData = options.cardData || [];
@@ -155,6 +158,11 @@ class Game extends EventEmitter {
         return this.playersAndSpectators[playerName] && !this.playersAndSpectators[playerName].left;
     }
 
+    /**
+     * Returns all players in the game (not Spectators).
+     *
+     * @returns {Array.<Player>} - array of Players.
+     */    
     getPlayers() {
         return Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
     }
@@ -271,6 +279,9 @@ class Game extends EventEmitter {
         if(!uuid) {
             return;
         }
+        if(uuid === TownSquareUUID) {
+            return this.townsquare;
+        }        
         for(let player of this.getPlayers()) {
             let foundLocation = player.findLocation(uuid); 
             if(foundLocation) {
@@ -308,18 +319,19 @@ class Game extends EventEmitter {
         return gameLocation ? gameLocation.isOpponentsHome(player) : false;
     }
 
-    getDudesAtLocation(locationUuid) {
+    getDudesAtLocation(locationUuid, condition) {
         let gameLocation = this.findLocation(locationUuid);
         if(!gameLocation) {
             return [];
         }
-        return gameLocation.getDudes();
+        return gameLocation.getDudes(condition);
     }
 
-    getDudesInPlay(player) {
+    getDudesInPlay(player, condition = () => true) {
         return this.filterCardsInPlay(card => 
             card.getType() === 'dude' &&
-            (!player || player === card.controller)
+            (!player || player === card.controller) &&
+            condition(card)
         );
     }
 
@@ -348,28 +360,7 @@ class Game extends EventEmitter {
             return;
         }
 
-        if(card.onClick(player)) {
-            return;
-        } 
-
-        this.defaultCardClick(player, card);
-    }
-
-    defaultCardClick(player, card) {
-        if(card.facedown || card.controller !== player) {
-            return;
-        }
-
-        let action = card.booted ?
-            GameActions.unbootCard({ card, force: true }) :
-            GameActions.bootCard({ card, force: true });
-
-        this.resolveGameAction(action).thenExecute(() => {
-            let bootStatus = card.booted ? 'boots' : 'unboots';
-            let cardFragment = card.getType() === 'outfit' ? 'their outfit card' : card;
-
-            this.addAlert('danger', '{0} {1} {2}', player, bootStatus, cardFragment);
-        });
+        card.onClick(player);
     }
 
     cardHasMenuItem(card, player, menuItem) {
@@ -535,19 +526,24 @@ class Game extends EventEmitter {
     }
 
     resolveTiebreaker(player1, player2, isForLowball = false) {
-        if(player1.rankModifier < 0) {
-            if(player2.rankModifier < 0) {
-                return { decision: 'exact tie' };
-            }
-            return isForLowball ? { winner: player2, loser: player1, decision: 'rank modifier' } : { winner: player1, loser: player2, decision: 'rank modifier' };
+        if((player1.rankModifier < 0 && player2.rankModifier < 0) ||
+            (player1.rankModifier > 0 && player2.rankModifier > 0)) {
+            return { decision: 'exact tie' };
         }
-        if(player1.rankModifier > 0) {
-            if(player2.rankModifier > 0) {
-                return { decision: 'exact tie' };
-            }
-            return isForLowball ? { winner: player1, loser: player2, decision: 'rank modifier' } : { winner: player2, loser: player1, decision: 'rank modifier' };
+        if(player1.rankModifier || player2.rankModifier) {
+            let playerLowerMod = player1.rankModifier < player2.rankModifier ? player1 : player2;
+            let playerHigherMod = player1.rankModifier < player2.rankModifier ? player2 : player1;
+            return isForLowball ? { 
+                winner: playerHigherMod, 
+                loser: playerLowerMod, 
+                decision: 'rank modifier' 
+            } : { 
+                winner: playerLowerMod, 
+                loser: playerHigherMod, 
+                decision: 'rank modifier' 
+            };
         }
-        if(!player1.getHandRank().tiebreaker) {
+        if(!player1.getHandRank().tiebreaker || !player2.getHandRank().tiebreaker) {
             return { decision: 'exact tie' };
         }
         for(let i = 0; i < player1.getHandRank().tiebreaker.length; i++) {
@@ -768,15 +764,6 @@ class Game extends EventEmitter {
         }
     }
 
-    togglePromptedActionWindow(playerName, windowName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.promptedActionWindows[windowName] = toggle;
-    }
-
     toggleTimerSetting(playerName, settingName, toggle) {
         var player = this.getPlayerByName(playerName);
         if(!player) {
@@ -784,24 +771,6 @@ class Game extends EventEmitter {
         }
 
         player.timerSettings[settingName] = toggle;
-    }
-
-    toggleKeywordSetting(playerName, settingName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.keywordSettings[settingName] = toggle;
-    }
-
-    toggleDupes(playerName, toggle) {
-        var player = this.getPlayerByName(playerName);
-        if(!player) {
-            return;
-        }
-
-        player.promptDupes = toggle;
     }
 
     initialise() {
@@ -890,13 +859,23 @@ class Game extends EventEmitter {
         return this.getCurrentPlayWindowName() === 'shootout plays' || this.getCurrentPlayWindowName() === 'shootout resolution';
     }
 
+    makePlayOutOfOrder(player, card, properties) {
+        if(this.currentPlayWindow) {
+            this.currentPlayWindow.makePlayOutOfOrder(player, card, properties);
+        }        
+    }
+
     markActionAsTaken(context) {
         if(this.currentPlayWindow) {
-            if(this.currentPlayWindow.currentPlayer !== context.player) {
-                this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.getCurrentPlayWindowName());
-            }
-            if(context.ability) {
-                this.currentPlayWindow.markActionAsTaken(context.player);
+            if(!this.currentPlayWindow.doNotMarkActionAsTaken) {
+                if(this.currentPlayWindow.currentPlayer !== context.player) {
+                    this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.getCurrentPlayWindowName());
+                }
+                if(context.ability) {
+                    this.currentPlayWindow.markActionAsTaken(context.player);
+                }
+            } else {
+                this.currentPlayWindow.onMakePlayDone();
             }
         } else if(this.currentPhase !== 'setup' || this.hasOpenReactionWindow()) {
             this.addAlert('danger', '{0} uses {1} outside of a play window', context.player, context.source);
@@ -987,6 +966,14 @@ class Game extends EventEmitter {
             this.beforeEventHandlers[eventName] = [beforeHandler];
         } else {
             this.beforeEventHandlers[eventName].push(beforeHandler);
+        }
+    }
+
+    removeBefore(eventName, handler) {
+        this.beforeEventHandlers[eventName] = this.beforeEventHandlers[eventName].filter(beforeHandler => 
+            beforeHandler.handler !== handler);
+        if(!this.beforeEventHandlers[eventName].length) {
+            delete this.beforeEventHandlers[eventName];
         }
     }
 
@@ -1124,7 +1111,10 @@ class Game extends EventEmitter {
             (!needUnbooted || !card.booted) &&
             (!context.ability.actionContext || card.allowGameAction(context.ability.actionContext.gameAction, context))
         );
-        if(this.shootout && context.ability.playTypePlayed(context) !== 'shootout:join') {
+        if(this.shootout) {
+            if(context.ability.playTypePlayed(context) === 'shootout:join') {
+                return kfDudes.filter(dude => !dude.isParticipating());
+            }
             return kfDudes.filter(dude => dude.isParticipating());
         }
         return kfDudes;
@@ -1374,7 +1364,7 @@ class Game extends EventEmitter {
     }
 
     passToNextPlayer() {
-        if(this.currentPhase === 'high noon') {
+        if(this.currentPhase === PhaseNames.HighNoon) {
             this.pipeline.getCurrentStep().passToNextPlayer();
         }
     }

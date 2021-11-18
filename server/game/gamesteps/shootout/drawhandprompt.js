@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames');
 const UiPrompt = require('../uiprompt');
 
 class DrawHandPrompt extends UiPrompt {
@@ -16,6 +17,7 @@ class DrawHandPrompt extends UiPrompt {
             this.selectedCards[player.name] = [];
             this.updateDrawCount(player);
         });
+        this.promptInfo = {};
     }
 
     activeCondition(player) {
@@ -43,14 +45,17 @@ class DrawHandPrompt extends UiPrompt {
                 buttons: [
                     { arg: 'redraw', text: 'Done' }
                 ],
-                selectCard: true
+                selectCard: true,
+                popupStayOpen: true
             };
         } 
         return {
             menuTitle: 'Reveal draw hand?',
+            promptInfo: this.promptInfo,
             buttons: [
                 { arg: 'revealdraw', text: 'Ready' }
-            ]
+            ],
+            popupStayOpen: true
         };
     }
 
@@ -63,7 +68,7 @@ class DrawHandPrompt extends UiPrompt {
     }
 
     continue() {
-        if(this.game.currentPhase === 'gambling') {
+        if(this.game.currentPhase === PhaseNames.Gambling) {
             // in gambling phase hands are drawn in separate step before this prompt
             this.drawCounts.forEach(drawCount => {
                 drawCount.handDrawn = true;
@@ -144,8 +149,11 @@ class DrawHandPrompt extends UiPrompt {
         if(arg === 'revealdraw') {
             if(player.drawHand.length !== 5) {
                 player.drawHandSelected = false;
+                this.promptInfo.type = 'danger';
+                this.promptInfo.message = `Number of cards in draw hand (${player.drawHand.length}) is not 5!`;
                 return false;
             }
+            this.promptInfo = {};
             player.drawHandSelected = true;   
             this.game.addMessage('{0} is ready to reveal their draw hand', player);
             return true;

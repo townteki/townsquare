@@ -1,3 +1,4 @@
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 const HandResult = require('../../handresult.js');
@@ -7,7 +8,7 @@ class HenryMoran extends DudeCard {
         this.traitReaction({
             triggerBefore: true,
             when: {
-                onDrawHandsRevealed: () => !this.booted && this.game.currentPhase === 'gambling' &&
+                onDrawHandsRevealed: () => !this.booted && this.game.currentPhase === PhaseNames.Gambling &&
                     this.checkIfIllegal()
             },
             message: context => 
@@ -16,13 +17,8 @@ class HenryMoran extends DudeCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: this }), context);
                 context.player.discardDrawHand();
-                this.game.queueSimpleStep(() => {
-                    const actualAmount = context.player.getNumCardsToDraw(5);
-                    const props = {
-                        amount: actualAmount,
-                        desiredAmount: 5
-                    };                    
-                    context.player.drawDeckAction(props, card => context.player.moveCardWithContext(card, 'draw hand', context));
+                this.game.queueSimpleStep(() => {                 
+                    context.player.drawDeckAction(5, card => context.player.moveCardWithContext(card, 'draw hand', context));
                 });
             }
         });

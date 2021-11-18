@@ -6,10 +6,12 @@ const BootCard = require('./BootCard');
 const CallOut = require('./CallOut');
 const CancelEffects = require('./CancelEffects');
 const ChooseGameAction = require('./ChooseGameAction');
+const DecreaseCasualties = require('./DecreaseCasualties');
 const DiscardCard = require('./DiscardCard');
 const DiscardTopCards = require('./DiscardTopCards');
 const DrawCards = require('./DrawCards');
 const GainGhostRock = require('./GainGhostRock');
+const IncreaseCasualties = require('./IncreaseCasualties');
 const JoinPosse = require('./JoinPosse');
 const LookAtDeck = require('./LookAtDeck');
 const LookAtHand = require('./LookAtHand');
@@ -22,7 +24,7 @@ const RemoveBounty = require('./RemoveBounty');
 const RemoveFromGame = require('./RemoveFromGame');
 const RemoveFromPosse = require('./RemoveFromPosse');
 const ReturnCardToHand = require('./ReturnCardToHand');
-const RevealCard = require('./RevealCard');
+const RevealTopCards = require('./RevealTopCards');
 const Search = require('./Search');
 const SendHome = require('./SendHome');
 const Shuffle = require('./Shuffle');
@@ -67,6 +69,15 @@ const GameActions = {
         context => context
     ),
     /**
+     * Decreases player casualties.
+     * 
+     * @param {*} props properties: 
+     *  - `player`: player for which casualties should be decreased
+     *  - `amount` (999): amount of casualties to be prevented (decreased). 
+     *      Default is 999 which basically means all casualties are prevented.
+     */    
+    decreaseCasualties: props => new AbilityAdapter(DecreaseCasualties, props),
+    /**
      * Discards card.
      * 
      * @param {*} props properties:
@@ -78,6 +89,14 @@ const GameActions = {
     discardTopCards: props => new AbilityAdapter(DiscardTopCards, props),
     drawCards: props => new AbilityAdapter(DrawCards, props),
     gainGhostRock: props => new AbilityAdapter(GainGhostRock, props),
+    /**
+     * Increases player casualties.
+     * 
+     * @param {*} props properties: 
+     *  - `player`: player for which casualties should be increased
+     *  - `amount` (1): amount of casualties to be increased
+     */      
+    increaseCasualties: props => new AbilityAdapter(IncreaseCasualties, props),
     /**
      * Adds dude to posse, and optionally also moves them into the shootout location.
      * 
@@ -128,7 +147,7 @@ const GameActions = {
     removeFromGame: props => new AbilityAdapter(RemoveFromGame, props),
     removeFromPosse: props => new AbilityAdapter(RemoveFromPosse, props),
     returnCardToHand: props => new AbilityAdapter(ReturnCardToHand, props),
-    revealCard: props => new AbilityAdapter(RevealCard, props),
+    revealTopCards: props => new AbilityAdapter(RevealTopCards, props),
     /**
      * Searches specific location for a card(s).
      * 

@@ -59,7 +59,8 @@ class FuntimeFreddy extends DudeCard {
                                                     title: this.title
                                                 }, context);                                                    
                                                 return true;
-                                            }
+                                            },
+                                            source: this
                                         });
                                     });                                      
                                     return true;

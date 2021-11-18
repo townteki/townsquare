@@ -7,7 +7,8 @@ class JoanMcGruder extends DudeCard {
             match: this,
             effect: [
                 ability.effects.dynamicBullets(() => this.dudesInJoansPosse() * -1),
-                ability.effects.cannotLeaveShootout()
+                ability.effects.cannotLeaveShootout(),
+                ability.effects.cannotBeSentHome('any', () => this.isParticipating())
             ]
         });
         this.persistentEffect({
@@ -16,8 +17,8 @@ class JoanMcGruder extends DudeCard {
             match: card => card.location === 'play area' &&
                 card.bounty <= card.influence,
             effect: [
-                ability.effects.cannotBeAffected('opponent', context => 
-                    context.ability && context.ability.isCardAbility() && context.ability.card.parent === this)
+                ability.effects.cannotBeAffected('opponent', context => context.ability && context.ability.card &&
+                    context.ability.isCardAbility() && context.ability.card.parent === this)
             ]
         });
     }

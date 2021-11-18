@@ -19,44 +19,39 @@ describe('the Player', () => {
     });
 
     describe('the drawDeckAction() function', () => {
-        describe('when amount and desiredAmount are equal', () => {
-            it('should return desiredAmount', () => {
-                var props = { amount: 2, desiredAmount: 2};
-                var cards = player.drawDeckAction(props, jasmine.createSpy('callback'));
+        describe('when amount is less than # of cards in deck', () => {
+            it('should return amount of cards', () => {
+                var cards = player.drawDeckAction(2, jasmine.createSpy('callback'));
                 expect(cards.length).toBe(2);
             });
 
             it('should call callback for each card', () => {
-                var props = { amount: 2, desiredAmount: 2};
                 var callback = jasmine.createSpy('callback');
-                player.searchDrawDeck(props, callback);
+                player.searchDrawDeck(2, callback);
 
                 expect(callback).toHaveBeenCalledTimes(2);
             });
         });
 
-        describe('when desiredAmount is greater than amount', () => {
-            it('should return desiredAmount', () => {
-                var props = { amount: 1, desiredAmount: 2};
-                var cards = player.drawDeckAction(props, card => {
+        describe('when amount is greater than # cards in draw deck', () => {
+            it('should return amount of cards', () => {
+                var cards = player.drawDeckAction(2, card => {
                     player.drawDeck = player.drawDeck.filter(drawCard => card !== drawCard);
                 });
                 expect(cards.length).toBe(2);
             });
 
             it('should call callback for each card', () => {
-                var props = { amount: 1, desiredAmount: 2};
                 var callback = jasmine.createSpy('callback');
-                player.drawDeckAction(props, callback);
+                player.drawDeckAction(2, callback);
 
                 expect(callback).toHaveBeenCalledTimes(2);
             });
 
             it('shuffles discard to draw deck', () => {
-                var props = { amount: 1, desiredAmount: 2};
                 var callback = jasmine.createSpy('callback');
                 player.shuffleDiscardToDrawDeck = jasmine.createSpy('shuffleDiscardToDrawDeck');
-                player.drawDeckAction(props, callback);
+                player.drawDeckAction(3, callback);
 
                 expect(player.shuffleDiscardToDrawDeck).toHaveBeenCalledTimes(1);
             });

@@ -20,25 +20,25 @@ class DeAnnulosMysteriis extends GoodsCard {
                 this.game.addMessage('{0} uses {1} and aces it to play {2} from discard', 
                     context.player, this, context.target),
             handler: context => {
-                const eventHandler = event => {
-                    this.untilEndOfShootoutPhase(context.ability, ability => ({
-                        match: event.shootout.leader,
-                        effect: [
-                            ability.effects.setAsStud(),
-                            ability.effects.modifyBullets(1)
-                        ]
-                    }));
-                    this.game.addMessage('{0} makes {1} a stud and gives them +1 bullets thanks to {2}', 
-                        context.player, event.shootout.leader, this);
-                };
-                this.game.once('onShootoutPhaseStarted', eventHandler);
-
-                context.player.moveCardWithContext(context.target, 'hand', context);
-                context.target.useAbility(context.player, { 
-                    doNotMarkActionAsTaken: true
-                });
-                this.game.onceConditional('onCardAbilityResolved', { condition: event => event.ability === context.ability },
-                    () => this.game.removeListener('onShootoutPhaseStarted', eventHandler));
+                if(context.player.moveCardWithContext(context.target, 'hand', context, true)) {
+                    const eventHandler = event => {
+                        this.untilEndOfShootoutPhase(context.ability, ability => ({
+                            match: event.shootout.leader,
+                            effect: [
+                                ability.effects.setAsStud(),
+                                ability.effects.modifyBullets(1)
+                            ]
+                        }));
+                        this.game.addMessage('{0} makes {1} a stud and gives them +1 bullets thanks to {2}', 
+                            context.player, event.shootout.leader, this);
+                    };
+                    this.game.once('onShootoutPhaseStarted', eventHandler);                    
+                    context.target.useAbility(context.player, { 
+                        doNotMarkActionAsTaken: true
+                    });
+                    this.game.onceConditional('onCardAbilityResolved', { condition: event => event.ability === context.ability },
+                        () => this.game.removeListener('onShootoutPhaseStarted', eventHandler));
+                }
             }
         });
     }

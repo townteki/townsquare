@@ -18,8 +18,16 @@ class SingleCostReducer extends BaseCostReducer {
         this.used = true;
     }
 
+    markUnused() {
+        this.player.addCostReducer(this);
+        this.used = false;   
+    }
+
     isExpired() {
         return this.used;
+    }
+
+    registerEvents() {
     }
 
     unregisterEvents() {

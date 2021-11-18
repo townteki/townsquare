@@ -22,7 +22,7 @@ class TechnologicalExhibition extends ActionCard {
                 this.game.resolveGameAction(
                     GameActions.search({
                         title: 'Select a gadget to put into play',
-                        match: { keyword: 'gadget', type: 'goods' },
+                        match: { keyword: 'gadget' },
                         location: ['hand', 'discard pile'],
                         numToSelect: 1,
                         message: {

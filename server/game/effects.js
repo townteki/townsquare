@@ -4,7 +4,6 @@ const CardTextDefinition = require('./CardTextDefinition');
 const CostReducer = require('./costreducer.js');
 const PlayableLocation = require('./playablelocation.js');
 const CannotRestriction = require('./cannotrestriction.js');
-const ImmunityRestriction = require('./immunityrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
 
@@ -375,6 +374,7 @@ const Effects = {
     cannotRefuseCallout: optionEffect('cannotRefuseCallout', 'Cannot refuse callouts'),
     cannotBePickedAsShooter: optionEffect('cannotBePickedAsShooter', 'Cannot be picked Shooter'),
     cannotInventGadgets: optionEffect('cannotInventGadgets', 'Cannot invent Gadgets'),
+    cannotCastSpell: optionEffect('cannotCastSpell', 'Cannot cast some spells'),
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin', 'Does not get Bounty on Join'),
     doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown', 'Does not Unboot at Sundown'),
     doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings', 'Does not provide Bullets'),
@@ -415,10 +415,10 @@ const Effects = {
             title: `Influence modified: ${value}`,
             gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
-                card.modifyInfluence(value, true);
+                card.modifyInfluence(value, true, true);
             },
             unapply: function(card) {
-                card.modifyInfluence(-value, false);
+                card.modifyInfluence(-value, false, true);
             }
         };
     },
@@ -429,10 +429,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.influence;
-                card.modifyInfluence(context.changeAmount[card.uuid], true);
+                card.modifyInfluence(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyInfluence(context.changeAmount[card.uuid] * -1);
+                card.modifyInfluence(context.changeAmount[card.uuid] * -1, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -454,10 +454,10 @@ const Effects = {
             title: `Control modified: ${value}`,
             gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
-                card.modifyControl(value, true);
+                card.modifyControl(value, true, true);
             },
             unapply: function(card) {
-                card.modifyControl(-value, false);
+                card.modifyControl(-value, false, true);
             }
         };
     },
@@ -468,10 +468,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.control;
-                card.modifyControl(context.changeAmount[card.uuid], true);
+                card.modifyControl(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyControl(context.changeAmount[card.uuid] * -1, false);
+                card.modifyControl(context.changeAmount[card.uuid] * -1, false, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -481,10 +481,10 @@ const Effects = {
             title: `Value modified: ${value}`,
             gameAction: value < 0 ? 'decreaseValue' : 'increaseValue',
             apply: function(card) {
-                card.modifyValue(value, true);
+                card.modifyValue(value, true, true);
             },
             unapply: function(card) {
-                card.modifyValue(-value, false);
+                card.modifyValue(-value, false, true);
             }
         };
     },
@@ -495,10 +495,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.value;
-                card.modifyValue(context.changeAmount[card.uuid], true);
+                card.modifyValue(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyValue(context.changeAmount[card.uuid] * -1);
+                card.modifyValue(context.changeAmount[card.uuid] * -1, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -508,10 +508,10 @@ const Effects = {
             title: `Production modified: ${value}`,
             gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
             apply: function(card) {
-                card.modifyProduction(value, true);
+                card.modifyProduction(value, true, true);
             },
             unapply: function(card) {
-                card.modifyProduction(-value, false);
+                card.modifyProduction(-value, false, true);
             }
         };
     },
@@ -523,10 +523,10 @@ const Effects = {
             apply: function(card, context) {
                 context.changeAmount = context.changeAmount || {};
                 context.changeAmount[card.uuid] = value - card.production;
-                card.modifyProduction(context.changeAmount[card.uuid], true);
+                card.modifyProduction(context.changeAmount[card.uuid], true, true);
             },
             unapply: function(card, context) {
-                card.modifyProduction(context.changeAmount[card.uuid] * -1, false);
+                card.modifyProduction(context.changeAmount[card.uuid] * -1, false, true);
                 delete context.changeAmount[card.uuid];
             }
         };
@@ -537,10 +537,10 @@ const Effects = {
             title: `Upkeep modified: ${value}`,
             gameAction: value < 0 ? 'decreaseUpkeep' : 'increaseUpkeep',
             apply: function(card) {
-                card.modifyUpkeep(value, true);
+                card.modifyUpkeep(value, true, true);
             },
             unapply: function(card) {
-                card.modifyUpkeep(-value, false);
+                card.modifyUpkeep(-value, false, true);
             }
         };
     },
@@ -549,10 +549,24 @@ const Effects = {
             title: `Skill Rating modified: ${value}`,
             gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
             apply: function(card) {
-                card.modifySkillRating(type, value, true);
+                if(type === 'anySkill') {
+                    card.modifySkillRating('blessed', value, true);
+                    card.modifySkillRating('shaman', value, true);
+                    card.modifySkillRating('huckster', value, true);
+                    card.modifySkillRating('mad scientist', value, true);
+                } else {
+                    card.modifySkillRating(type, value, true);
+                }
             },
             unapply: function(card) {
-                card.modifySkillRating(type, -value, false);
+                if(type === 'anySkill') {
+                    card.modifySkillRating('blessed', -value, true);
+                    card.modifySkillRating('shaman', -value, true);
+                    card.modifySkillRating('huckster', -value, true);
+                    card.modifySkillRating('mad scientist', -value, true);
+                } else {
+                    card.modifySkillRating(type, -value, true);
+                }
             }
         };
     },
@@ -604,16 +618,18 @@ const Effects = {
         };
     },
     productionToBeReceivedBy: function(player) {
+        const isStateDependent = (typeof player === 'function');
         return {
             title: `Production to be received by: ${player.name}`,
             apply: function(card) {
                 if(card.getType() === 'deed') {
-                    card.productionToBeReceivedBy = player;
+                    card.productionToBeReceivedBy = isStateDependent ? player() : player;
                 }
             },
             unapply: function(card) {
                 card.productionToBeReceivedBy = null;
-            }
+            },
+            isStateDependent
         };
     },
     additionalDynamicAdjacency: conditionalAdjacency('adjacent'),
@@ -656,10 +672,10 @@ const Effects = {
             targetType: 'player',
             gameAction: 'modifyHandRank',
             apply: function(player, context) {
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
-                player.modifyRank(-value, context, false);
+                player.modifyRank(-value, context, false, true);
             }
         };
     },
@@ -675,18 +691,18 @@ const Effects = {
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
                 let value = context.dynamicHandRank[player.name];
                 this.title = `Hand Rank modified: ${value}`;
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             reapply: function(player, context) {
                 let currentProperty = context.dynamicHandRank[player.name];
                 let newProperty = calculate(player, context) || 0;
                 context.dynamicHandRank[player.name] = newProperty;
                 let value = newProperty - currentProperty;
-                player.modifyRank(value, context, true);
+                player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
                 let value = context.dynamicHandRank[player.name];
-                player.modifyRank(-value, context, false);
+                player.modifyRank(-value, context, false, true);
                 delete context.dynamicHandRank[player.name];
             },
             isStateDependent
@@ -856,21 +872,6 @@ const Effects = {
             }
         };
     },
-    immuneTo: function(cardCondition) {
-        return {
-            apply: function(card, context) {
-                let restriction = new ImmunityRestriction(cardCondition, context.source);
-                context.immuneTo = context.immuneTo || {};
-                context.immuneTo[card.uuid] = restriction;
-                card.addAbilityRestriction(restriction);
-            },
-            unapply: function(card, context) {
-                let restriction = context.immuneTo[card.uuid];
-                card.removeAbilityRestriction(restriction);
-                delete context.immuneTo[card.uuid];
-            }
-        };
-    },
     takeControl: function(newController) {
         return {
             title: `Control taken by: ${newController.name}`,
@@ -1000,6 +1001,10 @@ const Effects = {
     },
     cannotModifyHandRanks: 
         playerOptionEffect('cannotModifyHandRanks', 'Hand ranks cannot be modified'),
+    cannotIncreaseCasualties: 
+        playerOptionEffect('cannotIncreaseCasualties', 'Casualties cannot be increased'),
+    cannotDecreaseCasualties: 
+        playerOptionEffect('cannotDecreaseCasualties', 'Casualties cannot be decreased'),        
     cardsCannotLeaveDiscard:
         playerOptionEffect('cardsCannotLeaveDiscard', 'Cards cannot leave discard'),
     switchBulletBonuses:
@@ -1102,6 +1107,8 @@ const Effects = {
         optionEffect('canMoveWithoutBooting', 'Can Move without Booting'),
     canJoinWithoutBooting:
         optionEffect('canJoinWithoutBooting', 'Can Join without Booting'),
+    cannotBootToJoinFromAdjacent:
+        optionEffect('cannotBootToJoinFromAdjacent', 'Cannot Join when Booting is required'),        
     canJoinWithoutMoving:
         optionEffect('canJoinWithoutMoving', 'Can Join without Moving'),
     canJoinWhileBooted:
@@ -1115,19 +1122,23 @@ const Effects = {
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
     canPerformSkillUsing: function(skillnameOrKF, condition) {
-        var getSkillRatingFunc;
         return {
             title: `Can perform other skills using ${skillnameOrKF}`,
-            apply: function(card) {
-                getSkillRatingFunc = card.getSkillRatingForCard;
-                card.getSkillRatingForCard = spellOrGadget => {
-                    if(condition(spellOrGadget)) {
-                        return card.getSkillRating(skillnameOrKF);
-                    }
-                };
+            apply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions.push({
+                    condition,
+                    skillnameOrKF,
+                    source: context.source
+                });
             },
-            unapply: function(card) {
-                card.getSkillRatingForCard = getSkillRatingFunc;
+            unapply: function(card, context) {
+                if(card.getType() !== 'dude') {
+                    return;
+                }
+                card.skillKfConditions = card.skillKfConditions.filter(condObj => condObj.source !== context.source);
             }
         };
     },

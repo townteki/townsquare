@@ -12,7 +12,7 @@ class ShadowWalk extends SpellCard {
             onSuccess: (context) => {
                 this.game.promptForLocation(context.player, {
                     activePromptTitle: 'Select where to move ' + this.parent.title,
-                    waitingPromptTitle: 'Waiting for opponent to select location',
+                    cardCondition: { condition: card => card.gamelocation !== this.parent.gamelocation },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: this.parent, 
@@ -20,7 +20,8 @@ class ShadowWalk extends SpellCard {
                         }), context);   
                         this.game.addMessage('{0} uses {1} to move {2} to {3}', player, this, this.parent, location);                                 
                         return true;
-                    }
+                    },
+                    source: this
                 });
             },
             source: this
@@ -34,25 +35,12 @@ class ShadowWalk extends SpellCard {
             actionContext: { card: this.parent, gameAction: 'joinPosse'},
             onSuccess: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent })).thenExecute(() => {
-                    this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent); 
-                    this.game.promptWithMenu(context.player, this, {
-                        activePrompt: {
-                            menuTitle: 'Make shootout play',
-                            buttons: [
-                                { text: 'Pass', method: 'pass' }
-                            ],
-                            promptTitle: this.title
-                        },
-                        source: this
-                    });
+                    this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent);
+                    this.game.makePlayOutOfOrder(context.player, this, { title: 'Make shootout play' });
                 });
             },
             source: this
         });
-    }
-
-    pass() {
-        return true;
     }
 }
 

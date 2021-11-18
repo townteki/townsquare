@@ -50,16 +50,7 @@ class CulpabilityScientizer extends GoodsCard {
                         onSelect: (player, card) => {
                             let eventHandler = () => {
                                 this.game.once('onPlayWindowOpened', () => {
-                                    this.game.promptWithMenu(player, this, {
-                                        activePrompt: {
-                                            menuTitle: 'Make shootout play',
-                                            buttons: [
-                                                { text: 'Done', method: 'done' }
-                                            ],
-                                            promptTitle: this.title
-                                        },
-                                        source: this
-                                    });
+                                    this.game.makePlayOutOfOrder(player, this, { title: 'Make shootout play' });
                                 });
                             };
                             this.game.once('onDudeAcceptedCallOut', eventHandler);
@@ -74,10 +65,6 @@ class CulpabilityScientizer extends GoodsCard {
                 });
             }
         });
-    }
-
-    done() {
-        return true;
     }
 }
 

@@ -37,7 +37,7 @@ class CardVisibility {
     isPublicRule(card) {
         return !card.facedown &&
             OpenInformationLocations.includes(card.location) && 
-            this.game.currentPhase !== 'setup';
+            (card.location !== 'play area' || this.game.currentPhase !== 'setup');
     }
 
     isControllerRule(card, player) {
@@ -47,7 +47,7 @@ class CardVisibility {
     isSpectatorRule(card, player) {
         return this.game.showHand &&
                player.isSpectator() &&
-               ['hand'].includes(card.location);
+               ['hand', 'draw hand'].includes(card.location);
     }
 
     isSetupRule(card) {

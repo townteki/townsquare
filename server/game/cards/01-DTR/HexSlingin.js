@@ -10,9 +10,10 @@ class HexSlingin extends ActionCard {
                 condition: card => card.isHex() && card.parent.isParticipating()
             }),
             handler: context => {
-                context.player.modifyRank(2, context);
-                this.game.addMessage('{0} uses {1} to raise his/her draw hand by 2 ranks. Current rank is {2}', 
-                    context.player, this, context.player.getTotalRank());
+                if(context.player.modifyRank(2, context)) {
+                    this.game.addMessage('{0} uses {1} to raise their draw hand by 2 ranks. Current rank is {2}', 
+                        context.player, this, context.player.getTotalRank());
+                }
             }
 
         });

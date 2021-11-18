@@ -5,6 +5,7 @@ class RabbitsDeception extends TechniqueCard {
         this.techniqueAction({
             title: 'Rabbit\'s Deception',
             playType: ['shootout'],
+            actionContext: { gameAction: ['sendHome', 'boot'] },
             combo: context => {
                 const oppPosse = this.game.shootout.getPosseByPlayer(context.player.getOpponent());
                 return oppPosse.getDudes(dude => dude.isStud()).length > 0;
@@ -20,7 +21,7 @@ class RabbitsDeception extends TechniqueCard {
                         waitingPromptTitle: 'Waiting for opponent to select dude',
                         cardCondition: card => card.controller !== this.controller && card.isParticipating(),
                         cardType: 'dude',
-                        gameAction: 'sendHome',
+                        gameAction: ['sendHome', 'boot'],
                         onSelect: (player, card) => {
                             this.game.shootout.sendHome(card, context).thenExecute(() => {
                                 this.game.addMessage('{0} uses {1} to send {2} home booted because {3} was not booted', 

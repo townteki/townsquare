@@ -44,7 +44,6 @@ describe('LookAtDeck', function() {
             expect(this.event.player).toBe(this.playerSpy);
             expect(this.event.lookingAt).toBe(this.opponentSpy);
             expect(this.event.amount).toBe(2);
-            expect(this.event.desiredAmount).toBe(3);
         });
 
         describe('the event handler', function() {

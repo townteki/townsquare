@@ -1,3 +1,4 @@
+const GameActions = require('../../GameActions/index.js');
 const LegendCard = require('../../legendcard.js');
 const StandardActions = require('../../PlayActions/StandardActions.js');
 
@@ -25,8 +26,10 @@ class EzekiahGrimme extends LegendCard {
             },
             cost: [ability.costs.bootSelf()],
             handler: context => {
-                // set to null to prevent discarding of pulled card in abilityresolver
-                context.event.context.pull = null;
+                if(context.event.context.pull) {
+                    // set the flag to prevent discarding of pulled card in abilityresolver
+                    context.event.context.pull.doNotHandlePulledCard = true;
+                }
                 this.game.promptForYesNo(context.player, {
                     title: 'Do you want to attach pulled Spell?',
                     onYes: player => {
@@ -41,7 +44,8 @@ class EzekiahGrimme extends LegendCard {
                     },
                     onNo: player => {
                         player.handlePulledCard(context.event.pulledCard);
-                    }
+                    },
+                    source: this
                 });
             }
         });
@@ -56,44 +60,33 @@ class EzekiahGrimme extends LegendCard {
                     card.isSkilled()
                 )
             ],
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
-                const topCards = context.player.drawDeck.slice(0, 5);
-                this.game.addMessage('{0} uses {1} to reveal top 5 cards of their deck: {2}', 
-                    context.player, this, topCards);
-                const possibleSpells = topCards.filter(revealedCard => {
-                    if(!revealedCard.isSpell()) {
-                        return false;
-                    }
-                    const copies = this.getNumOfCopiesInPlay(revealedCard, context.player);
-                    if(copies < 2) {
-                        return true;
-                    }
-                    return false;
-                });
-                const revealFunc = card => topCards.includes(card);
-                this.game.cardVisibility.addRule(revealFunc);
-                if(possibleSpells.length > 0) {
-                    this.game.promptForSelect(context.player, {
+                this.game.resolveGameAction(GameActions.revealTopCards({
+                    player: context.player,
+                    amount: 5,
+                    properties: {
                         activePromptTitle: 'Select a spell to attach',
-                        waitingPromptTitle: 'Waiting for opponent to select dude',
-                        cardCondition: card => possibleSpells.includes(card) &&
-                            card.canAttach(context.player, context.costs.boot),
-                        cardType: 'spell',
-                        onSelect: (player, spell) => {
+                        selectCondition: revealedCard => {
+                            if(!revealedCard.isSpell()) {
+                                return false;
+                            }
+                            const copies = this.getNumOfCopiesInPlay(revealedCard, context.player);
+                            if(copies < 2) {
+                                return revealedCard.canAttach(context.player, context.costs.boot);
+                            }
+                            return false;
+                        },
+                        onSelect: (player, spells) => {
                             this.game.addMessage('{0} uses {1} to attach {2} from revealed cards to {3} paying all costs', 
-                                context.player, this, spell, context.costs.boot);
+                                context.player, this, spells[0], context.costs.boot);
                             this.game.resolveStandardAbility(StandardActions.putIntoPlay({
                                 playType: 'ability',
                                 abilitySourceType: 'card',
                                 targetParent: context.costs.boot
-                            }), player, spell);                        
-                            return true;
+                            }), player, spells[0]);  
                         }
-                    });
-                }
-                this.game.queueSimpleStep(() => {
-                    this.game.cardVisibility.removeRule(revealFunc);
+                    }
+                }), context).thenExecute(() => {
                     context.player.shuffleDrawDeck();
                 });
             }

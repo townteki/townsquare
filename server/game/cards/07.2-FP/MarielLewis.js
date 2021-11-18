@@ -16,7 +16,7 @@ class MarielLewis extends DudeCard {
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude'],
                 ifAble: true,
-                gameAction: 'moveDude'
+                gameAction: 'sendHome'
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.sendHome({ card: context.target, options: { needToBoot: false }}), context).thenExecute(() => {

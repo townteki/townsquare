@@ -194,13 +194,13 @@ class ChatCommands {
     }
 
     pass(player) {
-        if(this.game.currentPlayWindow) {
+        if(this.game.currentPlayWindow && this.game.currentPlayWindow.name !== 'gambling') {
             this.game.currentPlayWindow.onPass(player);
         }
     }
 
     done(player) {
-        if(this.game.currentPlayWindow) {
+        if(this.game.currentPlayWindow && this.game.currentPlayWindow.name !== 'gambling') {
             this.game.currentPlayWindow.onDone(player);
         }
     }
@@ -592,7 +592,7 @@ class ChatCommands {
 
         this.game.addAlert('danger', '{0} uses the /discard-deck command to discard {1} from deck', player, TextHelper.count(num, 'card'));
         
-        player.discardFromDraw(num);
+        player.discardFromDrawDeck(num);
     }
 
     discardRandom(player, args) {
@@ -777,6 +777,7 @@ class ChatCommands {
         }
 
         this.game.allCards.push(preparedCard);
+        player.allCards.push(preparedCard);
 
         if(preparedCard.isToken()) {
             this.game.addAlert('danger', '{0} uses the /add-card command to put Token {1} into their outfit', player, preparedCard);
@@ -875,14 +876,14 @@ class ChatCommands {
         player.shuffleDiscardToDrawDeck();
     }
 
-    getNumberOrDefault(string, defaultNumber) {
+    getNumberOrDefault(string, defaultNumber, allowNeg = false) {
         var num = parseInt(string);
 
         if(isNaN(num)) {
             num = defaultNumber;
         }
 
-        if(num < 0) {
+        if(num < 0 && !allowNeg) {
             num = defaultNumber;
         }
 
@@ -967,10 +968,10 @@ class ChatCommands {
                 return { mod: this.getNumberOrDefault(arg, 1) };
             }
             if(arg.startsWith('-')) {
-                return { mod: this.getNumberOrDefault(arg, -1) };
+                return { mod: this.getNumberOrDefault(arg, -1, true) };
             }            
         }
-        return { set: this.getNumberOrDefault(arg, 1) };
+        return { set: this.getNumberOrDefault(arg, 1, true) };
     }
 }
 

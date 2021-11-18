@@ -11,16 +11,18 @@ class StartingPossePrompt extends AllPlayerPrompt {
     }
 
     activePrompt(player) {
-        let title = 'Select Starting Posse';
-        let errMessage = this.validateStartingPosse(player);
+        const errMessage = this.validateStartingPosse(player);
+        const promptInfo = {};
         if(errMessage) {
             this.validPosse = false;
-            title += '\nError: ' + errMessage;
+            promptInfo.type = 'danger';
+            promptInfo.message = errMessage;
         } else {
             this.validPosse = true;
         }
         return {
-            menuTitle: title,
+            menuTitle: 'Select Starting Posse',
+            promptInfo,
             buttons: [
                 { arg: 'selected', text: 'Done' }
             ]
@@ -39,17 +41,46 @@ class StartingPossePrompt extends AllPlayerPrompt {
     }
 
     validateStartingPosse(player) {
-        const startingSize = player.hand.reduce((size, card) => size + card.startingSize, 0);
-        if(startingSize > 5) {
-            return `Too many cards in (${startingSize}) in starting gang`;
+        const startingDudesSize = player.hand.reduce((size, card) => {
+            if(card.getType() === 'dude') {
+                return size + card.startingSize;
+            }
+            return size;
+        }, 0);
+        if(startingDudesSize > 5) {
+            return `Too many cards (${startingDudesSize}) in starting gang`;
         }
-        const posseCost = player.hand.reduce((aggregator, card) => aggregator + card.cost, 0);
+        if(player.hand.some(card => card.getType() === 'deed' && !card.hasKeyword('core'))) {
+            return 'Only Core deeds can be in the starting gang';
+        }
+        const startingCoreSize = player.hand.reduce((size, card) => {
+            if(card.getType() === 'deed' && card.hasKeyword('core')) {
+                return size + card.startingSize;
+            }
+            return size;
+        }, 0);
+        if(startingCoreSize > 1) {
+            return `Too many Core deeds (${startingCoreSize}) in starting gang`;
+        }
+        const startingGrifterSize = player.hand.reduce((size, card) => {
+            if(card.getType() === 'dude' && card.hasKeyword('grifter')) {
+                return size + card.startingSize;
+            }
+            return size;    
+        }, 0);
+        if(startingGrifterSize > player.availableGrifterActions) {
+            return `Too many Grifters (${startingGrifterSize}) in starting gang`;
+        }
+        const posseCost = player.hand.reduce((aggregator, card) => {
+            let reducedCost = player.getReducedCost('setup', card, player.createContext());
+            aggregator + reducedCost;
+        }, 0);
         if(posseCost > player.ghostrock) {
             return `Starting gang cost (${posseCost}) is greater than starting GR (${player.ghostrock})`;
         }
         for(let startingCard of player.hand) {
             if(!startingCard.startingCondition()) {
-                return `Card ${startingCard} does not match starting condition`;
+                return `Card ${startingCard.title} does not match starting condition`;
             }
             if(player.hand.find(card => card.code === startingCard.code && card !== startingCard && card.isUnique())) {
                 return 'Starting multiple copies of unique card';
