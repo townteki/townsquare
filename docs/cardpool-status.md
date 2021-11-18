@@ -22,7 +22,7 @@
 |:heavy_check_mark:   | 01006| Mongwau the Mighty
 |:heavy_check_mark:   | 01007| Bobo
 |                     | 01008| Arnold McCadish
-|                     | 01009| The Ghostly Gun
+|:heavy_check_mark:   | 01009| The Ghostly Gun
 |:white_check_mark:   | 01010| Avie Cline
 |:heavy_check_mark:   | 01011| Kevin Wainwright
 |                     | 01012| Tyxarglenak ?
@@ -517,7 +517,7 @@
 |                     | 13002| "Crazy" Mike Draksil
 |                     | 13003| Horace Manse
 |                     | 13004| Jia Mein (Exp.1)
-|                     | 13005| Janosz Pratt
+|:heavy_check_mark:   | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
 |                     | 13007| Luke, the Errand Boy
 |:heavy_check_mark:   | 13008| Arnold Stewart
