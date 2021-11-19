@@ -56,7 +56,6 @@ class ChatCommands {
             '/reset-stats': this.resetStats,
             '/reveal-hand': this.revealHand,
             '/reveal-deck': this.revealDeck,
-            '/send-home': this.sendHome,
             '/shooter': this.shooter,
             '/shuffle-discard': this.shuffleDiscard,
             '/skill-rating': this.skillRating,
@@ -476,28 +475,7 @@ class ChatCommands {
                 return true;
             }
         });
-    }
-
-    sendHome(player, args) {
-        var type = args[1];
-        var booted = false;
-        if(type === 'booted') {
-            booted = true;
-        }
-        this.game.promptForSelect(player, {
-            activePromptTitle: 'Select a dude to send home',
-            waitingPromptTitle: 'Waiting for opponent to select dude to send home',
-            cardCondition: card => card.location === 'play area' && (!this.game.shootout || card.isParticipating()),
-            cardType: ['dude'],
-            onSelect: (p, card) => {
-                this.handleAction(p, card, 'send home', () => {
-                    card.sendHome({ needToBoot: booted, fromPosse: true });
-                    this.game.addAlert('danger', '{0} uses the /send-home command to send {1} home ' + type, p, card);
-                });  
-                return true;
-            }
-        });
-    }    
+    }  
 
     blank(player, args) {
         var blankType = args[1];
