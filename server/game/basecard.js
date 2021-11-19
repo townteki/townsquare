@@ -49,7 +49,7 @@ class BaseCard {
         this.cost = cardData.cost;
         this.currentValue = cardData.rank;
         this.suitReferenceArray = [];
-        this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
+        this.suitReferenceArray.unshift({ source: 'default', suit: this.cardData.suit});
         this.type = cardData.type;
         this.type_code = cardData.type_code;
         this.currentBullets = cardData.bullets;
@@ -765,7 +765,7 @@ class BaseCard {
 
     resetStats() {
         this.suitReferenceArray = [];
-        this.suitReferenceArray.unshift({ source: this.uuid, suit: this.cardData.suit});
+        this.suitReferenceArray.unshift({ source: 'default', suit: this.cardData.suit});
         this.value = this.currentValue - this.permanentValue;
         this.permanentValue = 0;
         this.bullets = this.currentBullets - this.permanentBullets;

@@ -29,7 +29,8 @@ class SendHome extends GameAction {
             moveType: 'toHome',
             needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : true,
             allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true,
-            fromPosse: options.fromPosse || options.fromPosse === false ? options.fromPosse : true
+            fromPosse: options.fromPosse || options.fromPosse === false ? options.fromPosse : true,
+            isFleeing: !!options.isFleeing
         };
         return Object.assign(options, defaultOptions);
     }
