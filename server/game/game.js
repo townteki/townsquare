@@ -40,6 +40,7 @@ const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 const { TownSquareUUID } = require('./Constants/index.js');
+const Automaton = require('./automaton.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -90,6 +91,11 @@ class Game extends EventEmitter {
 
         for(let player of Object.values(details.players || {})) {
             this.playersAndSpectators[player.user.username] = new Player(player.id, player.user, this.owner === player.user.username, this);
+        }
+
+        if(this.gameType === 'solo') {
+            const automaton = new Automaton(this);
+            this.playersAndSpectators[automaton.user.username] = automaton;
         }
 
         for(let spectator of Object.values(details.spectators || {})) {
