@@ -15,10 +15,7 @@ class Automaton extends Player {
     constructor(game) {
         super(uuid.v1(), { settings: {} }, false, game);
 
-        this.user = {
-            username: 'POST-A-TRON'
-        }
-
+        this.user = { username: 'POST-A-TRON' };
         this.timerSettings = {};
 
         this.promptState = new PlayerPromptState();
