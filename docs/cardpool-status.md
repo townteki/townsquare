@@ -191,7 +191,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 03001| Leonardo "Leon" Cavallo
+|:heavy_check_mark:   | 03001| Leonardo "Leon" Cavallo
 |                     | 03002| Richard Slavin
 |:heavy_check_mark:   | 03003| Mortimer Parsons
 |                     | 03004| Gang Yi
