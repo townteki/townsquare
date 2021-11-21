@@ -14,8 +14,7 @@ class LeonardoLeonCavallo extends DudeCard {
                     location: 'play area',
                     controller: 'any',
                     condition: card =>
-                        card.gamelocation === this.gamelocation ||
-                        card.isAdjacent(this.gamelocation)
+                        card.isNearby(this.gamelocation)
                 },
                 cardType: ['dude']
             },
