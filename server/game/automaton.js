@@ -323,6 +323,12 @@ class Automaton extends Player {
 
         return Object.assign(state, promptState);
     }
+
+    handlePlayWindow(playWindow) {
+        // TODO M2 solo - handle properly once Automaton has decision engine and pulls implemented
+        this.game.addAlert('info', '{0}\'s {1} play window', this, playWindow.name);
+        playWindow.markActionAsTaken(this);
+    }
 }
 
 module.exports = Automaton;

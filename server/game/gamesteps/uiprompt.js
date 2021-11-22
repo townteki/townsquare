@@ -57,7 +57,7 @@ class UiPrompt extends BaseStep {
     }
 
     continue() {
-        if(!this.soloCompleted) {
+        if(this.canHandleSolo()) {
             this.handleSolo();
             this.soloCompleted = true;
         }
@@ -86,6 +86,10 @@ class UiPrompt extends BaseStep {
 
         return promptId.toLowerCase() === this.promptId.toLowerCase();
     }
+
+    canHandleSolo() {
+        return !this.soloCompleted;
+    }    
 
     /**
      * Handler that will be called to handle Automaton.
