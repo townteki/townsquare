@@ -243,6 +243,9 @@ class GameServer {
         for(let player of Object.values(pendingGame.players)) {
             game.selectDeck(player.name, player.deck);
         }
+        if(game.gameType === 'solo') {
+            game.selectDeckForAutomaton(pendingGame.soloPlayer.deck);
+        }
 
         game.initialise();
         if(pendingGame.rematch) {

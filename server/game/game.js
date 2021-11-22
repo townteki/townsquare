@@ -94,8 +94,7 @@ class Game extends EventEmitter {
         }
 
         if(this.gameType === 'solo') {
-            const automaton = new Automaton(this);
-            this.playersAndSpectators[automaton.user.username] = automaton;
+            this.automaton = new Automaton(this, details.soloPlayer.user);
         }
 
         for(let spectator of Object.values(details.spectators || {})) {
@@ -165,12 +164,16 @@ class Game extends EventEmitter {
     }
 
     /**
-     * Returns all players in the game (not Spectators).
+     * Returns all players in the game (not Spectators) including Automaton for Solo games.
      *
      * @returns {Array.<Player>} - array of Players.
      */    
     getPlayers() {
-        return Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
+        const humanPlayers = Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
+        if(this.automaton) {
+            return humanPlayers.concat([this.automaton]);
+        }
+        return humanPlayers;
     }
 
     getNumberOfPlayers() {
@@ -667,6 +670,14 @@ class Game extends EventEmitter {
         }
 
         player.selectDeck(deck);
+    }
+
+    selectDeckForAutomaton(deck) {
+        if(!this.automaton) {
+            return;
+        }
+
+        this.automaton.selectDeck(deck);
     }
 
     discardFromDrawHand(playerName) {

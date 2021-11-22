@@ -12,11 +12,8 @@ const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceCondit
 const Player = require('./player.js');
 
 class Automaton extends Player {
-    constructor(game) {
-        super(uuid.v1(), { settings: {} }, false, game);
-
-        this.user = { username: 'POST-A-TRON' };
-        this.timerSettings = {};
+    constructor(game, user) {
+        super(uuid.v1(), user, false, game);
 
         this.promptState = new PlayerPromptState();
         this.options = new ReferenceConditionalSetProperty();
