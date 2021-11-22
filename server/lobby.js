@@ -629,7 +629,7 @@ class Lobby {
         }
     }
 
-    onSelectDeck(socket, gameId, deckId) {
+    onSelectDeck(socket, gameId, deckId, forSolo) {
         let game = this.games[gameId];
         if(!game) {
             return Promise.reject('Game not found');
@@ -642,7 +642,7 @@ class Lobby {
 
                 formattedDeck.status = validateDeck(formattedDeck, { packs: packs, restrictedLists: [game.restrictedList], includeExtendedStatus: false });
 
-                game.selectDeck(socket.user.username, formattedDeck);
+                game.selectDeck(socket.user.username, formattedDeck, forSolo);
 
                 this.sendGameState(game);
             })
