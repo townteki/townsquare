@@ -329,6 +329,12 @@ class Automaton extends Player {
         this.game.addAlert('info', '{0}\'s {1} play window', this, playWindow.name);
         playWindow.markActionAsTaken(this);
     }
+
+    // TODO M2 solo - implement targeting priorities
+    // eslint-disable-next-line no-unused-vars
+    orderByTargetPriority(targets, gameAction) {
+        return targets;
+    }
 }
 
 module.exports = Automaton;
