@@ -3,8 +3,7 @@ const UiPrompt = require('../uiprompt');
 
 class DrawHandPrompt extends UiPrompt {
     constructor(game, drawCounts) {
-        super();
-        this.game = game;
+        super(game);
         this.players = game.getPlayers();
         this.drawCounts = drawCounts;
         if(!this.drawCounts) {
