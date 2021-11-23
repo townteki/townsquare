@@ -23,7 +23,7 @@ class LeonardoLeonCavallo extends DudeCard {
                 context.player.pullForSkill(context.target.value, skillRating, {
                     successHandler: context => {
                         this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
-                            this.game.addMessage('{0} has {1} boot {2}', context.player, this, context.target);
+                            this.game.addMessage('{0} uses {1} to boot {2}', context.player, this, context.target);
                         });
                     },
                     pullingDude: this,
