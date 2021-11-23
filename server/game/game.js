@@ -186,7 +186,7 @@ class Game extends EventEmitter {
     }
 
     getPlayerByName(playerName) {
-        if(this.automaton.name === playerName) {
+        if(this.automaton && this.automaton.name === playerName) {
             return this.automaton;
         }
         let player = this.playersAndSpectators[playerName];
@@ -451,15 +451,16 @@ class Game extends EventEmitter {
         }
     }
 
-    drop(playerName, cardId, target, gameLocation) {
+    drop(playerName, cardId, target, gameLocation, targetPlayerName) {
         let player = this.getPlayerByName(playerName);
+        let targetPlayer = this.getPlayerByName(targetPlayerName);
         let card = this.allCards.find(card => card.uuid === cardId);
 
         if(!player || !card) {
             return;
         }
 
-        let command = new DropCommand(this, player, card, target, gameLocation);
+        let command = new DropCommand(this, player, card, target, gameLocation, targetPlayer);
         command.execute();
     }
 
