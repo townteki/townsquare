@@ -93,7 +93,7 @@ class Game extends EventEmitter {
             this.playersAndSpectators[player.user.username] = new Player(player.id, player.user, this.owner === player.user.username, this);
         }
 
-        if(this.gameType === 'solo') {
+        if(this.isSolo()) {
             this.automaton = new Automaton(this, details.soloPlayer.user);
         }
 
@@ -109,7 +109,11 @@ class Game extends EventEmitter {
     }
 
     isLegacy() {
-        this.restrictedList.cardSet === 'original';
+        return this.restrictedList.cardSet === 'original';
+    }
+
+    isSolo() {
+        return this.gameType === 'solo';
     }
 
     reportError(e) {
@@ -164,13 +168,14 @@ class Game extends EventEmitter {
     }
 
     /**
-     * Returns all players in the game (not Spectators) including Automaton for Solo games.
+     * Returns all players in the game (not Spectators).
      *
+     * @param {boolean} includeSoloPlayer - including Automaton for Solo games
      * @returns {Array.<Player>} - array of Players.
      */    
-    getPlayers() {
+    getPlayers(includeSoloPlayer = true) {
         const humanPlayers = Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
-        if(this.automaton) {
+        if(this.automaton && includeSoloPlayer) {
             return humanPlayers.concat([this.automaton]);
         }
         return humanPlayers;
@@ -181,6 +186,9 @@ class Game extends EventEmitter {
     }
 
     getPlayerByName(playerName) {
+        if(this.automaton.name === playerName) {
+            return this.automaton;
+        }
         let player = this.playersAndSpectators[playerName];
 
         if(!player || player.isSpectator()) {

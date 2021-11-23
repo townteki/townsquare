@@ -5,6 +5,7 @@ class UiPrompt extends BaseStep {
     constructor(game) {
         super(game);
         this.completed = false;
+        this.soloCompleted = !this.game.isSolo();
         this.promptId = uuid.v1();
     }
 
@@ -17,7 +18,7 @@ class UiPrompt extends BaseStep {
     }
 
     setPrompt() {
-        for(let player of this.game.getPlayers()) {
+        for(let player of this.game.getPlayers(false)) {
             if(this.activeCondition(player)) {
                 player.setPrompt(this.addDefaultCommandToButtons(this.activePrompt(player)));
             } else {
@@ -56,6 +57,10 @@ class UiPrompt extends BaseStep {
     }
 
     continue() {
+        if(!this.soloCompleted) {
+            this.handleSolo();
+            this.soloCompleted = true;
+        }
         var completed = this.isComplete();
 
         if(completed) {
@@ -69,7 +74,7 @@ class UiPrompt extends BaseStep {
     }
 
     clearPrompts() {
-        for(let player of this.game.getPlayers()) {
+        for(let player of this.game.getPlayers(false)) {
             player.cancelPrompt();
         }
     }
@@ -81,6 +86,12 @@ class UiPrompt extends BaseStep {
 
         return promptId.toLowerCase() === this.promptId.toLowerCase();
     }
+
+    /**
+     * Handler that will be called to handle Automaton.
+     */
+    handleSolo() {
+    }    
 
     /**
      * Handler that will be called once isComplete() returns true.
