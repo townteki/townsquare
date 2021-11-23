@@ -89,7 +89,7 @@ class UiPrompt extends BaseStep {
 
     canHandleSolo() {
         return !this.soloCompleted;
-    }    
+    }     
 
     /**
      * Handler that will be called to handle Automaton.
