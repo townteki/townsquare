@@ -4,7 +4,7 @@ const DropCommand = require('../../../server/game/ServerCommands/DropCommand');
 describe('DropCommand', () => {
     describe('execute()', function() {
         beforeEach(function() {
-            this.gameSpy = jasmine.createSpyObj('game', ['addAlert', 'queueStep']);
+            this.gameSpy = jasmine.createSpyObj('game', ['addAlert', 'queueStep', 'isSolo']);
             this.playerSpy = jasmine.createSpyObj('player', ['discardCard', 'moveCard', 'putIntoPlay', 'aceCard']);
 
             this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
