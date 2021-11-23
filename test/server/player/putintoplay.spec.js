@@ -3,7 +3,7 @@ const Player = require('../../../server/game/player.js');
 
 describe('Player', function() {
     beforeEach(function() {
-        this.gameSpy = jasmine.createSpyObj('game', ['queueSimpleStep', 'queueStep', 'raiseEvent', 'resolveEvent', 'addMessage', 'takeControl']);
+        this.gameSpy = jasmine.createSpyObj('game', ['queueSimpleStep', 'queueStep', 'raiseEvent', 'resolveEvent', 'addMessage', 'takeControl', 'isSolo']);
         this.player = new Player('1', {username: 'Player 1', settings: {}}, true, this.gameSpy);
         this.player.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
         this.player.addOutfitToTown.and.callFake(function() {});
