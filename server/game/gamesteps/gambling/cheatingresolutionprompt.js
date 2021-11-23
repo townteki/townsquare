@@ -54,13 +54,11 @@ class CheatingResolutionPrompt extends PlayerOrderPrompt {
     }
 
     handleSolo() {
-        if(this.playWindowOpened && this.currentPlayer === this.game.automaton) {
-            this.game.automaton.handlePlayWindow(this);
-        }
+        this.game.automaton.handlePlayWindow(this);
     }
 
     canHandleSolo() {
-        return super.canHandleSolo() && this.playWindowOpened;
+        return super.canHandleSolo() && this.playWindowOpened && this.currentPlayer === this.game.automaton;
     }
 }
 
