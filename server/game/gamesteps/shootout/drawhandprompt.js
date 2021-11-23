@@ -159,6 +159,12 @@ class DrawHandPrompt extends UiPrompt {
         }
         return false;
     }
+
+    handleSolo() {
+        if(this.game.currentPhase === PhaseNames.Gambling) {
+            this.onMenuCommand(this.game.automaton, 'revealdraw');
+        }        
+    }
 }
 
 module.exports = DrawHandPrompt;
