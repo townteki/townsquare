@@ -1437,11 +1437,11 @@ class Game extends EventEmitter {
 
             return {
                 id: this.id,
-                isMelee: this.isMelee,
                 name: this.name,
                 owner: this.owner,
                 players: playerState,
                 messages: this.gameChat.messages,
+                gameType: this.gameType,
                 showHand: this.showHand,
                 shootout: shootoutState,
                 spectators: this.getSpectators().map(spectator => {
