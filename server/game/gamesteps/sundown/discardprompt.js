@@ -70,13 +70,19 @@ class DiscardPrompt extends AllPlayerPrompt {
     }
 
     discardCards(player, cards) {
-        player.discardCards(cards);
         if(cards.length === 0) {
             this.game.addMessage('{0} does not discard any card as part of Sundown', player);
         } else if(cards.length > 0) {
+            player.discardCards(cards);            
             this.game.addMessage('{0} discards {1} as part of Sundown', player, cards);
         }
         player.sundownDiscardDone = true;
+    }
+
+    handleSolo() {
+        const cardsToDiscard = this.game.automaton.getCardsToDiscardOnSundown();
+        this.discardCards(this.game.automaton, cardsToDiscard);
+        super.complete(this.game.automaton);
     }
 }
 
