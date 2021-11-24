@@ -335,6 +335,18 @@ class Automaton extends Player {
     orderByTargetPriority(targets, gameAction) {
         return targets;
     }
+
+    getCardsToDiscardOnSundown() {
+        //TODO M2 solo this will use Archetype's Programmed Reflex
+        //             for now discard one.
+        return this.hand.length ? this.hand.slice(0, 1) : [];
+    }
+
+    getCardsToDiscardDownToHandSize() {
+        //TODO M2 solo this will use Archetype's Programmed Reflex
+        //             for now discard to not exceed hand size.
+        return this.hand.length > this.handSize ? this.hand.slice(0, this.hand.length - this.handSize) : [];
+    }    
 }
 
 module.exports = Automaton;

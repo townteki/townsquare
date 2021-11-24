@@ -10,7 +10,11 @@ class DiscardToHandSizePrompt extends BaseStep {
         while(this.players.length) {
             let currentPlayer = this.players.shift();
             if(currentPlayer.isOverHandsizeLimit()) {
-                this.promptPlayerToDiscard(currentPlayer);
+                if(this.game.isSolo() && currentPlayer === this.game.automaton) {
+                    this.handleSolo();
+                } else {
+                    this.promptPlayerToDiscard(currentPlayer);
+                }
                 return false;
             }
         }
@@ -44,6 +48,13 @@ class DiscardToHandSizePrompt extends BaseStep {
     cancelSelection(player) {
         this.game.addAlert('danger', '{0} continues without discarding down to hand size', player, this);
         return true;
+    }
+
+    handleSolo() {
+        const cardsToDiscard = this.game.automaton.getCardsToDiscardDownToHandSize();
+        if(cardsToDiscard.length) {
+            this.discardCards(this.game.automaton, cardsToDiscard);
+        }
     }
 }
 
