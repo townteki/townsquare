@@ -57,7 +57,7 @@ class UiPrompt extends BaseStep {
     }
 
     continue() {
-        if(this.canHandleSolo()) {
+        if(this.game.isSolo() && this.canHandleSolo()) {
             this.handleSolo();
             this.soloCompleted = true;
         }
