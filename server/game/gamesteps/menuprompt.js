@@ -28,6 +28,9 @@ class MenuPrompt extends UiPrompt {
     }
 
     activeCondition(player) {
+        if(this.player === this.game.automaton) {
+            return player === this.player.getOpponent();
+        }
         return player === this.player;
     }
 
@@ -42,6 +45,9 @@ class MenuPrompt extends UiPrompt {
     }
 
     onMenuCommand(player, arg, method) {
+        if(this.player === this.game.automaton) {
+            player = this.player;
+        }
         if(player !== this.player) {
             return false;
         }
