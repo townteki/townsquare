@@ -40,7 +40,7 @@ const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 const { TownSquareUUID } = require('./Constants/index.js');
-const Automaton = require('./automaton.js');
+const Automaton = require('./Solo/automaton.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {

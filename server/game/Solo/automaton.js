@@ -1,15 +1,16 @@
 
 const uuid = require('uuid');
-const Location = require('./gamelocation.js');
-const AbilityContext = require('./AbilityContext.js');
-const AttachmentPrompt = require('./gamesteps/attachmentprompt.js');
-const DeedStreetSidePrompt = require('./gamesteps/deedstreetsideprompt.js');
-const PlayActionPrompt = require('./gamesteps/playactionprompt.js');
-const PlayerPromptState = require('./playerpromptstate.js');
+const Location = require('../gamelocation.js');
+const AbilityContext = require('../AbilityContext.js');
+const AttachmentPrompt = require('../gamesteps/attachmentprompt.js');
+const DeedStreetSidePrompt = require('../gamesteps/deedstreetsideprompt.js');
+const PlayActionPrompt = require('../gamesteps/playactionprompt.js');
+const PlayerPromptState = require('../playerpromptstate.js');
 
-const JokerPrompt = require('./gamesteps/jokerprompt.js');
-const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
-const Player = require('./player.js');
+const JokerPrompt = require('../gamesteps/jokerprompt.js');
+const ReferenceConditionalSetProperty = require('../PropertyTypes/ReferenceConditionalSetProperty.js');
+const Player = require('../player.js');
+const GunslingerArchetype = require('./Archetypes/GunslingerArchetype.js');
 
 class Automaton extends Player {
     constructor(game, user) {
@@ -17,6 +18,7 @@ class Automaton extends Player {
 
         this.promptState = new PlayerPromptState();
         this.options = new ReferenceConditionalSetProperty();
+        this.decisionEngine = new GunslingerArchetype();
     }
 
     isAutomaton() {
@@ -331,9 +333,8 @@ class Automaton extends Player {
     }
 
     // TODO M2 solo - implement targeting priorities
-    // eslint-disable-next-line no-unused-vars
     orderByTargetPriority(targets, gameAction) {
-        return targets;
+        return this.decisionEngine.targetPriorities(gameAction, targets);
     }
 
     getCardsToDiscardOnSundown() {
@@ -346,7 +347,16 @@ class Automaton extends Player {
         //TODO M2 solo this will use Archetype's Programmed Reflex
         //             for now discard to not exceed hand size.
         return this.hand.length > this.handSize ? this.hand.slice(0, this.hand.length - this.handSize) : [];
-    }    
+    }
+
+    decideCallout(caller, callee) {
+        const calloutReflex = this.decisionEngine.programmedReflex('callout');
+        if(calloutReflex && calloutReflex({ caller, callee })) {
+            caller.acceptCallout(callee.controller, callee.uuid);
+        } else {
+            caller.rejectCallout(callee.controller, callee.uuid);            
+        }
+    }
 }
 
 module.exports = Automaton;

@@ -365,16 +365,7 @@ class DudeCard extends DrawCard {
         this.shootoutStatus = ShootoutStatuses.CallingOut;
         card.shootoutStatus = ShootoutStatuses.CalledOut;
         if(!card.booted && card.canRejectCallout(this, canReject)) {
-            this.game.promptWithMenu(card.controller, this, {
-                activePrompt: {
-                    menuTitle: this.title + ' is calling out ' + card.title,
-                    buttons: [
-                        { text: 'Accept Callout', method: 'acceptCallout', arg: card.uuid },
-                        { text: 'Refuse Callout', method: 'rejectCallout', arg: card.uuid }
-                    ]
-                },
-                waitingPromptTitle: 'Waiting for opponent to decide if they run or fight'
-            });
+            card.controller.decideCallout(this, card);
         } else {
             this.acceptCallout(card.controller, card.uuid);
         }
