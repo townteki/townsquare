@@ -13,10 +13,16 @@ class ValuePrompt extends UiPrompt {
     }
 
     activeCondition(player) {
+        if(this.player === this.game.automaton) {
+            return player === this.player.getOpponent() && !this.valueIsSet;
+        }        
         return player === this.player && !this.valueIsSet;
     }
 
     activePrompt(player) {
+        if(this.player === this.game.automaton) {
+            player = this.player;
+        }        
         return {
             menuTitle: this.title,
             buttons: this.getButtons(player)
@@ -65,6 +71,9 @@ class ValuePrompt extends UiPrompt {
     }
 
     onMenuCommand(player, arg) {
+        if(this.player === this.game.automaton) {
+            player = this.player;
+        }        
         if(player !== this.player) {
             return false;
         }
