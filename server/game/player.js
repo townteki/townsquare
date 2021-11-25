@@ -1805,6 +1805,19 @@ class Player extends Spectator {
         }
     }
 
+    decideCallout(caller, callee) {
+        this.game.promptWithMenu(this, caller, {
+            activePrompt: {
+                menuTitle: caller.title + ' is calling out ' + callee.title,
+                buttons: [
+                    { text: 'Accept Callout', method: 'acceptCallout', arg: callee.uuid },
+                    { text: 'Refuse Callout', method: 'rejectCallout', arg: callee.uuid }
+                ]
+            },
+            waitingPromptTitle: 'Waiting for opponent to decide if they run or fight'
+        });        
+    }
+
     setSelectedCards(cards) {
         this.promptState.setSelectedCards(cards);
     }
