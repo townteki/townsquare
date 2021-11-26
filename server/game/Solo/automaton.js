@@ -5,20 +5,15 @@ const AbilityContext = require('../AbilityContext.js');
 const AttachmentPrompt = require('../gamesteps/attachmentprompt.js');
 const DeedStreetSidePrompt = require('../gamesteps/deedstreetsideprompt.js');
 const PlayActionPrompt = require('../gamesteps/playactionprompt.js');
-const PlayerPromptState = require('../playerpromptstate.js');
 
 const JokerPrompt = require('../gamesteps/jokerprompt.js');
-const ReferenceConditionalSetProperty = require('../PropertyTypes/ReferenceConditionalSetProperty.js');
 const Player = require('../player.js');
 const GunslingerArchetype = require('./Archetypes/GunslingerArchetype.js');
 
 class Automaton extends Player {
     constructor(game, user) {
         super(uuid.v1(), user, false, game);
-
-        this.promptState = new PlayerPromptState();
-        this.options = new ReferenceConditionalSetProperty();
-        this.decisionEngine = new GunslingerArchetype();
+        this.decisionEngine = new GunslingerArchetype(game, this);
     }
 
     isAutomaton() {
@@ -326,6 +321,37 @@ class Automaton extends Player {
         return Object.assign(state, promptState);
     }
 
+    pickShooter(availableDudes) {
+        const sortConditions = [
+            (dude1, dude2) => {
+                if(dude1.isStud() && dude1.bullets > 1) {
+                    if(dude2.isStud() && dude2.bullets > 1) {
+                        return dude1.bullets - dude2.bullets;
+                    }
+                    return -1;
+                }
+                return dude2.isStud() && dude2.bullets > 1 ? 1 : 0;
+            },
+            (dude1, dude2) => dude2.bullets - dude1.bullets,
+            (dude1, dude2) => {
+                if((!dude1.booted && !dude1.booted) || (dude1.booted && dude2.booted)) {
+                    return 0;
+                }
+                return dude1.booted ? 1 : -1;   
+            },
+            (dude1, dude2) => dude1.influence - dude2.influence
+        ];
+        const sortFunc = (dude1, dude2) => {
+            return sortConditions.reduce((value, condition) => {
+                if(!value) {
+                    return condition(dude1, dude2);
+                }
+                return value;
+            }, 0);
+        };
+        return availableDudes.sort(sortFunc)[0];
+    }
+
     handlePlayWindow(playWindow) {
         // TODO M2 solo - handle properly once Automaton has decision engine and pulls implemented
         this.game.addAlert('info', '{0}\'s {1} play window', this, playWindow.name);
@@ -351,11 +377,20 @@ class Automaton extends Player {
 
     decideCallout(caller, callee) {
         const calloutReflex = this.decisionEngine.programmedReflex('callout');
-        if(calloutReflex && calloutReflex({ caller, callee })) {
+        if(calloutReflex && calloutReflex(caller, callee)) {
             caller.acceptCallout(callee.controller, callee.uuid);
         } else {
             caller.rejectCallout(callee.controller, callee.uuid);            
         }
+    }
+
+    getDudesToFormPosse(shootout) {
+        const joinPosseReflex = this.decisionEngine.programmedReflex('joinPosse');
+        if(joinPosseReflex) {
+            return joinPosseReflex(shootout);
+        }
+
+        return [];
     }
 }
 

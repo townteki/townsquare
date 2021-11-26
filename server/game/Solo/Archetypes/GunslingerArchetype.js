@@ -1,8 +1,17 @@
+/** @typedef {import('../../game')} Game */
+/** @typedef {import('../../player')} Player */
 /** @typedef {import('../../effect')} Effect */
 /** @typedef {import('../../drawcard')} DrawCard */
 
 /* eslint-disable no-unused-vars */
 class GunslingerArchetype {
+    constructor(game, player) {
+        /** @type {Game} */
+        this.game = game;
+        /** @type {Player} */
+        this.player = player;
+    }
+
     /**
      * Returns reflex (function) of the Automaton on a specific action.
      *
@@ -15,6 +24,8 @@ class GunslingerArchetype {
         switch(type) {
             case 'callout':
                 return () => true;
+            case 'joinPosse':
+                return shootout => this.joinPosseReflex(shootout);            
             default:
                 break;
         }
@@ -54,6 +65,18 @@ class GunslingerArchetype {
      * @return {Function} function representing Automaton action.
      */      
     automatonPulls(pulledCard) {
+    }
+
+    // TODO M2 solo - needs to be ordered based on rules
+    joinPosseReflex(shootout) {
+        const dudesJoinInfos = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
+                (card !== shootout.mark || shootout.isJob()) &&
+                card !== shootout.leader)
+            .map(dude => { 
+                return { dude, requirements: dude.requirementsToJoinPosse() };
+            })
+            .filter(joinInfo => joinInfo.requirements.canJoin);
+        return dudesJoinInfos.map(info => info.dude).slice(0, 2);
     }
 }
 
