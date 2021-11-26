@@ -9,38 +9,34 @@ class ChatCommands {
         this.commands = {
             '/ace': this.ace,
             '/add-keyword': this.addKeyword,
-            '/addkey': this.addKeyword,
             '/add-card': this.addCard,
             '/attach': this.attach,
             '/bullets': this.bullets,
-            '/bul': this.bullets,
             '/blank': this.blank,
             '/bounty': this.bounty,
             '/cancel-prompt': this.cancelPrompt,
-            '/canpr': this.cancelPrompt,
             '/cancel-shootout': this.cancelShootout,
-            '/canshoot': this.cancelShootout,
             '/clear-shooter': this.clearShooter,
-            '/clshoot': this.clearShooter,
             '/clear-suit': this.clearSuit,
-            '/clsuit': this.clearSuit,
             '/clear-effects': this.clearEffects,
-            '/cleff': this.clearEffects,
             '/control': this.control,
             '/done': this.done,
             '/discard-random': this.discardRandom,
+            '/discard-random-solo': this.discardRandomSolo,
             '/discard-deck': this.discardFromDeck,
+            '/discard-deck-solo': this.discardFromDeckSolo,
             '/disconnectme': this.disconnectMe,
             '/draw': this.draw,
+            '/draw-solo': this.drawSolo,
             '/give-control': this.giveControl,
             '/hand-rank': this.handRank,
-            '/hr': this.handRank,
+            '/hand-rank-solo': this.handRankSolo,
             '/inf': this.influence,
-            '/join': this.joinPosse,
             '/join-posse': this.joinPosse,
             '/join-without-move': this.joinPosseWoMove,
             '/kung-fu': this.kungFuRating,
             '/look-deck': this.lookAtDeck,
+            '/look-deck-solo': this.lookAtDeckSolo,
             '/move': this.move,
             '/pass': this.pass,
             '/prod': this.prod,
@@ -48,18 +44,17 @@ class ChatCommands {
             '/rematch': this.rematch,
             '/remove-from-game': this.removeFromGame,
             '/remove-from-posse': this.removeFromPosse,
-            '/rmfp': this.removeFromPosse,
             '/remove-keyword': this.removeKeyword,
-            '/rmkey': this.removeKeyword,
             '/reset-abilities': this.resetAbilities,
-            '/resab': this.resetAbilities,
             '/reset-stats': this.resetStats,
             '/reveal-hand': this.revealHand,
+            '/reveal-hand-solo': this.revealHandSolo,
             '/reveal-deck': this.revealDeck,
+            '/reveal-deck-solo': this.revealDeckSolo,
             '/shooter': this.shooter,
             '/shuffle-discard': this.shuffleDiscard,
+            '/shuffle-discard-solo': this.shuffleDiscardSolo,
             '/skill-rating': this.skillRating,
-            '/skill': this.skillRating,
             '/suit': this.suit,
             '/token': this.setToken,
             '/use': this.useAbility,
@@ -81,9 +76,16 @@ class ChatCommands {
     draw(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
 
-        this.game.addAlert('danger', '{0} uses the /draw command to draw {1} cards to their hand', player, num);
+        this.game.addAlert('danger', '{0} uses the /draw command to draw {1} cards to {2}\'s hand', player, num);
 
         player.drawCardsToHand(num);
+    }
+
+    drawSolo(player, args) {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.draw(this.game.automaton, args);
     }
 
     bullets(player, args) {
@@ -184,6 +186,13 @@ class ChatCommands {
         player.modifyRank(change);
         this.game.addAlert('danger', '{0} uses the /hand-rank command to set their hand rank to {1}', 
             player, player.getTotalRank());
+    }
+
+    handRankSolo(player, args) {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.handRank(this.game.automaton, args);
     }
 
     pass(player) {
@@ -567,12 +576,26 @@ class ChatCommands {
         player.discardFromDrawDeck(num);
     }
 
+    discardFromDeckSolo(player, args) {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.discardFromDeck(this.game.automaton, args);
+    }
+
     discardRandom(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
 
         this.game.addAlert('danger', '{0} uses the /discard-random command to discard {1} at random', player, TextHelper.count(num, 'card'));
 
         player.discardAtRandom(num);
+    }
+
+    discardRandomSolo(player, args) {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.discardRandom(this.game.automaton, args);
     }
 
     giveControl(player) {
@@ -642,11 +665,26 @@ class ChatCommands {
             '{0} uses the /reveal-hand command to reveal their hand as: {1}', player, player.hand);
     }
 
+    revealHandSolo(player) {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.game.addAlert('danger',
+            '{0} uses the /reveal-hand command to reveal Automaton hand as: {1}', player, this.game.automaton.hand);
+    }
+
     revealDeck(player, args) {
         var num = this.getNumberOrDefault(args[1], 1);
         const topCards = player.drawDeck.slice(0, num);
         this.game.addAlert('danger',
             '{0} uses the /reveal-deck command to reveal {1} cards from deck: {2}', player, num, topCards);
+    }
+
+    revealDeckSolo(player, args) {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.revealDeck(this.game.automaton, args);
     }
 
     lookAtDeck(player, args) {
@@ -663,6 +701,13 @@ class ChatCommands {
         });
         this.game.addAlert('danger',
             '{0} uses the /look-deck command to look at {1} cards from top of their deck', player, num);
+    }
+
+    lookAtDeckSolo(player, args) {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.lookAtDeck(this.game.automaton, args);
     }
 
     removeFromGame(player) {
@@ -848,6 +893,13 @@ class ChatCommands {
         player.shuffleDiscardToDrawDeck();
     }
 
+    shuffleDiscardSolo() {
+        if(!this.game.isSolo()) {
+            return;
+        }
+        this.game.automaton.shuffleDiscardToDrawDeck();
+    }
+
     getNumberOrDefault(string, defaultNumber, allowNeg = false) {
         var num = parseInt(string);
 
@@ -881,7 +933,7 @@ class ChatCommands {
     }
 
     handleAction(player, card, action, handler) {
-        if(card.controller === player) {
+        if(card.controller === player || card.controller === this.game.automaton) {
             handler();
         } else {
             this.game.promptForYesNo(card.controller, {
