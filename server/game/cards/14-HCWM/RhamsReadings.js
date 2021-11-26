@@ -25,7 +25,7 @@ class RhamsReadings extends DeedCard {
                     });
                 } else {
                     const topDiscard = opponent.discardPile.length > 0 ? opponent.discardPile[0] : null;
-                    if(topDiscard && (topCard.suit.toLowerCase() === topDiscard.suit.toLowerCase() || topCard.value === topDiscard.value)) {
+                    if(topDiscard && topDiscard.getType() !== 'joker' && (topCard.suit.toLowerCase() === topDiscard.suit.toLowerCase() || topCard.value === topDiscard.value)) {
                         context.player.modifyGhostRock(1);
                         this.game.addMessage('{0} uses {1} to reveal {2} as the top card of {3}\'s deck, and gains 1 GR', 
                             context.player, this, topCard, opponent);   
