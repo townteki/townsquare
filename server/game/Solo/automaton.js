@@ -330,7 +330,7 @@ class Automaton extends Player {
                     }
                     return -1;
                 }
-                return dude2.isStud() && dude2.bullets > 1 ? 1 : 0;   
+                return dude2.isStud() && dude2.bullets > 1 ? 1 : 0;
             },
             (dude1, dude2) => dude2.bullets - dude1.bullets,
             (dude1, dude2) => {
@@ -342,11 +342,11 @@ class Automaton extends Player {
             (dude1, dude2) => dude1.influence - dude2.influence
         ];
         const sortFunc = (dude1, dude2) => {
-            return sortConditions.reduce((koef, condition) => {
-                if(!koef) {
+            return sortConditions.reduce((value, condition) => {
+                if(!value) {
                     return condition(dude1, dude2);
                 }
-                return koef;
+                return value;
             }, 0);
         };
         return availableDudes.sort(sortFunc)[0];
