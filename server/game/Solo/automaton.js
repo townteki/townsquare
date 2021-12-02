@@ -9,6 +9,7 @@ const PlayActionPrompt = require('../gamesteps/playactionprompt.js');
 const JokerPrompt = require('../gamesteps/jokerprompt.js');
 const Player = require('../player.js');
 const GunslingerArchetype = require('./Archetypes/GunslingerArchetype.js');
+const HandResult = require('../handresult.js');
 
 class Automaton extends Player {
     constructor(game, user) {
@@ -319,6 +320,50 @@ class Automaton extends Player {
         };
 
         return Object.assign(state, promptState);
+    }
+
+    finalizeDrawHand(handResult) {
+        if(this.drawHand.length > 5) {
+            const cardsToDiscard = this.drawHand.filter(drawCard => 
+                !handResult.getHandRank().cards.map(card => card.uuid).includes(drawCard.uuid));
+            this.discardCards(cardsToDiscard, false, () =>
+                this.game.addMessage('{0} discards {1} to make its draw hand', this, cardsToDiscard));
+        }
+    }
+
+    makeDrawHand(studBonus, drawBonus) {
+        this.drawCardsToDrawHand(studBonus).thenExecute(event => {
+            const studCards = event.cards;
+            if(drawBonus) {
+                let event = this.drawCardsToDrawHand(drawBonus);
+                if(!event.isNull()) {
+                    event.thenExecute(event => {
+                        const drawCards = event.cards;
+                        this.game.addAlert('warn', '{0} draws additional cards to draw hand: {1}', this, drawCards);
+                        let bestHandResult = drawCards.reduce((bestHandResult, drawCard) => {
+                            const handResult = new HandResult(studCards.concat([drawCard]), false, true);
+                            if(!bestHandResult || bestHandResult.getHandRank().rank < handResult.getHandRank().rank) {
+                                return handResult;
+                            }
+                            if(bestHandResult.getHandRank().rank === handResult.getHandRank().rank) {
+                                if(bestHandResult.getHandRank().cheatin && !handResult.getHandRank().cheatin) {
+                                    return handResult;
+                                }
+                                if(bestHandResult.getHandRank().jokersUsed && !handResult.getHandRank().jokersUsed) {
+                                    return handResult;
+                                }
+                            }
+                            return bestHandResult;
+                        }, null);
+                        this.finalizeDrawHand(bestHandResult);
+                    });
+                } else {
+                    this.finalizeDrawHand(new HandResult(studCards, false, true));
+                }
+            } else {
+                this.finalizeDrawHand(new HandResult(studCards, false, true));
+            }
+        });
     }
 
     pickShooter(availableDudes) {

@@ -316,7 +316,7 @@ class Player extends Spectator {
 
     determineHandResult(handResultText = 'reveals', doLowest = false) {
         if(this.drawHand.length > 1) {
-            this.handResult = new HandResult(this.drawHand, doLowest);
+            this.handResult = new HandResult(this.drawHand, doLowest, false);
         }
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
