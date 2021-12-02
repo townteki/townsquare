@@ -36,37 +36,7 @@ class HandResult {
         } else {
             this.handRank.tiebreakerHighCards = [];
         }
-        // In case of solo - sort allHands based on tiebreakers
         if(forSolo && !doLowest && this.handRank.allHands.length > 1) {
-            this.handRank.allHands.sort((h1, h2) => {
-                if(h1.cheatin && !h2.cheatin) {
-                    return 1;
-                }
-                if(!h1.cheatin && h2.cheatin) {
-                    return -1;
-                }
-                if(h1.jokersUsed && !h2.jokersUsed) {
-                    return 1;
-                }
-                if(!h1.jokersUsed && h2.jokersUsed) {
-                    return -1;
-                }
-                if(h1.tiebreaker) {
-                    for(let i = 0; i <= h1.tiebreaker.length - 1; i++) {
-                        if(h1.tiebreaker[i] !== h2.tiebreaker[i]) {
-                            return h2.tiebreaker[i] - h1.tiebreaker[i];
-                        }
-                    }
-                }
-                if(h1.tiebreakerHighCards) {
-                    for(let i = 0; i <= h1.tiebreakerHighCards.length - 1; i++) {
-                        if(h1.tiebreakerHighCards[i].value !== h2.tiebreakerHighCards[i].value) {
-                            return h2.tiebreakerHighCards[i].value - h1.tiebreakerHighCards[i].value;
-                        }
-                    }
-                }
-                return 0;
-            });
             this.handRank = this.handRank.allHands[0];
         }
         this.checkSpecialJokers(hand);
@@ -154,14 +124,18 @@ class PokerHands {
             }
         }
         Object.assign(handRank, info);
+        if(forSolo) {
+            handRank.addToAllHands(BaseHand.createFromHand(handRank));
+        }
     }
 }
 
 class BaseHand {
-    constructor(jokerCards) {
+    constructor(jokerCards, forSolo = false) {
         this.jokerCards = jokerCards;
         this.allHands = [];
         this.matches = [];
+        this.forSolo = forSolo;
     }
 
     get cards() {
@@ -175,6 +149,55 @@ class BaseHand {
         return currentCards;
     }
 
+    isBetterThan(hand) {
+        if(this.rank > hand.rank) {
+            return true;
+        } else if(this.rank < hand.rank) {
+            return false;
+        }
+        if(this.forSolo) {
+            if(hand.cheatin && !this.cheatin) { 
+                return true;
+            } else if(!hand.cheatin && this.cheatin) {
+                return false;
+            }
+            if(hand.jokersUsed && !this.jokersUsed) { 
+                return true;
+            } else if(!hand.jokersUsed && this.jokersUsed) {
+                return false;
+            }
+        }
+        if(this.tiebreaker) {
+            for(let i = 0; i <= this.tiebreaker.length - 1; i++) {
+                if(hand.tiebreaker[i] < this.tiebreaker[i]) {
+                    return true;
+                } else if(hand.tiebreaker[i] > this.tiebreaker[i]) {
+                    return false;
+                }
+            }
+        }
+        if(this.tiebreakerHighCards) {
+            for(let i = 0; i <= this.tiebreakerHighCards.length - 1; i++) {
+                if(hand.tiebreakerHighCards[i].value < this.tiebreakerHighCards[i].value) {
+                    return true;
+                } if(hand.tiebreakerHighCards[i].value > this.tiebreakerHighCards[i].value) {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    addToAllHands(hand) {
+        let i = 0;
+        for(i; i < this.allHands.length - 1; i++) {
+            if(hand.isBetterThan(this.allHands[i])) {
+                break;
+            }
+        }
+        this.allHands.splice(i, 0, hand);
+    }
+
     static createFromHand(handObject) {
         let newHand = new BaseHand(handObject.jokerCards);
         Object.assign(newHand, handObject);
@@ -183,8 +206,8 @@ class BaseHand {
 }
 
 class DeadMansHand extends BaseHand {
-    constructor(hand, jokerCards) {
-        super(jokerCards);
+    constructor(hand, jokerCards, forSolo) {
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         let dmh = [{value: 1, suit: 'Spades'},
             {value: 1, suit: 'Clubs'},
@@ -208,7 +231,7 @@ class DeadMansHand extends BaseHand {
 
 class FiveOfAKind extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         //Check for 5oaK, starting from the best (Ks)
         //down to the worst (As). Only return the best hand
@@ -230,8 +253,6 @@ class FiveOfAKind extends BaseHand {
                 PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                 if(!forSolo) {
                     break;
-                } else {
-                    this.allHands.push(BaseHand.createFromHand(this));
                 }
             }
         }
@@ -240,7 +261,7 @@ class FiveOfAKind extends BaseHand {
 
 class StraightFlush extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         Suits.forEach((suit) => {
             for(let i = 13; i > 0; i--) {
@@ -264,11 +285,10 @@ class StraightFlush extends BaseHand {
                         cheatin: false,
                         jokersUsed: (5 - matches.length > 0) ? 5 - matches.length : 0
                     };
-                    PokerHands.updateHandInfo(this, handRankInfo);
+                    PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                     if(!forSolo) {
                         return;
                     }
-                    this.allHands.push(BaseHand.createFromHand(this));
                 }
             }
         });
@@ -277,7 +297,7 @@ class StraightFlush extends BaseHand {
 
 class FourOfAKind extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         //Check for 4oaK, starting from the best (Ks, value 13)
         //down to the worst (As, value 1). Only return the best hand
@@ -300,11 +320,9 @@ class FourOfAKind extends BaseHand {
                     cheatin: PokerHands.isCheatin(matches),
                     jokersUsed: (4 - matches.length) > 0 ? 4 - matches.length : 0
                 };
-                PokerHands.updateHandInfo(this, handRankInfo);
+                PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                 if(!forSolo) {
                     break;
-                } else {
-                    this.allHands.push(BaseHand.createFromHand(this));
                 }
             }
         }
@@ -313,7 +331,7 @@ class FourOfAKind extends BaseHand {
 
 class FullHouse extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         let matches3, matches2;
 
@@ -346,8 +364,6 @@ class FullHouse extends BaseHand {
                             PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                             if(!forSolo) {
                                 break;
-                            } else {
-                                this.allHands.push(BaseHand.createFromHand(this));
                             }
                         }
                     }
@@ -359,7 +375,7 @@ class FullHouse extends BaseHand {
 
 class Flush extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         Suits.forEach((suit) => {
             let matches = _.filter(hand, (card) => {
@@ -380,7 +396,6 @@ class Flush extends BaseHand {
                 if(!forSolo) {
                     return;
                 }
-                this.allHands.push(BaseHand.createFromHand(this));
             }
         });
     }
@@ -388,7 +403,7 @@ class Flush extends BaseHand {
 
 class Straight extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         for(let i = 13; i > 0; i--) {
             let straight = [{value: i},
@@ -409,11 +424,9 @@ class Straight extends BaseHand {
                     cheatin: false,
                     jokersUsed: (5 - matches.length) > 0 ? 5 - matches.length : 0
                 };
-                PokerHands.updateHandInfo(this, handRankInfo);
+                PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                 if(!forSolo) {
                     break;
-                } else {
-                    this.allHands.push(BaseHand.createFromHand(this));
                 }
             }
         }
@@ -422,7 +435,7 @@ class Straight extends BaseHand {
 
 class ThreeOfAKind extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         //Check for 3oaK, starting from the best (Ks)
         //down to the worst (As). Only return the best hand
@@ -445,11 +458,9 @@ class ThreeOfAKind extends BaseHand {
                     cheatin: PokerHands.isCheatin(matches),
                     jokersUsed: (3 - matches.length) > 0 ? 3 - matches.length : 0
                 };
-                PokerHands.updateHandInfo(this, handRankInfo);
+                PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                 if(!forSolo) {
                     break;
-                } else {
-                    this.allHands.push(BaseHand.createFromHand(this));
                 }
             }
         }
@@ -458,7 +469,7 @@ class ThreeOfAKind extends BaseHand {
 
 class TwoPair extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         let matchesFirst, matchesSecond;
 
@@ -493,11 +504,9 @@ class TwoPair extends BaseHand {
                                 cheatin: PokerHands.isCheatin(matches),
                                 jokersUsed: (4 - matches.length) > 0 ? 4 - matches.length : 0
                             };
-                            PokerHands.updateHandInfo(this, handRankInfo);
+                            PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                             if(!forSolo) {
                                 break;
-                            } else {
-                                this.allHands.push(BaseHand.createFromHand(this));
                             }
                         }
                     }
@@ -509,7 +518,7 @@ class TwoPair extends BaseHand {
 
 class OnePair extends BaseHand {
     constructor(hand, jokerCards, forSolo) {
-        super(jokerCards);
+        super(jokerCards, forSolo);
         let jokers = jokerCards.length;
         //Check for 1P, starting from the best (Ks)
         //down to the worst (As). Only return the best hand
@@ -532,11 +541,9 @@ class OnePair extends BaseHand {
                     cheatin: PokerHands.isCheatin(matches),
                     jokersUsed: (2 - matches.length) > 0 ? 2 - matches.length : 0
                 };
-                PokerHands.updateHandInfo(this, handRankInfo);
+                PokerHands.updateHandInfo(this, handRankInfo, jokers, forSolo);
                 if(!forSolo) {
                     break;
-                } else {
-                    this.allHands.push(BaseHand.createFromHand(this));
                 }
             }
         }
