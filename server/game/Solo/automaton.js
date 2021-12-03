@@ -1,20 +1,21 @@
 
 const uuid = require('uuid');
-const Location = require('../gamelocation.js');
+const PhaseNames = require('../Constants/PhaseNames.js');
 const AbilityContext = require('../AbilityContext.js');
 const AttachmentPrompt = require('../gamesteps/attachmentprompt.js');
-const DeedStreetSidePrompt = require('../gamesteps/deedstreetsideprompt.js');
 const PlayActionPrompt = require('../gamesteps/playactionprompt.js');
 
 const JokerPrompt = require('../gamesteps/jokerprompt.js');
 const Player = require('../player.js');
-const GunslingerArchetype = require('./Archetypes/GunslingerArchetype.js');
+const GunfighterArchetype = require('./Archetypes/GunfighterArchetype.js');
 const HandResult = require('../handresult.js');
+const Priorities = require('./priorities.js');
+const BaseArchetype = require('./Archetypes/BaseArchetype.js');
 
 class Automaton extends Player {
     constructor(game, user) {
         super(uuid.v1(), user, false, game);
-        this.decisionEngine = new GunslingerArchetype(game, this);
+        this.decisionEngine = new GunfighterArchetype(game, this);
     }
 
     isAutomaton() {
@@ -46,12 +47,6 @@ class Automaton extends Player {
             },
             source: updatedOptions.source
         });
-    }
-
-    redrawFromHand(number = 1, callback = () => true, options = {}, context) {
-        this.discardFromHand(number, discardedCards => {
-            this.drawCardsToHand(discardedCards.length, context).thenExecute(event => callback(event, discardedCards));
-        }, options, context);
     }
 
     playCard(card, arg) {
@@ -231,23 +226,6 @@ class Automaton extends Player {
         }
     }
 
-    addDeedToStreet(card, target) {
-        if(card.hasKeyword('Out of Town')) {
-            this.locations.push(new Location.GameLocation(this.game, card, null, null));
-        } else if(/left/.test(target)) {
-            this.addDeedToLeft(card);
-        } else if(/right/.test(target)) {
-            this.addDeedToRight(card);
-        } else {
-            this.promptForDeedStreetSide(card);
-        }
-        this.moveCard(card, 'play area');
-    }
-
-    promptForDeedStreetSide(card) {
-        this.game.queueStep(new DeedStreetSidePrompt(this.game, this, card, 'play'));
-    }
-
     // If no callback is passed, pulled card is returned, but if it is joker the
     // value selection if needed has to be handled by the caller.
     // The pulled card has to be taken care of manually afterwards.
@@ -274,52 +252,6 @@ class Automaton extends Player {
             }
         });
         return pulledCard;
-    }
-
-    getState(activePlayer) {
-        let isActivePlayer = activePlayer === this;
-        let promptState = isActivePlayer ? this.promptState.getState() : {};
-        let locationsState = this.locations.map(location => {
-            return {
-                uuid: location.uuid,
-                order: location.order
-            };
-        });
-
-        let state = {
-            legend: this.legend ? this.legend.getSummary(activePlayer) : null,
-            cardPiles: {
-                cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
-                deadPile: this.getSummaryForCardList(this.deadPile, activePlayer).reverse(),
-                discardPile: this.getSummaryForCardList(this.discardPile, activePlayer),
-                drawDeck: this.getSummaryForCardList(this.drawDeck, activePlayer),
-                hand: this.getSummaryForCardList(this.hand, activePlayer),
-                drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
-                beingPlayed: this.getSummaryForCardList(this.beingPlayed, activePlayer)
-            },
-            inCheck: this.currentCheck,
-            disconnected: !!this.disconnectedAt,
-            outfit: this.outfit.getSummary(activePlayer),
-            firstPlayer: this.firstPlayer,
-            handRank: this.handResult.rank,
-            locations: locationsState,
-            id: this.id,
-            left: this.left,
-            numDrawCards: this.drawDeck.length,
-            name: this.name,
-            phase: this.game.currentPhase,
-            promptedActionWindows: this.promptedActionWindows,
-            stats: this.getStats(isActivePlayer),
-            keywordSettings: this.keywordSettings,
-            timerSettings: this.timerSettings,
-            totalControl: this.getTotalControl(),
-            totalInfluence: this.getTotalInfluence(),
-            user: {
-                username: this.user.username
-            }
-        };
-
-        return Object.assign(state, promptState);
     }
 
     finalizeDrawHand(handResult) {
@@ -365,36 +297,23 @@ class Automaton extends Player {
             }
         });
     }
+    
+    getInfluence(card) {
+        const savedCurrentPhase = this.game.currentPhase;
+        this.game.currentPhase = PhaseNames.Sundown;
+        const influence = card.influence;
+        this.game.currentPhase = savedCurrentPhase;
+        return influence;
+    }
 
     pickShooter(availableDudes) {
         const sortConditions = [
-            (dude1, dude2) => {
-                if(dude1.isStud() && dude1.bullets > 1) {
-                    if(dude2.isStud() && dude2.bullets > 1) {
-                        return dude1.bullets - dude2.bullets;
-                    }
-                    return -1;
-                }
-                return dude2.isStud() && dude2.bullets > 1 ? 1 : 0;
-            },
-            (dude1, dude2) => dude2.bullets - dude1.bullets,
-            (dude1, dude2) => {
-                if((!dude1.booted && !dude1.booted) || (dude1.booted && dude2.booted)) {
-                    return 0;
-                }
-                return dude1.booted ? 1 : -1;   
-            },
-            (dude1, dude2) => dude1.influence - dude2.influence
+            Priorities.highestStud(dude => dude.bullets > 1),
+            Priorities.highestBullets(),
+            Priorities.unbootedCard(),
+            Priorities.lowestInfluence()
         ];
-        const sortFunc = (dude1, dude2) => {
-            return sortConditions.reduce((value, condition) => {
-                if(!value) {
-                    return condition(dude1, dude2);
-                }
-                return value;
-            }, 0);
-        };
-        return availableDudes.sort(sortFunc)[0];
+        return BaseArchetype.highestPriority(availableDudes, sortConditions);
     }
 
     handlePlayWindow(playWindow) {
@@ -405,7 +324,11 @@ class Automaton extends Player {
 
     // TODO M2 solo - implement targeting priorities
     orderByTargetPriority(targets, gameAction) {
-        return this.decisionEngine.targetPriorities(gameAction, targets);
+        const orderFunc = this.decisionEngine.targetPriorities(gameAction, targets);
+        if(orderFunc) {
+            return orderFunc();
+        }
+        return targets;
     }
 
     getCardsToDiscardOnSundown() {
@@ -436,6 +359,109 @@ class Automaton extends Player {
         }
 
         return [];
+    }
+
+    getDudesToFlee(availableDudes) {
+        const fleeReflex = this.decisionEngine.programmedReflex('sendHome', { isFlee: true });
+        if(fleeReflex) {
+            return fleeReflex(availableDudes);
+        }
+
+        return [];
+    }
+
+    getCasualtiesResolution(shootout, casualtiesNum, firstCasualty, context) {
+        let availableVictims = shootout.getPosseByPlayer(this).getCards(card => {
+            context.casualty = card;
+            return card.coversCasualties('any', context);
+        });
+        let currentCasualtiesNum = casualtiesNum;
+        let resolutions = [];
+        // 1. check if there are any cards that has to be selected as first casualty
+        const handleFirstCasualty = (type) => {
+            let fcCoveredNum = firstCasualty.coversCasualties(type);
+            if(currentCasualtiesNum - fcCoveredNum >= 0) {
+                resolutions.push({
+                    card: firstCasualty,
+                    type: type
+                });
+                currentCasualtiesNum -= fcCoveredNum;
+                availableVictims = availableVictims.filter(victim => victim !== firstCasualty);
+                return true;
+            }
+            return false;           
+        };
+        if(availableVictims.includes(firstCasualty)) {
+            handleFirstCasualty('sendHome') || handleFirstCasualty('discard') || handleFirstCasualty('ace');
+        }
+        // if casualties are zero by resolving the first casualty, we are done
+        if(currentCasualtiesNum === 0) {
+            return resolutions;
+        }
+        // 2. check if there are any sidekick cards that can be selected as casualty
+        resolutions = resolutions.concat(availableVictims.reduce((result, victim) => {
+            if(!victim.hasKeyword('sidekick') || currentCasualtiesNum === 0) {
+                return result;
+            }
+            currentCasualtiesNum -= victim.coversCasualties('discard');
+            result.push({ card: victim, type: 'discard' });
+            return result;
+        }, []));
+        // if casualties are zero by resolving the sidekick, we are done
+        if(currentCasualtiesNum === 0) {
+            return resolutions;
+        }
+        // 3. check other cards that can be selected as casualties to resolve rest
+        let restOfVictims = availableVictims.filter(victim => !victim.hasKeyword('sidekick'));
+        restOfVictims = this.orderByTargetPriority(restOfVictims, 'casualties');
+        return resolutions.concat(restOfVictims.reduce((result, victim) => {
+            if(currentCasualtiesNum === 0) {
+                return result;
+            }
+            let casualtyInfos = [{
+                card: victim,
+                type: 'ace',
+                covered: victim.coversCasualties('ace')
+            }];
+            casualtyInfos.push({
+                card: victim,
+                type: 'discard',
+                covered: victim.coversCasualties('discard')
+            });
+            casualtyInfos.push({
+                card: victim,
+                type: 'sendHome',
+                covered: victim.coversCasualties('sendHome')
+            });
+            casualtyInfos = casualtyInfos.filter(info => info.covered > 0).sort((info1, info2) => {
+                let remain1 = currentCasualtiesNum - info1.covered;
+                let remain2 = currentCasualtiesNum - info2.covered;
+                if(remain1 === remain2) {
+                    if(info1.type === 'sendHome') {
+                        return -1;
+                    }
+                    if(info2.type === 'sendHome') {
+                        return 1;
+                    }
+                    if(info1.type === 'discard') {
+                        return -1;
+                    }
+                    if(info2.type === 'discard') {
+                        return 1;
+                    }
+                }
+                if(remain1 < 0 && remain2 === 0) {
+                    return 1;
+                }
+                if(remain2 < 0 && remain1 === 0) {
+                    return -1;
+                }
+                return Math.abs(remain1) - Math.abs(remain2);
+            });
+            result.push(casualtyInfos[0]);
+            currentCasualtiesNum -= casualtyInfos[0].covered;
+            return result;
+        }, []));
     }
 }
 
