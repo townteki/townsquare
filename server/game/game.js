@@ -1,5 +1,6 @@
 const EventEmitter = require('events');
 const moment = require('moment');
+const _ = require('lodash');
 
 const AttachmentValidityCheck = require('./AttachmentValidityCheck.js');
 const ChatCommands = require('./chatcommands.js');
@@ -514,14 +515,80 @@ class Game extends EventEmitter {
         player.modifyGhostRock(-appliedAmount);
     }
 
-    checkWinCondition() { 
-        if(this.getNumberOfPlayers() <= 1) {
-            return;
+    clone() {
+        let clonedGame = _.cloneDeep(this);
+        this.allCards.forEach(card => card.game = clonedGame);
+        clonedGame.queueSimpleStep = (func => func());
+        return clonedGame;
+    }
+
+    simulateSundown() {
+        if(this.currentPhase === PhaseNames.Sundown) {
+            return this;
         }
-        this.getPlayers().forEach(player => {
-            if(!player.currentCheck & player.isInCheck()) {
-                this.addAlert('warning', 'CHECK: {0} is in check', player);
+        let clonedGame = this.simulateEndOfShootout();
+        if(clonedGame.currentPhase === PhaseNames.Gambling) {
+            clonedGame.effectEngine.onPhaseEnded({ phase: PhaseNames.Gambling });
+            clonedGame.currentPhase = PhaseNames.Upkeep;
+            clonedGame.effectEngine.reapplyStateDependentEffects();
+        }
+        if(clonedGame.currentPhase === PhaseNames.Upkeep) {
+            clonedGame.effectEngine.onPhaseEnded({ phase: PhaseNames.Upkeep });
+            clonedGame.currentPhase = PhaseNames.HighNoon;
+            clonedGame.effectEngine.reapplyStateDependentEffects();
+        }
+        clonedGame.effectEngine.onPhaseEnded({ phase: PhaseNames.HighNoon });
+        clonedGame.effectEngine.reapplyStateDependentEffects();
+        clonedGame.currentPhase = '';
+        for(const player of clonedGame.getPlayers()) {
+            player.phase = '';
+        }
+
+        clonedGame.effectEngine.onAtEndOfPhase({ phase: PhaseNames.HighNoon });
+        clonedGame.effectEngine.reapplyStateDependentEffects();
+        clonedGame.currentPhase = PhaseNames.Sundown;
+        for(const player of clonedGame.getPlayers()) {
+            player.phase = PhaseNames.Sundown;
+        }
+
+        clonedGame.effectEngine.reapplyStateDependentEffects();
+        this.allCards.forEach(card => card.game = this);
+        return clonedGame;
+    }
+
+    simulateEndOfShootout(clonedGame) {
+        if(!clonedGame) {
+            clonedGame = this.clone();
+        }
+        if(!this.shootout) {
+            return clonedGame;
+        }
+        clonedGame.effectEngine.onShootoutRoundFinished();
+        clonedGame.effectEngine.onShootoutPhaseFinished();
+        clonedGame.effectEngine.reapplyStateDependentEffects();
+        clonedGame.currentPhase = '';
+        for(const player of clonedGame.getPlayers()) {
+            player.phase = '';
+        }
+
+        clonedGame.currentPhase = PhaseNames.HighNoon;
+        for(const player of clonedGame.getPlayers()) {
+            player.phase = PhaseNames.HighNoon;
+        }
+
+        clonedGame.effectEngine.reapplyStateDependentEffects();
+        this.allCards.forEach(card => card.game = this);
+        return clonedGame;
+    }
+
+    checkWinCondition() {
+        let gameToCheck = this.simulateSundown();
+        gameToCheck.getPlayers().forEach(player => {
+            const realPlayer = this.getPlayerByName(player.name);
+            if(!realPlayer.currentCheck & player.isInCheck()) {
+                this.addAlert('warning', 'CHECK: {0} is in check', realPlayer);
             }
+            realPlayer.currentCheck = player.currentCheck;
         });
     }
 
