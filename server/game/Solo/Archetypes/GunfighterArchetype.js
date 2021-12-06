@@ -54,11 +54,6 @@ class GunfighterArchetype extends BaseArchetype {
             .filter(joinInfo => joinInfo.requirements.canJoin);
         return dudesJoinInfos.map(info => info.dude).slice(0, 2);
     }
-
-    // TODO M2 solo - this check if card is draw after the shootout
-    isDraw(dude) {
-        return dude.isDraw();
-    }
 }
 
 class ConditionTables {
@@ -70,7 +65,7 @@ class ConditionTables {
                 current: {
                     leavingPlay: [
                         Priorities.lowestInfluence(),
-                        Priorities.draw(this.archetype),
+                        Priorities.draw(true),
                         Priorities.lowestCombinedCost()
                     ],
                     receiving: cardToBeReceived => {

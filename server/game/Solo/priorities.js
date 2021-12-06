@@ -1,6 +1,6 @@
 const Priorities = {
     lowestInfluence: function() {
-        return (dude1, dude2) => dude1.influence - dude2.influence;
+        return (dude1, dude2) => dude1.getSundownInfluence() - dude2.getSundownInfluence();
     },
     highestBullets: function() {
         return (dude1, dude2) => dude2.bullets - dude1.bullets;
@@ -16,13 +16,14 @@ const Priorities = {
             return dude2.isStud() && condition(dude2) ? 1 : 0;
         };
     },
-    draw: function(archetype) {
+    draw: function(afterShootout = false) {
         return (dude1, dude2) => {
-            if((!archetype.isDraw(dude1) && !archetype.isDraw(dude2)) || 
-                (archetype.isDraw(dude1) && archetype.isDraw(dude2))) {
+            let isDraw1 = afterShootout ? dude1.isDrawAfterShootout() : dude1.isDraw();
+            let isDraw2 = afterShootout ? dude2.isDrawAfterShootout() : dude2.isDraw();
+            if((!isDraw1 && !isDraw2) || (isDraw1 && isDraw2)) {
                 return 0;
             }
-            return archetype.isDraw(dude1) ? -1 : 1;
+            return isDraw1 ? -1 : 1;
         };
     },
     unbootedCard: function() {

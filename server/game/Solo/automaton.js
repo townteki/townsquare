@@ -1,6 +1,5 @@
 
 const uuid = require('uuid');
-const PhaseNames = require('../Constants/PhaseNames.js');
 const AbilityContext = require('../AbilityContext.js');
 const AttachmentPrompt = require('../gamesteps/attachmentprompt.js');
 const PlayActionPrompt = require('../gamesteps/playactionprompt.js');
@@ -298,14 +297,6 @@ class Automaton extends Player {
         });
     }
     
-    getInfluence(card) {
-        const savedCurrentPhase = this.game.currentPhase;
-        this.game.currentPhase = PhaseNames.Sundown;
-        const influence = card.influence;
-        this.game.currentPhase = savedCurrentPhase;
-        return influence;
-    }
-
     pickShooter(availableDudes) {
         const sortConditions = [
             Priorities.highestStud(dude => dude.bullets > 1),

@@ -142,6 +142,12 @@ class BaseCard {
         return location.locationCard;
     }
 
+    getSundownInfluence() {
+        const clonedGame = this.game.simulateSundown();
+        const clonedCard = clonedGame.findCardInPlayByUuid(this.uuid);
+        return clonedCard.influence;
+    }
+
     getValueText() {
         switch(this.value) {
             case 1:

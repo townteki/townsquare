@@ -585,6 +585,12 @@ class DudeCard extends DrawCard {
         return this.studReferenceArray[0].shooter === 'Draw';
     }
 
+    isDrawAfterShootout() {
+        const clonedGame = this.game.simulateEndOfShootout();
+        const clonedCard = clonedGame.findCardInPlayByUuid(this.uuid);
+        return clonedCard.isDraw();
+    }
+
     isHarrowed() {
         return this.hasKeyword('harrowed');
     }
