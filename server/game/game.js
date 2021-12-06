@@ -538,14 +538,13 @@ class Game extends EventEmitter {
             clonedGame.effectEngine.reapplyStateDependentEffects();
         }
         clonedGame.effectEngine.onPhaseEnded({ phase: PhaseNames.HighNoon });
-        clonedGame.effectEngine.reapplyStateDependentEffects();
         clonedGame.currentPhase = '';
+        clonedGame.effectEngine.reapplyStateDependentEffects();
         for(const player of clonedGame.getPlayers()) {
             player.phase = '';
         }
 
         clonedGame.effectEngine.onAtEndOfPhase({ phase: PhaseNames.HighNoon });
-        clonedGame.effectEngine.reapplyStateDependentEffects();
         clonedGame.currentPhase = PhaseNames.Sundown;
         for(const player of clonedGame.getPlayers()) {
             player.phase = PhaseNames.Sundown;
@@ -566,8 +565,9 @@ class Game extends EventEmitter {
         this.allCards.forEach(card => card.game = clonedGame);
         clonedGame.effectEngine.onShootoutRoundFinished();
         clonedGame.effectEngine.onShootoutPhaseFinished();
-        clonedGame.effectEngine.reapplyStateDependentEffects();
         clonedGame.currentPhase = '';
+        clonedGame.shootout = null;
+        clonedGame.effectEngine.reapplyStateDependentEffects();
         for(const player of clonedGame.getPlayers()) {
             player.phase = '';
         }
@@ -583,7 +583,7 @@ class Game extends EventEmitter {
     }
 
     checkWinCondition() {
-        if(this.currentPhase === PhaseNames.HighNoon || this.currentPhase === PhaseNames.Sundown) {
+        if([PhaseNames.HighNoon, PhaseNames.Sundown, PhaseNames.Shootout].includes(this.currentPhase)) {
             let gameToCheck = this.simulateSundown();
             gameToCheck.getPlayers().forEach(player => {
                 const realPlayer = this.getPlayerByName(player.name);
