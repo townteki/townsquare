@@ -20,12 +20,15 @@ class ValuePrompt extends UiPrompt {
     }
 
     activePrompt(player) {
+        let promptInfo;
         if(this.player === this.game.automaton) {
             player = this.player;
+            promptInfo = { type: 'info', message: this.game.automaton.name };
         }        
         return {
             menuTitle: this.title,
-            buttons: this.getButtons(player)
+            buttons: this.getButtons(player),
+            promptInfo
         };
     }
 

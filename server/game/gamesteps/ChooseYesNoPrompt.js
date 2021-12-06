@@ -25,7 +25,9 @@ class ChooseYesNoPrompt extends UiPrompt {
                 { arg: 'yes', text: 'Yes' },
                 { arg: 'no', text: 'No' }
             ],
-            promptTitle: this.source ? this.source.title : this.promptTitle
+            promptTitle: this.source ? this.source.title : this.promptTitle,
+            promptInfo: this.player === this.game.automaton ? 
+                { type: 'info', message: this.game.automaton.name } : undefined
         };
     }    
 

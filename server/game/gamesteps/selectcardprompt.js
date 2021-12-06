@@ -58,15 +58,17 @@ class SelectCardPrompt extends UiPrompt {
         if(this.choosingPlayer === this.game.automaton) {
             this.forSolo = true;
             this.choosingPlayer = this.choosingPlayer.getOpponent();
-        }
+            this.promptInfo = { type: 'info', message: this.game.automaton.name };
         // *****
+        } else {
+            this.promptInfo = properties.promptInfo || {};
+        }
         if(properties.source && !properties.waitingPromptTitle) {
             properties.waitingPromptTitle = 'Waiting for opponent to use ' + properties.source.title;
         }
 
         this.properties = properties;
         this.promptTitle = properties.promptTitle;
-        this.promptInfo = properties.promptInfo || {};
         this.context = properties.context;
         this.selector = properties.selector || CardSelector.for(properties);
         this.selectedCards = [];
