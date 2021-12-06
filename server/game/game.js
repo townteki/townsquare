@@ -517,7 +517,6 @@ class Game extends EventEmitter {
 
     clone() {
         let clonedGame = _.cloneDeep(this);
-        this.allCards.forEach(card => card.game = clonedGame);
         clonedGame.queueSimpleStep = (func => func());
         return clonedGame;
     }
@@ -527,6 +526,7 @@ class Game extends EventEmitter {
             return this;
         }
         let clonedGame = this.simulateEndOfShootout();
+        this.allCards.forEach(card => card.game = clonedGame);
         if(clonedGame.currentPhase === PhaseNames.Gambling) {
             clonedGame.effectEngine.onPhaseEnded({ phase: PhaseNames.Gambling });
             clonedGame.currentPhase = PhaseNames.Upkeep;
@@ -563,6 +563,7 @@ class Game extends EventEmitter {
         if(!this.shootout) {
             return clonedGame;
         }
+        this.allCards.forEach(card => card.game = clonedGame);
         clonedGame.effectEngine.onShootoutRoundFinished();
         clonedGame.effectEngine.onShootoutPhaseFinished();
         clonedGame.effectEngine.reapplyStateDependentEffects();
