@@ -583,14 +583,16 @@ class Game extends EventEmitter {
     }
 
     checkWinCondition() {
-        let gameToCheck = this.simulateSundown();
-        gameToCheck.getPlayers().forEach(player => {
-            const realPlayer = this.getPlayerByName(player.name);
-            if(!realPlayer.currentCheck & player.isInCheck()) {
-                this.addAlert('warning', 'CHECK: {0} is in check', realPlayer);
-            }
-            realPlayer.currentCheck = player.currentCheck;
-        });
+        if(this.currentPhase === PhaseNames.HighNoon || this.currentPhase === PhaseNames.Sundown) {
+            let gameToCheck = this.simulateSundown();
+            gameToCheck.getPlayers().forEach(player => {
+                const realPlayer = this.getPlayerByName(player.name);
+                if(!realPlayer.currentCheck & player.isInCheck()) {
+                    this.addAlert('warning', 'CHECK: {0} is in check', realPlayer);
+                }
+                realPlayer.currentCheck = player.currentCheck;
+            });
+        }
     }
 
     resolveTiebreaker(player1, player2, isForLowball = false) {
