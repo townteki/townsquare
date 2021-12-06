@@ -809,7 +809,8 @@ class ChatCommands {
         this.game.promptForSelect(player, {
             activePromptTitle: 'Select a card to attach/reattach',
             waitingPromptTitle: 'Waiting for opponent to select card to attach/reattach',
-            cardCondition: card => ['play area', 'hand', 'discard pile', 'being played'].includes(card.location) && card.controller === player,
+            cardCondition: card => ['play area', 'hand', 'discard pile', 'being played'].includes(card.location) && 
+                (card.controller === player || card.controller === this.game.automaton),
             cardType: ['goods', 'spell', 'action', 'dude'],
             onSelect: (p, cardToAttach) => {
                 const title = (cardToAttach.parent ? 'reattach ' : 'attach ') + cardToAttach.title;
@@ -818,7 +819,10 @@ class ChatCommands {
                     waitingPromptTitle: 'Waiting for opponent to select parent for attachment',
                     cardCondition: card => card.location === 'play area' && 
                         card.controller.canAttach(cardToAttach, card, 'chatcommand') &&
-                        (card.controller === player || cardToAttach.hasKeyword('condition') || cardToAttach.hasKeyword('totem')),
+                        (card.controller === player || 
+                        cardToAttach.hasKeyword('condition') || 
+                        cardToAttach.hasKeyword('totem') ||
+                        card.controller === this.game.automaton),
                     cardType: ['deed', 'dude', 'outfit'],
                     onSelect: (player, target) => {
                         player.performAttach(cardToAttach, target, 'chatcommand');    

@@ -1094,7 +1094,11 @@ class BaseCard {
         return false;
     }
 
-    coversCasualties(type = 'any') {
+    coversCasualties(type = 'any', context) {
+        if((context && !this.allowGameAction(type, context, { isCardEffect: false })) ||
+            this.cannotBeChosenAsCasualty()) {
+            return 0;
+        }
         if(this.getType() === 'dude') {
             let harrowCasualty = this.isHarrowed() ? 1 : 0;
             if(type === 'ace' || type === 'any') {

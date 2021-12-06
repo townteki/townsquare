@@ -19,6 +19,17 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             return this.continue();
         }
 
+        if(this.currentPlayer === this.game.automaton) {
+            this.handleSolo(context, options);
+            this.completePlayer();
+            return this.continue();
+        }
+        this.runOrGun(context, options);
+
+        return false;        
+    }
+
+    runOrGun(context, options) {
         this.game.promptForSelect(this.currentPlayer, {
             activePromptTitle: 'Select dudes to flee the shootout',
             multiSelect: true,
@@ -28,18 +39,9 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             ],
             cardCondition: card => card.controller === this.currentPlayer &&
                 card.location === 'play area' &&
-                card.getType() === 'dude' &&
-                !card.cannotFlee() &&
-                this.shootout.isInShootout(card) &&
-                card.allowGameAction('removeFromPosse', context, options) &&
-                (card.isAtHome() || card.allowGameAction('moveDude', context, options)),
+                this.canFleeFromShootout(card, context, options),
             onSelect: (player, cards) => {
-                cards.forEach(card => this.shootout.sendHome(
-                    card, 
-                    context,
-                    options
-                ));
-                this.completePlayer();
+                this.flee(cards, context, options);
                 return true;
             },
             onCancel: () => {
@@ -55,9 +57,30 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
                 this.completePlayer();
                 return true;
             }
-        });
+        });        
+    }
 
-        return false;        
+    canFleeFromShootout(card, context, options) {
+        return card.getType() === 'dude' &&
+            !card.cannotFlee() &&
+            this.shootout.isInShootout(card) &&
+            card.allowGameAction('removeFromPosse', context, options) &&
+            (card.isAtHome() || card.allowGameAction('moveDude', context, options));
+    }
+
+    handleSolo(context, options) {
+        const dudesThatCanFlee = this.game.automaton.cardsInPlay.filter(card =>
+            this.canFleeFromShootout(card, context, options));
+        const fleeingDudes = this.game.automaton.getDudesToFlee(dudesThatCanFlee);
+        this.flee(fleeingDudes, context, options);
+    }
+
+    flee(cards, context, options) {
+        cards.forEach(card => this.shootout.sendHome(
+            card, 
+            context,
+            options
+        ));
     }
 }
 
