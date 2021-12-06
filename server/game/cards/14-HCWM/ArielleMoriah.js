@@ -8,7 +8,7 @@ class ArielleMoriah extends DudeCard {
         this.reaction({
             title: 'React: Arielle Moriah',
             when: {
-                onCardBooted: event => event.card === this &&
+                onCardBooted: event => event.card === this && event.context &&
                     event.context.source && event.context.source.hasKeyword('miracle')
             },
             message: context => 
