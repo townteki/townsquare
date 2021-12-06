@@ -36,8 +36,9 @@ class MenuPrompt extends UiPrompt {
 
     activePrompt() {
         let promptTitle = this.properties.promptTitle || (this.properties.source ? this.properties.source.title : undefined);
+        let promptInfo = this.player === this.game.automaton ? { type: 'info', message: this.game.automaton.name } : undefined;
 
-        return Object.assign({ promptTitle: promptTitle }, this.properties.activePrompt);
+        return Object.assign({ promptTitle: promptTitle, promptInfo }, this.properties.activePrompt);
     }
 
     waitingPrompt() {
