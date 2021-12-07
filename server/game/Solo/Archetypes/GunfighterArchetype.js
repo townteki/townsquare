@@ -1,6 +1,7 @@
 /** @typedef {import('../../effect')} Effect */
 /** @typedef {import('../../drawcard')} DrawCard */
 
+const PhaseNames = require('../../Constants/PhaseNames');
 const Priorities = require('../priorities');
 const BaseArchetype = require('./BaseArchetype');
 
@@ -40,7 +41,38 @@ class GunfighterArchetype extends BaseArchetype {
      * 
      * @return {Function} function representing Automaton action.
      */      
-    automatonPulls(pulledCard) {
+    automatonPulls(pulledCard, playWindow) {
+        this.player.moveCard(pulledCard, 'hand');
+        let cardUsed = false;
+        if(playWindow.name === PhaseNames.HighNoon) {
+            this.game.queueSimpleStep(() => this.automatonMove(pulledCard));
+        }
+        this.game.queueSimpleStep(() => {
+            cardUsed = this.automatonPlayCard(pulledCard);
+        });
+        this.game.queueSimpleStep(() => {
+            if(!cardUsed) {
+                cardUsed = this.automatonUseAbility(pulledCard);
+            }
+        });
+        this.game.queueSimpleStep(() => {
+            if(!cardUsed) {
+                this.player.modifyGhostRock(1);
+                this.game.addMessage('{0} gets 1 GR as Recompense', this.player);
+            }
+        });
+    }
+
+    automatonMove(pulledCard) {
+
+    }
+
+    automatonPlayCard(pulledCard) {
+        return false;
+    }
+
+    automatonUseAbility(pulledCard) {
+        return false;
     }
 
     // TODO M2 solo - needs to be ordered based on rules

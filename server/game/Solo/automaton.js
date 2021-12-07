@@ -296,6 +296,16 @@ class Automaton extends Player {
             }
         });
     }
+
+    makeAutomatonPull(playWindow) {
+        if(this.drawDeck.length === 0) {
+            this.shuffleDiscardToDrawDeck();
+        }
+        const pulledCard = this.drawDeck[0];
+        this.game.addMessage('{0} makes an Automaton pull: {1}of{2}({3} )', 
+            this, pulledCard.getValueText(), pulledCard.suit, pulledCard);
+        this.decisionEngine.automatonPulls(pulledCard, playWindow);
+    }
     
     pickShooter(availableDudes) {
         const sortConditions = [
@@ -308,9 +318,8 @@ class Automaton extends Player {
     }
 
     handlePlayWindow(playWindow) {
-        // TODO M2 solo - handle properly once Automaton has decision engine and pulls implemented
-        this.game.addAlert('info', '{0}\'s {1} play window', this, playWindow.name);
-        playWindow.markActionAsTaken(this);
+        this.makeAutomatonPull(playWindow);
+        this.game.queueSimpleStep(() => playWindow.markActionAsTaken(this));
     }
 
     // TODO M2 solo - implement targeting priorities
