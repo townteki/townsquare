@@ -472,6 +472,43 @@ class DudeCard extends DrawCard {
         };
     }
 
+    requirementsToMove(origin, destination, options = {}) {
+        if(origin.uuid === destination.uuid) {
+            return { canMove: false };
+        }
+
+        if(this.booted) {
+            if((!options.needToBoot && options.isCardEffect) || options.allowBooted) {
+                return { canMove: true, needToBoot: false };
+            }
+            return { canMove: false };
+        }
+
+        if(this.canMoveWithoutBooting(Object.assign(options, { dude: this, origin, destination }))) {
+            return { canMove: true, needToBoot: false };
+        }
+
+        if(options.isCardEffect) {
+            return { canMove: true, needToBoot: options.needToBoot};
+        }
+
+        if(options.needToBoot === null || options.needToBoot === undefined) {
+            if(!origin.isAdjacent(destination.uuid)) {
+                return { canMove: true, needToBoot: true };
+            } 
+            if(origin.isTownSquare()) {
+                if(destination.uuid === this.controller.outfit.uuid) {
+                    return { canMove: true, needToBoot: true };
+                }
+            } else if(origin.uuid !== this.controller.outfit.uuid) {
+                return { canMove: true, needToBoot: true };
+            }
+            return { canMove: true, needToBoot: false };
+        }
+
+        return { canMove: true, needToBoot: options.needToBoot };
+    }
+
     needToMoveToJoinPosse() {
         let shootout = this.game.shootout;
         if(!shootout) {
