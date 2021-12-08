@@ -492,7 +492,7 @@ class DudeCard extends DrawCard {
             return { canMove: true, needToBoot: options.needToBoot};
         }
 
-        if(options.needToBoot === null) {
+        if(options.needToBoot === null || options.needToBoot === undefined) {
             if(!origin.isAdjacent(destination.uuid)) {
                 return { canMove: true, needToBoot: true };
             } 
