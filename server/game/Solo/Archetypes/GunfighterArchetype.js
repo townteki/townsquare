@@ -229,7 +229,7 @@ class GunfighterArchetype extends BaseArchetype {
                         });
                         // TODO M2 solo - for now do the clubs move here, until the prompt is replaced with automatic function
                         if(!dudeToMove) {
-                            let moveInfo = this.moveBasedOnSuit('spades', unbootedDudes);
+                            let moveInfo = this.moveBasedOnSuit('Spades', unbootedDudes);
                             if(moveInfo) {
                                 dudeToMove = moveInfo.dudeToMove;
                                 destination = moveInfo.destination;
