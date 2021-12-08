@@ -1618,26 +1618,11 @@ class Player extends Spectator {
             return;
         }
 
-        if(dude.canMoveWithoutBooting(Object.assign(options, { dude, origin, destination }))) {
-            options.needToBoot = false;
+        const reqToMove = dude.requirementsToMove(origin, destination, options);
+        if(!reqToMove.canMove) {
+            return;
         }
-
-        if(options.needToBoot === null && !options.isCardEffect) {
-            if(!options.allowBooted && dude.booted) {
-                return;
-            }
-            if(!origin.isAdjacent(destination.uuid)) {
-                options.needToBoot = true;
-            } else {
-                if(origin.isTownSquare()) {
-                    if(destination.uuid === this.outfit.uuid) {
-                        options.needToBoot = true;
-                    }
-                } else if(origin.uuid !== this.outfit.uuid) {
-                    options.needToBoot = true;
-                }
-            }
-        }
+        options.needToBoot = reqToMove.needToBoot;
 
         if(options.needToBoot) {
             this.bootCard(dude);

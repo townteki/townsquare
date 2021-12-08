@@ -121,6 +121,20 @@ class BaseArchetype {
         }
         return BaseArchetype.sortByPriority(array, conditions)[0];
     }
+
+    static getMovesWithoutBoot(dudes, destinations) {
+        let moves = [];
+        dudes.forEach(dude => {
+            destinations.forEach(deed => {
+                let reqToMove = dude.requirementsToMove(
+                    dude.getGameLocation(), deed.getGameLocation(), { needToBoot: null });
+                if(!reqToMove.needToBoot) {
+                    moves.push({ dudeToMove: dude, destination: deed });
+                }
+            });
+        });
+        return moves;
+    }
 }
 
 module.exports = BaseArchetype;
