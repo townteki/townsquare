@@ -254,7 +254,59 @@ class GunfighterArchetype extends BaseArchetype {
     }
 
     automatonPlayCard(pulledCard) {
-        return false;
+        let possibleCards = this.player.hand.filter(card => card.suit === pulledCard.suit);
+        if(!possibleCards.length) {
+            return false;
+        }
+        let playActions = [];
+        if(pulledCard.suit !== 'Clubs') {
+            possibleCards.forEach(card => {
+                if(this.game.currentPhase === PhaseNames.HighNoon && this.player.playablePlayActions(card, 'shoppin').length) {
+                    playActions.push({
+                        card,
+                        playFunction: () => this.player.playCard(card, 'shoppin')
+                    });
+                } else if(card.abilities.playActions.length > 0) {
+                    if(card.abilities.playActions.some(playAction => 
+                        playAction.meetsRequirements(playAction.createContext(this.player)))) {
+                        playActions.push({
+                            card,
+                            playFunction: () => this.player.playCard(card, 'play')
+                        });
+                    }
+                }
+            });
+        } else {
+            playActions = possibleCards.filter(card => card.hasEnabledCardAbility(this.player))
+                .map(card => {
+                    return {
+                        card,
+                        playFunction: () => card.useAbility(this.player)
+                    };
+                });
+        }
+        if(!playActions.length) {
+            return false;
+        }
+        if(playActions.length > 1) {
+            if(pulledCard.suit !== 'Clubs') {
+                let minCount = 999;
+                playActions = playActions.reduce((result, playAction) => {
+                    let count = this.player.cardsInPlay.filter(card => 
+                        card.value === playAction.card.value && card.suit === playAction.card.suit).length;
+                    if(count < minCount) {
+                        minCount = count;
+                        return [playAction];
+                    }
+                    if(count === minCount) {
+                        result.push(playAction);
+                    }
+                    return result;
+                }, []);
+            }
+        }
+        playActions[0].playFunction();
+        return true;
     }
 
     automatonUseAbility(pulledCard) {
