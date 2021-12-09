@@ -61,6 +61,12 @@ class GunfighterArchetype extends BaseArchetype {
                 this.player.modifyGhostRock(1);
                 this.game.addMessage('{0} gets 1 GR as Recompense', this.player);
             }
+            const cardsToDiscard = this.player.getCardsToDiscardDownToHandSize();
+            if(cardsToDiscard.length) {
+                this.player.discardCards(cardsToDiscard, false, () => {
+                    this.game.addMessage('{0} discards {1} to meet hand size limit', this.player, cardsToDiscard);
+                });
+            }
         });
     }
 
@@ -211,8 +217,8 @@ class GunfighterArchetype extends BaseArchetype {
                                 if(!reqForMove.needToBoot) {
                                     return true;
                                 }
-                                let reqForMoveFromTS = caller.requirementsToMove(this.game.townsquare, callee.getGameLocation(), { isCardEffect: false });
-                                if(!reqForMoveFromTS.needToBoot) {
+                                let reqForMoveToTS = caller.requirementsToMove(caller.getGameLocation(), this.game.townsquare, { isCardEffect: false });
+                                if(!reqForMoveToTS.needToBoot) {
                                     viaTS = true;
                                     return true;
                                 }
@@ -310,7 +316,47 @@ class GunfighterArchetype extends BaseArchetype {
     }
 
     automatonUseAbility(pulledCard) {
-        return false;
+        const processList = [
+            { suit: 'Clubs' },
+            { suit: 'Diams' },
+            { suit: 'Spades' },
+            { suit: 'Hearts' },
+            { type: 'outfit' },
+            { type: 'legend' }
+        ];
+        let startIndex = processList.findIndex(e => e.suit === pulledCard.suit);
+        let index = startIndex + 1;
+        let possibleCards = [];
+        while(index !== startIndex) {
+            let currentElement = processList[index];
+            possibleCards = this.player.cardsInPlay.filter(card => 
+                (card.suit === currentElement.suit || card.getType() === currentElement.type) &&
+                card.hasEnabledCardAbility(this.player));
+            if(currentElement.suit === 'Clubs') {
+                possibleCards = possibleCards.concat(this.player.hand.filter(card => 
+                    card.suit === 'Clubs' && card.hasEnabledCardAbility(this.player)));
+            }
+            if(possibleCards.length) {
+                break;
+            }
+            index = index === (processList.length - 1) ? 0 : index + 1;
+        }
+        // TODO M2 solo - select manually until Effect properties are implemented
+        if(possibleCards.length) {
+            this.game.promptForSelect(this.player, {
+                activePromptTitle: 'Select a card to use',
+                cardCondition: card => possibleCards.includes(card),
+                onSelect: (player, card) => {
+                    card.useAbility(player);
+                    return true;
+                },
+                onCancel: () => {
+                    this.player.modifyGhostRock(1);
+                    this.game.addMessage('{0} gets 1 GR as Recompense', this.player);
+                }
+            });
+        }
+        return !!possibleCards.length;
     }
 
     // TODO M2 solo - needs to be ordered based on rules
