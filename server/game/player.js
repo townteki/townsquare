@@ -591,22 +591,33 @@ class Player extends Spectator {
         return card.isUnique() && this.deadPile.some(c => c.title === card.title && (checkSelf || c !== card));
     }
 
+    playablePlayActions(card, playType, context) {
+        let cardToUpgrade = this.findUpgrade(card);
+        if(!context) {
+            context = new AbilityContext({
+                game: this.game,
+                player: this,
+                source: card,
+                cardToUpgrade: cardToUpgrade
+            });
+        } else {
+            context.cardToUpgrade = cardToUpgrade;
+        }
+        return card.getPlayActions(playType).filter(action =>
+            action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
+    }
+
     playCard(card, arg) {
         if(!card) {
             return false;
         }
 
-        let cardToUpgrade = this.findUpgrade(card);
-
         let context = new AbilityContext({
             game: this.game,
             player: this,
-            source: card,
-            cardToUpgrade: cardToUpgrade
+            source: card
         });
-        var playActions = card.getPlayActions(arg).filter(action =>
-            action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
-
+        var playActions = this.playablePlayActions(card, arg, context);
         if(playActions.length === 0) {
             return false;
         }
