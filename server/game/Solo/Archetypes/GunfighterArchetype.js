@@ -217,8 +217,8 @@ class GunfighterArchetype extends BaseArchetype {
                                 if(!reqForMove.needToBoot) {
                                     return true;
                                 }
-                                if(!reqForMoveFromTS.needToBoot) {
                                 let reqForMoveToTS = caller.requirementsToMove(caller.getGameLocation(), this.game.townsquare, { isCardEffect: false });
+                                if(!reqForMoveToTS.needToBoot) {
                                     viaTS = true;
                                     return true;
                                 }
@@ -316,7 +316,17 @@ class GunfighterArchetype extends BaseArchetype {
     }
 
     automatonUseAbility(pulledCard) {
-        return false;
+        const processList = [
+            { suit: 'Clubs' },
+            { suit: 'Diams' },
+            { suit: 'Spades' },
+            { suit: 'Hearts' },
+            { type: 'outfit' },
+            { type: 'legend' }
+        ];
+        let startIndex = processList.findIndex(e => e.suit === pulledCard.suit);
+        let index = startIndex + 1;
+        let possibleCards = [];
         while(index !== startIndex) {
             let currentElement = processList[index];
             possibleCards = this.player.cardsInPlay.filter(card => 
