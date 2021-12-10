@@ -44,16 +44,28 @@ class GunfighterArchetype extends BaseArchetype {
      */      
     automatonPulls(pulledCard, playWindow) {
         this.player.moveCard(pulledCard, 'hand');
+        if(pulledCard.getType() !== 'joker') {
+            this.performPullSteps(pulledCard.suit, playWindow.name);
+        } else {
+            this.performPullSteps('Hearts', playWindow.name);
+            this.performPullSteps('Spades', playWindow.name);
+            this.performPullSteps('Diams', playWindow.name);
+            this.performPullSteps('Clubs', playWindow.name);
+            this.game.queueSimpleStep(() => this.player.moveCard(pulledCard, 'dead pile'));
+        }
+    }
+
+    performPullSteps(suit, playWindowName) {
         let cardUsed = false;
-        if(playWindow.name === PhaseNames.HighNoon) {
-            this.game.queueSimpleStep(() => this.automatonMove(pulledCard));
+        if(playWindowName === PhaseNames.HighNoon) {
+            this.game.queueSimpleStep(() => this.automatonMove(suit));
         }
         this.game.queueSimpleStep(() => {
-            cardUsed = this.automatonPlayCard(pulledCard);
+            cardUsed = this.automatonPlayCard(suit);
         });
         this.game.queueSimpleStep(() => {
             if(!cardUsed) {
-                cardUsed = this.automatonUseAbility(pulledCard);
+                cardUsed = this.automatonUseAbility(suit);
             }
         });
         this.game.queueSimpleStep(() => {
@@ -67,16 +79,16 @@ class GunfighterArchetype extends BaseArchetype {
                     this.game.addMessage('{0} discards {1} to meet hand size limit', this.player, cardsToDiscard);
                 });
             }
-        });
+        }); 
     }
 
-    automatonMove(pulledCard) {
+    automatonMove(suit) {
         const unbootedDudes = this.player.cardsInPlay.filter(card => 
             card.getType() === 'dude' && !card.booted);
-        let moveInfo = this.moveBasedOnSuit(pulledCard.suit, unbootedDudes);
+        let moveInfo = this.moveBasedOnSuit(suit, unbootedDudes);
         // TODO M2 solo - for now do not do move if clubs because it was done in `moveBasedOnSuit` function
-        if(pulledCard.suit !== 'clubs') {
-            if(!moveInfo && pulledCard.suit !== 'Spades') {
+        if(suit !== 'Clubs') {
+            if(!moveInfo && suit !== 'Spades') {
                 moveInfo = this.moveBasedOnSuit('Spades', unbootedDudes);
             }
             if(moveInfo) {
@@ -259,25 +271,25 @@ class GunfighterArchetype extends BaseArchetype {
         return dudeToMove ? { dudeToMove, destination } : null;
     }
 
-    automatonPlayCard(pulledCard) {
-        let possibleCards = this.player.hand.filter(card => card.suit === pulledCard.suit);
+    automatonPlayCard(suit) {
+        let possibleCards = this.player.hand.filter(card => card.suit === suit);
         if(!possibleCards.length) {
             return false;
         }
         let playActions = [];
-        if(pulledCard.suit !== 'Clubs') {
+        if(suit !== 'Clubs') {
             possibleCards.forEach(card => {
                 if(this.game.currentPhase === PhaseNames.HighNoon && this.player.playablePlayActions(card, 'shoppin').length) {
                     playActions.push({
                         card,
-                        playFunction: () => this.player.playCard(card, 'shoppin')
+                        playFunction: () => this.player.playCard(card, 'shoppin', { doNotMarkActionAsTaken: true })
                     });
                 } else if(card.abilities.playActions.length > 0) {
                     if(card.abilities.playActions.some(playAction => 
                         playAction.meetsRequirements(playAction.createContext(this.player)))) {
                         playActions.push({
                             card,
-                            playFunction: () => this.player.playCard(card, 'play')
+                            playFunction: () => this.player.playCard(card, 'play', { doNotMarkActionAsTaken: true })
                         });
                     }
                 }
@@ -287,7 +299,7 @@ class GunfighterArchetype extends BaseArchetype {
                 .map(card => {
                     return {
                         card,
-                        playFunction: () => card.useAbility(this.player)
+                        playFunction: () => card.useAbility(this.player, { doNotMarkActionAsTaken: true })
                     };
                 });
         }
@@ -295,7 +307,7 @@ class GunfighterArchetype extends BaseArchetype {
             return false;
         }
         if(playActions.length > 1) {
-            if(pulledCard.suit !== 'Clubs') {
+            if(suit !== 'Clubs') {
                 let minCount = 999;
                 playActions = playActions.reduce((result, playAction) => {
                     let count = this.player.cardsInPlay.filter(card => 
@@ -315,7 +327,7 @@ class GunfighterArchetype extends BaseArchetype {
         return true;
     }
 
-    automatonUseAbility(pulledCard) {
+    automatonUseAbility(suit) {
         const processList = [
             { suit: 'Clubs' },
             { suit: 'Diams' },
@@ -324,7 +336,7 @@ class GunfighterArchetype extends BaseArchetype {
             { type: 'outfit' },
             { type: 'legend' }
         ];
-        let startIndex = processList.findIndex(e => e.suit === pulledCard.suit);
+        let startIndex = processList.findIndex(e => e.suit === suit);
         let index = startIndex + 1;
         let possibleCards = [];
         while(index !== startIndex) {
@@ -347,7 +359,7 @@ class GunfighterArchetype extends BaseArchetype {
                 activePromptTitle: 'Select a card to use',
                 cardCondition: card => possibleCards.includes(card),
                 onSelect: (player, card) => {
-                    card.useAbility(player);
+                    card.useAbility(player, { doNotMarkActionAsTaken: true });
                     return true;
                 },
                 onCancel: () => {

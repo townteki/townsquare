@@ -607,7 +607,7 @@ class Player extends Spectator {
             action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
     }
 
-    playCard(card, arg) {
+    playCard(card, arg, options = {}) {
         if(!card) {
             return false;
         }
@@ -621,6 +621,7 @@ class Player extends Spectator {
         if(playActions.length === 0) {
             return false;
         }
+        playActions.forEach(playAction => playAction = Object.assign(playAction.options || {}, { options }));
 
         if(playActions.length === 1) {
             context.ability = playActions[0];
@@ -777,17 +778,14 @@ class Player extends Spectator {
             case 'dude':
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                     updatedParams.context.cardToUpgrade.upgrade(card);
+                    this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
                 } else {
                     const putIntoPlayFunc = target => {
                         card.moveToLocation(target);
                         this.moveCard(card, 'play area');
                         this.entersPlay(card, updatedParams);
                         if(updatedParams.playingType === 'shoppin') {
-                            if(updatedParams.context && updatedParams.context.cardToUpgrade) {
-                                this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
-                            } else {
-                                this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
-                            }
+                            this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
                         } else if(this.game.currentPhase !== 'setup') {
                             this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
                         }
