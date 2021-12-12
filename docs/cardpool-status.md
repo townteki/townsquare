@@ -496,7 +496,7 @@
 |:heavy_check_mark:   | 12007| "Lucky" Sky Borne
 |:heavy_check_mark:   | 12008| Miranda Clarke
 |                     | 12009| Elliot Smithson
-|                     | 12010| Shelby Hunt
+|:heavy_check_mark:   | 12010| Shelby Hunt
 |:heavy_check_mark:   | 12011| The Joker's Smile
 |:heavy_check_mark:   | 12012| Old Marge's Manor
 |:heavy_check_mark:   | 12013| Xemo's Turban

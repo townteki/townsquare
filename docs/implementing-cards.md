@@ -409,7 +409,7 @@ this.applyAbilityEffect(context.ability, ability => ({
 
 In case the duration of effects was changes (e.g. Orphanage in third example), use following functions.
 
-To apply an effect to last until the end of the current challenge, use `untilEndOfChallenge`:
+To apply an effect to last until the end of the current shootout, use `untilEndOfShootout`:
 ```javascript
 // Until the end of the shootout round, the dude this is attached to gains +1 bullets
 this.untilEndOfShootoutRound(ability => ({
@@ -459,7 +459,7 @@ When declaring an action, use the `action`, `job` or `spellAction` method and pr
 ### Regular action
 
 Use the `action` method when declaring.
-See `/server/game/cardaction.js` for full documentation. Most of the action propertie will be filled out for you if you use snippet `cardaction`.
+See `/server/game/cardaction.js` for full documentation. Most of the action properties will be filled out for you if you use snippet `cardaction`.
 
 ```javascript
 class WinchesterModel1873 extends DrawCard {
