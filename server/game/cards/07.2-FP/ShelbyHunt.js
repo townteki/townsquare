@@ -12,7 +12,7 @@ class ShelbyHunt extends DudeCard {
                     this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
-                    match: context.target,
+                    match: this,
                     effect: [
                         ability.effects.modifyBullets(1),
                         ability.effects.setAsStud(),
