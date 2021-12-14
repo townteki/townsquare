@@ -8,7 +8,7 @@ class ShelbyHunt extends DudeCard {
             playType: 'shootout',
             ifCondition: () => this.opposingPosseContainsDudeWithHigherBullets(),
             message: context => 
-                this.game.addMessage('{0} uses {1} to increase bullets and become a stud. {1} cannot be chosen or affected by their opponent\'s abilities', 
+                this.game.addMessage('{0} uses {1} to give him +1 bullets, make him a stud and he cannot be chosen or affected by their opponent\'s abilities', 
                     context.player, this),
             ifFailMessage: context =>
                 this.game.addMessage('{0} uses {1} but there are no opposing dudes with higher bullets',
