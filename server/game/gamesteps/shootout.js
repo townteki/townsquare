@@ -39,15 +39,17 @@ class Shootout extends Phase {
         this.cancelled = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
-        this.abilityRestrictions = [];									  
-        this.initialise([
-            new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
-            new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
-            new SimpleStep(this.game, () => this.raisePossesFormedEvent()),
-            new SimpleStep(this.game, () => this.gatherPosses()),
-            new SimpleStep(this.game, () => this.breakinAndEnterin()),
-            new SimpleStep(this.game, () => this.beginShootoutRound())
-        ]);
+        this.abilityRestrictions = [];
+        if(!options.isSimulation) {									  
+            this.initialise([
+                new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
+                new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
+                new SimpleStep(this.game, () => this.raisePossesFormedEvent()),
+                new SimpleStep(this.game, () => this.gatherPosses()),
+                new SimpleStep(this.game, () => this.breakinAndEnterin()),
+                new SimpleStep(this.game, () => this.beginShootoutRound())
+            ]);
+        }
     }
 
     initialiseLeaderPosse() {

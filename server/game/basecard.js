@@ -637,8 +637,9 @@ class BaseCard {
         return menu;
     }
 
-    hasEnabledCardAbility(player, options = {}) {
-        const cardAbilityMenuItems = this.getActionMenuItems(player, options).filter(menuItem => menuItem.action.abilitySourceType === 'card');
+    hasEnabledCardAbility(player, options = {}, action) {
+        const cardAbilityMenuItems = this.getActionMenuItems(player, options)
+            .filter(menuItem => (!action || action === menuItem.action) && menuItem.action.abilitySourceType === 'card');
         return cardAbilityMenuItems && cardAbilityMenuItems.some(menuItem => !menuItem.item.disabled);
     }
 
