@@ -418,7 +418,7 @@
 |:heavy_check_mark:   | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
 |:heavy_check_mark:   | 10005| Emre, The Turkish Bear
-|                     | 10006| Michael "The Badger" Dodge
+|:heavy_check_mark:   | 10006| Michael "The Badger" Dodge
 |                     | 10007| Jim Cheveyo
 |:heavy_check_mark:   | 10008| Enapay
 |                     | 10009| Danny Wilde
