@@ -14,9 +14,9 @@ class ShelbyHunt extends DudeCard {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: [
-                        ability.effect.modifyBullets(1),
-                        ability.effect.setAsStud(),
-                        ability.effect.cannotBeAffectedByShootout('opponent')
+                        ability.effects.modifyBullets(1),
+                        ability.effects.setAsStud(),
+                        ability.effects.cannotBeAffectedByShootout('opponent')
                     ]
                 }));
             }
