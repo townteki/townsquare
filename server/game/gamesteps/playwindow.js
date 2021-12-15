@@ -147,6 +147,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
     }
 
     nextPlayer() {
+        this.passedPlayers = this.currentPlayer !== this.game.automaton ? [] : this.passedPlayers;
         const savePassedForSolo = [...this.passedPlayers];
         super.nextPlayer();
         if(this.game.isSolo()) {

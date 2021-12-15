@@ -373,14 +373,14 @@ class GunfighterArchetype extends BaseArchetype {
 
     // TODO M2 solo - needs to be ordered based on rules
     joinPosseReflex(shootout) {
+        const jobMark = shootout.isJob() && shootout.mark.getType() === 'dude' ? [shootout.mark] : [];
         const dudesJoinInfos = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
-                (card !== shootout.mark || shootout.isJob()) &&
-                card !== shootout.leader)
+                card !== shootout.mark && card !== shootout.leader)
             .map(dude => { 
                 return { dude, requirements: dude.requirementsToJoinPosse() };
             })
             .filter(joinInfo => joinInfo.requirements.canJoin);
-        return dudesJoinInfos.map(info => info.dude).slice(0, 2);
+        return jobMark.concat(dudesJoinInfos.map(info => info.dude).slice(0, 2));
     }
 }
 

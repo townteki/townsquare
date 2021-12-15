@@ -66,6 +66,7 @@ class Shootout extends Phase {
                 this.endShootout();
             } else {
                 if(this.game.getDudesInPlay(opponent, card => card.requirementsToJoinPosse().canJoin).length) {
+                    this.opposingPlayerName = opponent.name;
                     if(opponent === this.game.automaton) {
                         if(this.game.automaton.decideJobOpposing(this)) {
                             this.handleJobOpposing(opponent, true);
@@ -73,7 +74,6 @@ class Shootout extends Phase {
                             this.handleJobOpposing(opponent, false);
                         }
                     } else {
-                        this.opposingPlayerName = opponent.name;
                         this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
                             title: 'Do you want to oppose?',
                             onYes: () => this.handleJobOpposing(opponent, true),
