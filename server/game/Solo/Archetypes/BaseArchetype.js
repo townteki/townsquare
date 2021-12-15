@@ -137,6 +137,24 @@ class BaseArchetype {
         });
         return moves;
     }
+
+    static hasEnabledAbilityOfType(player, dude, abilityType, checkActionContext = true) {
+        const hasAbility = (card, player) => {
+            card.abilities.actions.some(action => {
+                if(!action.playType.includes(abilityType)) {
+                    return false;
+                }
+                if(action.ifCondition && !action.ifCondition({ game: card.game, player: player })) {
+                    return false;
+                }
+                if(checkActionContext && (!action.actionContext || action.actionContext.card !== dude)) {
+                    return false;
+                }
+                return card.hasEnabledCardAbility(player, {}, action);
+            });
+        };
+        return hasAbility(dude, player) || dude.attachments.some(att => hasAbility(att, player));
+    }
 }
 
 module.exports = BaseArchetype;

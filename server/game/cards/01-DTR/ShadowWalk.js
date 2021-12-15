@@ -32,7 +32,7 @@ class ShadowWalk extends SpellCard {
             playType: 'shootout:join',
             cost: ability.costs.bootSelf(),
             difficulty: 7,
-            actionContext: { card: this.parent, gameAction: 'joinPosse'},
+            actionContext: { card: this.parent, gameAction: 'joinPosse' },
             onSuccess: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent })).thenExecute(() => {
                     this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent);

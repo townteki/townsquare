@@ -8,7 +8,7 @@ const JokerPrompt = require('../gamesteps/jokerprompt.js');
 const Player = require('../player.js');
 const GunfighterArchetype = require('./Archetypes/GunfighterArchetype.js');
 const HandResult = require('../handresult.js');
-const Priorities = require('./priorities.js');
+const { Priorities } = require('./priorities.js');
 const BaseArchetype = require('./Archetypes/BaseArchetype.js');
 
 class Automaton extends Player {

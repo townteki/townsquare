@@ -42,6 +42,7 @@ const ValuePrompt = require('./gamesteps/valueprompt.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 const { TownSquareUUID } = require('./Constants/index.js');
 const Automaton = require('./Solo/automaton.js');
+const PlayWindow = require('./gamesteps/playwindow.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -595,6 +596,29 @@ class Game extends EventEmitter {
             player.phase = PhaseNames.HighNoon;
         }
 
+        clonedGame.effectEngine.reapplyStateDependentEffects();
+        this.allCards.forEach(card => card.game = this);
+        return clonedGame;
+    }
+
+    simulateShootout(playWindow = 'shootout plays', gamelocation) {
+        if(this.currentPhase === PhaseNames.Shootout) {
+            return this.clone();
+        }
+        if(this.currentPhase !== PhaseNames.HighNoon) {
+            return;
+        }
+        let clonedGame = this.clone();
+        this.allCards.forEach(card => card.game = clonedGame); 
+        clonedGame.shootout = new Shootout(clonedGame, clonedGame.currentPhase, {}, { gamelocation: gamelocation }, { isSimulation: true });
+        clonedGame.currentPhase = PhaseNames.Shootout;
+        clonedGame.effectEngine.onShootoutPhaseStarted();
+        clonedGame.effectEngine.onShootoutRoundStarted();
+        for(const player of clonedGame.getPlayers()) {
+            player.phase = PhaseNames.Shootout;
+        }
+
+        clonedGame.currentPlayWindow = new PlayWindow(clonedGame, playWindow);
         clonedGame.effectEngine.reapplyStateDependentEffects();
         this.allCards.forEach(card => card.game = this);
         return clonedGame;

@@ -19,7 +19,7 @@ class LaQuema extends GoodsCard {
             title: 'La Quema',
             playType: ['shootout:join'],
             cost: ability.costs.bootSelf(),
-            actionContext: { card: this.parent, gameAction: 'moveDude' },
+            actionContext: { card: this.parent, gameAction: 'joinPosse' },
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }), context);
                 context.ability.selectAnotherTarget(context.player, context, {

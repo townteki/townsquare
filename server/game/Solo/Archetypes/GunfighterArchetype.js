@@ -3,7 +3,7 @@
 
 const PhaseNames = require('../../Constants/PhaseNames');
 const GameActions = require('../../GameActions');
-const Priorities = require('../priorities');
+const { Priorities, booleanCondition } = require('../priorities');
 const BaseArchetype = require('./BaseArchetype');
 
 /* eslint-disable no-unused-vars */
@@ -11,6 +11,7 @@ class GunfighterArchetype extends BaseArchetype {
     constructor(game, player) {
         super(game, player);
         this.conditionTables = new ConditionTables(this);
+        this.shootoutStarted = false;
     }
 
     /**
@@ -44,6 +45,10 @@ class GunfighterArchetype extends BaseArchetype {
      */      
     automatonPulls(pulledCard, playWindow) {
         this.player.moveCard(pulledCard, 'hand');
+        const eventHandler = () => this.shootoutStarted = true;
+        if(playWindow.name === PhaseNames.HighNoon) {
+            this.game.once('onShootoutPhaseStarted', eventHandler);
+        }
         if(pulledCard.getType() !== 'joker') {
             this.performPullSteps(pulledCard.suit, playWindow.name);
         } else {
@@ -53,23 +58,34 @@ class GunfighterArchetype extends BaseArchetype {
             this.performPullSteps('Clubs', playWindow.name);
             this.game.queueSimpleStep(() => this.player.moveCard(pulledCard, 'dead pile'));
         }
+        if(playWindow.name === PhaseNames.HighNoon) {
+            this.game.queueSimpleStep(() => {
+                this.game.removeListener('onShootoutPhaseStarted', eventHandler);
+                this.shootoutStarted = false;
+                return true;
+            });
+        }
     }
 
     performPullSteps(suit, playWindowName) {
+        let cancelled = false;
         let cardUsed = false;
         if(playWindowName === PhaseNames.HighNoon) {
             this.game.queueSimpleStep(() => this.automatonMove(suit));
         }
         this.game.queueSimpleStep(() => {
-            cardUsed = this.automatonPlayCard(suit);
+            cancelled = this.shootoutStarted && playWindowName === PhaseNames.HighNoon;
+            if(!cancelled) {
+                cardUsed = this.automatonPlayCard(suit);
+            }
         });
         this.game.queueSimpleStep(() => {
-            if(!cardUsed) {
+            if(!cardUsed && !cancelled) {
                 cardUsed = this.automatonUseAbility(suit);
             }
         });
         this.game.queueSimpleStep(() => {
-            if(!cardUsed) {
+            if(!cardUsed && !cancelled) {
                 this.player.modifyGhostRock(1);
                 this.game.addMessage('{0} gets 1 GR as Recompense', this.player);
             }
@@ -371,7 +387,10 @@ class GunfighterArchetype extends BaseArchetype {
         return !!possibleCards.length;
     }
 
-    // TODO M2 solo - needs to be ordered based on rules
+    automatonRecompense() {
+
+    }
+
     joinPosseReflex(shootout) {
         const jobMark = shootout.isJob() && shootout.mark.getType() === 'dude' ? [shootout.mark] : [];
         const dudesJoinInfos = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
@@ -380,7 +399,29 @@ class GunfighterArchetype extends BaseArchetype {
                 return { dude, requirements: dude.requirementsToJoinPosse() };
             })
             .filter(joinInfo => joinInfo.requirements.canJoin);
-        return jobMark.concat(dudesJoinInfos.map(info => info.dude).slice(0, 2));
+        let clonedGame = this.game.simulateShootout('shootout plays', shootout.gamelocation);
+        let dudesWithJoin = [], dudesWithoutBoot = [], dudesWithAbility = [];
+        dudesJoinInfos.forEach(info => {
+            const clonedDude = clonedGame.findCardInPlayByUuid(info.dude.uuid);
+            if(BaseArchetype.hasEnabledAbilityOfType(this.player, clonedDude, 'shootout:join')) {
+                dudesWithJoin.push(info.dude);
+            }
+            if(!info.requirements.needToBoot) {
+                dudesWithoutBoot.push(info.dude);
+            }
+            if(info.dude.hasAbilityForType('shootout') || info.dude.hasAbilityForType('resolution')) {
+                dudesWithAbility.push(info.dude);
+            }
+        });
+        const priorityConds = [
+            (dude1, dude2) => booleanCondition(!dudesWithJoin.includes(dude1), !dudesWithJoin.includes(dude2)),
+            (dude1, dude2) => booleanCondition(dudesWithoutBoot.includes(dude1), dudesWithoutBoot.includes(dude2)),
+            Priorities.stud(),
+            Priorities.highestBullets(),
+            (dude1, dude2) => booleanCondition(dudesWithAbility.includes(dude1), dudesWithAbility.includes(dude2)),
+            Priorities.lowestInfluence()
+        ];
+        return jobMark.concat(BaseArchetype.sortByPriority(dudesJoinInfos.map(info => info.dude), priorityConds).slice(0, 2));
     }
 }
 
