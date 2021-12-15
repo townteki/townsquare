@@ -32,6 +32,8 @@ class BaseArchetype {
      */    
     programmedReflex(type, properties = {}) {
         switch(type) {
+            case 'react':
+            case 'jobOppose':
             case 'callout':
                 return () => true;
             case 'joinPosse':

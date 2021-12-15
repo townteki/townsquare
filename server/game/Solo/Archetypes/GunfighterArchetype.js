@@ -392,9 +392,9 @@ class GunfighterArchetype extends BaseArchetype {
     }
 
     joinPosseReflex(shootout) {
-        let dudesJoinInfos = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
-                (card !== shootout.mark || shootout.isJob()) &&
-                card !== shootout.leader)
+        const jobMark = shootout.isJob() && shootout.mark.getType() === 'dude' ? [shootout.mark] : [];
+        const dudesJoinInfos = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
+                card !== shootout.mark && card !== shootout.leader)
             .map(dude => { 
                 return { dude, requirements: dude.requirementsToJoinPosse() };
             })
@@ -421,7 +421,7 @@ class GunfighterArchetype extends BaseArchetype {
             (dude1, dude2) => booleanCondition(dudesWithAbility.includes(dude1), dudesWithAbility.includes(dude2)),
             Priorities.lowestInfluence()
         ];
-        return BaseArchetype.sortByPriority(dudesJoinInfos.map(info => info.dude), priorityConds).slice(0, 2);
+        return jobMark.concat(BaseArchetype.sortByPriority(dudesJoinInfos.map(info => info.dude), priorityConds).slice(0, 2));
     }
 }
 

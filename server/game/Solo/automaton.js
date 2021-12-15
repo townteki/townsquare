@@ -352,6 +352,16 @@ class Automaton extends Player {
         }
     }
 
+    decideJobOpposing(job) {
+        const jobOpposeReflex = this.decisionEngine.programmedReflex('jobOppose');
+        return jobOpposeReflex && jobOpposeReflex(job);
+    }
+
+    decideReacts(card, event) {
+        const reactReflex = this.decisionEngine.programmedReflex('react');
+        return reactReflex && reactReflex(card, event);
+    }
+
     getDudesToFormPosse(shootout) {
         const joinPosseReflex = this.decisionEngine.programmedReflex('joinPosse');
         if(joinPosseReflex) {
