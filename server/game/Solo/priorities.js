@@ -89,4 +89,7 @@ const Priorities = {
     }
 };
 
-module.exports = Priorities;
+module.exports = {
+    Priorities,
+    booleanCondition
+};

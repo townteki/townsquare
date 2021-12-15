@@ -6,6 +6,7 @@ class AngelicaEspinosa extends DudeCard {
         this.action({
             title: 'Angelica Espinosa',
             playType: ['shootout:join'],
+            actionContext: { card: this, gameAction: 'joinPosse' },
             condition: () => this.game.shootout &&
                 this.game.shootout.shootoutLocation.isAdjacent(this.gamelocation),
             message: context => 
