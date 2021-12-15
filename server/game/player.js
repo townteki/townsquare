@@ -870,6 +870,31 @@ class Player extends Spectator {
     }
 
     inventGadget(gadget, scientist, successHandler = () => true) {
+        if(!scientist) {
+            this.selectScientistToInvent(gadget, successHandler);
+        } else {
+            this.pullToInvent(scientist, gadget, successHandler);
+        }
+    }
+
+    selectScientistToInvent(gadget, successHandler) {
+        this.game.promptForSelect(this, {
+            activePromptTitle: 'Select a dude to invent ' + gadget.title,
+            waitingPromptTitle: 'Waiting for opponent to select dude',
+            cardCondition: card => card.location === 'play area' &&
+                card.controller === this &&
+                !card.cannotInventGadgets() &&
+                (!card.booted || gadget.canBeInventedWithoutBooting()) &&
+                card.canPerformSkillOn(gadget),
+            cardType: 'dude',
+            onSelect: (player, card) => {
+                this.pullToInvent(card, gadget, successHandler);
+                return true;
+            }
+        });
+    }
+
+    pullToInvent(scientist, gadget, successHandler) {
         const getPullProperties = (scientist, bootedToInvent) => {
             return {
                 successHandler: context => {
@@ -890,35 +915,15 @@ class Player extends Spectator {
                 bootedToInvent
             };
         };
-        const pullToInvent = (scientist, gadget) => {
-            let bootedToInvent = false;
-            if(!gadget.canBeInventedWithoutBooting()) {
-                this.bootCard(scientist);
-                bootedToInvent = true;
-            }
-            this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
-                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
-                    getPullProperties(event.scientist, event.bootedToInvent));
-            });
-        };
-        if(!scientist) {
-            this.game.promptForSelect(this, {
-                activePromptTitle: 'Select a dude to invent ' + gadget.title,
-                waitingPromptTitle: 'Waiting for opponent to select dude',
-                cardCondition: card => card.location === 'play area' &&
-                    card.controller === this &&
-                    !card.cannotInventGadgets() &&
-                    (!card.booted || gadget.canBeInventedWithoutBooting()) &&
-                    card.canPerformSkillOn(gadget),
-                cardType: 'dude',
-                onSelect: (player, card) => {
-                    pullToInvent(card, gadget);
-                    return true;
-                }
-            });
-        } else {
-            pullToInvent(scientist, gadget);
+        let bootedToInvent = false;
+        if(!gadget.canBeInventedWithoutBooting()) {
+            this.bootCard(scientist);
+            bootedToInvent = true;
         }
+        this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
+            this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
+                getPullProperties(event.scientist, event.bootedToInvent));
+        });
     }
 
     canAttach(attachment, card, playingType) {

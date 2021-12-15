@@ -43,6 +43,8 @@ class BaseArchetype {
                     return () => [];
                 }
                 return () => true;
+            case 'discardFromHand':
+                return number => this.player.hand.length ? this.player.hand.slice(0, number) : [];
             default:
                 break;
         }
