@@ -1,15 +1,13 @@
 # Townsquare
 
-Web based implementation of the Doomtown card game (Doomtown Online).
+Web based implementation of the Doomtown card game ([Doomtown Online](https://doomtown.online)).
 
 ## About
 
 Similarly as ringteki, this is based on the throneteki and uses large parts of the source. 
 Townsquare is a fork of the throneteki sourcecode. The code is written in node.js(server) and react.js(client).  
 
-![work-in-progress-wip](https://user-images.githubusercontent.com/10244559/111921254-edd64400-8a93-11eb-8efe-ca8707217470.png)
-
-This client is work in progress
+This client is currently in beta stage.
 
 ## Contributing
 
@@ -23,7 +21,8 @@ If you only need help with setting the development IDE, please see [Development]
 
 ### Implementation:
 
-Game engine is implemented, for implemented card scripts see: [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md)
+Status of implemented card scripts: [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md)
+Solo variant with basic automation is under development, you can check progress [here](https://github.com/townteki/townsquare/issues/1218).
 
 ## Issues
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.
