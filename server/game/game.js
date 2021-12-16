@@ -687,7 +687,7 @@ class Game extends EventEmitter {
         this.finishedAt = new Date();
         this.winReason = 'draw';
 
-        this.router.gameWon(this, this.winReason, this.winner);
+        this.router.gameWon(this);
     }
 
     recordWinner(winner, reason) {
@@ -695,13 +695,19 @@ class Game extends EventEmitter {
             return;
         }
 
-        this.addAlert('success', '{0} has won the game', winner);
+        if(this.isSolo()) {
+            const humanPlayer = this.getPlayers().find(player => player !== this.automaton);
+            this.soloScore = humanPlayer.braggingRightsScore();
+            this.addAlert('success', '{0} has won the game with final score: {1}', winner, this.soloScore.finalScore);
+        } else {
+            this.addAlert('success', '{0} has won the game', winner);
+        }
 
         this.winner = winner;
         this.finishedAt = new Date();
         this.winReason = reason;
 
-        this.router.gameWon(this, reason, winner);
+        this.router.gameWon(this);
     }
 
     changeStat(playerName, stat, value) {
@@ -1509,7 +1515,8 @@ class Game extends EventEmitter {
             players: players,
             winner: this.winner ? this.winner.name : undefined,
             winReason: this.winReason,
-            finishedAt: this.finishedAt
+            finishedAt: this.finishedAt,
+            soloScore: this.soloScore
         };
     }
 
