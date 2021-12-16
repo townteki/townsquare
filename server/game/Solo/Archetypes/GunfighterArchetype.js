@@ -387,10 +387,6 @@ class GunfighterArchetype extends BaseArchetype {
         return !!possibleCards.length;
     }
 
-    automatonRecompense() {
-
-    }
-
     joinPosseReflex(shootout) {
         const jobMark = shootout.isJob() && shootout.mark.getType() === 'dude' ? [shootout.mark] : [];
         const dudesJoinInfos = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
