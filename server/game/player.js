@@ -1818,6 +1818,35 @@ class Player extends Spectator {
         });        
     }
 
+    braggingRightsScore() {
+        if(this.game.getNumberOfPlayers() < 2) {
+            return 0;
+        }
+        let finalScore = 0;
+        let braggingRights = {};
+        braggingRights.totalCost = this.cardsInPlay.reduce((totalCost, card) => totalCost + (card.cost ? card.cost : 0), 0);
+        finalScore += braggingRights.totalCost;
+        braggingRights.ghostRock = Math.floor(this.ghostrock / 2);
+        finalScore += braggingRights.ghostRock;
+        if(this.getTotalControl() > this.getOpponent().getTotalInfluence()) {
+            braggingRights.aboveCP = this.getTotalControl() - this.getOpponent().getTotalInfluence();
+            finalScore += braggingRights.aboveCP;
+        }
+        if(this.getTotalInfluence() > this.getOpponent().getTotalControl()) {
+            braggingRights.aboveInf = this.getTotalInfluence() - this.getOpponent().getTotalControl();
+            finalScore += braggingRights.aboveInf;
+        }
+        braggingRights.oppDead = this.getOpponent().deadPile.filter(card => card.getType() === 'dude').length * 2;
+        finalScore += braggingRights.oppDead;
+        braggingRights.myDead = this.deadPile.filter(card => card.getType() === 'dude').length * -4;
+        finalScore += braggingRights.myDead;
+        braggingRights.numOfDays = this.game.round * -5;
+        finalScore += braggingRights.numOfDays;
+        braggingRights.finalScore = finalScore;
+
+        return braggingRights;
+    }
+
     setSelectedCards(cards) {
         this.promptState.setSelectedCards(cards);
     }
