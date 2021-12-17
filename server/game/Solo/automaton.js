@@ -82,9 +82,21 @@ class Automaton extends Player {
             this.shuffleDiscardToDrawDeck();
         }
         const pulledCard = this.drawDeck[0];
-        this.game.addMessage('{0} makes an Automaton pull: {1}of{2}({3} )', 
-            this, pulledCard.getValueText(), pulledCard.suit, pulledCard);
+        if(pulledCard.getType() === 'joker') {
+            this.game.addAlert('info', '{0} makes an Automaton pull: {1}', this, pulledCard);
+        } else {
+            this.game.addAlert('info', '{0} makes an Automaton pull: {1}of{2}({3} )', 
+                this, pulledCard.getValueText(), pulledCard.suit, pulledCard);
+        }
         this.decisionEngine.automatonPulls(pulledCard, playWindow);
+    }
+
+    isInCheckAfterMove(dude, destinationUuid) {
+        let clonedGame = this.game.clone();
+        const clonedDude = clonedGame.findCardInPlayByUuid(dude.uuid);
+        clonedDude.moveToLocation(destinationUuid);
+        this.game.simulateSundown(clonedGame);
+        return clonedDude.controller.isInCheck();
     }
     
     pickShooter(availableDudes) {

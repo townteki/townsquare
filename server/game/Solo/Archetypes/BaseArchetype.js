@@ -1,5 +1,5 @@
 /** @typedef {import('../../game')} Game */
-/** @typedef {import('../../player')} Player */
+/** @typedef {import('../automaton')} Automaton */
 /** @typedef {import('../../effect')} Effect */
 /** @typedef {import('../../drawcard')} DrawCard */
 
@@ -18,7 +18,7 @@ class BaseArchetype {
     constructor(game, player) {
         /** @type {Game} */
         this.game = game;
-        /** @type {Player} */
+        /** @type {Automaton} */
         this.player = player;
     }
 

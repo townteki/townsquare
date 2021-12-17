@@ -1986,7 +1986,8 @@ class Player extends Spectator {
             totalControl: this.getTotalControl(),
             totalInfluence: this.getTotalInfluence(),
             user: {
-                username: this.user.username
+                username: this.user.username,
+                isAutomaton: this === this.game.automaton
             }
         };
 
