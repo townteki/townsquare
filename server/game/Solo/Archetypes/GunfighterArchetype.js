@@ -128,18 +128,16 @@ class GunfighterArchetype extends BaseArchetype {
         };
         let dudeToMove;
         let destination;
-        // TODO M2 solo - remove this once joker is implemented
-        if(!suit || !unbootedDudes.length) {
+        if(!unbootedDudes.length) {
             return;
         }
-        // ***
         switch(suit) {
             case 'Hearts': {
                 let possibleDudes = unbootedDudes.filter(dude => !dude.isAtHome() && !isAtOppDeed(dude));
                 let possibleDeeds = this.game.findCardsInPlay(card => 
                     card.getType() === 'deed' && card.owner !== this.player);
                 if(possibleDudes.length && possibleDeeds.length) {
-                    dudeToMove = BaseArchetype.highestPriority(possibleDudes, [
+                    let orderedDudes = BaseArchetype.sortByPriority(possibleDudes, [
                         Priorities.hasInfluence(true),
                         Priorities.stud(),
                         Priorities.highestBullets()
@@ -148,12 +146,17 @@ class GunfighterArchetype extends BaseArchetype {
                         Priorities.highestControl(),
                         Priorities.highestProduction()
                     ]);
+                    if(!this.player.isInCheck()) {
+                        dudeToMove = orderedDudes.find(dude => !this.player.isInCheckAfterMove(dude, destination.uuid));
+                    } else {
+                        dudeToMove = orderedDudes[0];
+                    }
                 }
             } break;
             case 'Spades': {
                 let possibleDudes = unbootedDudes.filter(dude => !isAtOppDeed(dude));
                 if(possibleDudes.length) {
-                    dudeToMove = BaseArchetype.highestPriority(possibleDudes, [
+                    let orderedDudes = BaseArchetype.sortByPriority(possibleDudes, [
                         Priorities.isAtHome(),
                         Priorities.isInOpponentHome(),
                         Priorities.stud(),
@@ -161,6 +164,11 @@ class GunfighterArchetype extends BaseArchetype {
                         Priorities.highestBullets()
                     ]);
                     destination = this.game.townsquare;
+                    if(!this.player.isInCheck()) {
+                        dudeToMove = orderedDudes.find(dude => !this.player.isInCheckAfterMove(dude, destination.uuid));
+                    } else {
+                        dudeToMove = orderedDudes[0];
+                    }
                 }
             } break;
             case 'Diams': {
@@ -197,10 +205,16 @@ class GunfighterArchetype extends BaseArchetype {
                     let orderedDestinations = BaseArchetype.sortByPriority(possibleDeeds, [
                         Priorities.notControlledBy(this.player)
                     ]);
-                    let movesInfo = BaseArchetype.getMovesWithoutBoot(orderedDudes, orderedDestinations);
-                    if(movesInfo.length) {
-                        dudeToMove = movesInfo[0].dudeToMove;
-                        destination = movesInfo[0].destination;
+                    let possibleMoves = BaseArchetype.getMovesWithoutBoot(orderedDudes, orderedDestinations);
+                    if(possibleMoves.length) {
+                        let moveInfo = [0];
+                        if(!this.player.isInCheck()) {
+                            moveInfo = possibleMoves.find(move => !this.player.isInCheckAfterMove(move.dudeToMove, move.destination.uuid));
+                        }
+                        if(moveInfo) {
+                            dudeToMove = moveInfo.dudeToMove;
+                            destination = moveInfo.destination;
+                        }
                     }
                 }
             } break;
@@ -239,25 +253,13 @@ class GunfighterArchetype extends BaseArchetype {
                             Priorities.highestCost()
                         ]);
                         dudeToMove = orderedCallers.find(caller => {
-                            let viaTS = false;
                             let foundCallee = orderedCallees.find(callee => {
                                 let reqForMove = caller.requirementsToMove(caller.getGameLocation(), callee.getGameLocation(), { isCardEffect: false });
-                                if(!reqForMove.needToBoot) {
-                                    return true;
-                                }
-                                let reqForMoveToTS = caller.requirementsToMove(caller.getGameLocation(), this.game.townsquare, { isCardEffect: false });
-                                if(!reqForMoveToTS.needToBoot) {
-                                    viaTS = true;
-                                    return true;
-                                }
-                                return false;
+                                return !reqForMove.needToBoot;
                             });
-                            if(viaTS) {
-                                destination = this.game.townsquare;
-                                return true;
-                            } else if(foundCallee) {
+                            if(foundCallee) {
                                 destination = foundCallee.getGameLocation();
-                                return true;
+                                return !this.player.isInCheck() || !this.player.isInCheckAfterMove(caller, destination.uuid);
                             }
                             return false;
                         });

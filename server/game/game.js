@@ -540,11 +540,11 @@ class Game extends EventEmitter {
         return clonedGame;
     }
 
-    simulateSundown() {
+    simulateSundown(parClonedGame) {
         if(this.currentPhase === PhaseNames.Sundown) {
             return this;
         }
-        let clonedGame = this.simulateEndOfShootout();
+        let clonedGame = this.simulateEndOfShootout(parClonedGame);
         this.allCards.forEach(card => card.game = clonedGame);
         if(clonedGame.currentPhase === PhaseNames.Gambling) {
             clonedGame.effectEngine.onPhaseEnded({ phase: PhaseNames.Gambling });
@@ -710,8 +710,11 @@ class Game extends EventEmitter {
         this.router.gameWon(this);
     }
 
-    changeStat(playerName, stat, value) {
+    changeStat(playerName, stat, value, forAutomaton) {
         let player = this.getPlayerByName(playerName);
+        if(forAutomaton) {
+            player = this.automaton;
+        }
         if(!player) {
             return;
         }
