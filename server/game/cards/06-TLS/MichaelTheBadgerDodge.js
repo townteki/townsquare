@@ -1,5 +1,6 @@
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
+
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class MichaelTheBadgerDodge extends DudeCard {
@@ -16,12 +17,17 @@ class MichaelTheBadgerDodge extends DudeCard {
         this.action({
             title: 'Michael "The Badger" Dodge',
             playType: ['shootout'],
-            cost: ability.costs.bootSelf(),
+            cost: [
+                ability.costs.bootSelf(),
+                // Not strictly a cost, but needed so we can reference the result in the 
+                // action handler.
+                ability.costs.pull()
+            ],
             target: {
                 activePromptTitle: 'Choose an opposing Dude',
                 choosingPlayer: 'current',
                 cardCondition: { 
-                    participating: true, 
+                    inOpposingPosse: true, 
                     controller: 'opponent',
                     condition: card => !card.booted
                 },
@@ -30,25 +36,22 @@ class MichaelTheBadgerDodge extends DudeCard {
             },
             message: context => this.game.addMessage('{0} uses {1} to boot an opposing dude', context.player, this),
             handler: context => {
-                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
-                // TODO this calculation appears incorrect, it does not take into account the dude that was just booted
-                const opposingUnbootedDudes = this.unbootedDudeCount(context.player.getOpponent());
-                // this.game.shootout.getPosseByPlayer(context.player.getOpponent()).getDudes(dude => !dude.booted).length;
-                const unbootedDudes = this.unbootedDudeCount(context.player);
-                // this.game.shootout.getPosseByPlayer(context.player).getDudes(dude => !dude.booted).length;
-                if(opposingUnbootedDudes > unbootedDudes) {
-                    this.applyAbilityEffect(context.ability, ability => ({
-                        match: this,
-                        effect: [
-                            ability.effects.modifyBullets(-3)
-                        ]
-                    }));
-                    this.game.addMessage('{0}\'s bullets are lowered because there are more opposing unbooted dudes', this);
-                }
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
+                    const opposingUnbootedDudes = this.unbootedDudeCount(context.player.getOpponent());
+                    const unbootedDudes = this.unbootedDudeCount(context.player);
+                    if(opposingUnbootedDudes > unbootedDudes) {
+                        this.applyAbilityEffect(context.ability, ability => ({
+                            match: this,
+                            effect: [
+                                ability.effects.modifyBullets(-3)
+                            ]
+                        }));
+                        this.game.addMessage('{0}\'s bullets are lowered because there are more opposing unbooted dudes', this);
+                    }
 
-                context.player.handlePull({
-                    successCondition: pulledValue => pulledValue.suit !== 'clubs',
-                    successHandler: () => {
+                    if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
+                        this.game.addMessage('{0} uses {1} but fails to lower the bullets of {2}', context.player, this, context.target);
+                    } else {
                         context.target.applyAbilityEffect(context.ability, ability => ({
                             match: context.target,
                             effect: [
@@ -56,11 +59,7 @@ class MichaelTheBadgerDodge extends DudeCard {
                             ]
                         }));
                         this.game.addMessage('{0} uses {1} to lower the bullets of {2}', context.player, this, context.target);
-                    },
-                    failHandler: () => {
-                        this.game.addMessage('{0} uses {1} but fails to lower the bullets of {2}', context.player, this, context.target);
-                    },
-                    source: this
+                    }
                 });
             }
         });
