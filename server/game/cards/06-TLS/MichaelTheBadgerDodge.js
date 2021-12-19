@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class MichaelTheBadgerDodge extends DudeCard {
@@ -6,8 +7,8 @@ class MichaelTheBadgerDodge extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             targetController: 'current',
-            condition: () => true,
-            match: this && this.hasAttachmentWithKeywords(['melee', 'weapon']),
+            condition: () => this.hasAttachmentWithKeywords(['melee', 'weapon']), 
+            match: this,
             effect: [
                 ability.effects.setAsStud()
             ]
@@ -15,21 +16,22 @@ class MichaelTheBadgerDodge extends DudeCard {
         this.action({
             title: 'Michael "The Badger" Dodge',
             playType: ['shootout'],
-            cost: [
-                ability.costs.bootSelf(),
-                // Strictly speaking, I don't think this is actually a cost but we need
-                // a pulled card to resolve the effect below.
-                ability.costs.pull()
-            ],
+            cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Choose an opposing Dude',
                 choosingPlayer: 'current',
-                cardCondition: { inOpposingPosse: true, condition: card => !card.booted },
-                cardType: ['dude']
+                cardCondition: { 
+                    participating: true, 
+                    controller: 'opponent',
+                    condition: card => !card.booted
+                },
+                cardType: ['dude'],
+                gameAction: 'boot'
             },
-            message: context => this.game.addMessage('{0} uses {1} to decrease the bullets of an opposing dude', context.player, this),
+            message: context => this.game.addMessage('{0} uses {1} to boot an opposing dude', context.player, this),
             handler: context => {
-                context.target.bootSelf();
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
+                // TODO this calculation appears incorrect, it does not take into account the dude that was just booted
                 const opposingUnbootedDudes = this.unbootedDudeCount(context.player.getOpponent());
                 // this.game.shootout.getPosseByPlayer(context.player.getOpponent()).getDudes(dude => !dude.booted).length;
                 const unbootedDudes = this.unbootedDudeCount(context.player);
@@ -41,15 +43,25 @@ class MichaelTheBadgerDodge extends DudeCard {
                             ability.effects.modifyBullets(-3)
                         ]
                     }));
+                    this.game.addMessage('{0}\'s bullets are lowered because there are more opposing unbooted dudes', this);
                 }
-                if(context.pull.pulledSuit.toLowerCase() !== 'clubs') {
-                    context.target.applyAbilityEffect(context.ability, ability => ({
-                        match: this,
-                        effect: [
-                            ability.effects.modifyBullets(-3)
-                        ]
-                    }));
-                }
+
+                context.player.handlePull({
+                    successCondition: pulledValue => pulledValue.suit !== 'clubs',
+                    successHandler: () => {
+                        context.target.applyAbilityEffect(context.ability, ability => ({
+                            match: context.target,
+                            effect: [
+                                ability.effects.modifyBullets(-3)
+                            ]
+                        }));
+                        this.game.addMessage('{0} uses {1} to lower the bullets of {2}', context.player, this, context.target);
+                    },
+                    failHandler: () => {
+                        this.game.addMessage('{0} uses {1} but fails to lower the bullets of {2}', context.player, this, context.target);
+                    },
+                    source: this
+                });
             }
         });
     }
