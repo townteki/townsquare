@@ -109,14 +109,49 @@ class Automaton extends Player {
         return BaseArchetype.highestPriority(availableDudes, sortConditions);
     }
 
+    chooseCalloutParticipants(leaderCond, markCond) {
+        const orderedMarks = this.getOrderedMarks(markCond);
+        if(!orderedMarks.length) {
+            return {};
+        }
+        let chosenLeader;
+        let chosenMark = orderedMarks.find(mark => {
+            const orderedLeaders = this.getOrderedLeaders(card => leaderCond(card) && card.gamelocation === mark.gamelocation, mark);
+            if(orderedLeaders.length) {
+                chosenLeader = orderedLeaders[0];
+                return true;
+            }
+            return false;
+        });
+        return { leader: chosenLeader, mark: chosenMark};
+    }
+
+    getOrderedLeaders(condition = () => true, mark) {
+        const unbootedDudes = this.cardsInPlay.filter(card => card.getType() === 'dude' && !card.booted && condition(card));
+        const orderedDudes = this.orderByTargetPriority(unbootedDudes, 'chooseLeader', { mark });
+        if(orderedDudes && orderedDudes.length) {
+            return orderedDudes;
+        }
+        return [];
+    }
+
+    getOrderedMarks(condition = () => true) {
+        const possibleMarks = this.game.filterCardsInPlay(card => condition(card));
+        const orderedMarks = this.orderByTargetPriority(possibleMarks, 'chooseMark');
+        if(orderedMarks && orderedMarks.length) {
+            return orderedMarks;
+        }
+        return [];
+    }
+
     handlePlayWindow(playWindow) {
         this.makeAutomatonPull(playWindow);
         this.game.queueSimpleStep(() => playWindow.markActionAsTaken(this));
     }
 
     // TODO M2 solo - implement targeting priorities
-    orderByTargetPriority(targets, gameAction) {
-        const orderFunc = this.decisionEngine.targetPriorities(gameAction, targets);
+    orderByTargetPriority(targets, gameAction, context) {
+        const orderFunc = this.decisionEngine.targetPriorities(gameAction, targets, context);
         if(orderFunc) {
             return orderFunc();
         }

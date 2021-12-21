@@ -102,20 +102,17 @@ class GunfighterArchetype extends BaseArchetype {
         const unbootedDudes = this.player.cardsInPlay.filter(card => 
             card.getType() === 'dude' && !card.booted);
         let moveInfo = this.moveBasedOnSuit(suit, unbootedDudes);
-        // TODO M2 solo - for now do not do move if clubs because it was done in `moveBasedOnSuit` function
-        if(suit !== 'Clubs') {
-            if(!moveInfo && suit !== 'Spades') {
-                moveInfo = this.moveBasedOnSuit('Spades', unbootedDudes);
-            }
-            if(moveInfo) {
-                this.game.resolveGameAction(GameActions.moveDude({
-                    card: moveInfo.dudeToMove,
-                    targetUuid: moveInfo.destination.uuid,
-                    options: { isCardEffect: false }
-                }), { game: this.game, player: this.player });
-            } else {
-                this.game.addMessage('{0} is not moving any Dude', this.player);
-            }
+        if(!moveInfo && suit !== 'Spades') {
+            moveInfo = this.moveBasedOnSuit('Spades', unbootedDudes);
+        }
+        if(moveInfo) {
+            this.game.resolveGameAction(GameActions.moveDude({
+                card: moveInfo.dudeToMove,
+                targetUuid: moveInfo.destination.uuid,
+                options: { isCardEffect: false }
+            }), { game: this.game, player: this.player });
+        } else {
+            this.game.addMessage('{0} is not moving any Dude', this.player);
         }
     }
 
@@ -219,69 +216,37 @@ class GunfighterArchetype extends BaseArchetype {
                 }
             } break;
             case 'Clubs': {
-                // TODO M2 solo - for now, let player select who is calling who
-                //                later, when targeting priorities will be implemented, do it automatically
-                this.game.promptForSelect(this.player, {
-                    activePromptTitle: 'Select a caller',
-                    cardCondition: card => unbootedDudes.includes(card),
-                    onSelect: (player, caller) => {
-                        this.game.promptForSelect(player, {
-                            activePromptTitle: 'Select a callee',
-                            cardCondition: card => card.controller !== this.player &&
-                                card.gamelocation === caller.gamelocation,
-                            cardType: 'dude',
-                            onSelect: (player, callee) => {
-                                this.game.resolveGameAction(GameActions.callOut({ caller, callee, isCardEffect: false }),
-                                    { cage: this.game, player: this.player });
-                                return true;
-                            }
+                let calloutParticipants = this.player.chooseCalloutParticipants(() => true, this.getCalleeCondition());
+                if(calloutParticipants.leader) {
+                    this.game.resolveGameAction(GameActions.callOut({ 
+                        caller: calloutParticipants.leader, 
+                        callee: calloutParticipants.mark, 
+                        isCardEffect: false 
+                    }), { game: this.game, player: this.player });
+                } else {
+                    let orderedCallers = BaseArchetype.sortByPriority(unbootedDudes, [
+                        Priorities.stud(),
+                        Priorities.highestBullets()
+                    ]);
+                    let possibleCallees = this.player.getOpponent().cardsInPlay.filter(this.getCalleeCondition());
+                    let orderedCallees = BaseArchetype.sortByPriority(possibleCallees, [
+                        Priorities.highestControl(),
+                        Priorities.highestInfluence(),
+                        Priorities.mostAttachments(),
+                        Priorities.highestCost()
+                    ]);
+                    dudeToMove = orderedCallers.find(caller => {
+                        let foundCallee = orderedCallees.find(callee => {
+                            let reqForMove = caller.requirementsToMove(caller.getGameLocation(), callee.getGameLocation(), { isCardEffect: false });
+                            return !reqForMove.needToBoot;
                         });
-                        return true;
-                    },
-                    onCancel: () => {
-                        let orderedCallers = BaseArchetype.sortByPriority(unbootedDudes, [
-                            Priorities.stud(),
-                            Priorities.highestBullets()
-                        ]);
-                        let possibleCallees = this.player.getOpponent().cardsInPlay.filter(card => card.getType() === 'dude' &&
-                            (!this.game.isHome(card.gamelocation, card.controller) || card.canBeCalledOutAtHome()) &&
-                            card.canBeCalledOut({ game: this.game, player: this.player }));
-                        let orderedCallees = BaseArchetype.sortByPriority(possibleCallees, [
-                            Priorities.highestControl(),
-                            Priorities.highestInfluence(),
-                            Priorities.mostAttachments(),
-                            Priorities.highestCost()
-                        ]);
-                        dudeToMove = orderedCallers.find(caller => {
-                            let foundCallee = orderedCallees.find(callee => {
-                                let reqForMove = caller.requirementsToMove(caller.getGameLocation(), callee.getGameLocation(), { isCardEffect: false });
-                                return !reqForMove.needToBoot;
-                            });
-                            if(foundCallee) {
-                                destination = foundCallee.getGameLocation();
-                                return !this.player.isInCheck() || !this.player.isInCheckAfterMove(caller, destination.uuid);
-                            }
-                            return false;
-                        });
-                        // TODO M2 solo - for now do the clubs move here, until the prompt is replaced with automatic function
-                        if(!dudeToMove) {
-                            let moveInfo = this.moveBasedOnSuit('Spades', unbootedDudes);
-                            if(moveInfo) {
-                                dudeToMove = moveInfo.dudeToMove;
-                                destination = moveInfo.destination;
-                            }
+                        if(foundCallee) {
+                            destination = foundCallee.getGameLocation();
+                            return !this.player.isInCheck() || !this.player.isInCheckAfterMove(caller, destination.uuid);
                         }
-                        if(dudeToMove) {
-                            this.game.resolveGameAction(GameActions.moveDude({
-                                card: dudeToMove,
-                                targetUuid: destination.uuid,
-                                options: { isCardEffect: false }
-                            }), { game: this.game, player: this.player });
-                        }
-                        // ************
-                        return true;
-                    }
-                });
+                        return false;
+                    });
+                }
             } break;
             default:
                 break;
@@ -390,36 +355,11 @@ class GunfighterArchetype extends BaseArchetype {
     }
 
     joinPosseReflex(shootout) {
-        const jobMark = shootout.isJob() && shootout.mark.getType() === 'dude' ? [shootout.mark] : [];
-        const dudesJoinInfos = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
-                card !== shootout.mark && card !== shootout.leader)
-            .map(dude => { 
-                return { dude, requirements: dude.requirementsToJoinPosse() };
-            })
-            .filter(joinInfo => joinInfo.requirements.canJoin);
-        let clonedGame = this.game.simulateShootout('shootout plays', shootout.gamelocation);
-        let dudesWithJoin = [], dudesWithoutBoot = [], dudesWithAbility = [];
-        dudesJoinInfos.forEach(info => {
-            const clonedDude = clonedGame.findCardInPlayByUuid(info.dude.uuid);
-            if(BaseArchetype.hasEnabledAbilityOfType(this.player, clonedDude, 'shootout:join')) {
-                dudesWithJoin.push(info.dude);
-            }
-            if(!info.requirements.needToBoot) {
-                dudesWithoutBoot.push(info.dude);
-            }
-            if(info.dude.hasAbilityForType('shootout') || info.dude.hasAbilityForType('resolution')) {
-                dudesWithAbility.push(info.dude);
-            }
-        });
-        const priorityConds = [
-            (dude1, dude2) => booleanCondition(!dudesWithJoin.includes(dude1), !dudesWithJoin.includes(dude2)),
-            (dude1, dude2) => booleanCondition(dudesWithoutBoot.includes(dude1), dudesWithoutBoot.includes(dude2)),
-            Priorities.stud(),
-            Priorities.highestBullets(),
-            (dude1, dude2) => booleanCondition(dudesWithAbility.includes(dude1), dudesWithAbility.includes(dude2)),
-            Priorities.lowestInfluence()
-        ];
-        return jobMark.concat(BaseArchetype.sortByPriority(dudesJoinInfos.map(info => info.dude), priorityConds).slice(0, 2));
+        const jobMark = shootout.isJob() && shootout.mark && shootout.mark.getType() === 'dude' ? [shootout.mark] : [];
+        const possibleDudes = this.player.cardsInPlay.filter(card => card.getType() === 'dude' && 
+                card !== shootout.mark && card !== shootout.leader);
+
+        return jobMark.concat((this.player.orderByTargetPriority(possibleDudes, 'joinPosse')).slice(0, 2));
     }
 }
 
@@ -435,6 +375,19 @@ class ConditionTables {
                         Priorities.draw(true),
                         Priorities.lowestCombinedCost()
                     ],
+                    leaderOrJoin: dudeInfos => {
+                        return [
+                            (dude1, dude2) => booleanCondition(!dudeInfos[dude1.uuid].hasJoinAbility, 
+                                !dudeInfos[dude2.uuid].hasJoinAbility),
+                            (dude1, dude2) => booleanCondition(!dudeInfos[dude1.uuid].needToBoot, 
+                                !dudeInfos[dude2.uuid].needToBoot),
+                            Priorities.stud(),
+                            Priorities.highestBullets(),
+                            (dude1, dude2) => booleanCondition(dudeInfos[dude1.uuid].hasShootoutResAbility, 
+                                dudeInfos[dude2.uuid].hasShootoutResAbility),
+                            Priorities.lowestInfluence()
+                        ];
+                    },
                     receiving: cardToBeReceived => {
                         if(['spell', 'goods'].includes(cardToBeReceived)) {
                             return [
@@ -453,7 +406,12 @@ class ConditionTables {
                     }
                 },
                 opponent: {
-        
+                    mark: [
+                        Priorities.highestControl(),
+                        Priorities.highestInfluence(),
+                        Priorities.mostAttachments(),
+                        Priorities.highestCost()
+                    ]
                 },
                 any: {
         
@@ -465,24 +423,52 @@ class ConditionTables {
         };
     }
 
-    validateTargetPriorityProperties(cardType, controller, actionType) {
+    getTargetPriorityConditions(cardType, controller, actionType, ...args) {
         if(!this.targetPriorities[cardType]) {
-            return false;
+            return;
         }
         if(!this.targetPriorities[cardType][controller]) {
-            return false;
+            return;
         }
         if(!this.targetPriorities[cardType][controller][actionType]) {
-            return false;
-        }
-        return true;
-    }
-
-    orderByTargetPriorities(targets, cardType, controller, actionType) {
-        if(!this.validateTargetPriorityProperties(cardType, controller, actionType)) {
-            return targets;
+            return;
         }
         const conditions = this.targetPriorities[cardType][controller][actionType];
+        return typeof(conditions) === 'function' ? conditions(...args) : conditions;
+    }
+
+    orderByTargetPriorities(targets, cardType, controller, actionType, context = {}) {
+        let conditions;
+        switch(actionType) {
+            case 'chooseLeader':
+            case 'joinPosse': {
+                const game = this.archetype.game;
+                const joinReqs = BaseArchetype.getJoinRequirements(targets);
+                let clonedGame;
+                if(game.shootout) {
+                    clonedGame = game.simulateShootout('shootout plays', game.shootout.gamelocation);
+                } else if(context.mark) {
+                    clonedGame = game.simulateShootout('shootout plays', context.mark);
+                }
+                for(let dudeUuid in joinReqs) {
+                    let dudeJoinInfo = joinReqs[dudeUuid];
+                    dudeJoinInfo.hasShootoutResAbility = dudeJoinInfo.dude.hasAbilityForType('shootout') || 
+                        dudeJoinInfo.dude.hasAbilityForType('resolution');
+                    if(clonedGame) {
+                        const clonedDude = clonedGame.findCardInPlayByUuid(dudeUuid);
+                        dudeJoinInfo.hasJoinAbility = BaseArchetype.hasEnabledAbilityOfType(this.player, clonedDude, 'shootout:join');
+                    }
+                }
+                conditions = this.getTargetPriorityConditions(cardType, controller, 'leaderOrJoin', joinReqs);
+                break;
+            }
+            default:
+                conditions = this.getTargetPriorityConditions(cardType, controller, actionType);
+                break;
+        }
+        if(!conditions) {
+            return targets;
+        }
         return BaseArchetype.sortByPriority(targets, conditions);
     }
 }
