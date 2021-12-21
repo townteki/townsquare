@@ -149,7 +149,6 @@ class Automaton extends Player {
         this.game.queueSimpleStep(() => playWindow.markActionAsTaken(this));
     }
 
-    // TODO M2 solo - implement targeting priorities
     orderByTargetPriority(targets, gameAction, context) {
         const orderFunc = this.decisionEngine.targetPriorities(gameAction, targets, context);
         if(orderFunc) {
