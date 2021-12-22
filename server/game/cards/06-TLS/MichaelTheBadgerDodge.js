@@ -30,7 +30,7 @@ class MichaelTheBadgerDodge extends DudeCard {
                 },
                 cardType: ['dude']
             },
-            message: context => this.game.addMessage('{0} uses {1} to boot an opposing dude', context.player, this),
+            message: context => this.game.addMessage('{0} uses {1} to boot {2}', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
                     const opposingUnbootedDudes = this.unbootedDudeCount(context.player.getOpponent());
