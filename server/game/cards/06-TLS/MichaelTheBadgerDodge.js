@@ -45,19 +45,17 @@ class MichaelTheBadgerDodge extends DudeCard {
                         this.game.addMessage('{0} uses {1} who\'s bullets are lowered because there are more opposing unbooted dudes', context.player, this);
                     }
 
-                    context.player.pull((pulledCard, pulledValue, pulledSuit) => {
-                        if(pulledSuit === 'Clubs') {
-                            this.game.addMessage('{0} uses {1} but fails to lower the bullets of {2}', context.player, this, context.target);
-                        } else {
-                            context.target.applyAbilityEffect(context.ability, ability => ({
-                                match: context.target,
-                                effect: [
-                                    ability.effects.modifyBullets(-3)
-                                ]
-                            }));
-                            this.game.addMessage('{0} uses {1} to lower the bullets of {2}', context.player, this, context.target);
-                        }
-                    }, true, { context });
+                    if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
+                        this.game.addMessage('{0} uses {1} but fails to lower the bullets of {2}', context.player, this, context.target);
+                    } else {
+                        context.target.applyAbilityEffect(context.ability, ability => ({
+                            match: context.target,
+                            effect: [
+                                ability.effects.modifyBullets(-3)
+                            ]
+                        }));
+                        this.game.addMessage('{0} uses {1} to lower the bullets of {2} by 3', context.player, this, context.target);
+                    }
                 });
             }
         });
