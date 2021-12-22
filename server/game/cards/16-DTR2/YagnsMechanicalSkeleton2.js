@@ -13,12 +13,17 @@ class YagnsMechanicalSkeleton2 extends GoodsCard {
                 onDudeMoved: event => this.parent && event.card === this.parent &&
                     event.options.context.player !== this.controller,
                 onCardBooted: event => this.parent && event.card === this.parent &&
+                    event.context.player !== this.controller,
+                onDudeSentHome: event => this.parent && event.card === this.parent &&
                     event.context.player !== this.controller
             },
             cost: ability.costs.bootSelf(),
             handler: context => {
                 context.replaceHandler(event => {
-                    const eventText = event.name === 'onDudeMoved' ? 'move' : 'boot';
+                    let eventText = 'send home';
+                    if(['onDudeMoved', 'onCardBooted'].includes(event.name)) {
+                        eventText = event.name === 'onDudeMoved' ? 'move' : 'boot';
+                    }
                     this.game.addMessage('{0} uses {1} to cancel {2} action on {3}', 
                         context.player, this, eventText, this.parent);
                 });
