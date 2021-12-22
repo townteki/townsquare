@@ -55,7 +55,7 @@ class MichaelTheBadgerDodge extends DudeCard {
                                     ability.effects.modifyBullets(-3)
                                 ]
                             }));
-                            this.game.addMessage('{0} uses {1} to lower the bullets of {2}', context.player, this, context.target);
+                            this.game.addMessage('{0} uses {1} to lower the bullets of {2} by 3', context.player, this, context.target);
                         }
                     }, true, { context });
                 });
