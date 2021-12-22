@@ -27,6 +27,6 @@ class YagnsMechanicalSkeleton2 extends GoodsCard {
     }
 }
 
-YagnsMechanicalSkeleton2.code = '13015';
+YagnsMechanicalSkeleton2.code = '25226';
 
 module.exports = YagnsMechanicalSkeleton2;
