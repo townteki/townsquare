@@ -18,10 +18,7 @@ class MichaelTheBadgerDodge extends DudeCard {
             title: 'Michael "The Badger" Dodge',
             playType: ['shootout'],
             cost: [
-                ability.costs.bootSelf(),
-                // Not strictly a cost, but needed so we can reference the result in the 
-                // action handler.
-                ability.costs.pull()
+                ability.costs.bootSelf()
             ],
             target: {
                 activePromptTitle: 'Choose an opposing Dude',
@@ -31,8 +28,7 @@ class MichaelTheBadgerDodge extends DudeCard {
                     controller: 'opponent',
                     condition: card => !card.booted
                 },
-                cardType: ['dude'],
-                gameAction: 'boot'
+                cardType: ['dude']
             },
             message: context => this.game.addMessage('{0} uses {1} to boot an opposing dude', context.player, this),
             handler: context => {
@@ -46,20 +42,22 @@ class MichaelTheBadgerDodge extends DudeCard {
                                 ability.effects.modifyBullets(-3)
                             ]
                         }));
-                        this.game.addMessage('{0}\'s bullets are lowered because there are more opposing unbooted dudes', this);
+                        this.game.addMessage('{0} uses {1} who\'s bullets are lowered because there are more opposing unbooted dudes', context.player, this);
                     }
 
-                    if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
-                        this.game.addMessage('{0} uses {1} but fails to lower the bullets of {2}', context.player, this, context.target);
-                    } else {
-                        context.target.applyAbilityEffect(context.ability, ability => ({
-                            match: context.target,
-                            effect: [
-                                ability.effects.modifyBullets(-3)
-                            ]
-                        }));
-                        this.game.addMessage('{0} uses {1} to lower the bullets of {2}', context.player, this, context.target);
-                    }
+                    context.player.pull((pulledCard, pulledValue, pulledSuit) => {
+                        if(pulledSuit === 'Clubs') {
+                            this.game.addMessage('{0} uses {1} but fails to lower the bullets of {2}', context.player, this, context.target);
+                        } else {
+                            context.target.applyAbilityEffect(context.ability, ability => ({
+                                match: context.target,
+                                effect: [
+                                    ability.effects.modifyBullets(-3)
+                                ]
+                            }));
+                            this.game.addMessage('{0} uses {1} to lower the bullets of {2}', context.player, this, context.target);
+                        }
+                    }, true, { context });
                 });
             }
         });
