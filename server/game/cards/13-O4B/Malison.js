@@ -33,9 +33,11 @@ class Malison extends SpellCard {
                     this.game.addMessage('{0} uses {1} to give their posse +1 draw bonus', context.player, this);            
                 }
                 let eventHandler = () => {
-                    this.parent.modifyInfluence(1);
-                    this.game.addMessage('{0} gains 1 influence on {1} thanks to {2}',
-                        this.controller, this.parent, this);
+                    if(this.parent) {
+                        this.parent.modifyInfluence(1);
+                        this.game.addMessage('{0} gains 1 influence on {1} thanks to {2}',
+                            this.controller, this.parent, this);
+                    }
                 };
                 this.game.onceConditional('onCardDiscarded', {
                     until: 'onShootoutPhaseFinished',
