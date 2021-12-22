@@ -1366,9 +1366,11 @@ class Player extends Spectator {
                 technique.owner.moveCard(technique, technique.actionPlacementLocation);
             }
         };
-        if(isSuccessful) {
-            this.attach(technique, kfDude, 'technique');
-        }
+        this.attach(technique, kfDude, 'technique', () => {
+            if(!isSuccessful) {
+                this.bootCard(technique);
+            }
+        });
         if(this.game.shootout) {
             this.game.once('onPlayWindowClosed', eventHandler);
             this.game.once('onShootoutPhaseFinished', () => {
@@ -1486,7 +1488,7 @@ class Player extends Spectator {
 
     pullForKungFu(difficulty, properties, context) {
         const props = Object.assign(properties, {
-            successCondition: pulledValue => pulledValue < difficulty,
+            successCondition: pulledValue => pulledValue <= difficulty,
             pullBonus: 0,
             difficulty
         });
