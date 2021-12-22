@@ -66,10 +66,11 @@ class BaseArchetype {
      * @param {String} type
      * @param {Array.<DrawCard>} cards - array of target cards to be ordered.
      * @param {ConditionTables} tables
+     * @param {Object} context
      * 
      * @returns {Array.<Effect} target cards ordered by priority.
      */     
-    targetPriorities(type, cards, tables) {
+    targetPriorities(type, cards, tables, context = {}) {
         const cardTypes = cards.reduce((types, card) => {
             if(!types.includes(card.getType())) {
                 types.push(card.getType());
@@ -96,6 +97,12 @@ class BaseArchetype {
             case 'discard':
             case 'casualties':
                 return () => tables.orderByTargetPriorities(cards, cardType, controller, 'leavingPlay');
+            case 'chooseLeader':
+                return () => tables.orderByTargetPriorities(cards, cardType, controller, 'chooseLeader', context);
+            case 'joinPosse':
+                return () => tables.orderByTargetPriorities(cards, cardType, controller, 'joinPosse');
+            case 'chooseMark':
+                return () => tables.orderByTargetPriorities(cards, cardType, controller, 'chooseMark');
             default:
                 break;
         }        
@@ -105,6 +112,13 @@ class BaseArchetype {
     }
 
     joinPosseReflex() {
+    }
+
+    getCalleeCondition() {
+        return card => card.getType() === 'dude' &&
+            card.controller !== this.player &&
+            (!this.game.isHome(card.gamelocation, card.controller) || card.canBeCalledOutAtHome()) &&
+            card.canBeCalledOut({ game: this.game, player: this.player });
     }
 
     static sortByPriority(array, conditions) {
@@ -156,6 +170,14 @@ class BaseArchetype {
             });
         };
         return hasAbility(dude, player) || dude.attachments.some(att => hasAbility(att, player));
+    }
+
+    static getJoinRequirements(cards) {
+        return cards.filter(card => card.getType() === 'dude')
+            .reduce((reqs, dude) => { 
+                reqs[dude.uuid] = Object.assign({ dude }, dude.requirementsToJoinPosse());
+                return reqs;
+            }, {});
     }
 }
 
