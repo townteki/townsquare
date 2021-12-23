@@ -45,6 +45,8 @@ class BaseArchetype {
                 return () => true;
             case 'discardFromHand':
                 return number => this.player.hand.length ? this.player.hand.slice(0, number) : [];
+            case 'upkeepDiscard':
+                return dudesWithUpkeep => this.upkeepDiscardDudes(dudesWithUpkeep);
             default:
                 break;
         }
@@ -112,6 +114,9 @@ class BaseArchetype {
     }
 
     joinPosseReflex() {
+    }
+
+    upkeepDiscardDudes() {
     }
 
     getCalleeCondition() {

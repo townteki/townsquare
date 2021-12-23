@@ -1507,7 +1507,8 @@ class Game extends EventEmitter {
             return {
                 name: player.name,
                 outfit: player.outfit.title || player.outfit.gang_code,
-                legend: player.legend ? player.legend.title : undefined
+                legend: player.legend ? player.legend.title : undefined,
+                standaloneDeckId: player.standaloneDeckId
             };
         });
 

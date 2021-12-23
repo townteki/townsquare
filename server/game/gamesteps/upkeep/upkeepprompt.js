@@ -120,17 +120,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     handleSolo() {
         const requiredUpkeep = this.getRequiredUpkeep(this.game.automaton);
         if(requiredUpkeep > 0) {
-            const orderedTargets = this.game.automaton.orderByTargetPriority(this.getDudesWithUpkeep(this.game.automaton), 'discard');
-            this.selectedCards = [];
-            let freedUpkeep = 0;
-            for(let dude in orderedTargets) {
-                if(freedUpkeep < requiredUpkeep) {
-                    this.selectedCards.push(dude);
-                    freedUpkeep += dude.upkeep;
-                } else {
-                    break;
-                }
-            }
+            this.selectedCards = this.game.automaton.getDudesToDiscardForUpkeep(this.getDudesWithUpkeep(this.game.automaton));
         }
         if(!this.onMenuCommand(this.game.automaton)) {
             this.game.addAlert('warn', '{0} could not pay the upkeep, please resolve manually', this.currentPlayer);

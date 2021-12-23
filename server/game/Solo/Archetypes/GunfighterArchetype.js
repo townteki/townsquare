@@ -361,6 +361,20 @@ class GunfighterArchetype extends BaseArchetype {
 
         return jobMark.concat((this.player.orderByTargetPriority(possibleDudes, 'joinPosse')).slice(0, 2));
     }
+
+    upkeepDiscardDudes(dudesWithUpkeep) {
+        const orderedDudes = BaseArchetype.sortByPriority(dudesWithUpkeep, [Priorities.highestCombinedCost()]);
+        let currentGR = this.player.ghostrock;
+        let dudesToDiscard = [];
+        orderedDudes.forEach(dude => {
+            if(currentGR >= dude.upkeep) {
+                currentGR -= dude.upkeep;
+            } else {
+                dudesToDiscard.push(dude);
+            }
+        });
+        return dudesToDiscard;
+    }
 }
 
 class ConditionTables {
