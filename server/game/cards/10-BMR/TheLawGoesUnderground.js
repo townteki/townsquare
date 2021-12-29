@@ -3,34 +3,29 @@ const GameActions = require('../../GameActions');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class TheLawGoesUnderground extends ActionCard {
-    setupCardAbilities() {
+    /** @param {AbilityDsl} ability */
+    setupCardAbilities(ability) {
         this.action({
             title: 'The Law Goes Underground',
             playType: ['resolution'],
-            target: {
-                activePromptTitle: 'Choose your stud dude',
-                choosingPlayer: 'current',
-                cardCondition: { 
-                    participating: true,
-                    controller: 'current',
-                    condition: card => card.isStud()
-                },
-                cardType: ['dude']
-            },
+            cost: ability.costs.choose({
+                'Boot Stud': ability.costs.boot({
+                    type: 'dude',
+                    condition: card => this.game.shootout && card.isStud() && this.game.shootout.getPosseByPlayer(this.controller).isInPosse(card)
+                }),
+                'Discard Stud': ability.costs.discardFromPlay({
+                    type: 'dude',
+                    condition: card => this.game.shootout && card.isStud() && this.game.shootout.getPosseByPlayer(this.controller).isInPosse(card)
+                })
+            }),
             message: context => this.game.addMessage('{0} uses {1} to flee to their hideout', context.player, this),
             handler: context => {
-                const actorIsDeputy = context.target.hasKeyword('deputy');
-                if(context.target.booted) {
-                    this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
-                    this.game.addMessage('{0} discards {1} because they are booted', context.player, context.target);
-                } else {
-                    this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
-                    this.game.addMessage('{0} boots {1}', context.player, context.target);
-                }
+                const actor = context.costs.boot ? context.costs.boot : context.costs.discardFromPlay;
+                const actorIsDeputy = actor.hasKeyword('deputy');
                 if(actorIsDeputy) {
                     const opposingShooter = this.game.shootout.getPosseByPlayer(context.player.getOpponent()).shooter;
                     this.game.resolveGameAction(GameActions.sendHome({ card: opposingShooter, options: { needToBoot: true } }), context);
-                    this.game.addMessage('{0} sends {1} home because {2} is a Deputy', context.player, opposingShooter, context.target);
+                    this.game.addMessage('{0} sends {1} home because {2} is a Deputy', context.player, opposingShooter, actor);
                 }
                 let action = GameActions.simultaneously(
                     this.game.shootout.getPosseByPlayer(context.player).getDudes().map(card => GameActions.sendHome({
