@@ -28,7 +28,7 @@ class TheLawGoesUnderground extends ActionCard {
                     this.game.addMessage('{0} boots {1}', context.player, context.target);
                 }
                 if(actorIsDeputy) {
-                    const opposingShooter = this.game.shootout.getPosseByPlayer(player.getOpponent()).shooter;
+                    const opposingShooter = this.game.shootout.getPosseByPlayer(context.player.getOpponent()).shooter;
                     this.game.resolveGameAction(GameActions.sendHome({ card: opposingShooter, options: { needToBoot: true } }), context);
                     this.game.addMessage('{0} sends {1} home because {2} is a Deputy', context.player, opposingShooter, context.target);
                 }
