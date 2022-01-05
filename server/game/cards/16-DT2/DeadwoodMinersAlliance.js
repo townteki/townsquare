@@ -14,33 +14,29 @@ class DeadwoodMinersAlliance extends OutfitCard {
         this.action({
             title: 'Noon: Deadwood Miner\'s Alliance',
             playType: ['noon'],
-            cost: ability.costs.bootSelf(),
-            target: {
-                activePromptTitle: 'Choose your dude',
-                cardCondition: { 
-                    location: 'play area', 
-                    controller: 'current', 
-                    condition: card => card.locationCard && card.locationCard.owner !== this.owner
-                },
-                cardType: ['dude'],
-                gameAction: 'boot'
-            },
+            cost: [
+                ability.costs.bootSelf(),
+                ability.costs.boot(card => card.location === 'play area' &&
+                    card.controller === this.controller &&
+                    card.getType() === 'dude' &&
+                    card.locationCard && card.locationCard.owner !== this.owner)
+            ],
             handler: context => {
                 let bountyAmount = 1;
                 let amountGR = 1;
-                this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
+                this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot }), context);
                 context.player.modifyGhostRock(1);
-                const targetLocation = context.target.locationCard;
+                const targetLocation = context.costs.boot.locationCard;
                 if(targetLocation && targetLocation.hasKeyword('public')) {
-                    this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
+                    this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot }), context);
                     bountyAmount += 1;
                 }
                 if(targetLocation && targetLocation.hasKeyword('private')) {
                     context.player.modifyGhostRock(1);
                     amountGR += 1;
                 }
-                this.game.addMessage('{0} uses {1} to give {2} {3} bounty and to gain {4} GR', 
-                    context.player, this, context.target, bountyAmount, amountGR);     
+                this.game.addMessage('{0} uses {1} to boot {2} and give them {3} bounty and to gain {4} GR', 
+                    context.player, this, context.costs.boot, bountyAmount, amountGR);     
             }
         });
     }
