@@ -51,6 +51,9 @@ class DeckBuilder {
         if(params.addDefaultDeck) {
             params.cardTitles = params.cardTitles.concat(DefaultDeck);
         }
+        if(params.cardCodes) {
+            params.cardTitles = params.cardTitles.concat(params.cardCodes);
+        }
         let allCards = this.createCardCounts(params.cardTitles);
         let outfit = this.getCard(params.outfitTitle);
         let legend = params.legendTitle ? this.getCard(params.legendTitle) : null;
