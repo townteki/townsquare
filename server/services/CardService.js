@@ -76,7 +76,7 @@ class CardService {
             const defaultFormat = activeVersion.formats.find(format => format.name === 'default');
             return {
                 _id: `${activeVersion.issuer}-${activeVersion.version}`.replace(' ', '-').toLowerCase(),
-                name: `${activeVersion.issuer} FAQ v${activeVersion.version}`,
+                name: `${activeVersion.issuer} v${activeVersion.version}`,
                 date: activeVersion.date,
                 issuer: activeVersion.issuer,
                 cardSet: activeVersion.cardSet,
