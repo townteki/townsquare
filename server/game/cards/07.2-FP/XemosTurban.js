@@ -22,7 +22,6 @@ class XemosTurban extends GoodsCard {
                                     this.game.promptForSelect(player, {
                                         promptTitle: this.title,
                                         activePromptTitle: 'Select a card to discard',
-                                        waitingPromptTitle: 'Waiting for opponent to discard a card',
                                         mode: 'exactly',
                                         numCards: 1,
                                         cardCondition: card => card.location === 'hand' && card.controller === this.controller,
@@ -32,7 +31,8 @@ class XemosTurban extends GoodsCard {
                                                     p, this, cards[0]);
                                             });
                                             return true;
-                                        }
+                                        },
+                                        source: this
                                     }); 
                                 }); 
                                 this.game.resolveGameAction(GameActions.unbootCard({ card: this }), context);
