@@ -5,6 +5,8 @@ class JimHexter2 extends DudeCard {
         this.action({
             title: 'Jim Hexter',
             playType: ['shootout'],
+            repeatable: true,
+            limit: 1,
             condition: () => this.controller.getSpendableGhostRock() > 0,
             message: context => 
                 this.game.addMessage('{0} uses {1} to pay {2} 1 GR to make him a stud', context.player, this, context.player.getOpponent()),
@@ -14,7 +16,6 @@ class JimHexter2 extends DudeCard {
                     match: this,
                     effect: ability.effects.setAsStud()
                 }));
-                this.game.once('onShootoutPhaseFinished', () => context.ability.resetAbilityUsage());
             }
         });
     }
