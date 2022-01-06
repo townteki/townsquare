@@ -4,7 +4,8 @@ describe('ability limits', function() {
             beforeEach(function() {
                 const deck = this.buildDeck({
                     outfitTitle: 'Law Dogs',
-                    cardTitles: ['Law Dogs', 'Jake Smiley', 'Jacqueline Isham'],
+                    cardTitles: ['Law Dogs', 'Jake Smiley'],
+                    cardCodes: ['07009'],
                     startingTitles: ['Jake Smiley', 'Jacqueline Isham']
                 });
                 this.player1.selectDeck(deck);

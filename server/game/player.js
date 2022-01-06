@@ -111,7 +111,14 @@ class Player extends Spectator {
     }
 
     placeToken(codeOrName, gamelocation, properties = {}) {
-        let token = this.createCard(codeOrName);
+        let updatedCodeOrName = codeOrName;
+        if(codeOrName.toLowerCase() === 'gunslinger') {
+            updatedCodeOrName = this.game.isLegacy() ? '01146' : '24261';
+        }
+        if(codeOrName.toLowerCase() === 'ancestor spirit') {
+            updatedCodeOrName = this.game.isLegacy() ? '09041' : '24260';
+        }
+        let token = this.createCard(updatedCodeOrName);
         this.game.allCards.push(token);
         token.facedown = !!properties.facedown;
         token.booted = !!properties.booted;
@@ -1380,9 +1387,11 @@ class Player extends Spectator {
                 technique.owner.moveCard(technique, technique.actionPlacementLocation);
             }
         };
-        if(isSuccessful) {
-            this.attach(technique, kfDude, 'technique');
-        }
+        this.attach(technique, kfDude, 'technique', () => {
+            if(!isSuccessful) {
+                this.bootCard(technique);
+            }
+        });
         if(this.game.shootout) {
             this.game.once('onPlayWindowClosed', eventHandler);
             this.game.once('onShootoutPhaseFinished', () => {
@@ -1500,7 +1509,7 @@ class Player extends Spectator {
 
     pullForKungFu(difficulty, properties, context) {
         const props = Object.assign(properties, {
-            successCondition: pulledValue => pulledValue < difficulty,
+            successCondition: pulledValue => pulledValue <= difficulty,
             pullBonus: 0,
             difficulty
         });

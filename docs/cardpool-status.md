@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/667/?scale=875&title=implemented%20&width=200&suffix=%20cards) out of 875
+![Cards implemented](https://progress-bar.dev/928/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
 
 **Legend**
 
@@ -418,7 +418,7 @@
 |:heavy_check_mark:   | 10003| Den of Thieves
 |:heavy_check_mark:   | 10004| Asakichi Cooke
 |:heavy_check_mark:   | 10005| Emre, The Turkish Bear
-|                     | 10006| Michael "The Badger" Dodge
+|:heavy_check_mark:   | 10006| Michael "The Badger" Dodge
 |                     | 10007| Jim Cheveyo
 |:heavy_check_mark:   | 10008| Enapay
 |                     | 10009| Danny Wilde
@@ -496,7 +496,7 @@
 |:heavy_check_mark:   | 12007| "Lucky" Sky Borne
 |:heavy_check_mark:   | 12008| Miranda Clarke
 |                     | 12009| Elliot Smithson
-|                     | 12010| Shelby Hunt
+|:heavy_check_mark:   | 12010| Shelby Hunt
 |:heavy_check_mark:   | 12011| The Joker's Smile
 |:heavy_check_mark:   | 12012| Old Marge's Manor
 |:heavy_check_mark:   | 12013| Xemo's Turban
@@ -999,3 +999,269 @@
 |:heavy_check_mark:   | 23054| Masonic Augment
 |:heavy_check_mark:   | 23055| Swagger
 |:heavy_check_mark:   | 23056| Vamoosin'
+
+## `16-DT2` Weird West Edition
+
+| Status | Code | Title                    |
+|--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 24001| 108 Gracious Gifts
+|:heavy_check_mark:   | 24002| House of Many Faiths
+|:heavy_check_mark:   | 24003| Farnum's Consortium
+|:heavy_check_mark:   | 24004| Morgan Regulators
+|:heavy_check_mark:   | 24005| Encroaching Darkness
+|:heavy_check_mark:   | 24006| Serpentine Syndicate
+|:heavy_check_mark:   | 24007| Black Hills Guardians
+|:heavy_check_mark:   | 24008| The Spiritual Society
+|:heavy_check_mark:   | 24009| Law Dogs
+|:heavy_check_mark:   | 24010| Saved By Grace
+|:heavy_check_mark:   | 24011| Deadwood Miner's Alliance
+|:heavy_check_mark:   | 24012| The Sloane Gang
+|:heavy_check_mark:   | 24013| Daomei Wang
+|:heavy_check_mark:   | 24014| Randall
+|:heavy_check_mark:   | 24015| Asakichi Cooke
+|:heavy_check_mark:   | 24016| Natalya
+|:heavy_check_mark:   | 24017| Xui Yin Chen
+|:white_check_mark:   | 24018| Shi Long Peng
+|:heavy_check_mark:   | 24019| Emre, The Turkish Bear (Exp.1)
+|:heavy_check_mark:   | 24020| Yunxu Jiang
+|:heavy_check_mark:   | 24021| Forster Cooke
+|:heavy_check_mark:   | 24022| He Fang
+|:heavy_check_mark:   | 24023| Jim Hexter
+|:heavy_check_mark:   | 24024| Stevie Lyndon
+|:heavy_check_mark:   | 24025| Hao-T'e Zui, The Mad Monk
+|:heavy_check_mark:   | 24026| Irving Patterson
+|:heavy_check_mark:   | 24027| Arnold Stewart
+|:heavy_check_mark:   | 24028| Chuan "Jen" Qí
+|:heavy_check_mark:   | 24029| Seamus O'Toole
+|:heavy_check_mark:   | 24030| Diego Linares
+|:heavy_check_mark:   | 24031| Nathan Shane
+|:heavy_check_mark:   | 24032| Jon Longstride
+|:heavy_check_mark:   | 24033| Lane Healey
+|:heavy_check_mark:   | 24034| Jarrett Blake
+|:heavy_check_mark:   | 24035| Maggie Harris
+|:heavy_check_mark:   | 24036| Buckin' Billy Ballard
+|:heavy_check_mark:   | 24037| POST-A-TRON
+|:heavy_check_mark:   | 24038| E.B. Farnum
+|:heavy_check_mark:   | 24039| Landon Grimes
+|:heavy_check_mark:   | 24040| Pagliaccio
+|:heavy_check_mark:   | 24041| Mongwau The Mighty
+|:heavy_check_mark:   | 24042| The Brute
+|:heavy_check_mark:   | 24043| Valeria Batten
+|:heavy_check_mark:   | 24044| Alfred Byrne
+|:heavy_check_mark:   | 24045| Bobo
+|:heavy_check_mark:   | 24046| Alan Campbell
+|:heavy_check_mark:   | 24047| Sylvester Heath
+|:white_check_mark:   | 24048| Avie Cline
+|:heavy_check_mark:   | 24049| Kevin Wainwright
+|:heavy_check_mark:   | 24050| Jia Mein
+|:heavy_check_mark:   | 24051| Ursula, The Worm Queen
+|:heavy_check_mark:   | 24052| Alexander Sequoia
+|:heavy_check_mark:   | 24053| Mazatl
+|:heavy_check_mark:   | 24054| Marcia Ridge
+|:heavy_check_mark:   | 24055| Lydia Bear-Hands
+|:heavy_check_mark:   | 24056| The Mixer
+|:heavy_check_mark:   | 24057| Mariel Lewis
+|:heavy_check_mark:   | 24058| Enapay
+|:heavy_check_mark:   | 24059| Francisco Rosales
+|:heavy_check_mark:   | 24060| Zachary Deloria
+|:white_check_mark:   | 24061| Bloody Teeth
+|:heavy_check_mark:   | 24062| Smiling Frog
+|:heavy_check_mark:   | 24063| Speaks-With-Earth
+|:heavy_check_mark:   | 24064| Eagle Woman That All Look At
+|:heavy_check_mark:   | 24065| Laura Banks
+|:heavy_check_mark:   | 24066| Philip Swinford
+|:heavy_check_mark:   | 24067| Tommy Harden
+|:heavy_check_mark:   | 24068| Padre Ernesto de Diaz
+|:white_check_mark:   | 24069| Andreas Andregg
+|:heavy_check_mark:   | 24070| Erik Samson
+|:heavy_check_mark:   | 24071| "Thunder Boy" Nabbe
+|:heavy_check_mark:   | 24072| Drew Beauman
+|:heavy_check_mark:   | 24073| Judge Harry Somerset (Exp.1)
+|:heavy_check_mark:   | 24074| Clyde Owens
+|:heavy_check_mark:   | 24075| Deborah West (Exp.1)
+|:heavy_check_mark:   | 24076| Hattie DeLorre
+|:heavy_check_mark:   | 24077| Bass Reeves
+|:heavy_check_mark:   | 24078| Allie Hensman
+|:heavy_check_mark:   | 24079| Ike Clanton
+|:heavy_check_mark:   | 24080| Maria Kingsford
+|:heavy_check_mark:   | 24081| Lawrence Blackwood
+|:heavy_check_mark:   | 24082| Miranda Clarke
+|:white_check_mark:   | 24083| Pancho Castillo
+|:heavy_check_mark:   | 24084| "Ma" Florence Aims
+|:heavy_check_mark:   | 24085| Baker Andrews
+|:heavy_check_mark:   | 24086| Dave "Slim" Gorman
+|:heavy_check_mark:   | 24087| Milt Clemons
+|:heavy_check_mark:   | 24088| José Morales
+|:heavy_check_mark:   | 24089| Larry "Sevens" Swift
+|:heavy_check_mark:   | 24090| Jessica Patchett
+|:heavy_check_mark:   | 24091| Walter Jameson
+|:white_check_mark:   | 24092| Rob Wilby
+|:heavy_check_mark:   | 24093| Ramiro Mendoza
+|:heavy_check_mark:   | 24094| Rattler Young 'Un
+|:heavy_check_mark:   | 24095| "Mahogany" Jackson
+|:white_check_mark:   | 24096| Wilber Crowley
+|:white_check_mark:   | 24097| Roderick Byre
+|:white_check_mark:   | 24098| El Anónimo
+|:white_check_mark:   | 24099| Ezrael Jones
+|:heavy_check_mark:   | 24100| Angela Payne
+|:white_check_mark:   | 24101| Clint Ramsey
+|:heavy_check_mark:   | 24102| Nicodemus Whateley
+|:heavy_check_mark:   | 24103| Jacqueline Isham
+|:heavy_check_mark:   | 24104| The Joker's Smile
+|:heavy_check_mark:   | 24105| The Mayor's Office
+|:heavy_check_mark:   | 24106| Pony Express
+|:heavy_check_mark:   | 24107| 2nd Bank of Gomorra
+|:heavy_check_mark:   | 24108| New Town Hall
+|:heavy_check_mark:   | 24109| Pettigrew's Pawnshop
+|:heavy_check_mark:   | 24110| Hustings
+|:heavy_check_mark:   | 24111| The Orphanage
+|:heavy_check_mark:   | 24112| Yan Li's Tailoring
+|:heavy_check_mark:   | 24113| B & B Attorneys
+|:heavy_check_mark:   | 24114| Clanton Ranch
+|:heavy_check_mark:   | 24115| Dead Dog Tavern
+|:heavy_check_mark:   | 24116| Charlie's Place
+|:heavy_check_mark:   | 24117| Long Strides Ranch
+|:heavy_check_mark:   | 24118| Shane & Graves Security
+|:heavy_check_mark:   | 24119| Killer Bunnies Casino
+|:heavy_check_mark:   | 24120| Mount Moriah Cemetery
+|:heavy_check_mark:   | 24121| Nickel Night Inn
+|:heavy_check_mark:   | 24122| Cattle Market
+|:heavy_check_mark:   | 24123| Hunter Protections
+|:heavy_check_mark:   | 24124| Sherman Mortgage
+|:heavy_check_mark:   | 24125| Circle M Ranch
+|:heavy_check_mark:   | 24126| The Gomorra Gazette
+|:white_check_mark:   | 24127| Pat's Perch
+|:heavy_check_mark:   | 24128| Epidemic Laboratory
+|:heavy_check_mark:   | 24129| Old Marge's Manor
+|:heavy_check_mark:   | 24130| Surveyor's Office
+|:heavy_check_mark:   | 24131| Baird's Build & Loan
+|:heavy_check_mark:   | 24132| Carter's Bounties
+|:heavy_check_mark:   | 24133| Walters Creek Distillery
+|:heavy_check_mark:   | 24134| California Tax Office
+|:heavy_check_mark:   | 24135| Hellstromme Plant #9
+|:heavy_check_mark:   | 24136| Huntsmen's Society
+|:heavy_check_mark:   | 24137| Cliff's #4 Saloon
+|:heavy_check_mark:   | 24138| General Store
+|:heavy_check_mark:   | 24139| Silent Sigil
+|:heavy_check_mark:   | 24140| "Open Wound"
+|:heavy_check_mark:   | 24141| Railroad Station
+|:heavy_check_mark:   | 24142| The Whateley Estate
+|:heavy_check_mark:   | 24143| Baijiu Jar
+|:heavy_check_mark:   | 24144| Pair of Six-Shooters
+|:heavy_check_mark:   | 24145| La Quema
+|:heavy_check_mark:   | 24146| Bluetick
+|:heavy_check_mark:   | 24147| Hawley's Rose
+|:heavy_check_mark:   | 24148| Peacemaker
+|:heavy_check_mark:   | 24149| Bowie Knife
+|:heavy_check_mark:   | 24150| Culpability Scientizer
+|:heavy_check_mark:   | 24151| Shotgun
+|:heavy_check_mark:   | 24152| Disingenuine Currency Press
+|:heavy_check_mark:   | 24153| Faithful Hound
+|:heavy_check_mark:   | 24154| Tusk
+|:heavy_check_mark:   | 24155| Mustang
+|:heavy_check_mark:   | 24156| Pearl-Handled Revolver
+|:heavy_check_mark:   | 24157| Xemo's Turban
+|:heavy_check_mark:   | 24158| Roan
+|:heavy_check_mark:   | 24159| See-Through Spectacles
+|:heavy_check_mark:   | 24160| Winchester Model 1873
+|:heavy_check_mark:   | 24161| Hydro-Puncher
+|:heavy_check_mark:   | 24162| LeMat Revolver
+|:heavy_check_mark:   | 24163| Pinto
+|:heavy_check_mark:   | 24164| Flame-Thrower
+|:heavy_check_mark:   | 24165| Quickdraw Handgun
+|:heavy_check_mark:   | 24166| Ragged Mule
+|:heavy_check_mark:   | 24167| Mechanical Horse
+|:heavy_check_mark:   | 24168| Tin Star
+|:heavy_check_mark:   | 24169| Wendy's Teethkickers
+|:heavy_check_mark:   | 24170| Jael's Guile
+|:heavy_check_mark:   | 24171| Personal Ornithopter
+|:heavy_check_mark:   | 24172| Scoop Hound
+|:heavy_check_mark:   | 24173| Buffalo Rifle
+|:heavy_check_mark:   | 24174| Rapier
+|:heavy_check_mark:   | 24175| Yagn's Mechanical Skeleton
+|:heavy_check_mark:   | 24176| Bio-Charge Neutralizer
+|:heavy_check_mark:   | 24177| Guide Horse
+|:heavy_check_mark:   | 24178| Soul Cage
+|:heavy_check_mark:   | 24179| Fancy New Hat
+|:heavy_check_mark:   | 24180| Silver-Weaved Staff
+|:heavy_check_mark:   | 24181| Soul Blast
+|:heavy_check_mark:   | 24182| Corporeal Twist
+|:heavy_check_mark:   | 24183| Phantom Fingers
+|:heavy_check_mark:   | 24184| Fetch
+|:heavy_check_mark:   | 24185| Paralysis Mark
+|:heavy_check_mark:   | 24186| Phantasm
+|:heavy_check_mark:   | 24187| Shadow Walk
+|:heavy_check_mark:   | 24188| Forget
+|:heavy_check_mark:   | 24189| Blood Curse
+|:heavy_check_mark:   | 24190| Sight Beyond Sight
+|:heavy_check_mark:   | 24191| Onward Christian Soldiers
+|:heavy_check_mark:   | 24192| Get Behind Me, Satan!
+|:heavy_check_mark:   | 24193| Lay On Hands
+|:heavy_check_mark:   | 24194| Confession
+|:heavy_check_mark:   | 24195| Holy Roller
+|:heavy_check_mark:   | 24196| Shield of Faith
+|:heavy_check_mark:   | 24197| Consecration
+|:heavy_check_mark:   | 24198| Walk The Path
+|:heavy_check_mark:   | 24199| Soothe
+|:heavy_check_mark:   | 24200| Sword of the Spirit
+|:heavy_check_mark:   | 24201| Sun-Touched Raven
+|:heavy_check_mark:   | 24202| Strength of the Ancestors
+|:heavy_check_mark:   | 24203| Mother Bear's Rage
+|:heavy_check_mark:   | 24204| Owl's Insight
+|:heavy_check_mark:   | 24205| Spirit Dance
+|:heavy_check_mark:   | 24206| Red Horse's Tail
+|:heavy_check_mark:   | 24207| Spirit Trail
+|:heavy_check_mark:   | 24208| Many Speak As One
+|:heavy_check_mark:   | 24209| Ghostly Communion
+|:heavy_check_mark:   | 24210| Fire of Nanahbozho
+|:heavy_check_mark:   | 24211| Establishin' Who's in Charge
+|:heavy_check_mark:   | 24212| Make 'Em Sweat
+|:heavy_check_mark:   | 24213| Polite Inquiries
+|:heavy_check_mark:   | 24214| Bottom Dealin'
+|:heavy_check_mark:   | 24215| Make the Smart Choice
+|:heavy_check_mark:   | 24216| Mugging
+|:heavy_check_mark:   | 24217| Zhu's Ferocity
+|:heavy_check_mark:   | 24218| ...It's Who You Know
+|:heavy_check_mark:   | 24219| Raking Dragons
+|:heavy_check_mark:   | 24220| The Stakes Just Rose
+|:heavy_check_mark:   | 24221| Sun in Yer Eyes
+|:heavy_check_mark:   | 24222| Ambush
+|:heavy_check_mark:   | 24223| Belligerence
+|:heavy_check_mark:   | 24224| Coachwhip!
+|:heavy_check_mark:   | 24225| Rabbit's Lunar Leap
+|:heavy_check_mark:   | 24226| Hiding in the Shadows
+|:heavy_check_mark:   | 24227| Ol' Fashioned Hangin'
+|:heavy_check_mark:   | 24228| Pistol Whip
+|:heavy_check_mark:   | 24229| Rabbit's Deception
+|:heavy_check_mark:   | 24230| Calling the Cavalry
+|:heavy_check_mark:   | 24231| Faster on the Draw
+|:heavy_check_mark:   | 24232| Great Sage Matching Heaven
+|:heavy_check_mark:   | 24233| Technological Exhibition
+|:heavy_check_mark:   | 24234| Comin' Up Roses
+|:heavy_check_mark:   | 24235| Kidnappin'
+|:heavy_check_mark:   | 24236| Pinned Down
+|:heavy_check_mark:   | 24237| Two Hundred Fifty Rounds
+|:heavy_check_mark:   | 24238| Bounty Hunter
+|:heavy_check_mark:   | 24239| Ridden Down
+|:heavy_check_mark:   | 24240| This'll Hurt in the Morning'
+|:heavy_check_mark:   | 24241| Rabbit's Sweeping Snare
+|:heavy_check_mark:   | 24242| Ricochet
+|:heavy_check_mark:   | 24243| Shortcut
+|:heavy_check_mark:   | 24244| Trick Shooting
+|:heavy_check_mark:   | 24245| Crushing Inevitability
+|:heavy_check_mark:   | 24246| Recruitment Drive
+|:heavy_check_mark:   | 24247| Too Much Attention
+|:heavy_check_mark:   | 24248| Unprepared
+|:heavy_check_mark:   | 24249| Flight of the Lepus
+|:heavy_check_mark:   | 24250| Meet the New Boss
+|:heavy_check_mark:   | 24251| Outgunned
+|:heavy_check_mark:   | 24252| It's Not What You Know...
+|:heavy_check_mark:   | 24253| No Turning Back
+|:heavy_check_mark:   | 24254| Thirst for Blood
+|:heavy_check_mark:   | 24255| Election Day Slaughter
+|:heavy_check_mark:   | 24256| Nightmare at Noon
+|:heavy_check_mark:   | 24257| Point Blank
+|:heavy_check_mark:   | 24258| Joker (black)
+|:heavy_check_mark:   | 24259| Joker (red)
+|:heavy_check_mark:   | 24260| Ancestor Spirit
+|:heavy_check_mark:   | 24261| Gunslinger
