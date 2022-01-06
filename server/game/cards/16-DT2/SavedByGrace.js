@@ -3,38 +3,59 @@ const OutfitCard = require('../../outfitcard.js');
 
 class SavedByGrace extends OutfitCard {
     setupCardAbilities(ability) {
-        this.persistentEffect({
-            targetController: 'current',
-            effect: ability.effects.reduceFirstCardCostEachRound(1, card => card.getType() === 'spell' && card.isMiracle())
-        });
-
-        this.reaction({
-            title: 'Saved by Grace',
-            when: {
-                onPullSuccess: event => 
-                    event.pullingDude && event.source && 
-                    event.pullingDude.controller === this.controller && 
-                    event.source.getType() === 'spell' &&
-                    event.source.isMiracle()
-            },
+        this.action({
+            title: 'Noon: Saved By Grace',
+            playType: ['noon'],
             cost: ability.costs.bootSelf(),
+            target: {
+                activePromptTitle: 'Choose your skilled dude',
+                cardCondition: { 
+                    location: 'play area', 
+                    controller: 'current', 
+                    condition: card => card.hasKeyword('blessed') &&
+                        !card.isAtHome() 
+                },
+                cardType: ['dude']
+            },
             handler: context => {
-                if(context.player.moveCardWithContext(context.event.pulledCard, 'hand', context)) {
-                    context.ability.selectAnotherTarget(this.controller, context, {
-                        activePromptTitle: 'Select a card to discard',
-                        waitingPromptTitle: 'Waiting for opponent to discard a card',
-                        cardCondition: card => card.location === 'hand' && card.controller === this.controller,
-                        gameAction: 'discard',
-                        onSelect: (p, card) => {
-                            this.game.resolveGameAction(GameActions.discardCard({ card: card }, context)).thenExecute(() => {
-                                this.game.addMessage('{0} uses {1} to put pulled {2} to their hand and discards {3}', 
-                                    p, this, context.event.source, card);
-                            });
+                this.game.resolveGameAction(
+                    GameActions.search({
+                        title: 'Select a card to put to hand',
+                        topCards: 4,
+                        location: ['draw deck'],
+                        numToSelect: 1,
+                        doNotShuffleDeck: true,
+                        message: {
+                            format: '{player} boots {source} and looks at top 4 cards of their deck'
+                        },
+                        cancelMessage: {
+                            format: '{player} boots {source} and looks at top 4 cards of their deck, but does not take any of them'
+                        },
+                        handler: (card, searchContext) => {
+                            if(context.player.moveCardWithContext(card, 'hand', searchContext, true)) {
+                                this.game.addMessage('{0} uses {1} to put {2} in their hand', context.player, this, card);
+                            }
+                        }
+                    }),
+                    context
+                ).thenExecute(() => {
+                    context.ability.selectAnotherTarget(context.player, context, {
+                        activePromptTitle: 'Select a card to shuffle to deck',
+                        cardCondition: card => card.controller === context.player && card.location === 'hand',
+                        onSelect: (player, cardToShuffle) => {
+                            if(context.player.moveCardWithContext(cardToShuffle, 'draw deck', context, true)) {
+                                this.game.addMessage('{0} uses {1} to shuffle {2} from their hand to deck', player, this, cardToShuffle);
+                            }
+                            player.shuffleDrawDeck();
                             return true;
                         },
+                        onCancel: player => {
+                            this.game.addMessage('{0} shuffles their deck as part of {1}\'s ability', player, this);
+                            player.shuffleDrawDeck();
+                        },
                         source: this
-                    }); 
-                }
+                    });
+                });
             }
         });
     }
