@@ -1,6 +1,28 @@
-const TheMixer = require('../09.2-AGE/TheMixer');
+const DudeCard = require('../../dudecard');
 
-class TheMixer2 extends TheMixer {}
+class TheMixer2 extends DudeCard {
+    setupCardAbilities() {
+        this.action({
+            title: 'The Mixer',
+            playType: ['shootout'],
+            target: {
+                activePromptTitle: 'Choose a dude',
+                cardCondition: { location: 'play area', controller: 'any', participating: true },
+                cardType: ['dude']
+            },
+            message: context => this.game.addMessage('{0} uses {1} to make {2} ignore all bullet modifiers', context.player, this),
+            handler: context => {
+                this.applyAbilityEffect(context.ability, ability => ({
+                    match: context.target,
+                    effect: [
+                        ability.effects.ignoreBulletModifiers('opponent', context => 
+                            context.source.getType() === 'action' || (context.ability && context.ability.isCardAbility()))
+                    ]
+                }));
+            }
+        });
+    }
+}
 
 TheMixer2.code = '24056';
 
