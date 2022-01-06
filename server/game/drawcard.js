@@ -300,6 +300,9 @@ class DrawCard extends BaseCard {
     }
     
     getAttachmentsByKeywords(keywords) {
+        if(!this.attachments) {
+            return [];
+        }
         return this.attachments.filter(attachment => {
             for(let keyword of keywords) {
                 if(!attachment.hasKeyword(keyword)) {

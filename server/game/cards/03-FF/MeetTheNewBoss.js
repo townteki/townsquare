@@ -1,6 +1,6 @@
 const ActionCard = require('../../actioncard.js');
 
-class ActionName extends ActionCard {
+class MeetTheNewBoss extends ActionCard {
     setupCardAbilities() {
         this.job({
             title: 'Meet The New Boss',
@@ -21,6 +21,6 @@ class ActionName extends ActionCard {
     }
 }
 
-ActionName.code = '05040';
+MeetTheNewBoss.code = '05040';
 
-module.exports = ActionName;
+module.exports = MeetTheNewBoss;
