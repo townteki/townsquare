@@ -32,7 +32,7 @@ class AncestorsReproach extends SpellCard {
     }
 
     summonAncestorSpirit(context) {
-        let ancestorspirit = context.player.placeToken('09041', this.parent.gamelocation);
+        let ancestorspirit = context.player.placeToken('ancestor spirit', this.parent.gamelocation);
         this.game.resolveGameAction(GameActions.joinPosse({ card: ancestorspirit }), context).thenExecute(() => {
             this.game.addMessage('{0} uses {1} and aces {2} to bring a {3} into their posse', 
                 context.player, this, context.costs.ace, ancestorspirit);  
