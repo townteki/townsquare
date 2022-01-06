@@ -49,6 +49,6 @@ class Belligerence extends ActionCard {
     }
 }
 
-Belligerence.code = '24222';
+Belligerence.code = '24223';
 
 module.exports = Belligerence;
