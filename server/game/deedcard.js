@@ -16,6 +16,10 @@ class DeedCard extends LocationCard {
         return this.hasKeyword('Private');
     }
 
+    isPublic() {
+        return this.hasKeyword('Public');
+    }
+
     isSameStreet(card) {
         if(this.isOutOfTown()) {
             return false;
