@@ -19,8 +19,11 @@ class Kidnappin2 extends ActionCard {
             message: context =>
                 this.game.addMessage('{0} plays {1} on {2}', context.player, this, context.target),
             handler: context => {
-                const eventHandler = event => 
-                    this.game.resolveGameAction(GameActions.addBounty({ card: event.card }), context);
+                const eventHandler = event => {
+                    if(this.game.shootout && this.game.shootout.belongsToLeaderPlayer(event.card)) {
+                        this.game.resolveGameAction(GameActions.addBounty({ card: event.card }), context);
+                    }
+                };
                 this.game.on('onDudeJoinedPosse', eventHandler);
                 this.game.once('onShootoutPhaseFinished', () => {
                     this.game.removeListener('onDudeJoinedPosse', eventHandler);
