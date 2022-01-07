@@ -24,17 +24,18 @@ class DeadwoodMinersAlliance extends OutfitCard {
             handler: context => {
                 let bountyAmount = 1;
                 let amountGR = 1;
-                this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot }), context);
-                context.player.modifyGhostRock(1);
                 const targetLocation = context.costs.boot.locationCard;
-                if(targetLocation && targetLocation.hasKeyword('public')) {
-                    this.game.resolveGameAction(GameActions.addBounty({ card: context.costs.boot }), context);
+                if(targetLocation && targetLocation.isPublic()) {
                     bountyAmount += 1;
                 }
-                if(targetLocation && targetLocation.hasKeyword('private')) {
-                    context.player.modifyGhostRock(1);
+                if(targetLocation && targetLocation.isPrivate()) {
                     amountGR += 1;
                 }
+                this.game.resolveGameAction(GameActions.addBounty({ 
+                    card: context.costs.boot, 
+                    amount: bountyAmount 
+                }), context);
+                context.player.modifyGhostRock(amountGR);
                 this.game.addMessage('{0} uses {1} to boot {2} and give them {3} bounty and to gain {4} GR', 
                     context.player, this, context.costs.boot, bountyAmount, amountGR);     
             }

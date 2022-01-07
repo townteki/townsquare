@@ -184,6 +184,8 @@ class TownSquare extends GameLocation {
             allowGameAction: () => true,
             isAdjacent: (targetUuid) => this.isAdjacent(targetUuid),
             isOutOfTown: () => false,
+            isPublic: () => true,
+            isPrivate: () => false,
             hasKeyword: () => false,
             hasAttachment: () => false,
             hasAttachmentWithKeywords: () => false,
