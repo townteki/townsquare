@@ -6,17 +6,14 @@ class SavedByGrace extends OutfitCard {
         this.action({
             title: 'Noon: Saved By Grace',
             playType: ['noon'],
-            cost: ability.costs.bootSelf(),
-            target: {
-                activePromptTitle: 'Choose your skilled dude',
-                cardCondition: { 
-                    location: 'play area', 
-                    controller: 'current', 
-                    condition: card => card.hasKeyword('blessed') &&
-                        !card.isAtHome() 
-                },
-                cardType: ['dude']
-            },
+            cost: [
+                ability.costs.bootSelf(),
+                ability.costs.boot(card => card.location === 'play area' &&
+                    card.controller === this.controller &&
+                    card.getType() === 'dude' &&
+                    card.hasKeyword('blessed') &&
+                    !card.isAtHome())
+            ],
             handler: context => {
                 this.game.resolveGameAction(
                     GameActions.search({
@@ -26,10 +23,12 @@ class SavedByGrace extends OutfitCard {
                         numToSelect: 1,
                         doNotShuffleDeck: true,
                         message: {
-                            format: '{player} boots {source} and looks at top 4 cards of their deck'
+                            format: '{player} uses {source} and boots {bootedDude} to look at top 4 cards of their deck',
+                            args: { bootedDude: () => context.costs.boot }
                         },
                         cancelMessage: {
-                            format: '{player} boots {source} and looks at top 4 cards of their deck, but does not take any of them'
+                            format: '{player} uses {source} and boots {bootedDude} to look at top 4 cards of their deck, but does not take any of them',
+                            args: { bootedDude: () => context.costs.boot }
                         },
                         handler: (card, searchContext) => {
                             if(context.player.moveCardWithContext(card, 'hand', searchContext, true)) {
@@ -44,7 +43,7 @@ class SavedByGrace extends OutfitCard {
                         cardCondition: card => card.controller === context.player && card.location === 'hand',
                         onSelect: (player, cardToShuffle) => {
                             if(context.player.moveCardWithContext(cardToShuffle, 'draw deck', context, true)) {
-                                this.game.addMessage('{0} uses {1} to shuffle {2} from their hand to deck', player, this, cardToShuffle);
+                                this.game.addMessage('{0} uses {1} to shuffle a card from their hand to deck', player, this);
                             }
                             player.shuffleDrawDeck();
                             return true;
