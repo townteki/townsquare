@@ -8,8 +8,8 @@ class EmreTheTurkishBearExp1 extends DudeCard {
             repeatable: true,
             when: {
                 onPullSuccess: event => this.game.shootout && !this.reactUsed && 
-                    event.props.pullingDude === this &&
-                    event.props.source && event.props.source.hasKeyword('technique')
+                    event.pullingDude === this &&
+                    event.source && event.source.hasKeyword('technique')
             },
             handler: context => {
                 this.reactUsed = true;

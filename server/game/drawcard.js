@@ -231,7 +231,7 @@ class DrawCard extends BaseCard {
     whileAttached(properties) {
         this.persistentEffect({
             condition: () => !!this.parent && (!properties.condition || properties.condition()),
-            match: (card, context) => card === this.parent && (!properties.match || properties.match(card, context)),
+            match: (card, context) => card.uuid === this.parent.uuid && (!properties.match || properties.match(card, context)),
             targetController: 'any',
             effect: properties.effect,
             recalculateWhen: properties.recalculateWhen,

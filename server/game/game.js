@@ -102,6 +102,11 @@ class Game extends EventEmitter {
         this.router = options.router;
 
         this.pushAbilityContext({ resolutionStage: 'framework' });
+        this.on('onCardLeftPlay', event => {
+            if(event.card.control || event.card.influence) {
+                this.checkWinCondition();
+            }
+        });
     }
 
     isLegacy() {
