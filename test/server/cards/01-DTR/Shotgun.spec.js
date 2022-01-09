@@ -9,7 +9,9 @@ describe('Shotgun', function() {
                 });
                 const deck2 = this.buildDeck({
                     outfitTitle: 'The Sloane Gang',
-                    cardTitles: ['The Sloane Gang', 'Allie Hensman', 'Barton Everest', 'Shotgun'], 
+                    cardTitles: ['The Sloane Gang', 'Allie Hensman', 'Barton Everest', 'Shotgun'],
+                    // DTR Base Set Shotgun, which is different from WWE Shotgun. 
+                    cardCodes: ['01084'],
                     startingTitles: ['Allie Hensman', 'Barton Everest']
                 });
                 this.player1.selectDeck(deck1);
@@ -52,8 +54,8 @@ describe('Shotgun', function() {
                     expect(this.player2).not.toAllowSelect(this.jacqueline);
                 });
 
-                it('not allow to select dude with value equal to bullets', function() {
-                    expect(this.player2).not.toAllowSelect(this.tommy);
+                it('allow to select dude with value equal to bullets', function() {
+                    expect(this.player2).toAllowSelect(this.tommy);
                 });
 
                 it('allow to select dude with value lower than bullets', function() {
