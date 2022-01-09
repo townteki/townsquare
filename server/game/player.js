@@ -111,7 +111,14 @@ class Player extends Spectator {
     }
 
     placeToken(codeOrName, gamelocation, properties = {}) {
-        let token = this.createCard(codeOrName);
+        let updatedCodeOrName = codeOrName;
+        if(codeOrName.toLowerCase() === 'gunslinger') {
+            updatedCodeOrName = this.game.isLegacy() ? '01146' : '24261';
+        }
+        if(codeOrName.toLowerCase() === 'ancestor spirit') {
+            updatedCodeOrName = this.game.isLegacy() ? '09041' : '24260';
+        }
+        let token = this.createCard(updatedCodeOrName);
         this.game.allCards.push(token);
         token.facedown = !!properties.facedown;
         token.booted = !!properties.booted;
@@ -963,7 +970,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(playingType !== 'trading' && playingType !== 'upgrade') {
+        if(originalLocation !== card.location && playingType !== 'upgrade') {
             attachment.owner.removeCardFromPile(attachment);
         }
 
@@ -1396,7 +1403,11 @@ class Player extends Spectator {
         }
         if(props.context && props.context.ability) {
             this.game.onceConditional('onCardAbilityResolved', { condition: event => event.ability === props.context.ability },
-                () => this.handlePulledCard(pulledCard));
+                () => {
+                    if(!props.context.pull || !props.context.pull.doNotHandlePulledCard) {
+                        this.handlePulledCard(pulledCard);
+                    }
+                });
         }
         this.game.raiseEvent('onCardPulled', { card: pulledCard, value: pulledCard.value, suit: pulledCard.suit, props }, event => {
             if(callback) {

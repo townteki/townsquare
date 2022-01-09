@@ -8,7 +8,8 @@ class OpenWound extends DeedCard {
             condition: () => true,
             match: this,
             effect: [
-                ability.effects.additionalDynamicAdjacency(card => card.location === 'play area' && card.code === '16012' && card !== this, this.uuid)
+                ability.effects.additionalDynamicAdjacency(card => card.location === 'play area' && 
+                    ['16012', '24140'].includes(card.code) && card !== this, this.uuid)
             ]
         });
         this.action({
