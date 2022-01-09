@@ -970,7 +970,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(playingType !== 'trading' && playingType !== 'upgrade') {
+        if(originalLocation !== card.location && playingType !== 'upgrade') {
             attachment.owner.removeCardFromPile(attachment);
         }
 
@@ -1403,7 +1403,11 @@ class Player extends Spectator {
         }
         if(props.context && props.context.ability) {
             this.game.onceConditional('onCardAbilityResolved', { condition: event => event.ability === props.context.ability },
-                () => this.handlePulledCard(pulledCard));
+                () => {
+                    if(!props.context.pull || !props.context.pull.doNotHandlePulledCard) {
+                        this.handlePulledCard(pulledCard);
+                    }
+                });
         }
         this.game.raiseEvent('onCardPulled', { card: pulledCard, value: pulledCard.value, suit: pulledCard.suit, props }, event => {
             if(callback) {
