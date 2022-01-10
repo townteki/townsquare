@@ -702,7 +702,7 @@
 |:heavy_check_mark:   | 18037| Great Sage Matching Heaven
 |:heavy_check_mark:   | 18038| Two Hundred Fifty Rounds
 |                     | 18039| Moving Forward
-|                     | 18040| The Law Goes Underground
+|:heavy_check_mark:   | 18040| The Law Goes Underground
 |:heavy_check_mark:   | 18041| "Thunder Boy" Nabbe
 |:heavy_check_mark:   | 18042| Dave "Slim" Gorman
 
