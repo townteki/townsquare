@@ -54,8 +54,8 @@ describe('Shotgun', function() {
                     expect(this.player2).not.toAllowSelect(this.jacqueline);
                 });
 
-                it('allow to select dude with value equal to bullets', function() {
-                    expect(this.player2).toAllowSelect(this.tommy);
+                it('not allow to select dude with value equal to bullets', function() {
+                    expect(this.player2).not.toAllowSelect(this.tommy);
                 });
 
                 it('allow to select dude with value lower than bullets', function() {
