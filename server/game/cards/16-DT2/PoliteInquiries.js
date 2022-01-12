@@ -17,14 +17,18 @@ class PoliteInquiries extends ActionCard {
                     return;
                 }
                 const numOfCards = context.costs.boot.bullets > 4 ? 4 : context.costs.boot.bullets;
-                context.player.drawCardsToHand(numOfCards, context);
-                context.player.discardFromHand(numOfCards, discardedCards => {
-                    context.player.drawCardsToHand(1, context);
-                    this.game.addMessage('{0} uses {1} to draw {2} cards, then discard {3} and to draw another card', 
-                        context.player, this, numOfCards, discardedCards);
-                }, {
-                    title: this.title
-                }, context);
+                if(numOfCards) {
+                    context.player.drawCardsToHand(numOfCards, context);
+                    context.player.discardFromHand(numOfCards, discardedCards => {
+                        this.game.addMessage('{0} uses {1} to draw {2} cards, then discard {3} and to draw another card', 
+                            context.player, this, numOfCards, discardedCards);
+                    }, {
+                        title: this.title
+                    }, context);
+                } else {
+                    this.game.addMessage('{0} uses {1} to draw a card', context.player, this);
+                }
+                context.player.drawCardsToHand(1, context);
             }
         });
     }

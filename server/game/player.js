@@ -1805,8 +1805,7 @@ class Player extends Spectator {
 
     removeCardFromPile(card) {
         if(card.controller !== this) {
-            card.controller.removeCardFromPile(card);
-            this.game.takeControl(card.owner, card);
+            this.game.takeControl(card.owner, card, () => card.controller.removeCardFromPile(card));
             return;
         }
 

@@ -342,9 +342,9 @@ class BaseCard {
      * @param {AbilityDsl} ability
      * @param {(ability: AbilityDsl) => void} propertyFactory
      */    
-    applyAbilityEffect(ability, propertyFactory) {
+    applyAbilityEffect(ability, propertyFactory, causedByPlayType) {
         if(this.game.shootout) {
-            this.untilEndOfShootoutPhase(ability, propertyFactory);
+            this.untilEndOfShootoutPhase(ability, propertyFactory, causedByPlayType);
         } else {
             var properties = propertyFactory(AbilityDsl);
             if(ability.playTypePlayed() === 'noon') {

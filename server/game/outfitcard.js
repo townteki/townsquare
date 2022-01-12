@@ -9,6 +9,10 @@ class OutfitCard extends LocationCard {
         return true;
     }
 
+    isPublic() {
+        return false;
+    }
+
     isOutOfTown() {
         return false;
     }
