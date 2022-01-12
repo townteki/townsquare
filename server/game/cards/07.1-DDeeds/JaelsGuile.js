@@ -11,6 +11,7 @@ class JaelsGuile extends GoodsCard {
                 if(!this.game.shootout) {
                     this.game.addMessage('{0} uses {1} but it does not have any effect because this is not shootout',
                         context.player, this);
+                    return;
                 }
                 const jaelsGuileFunc = (player, context) => {
                     this.game.queueSimpleStep(() => { 
