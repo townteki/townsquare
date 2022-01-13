@@ -1115,7 +1115,6 @@ class Player extends Spectator {
 
     resetForRound() {
         this.upkeepPaid = false;
-        this.sundownDiscardDone = false;
         this.passTurn = false;
         this.currentCheck = false;
         this.cardsInPlay.forEach(card => card.resetForRound());

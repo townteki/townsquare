@@ -1,82 +1,40 @@
-const AllPlayerPrompt = require('../allplayerprompt.js');
+const PlayerOrderPrompt = require('../playerorderprompt.js');
 
-class DiscardPrompt extends AllPlayerPrompt {
+class DiscardPrompt extends PlayerOrderPrompt {
     constructor(game) {
         super(game);
         this.selectedCards = [];
     }
 
-    completionCondition(player) {
-        return player.sundownDiscardDone || player.getNumberOfDiscardsAtSundown() === 0;
-    }
-
-    activePrompt(player) {
-        return {
-            menuTitle: 'Select up to ' + player.getNumberOfDiscardsAtSundown() + ' cards from hand to discard',
-            buttons: [
-                { arg: 'selected', text: 'Done' }
-            ],
-            selectCard: true
-        };
-    }
-
-    waitingPrompt() {
-        return { menuTitle: 'Waiting for opponent to discard cards' };
-    }
-
     continue() {
-        for(let player of this.game.getPlayers()) {
-            if(!this.completionCondition(player)) {
-                if(player.discardAllDuringSundown()) {
-                    this.discardCards(player, player.hand);
-                    super.complete(player);
-                } else {
-                    this.highlightSelectableCards(player);
-                }
+        if(!this.isComplete()) {
+            const discardNum = this.currentPlayer.getNumberOfDiscardsAtSundown();
+            if(discardNum > 0) {
+                this.game.promptForSelect(this.currentPlayer, {
+                    activePromptTitle: `Select up to ${discardNum} cards from hand to discard`,
+                    cardCondition: card => card.location === 'hand' &&
+                    card.controller === this.currentPlayer,
+                    multiSelect: true,
+                    numCards: discardNum,
+                    onSelect: (player, cards) => {
+                        player.discardCards(cards);
+                        this.game.addMessage('{0} discards {1} as part of Sundown', player, cards);
+                        this.completePlayer();
+                        return true;
+                    },
+                    onCancel: player => this.noDiscard(player)
+                });
+            } else {
+                this.noDiscard(this.currentPlayer);
             }
         }
 
-        return super.continue();
+        return this.isComplete(); 
     }
 
-    onCardClicked(player, card) {
-        if(card.location !== 'hand') {
-            return false;
-        }
-
-        if(this.selectedCards.length >= player.getNumberOfDiscardsAtSundown() && !this.selectedCards.includes(card)) {
-            return false;
-        }
-
-        if(!this.selectedCards.includes(card)) {
-            this.selectedCards.push(card);
-        } else {
-            this.selectedCards = this.selectedCards.filter(selectedCard => selectedCard !== card);
-        }
-        player.setSelectedCards(this.selectedCards);
-    }
-
-    highlightSelectableCards(player) {
-        player.selectCard = true;
-        player.setSelectableCards(player.hand);
-    }
-
-    onMenuCommand(player) {
-        this.discardCards(player, this.selectedCards);
-        this.selectedCards = [];
-        player.clearSelectedCards();
-        player.clearSelectableCards();
-        super.complete(player);
-    }
-
-    discardCards(player, cards) {
-        player.discardCards(cards);
-        if(cards.length === 0) {
-            this.game.addMessage('{0} does not discard any card as part of Sundown', player);
-        } else if(cards.length > 0) {
-            this.game.addMessage('{0} discards {1} as part of Sundown', player, cards);
-        }
-        player.sundownDiscardDone = true;
+    noDiscard(player) {
+        this.game.addMessage('{0} does not discard any card as part of Sundown', player);
+        this.completePlayer();
     }
 }
 
