@@ -22,6 +22,7 @@ class UpkeepPhase extends Phase {
                 player.debtor = false;
                 debtorText = '(-1 borrowed GR)';
             }
+            player.ghostrock += production;
             this.game.addMessage('{0} has received production of {1} GR{2}', player, production, debtorText);
         });
     }
