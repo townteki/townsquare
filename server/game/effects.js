@@ -879,7 +879,7 @@ const Effects = {
                 let finalController = typeof newController === 'function' ? newController() : newController;
                 context.originalController = context.originalController || {};
                 context.originalController[card.uuid] = card.controller;
-                context.game.takeControl(finalController, card, context.source);
+                context.game.takeControl(finalController, card);
             },
             unapply: function(card, context) {
                 context.game.revertControl(card, context.originalController[card.uuid]);

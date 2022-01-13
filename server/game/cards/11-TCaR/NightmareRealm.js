@@ -31,7 +31,7 @@ class NightmareRealm extends SpellCard {
                                     ability.effects.modifyBullets(-1),
                                     ability.effects.modifyValue(-1)
                                 ]
-                            }));
+                            }), context.causedByPlayType);
                         }
                     };
                     this.game.on('onShooterToBePicked', eventHandler);
