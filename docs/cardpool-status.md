@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/928/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
+![Cards implemented](https://progress-bar.dev/930/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
 
 **Legend**
 
@@ -702,7 +702,7 @@
 |:heavy_check_mark:   | 18037| Great Sage Matching Heaven
 |:heavy_check_mark:   | 18038| Two Hundred Fifty Rounds
 |                     | 18039| Moving Forward
-|                     | 18040| The Law Goes Underground
+|:heavy_check_mark:   | 18040| The Law Goes Underground
 |:heavy_check_mark:   | 18041| "Thunder Boy" Nabbe
 |:heavy_check_mark:   | 18042| Dave "Slim" Gorman
 
