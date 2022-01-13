@@ -8,7 +8,7 @@ class DiscardPrompt extends PlayerOrderPrompt {
 
     continue() {
         if(!this.isComplete()) {
-            const discardNum = this.currentPlayer.getNumberOfDiscardsAtSundown();
+            const discardNum = this.currentPlayer.getNumberOfDiscardsAtNightfall();
             if(discardNum > 0) {
                 this.game.promptForSelect(this.currentPlayer, {
                     activePromptTitle: `Select up to ${discardNum} cards from hand to discard`,
@@ -18,7 +18,7 @@ class DiscardPrompt extends PlayerOrderPrompt {
                     numCards: discardNum,
                     onSelect: (player, cards) => {
                         player.discardCards(cards);
-                        this.game.addMessage('{0} discards {1} as part of Sundown', player, cards);
+                        this.game.addMessage('{0} discards {1} as part of Nightfall', player, cards);
                         this.completePlayer();
                         return true;
                     },
@@ -33,7 +33,7 @@ class DiscardPrompt extends PlayerOrderPrompt {
     }
 
     noDiscard(player) {
-        this.game.addMessage('{0} does not discard any card as part of Sundown', player);
+        this.game.addMessage('{0} does not discard any card as part of Nightfall', player);
         this.completePlayer();
     }
 }

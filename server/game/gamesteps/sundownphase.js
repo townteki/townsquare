@@ -1,8 +1,5 @@
 const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
-const DiscardPrompt = require('./sundown/discardprompt.js');
-const SundownPrompt = require('./sundown/sundownprompt.js');
-const DiscardToHandSizePrompt = require('./sundown/discardtohandsizeprompt');
 const PhaseNames = require('../Constants/PhaseNames.js');
 class SundownPhase extends Phase {
     constructor(game) {
@@ -10,21 +7,8 @@ class SundownPhase extends Phase {
         this.initialise([
             new SimpleStep(game, () => this.game.raiseEvent('onAtStartOfSundown')),
             new SimpleStep(game, () => this.checkWinCondition()),
-            new DiscardPrompt(game),
-            new DiscardToHandSizePrompt(game),
-            new SimpleStep(game, () => this.sundownRedraw()),
-            new SimpleStep(game, () => this.game.raiseEvent('onSundownUnbooting')),
-            new SimpleStep(game, () => this.unbootCards()),
-            new SimpleStep(game, () => this.roundEnded()),
-            new SundownPrompt(game)
+            new SimpleStep(game, () => this.reportCurrentStats())
         ]);
-    }
-
-    sundownRedraw() {
-        this.game.getPlayers().forEach(player => {
-            player.redrawToHandSize(PhaseNames.Sundown);
-            this.game.raiseEvent('onAfterHandRefill', { player });
-        });
     }
 
     checkWinCondition() {
@@ -38,31 +22,21 @@ class SundownPhase extends Phase {
 
         if(potentialWinner.length === 1) {
             this.game.recordWinner(potentialWinner[0], 'Control points greater than influence');
+        } else if(potentialWinner.length === 2) {
+            if(potentialWinner[0].getTotalControl() > potentialWinner[1].getTotalControl()) {
+                this.game.recordWinner(potentialWinner[0], 'Control points greater than influence on tiebreaker');
+            }
+            if(potentialWinner[1].getTotalControl() > potentialWinner[0].getTotalControl()) {
+                this.game.recordWinner(potentialWinner[1], 'Control points greater than influence on tiebreaker');
+            }
         }
         this.game.raiseEvent('onSundownAfterVictoryCheck');
     }
 
-    unbootCards() {
+    reportCurrentStats() {
         this.game.getPlayers().forEach(player => {
-            player.cardsInPlay.forEach(card => {
-                if(!card.options.contains('doesNotUnbootAtSundown')) {
-                    player.unbootCard(card);
-                }
-            });
+            this.game.addMessage('{0}: {1} CP | {2} influence', player, player.getTotalControl(), player.getTotalInfluence());
         });
-    }
-
-    roundEnded() {
-        this.game.raiseEvent('onRoundEnded');
-
-        let players = this.game.getPlayers();
-        players.forEach(player => player.resetForRound());
-        this.game.round++;
-
-        this.game.addAlert('endofround', 'End of day {0}', this.game.round);
-        this.game.addAlert('startofround', 'Day {0}', this.game.round + 1);
-
-        this.game.checkForTimeExpired();
     }
 }
 

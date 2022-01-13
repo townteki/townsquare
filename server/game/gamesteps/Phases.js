@@ -3,6 +3,7 @@ const GamblingPhase = require('./gamblingphase');
 const UpkeepPhase = require('./upkeepphase');
 const HighNoonPhase = require('./highnoonphase');
 const SundownPhase = require('./sundownphase');
+const NightfallPhase = require('./nightfallphase');
 
 class Phases {
     constructor() {
@@ -11,7 +12,8 @@ class Phases {
             gambling: GamblingPhase,
             upkeep: UpkeepPhase,
             highnoon: HighNoonPhase,
-            sundown: SundownPhase
+            sundown: SundownPhase,
+            nightfall: NightfallPhase
         };
     }
 
@@ -20,7 +22,8 @@ class Phases {
             'gambling',
             'upkeep',
             'highnoon',
-            'sundown'
+            'sundown',
+            'nightfall'
         ];
     }
 

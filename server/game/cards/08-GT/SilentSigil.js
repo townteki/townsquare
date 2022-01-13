@@ -6,12 +6,12 @@ class SilentSigil extends DeedCard {
         this.persistentEffect({
             condition: () => true,
             match: player => player === this.controller,
-            effect: ability.effects.modifySundownDiscard(-1)
+            effect: ability.effects.modifyNightfallDiscard(-1)
         });
         this.reaction({
             title: 'Silent Sigil',
             when: {
-                onCardsDrawn: event => event.reason === PhaseNames.Sundown && event.player === this.controller
+                onCardsDrawn: event => event.reason === PhaseNames.Nightfall && event.player === this.controller
             },
             message: context => this.game.addMessage('{0} uses {1} to draw an additional card', context.player, this),
             handler: context => {

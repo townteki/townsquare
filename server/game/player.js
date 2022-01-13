@@ -148,7 +148,7 @@ class Player extends Spectator {
         return opponents[0];
     }
 
-    getNumberOfDiscardsAtSundown() {
+    getNumberOfDiscardsAtNightfall() {
         return this.discardNumber < 0 ? 0 : this.discardNumber;
     }
 
@@ -1914,8 +1914,8 @@ class Player extends Spectator {
         return this.options.contains('otherDudesCannotJoin');        
     }
 
-    discardAllDuringSundown() {
-        return this.options.contains('discardAllDuringSundown');
+    discardAllDuringNightfall() {
+        return this.options.contains('discardAllDuringNightfall');
     }    
 
     getState(activePlayer) {
