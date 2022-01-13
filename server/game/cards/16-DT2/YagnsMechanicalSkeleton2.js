@@ -11,11 +11,11 @@ class YagnsMechanicalSkeleton2 extends GoodsCard {
             triggerBefore: true,
             when: {
                 onDudeMoved: event => this.parent && event.card === this.parent &&
-                    event.options.context.player !== this.controller,
+                    event.options.context && event.options.context.player !== this.controller,
                 onCardBooted: event => this.parent && event.card === this.parent &&
-                    event.context.player !== this.controller,
+                    event.context && event.context.player !== this.controller,
                 onDudeSentHome: event => this.parent && event.card === this.parent &&
-                    event.context.player !== this.controller
+                    event.context && event.context.player !== this.controller
             },
             cost: ability.costs.bootSelf(),
             handler: context => {

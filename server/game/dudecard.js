@@ -543,7 +543,7 @@ class DudeCard extends DrawCard {
             card: this, 
             targetUuid: shootout.gamelocation,
             options: updatedOptions
-        }), options.context);
+        }), options.context || { game: this.game, player: this.controller });
         return !(event instanceof NullEvent);
     }
     
