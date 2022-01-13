@@ -1088,8 +1088,6 @@ class Player extends Spectator {
             return memo;
         }, 0);
 
-        this.ghostrock += production;
-
         return production;
     }
 
