@@ -8,28 +8,38 @@ class DiscardPrompt extends PlayerOrderPrompt {
 
     continue() {
         if(!this.isComplete()) {
-            const discardNum = this.currentPlayer.getNumberOfDiscardsAtNightfall();
-            if(discardNum > 0) {
-                this.game.promptForSelect(this.currentPlayer, {
-                    activePromptTitle: `Select up to ${discardNum} cards from hand to discard`,
-                    cardCondition: card => card.location === 'hand' &&
-                    card.controller === this.currentPlayer,
-                    multiSelect: true,
-                    numCards: discardNum,
-                    onSelect: (player, cards) => {
-                        player.discardCards(cards);
-                        this.game.addMessage('{0} discards {1} as part of Nightfall', player, cards);
-                        this.completePlayer();
-                        return true;
-                    },
-                    onCancel: player => this.noDiscard(player)
-                });
+            if(this.game.isSolo()) {
+                this.handleSolo();
             } else {
-                this.noDiscard(this.currentPlayer);
+                const discardNum = this.currentPlayer.getNumberOfDiscardsAtNightfall();
+                if(discardNum > 0) {
+                    this.game.promptForSelect(this.currentPlayer, {
+                        activePromptTitle: `Select up to ${discardNum} cards from hand to discard`,
+                        cardCondition: card => card.location === 'hand' &&
+                    card.controller === this.currentPlayer,
+                        multiSelect: true,
+                        numCards: discardNum,
+                        onSelect: (player, cards) => {
+                            player.discardCards(cards);
+                            this.game.addMessage('{0} discards {1} as part of Nightfall', player, cards);
+                            this.completePlayer();
+                            return true;
+                        },
+                        onCancel: player => this.noDiscard(player)
+                    });
+                } else {
+                    this.noDiscard(this.currentPlayer);
+                }
             }
         }
 
         return this.isComplete(); 
+    }
+
+    handleSolo() {
+        const cardsToDiscard = this.game.automaton.getCardsToDiscardOnSundown();
+        this.discardCards(this.game.automaton, cardsToDiscard);
+        this.completePlayer();
     }
 
     noDiscard(player) {
