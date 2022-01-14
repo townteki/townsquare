@@ -1,6 +1,6 @@
 const AllPlayerPrompt = require('../allplayerprompt.js');
 
-class SundownPrompt extends AllPlayerPrompt {
+class NightfallPrompt extends AllPlayerPrompt {
     completionCondition(player) {
         return player.passTurn;
     }
@@ -27,4 +27,4 @@ class SundownPrompt extends AllPlayerPrompt {
     }
 }
 
-module.exports = SundownPrompt;
+module.exports = NightfallPrompt;

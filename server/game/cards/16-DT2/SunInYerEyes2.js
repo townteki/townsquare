@@ -17,7 +17,7 @@ class SunInYerEyes2 extends ActionCard {
                 this.abilityContext = context;
                 const buttons = [
                     { text: 'Give -2 bullets', method: 'applySunInYerEyes', arg: 'minusBullets' },
-                    { text: 'Set to Draw', method: 'applySunInYerEyes', arg: 'setToDraw' }
+                    { text: 'Set to Draw', method: 'applySunInYerEyes', arg: 'setAsDraw' }
                 ];
                 if(context.player.getSpendableGhostRock() >= 1) {
                     buttons.push({ text: 'Both effects', method: 'applySunInYerEyes', arg: 'both' });

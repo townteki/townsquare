@@ -108,6 +108,11 @@ class Game extends EventEmitter {
         this.router = options.router;
 
         this.pushAbilityContext({ resolutionStage: 'framework' });
+        this.on('onCardLeftPlay', event => {
+            if(event.card.control || event.card.influence) {
+                this.checkWinCondition();
+            }
+        });
     }
 
     isLegacy() {
@@ -1249,7 +1254,7 @@ class Game extends EventEmitter {
         return kfDudes;
     }
 
-    takeControl(player, card) {
+    takeControl(player, card, callback = () => true) {
         var oldController = card.controller;
         var newController = player;
 
@@ -1262,9 +1267,12 @@ class Game extends EventEmitter {
         }
 
         this.applyGameAction('takeControl', card, card => {
+            const originalLocation = card.location;
             oldController.removeCardFromPile(card);
             oldController.allCards = oldController.allCards.filter(c => c !== card);
-            newController.cardsInPlay.push(card);
+            if(originalLocation === 'play area') {
+                newController.cardsInPlay.push(card);
+            }
             newController.allCards.push(card);
             card.controller = newController;
             if(this.shootout && card.getType() === 'dude' && card.isParticipating()) {
@@ -1276,14 +1284,7 @@ class Game extends EventEmitter {
                     this.shootout.leaderPosse.addToPosse(card);
                 }
             }
-
-            if(card.location !== 'play area') {
-                let originalLocation = card.location;
-                card.moveTo('play area');
-                card.applyPersistentEffects();
-                this.raiseEvent('onCardEntersPlay', { card: card, playingType: 'play', originalLocation: originalLocation });
-            }
-
+            callback();
             this.raiseEvent('onCardTakenControl', { card: card });
         });
     }

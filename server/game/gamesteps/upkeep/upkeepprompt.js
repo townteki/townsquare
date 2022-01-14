@@ -5,7 +5,6 @@ class UpkeepPrompt extends PlayerOrderPrompt {
         super(game);
         this.title = 'Select Dudes to fire' ;
         this.selectedCards = [];
-        this.firstUpkeepMessage = true;
     }
 
     activeCondition(player) {
@@ -36,16 +35,11 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     }
 
     continue() {
-        if(this.firstUpkeepMessage && this.getDudesWithUpkeep(this.currentPlayer).length === 0) {
-            this.game.addMessage('{0} does not pay any upkeep', this.currentPlayer);
-            this.firstUpkeepMessage = false;
-        }
-        if(this.isComplete()) {
+        if(super.continue()) {
             return true;
         }
         this.highlightSelectableCards(this.currentPlayer);
-
-        return super.continue();
+        return false;
     }
 
     onCardClicked(player, card) {
@@ -93,7 +87,6 @@ class UpkeepPrompt extends PlayerOrderPrompt {
             player.payUpkeep(upkeep);
             this.game.addMessage('{0} has paid upkeep of {1} GR', player, upkeep);
         }
-        this.firstUpkeepMessage = false;
         this.selectedCards = [];
         player.clearSelectedCards();
         player.clearSelectableCards();

@@ -4,7 +4,7 @@ class WalterJameson extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.location === 'play area' && this.locationCard &&
-                this.locationCard.owner !== this.controller,
+                this.locationCard.owner !== this.controller && this.isAtDeed(),
             match: this,
             effect: ability.effects.modifyInfluence(1)
         });

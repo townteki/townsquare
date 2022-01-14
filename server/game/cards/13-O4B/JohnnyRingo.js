@@ -19,12 +19,15 @@ class JohnnyRingo extends DudeCard {
                     until: {
                         onShootoutRoundFinished: () => true
                     },
+                    targetController: 'any',
                     condition: () => true,
                     match: card => card.getType() === 'dude' && card.isParticipating(),
                     effect: [
                         ability.effects.cannotBeAffected('opponent', () => true, 'any', 'react'),
                         ability.effects.cannotBeAffected('opponent', () => true, 'any', 'resolution'),
-                        ability.effects.cannotBeAffectedByShootout('opponent')
+                        ability.effects.cannotBeAffectedByShootout('opponent'),
+                        ability.effects.cannotBeTargeted('opponent', context => context.ability && 
+                            ['shootout', 'resolution', 'react'].includes(context.ability.playTypePlayed(context)))
                     ]
                 }));
             }

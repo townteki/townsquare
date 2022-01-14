@@ -6,7 +6,7 @@ class GraciousGifts extends OutfitCard {
         this.persistentEffect({
             condition: () => this.owner.ghostrock < this.owner.getOpponent().ghostrock,
             match: this.owner,
-            effect: ability.effects.modifySundownDiscard(1)
+            effect: ability.effects.modifyNightfallDiscard(1)
         });
 
         this.action({

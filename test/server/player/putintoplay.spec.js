@@ -96,10 +96,6 @@ describe('Player', function() {
                 expect(this.player.cardsInPlay).toContain(this.cardSpy);
             });
 
-            it('should remove the card from the other player', function() {
-                expect(this.opponent.hand).not.toContain(this.cardSpy);
-            });
-
             it('should transfer control to the player', function () {
                 expect(this.cardSpy.controller).toBe(this.player);
             });
