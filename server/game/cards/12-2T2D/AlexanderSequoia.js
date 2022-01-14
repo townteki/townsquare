@@ -5,7 +5,7 @@ class AlexanderSequoia extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.isInTownSquare(),
-            effect: ability.effects.modifySundownDiscard(1)
+            effect: ability.effects.modifyNightfallDiscard(1)
         });
         
         this.action({

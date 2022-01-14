@@ -6,7 +6,7 @@ class KillerBunniesCasino extends DeedCard {
             condition: () => true,
             match: player => player === this.controller,
             effect: [
-                ability.effects.modifySundownDiscard(1)
+                ability.effects.modifyNightfallDiscard(1)
             ]
         });
     }
