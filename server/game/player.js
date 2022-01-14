@@ -1366,6 +1366,7 @@ class Player extends Spectator {
 
     handleTaoTechniques(technique, kfDude, isSuccessful) {
         const eventHandler = () => {
+            technique.comboTarget = undefined;
             if(technique.location === 'being played' || technique.parent === kfDude) {
                 technique.owner.moveCard(technique, technique.actionPlacementLocation);
             }

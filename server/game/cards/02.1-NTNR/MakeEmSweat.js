@@ -11,7 +11,8 @@ class MakeEmSweat extends ActionCard {
                 card.isParticipating() && card.controller === this.controller &&
                     !card.booted),
             target: {
-                cardCondition: {location: 'play area', condition: card => card.isParticipating()},
+                activePromptTitle: 'Choose dude to reduce bullets',
+                cardCondition: { location: 'play area', participating: true },
                 cardType: 'dude'
             },
             handler: context => {
