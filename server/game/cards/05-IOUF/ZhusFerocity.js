@@ -5,34 +5,30 @@ class ZhusFerocity extends TechniqueCard {
         this.techniqueAction({
             title: 'Zhu\'s Ferocity',
             playType: ['shootout'],
+            target: {
+                activePromptTitle: 'Choose an opposing dude',
+                cardCondition: { location: 'play area', controller: 'opponent', participating: true },
+                cardType: ['dude']
+            },
             combo: context => {
-                if(!context.zhusTarget) {
+                if(!this.comboTarget) {
                     return false;
                 }
-                return context.kfDude.bullets > context.zhusTarget.bullets;
+                return context.kfDude.bullets > this.comboTarget.bullets;
             },
-            onSuccess: (context) => {
+            onSuccess: context => {
+                this.comboTarget = context.target;
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.kfDude,
                     effect: ability.effects.modifyBullets(1)
                 }));
-                context.ability.selectAnotherTarget(context.player, context, {
-                    activePromptTitle: 'Select an opposing dude',
-                    waitingPromptTitle: 'Waiting for opponent to select dude',
-                    cardCondition: card => card.controller !== this.owner && card.isParticipating(),
-                    cardType: 'dude',
-                    onSelect: (player, dude) => {
-                        context.zhusTarget = dude;
-                        this.applyAbilityEffect(context.ability, ability => ({
-                            match: dude,
-                            effect: ability.effects.modifyBullets(-1)
-                        }));
-                        this.game.addMessage('{0} uses {1} to give {2} -1 bullet and {3} +1 bullet', 
-                            player, this, dude, context.kfDude);
-                        return true;
-                    },
-                    source: this
-                });
+                this.applyAbilityEffect(context.ability, ability => ({
+                    match: context.target,
+                    effect: ability.effects.modifyBullets(-1)
+                }));
+                this.game.addMessage('{0} uses {1} to give {2} -1 bullet and {3} +1 bullet', 
+                    context.player, this, context.target, context.kfDude);
+                return true;
             },
             source: this
         });
