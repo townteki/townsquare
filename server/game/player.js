@@ -148,7 +148,7 @@ class Player extends Spectator {
         return opponents[0];
     }
 
-    getNumberOfDiscardsAtSundown() {
+    getNumberOfDiscardsAtNightfall() {
         return this.discardNumber < 0 ? 0 : this.discardNumber;
     }
 
@@ -1088,8 +1088,6 @@ class Player extends Spectator {
             return memo;
         }, 0);
 
-        this.ghostrock += production;
-
         return production;
     }
 
@@ -1117,7 +1115,6 @@ class Player extends Spectator {
 
     resetForRound() {
         this.upkeepPaid = false;
-        this.sundownDiscardDone = false;
         this.passTurn = false;
         this.currentCheck = false;
         this.cardsInPlay.forEach(card => card.resetForRound());
@@ -1806,7 +1803,7 @@ class Player extends Spectator {
     removeCardFromPile(card) {
         if(card.controller !== this) {
             card.controller.removeCardFromPile(card);
-            this.game.takeControl(card.owner, card);
+            this.game.takeControl(card.owner, card, () => card.controller.removeCardFromPile(card));
             return;
         }
 
@@ -1917,8 +1914,8 @@ class Player extends Spectator {
         return this.options.contains('otherDudesCannotJoin');        
     }
 
-    discardAllDuringSundown() {
-        return this.options.contains('discardAllDuringSundown');
+    discardAllDuringNightfall() {
+        return this.options.contains('discardAllDuringNightfall');
     }    
 
     getState(activePlayer) {

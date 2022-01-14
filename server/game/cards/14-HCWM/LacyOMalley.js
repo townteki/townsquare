@@ -7,7 +7,7 @@ class LacyOMalley extends LegendCard {
             effect: [
                 ability.effects.cardsCannotLeaveDiscard(this, context => context.ability && 
                     context.ability.isCardAbility()),
-                ability.effects.discardAllDuringSundown()
+                ability.effects.discardAllDuringNightfall()
             ]
         });
     }
