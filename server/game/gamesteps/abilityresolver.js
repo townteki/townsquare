@@ -195,6 +195,7 @@ class AbilityResolver extends BaseStep {
     }
 
     waitForTargetResolution() {
+        this.cancelled = this.cancelled || !!this.ability.cancelled;
         if(this.cancelled) {
             return;
         }

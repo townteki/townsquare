@@ -9,7 +9,7 @@ class TseCheNakosWeaving extends SpellCard {
             condition: () => this.parent.getType() === 'deed',
             effect: [
                 ability.effects.addKeyword('holy ground'),
-                ability.effects.doesNotUnbootAtSundown()
+                ability.effects.doesNotUnbootAtNightfall()
             ]
         });
 

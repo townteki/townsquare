@@ -127,6 +127,9 @@ class TechniqueAction extends CardAction {
                         this.applyCostOnKfDude(context);
                         return true;
                     },
+                    onCancel: () => {
+                        context.ability.cancelled = true;
+                    },
                     source: this.card
                 });
             }

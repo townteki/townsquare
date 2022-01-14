@@ -376,7 +376,7 @@ const Effects = {
     cannotInventGadgets: optionEffect('cannotInventGadgets', 'Cannot invent Gadgets'),
     cannotCastSpell: optionEffect('cannotCastSpell', 'Cannot cast some spells'),
     doesNotGetBountyOnJoin: optionEffect('doesNotGetBountyOnJoin', 'Does not get Bounty on Join'),
-    doesNotUnbootAtSundown: optionEffect('doesNotUnbootAtSundown', 'Does not Unboot at Sundown'),
+    doesNotUnbootAtNightfall: optionEffect('doesNotUnbootAtNightfall', 'Does not Unboot at Nightfall'),
     doesNotProvideBulletRatings: optionEffect('doesNotProvideBulletRatings', 'Does not provide Bullets'),
     doesNotReturnAfterJob: optionEffect('doesNotReturnAfterJob', 'Does not go Home after Job'),
     doesNotHaveToBeInvented: optionEffect('doesNotHaveToBeInvented', 'Does not have to be Invented'),
@@ -654,9 +654,9 @@ const Effects = {
             }
         };
     },
-    modifySundownDiscard: function(value) {
+    modifyNightfallDiscard: function(value) {
         return {
-            title: `Sundown Discard modified: ${value}`,
+            title: `Nightfall Discard modified: ${value}`,
             targetType: 'player',
             apply: function(player) {
                 player.discardNumber += value;
@@ -879,7 +879,7 @@ const Effects = {
                 let finalController = typeof newController === 'function' ? newController() : newController;
                 context.originalController = context.originalController || {};
                 context.originalController[card.uuid] = card.controller;
-                context.game.takeControl(finalController, card, context.source);
+                context.game.takeControl(finalController, card);
             },
             unapply: function(card, context) {
                 context.game.revertControl(card, context.originalController[card.uuid]);
@@ -1015,8 +1015,8 @@ const Effects = {
         playerOptionEffect('onlyShooterContributes', 'Only shooter contributes'),
     otherDudesCannotJoin:
         playerOptionEffect('otherDudesCannotJoin', 'Other dudes cannot join posse'),
-    discardAllDuringSundown: 
-        playerOptionEffect('discardAllDuringSundown', 'Discard all cards during Sundown'),        
+    discardAllDuringNightfall: 
+        playerOptionEffect('discardAllDuringNightfall', 'Discard all cards during Nightfall'),        
     modifyPosseStudBonus: function(amount) {
         return {
             title: `Stud Bonus modified: ${amount}`,

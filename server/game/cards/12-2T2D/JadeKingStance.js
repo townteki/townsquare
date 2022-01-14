@@ -10,23 +10,19 @@ class JadeKingStance extends TechniqueCard {
             playType: ['noon'],
             actionContext: { gameAction: 'unboot' },
             onSuccess: (context) => {
-                if(!context.kfDude.booted) {
-                    this.game.resolveGameAction(GameActions.unbootCard({ card: context.kfDude }), context).thenExecute(() => {
-                        this.applyAbilityEffect(context.ability, ability => ({
-                            match: context.kfDude,
-                            effect: [
-                                ability.effects.modifyBullets(2),
-                                ability.effects.modifySkillRating('kung fu', 2),
-                                ability.effects.cannotBeMoved()
-                            ]
-                        }));
-                        this.game.addMessage('{0} uses {1} to unboot {2}, give them +2 bullets, +2 kung fu and they cannot move', 
-                            context.player, this, context.kfDude);
-                    });
-                } else {
-                    this.game.addMessage('{0} uses {1} but it does not have any effect because {2} is not booted', 
-                        context.player, this, context.kfDude);                
-                }
+                this.game.resolveGameAction(GameActions.unbootCard({ card: context.kfDude }), context).thenExecute(() => {
+                    this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.kfDude);
+                });
+                this.applyAbilityEffect(context.ability, ability => ({
+                    match: context.kfDude,
+                    effect: [
+                        ability.effects.modifyBullets(2),
+                        ability.effects.modifySkillRating('kung fu', 2),
+                        ability.effects.cannotBeMoved()
+                    ]
+                }));
+                this.game.addMessage('{0} uses {1} to give {2} +2 bullets, +2 kung fu and they cannot move', 
+                    context.player, this, context.kfDude);
             },
             source: this
         });
