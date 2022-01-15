@@ -417,7 +417,7 @@ this.applyAbilityEffect(context.ability, ability => ({
 }));
 ```
 
-In case the duration of effects was changes, use following functions.
+In case the duration of effects was changed, use following functions.
 
 To apply an effect to last until the end of the current shootout, use `untilEndOfShootout`:
 ```javascript
