@@ -1038,8 +1038,8 @@ handler: card => {
 **callOut**
  - `caller`: dude who is doing the Call out
  - `callee`: dude who is being Called out
- - `isCardEffect`: (true): *true* if the call out comes from the effect of a card.
- - `canReject`: (true): *true* if the callee can reject the call out.
+ - `isCardEffect` (true): *true* if the call out comes from the effect of a card.
+ - `canReject` (true): *true* if the callee can reject the call out.
 
 **cancelEffects**
 
