@@ -37,7 +37,8 @@ class MasonAdler extends DudeCard {
                         onShootoutPhaseFinished: () => true
                     },
                     match: this.game.shootout,
-                    effect: ability.effects.cannotBringDudesIntoPosseByShootout()
+                    effect: ability.effects.cannotBringDudesIntoPosse('any', 
+                        effectContext => effectContext.card !== this && context.player === effectContext.card.controller)
                 }));
             },
             onSuccess: (job, context) => {
