@@ -3,7 +3,7 @@
 
 Contents:
  - [Getting started](#Getting-started)
- - [General information](#Genaral-information)
+ - [General information](#General-information)
 	- [Rank modifications](#Rank-modifications)
 	- [Using game locations](#Using-game-locations)
 	- [Resetting abilities](#Resetting-abilities)
@@ -48,7 +48,7 @@ Contents:
 
 We recommend using VScode for implementing a card as there are many snippets that will help you.
 Whenever we refer to **action**, we mean also _spell_ and _job_ actions. 
-Whenever we mention **triggered abilities**, we mean _reaction_, _spell_reaction_, _traitReaction_ (in the future there can be some kind of interrupts also)
+Whenever we mention **triggered abilities**, we mean _reaction_, _spell_reaction_, _traitReaction_ (in the future there can be some kind of interrupts also).
 Whenever you need to perform some basic game action, such as discard a card, boot a card, join posse, call out a dude or other refer to the [Game actions](#Game-actions) section.
 Whenever you need to do something base on event, refer to the [Events](#Events) section for the event names. 
 > !!! M2 later will also add event parameters !!!
@@ -74,7 +74,7 @@ _Spell_ - snippet: `spellcard`, class: `SpellCard`
 _Action_ - snippet: `actioncard`, class: `ActionCard`
 _Outfit_ - snippet: `outfitcard`, class: `OutfitCard`
 
-In case you are using snippet, just type the snippet prefix (e.g. `dudecard`) and VSCode should give you suggestion. If not, press Ctrl+space.
+To use a snippet, just type the snippet prefix (e.g. `dudecard`) and VSCode should give you suggestion. If not, press Ctrl+space.
 
 The card class should have its `code` property set to the unique card identifier for that card. You can find these in `/server/game/cards/cards_summary.csv`, or on [dtdb.co](https://dtdb.co/) by looking at the URL for the specific card. Or by combining the 2-digit pack number (01) and 3-digit card number (035).
 
@@ -92,7 +92,8 @@ module.exports = AllieHensman;
 
 ### 3. Override the `setupCardAbilities` method.
 
-Persistent effects, actions, reactions, spells, jobs and trait reactions should be defined in the `setupCardAbilities` method. This method passes in an `ability` parameter that gives you access to effect implementations and costs. All this will be filled for you if you use snippet.
+Persistent effects, actions, reactions, spells, jobs and trait reactions should be defined in the `setupCardAbilities` method. This method passes in an `ability` parameter that gives you access to effect implementations and costs. All this will be filled for you if you use a snippet.
+
 See below for more documentation.
 
 ```javascript
@@ -129,12 +130,12 @@ Various information you will need when implementing cards.
 
 ### Rank modifications
 
-In case you will need to perform any rank modifications. You will need these methods:
+In case you will need to perform any rank modifications, you will need these methods:
 
 - `player.modifyRank(number)` to modify player's hand rank. Use negative values to lower the hand rank.
 - `player.getTotalRank()` to get player's current modified hand rank.
 
-For example Barton Everest' trait to modify hand ranks:
+For example Barton Everest's trait to modify hand ranks:
 ```javascript
 this.traitReaction({
     when: {
@@ -152,7 +153,7 @@ this.traitReaction({
 
 Every time you will need to use game locations such as various deeds on your street, townsquare, outfit or others, use their `uuid` attribute. For example if I want to pass Town Square location to some function, I will use `game.townsquare.uuid`.
 
-**Important:** To get `uuid` of the current location of a card, you can either use attribute `gamelocation` or `getGameLocation().uuid`. Every type of card except action cards has a `gamelocation` attribute.
+**Important:** To get `uuid` of the current location of a card, you can either use the attribute `gamelocation` or `getGameLocation().uuid`. Every type of card except action cards has a `gamelocation` attribute.
 
 For example to move a dude with Mustang to a target location:
 
@@ -201,7 +202,7 @@ this.action({
 
 Some abilities let you use some different abilities once more. To be able to do that, you will have to reset abilities of that card using `card.resetAbilities()`.
 
-Example (no card implemented yet with abilities refresh):
+Example:
 ```javascript
 this.action({
     title: 'Jon Longstride',
@@ -284,8 +285,16 @@ By default, an effect will only be applied to cards controlled by the current pl
 To target only opponent cards, set `targetController` to `'opponent'`:
 
 ```javascript
-// No example implemented yet.
-
+// Opposing dudes at Wendy XP1's location have -2 value.
+this.persistentEffect({
+    targetController: 'opponent',
+    condition: () => true,
+    match: card => card.location === 'play area' && 
+        card.getType() === 'dude' &&
+        card.isWanted() &&
+        card.gamelocation === this.gamelocation,
+    effect: ability.effects.modifyValue(-2)
+});
 ```
 
 To target all cards regardless of who controls them, set `targetController` to `'any'`:
@@ -312,7 +321,7 @@ this.persistentEffect({
 });
 ```
 
-Similar effect is for dynamic bullets of Wylie Jenks.
+Similar effect for the dynamic bullets of Wylie Jenks.
 
 ```javascript
 // Wylie has +1 bullet for each wanted dude in the opposing posse.
@@ -325,7 +334,7 @@ this.persistentEffect({
 
 ### Attachment-based effects
 
-A `whileAttached` method is provided to define persistent effects that are applied to the card an attachment is attached. These effects remain as long as the card is attached to its parent and the attachment has not been blanked.
+A `whileAttached` method is provided to define persistent effects that are applied to the card to which an attachment is attached. These effects remain as long as the card is attached to its parent and the attachment has not been blanked.
 
 ```javascript
 // Attached dude becomes a stud.
@@ -369,7 +378,7 @@ By default, effects will only be applied to cards in the play area.  Certain car
 
 ### Player modifying effects
 
-Certain cards provide bonuses or restrictions on the player itself instead of on any specific cards. Such effects can be implemented setting the `targetType` to `'player'`.
+Certain cards provide bonuses or restrictions on the player itself instead of on any specific cards. Such effects can be implemented by setting the `targetType` to `'player'`.
 
 ```javascript
 effectName: function() {
@@ -391,11 +400,12 @@ this.persistentEffect({
 Unlike persistent effects, lasting effects are typically applied during an action or reaction and expire after a specified period of time.  Because lasting effects can be applied almost anywhere, each method takes a factory function that provides the `ability` object and should return the effect properties. The properties returned when applying these effects are identical to those of persistent effects, but additional methods are provided to apply them immediately with the correct duration.
 
 Mostly you will be using lasting effects that adhere to rules for the Noon and Shootout abilities:
-Effects caused by a Noon ability last until the end of the day (that is, through the end of the Sundown phase, but before the next Gamblin' phase). Effects caused by Shootout abilities last until the end of that particular shootout before expiring. Unless stated otherwise, ongoing effects created by reacts last until the end of the current shootout or phase, whichever comes first. 
+Effects caused by a Noon ability last until the end of the day (that is, through the end of the Sundown phase, but end before the next Gamblin' phase). Effects caused by Shootout abilities last until the end of that particular shootout before expiring. Unless stated otherwise, ongoing effects created by reacts last until the end of the current shootout or phase, whichever comes first. 
 
 **Important: These should not be used within setupCardAbilities, only within handler code for actions and triggered abilities.**
 
-To apply an effect for action that expires based on action type, use `applyAbilityEffect`. Next example is for _Sun In Yer Eyes_ which has `playType` "shootout" (will be explained in [Actions](#Actions) section), therefore the `applyAbilityEffect` automatically sets duration only for the shootout:
+To apply an effect for an action that expires based on action type, use `applyAbilityEffect`. The following example is for _Sun In Yer Eyes_ which has `playType` "shootout" (explained in the [Actions](#Actions) section), therefore the `applyAbilityEffect` automatically sets the duration only for the shootout:
+
 ```javascript
 // Choose a dude in this shootout. That dude gets –2 bullets and becomes a draw.
 this.applyAbilityEffect(context.ability, ability => ({
@@ -407,7 +417,7 @@ this.applyAbilityEffect(context.ability, ability => ({
 }));
 ```
 
-In case the duration of effects was changes (e.g. Orphanage in third example), use following functions.
+In case the duration of effects was changed, use following functions.
 
 To apply an effect to last until the end of the current shootout, use `untilEndOfShootout`:
 ```javascript
@@ -445,8 +455,8 @@ this.untilEndOfRound(ability => ({
 Actions are abilities provided by the card text that players may trigger during play windows:
 **Noon** - this play window is opened during the high noon phase except shootouts. Actions that can be used during this window use playType `noon`.
 **Shootout** - this play window is opened during the shootout plays steps of shootout. Actions that can be used during this window use playType `shootout`.
-	- there is specific playType for cards that can be played outside of shootout and which join dude to posse: `shootout:join`
-**Resolution** - this play window is opened during the resolution plays step of shootout phase. Actions that can be used during this window use playType `resolution`.
+	- there is specific playType for cards that can be played outside of shootout and which add a dude to a posse: `shootout:join`
+**Resolution** - this play window is opened during the resolution plays step of the shootout phase. Actions that can be used during this window use playType `resolution`.
 **Cheatin' Resolution** - this play window is opened during the gambling phase and in the resolution plays step of shootout phase. Actions that can be used during this window use playType `cheatin resolution`.
 
 There are 3 different types of actions:
@@ -454,11 +464,12 @@ There are 3 different types of actions:
  - jobs
  - spells
 
-When declaring an action, use the `action`, `job` or `spellAction` method and provide it with a `title` and a `handler` property. The title is not usually seen. It is used only if there are multiple actions for the card. In that case use title that clearly distinguishes between the actions. In other cases just use the card name. The handler is a function to be called when the player chooses to trigger the action. The handler receives a context object as its only parameter which contains the `player` executing the action, and the `source` card that triggered the ability.
+When declaring an action, use the `action`, `job` or `spellAction` method and provide it with a `title` and a `handler` property. The title is not usually seen. It is used only if there are multiple actions for the card. In that case use a title that clearly distinguishes between the actions. In other cases just use the card name. The handler is a function to be called when the player chooses to trigger the action. The handler receives a context object as its only parameter which contains the `player` executing the action, and the `source` card that triggered the ability.
 
 ### Regular action
 
 Use the `action` method when declaring.
+
 See `/server/game/cardaction.js` for full documentation. Most of the action properties will be filled out for you if you use snippet `cardaction`.
 
 ```javascript
@@ -481,7 +492,7 @@ class WinchesterModel1873 extends DrawCard {
 
 ### Jobs
 
-Use the `job` method when declaring. Provide it `bootLeader` property to specify if leader should boot to perform the job. Default is true. To specify what should happen in case job succeeds, provide it `onSuccess` property, or `onFail` property respectively if job fails. 
+Use the `job` method when declaring. Provide the `bootLeader` property to specify if leader should boot to perform the job. Default is true. To specify what should happen in case job succeeds, provide the `onSuccess` property, or `onFail` property respectively if job fails. 
 Specific targets (marks) for job (`target` property):
  - `'townsquare'` in case job marks Town Square
  - `'currentHome'` in case job marks its home
@@ -516,7 +527,7 @@ this.job({
     playType: 'noon',
     bootLeader: true,
     target: {
-	// target definition
+	    // target definition
     },
     handler: context => {
         this.game.once('onLeaderPosseFormed', event => event.shootout.actOnLeaderPosse(dude => dude.increaseBounty()));
@@ -531,9 +542,10 @@ this.job({
 ### Spells
 
 Use the `spellAction` method when declaring. Provide it `difficulty` property to specify number or function representing the difficulty of the spell. If it is function, it takes context as parameter. To specify what should happen in case spell succeeds, provide it `onSuccess` property, or `onFail` property respectively if spell fails.
-See `/server/game/spellaction.js` for full documentation. Most of the action propertie will be filled out for you if you use snippet `spellaction`.
 
-**Important**: Context includes also `pulledCard`, `difficulty` and `totalPulledValue` properties. `difficulty` will contain final difficulty (e.g. grit), 	`totalPulledValue` will contain value of pulled card with all bonuses.
+See `/server/game/spellaction.js` for full documentation. Most of the action properties will be filled out for you if you use the snippet `spellaction`.
+
+**Important**: Context also includes `pulledCard`, `difficulty` and `totalPulledValue` properties. `pulledCard` will contain the actual `DrawCard` that was pulled, `difficulty` will contain final difficulty (e.g. grit), `totalPulledValue` will contain value of pulled card with all bonuses.
 
 ```javascript
 this.spellAction({
@@ -541,18 +553,18 @@ this.spellAction({
     playType: 'shootout',
     cost: ability.costs.bootSelf(),
     target: {
-	// target definition
+	    // target definition
     },
     difficulty: context => context.target.getGrit(),
     onSuccess: (context) => {
     	if(context.totalPullValue - 6 >= context.difficulty) {
-		// ace target
-	} else {
-		// send target home booted
-	}
+            // ace target
+        } else {
+            // send target home booted
+        }
     },
     onFail: (context) => {
-	// send parent home booted
+	    // send parent home booted
     },
     source: this
 });
@@ -564,7 +576,7 @@ this.spellAction({
     playType: 'Noon',
     difficulty: 5,
     onSuccess: (context) => {
-	// On success handler
+	    // On success handler
     }
 });
 ```
@@ -584,7 +596,7 @@ this.action({
 
 ### Paying additional costs for action
 
-Some actions have an additional cost, such as booting the card. In these cases, specify the `cost` parameter. The action will check if the cost can be paid. If it can't, the action will not execute. If it can, costs will be paid automatically and then the action will execute.
+Some actions have an additional cost such as booting the card. In these cases, specify the `cost` parameter. The action will check if the cost can be paid. If it can't, the action will not execute. If it can, costs will be paid automatically and then the action will execute.
 
 For a full list of costs, look at `/server/game/costs.js`.
 
@@ -613,16 +625,16 @@ this.action({
 
 ### Choosing or targeting cards
 
-Cards that specify to 'choose' or otherwise target a specific card can be implemented by passing a `target` property, At minimum, the target property must have an `activePromptTitle` to be used as the prompt text, and a `cardCondition` function that returns `true` for valid targets. Any other properties that apply to `Game.promptForSelect` are valid.
+Cards that specify to 'choose' or otherwise target a specific card can be implemented by passing a `target` property. At minimum the target property must have an `activePromptTitle` to be used as the prompt text and a `cardCondition` function that returns `true` for valid targets. Any other properties that apply to `Game.promptForSelect` are valid.
 
 ```javascript
 this.action({
     title: 'Do action that targets a Deputy',
     target: {
         // activePromptTitle: 'Select a dude',  // <- default prompt message, overridable
-	location: 'play area',
+	    location: 'play area',
         cardCondition: card => card.hasTrait('Deputy'),
-	cardType: 'dude
+	    cardType: 'dude
     },
     // ...
 });
@@ -709,14 +721,14 @@ this.action({
 });
 ```
 
-If an action is cancelled in this manner, it is not counted towards any 'limit X per challenge/phase/round' requirements.
-
+If an action is cancelled in this manner, it is not counted towards any 'limit X per phase/round' requirements.
 
 ### Limiting an action to a specific phase
 
-> !!! M2 we will not probably need this
+> !!! M2 we will probably not need this
 
 You should not use this very often as the abilities phase limitation is determined automatically based on rules. That means play type `'shootout'`, `'shootout:join'` or `'resolution'` can only be played during shootout phase, `'noon'` only during high noon phase and `'cheatin resolution'` only during shootout or gambling.
+
 But if you need to limit to a specific phase in other cases, you can pass an optional `phase` property to the action to limit it to just that phase. Valid phases include `'gambling'`, `'upkeep'`, `'high noon'`, `'shootout'`, `'sundown'`. The default is `'any'` which allows the action to be triggered in any phase.
 
 ```javascript
@@ -767,8 +779,7 @@ Each triggered ability has an associated triggering condition. This is done usin
 
 ### React
 
-Reactions are a yes / no choice on whether the player wants to activate the ability or not on a specific event. For these, it's usually only necessary to provide a `when` event listener, the `handler` method, and `cost`. There 
-are some additional properties (e.g. `repeatable`), for full documentation of properties, see `/server/game/cardreaction.js`.
+Reactions are a yes / no choice on whether the player wants to activate the ability on a specific event. For these, it's usually only necessary to provide a `when` event listener, the `handler` method, and `cost`. There are some additional properties (e.g. `repeatable`), for full documentation of properties, see `/server/game/cardreaction.js`.
 
 ```javascript
 this.reaction({
@@ -859,7 +870,7 @@ If a card has multiple costs, an array of cost objects may be sent using the `co
 
 ```javascript
 this.reaction({
-    when {
+    when: {
         // some event
     }
     // This card must be booted AND 2 GR paid as a cost for the action.
@@ -875,18 +886,18 @@ this.reaction({
 
 ### Limiting the number of uses
 
-> !!! M2 there is no card implemented that would need this that is useing React !!!
+> !!! M2 there is no card implemented that would need this that is using React !!!
 
-Some repeatable abilities have limiting number of times they may be used in a given period. You can pass an optional `limit` property.
+Some repeatable abilities have a limited number of times they may be used in a given period. You can pass an optional `limit` property.
 
 ```javascript
 this.reaction({
     when: {
         // event
     },
-    // limit once
+    // limit twice
 	repeatable: true,
-    limit: 1,
+    limit: 2,
     handler: () => {
         // do something
     }
@@ -956,11 +967,11 @@ this.game.resolveGameAction(GameActions.moveDude({
 }));
 ```
 
-**Note**: Basic game actions such as booting, unbooting, discarding and acing cards can be done using the `player` functions. All these actions are marked properly in the list of the action games below.
+**Note**: Basic game actions such as booting, unbooting, discarding and acing cards can be done using the `player` functions. All these actions are marked properly in the list of the game actions below.
 
 ### Putting cards into play
 
-Specific game action is putting a card into play paying some kind of costs or that has other conditions. In this case we cannot use `GameActions.putIntoPlay` game action as it does not have costs resolution and other processing. Instead, you will have to use `StandardActions.putIntoPlay` which will be passed to `game.resolveStandardAbility(action, player, source, callback)`. 
+A specific game action is putting a card into play paying some kind of costs or that has other conditions. In this case we cannot use `GameActions.putIntoPlay` game action as it does not have costs resolution and other processing. Instead, you will have to use `StandardActions.putIntoPlay` which will be passed to `game.resolveStandardAbility(action, player, source, callback)`. 
 
 Parameters for `resolveStandardAbility`:
  - action - `StandardActions.putIntoPlay` action. Usually you will only have to call the function without parameters (use defaults), but in case you need something specific, parameters are:
@@ -989,7 +1000,7 @@ handler: context => {
 //...               
 ```
 
-There are predefined functions for vrious situations, for example if you want to put something into play with cost reduction:
+There are predefined functions for various situations, for example if you want to put something into play with cost reduction:
 
 ```javascript
 //...
@@ -1023,6 +1034,7 @@ handler: card => {
 **addToHand**
 
 **bootCard** - can be called using `player.bootCard(card, playType)`. Use playType parameter only if you are performing special kind of booting.
+
 **callOut**
  - `caller`: dude who is doing the Call out
  - `callee`: dude who is being Called out
@@ -1033,7 +1045,7 @@ handler: card => {
 
 **choose**
 
-**discardCard** - can be called using `player.aceCard(card, allowSave = true, options)`. If you need to ace multiple cards, you can use `player.aceCards(card, allowSave = true, callback = () => true, options)`
+**discardCard** - can be called using `player.discardCard(card, allowSave = true, options)`. If you need to discard multiple cards, you can use `player.discardCards(cards, allowSave = true, callback = () => true, options)`
  - `card`: card to be discarded
  - `allowSave` (true): (to be added)
  - `source`: source location of the card to be discarded
@@ -1090,7 +1102,7 @@ handler: card => {
 
 **revealCard**
 
-**search** - searches specific location for a card(s).
+**search** - searches a specific location for a card(s).
  - `title`
  - `gameAction`
  - `location`
