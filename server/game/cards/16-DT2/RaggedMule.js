@@ -18,19 +18,16 @@ class RaggedMule extends GoodsCard {
             target: { cardType: 'location' },
             actionContext: { card: this.parent, gameAction: 'moveDude'},
             message: context => 
-                this.game.addMessage('{0} uses {1} to move {2} to {3}', context.player, this, this.parent, context.target),
+                this.game.addMessage('{0} uses {1} to move {2} to {3}', 
+                    context.player, this, this.getDudeToMove(context), context.target),
             handler: context => {
-                let dudeToMove = this.parent;
-                if(!dudeToMove && context.costs && context.costs.savedCardsInfo) {
-                    const savedParents = context.costs.savedCardsInfo.find(cardInfo => cardInfo.parent).map(cardInfo => cardInfo.parent);
-                    if(savedParents.length) {
-                        dudeToMove = savedParents[0];
-                    }
+                let dudeToMove = this.getDudeToMove(context);
+                if(dudeToMove) {
+                    this.game.resolveGameAction(GameActions.moveDude({ 
+                        card: dudeToMove, 
+                        targetUuid: context.target.uuid 
+                    }), context); 
                 }
-                this.game.resolveGameAction(GameActions.moveDude({ 
-                    card: dudeToMove, 
-                    targetUuid: context.target.uuid 
-                }), context); 
             }
         });
 
@@ -46,18 +43,25 @@ class RaggedMule extends GoodsCard {
             ],
             actionContext: { card: this.parent, gameAction: 'joinPosse'},
             message: context => 
-                this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.parent),
+                this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, this.getDudeToMove(context)),
             handler: context => {
-                let dudeToMove = this.parent;
-                if(!dudeToMove && context.costs && context.costs.savedCardsInfo) {
-                    const savedParents = context.costs.savedCardsInfo.find(cardInfo => cardInfo.parent).map(cardInfo => cardInfo.parent);
-                    if(savedParents.length) {
-                        dudeToMove = savedParents[0];
-                    }
+                let dudeToMove = this.getDudeToMove(context);
+                if(dudeToMove) {
+                    this.game.resolveGameAction(GameActions.joinPosse({ card: dudeToMove }), context);
                 }
-                this.game.resolveGameAction(GameActions.joinPosse({ card: dudeToMove }), context);
             }
         });        
+    }
+
+    getDudeToMove(context) {
+        let dudeToMove = this.parent;
+        if(!dudeToMove && context.costs && context.costs.savedCardsInfo) {
+            const savedParents = context.costs.savedCardsInfo.filter(cardInfo => cardInfo.parent).map(cardInfo => cardInfo.parent);
+            if(savedParents.length) {
+                dudeToMove = savedParents[0];
+            }
+        }
+        return dudeToMove;
     }
 }
 
