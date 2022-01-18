@@ -15,7 +15,7 @@ class MarshalCavesCallarman extends DudeCard {
         this.action({
             title: 'Reduce Bounty',
             playType: 'noon',
-            ifCondition: () => this.locationCard.isPublic(),
+            ifCondition: () => this.locationCard && this.locationCard.isPublic(),
             ifFailMessage: context => 
                 this.game.addMessage('{0} uses {1}\'s ability, but it has no effect since he is not at a Public location', 
                     context.player, this),
