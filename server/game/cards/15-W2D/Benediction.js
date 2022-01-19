@@ -18,7 +18,7 @@ class Benediction extends SpellCard {
                 },
                 cardType: ['dude']
             },
-            difficulty: 8,
+            difficulty: 6,
             onSuccess: (context) => {
                 if(!context.target.isSkilled()) {
                     this.applyAbilityEffect(context.ability, ability => ({
