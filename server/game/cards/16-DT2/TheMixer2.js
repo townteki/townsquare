@@ -11,14 +11,15 @@ class TheMixer2 extends DudeCard {
                 cardType: ['dude']
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} to make {2} ignore all opponent bullet modifiers', 
-                    context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to make {2} ignore {3}\'s bullet modifiers except from attached goods', 
+                    context.player, this, context.target, context.player.getOpponent()),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: [
-                        ability.effects.ignoreBulletModifiers('opponent', context => 
-                            context.source.getType() === 'action' || (context.ability && context.ability.isCardAbility()))
+                        ability.effects.ignoreBulletModifiers('any', context => 
+                            context.player !== this.controller &&
+                            (context.source.getType() === 'action' || (context.ability && context.ability.isCardAbility())))
                     ]
                 }));
             }

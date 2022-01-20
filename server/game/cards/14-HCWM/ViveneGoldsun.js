@@ -19,10 +19,10 @@ class ViveneGoldsun extends DudeCard {
                 ability.costs.discardFromPlay((card, context) => card.parent === this &&
                     card.getType() === 'goods' &&
                     card.hasKeyword('mystical') &&
-                    this.hasUsefulMystical(card, context))
+                    this.isUsefulMystical(card, context))
             ],
             target: {
-                activePromptTitle: 'Choose Mystical to boot',
+                activePromptTitle: 'Choose dude to send home',
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'opponent', 
@@ -49,7 +49,7 @@ class ViveneGoldsun extends DudeCard {
         });
     }
 
-    hasUsefulMystical(card, context) {
+    isUsefulMystical(card, context) {
         if(!this.game.shootout) {
             return false;
         }
