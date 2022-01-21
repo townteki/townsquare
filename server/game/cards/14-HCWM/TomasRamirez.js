@@ -25,9 +25,9 @@ class TomasRamirez extends DudeCard {
                 const skillRating = this.getSkillRating('huckster');
                 context.player.pullForSkill(context.target.value, skillRating, {
                     successHandler: context => {
-                        this.game.resolveGameAction(GameActions.discardCard({ card: context.target }, context));
-                        this.game.resolveGameAction(GameActions.discardCard({ card: context.costs.boot }, context));
-                        this.game.addMessage('{0} uses {1} and discards {2} to discard {3}', 
+                        this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
+                        this.game.resolveGameAction(GameActions.discardCard({ card: context.costs.boot }), context);
+                        this.game.addMessage('{0} uses {1} to discard {2} and {3}', 
                             context.player, this, context.costs.boot, context.target);
                     },
                     pullingDude: this,
