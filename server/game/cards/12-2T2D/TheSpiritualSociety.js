@@ -36,7 +36,7 @@ class TheSpiritualSociety extends OutfitCard {
                     cardType: 'dude',
                     gameAction: 'boot',
                     onSelect: (player, card) => {
-                        this.game.resolveGameAction(GameActions.bootCard({ card }, context)).thenExecute(() => {
+                        this.game.resolveGameAction(GameActions.bootCard({ card }), context).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} and boots {2} to boot {3}', player, this, context.costs.boot, card);
                         });                     
                         return true;

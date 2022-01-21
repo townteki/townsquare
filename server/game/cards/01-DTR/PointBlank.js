@@ -25,7 +25,7 @@ class PointBlank extends ActionCard {
                     cardType: 'dude',
                     gameAction: 'ace',
                     onSelect: (player, card) => {
-                        this.game.resolveGameAction(GameActions.aceCard({ card }, context));
+                        this.game.resolveGameAction(GameActions.aceCard({ card }), context);
                         this.game.addMessage('{0} uses {1} to boot {2}, forcing {3} to ace {4}',
                             this.controller, this, context.costs.boot, player, card);                      
                         return true;
