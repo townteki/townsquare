@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run jasmine",
+    "coverage": "nyc npm run test",
     "jasmine": "cross-env JASMINE_CONFIG_PATH=./jasmine.json jasmine",
-    "cover": "cross-env JASMINE_CONFIG_PATH=./jasmine.json istanbul cover --include-all-sources jasmine",
     "lint": "eslint server/ test/server/ --ext=js",
     "pack-lobby": "node ./pack.js"
   },
@@ -62,6 +62,7 @@
     "cucumber": "^4.2.1",
     "eslint": "^6.8.0",
     "faker": "^4.1.0",
-    "jasmine": "^2.8.0"
+    "jasmine": "^2.8.0",
+    "nyc": "^15.1.0"
   }
 }
