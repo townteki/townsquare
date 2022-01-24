@@ -13,3 +13,4 @@ testoutput/*
 dist/*
 .vscode/tasks.json
 local.json5
+.nyc_output
