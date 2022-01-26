@@ -38,6 +38,10 @@ class NullCard {
     isNearby() {
         return false;
     }
+    
+    hasAttachmentWithKeywords() {
+        return false;
+    }
 }
 
 module.exports = NullCard;
