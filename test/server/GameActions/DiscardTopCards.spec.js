@@ -2,7 +2,7 @@ const DiscardTopCards = require('../../../server/game/GameActions/DiscardTopCard
 
 describe('DiscardTopCards', function() {
     beforeEach(function() {
-        this.playerSpy = jasmine.createSpyObj('player', ['moveCard']);
+        this.playerSpy = jasmine.createSpyObj('player', ['drawDeckAction', 'moveCard']);
         this.deckSpy = jasmine.createSpyObj('drawDeck', ['length']);
         this.playerSpy.drawDeck = this.deckSpy;
         this.props = { player: this.playerSpy, amount: 0 };
@@ -38,6 +38,29 @@ describe('DiscardTopCards', function() {
                 this.deckSpy.length = 5;
                 this.props.amount = 10;
                 expect(DiscardTopCards.allow(this.props)).toBe(true);
+            });
+        });
+    });
+
+    describe('createEvent()', function() {
+        beforeEach(function() {
+            this.props.amount = 3;
+            this.event = DiscardTopCards.createEvent(this.props);
+        });
+
+        it('creates a DiscardTopCards event', function() {
+            expect(this.event.name).toBe('onTopCardsDiscarded');
+            expect(this.event.amount).toBe(3);
+        });
+
+        describe('the event handler', function() {            
+            it('draws the correct number of cards', function() {
+                // Just return strings instead of full card objects, we're not testing the logic
+                // of drawDeckAction() and the event doesn't care what they actually are.
+                this.playerSpy.drawDeckAction.and.returnValue(['card1', 'card2', 'card3']);
+                this.event.executeHandler();
+                expect(this.playerSpy.drawDeckAction).toHaveBeenCalledWith(3, jasmine.any(Function));
+                expect(this.event.topCards.length).toBe(3);
             });
         });
     });
