@@ -98,7 +98,7 @@ class BaseCard {
     }
 
     get suit() {
-        return this.suitReferenceArray[0].suit;
+        return this.suitReferenceArray[0].suit || '';
     }
 
     get bullets() {
