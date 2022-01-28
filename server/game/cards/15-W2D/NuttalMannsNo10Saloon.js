@@ -7,7 +7,7 @@ class NuttalMannsNo10Saloon extends DeedCard {
     setupCardAbilities(ability) {
         this.action({
             title: 'Noon: Nuttal & Mann\'s No.10 Saloon',
-            playType: ['noon'],
+            playType: ['noon', 'shootout'],
             cost: [
                 ability.costs.bootSelf(),
                 ability.costs.payGhostRock(1)

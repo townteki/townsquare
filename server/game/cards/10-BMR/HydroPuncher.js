@@ -21,7 +21,9 @@ class HydroPuncher extends GoodsCard {
                 cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude']
             },
-            message: context => this.game.addMessage('{0} uses {1} to punch {2} and boot them', context.player, this),
+            message: context => 
+                this.game.addMessage('{0} uses {1} to punch {2} and boot them', 
+                    context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 if(context.target.hasAttachment()) {
@@ -32,7 +34,7 @@ class HydroPuncher extends GoodsCard {
                         cardType: ['goods', 'spell'],
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.bootCard({ card: card }), context).thenExecute(() =>
-                                this.game.addMessage('{0} boots also {1} as result of {3}', player, this, card));
+                                this.game.addMessage('{0} boots also {1} as result of {3}', player, card, this));
                             return true;
                         }
                     });

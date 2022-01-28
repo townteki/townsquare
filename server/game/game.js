@@ -907,6 +907,10 @@ class Game extends EventEmitter {
         player.timerSettings[settingName] = toggle;
     }
 
+    togglePauseTimer() {
+        this.timeLimit.togglePauseTimer();
+    }
+
     initialise() {
         var players = {};
 
@@ -1556,12 +1560,14 @@ class Game extends EventEmitter {
                     };
                 }),
                 started: this.started,
+                createdAt: this.createdAt,
                 winner: this.winner ? this.winner.name : undefined,
                 cancelPromptUsed: this.cancelPromptUsed,
+                round: this.round,
                 useGameTimeLimit: this.useGameTimeLimit,
                 gameTimeLimitStarted: this.timeLimit.timeLimitStarted,
                 gameTimeLimitStartedAt: this.timeLimit.timeLimitStartedAt,
-                gameTimeLimitTime: this.timeLimit.timeLimitInMinutes
+                gameTimeLimitTime: this.timeLimit.timeLimitInSeconds
             };
         }
 

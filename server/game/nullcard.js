@@ -34,6 +34,14 @@ class NullCard {
     adjacentLocations() {
         return [];
     }
+
+    isNearby() {
+        return false;
+    }
+    
+    hasAttachmentWithKeywords() {
+        return false;
+    }
 }
 
 module.exports = NullCard;

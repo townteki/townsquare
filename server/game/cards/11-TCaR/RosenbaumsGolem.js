@@ -9,7 +9,7 @@ class RosenbaumsGolem extends DudeCard {
             playType: ['shootout'],
             target: {
                 activePromptTitle: 'Choose an opposing dude',
-                cardCondition: { location: 'play area', controller: 'opponent' },
+                cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude'],
                 gameAction: 'boot'
             },

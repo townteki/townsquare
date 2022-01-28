@@ -17,16 +17,17 @@ class PointBlank2 extends ActionCard {
             handler: context => {
                 context.ability.selectAnotherTarget(context.player.getOpponent(), context, {
                     activePromptTitle: 'Select a dude to ace',
-                    waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: { location: 'play area', controller: context.player.getOpponent(), participating: true, condition: card => card.bullets < context.costs.boot.bullets },
                     cardType: 'dude',
                     gameAction: 'ace',
                     onSelect: (opponent, cardToAce) => {
-                        this.game.resolveGameAction(GameActions.aceCard({card: cardToAce}, context));
-                        this.game.addMessage('{0} uses {1} and boots {2}, forcing {3} to ace {4}',
-                            context.player, this, context.costs.boot, opponent, cardToAce);
+                        this.game.resolveGameAction(GameActions.aceCard({ card: cardToAce }), context).thenExecute(() => {
+                            this.game.addMessage('{0} uses {1} and boots {2}, forcing {3} to ace {4}',
+                                context.player, this, context.costs.boot, opponent, cardToAce);
+                        });
                         return true;
-                    }
+                    },
+                    source: this
                 });
             }
         });

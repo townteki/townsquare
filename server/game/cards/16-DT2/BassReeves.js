@@ -26,7 +26,6 @@ class BassReeves extends DudeCard {
         this.action({
             title: 'Bass Reeves',
             playType: ['noon'],
-            cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Choose a dude to callout',
                 cardCondition: { 
