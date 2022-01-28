@@ -10,12 +10,9 @@ class YagnsMechanicalSkeleton2 extends GoodsCard {
             title: 'React: Yagn\'s Mechanical Skeleton',
             triggerBefore: true,
             when: {
-                onDudeMoved: event => this.parent && event.card === this.parent &&
-                    event.options.context && event.options.context.player !== this.controller,
-                onCardBooted: event => this.parent && event.card === this.parent &&
-                    event.context && event.context.player !== this.controller,
-                onDudeSentHome: event => this.parent && event.card === this.parent &&
-                    event.context && event.context.player !== this.controller
+                onDudeMoved: event => this.matchesReactCondition(event.card, event.options.context),
+                onCardBooted: event => this.matchesReactCondition(event.card, event.context),
+                onDudeSentHome: event => this.matchesReactCondition(event.card, event.context)
             },
             cost: ability.costs.bootSelf(),
             handler: context => {
@@ -29,6 +26,11 @@ class YagnsMechanicalSkeleton2 extends GoodsCard {
                 });
             }
         });
+    }
+
+    matchesReactCondition(card, context) {
+        return this.parent && card === this.parent && context &&
+            context.player && context.player !== this.controller;
     }
 }
 

@@ -314,6 +314,7 @@ class DudeCard extends DrawCard {
 
         expDude.shootoutStatus = this.shootoutStatus;
         expDude.booted = this.booted;
+        expDude.tokens = Object.assign({}, this.tokens); 
         expDude.parent = this.parent;
         expDude.location = this.location;
         expDude.gameLoc = this.gameLoc;

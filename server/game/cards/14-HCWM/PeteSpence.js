@@ -37,7 +37,7 @@ class PeteSpence extends DudeCard {
                                 booted: true
                             }, () => {
                                 if(card.hasKeyword('weapon') && !card.parent.isWanted()) {
-                                    this.game.resolveGameAction(GameActions.addBounty({ card: card.parent }, context));
+                                    this.game.resolveGameAction(GameActions.addBounty({ card: card.parent }), context);
                                     this.game.addMessage('{0}\'s bounty is raised by 1 from attaching {1}', card.parent, card);
                                 }
                             }), context.player, card);

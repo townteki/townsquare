@@ -1,4 +1,5 @@
 const ActionCard = require('../../actioncard.js');
+const PhaseNames = require('../../Constants/PhaseNames.js');
 const GameActions = require('../../GameActions/index.js');
 
 class ThirstForBlood extends ActionCard {
@@ -83,6 +84,12 @@ class ThirstForBlood extends ActionCard {
             default:
                 break;
         }
+        this.untilEndOfPhase(this.abilityContext.ability, ability => ({
+            match: this.abilityContext.target,
+            effect: ability.effects.modifyInfluence(-1)
+        }), PhaseNames.Sundown);
+        this.game.addMessage('{0} reduces {1}\'s influence by 1 due to their {2}', 
+            player, this.abilityContext.target, this);
 
         return true;
     }

@@ -575,7 +575,7 @@ const Effects = {
             title: `${type[0].toUpperCase() + type.slice(1)} rating modified`,
             apply: function(card, context) {
                 context.dynamicSkillRating = context.dynamicSkillRating || {};
-                context.dynamicSkillRating[card.uuid] = skillRatingFunc(card, context) || [];
+                context.dynamicSkillRating[card.uuid] = skillRatingFunc(card, context) || 0;
                 let value = context.dynamicSkillRating[card.uuid];
                 card.modifySkillRating(type, value);
             },
@@ -1091,6 +1091,8 @@ const Effects = {
     },
     selectAsFirstCasualty:
         optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty'),
+    cannotBringDudesIntoPosse:
+        cannotEffectType('joinPosse', opponent => `Cannot bring dudes to posse by${opponent}`, 'shootout'),
     cannotBringDudesIntoPosseByShootout: 
         cannotEffectPlayType('shootout:join', opponent => `Cannot bring dudes to posse by${opponent} shootout`, 'shootout'),
     cannotBeChosenAsCasualty:

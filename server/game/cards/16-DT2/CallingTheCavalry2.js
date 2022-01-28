@@ -5,7 +5,9 @@ class CallingTheCavalry2 extends ActionCard {
         this.action({
             title: 'Calling the Cavalry',
             playType: ['shootout'],
-            message: context => this.game.addMessage('{0} uses {1} to give both players +1 hand rank for each Horse in their posse', context.player, this),
+            message: context => 
+                this.game.addMessage('{0} uses {1} to give player with the most Horses +1 hand rank', 
+                    context.player, this),
             handler: context => {
                 let eventHandler = () => {
                     this.lastingEffect(context.ability, ability => ({

@@ -6,30 +6,26 @@ class RakingDragons extends TechniqueCard {
         this.techniqueAction({
             title: 'Raking Dragons',
             playType: ['shootout'],
+            target: {
+                activePromptTitle: 'Choose opposing dude',
+                cardCondition: { location: 'play area', controller: 'opponent', participating: true },
+                cardType: ['dude']
+            },
             combo: context => {
-                if(!context.dragonTarget) {
+                if(!this.comboTarget) {
                     return false;
                 }
-                return context.kfDude.value > context.dragonTarget.value;
+                return context.kfDude.value > this.comboTarget.value;
             },
-            onSuccess: (context) => {
-                context.ability.selectAnotherTarget(context.player, context, {
-                    activePromptTitle: 'Select a dude',
-                    waitingPromptTitle: 'Waiting for opponent to select dude',
-                    cardCondition: card => card.isParticipating(),
-                    cardType: 'dude',
-                    onSelect: (player, card) => {
-                        context.dragonTarget = card;
-                        this.game.resolveGameAction(GameActions.bootCard({ card }), context);
-                        this.applyAbilityEffect(context.ability, ability => ({
-                            match: card,
-                            effect: ability.effects.modifyValue(-2)
-                        }));
-                        this.game.addMessage('{0} uses {1} to boot {2} and give them -2 value', player, this, card);
-                        return true;
-                    },
-                    source: this
-                });                
+            onSuccess: context => {
+                this.comboTarget = context.target;
+                this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
+                this.applyAbilityEffect(context.ability, ability => ({
+                    match: context.target,
+                    effect: ability.effects.modifyValue(-2)
+                }));
+                this.game.addMessage('{0} uses {1} to boot {2} and give them -2 value', context.player, this, context.target);
+                return true;
             },
             source: this
         });

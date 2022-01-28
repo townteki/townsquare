@@ -19,9 +19,9 @@ class CaliforniaTaxOffice extends DeedCard {
             },
             message: context => this.game.addMessage('{0} uses {1} to demand upkeep for {2}', context.player, this, context.target),
             handler: context => {
-                const opp = context.player.getOpponent();
-                if(context.player.getSpendableGhostRock() >= context.target.upkeep) {
-                    this.game.promptForYesNo(opp, {
+                const taxPayer = context.target.controller;
+                if(taxPayer.getSpendableGhostRock() >= context.target.upkeep) {
+                    this.game.promptForYesNo(taxPayer, {
                         title: `Do you want to pay ${context.target.upkeep} GR upkeep for ${context.target.title} ?`,
                         onYes: player => {
                             player.spendGhostRock(context.target.upkeep);
@@ -40,7 +40,7 @@ class CaliforniaTaxOffice extends DeedCard {
                     });
                 } else {
                     this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context);
-                    this.game.addMessage('{0} has to discard {1} because they do not have enough GR to pay upkeep to {2}', opp, context.target, this);
+                    this.game.addMessage('{0} has to discard {1} because they do not have enough GR to pay upkeep to {2}', taxPayer, context.target, this);
                 }
             }
         });
