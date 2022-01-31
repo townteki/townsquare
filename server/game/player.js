@@ -22,6 +22,7 @@ const { UUID, TownSquareUUID, StartingHandSize, StartingDiscardNumber, HereticJo
 const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+const MathHelper = require('./MathHelper.js');
 
 /** @typedef {import('./game')} Game */
 
@@ -441,7 +442,7 @@ class Player extends Spectator {
         var cards = [];
 
         while(cards.length < toDiscard) {
-            var cardIndex = Math.floor(Math.random() * this.hand.length);
+            var cardIndex = MathHelper.randomInt(this.hand.length);
 
             var card = this.hand[cardIndex];
             if(!cards.includes(card)) {

@@ -2,6 +2,7 @@ const Phase = require('./phase.js');
 const SimpleStep = require('./simplestep.js');
 const StartingPossePrompt = require('./setup/startingposseprompt.js');
 const GrifterPrompt = require('./setup/grifterprompt.js');
+const MathHelper = require('../MathHelper.js');
 
 class SetupPhase extends Phase {
     constructor(game) {
@@ -14,6 +15,7 @@ class SetupPhase extends Phase {
             new StartingPossePrompt(game),
             new SimpleStep(game, () => this.startGame()),
             new SimpleStep(game, () => this.announceSetupCards()),
+            new SimpleStep(game, () => this.setInitialFirstPlayer()),
             new SimpleStep(game, () => game.raiseEvent('onSetupFinished')),
             new GrifterPrompt(game),
             new SimpleStep(game, () => game.activatePersistentEffects())
@@ -60,8 +62,15 @@ class SetupPhase extends Phase {
         for(const player of this.game.getPlayers()) {
             let cards = [...player.cardsInPlay];
             let dudes = cards.filter(card => card.getType() === 'dude');
-            this.game.addMessage('{0} has following starting dudes: {1}.', player, dudes);
+            this.game.addMessage('{0} has following starting dudes: {1}', player, dudes);
         }
+    }
+
+    setInitialFirstPlayer() {
+        let players = this.game.getPlayers();
+        let firstPlayer = players[MathHelper.randomInt(players.length)];
+        this.game.setFirstPlayer(firstPlayer);
+        this.game.addMessage('{0} has been set randomly as a starting player', firstPlayer);
     }
 }
 
