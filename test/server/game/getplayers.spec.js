@@ -114,53 +114,5 @@ describe('Game', function() {
                 });
             });
         });
-
-        describe('when there are more than two players', function() {
-            beforeEach(function() {
-                this.player1 = createPlayerSpy({ id: '1', name: 'test1', firstPlayer: false });
-                this.player2 = createPlayerSpy({ id: '2', name: 'test2', firstPlayer: false });
-                this.player3 = createPlayerSpy({ id: '3', name: 'test1', firstPlayer: false });
-
-                this.game.playersAndSpectators['test1'] = this.player1;
-                this.game.playersAndSpectators['test2'] = this.player2;
-                this.game.playersAndSpectators['test3'] = this.player3;
-            });
-
-            describe('and there is no first player', function() {
-                it('should return the players in default order', function() {
-                    expect(this.game.getPlayersInFirstPlayerOrder()).toEqual([this.player1, this.player2, this.player3]);
-                });
-            });
-
-            describe('and the first player in the list is first player', function() {
-                beforeEach(function() {
-                    this.player1.firstPlayer = true;
-                });
-
-                it('should return the players in correct order', function() {
-                    expect(this.game.getPlayersInFirstPlayerOrder()).toEqual([this.player1, this.player2, this.player3]);
-                });
-            });
-
-            describe('and the last player in the list is first player', function() {
-                beforeEach(function() {
-                    this.player3.firstPlayer = true;
-                });
-
-                it('should return the players in correct order', function() {
-                    expect(this.game.getPlayersInFirstPlayerOrder()).toEqual([this.player3, this.player1, this.player2]);
-                });
-            });
-
-            describe('and a middle player in the list is first player', function() {
-                beforeEach(function() {
-                    this.player2.firstPlayer = true;
-                });
-
-                it('should return the players in clockwise order', function() {
-                    expect(this.game.getPlayersInFirstPlayerOrder()).toEqual([this.player2, this.player3, this.player1]);
-                });
-            });
-        });
     });
 });
