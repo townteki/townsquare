@@ -41,6 +41,7 @@ const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 const { TownSquareUUID } = require('./Constants/index.js');
+const MathHelper = require('./MathHelper.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -188,9 +189,9 @@ class Game extends EventEmitter {
     }
 
     getPlayersInFirstPlayerOrder() {
-        if(this.currentPhase === 'setup') {
+        if(!this.getFirstPlayer() && this.currentPhase === 'setup') {
             let players = this.getPlayers();
-            let firstPlayer = players[Math.floor(Math.random() * players.length)];
+            let firstPlayer = players[MathHelper.randomInt(players.length)];
             return this.getPlayersInBoardOrder(player => player === firstPlayer);
         }
         return this.getPlayersInBoardOrder(player => player.firstPlayer);

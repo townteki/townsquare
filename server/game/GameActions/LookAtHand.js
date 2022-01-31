@@ -1,3 +1,4 @@
+const MathHelper = require('../MathHelper');
 const GameAction = require('./GameAction');
 
 class LookAtHand extends GameAction {
@@ -24,7 +25,7 @@ class LookAtHand extends GameAction {
         let workHand = opponent.hand;
         const cardsToLook = [];
         while(cardsToLook.length < params.numToShow && workHand.length > 0) {
-            let selectedCard = workHand[Math.floor(Math.random() * (workHand.length - 1))];
+            let selectedCard = workHand[MathHelper.randomInt(workHand.length)];
             workHand = workHand.filter(card => card !== selectedCard);
             cardsToLook.push(selectedCard);
         }
