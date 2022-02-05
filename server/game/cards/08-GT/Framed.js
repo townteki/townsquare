@@ -2,7 +2,7 @@ const ActionCard = require('../../actioncard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class Framed extends ActionCard {
-    setupCardAbilities() {
+    setupCardAbilities(ability) {
         this.action({
             title: 'Framed: Initial bounty',
             playType: ['noon'],
