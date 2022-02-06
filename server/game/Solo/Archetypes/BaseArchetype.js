@@ -47,6 +47,8 @@ class BaseArchetype {
                 return number => this.player.hand.length ? this.player.hand.slice(0, number) : [];
             case 'upkeepDiscard':
                 return dudesWithUpkeep => this.upkeepDiscardDudes(dudesWithUpkeep);
+            case 'assignCasualties':
+                return (casualtyContext, firstCasualty) => this.assignCasualties(casualtyContext, firstCasualty);
             default:
                 break;
         }
@@ -119,6 +121,9 @@ class BaseArchetype {
     upkeepDiscardDudes() {
     }
 
+    assignCasualties() {
+    }
+
     getCalleeCondition() {
         return card => card.getType() === 'dude' &&
             card.controller !== this.player &&
@@ -183,6 +188,24 @@ class BaseArchetype {
                 reqs[dude.uuid] = Object.assign({ dude }, dude.requirementsToJoinPosse());
                 return reqs;
             }, {});
+    }
+
+    static handleCasualty(type, casualty, resolutions, casualtyContext) {
+        let maxCoveredNum = casualty.coversCasualties('any');
+        let coveredNum = casualty.coversCasualties(type);
+        if((casualtyContext.maxCasualties - (maxCoveredNum - coveredNum)) < casualtyContext.currentCasualties) {
+            return resolutions;
+        }
+        if(casualtyContext.currentCasualties - coveredNum >= 0) {
+            casualtyContext.currentCasualtiesNum -= coveredNum;
+            casualtyContext.availableVictims = casualtyContext.availableVictims.filter(victim => victim !== casualty);
+            resolutions.push({
+                card: casualty,
+                type: type,
+                covered: coveredNum
+            });
+        }
+        return resolutions;   
     }
 }
 

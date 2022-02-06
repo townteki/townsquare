@@ -68,8 +68,21 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
 
     handleSolo(shootout) {
         let firstCasualty = this.findFirstCasualties(this.game.automaton).pop();
-        const casualties = this.game.automaton.getCasualtiesResolution(shootout, this.getCurrentCasualties(), 
-            firstCasualty, this.createContext(null, this.game.automaton));
+        let casualtyContext = {
+            currentCasualtiesNum: this.getCurrentCasualties(), 
+            maxPossibleCasualties: 0
+        };
+        const context = this.createContext(null, this.game.automaton);
+        casualtyContext.availableVictims = shootout.getPosseByPlayer(this.game.automaton).getCards(card => {
+            context.casualty = card;
+            let casualtyNum = card.coversCasualties('any', context);
+            if(casualtyNum) {
+                casualtyContext.maxPossibleCasualties += casualtyNum;
+                return true;
+            }
+            return false;
+        });
+        const casualties = this.game.automaton.getCasualties(casualtyContext, firstCasualty);
         casualties.forEach(casualty => {
             this.coverCasualty(this.game.automaton, casualty.card, casualty.type);
         });
