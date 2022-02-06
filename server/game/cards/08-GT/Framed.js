@@ -23,7 +23,7 @@ class Framed extends ActionCard {
                     bountify();
                 } else {
                     context.game.promptForYesNo(vBoss, {
-                        title: `Framed: Do you want to pay 1 GR to ${context.player} and boot ${context.target.title} to prevent 1 bounty?`,
+                        title: `Do you want to pay 1 GR to ${context.player} and boot ${context.target.title} to prevent 1 bounty?`,
                         onYes: () => {
                             this.game.transferGhostRock({
                                 from: vBoss,
