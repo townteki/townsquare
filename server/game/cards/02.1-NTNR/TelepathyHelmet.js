@@ -13,7 +13,7 @@ class TelepathyHelmet extends GoodsCard {
             playType: 'noon',
             cost: ability.costs.payGhostRock(1),
             repeatable: true,
-            ifCondition: () => context.player.getOpponent().hand.length,
+            ifCondition: context => context.player.getOpponent().hand.length,
             ifFailMessage: context => this.game.addMessage('{0} uses {1}, but {2} has no cards in hand', context.player, this, context.player.getOpponent()),
             message: context => this.game.addMessage('{0} uses {1} to look at {2}\'s play hand', context.player, this, context.player.getOpponent()),
             handler: context => {
