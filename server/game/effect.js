@@ -166,23 +166,23 @@ class Effect {
 
         if(this.targetType === 'card') {
             if(this.targetController === 'current') {
-                return target.controller === this.source.controller;
+                return target.controller.equals(this.source.controller);
             }
 
             if(this.targetController === 'opponent') {
-                return target.controller !== this.source.controller;
+                return !target.controller.equals(this.source.controller);
             }
         } else if(this.targetType === 'player') {
             if(this.targetController === 'current') {
-                return target === this.source.controller;
+                return target.equals(this.source.controller);
             }
 
             if(this.targetController === 'opponent') {
-                return target !== this.source.controller;
+                return !target.equals(this.source.controller);
             }
 
             if(this.targetController !== 'any') {
-                return target === this.targetController;
+                return target.eqauls(this.targetController);
             }
         }
 

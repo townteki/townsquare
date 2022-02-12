@@ -21,7 +21,7 @@ class JoinPosse extends GameAction {
         if(card.game.shootout.isJob() && !params.needToBoot) {
             params.needToBoot = card.requirementsToJoinPosse(params.allowBooted).needToBoot;
         }
-        let toLeaderPosse = card.controller === card.game.shootout.leaderPlayer;
+        let toLeaderPosse = card.controller.equals(card.game.shootout.leaderPlayer);
         card.game.raiseEvent('onDudeJoiningPosse', { card, leaderPosse: toLeaderPosse, options: params });
 
         return this.event('_DO_NOT_USE_', { card, leaderPosse: toLeaderPosse, options: params }, event => {

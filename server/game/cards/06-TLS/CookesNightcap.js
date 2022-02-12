@@ -3,7 +3,7 @@ const DeedCard = require('../../deedcard.js');
 class CookesNightcap extends DeedCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.controller !== this.owner,
+            condition: () => !this.controller.equals(this.owner),
             match: this,
             effect: [
                 ability.effects.setControl(2)

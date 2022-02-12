@@ -15,7 +15,7 @@ class TriggeredAbility extends BaseAbility {
                 onSetupFinished: () => this.card.controller.availableGrifterActions > 0
             };
         }
-        this.playerFunc = properties.player || (player => this.card.controller === player || this.card.canUseControllerAbilities(player));
+        this.playerFunc = properties.player || (player => this.card.controller.equals(player) || this.card.canUseControllerAbilities(player));
         this.eventType = eventType;
         this.location = this.buildLocation(card, properties.location);
 

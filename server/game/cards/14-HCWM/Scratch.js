@@ -6,7 +6,7 @@ class Scratch extends GoodsCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onCardDiscarded: event => event.card === this && event.originalLocation === 'play area'
+                onCardDiscarded: event => event.card.equals(this) && event.originalLocation === 'play area'
             },
             location: 'discard pile',
             handler: context => {

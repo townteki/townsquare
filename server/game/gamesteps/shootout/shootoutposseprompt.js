@@ -26,7 +26,7 @@ class ShootoutPossePrompt extends UiPrompt {
                     additionalButtons: additionalButtons,
                     cardCondition: card => card.getType() === 'dude' && 
                         card.location === 'play area' &&
-                        card.controller === this.player &&
+                        card.controller.equals(this.player) &&
                         (card !== this.shootout.mark || this.shootout.isJob()) &&
                         card !== this.shootout.leader &&
                         !card.isParticipating() &&

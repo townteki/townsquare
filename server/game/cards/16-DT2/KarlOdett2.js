@@ -12,7 +12,7 @@ class KarlOdett2 extends DudeCard {
     isNonAboInLocation() {
         let gameLocation = this.getGameLocation();
         return gameLocation && 
-            gameLocation.getDudes().some(dude => dude.controller === this.controller && !dude.hasKeyword('abomination'));
+            gameLocation.getDudes().some(dude => dude.controller.equals(this.controller) && !dude.hasKeyword('abomination'));
     }
 }
 

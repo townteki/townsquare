@@ -24,7 +24,7 @@ class HawleysRose extends GoodsCard {
         if(gameLocation.locationCard.getType() !== 'deed') {
             return false;
         }
-        return gameLocation.getDudes().find(dude => dude.controller !== this.controller);
+        return gameLocation.getDudes().find(dude => !dude.controller.equals(this.controller));
     }
 }
 

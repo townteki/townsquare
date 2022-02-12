@@ -5,8 +5,8 @@ class TheWhateleyEstate extends DeedCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onDudeEnteredLocation: event => event.gameLocation.locationCard === this &&
-                    event.card.controller !== this.owner
+                onDudeEnteredLocation: event => this.equals(event.gameLocation.locationCard) &&
+                    !this.owner.equals(event.card.controller) 
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: context.event.card }), context);           
