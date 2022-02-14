@@ -50,7 +50,7 @@ describe('CardReaction', function () {
 
         describe('player', function() {
             beforeEach(function() {
-                this.controller = { controller: true };
+                this.controller = { equals: p => p === this.controller };
                 this.cardSpy.controller = this.controller;
             });
 
