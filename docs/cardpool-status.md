@@ -52,7 +52,7 @@
 |:heavy_check_mark:   | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
 |:heavy_check_mark:   | 01038| Marion Seville
-|                     | 01039| Sanford Taylor
+|:heavy_check_mark:   | 01039| Sanford Taylor
 |:heavy_check_mark:   | 01040| Barton Everest
 |:white_check_mark:   | 01041| Pancho Castillo
 |                     | 01042| Jonah Essex
