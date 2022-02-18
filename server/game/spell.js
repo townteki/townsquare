@@ -36,13 +36,13 @@ class Spell {
     }
 
     castSpell(context, abilityHandler = () => true) {
-        const skillRating = context.caster.getSkillRatingForCard(this.ability.card);
+        const skillName = context.caster.getSkillForCard(this.ability.card);
         if(context.target) {
-            this.ability.game.addMessage('{0}\'s caster {1} attempts to cast {2} on {3} (using skill rating {4})', 
-                context.player, context.caster, this.ability.card, context.target, skillRating);
+            this.ability.game.addMessage('{0}\'s {1} {2} attempts to cast {3} on {4}', 
+                context.player, skillName, context.caster, this.ability.card, context.target);
         } else {
-            this.ability.game.addMessage('{0}\'s caster {1} attempts to cast {2} (using skill rating {3})', 
-                context.player, context.caster, this.ability.card, skillRating);
+            this.ability.game.addMessage('{0}\'s {1} {2} attempts to cast {3}', 
+                context.player, skillName, context.caster, this.ability.card);
         }
         abilityHandler(context);
         let finalDifficulty = this.difficulty;
@@ -50,7 +50,7 @@ class Spell {
             finalDifficulty = this.difficulty(context);
         }
         context.difficulty = finalDifficulty;
-        context.player.pullForSkill(finalDifficulty, skillRating, {
+        context.player.pullForSkill(finalDifficulty, skillName, {
             successHandler: context => this.onSuccess(context),
             failHandler: context => this.onFail(context),
             pullingDude: context.caster,
