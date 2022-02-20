@@ -118,34 +118,37 @@ class DudeCard extends DrawCard {
         if(baseSkillRating === null || baseSkillRating === undefined) {
             return;
         }
-        const bonus = this.skillKfBonuses.reduce((aggregator, bonus) => {
+        return baseSkillRating;
+    }
+
+    getSkillCheckBonus(skillNameOrKF) {
+        return this.skillKfBonuses.reduce((aggregator, bonus) => {
             if(typeof(bonus.bonus) === 'function') {
                 return aggregator + (bonus.bonus(skillNameOrKF) || 0);
             }
             return aggregator + bonus.bonus;
         }, 0);
-        return baseSkillRating + bonus;
     }
 
-    getSkillRatingForCard(spellOrGadget) {
+    getSkillForCard(spellOrGadget) {
         const condObj = this.skillKfConditions.find(condObj => condObj.condition(spellOrGadget));
         if(condObj) {
-            return this.getSkillRating(condObj.skillnameOrKF);
+            return condObj.skillnameOrKF;
         }
         if(spellOrGadget.isGadget()) {
-            return this.getSkillRating('mad scientist');
+            return 'mad scientist';
         }
         if(spellOrGadget.getType() !== 'goods' && spellOrGadget.getType() !== 'spell') {
             return;
         }
         if(spellOrGadget.isMiracle()) {
-            return this.getSkillRating('blessed');
+            return 'blessed';
         }
         if(spellOrGadget.isHex()) {
-            return this.getSkillRating('huckster');
+            return 'huckster';
         }
         if(spellOrGadget.isSpirit() || spellOrGadget.isTotem()) {
-            return this.getSkillRating('shaman');
+            return 'shaman';
         }
     }
 
@@ -154,7 +157,11 @@ class DudeCard extends DrawCard {
     }
 
     canPerformSkillOn(spellOrGadget) {
-        const skillRating = this.getSkillRatingForCard(spellOrGadget);
+        const skillName = this.getSkillForCard(spellOrGadget);
+        if(!skillName) {
+            return false;
+        }
+        const skillRating = this.getSkillRating(skillName);
         return skillRating !== null && skillRating !== undefined;
     }
 
