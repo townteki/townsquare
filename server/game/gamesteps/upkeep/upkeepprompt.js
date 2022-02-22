@@ -3,7 +3,7 @@ const PlayerOrderPrompt = require('../playerorderprompt.js');
 class UpkeepPrompt extends PlayerOrderPrompt {
     constructor(game) {
         super(game);
-        this.title = 'Select Dudes to fire' ;
+        this.title = 'Select Cards to fire' ;
         this.selectedCards = [];
     }
 
@@ -44,8 +44,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     }
 
     onCardClicked(player, card) {
-        if(card.controller !== player || card.location !== 'play area' ||
-            card.getType() !== 'dude' || card.upkeep === 0) {
+        if(card.controller !== player || card.location !== 'play area' || !card.upkeep) {
             return false;
         }
 
