@@ -9,11 +9,11 @@ class UpkeepPrompt extends PlayerOrderPrompt {
 
     activeCondition(player) {
         return super.activeCondition(player) && 
-            !player.upkeepPaid && this.getDudesWithUpkeep(player).length > 0;
+            !player.upkeepPaid && this.getCardsWithUpkeep(player).length > 0;
     }
 
     skipCondition(player) {
-        return player.upkeepPaid || this.getDudesWithUpkeep(player).length === 0;
+        return player.upkeepPaid || this.getCardsWithUpkeep(player).length === 0;
     }
 
     activePrompt(player) {
@@ -59,7 +59,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
 
     highlightSelectableCards(player) {
         player.selectCard = true;
-        player.setSelectableCards(this.getDudesWithUpkeep(player));
+        player.setSelectableCards(this.getCardsWithUpkeep(player));
     }
 
     onMenuCommand(player) {
@@ -103,8 +103,8 @@ class UpkeepPrompt extends PlayerOrderPrompt {
         return difference < 0 ? 0 : difference;
     }
 
-    getDudesWithUpkeep(player) {
-        return player.cardsInPlay.filter(card => card.getType() === 'dude' && card.upkeep);
+    getCardsWithUpkeep(player) {
+        return player.cardsInPlay.filter(card => card.upkeep);
     }
 }
 
