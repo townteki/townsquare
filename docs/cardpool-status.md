@@ -468,7 +468,7 @@
 |:heavy_check_mark:   | 11007| Zachary Deloria
 |:heavy_check_mark:   | 11008| Karl Odett
 |:heavy_check_mark:   | 11009| Erik Samson
-|                     | 11010| Dr. Brian Foxworth
+|:heavy_check_mark:   | 11010| Dr. Brian Foxworth
 |:heavy_check_mark:   | 11011| Buford Hurley
 |:heavy_check_mark:   | 11012| Doris Powell
 |                     | 11013| Rico Rodegain
