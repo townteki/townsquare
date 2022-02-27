@@ -1093,7 +1093,7 @@ class Player extends Spectator {
     }
 
     determineUpkeep(selectedCards = []) {
-        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
+        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && 
             card.upkeep > 0 && !selectedCards.includes(card));
         let upkeep = upkeepCards.reduce((memo, card) => {
             return memo + card.upkeep;
