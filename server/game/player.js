@@ -896,7 +896,7 @@ class Player extends Spectator {
                 bootedToInvent = true;
             }
             this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
-                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
+                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillForCard(event.gadget), 
                     getPullProperties(event.scientist, event.bootedToInvent));
             });
         };
@@ -1093,7 +1093,7 @@ class Player extends Spectator {
     }
 
     determineUpkeep(selectedCards = []) {
-        let upkeepCards = this.game.findCardsInPlay(card => card.controller.equals(this) && card.getType() === 'dude' &&
+        let upkeepCards = this.game.findCardsInPlay(card => card.controller.equals(this) && 
             card.upkeep > 0 && !selectedCards.includes(card));
         let upkeep = upkeepCards.reduce((memo, card) => {
             return memo + card.upkeep;
@@ -1434,12 +1434,13 @@ class Player extends Spectator {
             context
         };
         this.pull((pulledCard, pulledValue, pulledSuit) => {
+            const totalPullValue = pulledValue + props.pullBonus;
             if(context) {
-                context.totalPullValue = pulledValue + props.pullBonus;
+                context.totalPullValue = totalPullValue;
             }
-            if(props.successCondition(pulledValue + props.pullBonus)) {
-                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.',
-                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff);
+            if(props.successCondition(totalPullValue)) {
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded (total pull value = {5})',
+                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff, totalPullValue);
                 this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
                     let isAbility = !!context;
                     const pullInfo = { 
@@ -1459,8 +1460,8 @@ class Player extends Spectator {
                     }
                 });
             } else {
-                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.',
-                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff);
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed (total pull value - {5})',
+                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff, totalPullValue);
                 this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
                     let isAbility = !!context;
                     const pullInfo = { 
@@ -1483,13 +1484,15 @@ class Player extends Spectator {
         }, false, props);
     }
 
-    pullForSkill(difficulty, skillRating, properties, context) {
+    pullForSkill(difficulty, skillName, properties, context) {
+        const skillRating = properties.pullingDude.getSkillRating(skillName);
+        const checkBonus = properties.pullingDude.getSkillCheckBonus(skillName);
         this.game.raiseEvent('onPullForSkill', { 
-            player: this, difficulty, skillRating, properties 
+            player: this, difficulty, skillRating, checkBonus, properties 
         }, event => {
             const props = Object.assign(properties, {
                 successCondition: pulledValue => pulledValue >= event.difficulty,
-                pullBonus: event.skillRating,
+                pullBonus: event.skillRating + event.checkBonus,
                 difficulty
             });
             this.handlePull(props, context);

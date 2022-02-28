@@ -865,7 +865,7 @@ class Game extends EventEmitter {
         this.playersAndSpectators = players;
 
         if(this.useGameTimeLimit) {
-            let timeLimitStartType = 'whenSetupFinished'; //todo: change to property of game when more kinds of time limit start triggers are implemented/asked for
+            let timeLimitStartType = 'whenFirstLowballRevealed';
             let timeLimitInMinutes = this.gameTimeLimit;
             this.timeLimit.initialiseTimeLimit(timeLimitStartType, timeLimitInMinutes);
         }
