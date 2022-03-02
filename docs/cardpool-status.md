@@ -266,7 +266,7 @@
 |:heavy_check_mark:   | 05021| California Tax Office
 |:heavy_check_mark:   | 05022| St. Anthony's Chapel
 |:heavy_check_mark:   | 05023| The Whateley Estate
-|                     | 05024| Outlaw Mask
+|:heavy_check_mark:   | 05024| Outlaw Mask
 |                     | 05025| Clown Carriage
 |:heavy_check_mark:   | 05026| Bio-Charged Neutralizer
 |                     | 05027| Evanor
