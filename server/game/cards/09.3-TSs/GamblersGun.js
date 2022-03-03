@@ -9,12 +9,9 @@ class TheGamblersGun extends GoodsCard {
                     event.ability.isCardAbility() && event.ability.playTypePlayed() === 'cheatin resolution' &&
                     this.parent && this.parent.getType() === 'dude'
             },
-            handler: context => {
-                this.game.resolveGameAction(GameActions.discardCard({ card: this.parent }), context).thenExecute(() => {
-                    this.game.addMessage('{0} discards {1} due to {2} because a Cheatin\' Resolution was used against them', 
-                        context.player, this.parent, this);
-                });
-            }
+            message: contect => this.game.addMessage('{0} discards {1} due to {2} because a Cheatin\' Resolution was used against them',
+                context.player, this.parent, this),
+            handler: context => this.game.resolveGameAction(GameActions.discardCard({ card: this.parent }), context)
         });
 
         this.action({
