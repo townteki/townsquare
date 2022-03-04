@@ -1,5 +1,5 @@
-const GameActions = require('.');
 const GameAction = require('./GameAction');
+const AddBounty = require('./AddBounty');
 
 class JoinPosse extends GameAction {
     constructor() {
@@ -48,7 +48,7 @@ class JoinPosse extends GameAction {
                     }
                 }
                 if(!event.options.doNotPutBounty && shootout.isBreakinAndEnterin(event.card)) {
-                    event.card.game.resolveGameAction(GameActions.addBounty({ card: event.card }), context);
+                    event.thenAttachEvent(AddBounty.createEvent({ card: event.card }));
                 }
                 event.card.game.raiseEvent('onDudeJoinedPosse', { card: event.card, leaderPosse: event.leaderPosse, options: event.options });
             }
