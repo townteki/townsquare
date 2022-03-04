@@ -1,3 +1,4 @@
+const GameActions = require('.');
 const GameAction = require('./GameAction');
 
 class JoinPosse extends GameAction {
@@ -29,7 +30,7 @@ class JoinPosse extends GameAction {
             const shootout = event.card.game.shootout;
             if(shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot && 
                 !event.card.canJoinWithoutBooting()) {
-                if(card.allowGameAction('boot', context, options)) {
+                if(event.card.allowGameAction('boot', context, options)) {
                     bootingReq = 'do-boot';
                 } else {
                     bootingReq = 'not-met';
@@ -47,9 +48,9 @@ class JoinPosse extends GameAction {
                     }
                 }
                 if(!event.options.doNotPutBounty && shootout.isBreakinAndEnterin(event.card)) {
-                    event.card.increaseBounty();
+                    event.card.game.resolveGameAction(GameActions.addBounty({ card: event.card }), context);
                 }
-                card.game.raiseEvent('onDudeJoinedPosse', { card: event.card, leaderPosse: event.leaderPosse, options: event.options });
+                event.card.game.raiseEvent('onDudeJoinedPosse', { card: event.card, leaderPosse: event.leaderPosse, options: event.options });
             }
         });
     }

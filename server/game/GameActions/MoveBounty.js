@@ -1,3 +1,4 @@
+const GameActions = require('.');
 const GameAction = require('./GameAction');
 
 class MoveBounty extends GameAction {
@@ -14,11 +15,17 @@ class MoveBounty extends GameAction {
         );
     }
 
-    createEvent({ from, to, amount = 1 }) {
+    createEvent({ from, to, amount = 1, context }) {
         let appliedBounty = Math.min(from.bounty, amount);
         return this.event('onCardBountyMoved', { source: from, target: to, bounty: appliedBounty }, event => {
-            event.source.increaseBounty(appliedBounty);
-            event.target.decreaseBounty(appliedBounty);
+            event.source.game.resolveGameAction(GameActions.removeBounty({ 
+                card: event.source,
+                amount: event.bounty
+            }), context);
+            event.target.game.resolveGameAction(GameActions.addBounty({ 
+                card: event.target,
+                amount: event.bounty
+            }), context);
         });
     }
 }
