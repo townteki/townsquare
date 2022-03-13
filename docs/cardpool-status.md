@@ -289,7 +289,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 06002| The Flying Popescus
+|:heavy_check_mark:   | 06002| The Flying Popescus
 |                     | 06003| Andrew Burton
 |                     | 06004| Elmore Rhine
 |                     | 06005| Howard Aswell
