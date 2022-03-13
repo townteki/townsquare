@@ -19,7 +19,7 @@ class TheFlyingPopescus extends DudeCard {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: this,
                     effect: ability.effects.setAsStud()
-                });
+                }));
             }
         });
     }
