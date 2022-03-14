@@ -2,6 +2,8 @@ const Effect = require('../../server/game/effect.js');
 
 function createTarget(properties = {}) {
     let card = jasmine.createSpyObj('card', ['allowGameAction', 'getGameElementType']);
+    card.controller = jasmine.createSpyObj('player', ['equals']);
+    card.controller.equals.and.returnValue(true);
     card.allowGameAction.and.returnValue(true);
     card.getGameElementType.and.returnValue('card');
     Object.assign(card, properties);
@@ -9,7 +11,10 @@ function createTarget(properties = {}) {
 }
 
 function createPlayerTarget(properties = {}) {
-    let player = jasmine.createSpyObj('player', ['getGameElementType']);
+    let player = jasmine.createSpyObj('player', ['getGameElementType', 'equals']);
+    player.equals.and.callFake(p => { 
+        return player === p;
+    });
     player.getGameElementType.and.returnValue('player');
     Object.assign(player, properties);
     return player;
@@ -149,8 +154,8 @@ describe('Effect', function() {
         describe('when the effect target type is card', function() {
             beforeEach(function() {
                 this.effect.active = true;
-                this.player = {};
-                this.anotherPlayer = {};
+                this.player = createPlayerTarget();
+                this.anotherPlayer = createPlayerTarget();
                 this.sourceSpy.controller = this.player;
                 this.matchingCard.controller = this.player;
             });

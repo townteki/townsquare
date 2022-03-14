@@ -18,7 +18,9 @@ class TimeLimit {
         if(timeLimitStartType === 'whenSetupFinished') {
             this.game.on('onSetupFinished', () => this.startTimer());
         }
-        //todo: implement more kinds of triggers to star the time limit   
+        if(timeLimitStartType === 'whenFirstLowballRevealed') {
+            this.game.once('onDrawHandsRevealed', () => this.startTimer());
+        }   
     }
 
     startTimer() {

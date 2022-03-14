@@ -575,7 +575,7 @@
 |                     | 14034| Pigging Out
 |:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
-|                     | 14037| Framed
+|:heavy_check_mark:   | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
 |                     | 14039| Foreboding Glance
 |:white_check_mark:   | 14040| Heretic Joker (Red)
@@ -627,7 +627,7 @@
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
-|                     | 16017| Inner Struggle
+|:heavy_check_mark:   | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
 |:heavy_check_mark:   | 16019| Siege Of The Orphanage
 |                     | 16020| Lighting The Fuse

@@ -8,7 +8,7 @@ class AdrianVallejo extends DudeCard {
             when: {
                 onDudeMoved: event => this.game.shootout && event.options.context && 
                     event.options.context.ability && event.options.context.ability.isCardAbility() && 
-                    event.card !== this &&
+                    !this.equals(event.card) &&
                     !this.isParticipating() &&
                     event.target === this.game.shootout.shootoutLocation.uuid &&
                     event.options.toPosse &&

@@ -89,7 +89,7 @@ class DeckSearchPrompt extends BaseStep {
             return cards.includes(card);
         }
 
-        return card.location === 'draw deck' && card.controller === this.choosingPlayer;
+        return card.location === 'draw deck' && card.controller.equals(this.choosingPlayer);
     }
 
     searchCards(context) {
@@ -101,7 +101,7 @@ class DeckSearchPrompt extends BaseStep {
     }
 
     inAdditionalLocation(card) {
-        return this.properties.additionalLocations.includes(card.location) && card.controller === this.choosingPlayer;
+        return this.properties.additionalLocations.includes(card.location) && card.controller.equals(this.choosingPlayer);
     }
 
     checkCardCondition(card, context) {

@@ -4,8 +4,8 @@ class YunxuJiang extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.isParticipating() && 
-                (this.game.shootout.shootoutLocation.locationCard.controller === this.controller || this.game.isHome(this.gamelocation, this.controller)),
-            match: card => card.getType() === 'dude' && card.isParticipating() && card.controller === this.controller && card !== this,
+                (this.game.shootout.shootoutLocation.locationCard.controller.equals(this.controller) || this.game.isHome(this.gamelocation, this.controller)),
+            match: card => card.getType() === 'dude' && card.isParticipating() && card.controller.equals(this.controller) && !card.equals(this),
             effect: [
                 ability.effects.modifyBullets(1),
                 ability.effects.modifyValue(1)

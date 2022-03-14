@@ -9,8 +9,8 @@ class DrunkenMasters extends OutfitCard {
             condition: () => true,
             match: card => card.location === 'play area' &&
                 card.getType() === 'deed' &&
-                (card.owner.leftmostLocation().locationCard === card ||
-                card.owner.rightmostLocation().locationCard === card),
+                (card.equals(card.owner.leftmostLocation().locationCard) ||
+                card.equals(card.owner.rightmostLocation().locationCard)),
             effect: ability.effects.addKeyword('saloon')
         });
 

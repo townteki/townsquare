@@ -222,7 +222,7 @@ class Player extends Spectator {
             ? predicateOrMatcher
             : card => CardMatcher.isMatch(card, predicateOrMatcher);
         return this.game.allCards.reduce((num, card) => {
-            if(card.controller === this && card.location === 'play area' && predicate(card)) {
+            if(card.controller.equals(this) && card.location === 'play area' && predicate(card)) {
                 return num + 1;
             }
 
@@ -232,10 +232,10 @@ class Player extends Spectator {
 
     isCardInPlayableLocation(card, playingType) {
         let playableLocations = ['shoppin', 'play'].map(playingType =>
-            new PlayableLocation(playingType, card => card.controller === this && card.location === 'hand'));
+            new PlayableLocation(playingType, card => card.controller.equals(this) && card.location === 'hand'));
         if(playingType === 'combo') {
             playableLocations.push(new PlayableLocation(playingType, card => 
-                card.controller === this && (card.location === 'hand' || card.location === 'discard pile')));
+                card.controller.equals(this) && (card.location === 'hand' || card.location === 'discard pile')));
         }
         return playableLocations.some(location => location.playingType === playingType && location.contains(card));
     }
@@ -416,7 +416,7 @@ class Player extends Spectator {
             activePromptTitle: updatedOptions.activePromptTitle || 
                 number > 1 ? 'Select cards to discard' : 'Select a card to discard',
             waitingPromptTitle: updatedOptions.waitingPromptTitle || 'Waiting for opponent to discard card(s)',
-            cardCondition: card => card.location === 'hand' && card.controller === this &&
+            cardCondition: card => card.location === 'hand' && card.controller.equals(this) &&
                 (!options.condition || options.condition(card)),
             onSelect: (p, cards) => {
                 if(updatedOptions.discardExactly && cards.length !== number) {
@@ -437,7 +437,7 @@ class Player extends Spectator {
         }, options, context);
     }
 
-    discardAtRandom(number, callback = () => true) {
+    discardAtRandom(number, callback = () => true, showMessage = true) {
         var toDiscard = Math.min(number, this.hand.length);
         var cards = [];
 
@@ -451,7 +451,9 @@ class Player extends Spectator {
         }
 
         this.discardCards(cards, false, discarded => {
-            this.game.addMessage('{0} discards {1} at random', this, discarded);
+            if(showMessage) {
+                this.game.addMessage('{0} discards {1} at random', this, discarded);
+            }
             callback(discarded);
         });
     }
@@ -666,9 +668,9 @@ class Player extends Spectator {
             return true;
         }
         if(triggerPlayer === 'owner') {
-            return card.owner === this;
+            return card.owner.equals(this);
         }
-        return card.controller === this || card.canUseControllerAbilities(this);
+        return card.controller.equals(this) || card.canUseControllerAbilities(this);
     }
 
     canTrigger(card) {
@@ -825,7 +827,7 @@ class Player extends Spectator {
     }
 
     entersPlay(card, params) {
-        if(card.controller !== this) {
+        if(!card.controller.equals(this)) {
             card.controller.allCards = card.controller.allCards.filter(c => c !== card);
             this.allCards.push(card);
         }
@@ -896,7 +898,7 @@ class Player extends Spectator {
                 bootedToInvent = true;
             }
             this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
-                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
+                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillForCard(event.gadget), 
                     getPullProperties(event.scientist, event.bootedToInvent));
             });
         };
@@ -905,7 +907,7 @@ class Player extends Spectator {
                 activePromptTitle: 'Select a dude to invent ' + gadget.title,
                 waitingPromptTitle: 'Waiting for opponent to select dude',
                 cardCondition: card => card.location === 'play area' &&
-                    card.controller === this &&
+                    card.controller.equals(this) &&
                     !card.cannotInventGadgets() &&
                     (!card.booted || gadget.canBeInventedWithoutBooting()) &&
                     card.canPerformSkillOn(gadget),
@@ -934,7 +936,7 @@ class Player extends Spectator {
         }
 
         if(playingType === 'shoppin') {
-            if(!card.locationCard || card.locationCard.controller !== attachment.controller) {
+            if(!card.locationCard || !card.locationCard.controller.equals(attachment.controller)) {
                 return false;
             } 
             if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
@@ -967,7 +969,7 @@ class Player extends Spectator {
         let originalLocation = attachment.location;
         let originalParent = attachment.parent;
 
-        if(attachment.controller !== card.controller) {
+        if(!attachment.controller.equals(card.controller)) {
             this.game.takeControl(card.controller, attachment);
         }
 
@@ -1079,7 +1081,7 @@ class Player extends Spectator {
     receiveProduction() {
         let producers = this.game.findCardsInPlay(card => card.production > 0);
         let production = producers.reduce((memo, card) => {
-            if(card.productionToBeReceivedBy === this || (!card.productionToBeReceivedBy && card.controller === this)) {
+            if(card.productionToBeReceivedBy === this || (!card.productionToBeReceivedBy && card.controller.equals(this))) {
                 let partialProduction = card.production;
                 if(card.isLocationCard()) {
                     partialProduction = card.receiveProduction(this);
@@ -1093,7 +1095,7 @@ class Player extends Spectator {
     }
 
     determineUpkeep(selectedCards = []) {
-        let upkeepCards = this.game.findCardsInPlay(card => card.controller === this && card.getType() === 'dude' &&
+        let upkeepCards = this.game.findCardsInPlay(card => card.controller.equals(this) && 
             card.upkeep > 0 && !selectedCards.includes(card));
         let upkeep = upkeepCards.reduce((memo, card) => {
             return memo + card.upkeep;
@@ -1434,12 +1436,13 @@ class Player extends Spectator {
             context
         };
         this.pull((pulledCard, pulledValue, pulledSuit) => {
+            const totalPullValue = pulledValue + props.pullBonus;
             if(context) {
-                context.totalPullValue = pulledValue + props.pullBonus;
+                context.totalPullValue = totalPullValue;
             }
-            if(props.successCondition(pulledValue + props.pullBonus)) {
-                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded.',
-                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff);
+            if(props.successCondition(totalPullValue)) {
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and succeeded (total pull value = {5})',
+                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff, totalPullValue);
                 this.game.raiseEvent('onPullSuccess', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
                     let isAbility = !!context;
                     const pullInfo = { 
@@ -1459,8 +1462,8 @@ class Player extends Spectator {
                     }
                 });
             } else {
-                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed.',
-                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff);
+                this.game.addMessage('{0} pulled {1}of{2} ({3}) as check for {4} and failed (total pull value - {5})',
+                    this, pulledValue, pulledSuit, pulledCard, props.source ? props.source : props.chatCommandDiff, totalPullValue);
                 this.game.raiseEvent('onPullFail', Object.assign(props, { pulledValue, pulledSuit, pulledCard }), event => {
                     let isAbility = !!context;
                     const pullInfo = { 
@@ -1483,13 +1486,15 @@ class Player extends Spectator {
         }, false, props);
     }
 
-    pullForSkill(difficulty, skillRating, properties, context) {
+    pullForSkill(difficulty, skillName, properties, context) {
+        const skillRating = properties.pullingDude.getSkillRating(skillName);
+        const checkBonus = properties.pullingDude.getSkillCheckBonus(skillName);
         this.game.raiseEvent('onPullForSkill', { 
-            player: this, difficulty, skillRating, properties 
+            player: this, difficulty, skillRating, checkBonus, properties 
         }, event => {
             const props = Object.assign(properties, {
                 successCondition: pulledValue => pulledValue >= event.difficulty,
-                pullBonus: event.skillRating,
+                pullBonus: event.skillRating + event.checkBonus,
                 difficulty
             });
             this.handlePull(props, context);
@@ -1540,7 +1545,7 @@ class Player extends Spectator {
     }
 
     getTotalControl() {
-        let controlCards = this.game.findCardsInPlay(card => card.control > 0 && card.controller === this);
+        let controlCards = this.game.findCardsInPlay(card => card.control > 0 && card.controller.equals(this));
         let control = controlCards.reduce((memo, card) => {
             return memo + card.control;
         }, this.control);
@@ -1549,7 +1554,7 @@ class Player extends Spectator {
     }
 
     getTotalInfluence() {
-        let influenceCards = this.game.findCardsInPlay(card => card.getType() === 'dude' && card.influence > 0 && card.controller === this);
+        let influenceCards = this.game.findCardsInPlay(card => card.getType() === 'dude' && card.influence > 0 && card.controller.equals(this));
         let infByLocation = {};
         let influence = influenceCards.reduce((memo, card) => {
             if(isNaN(infByLocation[card.gamelocation])) {
@@ -1803,7 +1808,7 @@ class Player extends Spectator {
     }
 
     removeCardFromPile(card) {
-        if(card.controller !== this) {
+        if(!card.controller.equals(this)) {
             card.controller.removeCardFromPile(card);
             this.game.takeControl(card.owner, card, () => card.controller.removeCardFromPile(card));
             return;
