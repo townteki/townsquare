@@ -6,6 +6,8 @@ class PuttingThePiecesTogether extends ActionCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.traitReaction({
+            location: 'play area',
+            ignoreActionCosts: true,            
             when: {
                 onDrawHandsRevealed: () => this.controller.isCheatin()
             },
