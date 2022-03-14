@@ -22,7 +22,7 @@ class BackWays extends ActionCard {
                     activePromptTitle: 'Choose destination for ' + context.target.title,
                     cardCondition: {
                         location: 'play area',
-                        condition: card => card !== erstwhileLocation
+                        condition: card => !card.equals(erstwhileLocation)
                     },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
