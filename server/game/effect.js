@@ -182,7 +182,7 @@ class Effect {
             }
 
             if(this.targetController !== 'any') {
-                return target.eqauls(this.targetController);
+                return target.equals(this.targetController);
             }
         }
 
