@@ -227,17 +227,17 @@ class Game extends EventEmitter {
 
     setFirstPlayer(firstPlayer) {
         for(let player of this.getPlayers()) {
-            player.firstPlayer = player === firstPlayer;
+            player.firstPlayer = player.equals(firstPlayer);
         }
         this.raiseEvent('onFirstPlayerDetermined', { player: firstPlayer });
     }
 
     getOpponents(player) {
-        return this.getPlayers().filter(p => p !== player);
+        return this.getPlayers().filter(p => !p.equals(player));
     }
 
     getOpponentsInFirstPlayerOrder(player) {
-        return this.getPlayersInFirstPlayerOrder().filter(p => p !== player);
+        return this.getPlayersInFirstPlayerOrder().filter(p => !p.equals(player));
     }
 
     isCardVisible(card, player) {
@@ -337,7 +337,7 @@ class Game extends EventEmitter {
     getDudesInPlay(player, condition = () => true) {
         return this.filterCardsInPlay(card => 
             card.getType() === 'dude' &&
-            (!player || player === card.controller) &&
+            (!player || player.equals(card.controller)) &&
             condition(card)
         );
     }
@@ -948,7 +948,7 @@ class Game extends EventEmitter {
     markActionAsTaken(context) {
         if(this.currentPlayWindow) {
             if(!this.currentPlayWindow.doNotMarkActionAsTaken) {
-                if(this.currentPlayWindow.currentPlayer !== context.player) {
+                if(!context.player.equals(this.currentPlayWindow.currentPlayer)) {
                     this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.getCurrentPlayWindowName());
                 }
                 if(context.ability) {
@@ -1204,7 +1204,7 @@ class Game extends EventEmitter {
         var oldController = card.controller;
         var newController = player;
 
-        if(oldController === newController) {
+        if(oldController.equals(newController)) {
             return;
         }
 
@@ -1215,7 +1215,7 @@ class Game extends EventEmitter {
         this.applyGameAction('takeControl', card, card => {
             const originalLocation = card.location;
             oldController.removeCardFromPile(card);
-            oldController.allCards = oldController.allCards.filter(c => c !== card);
+            oldController.allCards = oldController.allCards.filter(c => !c.equals(card));
             if(originalLocation === 'play area') {
                 newController.cardsInPlay.push(card);
             }

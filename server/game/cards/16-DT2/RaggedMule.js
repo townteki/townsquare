@@ -33,7 +33,7 @@ class RaggedMule extends GoodsCard {
 
         this.action({
             title: 'Shootout: Join Dude to posse',
-            playType: ['shootout'],
+            playType: ['shootout:join'],
             cost: [
                 ability.costs.bootSelf(),
                 ability.costs.choose({

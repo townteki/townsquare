@@ -6,7 +6,7 @@ class GabrielPrior extends DudeCard {
             triggerBefore: true,
             when: {
                 onCardPulled: event => event.props.pullingDude && event.props.source &&
-                    event.props.pullingDude === this &&
+                    this.equals(event.props.pullingDude) &&
                     event.props.source.hasKeyword('miracle')
             },
             handler: context => {
@@ -24,7 +24,7 @@ class GabrielPrior extends DudeCard {
     }
 
     getSkillBonus() {
-        return this.game.getDudesAtLocation(this.gamelocation).filter(dude => dude.controller === this.controller && dude !== this).length;
+        return this.game.getDudesAtLocation(this.gamelocation).filter(dude => dude.controller.equals(this.controller) && !dude.equals(this)).length;
     }
 }
 

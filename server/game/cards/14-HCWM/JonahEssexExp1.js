@@ -15,8 +15,8 @@ class JonahEssexExp1 extends DudeCard {
 
         this.persistentEffect({
             condition: () => this.isParticipating(),
-            match: card => card !== this &&
-                card.controller === this.controller && 
+            match: card => !card.equals(this) &&
+                card.controller.equals(this.controller) && 
                 card.getType() === 'dude' &&
                 card.isParticipating() &&
                 card.isWanted(),
@@ -32,7 +32,7 @@ class JonahEssexExp1 extends DudeCard {
                     location: 'play area', 
                     controller: 'any', 
                     condition: card => card.parent &&
-                        card.owner !== this.controller &&
+                        !card.owner.equals(this.controller) &&
                         card.gamelocation === this.gamelocation &&
                         card.cost <= this.bounty
                 },

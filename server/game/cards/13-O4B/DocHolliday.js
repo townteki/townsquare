@@ -3,7 +3,8 @@ const LegendCard = require('../../legendcard.js');
 class DocHolliday extends LegendCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.game.shootout && this.game.shootout.leaderPlayer === this.owner && !this.isSpellcasterInLeaderPosse(),
+            condition: () => this.game.shootout && 
+                this.owner.equals(this.game.shootout.leaderPlayer) && !this.isSpellcasterInLeaderPosse(),
             match: this.owner,
             effect: [
                 ability.effects.modifyPosseStudBonus(-2)

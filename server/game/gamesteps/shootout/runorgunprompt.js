@@ -26,7 +26,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             additionalButtons: [
                 { text: 'All dudes run', arg: 'allrun' }
             ],
-            cardCondition: card => card.controller === this.currentPlayer &&
+            cardCondition: card => card.controller.equals(this.currentPlayer) &&
                 card.location === 'play area' &&
                 card.getType() === 'dude' &&
                 !card.cannotFlee() &&

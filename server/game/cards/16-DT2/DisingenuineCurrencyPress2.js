@@ -4,7 +4,7 @@ class DisingenuineCurrencyPress2 extends GoodsCard {
     setupCardAbilities() {
         this.traitReaction({
             when: {
-                onGadgetInvented: event => event.gadget === this
+                onGadgetInvented: event => this.equals(event.gadget)
             },
             message: context => this.game.addMessage('{0} gains 4 GR thanks to inventing the {1}', context.player, this),
             handler: context => {
@@ -13,7 +13,7 @@ class DisingenuineCurrencyPress2 extends GoodsCard {
         });
         this.traitReaction({
             when: {
-                onCardDiscarded: event => event.card === this && event.originalLocation === 'play area'
+                onCardDiscarded: event => this.equals(event.card) && event.originalLocation === 'play area'
             },
             message: context => this.game.addMessage('{0} draws a card thanks to the {1}', context.player, this),
             handler: context => {
