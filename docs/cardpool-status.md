@@ -177,7 +177,7 @@
 |:white_check_mark:   | 02010| Roderick Byre
 |:heavy_check_mark:   | 02011| Town Council
 |:heavy_check_mark:   | 02012| The R&D Ranch
-|                     | 02013| Telepathy Helmet
+|:heavy_check_mark:   | 02013| Telepathy Helmet
 |:heavy_check_mark:   | 02014| Faithful Hound
 |:heavy_check_mark:   | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
