@@ -19,8 +19,7 @@ class LeonardoLeonCavallo extends DudeCard {
                 cardType: ['dude']
             },
             handler: context => {
-                const skillRating = this.getSkillRating('huckster');
-                context.player.pullForSkill(context.target.value, skillRating, {
+                context.player.pullForSkill(context.target.value, 'huckster', {
                     successHandler: context => {
                         this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context).thenExecute(() => {
                             this.game.addMessage('{0} uses {1} to boot {2}', context.player, this, context.target);

@@ -6,14 +6,14 @@ class MarciaRidge extends DudeCard {
             targetController: 'any',
             condition: () => this.isInTownSquare() && this.isPlayerControllingTownSquare(),
             match: card => card.getType() === 'deed' && this.game.townsquare.isAdjacent(card.gamelocation),
-            effect: ability.effects.canUseControllerAbilities(this, player => player === this.controller)
+            effect: ability.effects.canUseControllerAbilities(this, player => player.equals(this.controller))
         });
     }
 
     isPlayerControllingTownSquare() {
         let opponent = this.controller.getOpponent();
-        let playerTSDudes = this.game.townsquare.getDudes().filter(dude => dude && dude.controller === this.controller);
-        let opponentTSDudes = this.game.townsquare.getDudes().filter(dude => dude && dude.controller === opponent);
+        let playerTSDudes = this.game.townsquare.getDudes().filter(dude => dude && dude.controller.equals(this.controller));
+        let opponentTSDudes = this.game.townsquare.getDudes().filter(dude => dude && dude.controller.equals(opponent));
         return playerTSDudes.reduce((memo, dude) => memo + dude.influence, 0) > opponentTSDudes.reduce((memo, dude) => memo + dude.influence, 0);
     }
 }

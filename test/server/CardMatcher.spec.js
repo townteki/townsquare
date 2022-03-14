@@ -75,7 +75,7 @@ describe('CardMatcher', function() {
 
     describe('createAttachmentMatcher', function() {
         beforeEach(function() {
-            let controller = { controller: 1 };
+            let controller = { equals: p => p === controller };
             this.context = { player: controller };
             this.cardSpy.controller = controller;
             this.cardSpy.getType.and.returnValue('dude');
@@ -99,7 +99,7 @@ describe('CardMatcher', function() {
         describe('controller', function() {
             describe('when a specific value', function() {
                 beforeEach(function() {
-                    this.controller = { controller: 1 };
+                    this.controller = { equals: p => p === this.controller };
                     this.matcher = CardMatcher.createAttachmentMatcher({ controller: this.controller });
                 });
 
@@ -109,7 +109,7 @@ describe('CardMatcher', function() {
                 });
 
                 it('should return false when it does not match', function() {
-                    this.cardSpy.controller = { controller: 2 };
+                    this.cardSpy.controller = { equals: p => p === this.cardSpy.controller };
                     expect(this.matcher(this.cardSpy, this.context)).toBe(false);
                 });
             });
@@ -125,7 +125,7 @@ describe('CardMatcher', function() {
                 });
 
                 it('should return false when the controller is different from the context player', function() {
-                    this.cardSpy.controller = { controller: 2 };
+                    this.cardSpy.controller = { equals: p => p === this.cardSpy.controller };
                     expect(this.matcher(this.cardSpy, this.context)).toBe(false);
                 });
             });
@@ -141,7 +141,7 @@ describe('CardMatcher', function() {
                 });
 
                 it('should return true when the controller is different from the context player', function() {
-                    this.cardSpy.controller = { controller: 2 };
+                    this.cardSpy.controller = { equals: p => p === this.cardSpy.controller };
                     expect(this.matcher(this.cardSpy, this.context)).toBe(true);
                 });
             });

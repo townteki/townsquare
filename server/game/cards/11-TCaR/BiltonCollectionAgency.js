@@ -6,7 +6,7 @@ class BiltonCollectionAgency extends DeedCard {
             title: 'Collect Extra Production',
             when: {
                 onProductionReceived: event =>
-                    event.player === this.player
+                    this.controller.equals(event.player)
             },
             cost: ability.costs.bootSelf(),
             target: {

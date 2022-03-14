@@ -18,7 +18,7 @@ class JoanMcGruder extends DudeCard {
                 card.bounty <= card.influence,
             effect: [
                 ability.effects.cannotBeAffected('opponent', context => context.ability && context.ability.card &&
-                    context.ability.isCardAbility() && context.ability.card.parent === this)
+                    context.ability.isCardAbility() && this.equals(context.ability.card.parent))
             ]
         });
     }
