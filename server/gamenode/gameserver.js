@@ -298,8 +298,10 @@ class GameServer {
         }
 
         for(let player of Object.values(game.getPlayersAndSpectators())) {
-            player.socket.send('cleargamestate');
-            player.socket.leaveChannel(game.id);
+            if(player.socket) {
+                player.socket.send('cleargamestate');
+                player.socket.leaveChannel(game.id);
+            }
         }
 
         delete this.games[gameId];

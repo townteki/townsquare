@@ -15,7 +15,8 @@ class Ambush extends ActionCard {
             },
             handler: (context) => {
                 if(!context.target.isWanted()) {
-                    this.game.once('onLeaderPosseFormed', event => event.shootout.actOnLeaderPosse(dude => dude.increaseBounty()));
+                    this.game.once('onLeaderPosseFormed', event => 
+                        event.shootout.actOnLeaderPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), context)));
                     this.game.addMessage('{0}\'s posse all receive 1 bounty since {1} is not wanted', context.player, context.target);
                 }
             },

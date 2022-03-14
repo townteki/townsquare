@@ -412,9 +412,11 @@ class Shootout extends Phase {
         }
         const locationCard = this.shootoutLocation.locationCard;
         if(locationCard.owner !== this.leaderPlayer) {
-            this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
+            this.actOnLeaderPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), { game: this.game, card: dude }), 
+                dude => !this.isBreakinAndEnterin(dude, locationCard));
         } else {
-            this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
+            this.actOnOpposingPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), { game: this.game, card: dude }), 
+                dude => !this.isBreakinAndEnterin(dude, locationCard));
         }
     } 
 
