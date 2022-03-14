@@ -4,7 +4,7 @@ const LegendCard = require('../../legendcard.js');
 class Raven extends LegendCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.game.shootout && this.game.shootout.leaderPlayer === this.controller &&
+            condition: () => this.game.shootout && this.controller.equals(this.game.shootout.leaderPlayer) &&
                 this.game.shootout.getPosseStat(this.controller, 'bullets') < this.game.shootout.getPosseStat(this.controller.getOpponent(), 'bullets'),
             match: this.owner,
             effect: [
@@ -31,7 +31,7 @@ class Raven extends LegendCard {
             handler: context => {
                 this.untilEndOfRound(context.ability, ability => ({
                     condition: () => this.game.shootout &&
-                        this.game.shootout.shootoutLocation.locationCard === context.target,
+                        context.target.equals(this.game.shootout.shootoutLocation.locationCard),
                     match: context.player,
                     effect: ability.effects.modifyPosseShooterBonus(2)
                 }));
@@ -64,14 +64,14 @@ class Raven extends LegendCard {
                     }
                 };
                 this.game.onceConditional('onShootoutPhaseFinished', { 
-                    condition: event => event.shootout.shootoutLocation.locationCard === context.target &&
-                        event.shootout.winner === context.player
+                    condition: event => context.target.equals(event.shootout.shootoutLocation.locationCard) &&
+                        context.player.equals(event.shootout.winner) 
                 }, eventHandler);
                 this.game.once('onRoundEnded', () => {
                     this.permanentBulletGiven = false;
                 });
                 this.game.once('onSundownAfterVictoryCheck', () => {
-                    if(context.target.controller === context.player && context.target.owner !== context.player) {
+                    if(context.target.controllerequals(context.player) && !context.target.owner.equals(context.player)) {
                         eventHandler();
                     }
                 });
@@ -85,7 +85,7 @@ class Raven extends LegendCard {
         const inTownDeeds = allLocations.map(loc => loc.locationCard).filter(card => card.getType() === 'deed' && !card.isOutOfTown());
         const occupation = {};
         inTownDeeds.forEach(deed => {
-            if(deed.controller !== deed.owner) {
+            if(!deed.controller.equals(deed.owner)) {
                 if(occupation[deed.controller.name]) {
                     occupation[deed.controller.name] += 1;
                 } else {

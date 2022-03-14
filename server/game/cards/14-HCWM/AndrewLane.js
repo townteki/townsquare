@@ -5,8 +5,8 @@ class AndrewLane extends LegendCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.game.shootout &&
-                this.game.shootout.leaderPlayer === this.controller,
-            match: card => card.controller === this.owner &&
+                this.controller.equals(this.game.shootout.leaderPlayer),
+            match: card => card.controller.equals(this.owner) &&
                 card.getType() === 'dude' &&
                 card.isParticipating() &&
                 !card.hasAttachmentWithKeywords(['weapon']),

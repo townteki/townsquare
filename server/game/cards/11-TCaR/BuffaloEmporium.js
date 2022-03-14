@@ -36,7 +36,7 @@ class BuffaloEmporium extends DeedCard {
                     }
                     this.applyAbilityEffect(context.ability, ability => ({
                         condition: () => context.target.isParticipating() && 
-                            context.target.controller === context.player,
+                            context.target.controller.equals(context.player),
                         match: context.player,
                         effect: ability.effects.modifyPosseStudBonus(1)
                     }));

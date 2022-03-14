@@ -42,13 +42,13 @@ class JasperStone extends LegendCard {
                     } else {
                         this.game.onceConditional('onShooterPicked', { 
                             until: 'onShootoutPhaseFinished',
-                            condition: event => event.card.controller === context.player 
+                            condition: event => context.player.equals(event.card.controller) 
                         }, event => givePermBonuses(event.card));
                     }
                 };
                 this.game.onceConditional('onCardAced', { 
                     until: 'onShootoutPhaseFinished',
-                    condition: event => event.card === context.target 
+                    condition: event => event.card.equals(context.target) 
                 }, eventHandler);
             }
         });

@@ -1,4 +1,18 @@
 class NullCard {
+    get controller() {
+        return {
+            id: 'game',
+            equals: () => false
+        };
+    }
+
+    get owner() {
+        return {
+            id: 'game',
+            equals: () => false
+        };
+    }
+
     hasKeyword() {
         return false;
     }
@@ -40,6 +54,10 @@ class NullCard {
     }
     
     hasAttachmentWithKeywords() {
+        return false;
+    }
+
+    equals() {
         return false;
     }
 }

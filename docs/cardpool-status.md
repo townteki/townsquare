@@ -177,7 +177,7 @@
 |:white_check_mark:   | 02010| Roderick Byre
 |:heavy_check_mark:   | 02011| Town Council
 |:heavy_check_mark:   | 02012| The R&D Ranch
-|                     | 02013| Telepathy Helmet
+|:heavy_check_mark:   | 02013| Telepathy Helmet
 |:heavy_check_mark:   | 02014| Faithful Hound
 |:heavy_check_mark:   | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
@@ -575,7 +575,7 @@
 |                     | 14034| Pigging Out
 |:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
-|                     | 14037| Framed
+|:heavy_check_mark:   | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
 |                     | 14039| Foreboding Glance
 |:white_check_mark:   | 14040| Heretic Joker (Red)
@@ -627,7 +627,7 @@
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
-|                     | 16017| Inner Struggle
+|:heavy_check_mark:   | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
 |:heavy_check_mark:   | 16019| Siege Of The Orphanage
 |                     | 16020| Lighting The Fuse

@@ -15,8 +15,9 @@ class BurnEmOut extends ActionCard {
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} marking {2}', context.player, this, context.target),
-            handler: () => {
-                this.game.once('onLeaderPosseFormed', event => event.shootout.actOnLeaderPosse(dude => dude.increaseBounty()));
+            handler: context => {
+                this.game.once('onLeaderPosseFormed', event => 
+                    event.shootout.actOnLeaderPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), context)));
             },
             onSuccess: (job, context) => {
                 this.game.resolveGameAction(GameActions.lookAtHand({
