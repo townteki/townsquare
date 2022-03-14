@@ -7,7 +7,7 @@ class MahoganyJackson extends DudeCard {
     setupCardAbilities() {
         this.traitReaction({
             when: {
-                onDudeJoinedPosse: event => event.card === this
+                onDudeJoinedPosse: event => this.equals(event.card)
             },
             message: context => 
                 this.game.addMessage('{0} discards 2 cards from top of their deck thanks to {1}', 

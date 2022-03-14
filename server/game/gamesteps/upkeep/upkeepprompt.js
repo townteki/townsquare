@@ -44,7 +44,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     }
 
     onCardClicked(player, card) {
-        if(card.controller !== player || card.location !== 'play area' || !card.upkeep) {
+        if(!card.controller.equals(player) || card.location !== 'play area' || !card.upkeep) {
             return false;
         }
 

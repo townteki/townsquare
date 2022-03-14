@@ -686,6 +686,7 @@ const Effects = {
         return {
             title: 'Hand Rank dynamically modified',
             gameAction: 'modifyHandRank',
+            targetType: 'player',
             apply: function(player, context) {
                 context.dynamicHandRank = context.dynamicHandRank || {};
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
@@ -1301,8 +1302,8 @@ const Effects = {
         return {
             targetType: 'player',
             apply: function(player, context) {
-                let revealFunc = (card, viewingPlayer) => player.drawDeck.length > 0 && player.drawDeck[0] === card && card.controller === player && viewingPlayer === player;
-
+                let revealFunc = (card, viewingPlayer) => player.drawDeck.length > 0 && 
+                    card.equals(player.drawDeck[0]) && card.controller.equals(player) && viewingPlayer.equals(player);
                 context.lookAtTopCard = context.lookAtTopCard || {};
                 context.lookAtTopCard[player.name] = revealFunc;
                 context.game.cardVisibility.addRule(revealFunc);
@@ -1319,8 +1320,7 @@ const Effects = {
         return {
             targetType: 'player',
             apply: function(player, context) {
-                let revealFunc = (card) => player.drawDeck.length > 0 && player.drawDeck[0] === card;
-
+                let revealFunc = (card) => player.drawDeck.length > 0 && card.equals(player.drawDeck[0]);
                 context.revealTopCard = context.revealTopCard || {};
                 context.revealTopCard[player.name] = revealFunc;
                 context.game.cardVisibility.addRule(revealFunc);

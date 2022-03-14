@@ -5,9 +5,9 @@ class AbuelitaEspinoza extends DudeCard {
         this.persistentEffect({
             condition: () => this.isAtDeed() && 
                 this.locationCard.owner !== this.controller,
-            match: card => card !== this &&
+            match: card => !card.equals(this) &&
                 card.location === 'play area' &&
-                card.controller === this.controller &&
+                card.controller.equals(this.controller) &&
                 card.getType() === 'dude',
             effect: ability.effects.modifyUpkeep(-1)
         });

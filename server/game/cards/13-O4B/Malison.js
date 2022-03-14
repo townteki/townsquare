@@ -41,11 +41,11 @@ class Malison extends SpellCard {
                 };
                 this.game.onceConditional('onCardDiscarded', {
                     until: 'onShootoutPhaseFinished',
-                    condition: event => event.card === context.target 
+                    condition: event => event.card.equals(context.target) 
                 }, eventHandler);
                 this.game.onceConditional('onCardAced', { 
                     until: 'onShootoutPhaseFinished',
-                    condition: event => event.card === context.target 
+                    condition: event => event.card.equals(context.target) 
                 }, eventHandler);
             },
             source: this

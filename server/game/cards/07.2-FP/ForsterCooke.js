@@ -5,7 +5,7 @@ class ForsterCooke extends DudeCard {
         this.persistentEffect({
             targetController: 'current',
             condition: () => this.locationCard.hasOneOfKeywords(['Saloon', 'Casino']),
-            match: card => card.getType() === 'dude' && card !== this,
+            match: card => card.getType() === 'dude' && !this.equals(card),
             effect: [
                 ability.effects.modifyBullets(1),
                 ability.effects.modifyValue(1)

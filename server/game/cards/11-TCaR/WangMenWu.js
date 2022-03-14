@@ -18,7 +18,7 @@ class WangMenWu extends DudeCard {
                     gunslinger.removeFromGame();
                 };
                 this.game.onceConditional('onShooterToBePicked', { 
-                    condition: event => event.player === context.player 
+                    condition: event => event.player.equals(context.player) 
                 }, eventHandler);
                 this.game.once('onShootoutPhaseFinished', () => {
                     if(gunslinger.location === 'play area') {
