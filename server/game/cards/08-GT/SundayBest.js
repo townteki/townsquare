@@ -14,7 +14,7 @@ class SundayBest extends GoodsCard {
                     this.parent && this.parent.getType() === 'dude'
             },
             target: {
-                activePromptTitle: 'Select location for ${this.parent.title} to run to',
+                activePromptTitle: `Select location for ${this.parent.title} to run to`,
                 cardCondition: {
                     location: 'play area',
                     condition: card => card.isAdjacent(this.parent.gameLocation)
