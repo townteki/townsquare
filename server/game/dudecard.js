@@ -206,7 +206,7 @@ class DudeCard extends DrawCard {
                     card.gamelocation === this.gamelocation &&
                     (!this.game.isHome(this.gamelocation, card.controller) || card.canBeCalledOutAtHome()) &&
                     card.uuid !== this.uuid &&
-                    card.controller !== this.controller,
+                    !card.controller.equals(this.controller),
                 autoSelect: false,
                 gameAction: 'callout'
             },
@@ -310,7 +310,7 @@ class DudeCard extends DrawCard {
                     effect.match = effect.match.filter(matchTarget => matchTarget !== this);
                     effect.match.push(expDude);
                 }
-            } else if(effect.match === this) {
+            } else if(this.equals(effect.match)) {
                 effect.match = expDude;
             }
         });
@@ -336,7 +336,7 @@ class DudeCard extends DrawCard {
 
     canTradeGoods(card) {
         return card.getType() === 'goods' && 
-        card.parent === this &&
+        this.equals(card.parent) &&
         !card.wasTraded() &&
         !card.cannotBeTraded();        
     }
@@ -501,7 +501,7 @@ class DudeCard extends DrawCard {
     }
 
     canLeadJob(player) {
-        if(this.controller !== player) {
+        if(!this.controller.equals(player)) {
             return false;
         }
         if(this.booted) {

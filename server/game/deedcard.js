@@ -27,7 +27,7 @@ class DeedCard extends LocationCard {
         if(card.getType() === 'deed' && card.isOutOfTown()) {
             return false;
         }
-        if(card.getType() === 'outfit' && card.owner === this.owner) {
+        if(card.getType() === 'outfit' && this.owner.equals(card.owner)) {
             return true;
         }
         return this.owner.locations.some(location => location.uuid === card.uuid);

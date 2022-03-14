@@ -12,7 +12,7 @@ class ZacharyDeloria extends DudeCard {
 
     getHighestInfluenceHere() {
         const gameLocation = this.getGameLocation();
-        const dudesHere = gameLocation ? gameLocation.getDudes(dude => dude.controller === this.controller) : [];
+        const dudesHere = gameLocation ? gameLocation.getDudes(dude => dude.controller.equals(this.controller)) : [];
         return dudesHere.reduce((memo, dude) => dude.influence > memo ? dude.influence : memo, 0);
     }
 }
