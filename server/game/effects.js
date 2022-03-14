@@ -686,6 +686,7 @@ const Effects = {
         return {
             title: 'Hand Rank dynamically modified',
             gameAction: 'modifyHandRank',
+            targetType: 'player',
             apply: function(player, context) {
                 context.dynamicHandRank = context.dynamicHandRank || {};
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;

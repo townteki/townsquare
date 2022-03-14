@@ -7,6 +7,7 @@ class InnerStruggle extends ActionCard {
             when: {
                 onDrawHandsRevealed: () => this.parent && this.parent.controller.isCheatin() && !this.owner.isCheatin() && !this.booted
             },
+            location: 'play area',
             ignoreActionCosts: true,
             handler: context => {
                 this.game.resolveGameAction(GameActions.bootCard({ card: this}), context).thenExecute(() => {
@@ -17,8 +18,8 @@ class InnerStruggle extends ActionCard {
 
         this.persistentEffect({
             location: 'play area',
-            condition: () => this.game.shootout,
-            match: this.controller,
+            condition: () => !!this.parent && this.game.shootout,
+            match: player => player.equals(this.controller),
             effect: ability.effects.dynamicHandRankMod(() => this.booted ? -1 : 0)
         });
 
@@ -32,7 +33,7 @@ class InnerStruggle extends ActionCard {
                     this.controller.discardAtRandom(1, discarded => {
                         this.game.addMessage('{0} uses {1}, attaches it to {2} and {3} randomly discards {4}', 
                             context.player, this, theirhome, this.controller, discarded);
-                    });
+                    }, false);
                 });
             }
         });
