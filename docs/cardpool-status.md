@@ -575,7 +575,7 @@
 |                     | 14034| Pigging Out
 |:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
-|                     | 14037| Framed
+|:heavy_check_mark:   | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
 |                     | 14039| Foreboding Glance
 |:white_check_mark:   | 14040| Heretic Joker (Red)
