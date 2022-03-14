@@ -11,10 +11,9 @@ class DrBrianFoxworth extends DudeCard {
         this.reaction({
             title: 'Dr. Brian Foxworth',
             when: {
-                onShootoutCasualtiesStepStarted: () => this.game.shootout
+                onShootoutCasualtiesStepStarted: () => this.location === 'play area'
             },
             repeatable: true,
-            location: 'play area',
             handler: context => {
                 const DrInf = this.influence;
                 context.game.promptForYesNo(context.player, {
