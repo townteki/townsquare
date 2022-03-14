@@ -14,7 +14,7 @@ class TallulahLulaMorgan extends DudeCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'current', 
-                    condition: card => card.owner !== this.controller 
+                    condition: card => !card.owner.equals(this.controller)
                 },
                 cardType: ['deed']
             },
