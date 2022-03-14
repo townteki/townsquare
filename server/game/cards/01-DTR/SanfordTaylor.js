@@ -6,7 +6,7 @@ class SanfordTaylor extends DudeCard {
         this.action({
             title: 'Noon: Sanford Taylor',
             playType: ['noon'],
-            condition: () => this.locationCard.getType() === 'deed', 
+            condition: () => this.isAtDeed(), 
             cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Select a dude to call out',
