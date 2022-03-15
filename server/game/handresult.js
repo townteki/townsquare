@@ -43,16 +43,18 @@ class HandResult {
 
     checkSpecialJokers(hand) {
         this.handRank.jokerMod = 0;
+        let cheatnessCake = true;
         hand.forEach(card => {
             if(DevilJokerCodes.includes(card.code)) {
                 this.handRank.specialJoker = card;
                 this.handRank.jokerMod += 2;
-                this.handRank.cheatin = true;
+                this.handRank.cheatin = cheatnessCake;
             }
             if(HereticJokerCodes.includes(card.code)) {
                 this.handRank.specialJoker = card;
                 this.handRank.jokerMod -= 3;
                 this.handRank.cheatin = false;
+                cheatnessCake = false;
             }
         });
     }

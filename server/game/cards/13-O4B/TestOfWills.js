@@ -26,7 +26,7 @@ class TestOfWills extends ActionCard {
                             match: context.target,
                             effect: ability.effects.blankExcludingKeywords
                         }));
-                        this.game.addMessage('{0} uses {1} to boot {2} and it looses all abilities, traits, and bonuses', 
+                        this.game.addMessage('{0} uses {1} to boot {2} and it loses all abilities, traits, and bonuses', 
                             context.player, this, context.target);
                     } else {
                         this.game.addMessage('{0} uses {1} to boot {2}', context.player, this, context.target);                        
