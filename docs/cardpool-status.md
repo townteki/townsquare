@@ -195,7 +195,7 @@
 |                     | 03002| Richard Slavin
 |:heavy_check_mark:   | 03003| Mortimer Parsons
 |                     | 03004| Gang Yi
-|                     | 03005| Tallulah "Lula" Morgan
+|:heavy_check_mark:   | 03005| Tallulah "Lula" Morgan
 |                     | 03006| Dr. Emanuel Ashbel
 |:heavy_check_mark:   | 03007| Angélica Espinosa
 |:heavy_check_mark:   | 03008| José Morales
