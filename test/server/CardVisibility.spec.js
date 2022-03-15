@@ -4,8 +4,11 @@ describe('CardVisibility', function() {
     beforeEach(function() {
         this.specator = jasmine.createSpyObj('spectator', ['isSpectator']);
         this.specator.isSpectator.and.returnValue(true);
-        this.controller = jasmine.createSpyObj('controller', ['isSpectator']);
+        this.controller = jasmine.createSpyObj('controller', ['isSpectator', 'equals']);
         this.controller.readyToStart = true;
+        this.controller.equals.and.callFake(p => {
+            return this.controller === p;
+        });
         this.opponent = jasmine.createSpyObj('opponent', ['isSpectator']);
         this.opponent.readyToStart = true;
         this.card = { location: 'play area', facedown: false, controller: this.controller };

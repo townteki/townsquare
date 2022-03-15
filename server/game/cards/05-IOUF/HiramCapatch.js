@@ -5,9 +5,9 @@ class HiramCapatch extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.game.currentPhase === PhaseNames.Upkeep,
-            match: card => card !== this &&
+            match: card => !card.equals(this) &&
                 card.location === 'play area' &&
-                card.controller === this.controller &&
+                card.controller.equals(this.controller) &&
                 card.getType() === 'dude' &&
                 card.isNearby(this.gamelocation),
             effect: ability.effects.modifyInfluence(1)

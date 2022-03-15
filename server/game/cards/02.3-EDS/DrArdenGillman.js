@@ -18,8 +18,7 @@ class DrArdenGillman extends DudeCard {
                 cardType: ['dude']
             },
             handler: context => {
-                const skillRating = this.getSkillRating('mad scientist');
-                context.player.pullForSkill(context.target.getGrit(), skillRating, {
+                context.player.pullForSkill(context.target.getGrit(), 'mad scientist', {
                     successHandler: context => {
                         let targetAced = false;
                         if(context.totalPullValue - 6 >= context.target.getGrit()) {

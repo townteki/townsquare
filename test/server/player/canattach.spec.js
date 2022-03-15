@@ -37,7 +37,7 @@ describe('Player', function() {
 
         describe('when shoppin in uncontrolled location', function() {
             it('should return false', function() {
-                this.cardSpy.locationCard = { controller: 'other' };
+                this.cardSpy.locationCard = { controller: { equals: () => false } };
                 expect(this.player.canAttach(this.attachmentSpy, this.cardSpy, 'shoppin')).toBe(false);
             });
         });

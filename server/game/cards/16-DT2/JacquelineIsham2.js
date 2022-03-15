@@ -4,7 +4,7 @@ class JacquelineIsham2 extends DudeCard {
     setupCardAbilities() {
         this.traitReaction({
             when: {
-                onDudeJoinedPosse: event => !event.leaderPosse && event.card === this
+                onDudeJoinedPosse: event => !event.leaderPosse && this.equals(event.card)
             },
             handler: context => {                
                 this.untilEndOfShootoutPhase(context.ability, ability => ({

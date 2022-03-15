@@ -34,13 +34,13 @@ class HaoTeZui extends DudeCard {
     getNumOfDiffLocations() {
         const numberOfLocations = this.game.getPlayers().reduce((locAgg, player) => {
             return locAgg + player.locations.reduce((agg, loc) => {
-                if(loc.getDudes(dude => dude.controller === this.controller).length) {
+                if(loc.getDudes(dude => dude.controller.equals(this.controller)).length) {
                     return agg + 1;
                 }
                 return agg;
             }, 0);
         }, 0);
-        if(this.game.townsquare.getDudes(dude => dude.controller === this.controller).length) {
+        if(this.game.townsquare.getDudes(dude => dude.controller.equals(this.controller)).length) {
             return numberOfLocations + 1;
         }
         return numberOfLocations;

@@ -38,7 +38,7 @@ class LookAtHand extends GameAction {
                 multiSelect: true,
                 numCards: params.numToSelect,
                 cardCondition: card => card.location === 'hand' && 
-                    card.controller === event.opponent && 
+                    card.controller.equals(event.opponent) && 
                     context.game.isCardVisible(card, event.player) &&
                     params.condition(card),
                 onSelect: (player, cards) => {

@@ -100,7 +100,7 @@ class Search extends GameAction {
                 return cards.includes(card);
             }
 
-            return validLocations.includes(card.location) && card.controller === searchedPlayer;
+            return validLocations.includes(card.location) && card.controller.equals(searchedPlayer);
         };
     }
 

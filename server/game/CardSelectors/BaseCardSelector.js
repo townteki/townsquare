@@ -201,7 +201,7 @@ class BaseCardSelector {
             return true;
         }
 
-        return card.controller === selectedCards[0].controller;
+        return card.controller.equals(selectedCards[0].controller);
     }
 
     static isAllowedSpecialTarget(target) {

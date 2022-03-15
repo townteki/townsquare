@@ -48,7 +48,7 @@ class GrimServantODeath extends ActionCard {
                         });
                         this.game.onceConditional('onHandResultDetermined', { 
                             until: 'onShootoutRoundFinished',
-                            condition: event => event.player === context.player.getOpponent() && context.player.getOpponent().isCheatin()
+                            condition: event => event.player.equals(context.player.getOpponent()) && context.player.getOpponent().isCheatin()
                         }, event => {
                             this.game.resolveGameAction(GameActions.increaseCasualties({ 
                                 player: event.player, 
