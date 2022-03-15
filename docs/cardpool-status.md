@@ -651,7 +651,7 @@
 |                     | 17012| Knight's Chasuble
 |:heavy_check_mark:   | 17013| Pedro
 |:heavy_check_mark:   | 17014| Aetheric Shockwave Inducer
-|                     | 17015| The Gambler's Gun
+|:heavy_check_mark:   | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
 |:heavy_check_mark:   | 17017| Ghostly Communion
 |:heavy_check_mark:   | 17018| Calling The Cavalry
