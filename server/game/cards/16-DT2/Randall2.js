@@ -4,7 +4,7 @@ class Randall2 extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             condition: () => this.numberOfLocations() >= 3,
-            match: player => player === this.controller,
+            match: player => player.equals(this.controller),
             effect: ability.effects.modifyHandSize(1)
         });
     }

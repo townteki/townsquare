@@ -7,13 +7,22 @@ class RamiroMendoza extends DudeCard {
                 onDudeJoinedPosse: event => event.card === this
             },
             handler: context => {
-                // TODO M2 Ask if player wants to pay
                 if(context.player.getSpendableGhostRock() >= 1) {
-                    context.player.spendGhostRock(1);
-                    this.game.addMessage('{0} has to pay 1 GR to {1} to make him join the posse', this.controller, this);
+                    this.game.promptForYesNo(context.player, {
+                        title: 'Do you want to pay 1GR for Ramiro?',
+                        onYes: player => {
+                            player.spendGhostRock(1);
+                            this.game.addMessage('{0} has to pay 1 GR to {1} to make him join the posse', player, this);                            
+                        },
+                        onNo: player => {
+                            player.discardCard(this, false);
+                            this.game.addMessage('{0} decides to not pay 1 GR to {1}, who leaves town', player, this);
+                        },
+                        source: this
+                    });
                 } else {
                     context.player.discardCard(this, false);
-                    this.game.addMessage('{0} does not have 1 GR to pay to {1}, who leaves town', this.controller, this);
+                    this.game.addMessage('{0} does not have 1 GR to pay to {1}, who leaves town', context.player, this);
                 }
             }
         });

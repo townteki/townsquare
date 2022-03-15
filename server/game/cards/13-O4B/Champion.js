@@ -48,11 +48,11 @@ class Champion extends SpellCard {
                 };
                 this.game.onceConditional('onCardAced', {
                     until: 'onShootoutPhaseFinished',
-                    condition: event => event.card === context.costs.boot
+                    condition: event => event.card.equals(context.costs.boot)
                 }, eventHandler);
                 this.game.onceConditional('onCardDiscarded', {
                     until: 'onShootoutPhaseFinished',
-                    condition: event => event.card === context.costs.boot
+                    condition: event => event.card.equals(context.costs.boot)
                 }, eventHandler);
             },
             source: this

@@ -4,7 +4,7 @@ class RabidRanceHitchcock extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             targetController: 'current',
-            condition: () => this.locationCard.owner !== this.controller,
+            condition: () => !this.locationCard.owner.equals(this.controller),
             match: card => card.uuid === this.gamelocation,
             effect: ability.effects.modifyControl(1)
         });

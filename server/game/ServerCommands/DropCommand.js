@@ -17,7 +17,7 @@ class DropCommand {
     }
 
     execute() {
-        if(this.card.controller !== this.player) {
+        if(!this.card.controller.equals(this.player)) {
             return;
         }
         const defaultContext = { game: this.game, player: this.player };

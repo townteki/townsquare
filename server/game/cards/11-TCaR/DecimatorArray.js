@@ -5,7 +5,7 @@ class DecimatorArray extends GoodsCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onGadgetInvented: event => event.gadget === this && 
+                onGadgetInvented: event => event.gadget.equals(this) && 
                     this.controller.cardsInPlay.some(card => card.getType() === 'dude' && card.hasKeyword('mad scientist') && card.booted)
             },
             handler: context => {

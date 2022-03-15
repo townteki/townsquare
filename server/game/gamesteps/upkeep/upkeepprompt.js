@@ -3,17 +3,17 @@ const PlayerOrderPrompt = require('../playerorderprompt.js');
 class UpkeepPrompt extends PlayerOrderPrompt {
     constructor(game) {
         super(game);
-        this.title = 'Select Dudes to fire' ;
+        this.title = 'Select Cards to fire' ;
         this.selectedCards = [];
     }
 
     activeCondition(player) {
         return super.activeCondition(player) && 
-            !player.upkeepPaid && this.getDudesWithUpkeep(player).length > 0;
+            !player.upkeepPaid && this.getCardsWithUpkeep(player).length > 0;
     }
 
     skipCondition(player) {
-        return player.upkeepPaid || this.getDudesWithUpkeep(player).length === 0;
+        return player.upkeepPaid || this.getCardsWithUpkeep(player).length === 0;
     }
 
     activePrompt(player) {
@@ -44,8 +44,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     }
 
     onCardClicked(player, card) {
-        if(card.controller !== player || card.location !== 'play area' ||
-            card.getType() !== 'dude' || card.upkeep === 0) {
+        if(!card.controller.equals(player) || card.location !== 'play area' || !card.upkeep) {
             return false;
         }
 
@@ -59,7 +58,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
 
     highlightSelectableCards(player) {
         player.selectCard = true;
-        player.setSelectableCards(this.getDudesWithUpkeep(player));
+        player.setSelectableCards(this.getCardsWithUpkeep(player));
     }
 
     onMenuCommand(player) {
@@ -103,8 +102,8 @@ class UpkeepPrompt extends PlayerOrderPrompt {
         return difference < 0 ? 0 : difference;
     }
 
-    getDudesWithUpkeep(player) {
-        return player.cardsInPlay.filter(card => card.getType() === 'dude' && card.upkeep);
+    getCardsWithUpkeep(player) {
+        return player.cardsInPlay.filter(card => card.upkeep);
     }
 }
 

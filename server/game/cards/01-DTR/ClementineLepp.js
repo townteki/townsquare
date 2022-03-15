@@ -4,7 +4,7 @@ class ClementineLepp extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             targetController: 'current',
-            condition: () => this.locationCard.hasKeyword('Saloon') && this.locationCard.owner === this.controller,
+            condition: () => this.locationCard.hasKeyword('Saloon') && this.locationCard.owner.equals(this.controller),
             match: this,
             effect: [
                 ability.effects.modifyInfluence(1),
