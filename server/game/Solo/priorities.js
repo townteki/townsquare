@@ -5,6 +5,11 @@ function booleanCondition(bool1, bool2) {
     return bool1 ? -1 : 1;
 }
 
+function combinedCost(card) {
+    return [card].concat(card.attachments)
+        .reduce((cost, card) => cost + card.cost, 0);
+}
+
 const Priorities = {
     lowestInfluence: function() {
         return (dude1, dude2) => dude1.getSundownInfluence() - dude2.getSundownInfluence();
@@ -56,13 +61,10 @@ const Priorities = {
         };
     },
     lowestCombinedCost: function() {
-        return (card1, card2) => {
-            const combinedCost1 = [card1].concat(card1.attachments)
-                .reduce((cost, card) => cost + card.cost, 0);
-            const combinedCost2 = [card2].concat(card2.attachments)
-                .reduce((cost, card) => cost + card.cost, 0);
-            return combinedCost1 - combinedCost2;
-        };
+        return (card1, card2) => combinedCost(card1) - combinedCost(card2);
+    },
+    highestCombinedCost: function() {
+        return (card1, card2) => combinedCost(card2) - combinedCost(card1);
     },
     hasInfluence: function(atSundown = false) {
         return (dude1, dude2) => {

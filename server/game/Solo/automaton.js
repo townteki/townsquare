@@ -17,6 +17,11 @@ class Automaton extends Player {
         return true;
     }
 
+    prepareDecks() {
+        super.prepareDecks();
+        this.standaloneDeckId = this.deck.standaloneDeckId;
+    }
+
     discardFromHand(number = 1, callback = () => true, options = {}, context) {
         let updatedOptions = Object.assign({ discardExactly: false }, options);
         const cardsToDiscard = this.getCardsToDiscard(number, updatedOptions);
@@ -165,9 +170,9 @@ class Automaton extends Player {
         return [];
     }
 
-    getCardsToDiscardOnSundown() {
+    getCardsToDiscardOnNightfall() {
         return this.hand.length ? 
-            this.getCardsToDiscard(this.getNumberOfDiscardsAtSundown(), { forSundown: true }) : [];
+            this.getCardsToDiscard(this.getNumberOfDiscardsAtNightfall(), { forNightfall: true }) : [];
     }
 
     getCardsToDiscardDownToHandSize() {
@@ -212,98 +217,22 @@ class Automaton extends Player {
         return [];
     }
 
-    getCasualtiesResolution(shootout, casualtiesNum, firstCasualty, context) {
-        let availableVictims = shootout.getPosseByPlayer(this).getCards(card => {
-            context.casualty = card;
-            return card.coversCasualties('any', context);
-        });
-        let currentCasualtiesNum = casualtiesNum;
-        let resolutions = [];
-        // 1. check if there are any cards that has to be selected as first casualty
-        const handleFirstCasualty = (type) => {
-            let fcCoveredNum = firstCasualty.coversCasualties(type);
-            if(currentCasualtiesNum - fcCoveredNum >= 0) {
-                resolutions.push({
-                    card: firstCasualty,
-                    type: type
-                });
-                currentCasualtiesNum -= fcCoveredNum;
-                availableVictims = availableVictims.filter(victim => victim !== firstCasualty);
-                return true;
-            }
-            return false;           
-        };
-        if(availableVictims.includes(firstCasualty)) {
-            handleFirstCasualty('sendHome') || handleFirstCasualty('discard') || handleFirstCasualty('ace');
+    getDudesToDiscardForUpkeep(dudesWithUpkeep) {
+        const upkeepReflex = this.decisionEngine.programmedReflex('upkeepDiscard');
+        if(upkeepReflex) {
+            return upkeepReflex(dudesWithUpkeep);
         }
-        // if casualties are zero by resolving the first casualty, we are done
-        if(currentCasualtiesNum === 0) {
-            return resolutions;
+
+        return [];
+    }
+
+    getCasualties(casualtyContext, firstCasualty) {
+        const casualtyReflex = this.decisionEngine.programmedReflex('assignCasualties');
+        if(casualtyReflex) {
+            return casualtyReflex(casualtyContext, firstCasualty);
         }
-        // 2. check if there are any sidekick cards that can be selected as casualty
-        resolutions = resolutions.concat(availableVictims.reduce((result, victim) => {
-            if(!victim.hasKeyword('sidekick') || currentCasualtiesNum === 0) {
-                return result;
-            }
-            currentCasualtiesNum -= victim.coversCasualties('discard');
-            result.push({ card: victim, type: 'discard' });
-            return result;
-        }, []));
-        // if casualties are zero by resolving the sidekick, we are done
-        if(currentCasualtiesNum === 0) {
-            return resolutions;
-        }
-        // 3. check other cards that can be selected as casualties to resolve rest
-        let restOfVictims = availableVictims.filter(victim => !victim.hasKeyword('sidekick'));
-        restOfVictims = this.orderByTargetPriority(restOfVictims, 'casualties');
-        return resolutions.concat(restOfVictims.reduce((result, victim) => {
-            if(currentCasualtiesNum === 0) {
-                return result;
-            }
-            let casualtyInfos = [{
-                card: victim,
-                type: 'ace',
-                covered: victim.coversCasualties('ace')
-            }];
-            casualtyInfos.push({
-                card: victim,
-                type: 'discard',
-                covered: victim.coversCasualties('discard')
-            });
-            casualtyInfos.push({
-                card: victim,
-                type: 'sendHome',
-                covered: victim.coversCasualties('sendHome')
-            });
-            casualtyInfos = casualtyInfos.filter(info => info.covered > 0).sort((info1, info2) => {
-                let remain1 = currentCasualtiesNum - info1.covered;
-                let remain2 = currentCasualtiesNum - info2.covered;
-                if(remain1 === remain2) {
-                    if(info1.type === 'sendHome') {
-                        return -1;
-                    }
-                    if(info2.type === 'sendHome') {
-                        return 1;
-                    }
-                    if(info1.type === 'discard') {
-                        return -1;
-                    }
-                    if(info2.type === 'discard') {
-                        return 1;
-                    }
-                }
-                if(remain1 < 0 && remain2 === 0) {
-                    return 1;
-                }
-                if(remain2 < 0 && remain1 === 0) {
-                    return -1;
-                }
-                return Math.abs(remain1) - Math.abs(remain2);
-            });
-            result.push(casualtyInfos[0]);
-            currentCasualtiesNum -= casualtyInfos[0].covered;
-            return result;
-        }, []));
+
+        return [];
     }
 }
 

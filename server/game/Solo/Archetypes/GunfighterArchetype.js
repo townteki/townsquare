@@ -176,7 +176,7 @@ class GunfighterArchetype extends BaseArchetype {
                     Priorities.highestBullets()
                 ]);
                 const unbootedAtTS = this.game.getDudesAtLocation(this.game.townsquare.uuid, dude => !dude.booted);
-                orderedDudes = orderedDudes.find(dude => {
+                orderedDudes = orderedDudes.filter(dude => {
                     if(unbootedAtTS.length === 1 && unbootedAtTS.includes(dude)) {
                         return false;
                     }
@@ -361,6 +361,112 @@ class GunfighterArchetype extends BaseArchetype {
 
         return jobMark.concat((this.player.orderByTargetPriority(possibleDudes, 'joinPosse')).slice(0, 2));
     }
+
+    upkeepDiscardDudes(dudesWithUpkeep) {
+        const orderedDudes = BaseArchetype.sortByPriority(dudesWithUpkeep, [Priorities.highestCombinedCost()]);
+        let currentGR = this.player.ghostrock;
+        let dudesToDiscard = [];
+        orderedDudes.forEach(dude => {
+            if(currentGR >= dude.upkeep) {
+                currentGR -= dude.upkeep;
+            } else {
+                dudesToDiscard.push(dude);
+            }
+        });
+        return dudesToDiscard;
+    }
+
+    assignCasualties(casualtyContext, firstCasualty) {
+        let resolutions = [];
+        // 1. check if there are any cards that has to be selected as first casualty
+        if(casualtyContext.availableVictims.includes(firstCasualty)) {
+            resolutions = BaseArchetype.handleCasualty('sendHome', firstCasualty, resolutions, casualtyContext) || 
+                BaseArchetype.handleCasualty('discard', firstCasualty, resolutions, casualtyContext) || 
+                BaseArchetype.handleCasualty('ace', firstCasualty, resolutions, casualtyContext);
+        }
+        // if casualties are zero by resolving the first casualty, we are done
+        if(casualtyContext.currentCasualtiesNum === 0) {
+            return resolutions;
+        }
+
+        [...casualtyContext.availableVictims].forEach(victim => {
+            if(victim.hasKeyword('harrowed') && casualtyContext.currentCasualtiesNum > 0) {
+                resolutions = BaseArchetype.handleCasualty('sendHome', victim, resolutions, casualtyContext);
+            }
+        });
+        if(casualtyContext.currentCasualtiesNum === 0) {
+            return resolutions;
+        }
+
+        // 2. check if there are any sidekick cards that can be selected as casualty
+        [...casualtyContext.availableVictims].forEach(victim => {
+            if(victim.hasKeyword('sidekick') && casualtyContext.currentCasualtiesNum > 0) {
+                resolutions = BaseArchetype.handleCasualty('discard', victim, resolutions, casualtyContext);
+            }
+        });
+        // if casualties are zero by resolving the sidekick, we are done
+        if(casualtyContext.currentCasualtiesNum === 0) {
+            return resolutions;
+        }
+
+        [...casualtyContext.availableVictims].forEach(victim => {
+            if(victim.hasKeyword('token') && casualtyContext.currentCasualtiesNum > 0) {
+                resolutions = BaseArchetype.handleCasualty('ace', victim, resolutions, casualtyContext) || 
+                    BaseArchetype.handleCasualty('discard', victim, resolutions, casualtyContext) || 
+                    BaseArchetype.handleCasualty('sendHome', victim, resolutions, casualtyContext);
+            }
+        });
+        // 3. check other cards that can be selected as casualties to resolve rest
+        let restOfVictims = this.player.orderByTargetPriority(casualtyContext.availableVictims, 'casualties');
+        return resolutions.concat(restOfVictims.reduce((result, victim) => {
+            if(casualtyContext.currentCasualtiesNum === 0) {
+                return result;
+            }
+            let casualtyInfos = [{
+                card: victim,
+                type: 'ace',
+                covered: victim.coversCasualties('ace')
+            }];
+            casualtyInfos.push({
+                card: victim,
+                type: 'discard',
+                covered: victim.coversCasualties('discard')
+            });
+            casualtyInfos.push({
+                card: victim,
+                type: 'sendHome',
+                covered: victim.coversCasualties('sendHome')
+            });
+            casualtyInfos = casualtyInfos.filter(info => info.covered > 0).sort((info1, info2) => {
+                let remain1 = casualtyContext.currentCasualtiesNum - info1.covered;
+                let remain2 = casualtyContext.currentCasualtiesNum - info2.covered;
+                if(remain1 === remain2) {
+                    if(info1.type === 'sendHome') {
+                        return -1;
+                    }
+                    if(info2.type === 'sendHome') {
+                        return 1;
+                    }
+                    if(info1.type === 'discard') {
+                        return -1;
+                    }
+                    if(info2.type === 'discard') {
+                        return 1;
+                    }
+                }
+                if(remain1 < 0 && remain2 === 0) {
+                    return 1;
+                }
+                if(remain2 < 0 && remain1 === 0) {
+                    return -1;
+                }
+                return Math.abs(remain1) - Math.abs(remain2);
+            });
+            result.push(casualtyInfos[0]);
+            casualtyContext.currentCasualtiesNum -= casualtyInfos[0].covered;
+            return result;
+        }, []));
+    }
 }
 
 class ConditionTables {
@@ -450,8 +556,13 @@ class ConditionTables {
                 } else if(context.mark) {
                     clonedGame = game.simulateShootout('shootout plays', context.mark);
                 }
+                const dudesThatCannotJoin = [];
                 for(let dudeUuid in joinReqs) {
                     let dudeJoinInfo = joinReqs[dudeUuid];
+                    if(!dudeJoinInfo.canJoin) {
+                        dudesThatCannotJoin.push(dudeUuid);
+                        continue;
+                    }
                     dudeJoinInfo.hasShootoutResAbility = dudeJoinInfo.dude.hasAbilityForType('shootout') || 
                         dudeJoinInfo.dude.hasAbilityForType('resolution');
                     if(clonedGame) {
@@ -459,6 +570,11 @@ class ConditionTables {
                         dudeJoinInfo.hasJoinAbility = BaseArchetype.hasEnabledAbilityOfType(this.player, clonedDude, 'shootout:join');
                     }
                 }
+                dudesThatCannotJoin.forEach(dudeUuid => {
+                    targets = targets.filter(target => target.uuid !== dudeUuid);
+                    delete joinReqs[dudeUuid];
+                });
+
                 conditions = this.getTargetPriorityConditions(cardType, controller, 'leaderOrJoin', joinReqs);
                 break;
             }
