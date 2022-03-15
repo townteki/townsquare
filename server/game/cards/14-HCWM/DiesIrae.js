@@ -13,7 +13,7 @@ class DiesIrae extends SpellCard {
                 this.abilityContext = context;
                 this.game.onceConditional('onShooterPicked', { 
                     until: 'onShootoutPhaseFinished',
-                    condition: event => event.card.controller === context.player 
+                    condition: event => event.card.controller.equals(context.player) 
                 }, () => {
                     let deadDudes = context.player.deadPile.filter(card => card.getType() === 'dude');
                     if(!deadDudes.length) {

@@ -29,7 +29,7 @@ class HeartsCard extends DrawCard {
 
     meleeWeaponCondition() {
         return this.game.shootout && this.game.shootout.getParticipants().some(dude => {
-            if(dude.controller === this.controller) {
+            if(dude.controller.equals(this.controller)) {
                 return false;
             }
             let nonMeleeUnbootedWeapon = dude.attachments.filter(att => att.hasKeyword('weapon') && !att.hasKeyword('melee') && !att.booted);

@@ -6,7 +6,7 @@ class FrankStillwell extends DudeCard {
         this.traitReaction({
             when: {
                 onDudeJoinedPosse: event => !event.leaderPosse && 
-                    event.card === this &&
+                    this.equals(event.card) &&
                     event.card.isWanted()
             },
             handler: context => {
