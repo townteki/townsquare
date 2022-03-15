@@ -4,7 +4,7 @@ class HankKetchum extends LegendCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onPlayWindowClosed: event => this.game.shootout && this.game.shootout.leaderPlayer === this.owner &&
+                onPlayWindowClosed: event => this.game.shootout && this.owner.equals(this.game.shootout.leaderPlayer) &&
                     event.playWindow.name === 'shootout plays'
             },
             handler: context => {
@@ -15,7 +15,7 @@ class HankKetchum extends LegendCard {
                     },
                     match: card => card.location === 'play area' && 
                         card.getType() === 'dude' && 
-                        card.controller === this.owner &&
+                        card.controller.equals(this.owner) &&
                         card.isParticipating() && 
                         !this.isDudeWithHighestGrit(card),
                     effect: ability.effects.cannotBePickedAsShooter()

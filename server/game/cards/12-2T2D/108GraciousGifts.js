@@ -19,7 +19,7 @@ class GraciousGifts extends OutfitCard {
             target: {
                 activePromptTitle: 'Select Your Dude to unboot',
                 waitingPromptTitle: 'Waiting for Opponent to Select Their Dude',
-                cardCondition: card => card.location === 'play area' && card.controller === this.controller,
+                cardCondition: card => card.location === 'play area' && card.controller.equals(this.controller),
                 cardType: 'dude',
                 gameAction: 'unboot'
             },

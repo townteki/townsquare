@@ -5,7 +5,7 @@ class AnalyticalCognisizer extends GoodsCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onGadgetInvented: event => event.gadget === this
+                onGadgetInvented: event => this.equals(event.gadget)
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.unbootCard({ card: context.event.scientist }), context);

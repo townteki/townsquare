@@ -62,8 +62,8 @@ class Scattergun extends GoodsCard {
         }
         const leaderPosse = this.game.shootout.leaderPosse;
         const oppPosse = this.game.shootout.opposingPosse;
-        return (leaderPosse && leaderPosse.shooter === dude) ||
-            (oppPosse && oppPosse.shooter === dude);
+        return (leaderPosse && leaderPosse.shooter.equals(dude)) ||
+            (oppPosse && oppPosse.shooter.equals(dude));
     }
 }
 

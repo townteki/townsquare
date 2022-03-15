@@ -10,12 +10,12 @@ class CurseOfFailure extends ActionCard {
                 ability.effects.setInfluence(0),
                 ability.effects.setControl(0),
                 ability.effects.modifyUpkeep(1),
-                ability.effects.cannotIncreaseBullets('any', context => context.source !== this),
-                ability.effects.cannotDecreaseBullets('any', context => context.source !== this),
-                ability.effects.cannotIncreaseInfluence('any', context => context.source !== this),
-                ability.effects.cannotDecreaseInfluence('any', context => context.source !== this),
-                ability.effects.cannotIncreaseControl('any', context => context.source !== this),
-                ability.effects.cannotDecreaseControl('any', context => context.source !== this)
+                ability.effects.cannotIncreaseBullets('any', context => !this.equals(context.source)),
+                ability.effects.cannotDecreaseBullets('any', context => !this.equals(context.source)),
+                ability.effects.cannotIncreaseInfluence('any', context => !this.equals(context.source)),
+                ability.effects.cannotDecreaseInfluence('any', context => !this.equals(context.source)),
+                ability.effects.cannotIncreaseControl('any', context => !this.equals(context.source)),
+                ability.effects.cannotDecreaseControl('any', context => !this.equals(context.source))
             ]
         });
 

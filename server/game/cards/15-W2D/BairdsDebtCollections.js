@@ -7,7 +7,7 @@ class BairdsDebtCollections extends DeedCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onCardEntersPlay: event => event.card !== this && event.card.getType() === 'deed' &&
+                onCardEntersPlay: event => !this.equals(event.card) && event.card.getType() === 'deed' &&
                     ['shoppin', 'ability'].includes(event.playingType)
             },
             handler: () => {

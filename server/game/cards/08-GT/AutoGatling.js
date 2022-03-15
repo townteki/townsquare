@@ -14,9 +14,9 @@ class AutoGatling extends GoodsCard {
         this.persistentEffect({
             condition: () => this.parent,
             match: card => card.getType() === 'dude' && 
-                card.controller !== this.owner &&
+                !card.controller.equals(this.owner) &&
                 !card.booted && 
-                card.locationCard === this.parent,
+                this.parent.equals(card.locationCard),
             effect: [ability.effects.modifyInfluence(-1)]
         });
     }

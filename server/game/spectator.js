@@ -15,6 +15,10 @@ class Spectator {
     isSpectator() {
         return true;
     }
+
+    equals(spectator) {
+        return spectator && this.id === spectator.id;
+    }
 }
 
 module.exports = Spectator;

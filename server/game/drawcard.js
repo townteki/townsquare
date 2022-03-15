@@ -16,7 +16,9 @@ class DrawCard extends BaseCard {
         this.minCost = 0;
         this.difficultyMod = 0;
         this.currentControl = this.cardData.control || 0;
+        this.currentUpkeep = this.cardData.upkeep;
         this.permanentControl = 0;
+        this.permanentUpkeep = 0;
         if(!this.hasKeyword('rowdy')) {
             this.controlDeterminator = 'influence:deed';
         } else {
@@ -73,6 +75,17 @@ class DrawCard extends BaseCard {
         }
     }
 
+    get upkeep() {
+        if(this.currentUpkeep < 0) {
+            return 0;
+        }
+        return this.currentUpkeep;
+    }
+
+    set upkeep(amount) {
+        this.currentUpkeep = amount;
+    }
+
     modifyControl(amount, applying = true, fromEffect = false) {
         this.currentControl += amount;
         if(!fromEffect) {
@@ -85,6 +98,20 @@ class DrawCard extends BaseCard {
             applying: applying
         };
         this.game.raiseEvent('onCardControlChanged', params);
+    }
+
+    modifyUpkeep(amount, applying = true, fromEffect = false) {
+        this.currentUpkeep += amount;
+        if(!fromEffect) {
+            this.permanentUpkeep += amount;
+        }
+
+        let params = {
+            card: this,
+            amount: amount,
+            applying: applying
+        };
+        this.game.raiseEvent('onCardUpkeepChanged', params);
     }
 
     removeAllControl() {
@@ -351,6 +378,8 @@ class DrawCard extends BaseCard {
         }
         this.control = this.currentControl - this.permanentControl;
         this.permanentControl = 0;
+        this.upkeep = this.currentUpkeep - this.permanentUpkeep;
+        this.permanentUpkeep = 0;
         super.leavesPlay();
     }
 
