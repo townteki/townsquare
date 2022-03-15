@@ -17,8 +17,8 @@ class StrengthOfTheAncestors extends SpellCard {
                         ability.effects.cannotBeSentHome('opponent')
                     ]
                 }));
-                this.game.onceConditional('onDudeLeftLocation', { condition: event => event.card === this.parent }, 
-                    () => this.game.effectEngine.unapplyAndRemove(effect => effect.source === this));
+                this.game.onceConditional('onDudeLeftLocation', { condition: event => event.card.equals(this.parent) }, 
+                    () => this.game.effectEngine.unapplyAndRemove(effect => this.equals(effect.source)));
                 this.game.addMessage('{0} uses {1} to give {2} +3 bullets, make them a stud and prevent them from being booted ' +
                     ' or sent home booted by opposing card effects while they do not leave {3}', 
                 context.player, this, this.parent, this.parent.locationCard);

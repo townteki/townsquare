@@ -27,7 +27,7 @@ class TheOrphanage extends DeedCard {
 
     getDeedControlWoOrphanage(card) {
         const effects = this.game.effectEngine.getAppliedEffectsOnCard(card);
-        if(effects && effects.some(effect => effect.source === this)) {
+        if(effects && effects.some(effect => this.equals(effect.source))) {
             return card.control + 1;
         }
         return card.control;

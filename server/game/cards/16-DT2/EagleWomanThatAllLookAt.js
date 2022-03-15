@@ -58,7 +58,7 @@ class EagleWomanThatAllLookAt extends DudeCard {
         this.persistentEffect({
             condition: () => true,
             match: card => card.location === 'play area' &&
-                card.controller === this.controller &&
+                card.controller.equals(this.controller) &&
                 card.getType() === 'dude' && card.hasKeyword('shaman'),
             effect: ability.effects.addCardAction({
                 title: 'Noon/Shootout: Move Eagle Woman here',

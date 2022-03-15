@@ -5,8 +5,8 @@ class DariusHellstromme extends LegendCard {
     setupCardAbilities(ability) {
         this.traitReaction({
             when: {
-                onShooterPicked: event => event.card.controller === this.controller &&                   
-                    this.game.shootout.leaderPlayer === this.controller &&
+                onShooterPicked: event => event.card.controller.equals(this.controller) &&                   
+                    this.game.shootout.leaderPlayer.equals(this.controller) &&
                     !event.card.hasAttachmentWithKeywords(['gadget', 'weapon'])
             },
             handler: context => {

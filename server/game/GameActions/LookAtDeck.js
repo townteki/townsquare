@@ -17,7 +17,7 @@ class LookAtDeck extends GameAction {
                 activePromptTitle: `Look at ${event.lookingAt.name}'s deck`,
                 source: context.source,
                 revealTargets: true,
-                cardCondition: card => card.location === 'draw deck' && card.controller === event.lookingAt && event.topCards.includes(card),
+                cardCondition: card => card.location === 'draw deck' && card.controller.equals(event.lookingAt) && event.topCards.includes(card),
                 additionalButtons,
                 onSelect: () => false,
                 onMenuCommand

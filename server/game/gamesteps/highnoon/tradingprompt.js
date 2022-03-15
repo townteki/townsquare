@@ -39,7 +39,7 @@ class TradingPrompt extends UiPrompt {
         this.game.promptForSelect(this.player, {
             promptTitle: 'Tradin\' action',
             activePromptTitle: 'Select dude to receive goods',
-            cardCondition: card => card.controller === this.player && 
+            cardCondition: card => card.controller.equals(this.player) && 
                 card.getType() === 'dude' &&
                 !card.booted &&
                 card.gamelocation === this.fromDudeCard.gamelocation && 
@@ -89,7 +89,7 @@ class TradingPrompt extends UiPrompt {
                     activePromptTitle: 'Select attachment(s) to trade',
                     multiSelect: true,
                     numCards: 0,
-                    cardCondition: card => card.controller === player && dude.canTradeGoods(card),
+                    cardCondition: card => card.controller.equals(player) && dude.canTradeGoods(card),
                     onSelect: (player, cards) => {
                         this.attachments = cards;
                         this.performTrading();

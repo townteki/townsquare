@@ -14,7 +14,7 @@ class TheBloodyStar extends GoodsCard {
 
         this.traitReaction({
             when: {
-                onCardEntersPlay: event => event.card === this
+                onCardEntersPlay: event => this.equals(event.card)
             },
             handler: context => {
                 this.game.resolveGameAction(GameActions.addBounty({ card: this.parent, amount: 2 }), context).thenExecute(() => {

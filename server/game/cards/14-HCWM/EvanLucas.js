@@ -7,7 +7,7 @@ class EvanLucas extends DudeCard {
         this.traitReaction({
             when: {
                 onCardAced: event => this.isParticipating() && 
-                    event.card.controller !== this.controller &&
+                    !this.controller.equals(event.card.controller) &&
                     event.card.getType() === 'dude' && event.fromPosse
             },
             message: context =>
