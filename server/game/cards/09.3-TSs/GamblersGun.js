@@ -19,7 +19,7 @@ class TheGamblersGun extends GoodsCard {
             playType: ['resolution'],
             cost: ability.costs.bootSelf(),
             ifCondition: context => this.parent && this.game.shootout &&
-                this.parent === this.game.shootout.getPosseByPlayer(context.player).shooter,
+                this.parent.equals(this.game.shootout.getPosseByPlayer(context.player).shooter),
             ifFailMessage: context => this.game.addMessage('{0} uses {1}, but it has no effect because {2} is not the shooter',
                 context.player, this, this.parent),
             handler: context => {
