@@ -183,7 +183,7 @@
 |:heavy_check_mark:   | 02016| Paralysis Mark
 |:heavy_check_mark:   | 02017| Forget
 |:heavy_check_mark:   | 02018| Make 'em Sweat
-|                     | 02019| Back Ways
+|:heavy_check_mark:   | 02019| Back Ways
 |                     | 02020| Hired Help
 |:heavy_check_mark:   | 02021| Too Much Attention
 
