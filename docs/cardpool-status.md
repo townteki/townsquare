@@ -639,7 +639,7 @@
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 17001| Shi Long Peng
 |                     | 17002| Seamus McCaffrey
-|                     | 17003| Gene North Star
+|:heavy_check_mark:   | 17003| Gene North Star
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
