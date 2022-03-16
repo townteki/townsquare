@@ -13,7 +13,6 @@ class DrBrianFoxworth extends DudeCard {
             when: {
                 onShootoutCasualtiesStepStarted: () => this.location === 'play area'
             },
-            repeatable: true,
             handler: context => {
                 const DrInf = this.influence;
                 context.game.promptForYesNo(context.player, {
@@ -29,6 +28,7 @@ class DrBrianFoxworth extends DudeCard {
                             });
                         });
                     },
+                    onNo: () => this.abilities.reactions.forEach(reaction => reaction.resetAbilityUsage()),
                     source: this
                 });
             },
