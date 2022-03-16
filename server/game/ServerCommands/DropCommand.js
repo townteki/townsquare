@@ -19,10 +19,10 @@ class DropCommand {
 
     execute() {
         if(!this.game.isSolo()) {
-            if(this.card.controller !== this.player) {
+            if(!this.card.controller.equals(this.player)) {
                 return;
             }
-            if(this.targetPlayer && this.targetPlayer !== this.player) {
+            if(this.targetPlayer && !this.targetPlayer.equals(this.player)) {
                 return;
             }
         }

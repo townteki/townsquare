@@ -60,7 +60,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
     }
 
     canCoverCasualty(card, player, casualtyType) {
-        return card.controller === player && 
+        return card.controller.equals(player) && 
             card.location === 'play area' &&
             this.shootout.isInShootout(card) &&
             card.coversCasualties(casualtyType, this.createContext(card, player)) > 0;

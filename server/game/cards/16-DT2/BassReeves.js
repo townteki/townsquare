@@ -17,7 +17,7 @@ class BassReeves extends DudeCard {
             },
             handler: context => {
                 if(context.player.modifyRank(1, context)) {
-                    this.game.addMessage('{0}\'s rank is increased by 1 thanks to the {2}; Current rank is {3}', 
+                    this.game.addMessage('{0}\'s rank is increased by 1 thanks to the {1}; Current rank is {2}', 
                         context.player, this, context.player.getTotalRank());
                 }
             }

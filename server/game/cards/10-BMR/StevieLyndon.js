@@ -5,7 +5,7 @@ class StevieLyndon extends DudeCard {
         this.traitReaction({
             triggerBefore: true,
             when: {
-                onCardAbilityInitiated: event => event.source.parent === this && event.source.hasKeyword('hymn')
+                onCardAbilityInitiated: event => this.equals(event.source.parent) && event.source.hasKeyword('hymn')
             },
             handler: context => {
                 this.lastingEffect(context.ability, ability => ({

@@ -17,7 +17,7 @@ class DiscardPrompt extends PlayerOrderPrompt {
                 }
                 this.completePlayer();
             } else {
-                if(this.game.isSolo() && this.currentPlayer === this.game.automaton) {
+                if(this.game.isSolo() && this.currentPlayer.equals(this.game.automaton)) {
                     this.handleSolo();
                 } else {
                     const discardNum = this.currentPlayer.getNumberOfDiscardsAtNightfall();
@@ -25,7 +25,7 @@ class DiscardPrompt extends PlayerOrderPrompt {
                         this.game.promptForSelect(this.currentPlayer, {
                             activePromptTitle: `Select up to ${discardNum} cards from hand to discard`,
                             cardCondition: card => card.location === 'hand' &&
-                            card.controller === this.currentPlayer,
+                            card.controller.equals(this.currentPlayer),
                             multiSelect: true,
                             numCards: discardNum,
                             onSelect: (player, cards) => {

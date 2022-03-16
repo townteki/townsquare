@@ -13,8 +13,6 @@ class LauraBanks extends DudeCard {
                 cardCondition: { location: 'play area', controller: 'any', participating: true },
                 cardType: ['dude']
             },
-            message: context => 
-                this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 this.abilityContext = context;
                 this.game.promptWithMenu(context.player, this, {

@@ -147,6 +147,10 @@ class BaseCard {
         const clonedCard = clonedGame.findCardInPlayByUuid(this.uuid);
         return clonedCard.influence;
     }
+    
+    equals(card) {
+        return card && this.uuid === card.uuid;
+    }
 
     getValueText() {
         switch(this.value) {
@@ -604,7 +608,7 @@ class BaseCard {
         let menu = [];
         let menuActionItems = this.getActionMenuItems(player);
 
-        if(this.location === 'play area' && player === this.controller) {
+        if(this.location === 'play area' && player.equals(this.controller)) {
             menu = [{ method: 'toggleUnBoot', text: 'Boot / Unboot' }];
         }
         if(!menu.length && menuActionItems.filter(menuItem => 
@@ -656,7 +660,7 @@ class BaseCard {
     }
 
     toggleUnBoot(player) {
-        if(this.facedown || this.controller !== player) {
+        if(this.facedown || !this.controller.equals(player)) {
             return;
         }
 
@@ -726,7 +730,7 @@ class BaseCard {
     }
 
     isOpposing(player) {
-        return this.isParticipating() && this.controller !== player;
+        return this.isParticipating() && !this.controller.equals(player);
     }
 
     isInLeaderPosse() {
@@ -1041,7 +1045,7 @@ class BaseCard {
     }
 
     isInControlledLocation() {
-        return this.locationCard && this.locationCard.controller === this.controller;
+        return this.locationCard && this.locationCard.controller.equals(this.controller);
     }
 
     isInSameLocation(card) {

@@ -13,7 +13,7 @@ class PickYerShooterPrompt extends PlayerOrderPrompt {
                 card.getType() === 'dude' && 
                 this.shootout.isInShootout(card) &&
                 !card.cannotBePickedAsShooter());
-            if(this.currentPlayer === this.game.automaton) {
+            if(this.currentPlayer.equals(this.game.automaton)) {
                 const shooter = this.game.automaton.pickShooter(availableDudes);
                 this.pickShooter(this.game.automaton, shooter);
             } else {

@@ -259,10 +259,13 @@ class Shootout extends Phase {
     }
 
     getPosseByPlayer(player) {
-        if(player === this.leaderPlayer) {
+        if(!player) {
+            return;
+        }
+        if(player.equals(this.leaderPlayer)) {
             return this.leaderPosse;
         }
-        if(player === this.opposingPlayer) {
+        if(player.equals(this.opposingPlayer)) {
             return this.opposingPosse;
         }
     }
@@ -395,9 +398,12 @@ class Shootout extends Phase {
     }
 
     actOnPlayerPosse(player, action, exception) {
-        if(this.leaderPlayer === player) {
+        if(!player) {
+            return;
+        }
+        if(player.equals(this.leaderPlayer)) {
             this.actOnLeaderPosse(action, exception);
-        } else if(this.opposingPlayer === player) {
+        } else if(player.equals(this.opposingPlayer)) {
             this.actOnOpposingPosse(action, exception);
         }
     }
@@ -413,7 +419,7 @@ class Shootout extends Phase {
         }
         const shootoutLocCard = locationCard || this.shootoutLocation.locationCard;
         if(shootoutLocCard && (shootoutLocCard.getType() === 'outfit' || shootoutLocCard.hasKeyword('private'))) {
-            return !dude.options.contains('doesNotGetBountyOnJoin') && shootoutLocCard.owner !== dude.controller;
+            return !dude.options.contains('doesNotGetBountyOnJoin') && !shootoutLocCard.owner.equals(dude.controller);
         }
         return false;
     }
@@ -423,10 +429,12 @@ class Shootout extends Phase {
             return;
         }
         const locationCard = this.shootoutLocation.locationCard;
-        if(locationCard.owner !== this.leaderPlayer) {
-            this.actOnLeaderPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
+        if(!locationCard.owner.equals(this.leaderPlayer)) {
+            this.actOnLeaderPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), { game: this.game, card: dude }), 
+                dude => !this.isBreakinAndEnterin(dude, locationCard));
         } else {
-            this.actOnOpposingPosse(dude => dude.increaseBounty(), dude => !this.isBreakinAndEnterin(dude, locationCard));
+            this.actOnOpposingPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), { game: this.game, card: dude }), 
+                dude => !this.isBreakinAndEnterin(dude, locationCard));
         }
     } 
 

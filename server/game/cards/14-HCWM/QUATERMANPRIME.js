@@ -35,7 +35,7 @@ class QUATERMANPRIME extends DudeCard {
 
     isValidSource(source) {
         return source && source.getType() === 'goods' && 
-            source.parent === this;
+            this.equals(source.parent);
     }
 }
 

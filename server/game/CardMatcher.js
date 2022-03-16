@@ -53,7 +53,7 @@ class CardMatcher {
         return function(card, context) {
             return (
                 (card.getType() === 'townsquare' || CardMatcher.isMatch(card, propertiesOrFunc)) &&
-                Matcher.anyValue(propertiesOrFunc.controller, controller => card.controller === controller || CardMatcher.attachmentControllerMatches(controller, card, context)) &&
+                Matcher.anyValue(propertiesOrFunc.controller, controller => card.controller.equals(controller) || CardMatcher.attachmentControllerMatches(controller, card, context)) &&
                 Matcher.anyValue(propertiesOrFunc.condition, condition => condition(card, context))
             );
         };
@@ -69,7 +69,7 @@ class CardMatcher {
         return function(card, context) {
             return (
                 CardMatcher.isMatch(card, defaultedProperties) &&
-                Matcher.anyValue(properties.controller, controller => card.controller === controller || CardMatcher.attachmentControllerMatches(controller, card, context))
+                Matcher.anyValue(properties.controller, controller => card.controller.equals(controller) || CardMatcher.attachmentControllerMatches(controller, card, context))
             );
         };
     }
@@ -79,9 +79,9 @@ class CardMatcher {
             case 'any':
                 return true;
             case 'current':
-                return card.controller === context.player;
+                return card.controller.equals(context.player);
             case 'opponent':
-                return card.controller !== context.player;
+                return !card.controller.equals(context.player);
         }
 
         return false;

@@ -13,8 +13,6 @@ class DudeCard extends DrawCard {
         super(owner, cardData);
 
         this.gritFunc = null;
-        this.currentUpkeep = this.cardData.upkeep;
-        this.permanentUpkeep = 0;
         this.currentDeedInfluence = 0;
 
         this.shootoutStatus = ShootoutStatuses.None;
@@ -62,17 +60,6 @@ class DudeCard extends DrawCard {
         return this.studReferenceArray[0].shooter;
     }
 
-    get upkeep() {
-        if(this.currentUpkeep < 0) {
-            return 0;
-        }
-        return this.currentUpkeep;
-    }
-
-    set upkeep(amount) {
-        this.currentUpkeep = amount;
-    }
-
     get deedInfluence() {
         if(this.currentDeedInfluence < 0) {
             return 0;
@@ -118,34 +105,37 @@ class DudeCard extends DrawCard {
         if(baseSkillRating === null || baseSkillRating === undefined) {
             return;
         }
-        const bonus = this.skillKfBonuses.reduce((aggregator, bonus) => {
+        return baseSkillRating;
+    }
+
+    getSkillCheckBonus(skillNameOrKF) {
+        return this.skillKfBonuses.reduce((aggregator, bonus) => {
             if(typeof(bonus.bonus) === 'function') {
                 return aggregator + (bonus.bonus(skillNameOrKF) || 0);
             }
             return aggregator + bonus.bonus;
         }, 0);
-        return baseSkillRating + bonus;
     }
 
-    getSkillRatingForCard(spellOrGadget) {
+    getSkillForCard(spellOrGadget) {
         const condObj = this.skillKfConditions.find(condObj => condObj.condition(spellOrGadget));
         if(condObj) {
-            return this.getSkillRating(condObj.skillnameOrKF);
+            return condObj.skillnameOrKF;
         }
         if(spellOrGadget.isGadget()) {
-            return this.getSkillRating('mad scientist');
+            return 'mad scientist';
         }
         if(spellOrGadget.getType() !== 'goods' && spellOrGadget.getType() !== 'spell') {
             return;
         }
         if(spellOrGadget.isMiracle()) {
-            return this.getSkillRating('blessed');
+            return 'blessed';
         }
         if(spellOrGadget.isHex()) {
-            return this.getSkillRating('huckster');
+            return 'huckster';
         }
         if(spellOrGadget.isSpirit() || spellOrGadget.isTotem()) {
-            return this.getSkillRating('shaman');
+            return 'shaman';
         }
     }
 
@@ -154,7 +144,11 @@ class DudeCard extends DrawCard {
     }
 
     canPerformSkillOn(spellOrGadget) {
-        const skillRating = this.getSkillRatingForCard(spellOrGadget);
+        const skillName = this.getSkillForCard(spellOrGadget);
+        if(!skillName) {
+            return false;
+        }
+        const skillRating = this.getSkillRating(skillName);
         return skillRating !== null && skillRating !== undefined;
     }
 
@@ -169,20 +163,6 @@ class DudeCard extends DrawCard {
             return this.gritFunc(currentGrit, context);
         }
         return currentGrit;
-    }
-
-    modifyUpkeep(amount, applying = true, fromEffect = false) {
-        this.currentUpkeep += amount;
-        if(!fromEffect) {
-            this.permanentUpkeep += amount;
-        }
-
-        let params = {
-            card: this,
-            amount: amount,
-            applying: applying
-        };
-        this.game.raiseEvent('onCardUpkeepChanged', params);
     }
 
     modifyDeedInfluence(amount, applying = true) {
@@ -226,7 +206,7 @@ class DudeCard extends DrawCard {
                     card.gamelocation === this.gamelocation &&
                     (!this.game.isHome(this.gamelocation, card.controller) || card.canBeCalledOutAtHome()) &&
                     card.uuid !== this.uuid &&
-                    card.controller !== this.controller,
+                    !card.controller.equals(this.controller),
                 autoSelect: false,
                 gameAction: 'callout'
             },
@@ -330,7 +310,7 @@ class DudeCard extends DrawCard {
                     effect.match = effect.match.filter(matchTarget => matchTarget !== this);
                     effect.match.push(expDude);
                 }
-            } else if(effect.match === this) {
+            } else if(this.equals(effect.match)) {
                 effect.match = expDude;
             }
         });
@@ -356,7 +336,7 @@ class DudeCard extends DrawCard {
 
     canTradeGoods(card) {
         return card.getType() === 'goods' && 
-        card.parent === this &&
+        this.equals(card.parent) &&
         !card.wasTraded() &&
         !card.cannotBeTraded();        
     }
@@ -549,7 +529,7 @@ class DudeCard extends DrawCard {
     }
 
     canLeadJob(player) {
-        if(this.controller !== player) {
+        if(!this.controller.equals(player)) {
             return false;
         }
         if(this.booted) {
@@ -688,8 +668,6 @@ class DudeCard extends DrawCard {
         }
         this.studReferenceArray = [];
         this.studReferenceArray.unshift({ source: 'default', shooter: this.cardData.shooter});
-        this.upkeep = this.currentUpkeep - this.permanentUpkeep;
-        this.permanentUpkeep = 0;
     }
 
     getSummary(activePlayer) {

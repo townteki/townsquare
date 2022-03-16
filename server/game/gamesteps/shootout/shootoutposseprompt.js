@@ -15,7 +15,7 @@ class ShootoutPossePrompt extends UiPrompt {
                 this.joinLeaderAndMark(this.player);
                 this.complete(); 
             } else {
-                if(this.player !== this.game.automaton) {
+                if(!this.player.equals(this.game.automaton)) {
                     this.handleDefaultJoin();
                 } else {
                     this.handleSolo();
@@ -37,9 +37,9 @@ class ShootoutPossePrompt extends UiPrompt {
             additionalButtons: additionalButtons,
             cardCondition: card => card.getType() === 'dude' && 
                 card.location === 'play area' &&
-                card.controller === this.player &&
-                (card !== this.shootout.mark || this.shootout.isJob()) &&
-                card !== this.shootout.leader &&
+                card.controller.equals(this.player) &&
+                (!card.equals(this.shootout.mark) || this.shootout.isJob()) &&
+                !card.equals(this.shootout.leader) &&
                 !card.isParticipating() &&
                 card.requirementsToJoinPosse().canJoin,
             onSelect: (player, dudeSelection) => {
@@ -87,14 +87,14 @@ class ShootoutPossePrompt extends UiPrompt {
                 } 
             }))
         );
-        if(this.shootout.leaderPlayer === player) {
+        if(player.equals(this.shootout.leaderPlayer)) {
             this.game.raiseEvent('onLeaderPosseFormed', { shootout: this.shootout });
-            this.game.addMessage('{0} with {1} as leader forms their posse including dudes: {2}.', player, this.shootout.leader, dudes);
+            this.game.addMessage('{0} with {1} as leader forms their posse including dudes: {2}', player, this.shootout.leader, dudes);
         } else {
             if(!this.shootout.isJob()) {
-                this.game.addMessage('{0} with {1} as mark forms their posse including dudes: {2}.', player, this.shootout.mark, dudes);   
+                this.game.addMessage('{0} with {1} as mark forms their posse including dudes: {2}', player, this.shootout.mark, dudes);   
             } else {
-                this.game.addMessage('{0} is opposing a job marking {1} and forms their posse including dudes: {2}.', player, this.shootout.mark, dudes); 
+                this.game.addMessage('{0} is opposing a job marking {1} and forms their posse including dudes: {2}', player, this.shootout.mark, dudes); 
             }
         }                 
         this.complete();    
@@ -102,7 +102,7 @@ class ShootoutPossePrompt extends UiPrompt {
 
     joinLeaderAndMark(player) {
         //Leader and mark (if not job because in job mark does not have to be in posse) join posses first.
-        if(this.shootout.leaderPlayer === player) {
+        if(player.equals(this.shootout.leaderPlayer)) {
             this.game.resolveGameAction(GameActions.joinPosse({ 
                 card: this.shootout.leader, 
                 options: { 

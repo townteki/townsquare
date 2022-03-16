@@ -9,7 +9,7 @@ class FarnumsConsortium extends OutfitCard {
             match: card => card.location === 'play area' &&
                 card.getType() === 'deed' &&
                 !card.isOutOfTown() &&
-                this.game.getDudesAtLocation(card.uuid).some(dude => dude.controller === this.owner),
+                this.game.getDudesAtLocation(card.uuid).some(dude => dude.controller.equals(this.owner)),
             effect: ability.effects.modifyProduction(1)
         });
 

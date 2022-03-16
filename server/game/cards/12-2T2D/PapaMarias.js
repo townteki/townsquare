@@ -16,8 +16,7 @@ class PapaMarias extends DudeCard {
                 cardType: ['dude']
             },
             handler: context => {
-                const skillRating = this.getSkillRating('huckster');
-                context.player.pullForSkill(7, skillRating, {
+                context.player.pullForSkill(7, 'huckster', {
                     successHandler: context => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 

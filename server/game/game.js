@@ -43,6 +43,7 @@ const PhaseNames = require('./Constants/PhaseNames.js');
 const { TownSquareUUID } = require('./Constants/index.js');
 const Automaton = require('./Solo/automaton.js');
 const PlayWindow = require('./gamesteps/playwindow.js');
+const MathHelper = require('./MathHelper.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -206,9 +207,9 @@ class Game extends EventEmitter {
     }
 
     getPlayersInFirstPlayerOrder() {
-        if(this.currentPhase === 'setup') {
+        if(!this.getFirstPlayer() && this.currentPhase === 'setup') {
             let players = this.getPlayers();
-            let firstPlayer = players[Math.floor(Math.random() * players.length)];
+            let firstPlayer = players[MathHelper.randomInt(players.length)];
             return this.getPlayersInBoardOrder(player => player === firstPlayer);
         }
         return this.getPlayersInBoardOrder(player => player.firstPlayer);
@@ -244,17 +245,17 @@ class Game extends EventEmitter {
 
     setFirstPlayer(firstPlayer) {
         for(let player of this.getPlayers()) {
-            player.firstPlayer = player === firstPlayer;
+            player.firstPlayer = player.equals(firstPlayer);
         }
         this.raiseEvent('onFirstPlayerDetermined', { player: firstPlayer });
     }
 
     getOpponents(player) {
-        return this.getPlayers().filter(p => p !== player);
+        return this.getPlayers().filter(p => !p.equals(player));
     }
 
     getOpponentsInFirstPlayerOrder(player) {
-        return this.getPlayersInFirstPlayerOrder().filter(p => p !== player);
+        return this.getPlayersInFirstPlayerOrder().filter(p => !p.equals(player));
     }
 
     isCardVisible(card, player) {
@@ -354,7 +355,7 @@ class Game extends EventEmitter {
     getDudesInPlay(player, condition = () => true) {
         return this.filterCardsInPlay(card => 
             card.getType() === 'dude' &&
-            (!player || player === card.controller) &&
+            (!player || player.equals(card.controller)) &&
             condition(card)
         );
     }
@@ -923,7 +924,7 @@ class Game extends EventEmitter {
         this.playersAndSpectators = players;
 
         if(this.useGameTimeLimit) {
-            let timeLimitStartType = 'whenSetupFinished'; //todo: change to property of game when more kinds of time limit start triggers are implemented/asked for
+            let timeLimitStartType = 'whenFirstLowballRevealed';
             let timeLimitInMinutes = this.gameTimeLimit;
             this.timeLimit.initialiseTimeLimit(timeLimitStartType, timeLimitInMinutes);
         }
@@ -1006,7 +1007,7 @@ class Game extends EventEmitter {
     markActionAsTaken(context) {
         if(this.currentPlayWindow) {
             if(!this.currentPlayWindow.doNotMarkActionAsTaken) {
-                if(this.currentPlayWindow.currentPlayer !== context.player) {
+                if(!context.player.equals(this.currentPlayWindow.currentPlayer)) {
                     this.addAlert('danger', '{0} uses {1} during {2}\'s turn in the {3} phase/step', context.player, context.source, this.currentPlayWindow.currentPlayer, this.getCurrentPlayWindowName());
                 }
                 if(context.ability) {
@@ -1262,7 +1263,7 @@ class Game extends EventEmitter {
         var oldController = card.controller;
         var newController = player;
 
-        if(oldController === newController) {
+        if(oldController.equals(newController)) {
             return;
         }
 
@@ -1273,7 +1274,7 @@ class Game extends EventEmitter {
         this.applyGameAction('takeControl', card, card => {
             const originalLocation = card.location;
             oldController.removeCardFromPile(card);
-            oldController.allCards = oldController.allCards.filter(c => c !== card);
+            oldController.allCards = oldController.allCards.filter(c => !c.equals(card));
             if(originalLocation === 'play area') {
                 newController.cardsInPlay.push(card);
             }

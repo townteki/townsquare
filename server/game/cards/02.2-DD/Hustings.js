@@ -6,7 +6,7 @@ class Hustings extends DeedCard {
             targetController: 'any',
             condition: () => true,
             match: card => card.getType() === 'dude' && 
-                card.controller !== this.controller &&
+                !card.controller.equals(this.controller) &&
                 !card.booted && 
                 this.game.isHome(card.gamelocation, card.controller),
             effect: [

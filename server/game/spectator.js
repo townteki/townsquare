@@ -18,7 +18,11 @@ class Spectator {
 
     isAutomaton() {
         return false;
-    }    
+    }
+    
+    equals(spectator) {
+        return spectator && this.id === spectator.id;
+    }
 }
 
 module.exports = Spectator;

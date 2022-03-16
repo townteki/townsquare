@@ -40,6 +40,7 @@ const GameActions = {
      * @param {*} props properties: 
      *  - `card`: card to which the bounty will be added
      *  - `amount` (1): amount of bounty to be added
+     *  - `maxAmount` (999): maximum amount of bounty for a card for this action
      */
     addBounty: props => new AbilityAdapter(AddBounty, props),
     /**

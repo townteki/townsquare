@@ -43,7 +43,7 @@ class CardVisibility {
     }
 
     isControllerRule(card, player) {
-        return card.controller === player && (card.location !== 'draw deck' || player.showDeck);
+        return card.controller.equals(player) && (card.location !== 'draw deck' || player.showDeck);
     }
 
     isSpectatorRule(card, player) {

@@ -3,7 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class AuntLouMarchbanks extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.locationCard.owner === this.controller,
+            condition: () => this.controller.equals(this.locationCard.owner),
             match: this,
             effect: ability.effects.setAsStud()
         });
