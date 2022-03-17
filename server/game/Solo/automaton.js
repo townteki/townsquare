@@ -217,10 +217,10 @@ class Automaton extends Player {
         return [];
     }
 
-    getDudesToDiscardForUpkeep(dudesWithUpkeep) {
+    getCardsToDiscardForUpkeep(cardsWithUpkeep) {
         const upkeepReflex = this.decisionEngine.programmedReflex('upkeepDiscard');
         if(upkeepReflex) {
-            return upkeepReflex(dudesWithUpkeep);
+            return upkeepReflex(cardsWithUpkeep);
         }
 
         return [];

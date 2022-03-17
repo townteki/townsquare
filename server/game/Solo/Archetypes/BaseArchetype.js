@@ -46,7 +46,7 @@ class BaseArchetype {
             case 'discardFromHand':
                 return number => this.player.hand.length ? this.player.hand.slice(0, number) : [];
             case 'upkeepDiscard':
-                return dudesWithUpkeep => this.upkeepDiscardDudes(dudesWithUpkeep);
+                return cardsWithUpkeep => this.upkeepDiscardCards(cardsWithUpkeep);
             case 'assignCasualties':
                 return (casualtyContext, firstCasualty) => this.assignCasualties(casualtyContext, firstCasualty);
             default:
@@ -118,7 +118,7 @@ class BaseArchetype {
     joinPosseReflex() {
     }
 
-    upkeepDiscardDudes() {
+    upkeepDiscardCards() {
     }
 
     assignCasualties() {
