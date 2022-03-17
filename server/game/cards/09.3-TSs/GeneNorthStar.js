@@ -6,7 +6,7 @@ class GeneNorthStar extends DudeCard {
             title: 'Shootout: Gene North Star',
             playType: ['shootout'],
             cost: ability.costs.discardFromPlay(card => 
-                card.parent === this &&
+                this.equals(card.parent) &&
                 card.hasKeyword('spirit')),
             message: context => this.game.addMessage('{0} uses {1}, discarding his {2} to give him +2 bullets', 
                 context.player, this, context.costs.discardFromPlay),
