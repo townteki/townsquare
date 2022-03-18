@@ -1,6 +1,8 @@
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
 
+const DrReactTitle = 'Dr. Brian Foxworth';
+
 class DrBrianFoxworth extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
@@ -9,7 +11,7 @@ class DrBrianFoxworth extends DudeCard {
             effect: ability.effects.cannotBeCalledOut()
         });
         this.reaction({
-            title: 'Dr. Brian Foxworth',
+            title: DrReactTitle,
             when: {
                 onShootoutCasualtiesStepStarted: () => this.location === 'play area'
             },
@@ -28,7 +30,7 @@ class DrBrianFoxworth extends DudeCard {
                             });
                         });
                     },
-                    onNo: () => this.abilities.reactions.forEach(reaction => reaction.resetAbilityUsage()),
+                    onNo: () => this.abilities.reactions.filter(reaction => reaction.title === DrReactTitle).forEach(reaction => reaction.resetAbilityUsage()),
                     source: this
                 });
             },
