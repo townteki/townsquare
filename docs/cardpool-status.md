@@ -39,7 +39,7 @@
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
-|                     | 01026| Prof. Eustace True
+|:heavy_check_mark:   | 01026| Prof. Eustace True
 |:heavy_check_mark:   | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
 |:heavy_check_mark:   | 01029| Jon Longstride
