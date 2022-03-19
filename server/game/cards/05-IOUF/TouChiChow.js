@@ -19,12 +19,12 @@ class TouChiChow extends DudeCard {
                 type: 'deed',
                 condition: card => card.controller === this.controller
             }),
-            target: {
+            target:  {
                 activePromptTitle: 'Choose a dude to unboot',
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'any', 
-                    condition: card => card.isNearby(context.costs.boot)
+                    condition: (card,context) => card.isNearby(context.costs.boot)
                 },
                 cardType: ['dude']
             },
