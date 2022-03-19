@@ -47,7 +47,7 @@
 |:heavy_check_mark:   | 01031| Jarrett Blake
 |:heavy_check_mark:   | 01032| Harold Aimslee
 |:heavy_check_mark:   | 01033| Rémy LaPointe
-|                     | 01034| Max Baine
+|:heavy_check_mark:   | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
 |:heavy_check_mark:   | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
