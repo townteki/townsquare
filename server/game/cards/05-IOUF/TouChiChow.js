@@ -24,7 +24,7 @@ class TouChiChow extends DudeCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'any', 
-                    condition: (card,context) => card.isNearby(context.costs.boot)
+                    condition: (card, context) => card.isNearby(context.costs.boot)
                 },
                 cardType: ['dude']
             },
