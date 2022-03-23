@@ -17,9 +17,9 @@ class TouChiChow extends DudeCard {
             repeatable: true,
             cost: ability.costs.boot({
                 type: 'deed',
-                condition: card => card.controller === this.controller
+                condition: card => card.controller.equals(this.controller)
             }),
-            target:  {
+            target: {
                 activePromptTitle: 'Choose a dude to unboot',
                 cardCondition: { 
                     location: 'play area', 
@@ -36,7 +36,7 @@ class TouChiChow extends DudeCard {
 
     getNumOfControlledDeeds() {
         return this.controller.cardsInPlay.reduce((num, card) => {
-            if(card.getType() === 'deed' && card.controller === this.controller) {
+            if(card.getType() === 'deed' && card.controller.equals(this.controller)) {
                 return num + 1;
             }
             return num;
