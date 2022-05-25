@@ -30,6 +30,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run test
+    - name: Give permissions for reviewdog
+      run: |
+        sudo chown -R root:root $GITHUB_WORKSPACE
     - name: Run eslint with reviewdog
       uses: reviewdog/action-eslint@v1.0.0
       with:
