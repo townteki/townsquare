@@ -3,7 +3,7 @@ const DudeCard = require('../../dudecard.js');
 class TheFlyingPopescus extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.getAttachmentsByKeywords('hex').length >= 2,
+            condition: () => this.getAttachmentsByKeywords(['hex']).length >= 2,
             match: this,
             effect: ability.effects.modifyInfluence(1)
         });

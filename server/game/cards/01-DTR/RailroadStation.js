@@ -15,8 +15,12 @@ class RailroadStation extends DeedCard {
             },
             handler: context => {
                 this.game.promptForLocation(context.player, {
-                    activePromptTitle: 'Select destination',
+                    activePromptTitle: 'Select destination for ' + context.target.title,
                     waitingPromptTitle: 'Waiting for opponent to select location',
+                    cardCondition: {
+                        location: 'play area',
+                        condition: card => !card.equals(this)
+                    },
                     onSelect: (player, location) => {
                         this.game.resolveGameAction(GameActions.moveDude({ 
                             card: context.target, 
