@@ -519,7 +519,7 @@
 |                     | 13004| Jia Mein (Exp.1)
 |:heavy_check_mark:   | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
-|                     | 13007| Luke, the Errand Boy
+|:heavy_check_mark:   | 13007| Luke, the Errand Boy
 |:heavy_check_mark:   | 13008| Arnold Stewart
 |                     | 13009| Rick Henderson
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
