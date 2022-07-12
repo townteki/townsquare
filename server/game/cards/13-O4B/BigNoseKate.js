@@ -32,8 +32,14 @@ class BigNoseKate extends DudeCard {
                     msg += ' and +1 influence';
                 }
                 if(!context.target.isWanted()) {
-                    this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
-                    msg += ' and 1 bounty';
+                    this.game.promptForYesNo(this.controller, {
+                        title: 'Do you want to add 1 bounty',
+                        onYes: () => {
+                            this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
+                            this.game.addMessage('{0} uses {1} to give {2} +1 bounty', this.controller, this, context.target)
+                        },
+                        source: this
+                    });
                 }
                 this.game.addMessage(msg, context.player, this, context.costs.discardFromHand, context.target);
             }
