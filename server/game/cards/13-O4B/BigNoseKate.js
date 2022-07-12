@@ -36,7 +36,7 @@ class BigNoseKate extends DudeCard {
                         title: 'Do you want to add 1 bounty',
                         onYes: () => {
                             this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
-                            this.game.addMessage('{0} uses {1} to give {2} +1 bounty', this.controller, this, context.target)
+                            this.game.addMessage('{0} uses {1} to give {2} +1 bounty', this.controller, this, context.target);
                         },
                         source: this
                     });
