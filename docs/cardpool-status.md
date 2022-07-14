@@ -552,7 +552,7 @@
 |:heavy_check_mark:   | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
 |:heavy_check_mark:   | 14013| Henry Moran
-|                     | 14014| Gomorra Lot Commission
+|:heavy_check_mark:   | 14014| Gomorra Lot Commission
 |:heavy_check_mark:   | 14015| Wagner Memorial Ranch
 |:heavy_check_mark:   | 14016| Notary Public
 |                     | 14017| Market Street
