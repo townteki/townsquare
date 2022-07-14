@@ -29,19 +29,19 @@ class Disarm extends ActionCard {
                                         context.player, this, context.target, att);
                                 });                                
                             }
+                            this.game.resolveGameAction(GameActions.decreaseCasualties({ player: context.player }), context);
                         } else {
                             this.game.resolveGameAction(GameActions.bootCard({ card: att }), context).thenExecute(() => {
-                                this.game.addMessage('{0} uses {1} to boot {2}\'s attachment {3} and to ignore all casualties', 
+                                this.game.addMessage('{0} uses {1} to boot {2}\'s attachment {3}', 
                                     context.player, this, context.target, att);
                             });
                         }
-                        this.game.resolveGameAction(GameActions.decreaseCasualties({ player: context.player }), context); 
                         if(!context.player.isCheatin()) {
                             context.ability.selectAnotherTarget(context.player, context, {
                                 activePromptTitle: 'Select your dude',
                                 waitingPromptTitle: 'Waiting for opponent to select dude',
                                 cardCondition: card => card.location === 'play area' &&
-                                    card.controller === context.player,
+                                card.controller === context.player,
                                 cardType: 'dude',
                                 onSelect: (player, dude) => {
                                     this.untilEndOfRound(context.ability, ability => ({
