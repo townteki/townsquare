@@ -15,7 +15,7 @@ class GhostlyCommunion2 extends SpellCard {
                     location: 'play area',
                     condition: card => card.hasKeyword('holy ground') || 
                         card.adjacentLocations().some(location => location.locationCard.hasKeyword('holy ground')) ||
-                        card.isNearby(this.controller.outfit.uuid)
+                        card.isNearby(this.controller.outfit.uuid) || this.game.townsquare.uuid
                 },
                 cardType: 'location'
             },
@@ -37,7 +37,7 @@ class GhostlyCommunion2 extends SpellCard {
             condition: () => this.game.shootout &&
                 (this.game.shootout.shootoutLocation.locationCard.hasKeyword('holy ground') || 
                 this.game.shootout.shootoutLocation.locationCard.adjacentLocations().some(location => location.locationCard.hasKeyword('holy ground')) ||
-                this.game.shootout.shootoutLocation.locationCard.isNearby(this.controller.outfit.uuid)),
+                this.game.shootout.shootoutLocation.locationCard.isNearby(this.controller.outfit.uuid)) || this.game.shootout.shootoutLocation === this.game.townsquare.uuid,
             onSuccess: (context) => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }), context);
                 this.applyAbilityEffect(context.ability, ability => ({
