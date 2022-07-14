@@ -14,7 +14,8 @@ class BuffaloRifle2 extends GoodsCard {
                 this.game.resolveGameAction(GameActions.joinPosse({ 
                     card: this.parent, 
                     options: {
-                        moveToPosse: false
+                        moveToPosse: false,
+                        allowBooted: true
                     }
                 }), context);
             }
