@@ -348,7 +348,7 @@
 |                     | 08006| Jack O'Hara
 |:heavy_check_mark:   | 08007| John "Aces" Radcliffe
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
-|                     | 08009| Old Man McDroste
+|:heavy_check_mark:   | 08009| Old Man McDroste
 |:heavy_check_mark:   | 08010| Flint's Amusements
 |:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
