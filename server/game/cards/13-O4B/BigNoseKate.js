@@ -17,7 +17,6 @@ class BigNoseKate extends DudeCard {
                 },
                 cardType: ['dude']
             },
-            message: context => this.game.addMessage('{0} uses {1} to ', context.player, this),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
@@ -32,8 +31,14 @@ class BigNoseKate extends DudeCard {
                     msg += ' and +1 influence';
                 }
                 if(!context.target.isWanted()) {
-                    this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
-                    msg += ' and 1 bounty';
+                    this.game.promptForYesNo(context.player, {
+                        title: 'Do you want to add a bounty to ' + context.target.title + '?',
+                        onYes: () => {
+                            this.game.resolveGameAction(GameActions.addBounty({ card: context.target }), context);
+                            msg += ' and 1 bounty';
+                        },
+                        source: this
+                    });
                 }
                 this.game.addMessage(msg, context.player, this, context.costs.discardFromHand, context.target);
             }

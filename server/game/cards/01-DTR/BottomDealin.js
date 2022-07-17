@@ -6,7 +6,7 @@ class BottomDealin extends ActionCard {
             title: 'Bottom Dealin\'',
             playType: ['cheatin resolution'],
             message: context => 
-                this.game.addMessage('{0} uses {1} to discard {2}\'s cheatin\' hand and replace it with the top five cards of {1}\'s deck', 
+                this.game.addMessage('{0} uses {1} to discard {2}\'s cheatin\' hand and replace it with the top five cards of {0}\'s deck', 
                     context.player, this, context.player.getOpponent()),
             handler: context => {
                 const opponent = context.player.getOpponent();
