@@ -39,14 +39,14 @@ class TeleportationDevice extends GoodsCard {
                 let teleMessage = '{0} uses {1} on {2}';
                 if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
                     this.game.resolveGameAction(GameActions.discardCard({ card: context.targets.tDude }), context).thenExecute(() => {
-                        teleMessage+= ', no one knows where they ended up';
+                        teleMessage += ', no one knows where they ended up';
                     });
                 } else {
                     this.game.resolveGameAction(GameActions.moveDude({ 
                         card: context.targets.tDude, 
                         targetUuid: context.targets.tDest.uuid 
                     }), context).thenExecute(() => {
-                        teleMessage+= ', moving them to {3}';
+                        teleMessage += ', moving them to {3}';
                     });
                 }
                 this.game.addMessage(teleMessage, context.player, this, context.targets.tDude, context.targets.tDest);
