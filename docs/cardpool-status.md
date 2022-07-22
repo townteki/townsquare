@@ -231,7 +231,7 @@
 |:heavy_check_mark:   | 04012| The Mayor's Office
 |:heavy_check_mark:   | 04013| Hunter Protections
 |:heavy_check_mark:   | 04014| The Evidence
-|                     | 04015| Teleportation Device
+|:heavy_check_mark:   | 04015| Teleportation Device
 |                     | 04016| Mayfair Family Deck
 |:heavy_check_mark:   | 04017| Puppet
 |                     | 04018| Summoning
