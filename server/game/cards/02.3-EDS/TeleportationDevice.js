@@ -14,7 +14,7 @@ class TeleportationDevice extends GoodsCard {
             repeatable: true,
             cost: [
                 ability.costs.payGhostRock(1),
-                ability.costs.pull();
+                ability.costs.pull()
             ],
             targets: {
                 tDude: {
