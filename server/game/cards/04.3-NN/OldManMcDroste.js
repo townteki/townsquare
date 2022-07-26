@@ -5,7 +5,8 @@ class OldManMcDroste extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
             targetController: 'any',
-            condition: () => this.isOutOfTown() && this.isAtDeed(),
+            condition: () => this.isAtDeed('out-town'),
+
             match: this,
             effect: ability.effects.modifyControl(1)
         });
