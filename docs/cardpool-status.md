@@ -39,7 +39,7 @@
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
-|                     | 01026| Prof. Eustace True
+|:heavy_check_mark:   | 01026| Prof. Eustace True
 |:heavy_check_mark:   | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
 |:heavy_check_mark:   | 01029| Jon Longstride
@@ -206,7 +206,7 @@
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |:heavy_check_mark:   | 03015| Holy Wheel Gun
-|                     | 03016| Stone Idol
+|:heavy_check_mark:   | 03016| Stone Idol
 |:heavy_check_mark:   | 03017| Corporeal Twist
 |:heavy_check_mark:   | 03018| Fetch
 |:heavy_check_mark:   | 03019| ...It's who you know
@@ -380,7 +380,7 @@
 |:heavy_check_mark:   | 09012| Yunxu Jiang
 |:heavy_check_mark:   | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
-|                     | 09015| T'ou Chi Chow
+|:heavy_check_mark:   | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |:heavy_check_mark:   | 09017| Mazatl
 |:heavy_check_mark:   | 09018| Marcia Ridge
@@ -645,7 +645,7 @@
 |                     | 17006| Erin Knight
 |:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
-|                     | 17009| The Grey Man
+|:heavy_check_mark:   | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
