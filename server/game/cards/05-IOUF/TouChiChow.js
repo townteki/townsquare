@@ -19,18 +19,31 @@ class TouChiChow extends DudeCard {
                 type: 'deed',
                 condition: card => card.controller.equals(this.controller)
             }),
-            target: {
-                activePromptTitle: 'Choose a dude to unboot',
-                cardCondition: { 
-                    location: 'play area', 
-                    controller: 'any', 
-                    condition: (card, context) => card.isNearby(context.costs.boot)
-                },
-                cardType: ['dude']
-            },
-            message: context => this.game.addMessage('{0} uses {1}, booting {2} to unboot {3}',
-                context.player, this, context.costs.boot, context.target),
-            handler: context => this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context)
+            handler: context => {
+                context.ability.selectAnotherTarget(context.player, context, {
+                    activePromptTitle: 'Choose a dude to unboot',
+                    cardCondition: { 
+                        location: 'play area', 
+                        controller: 'any', 
+                        booted: true,
+                        condition: card => card.isNearby(context.costs.boot.gamelocation)
+                    },
+                    cardType: ['dude'],
+                    gameAction: 'unboot',
+                    onSelect: (player, card) => {
+                        this.game.resolveGameAction(GameActions.unbootCard({ card }), context);
+                        this.game.addMessage('{0} uses {1}, booting {2} to unboot {3}',
+                            player, this, context.costs.boot, card);
+                        return true;
+                    },
+                    onCancel: player => {
+                        this.game.addMessage('{0} uses {1} and boot {2}, but does not select any card to unboot',
+                            player, this, context.costs.boot);
+                        return true;                        
+                    },
+                    source: this
+                });
+            }
         });
     }
 
