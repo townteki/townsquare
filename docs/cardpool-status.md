@@ -645,7 +645,7 @@
 |                     | 17006| Erin Knight
 |:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
-|                     | 17009| The Grey Man
+|:heavy_check_mark:   | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
