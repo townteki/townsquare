@@ -32,7 +32,7 @@ class ShootoutPossePrompt extends UiPrompt {
                         !card.isParticipating() &&
                         card.requirementsToJoinPosse().canJoin,
                     onSelect: (player, dudeSelection) => {
-                        if(!this.passesJobCondition(dudeSelection)) {
+                        if(player.equals(this.shootout.leaderPlayer) && !this.passesJobCondition(dudeSelection)) {
                             return true;
                         }
                         this.joinLeaderAndMark(player);
@@ -61,7 +61,7 @@ class ShootoutPossePrompt extends UiPrompt {
                         return true;
                     },
                     onCancel: (player) => {
-                        if(!this.passesJobCondition()) {
+                        if(player.equals(this.shootout.leaderPlayer) && !this.passesJobCondition()) {
                             return true;
                         }
                         if(this.shootout.isJob() && this.shootout.opposingPlayer === player) {
