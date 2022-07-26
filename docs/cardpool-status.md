@@ -380,7 +380,7 @@
 |:heavy_check_mark:   | 09012| Yunxu Jiang
 |:heavy_check_mark:   | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
-|                     | 09015| T'ou Chi Chow
+|:heavy_check_mark:   | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |:heavy_check_mark:   | 09017| Mazatl
 |:heavy_check_mark:   | 09018| Marcia Ridge
