@@ -14,6 +14,7 @@ class MaxBaine extends DudeCard {
         });
         this.persistentEffect({
             targetController: 'current',
+            condition: () => true,
             match: card => card.getType() === 'dude' && card.locationCard.hasKeyword('ranch') && !this.equals(card),
             effect: [
                 ability.effects.modifyInfluence(1),
