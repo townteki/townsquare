@@ -24,7 +24,7 @@ class SpellCard extends HeartsCard {
             if(['validityCheck', 'chatcommand'].includes(playingType)) {
                 return true;
             }
-            return card.controller === this.controller && 
+            return card.controller.equals(this.controller) && 
                 this.game.getDudesAtLocation(card.gamelocation).find(dude => 
                     dude.canPerformSkillOn(this) && !dude.booted
                 );

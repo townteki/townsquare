@@ -5,9 +5,10 @@ describe('DropCommand', () => {
     describe('execute()', function() {
         beforeEach(function() {
             this.gameSpy = jasmine.createSpyObj('game', ['addAlert', 'queueStep']);
-            this.playerSpy = jasmine.createSpyObj('player', ['discardCard', 'moveCard', 'putIntoPlay', 'aceCard']);
+            this.playerSpy = jasmine.createSpyObj('player', ['discardCard', 'moveCard', 'putIntoPlay', 'aceCard', 'equals']);
+            this.playerSpy.equals.and.returnValue(true);
 
-            this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction', 'getType']);
+            this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction', 'getType', 'equals']);
             this.cardSpy.allowGameAction.and.returnValue(true);
             this.cardSpy.controller = this.cardSpy.owner = this.playerSpy;
             this.cardSpy.getType.and.returnValue('character');

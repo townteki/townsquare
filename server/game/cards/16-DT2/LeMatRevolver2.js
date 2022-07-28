@@ -52,7 +52,7 @@ class LeMatRevolver2 extends GoodsCard {
             return false;
         }
         const posse = this.game.shootout.getPosseByPlayer(this.controller);
-        return this.parent.isStud() && posse && posse.shooter === this.parent;
+        return this.parent.isStud() && posse && posse.shooter && posse.shooter.equals(this.parent);
     }
 }
 

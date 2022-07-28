@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/930/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
+![Cards implemented](https://progress-bar.dev/940/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
 
 **Legend**
 
@@ -39,7 +39,7 @@
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
-|                     | 01026| Prof. Eustace True
+|:heavy_check_mark:   | 01026| Prof. Eustace True
 |:heavy_check_mark:   | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
 |:heavy_check_mark:   | 01029| Jon Longstride
@@ -52,7 +52,7 @@
 |:heavy_check_mark:   | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
 |:heavy_check_mark:   | 01038| Marion Seville
-|                     | 01039| Sanford Taylor
+|:heavy_check_mark:   | 01039| Sanford Taylor
 |:heavy_check_mark:   | 01040| Barton Everest
 |:white_check_mark:   | 01041| Pancho Castillo
 |                     | 01042| Jonah Essex
@@ -177,13 +177,13 @@
 |:white_check_mark:   | 02010| Roderick Byre
 |:heavy_check_mark:   | 02011| Town Council
 |:heavy_check_mark:   | 02012| The R&D Ranch
-|                     | 02013| Telepathy Helmet
+|:heavy_check_mark:   | 02013| Telepathy Helmet
 |:heavy_check_mark:   | 02014| Faithful Hound
 |:heavy_check_mark:   | 02015| Plasma Drill
 |:heavy_check_mark:   | 02016| Paralysis Mark
 |:heavy_check_mark:   | 02017| Forget
 |:heavy_check_mark:   | 02018| Make 'em Sweat
-|                     | 02019| Back Ways
+|:heavy_check_mark:   | 02019| Back Ways
 |                     | 02020| Hired Help
 |:heavy_check_mark:   | 02021| Too Much Attention
 
@@ -195,7 +195,7 @@
 |                     | 03002| Richard Slavin
 |:heavy_check_mark:   | 03003| Mortimer Parsons
 |                     | 03004| Gang Yi
-|                     | 03005| Tallulah "Lula" Morgan
+|:heavy_check_mark:   | 03005| Tallulah "Lula" Morgan
 |                     | 03006| Dr. Emanuel Ashbel
 |:heavy_check_mark:   | 03007| Angélica Espinosa
 |:heavy_check_mark:   | 03008| José Morales
@@ -206,7 +206,7 @@
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |:heavy_check_mark:   | 03015| Holy Wheel Gun
-|                     | 03016| Stone Idol
+|:heavy_check_mark:   | 03016| Stone Idol
 |:heavy_check_mark:   | 03017| Corporeal Twist
 |:heavy_check_mark:   | 03018| Fetch
 |:heavy_check_mark:   | 03019| ...It's who you know
@@ -266,7 +266,7 @@
 |:heavy_check_mark:   | 05021| California Tax Office
 |:heavy_check_mark:   | 05022| St. Anthony's Chapel
 |:heavy_check_mark:   | 05023| The Whateley Estate
-|                     | 05024| Outlaw Mask
+|:heavy_check_mark:   | 05024| Outlaw Mask
 |                     | 05025| Clown Carriage
 |:heavy_check_mark:   | 05026| Bio-Charged Neutralizer
 |                     | 05027| Evanor
@@ -289,7 +289,7 @@
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
-|                     | 06002| The Flying Popescus
+|:heavy_check_mark:   | 06002| The Flying Popescus
 |                     | 06003| Andrew Burton
 |                     | 06004| Elmore Rhine
 |                     | 06005| Howard Aswell
@@ -348,7 +348,7 @@
 |                     | 08006| Jack O'Hara
 |:heavy_check_mark:   | 08007| John "Aces" Radcliffe
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
-|                     | 08009| Old Man McDroste
+|:heavy_check_mark:   | 08009| Old Man McDroste
 |:heavy_check_mark:   | 08010| Flint's Amusements
 |:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
@@ -380,7 +380,7 @@
 |:heavy_check_mark:   | 09012| Yunxu Jiang
 |:heavy_check_mark:   | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
-|                     | 09015| T'ou Chi Chow
+|:heavy_check_mark:   | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |:heavy_check_mark:   | 09017| Mazatl
 |:heavy_check_mark:   | 09018| Marcia Ridge
@@ -519,7 +519,7 @@
 |                     | 13004| Jia Mein (Exp.1)
 |:heavy_check_mark:   | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
-|                     | 13007| Luke, the Errand Boy
+|:heavy_check_mark:   | 13007| Luke, the Errand Boy
 |:heavy_check_mark:   | 13008| Arnold Stewart
 |                     | 13009| Rick Henderson
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
@@ -575,7 +575,7 @@
 |                     | 14034| Pigging Out
 |:heavy_check_mark:   | 14035| Technological Exhibition
 |                     | 14036| A Piece of the Action
-|                     | 14037| Framed
+|:heavy_check_mark:   | 14037| Framed
 |                     | 14038| Plague of Grasshoppers
 |                     | 14039| Foreboding Glance
 |:white_check_mark:   | 14040| Heretic Joker (Red)
@@ -627,7 +627,7 @@
 |                     | 16014| Bacillus Pasteuria
 |                     | 16015| The Blighted
 |:heavy_check_mark:   | 16016| Sun-Touched Raven
-|                     | 16017| Inner Struggle
+|:heavy_check_mark:   | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
 |:heavy_check_mark:   | 16019| Siege Of The Orphanage
 |                     | 16020| Lighting The Fuse
@@ -639,19 +639,19 @@
 |--------|-----:|:------------------------:|
 |:heavy_check_mark:   | 17001| Shi Long Peng
 |                     | 17002| Seamus McCaffrey
-|                     | 17003| Gene North Star
+|:heavy_check_mark:   | 17003| Gene North Star
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
 |                     | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
 |:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
-|                     | 17009| The Grey Man
+|:heavy_check_mark:   | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
 |:heavy_check_mark:   | 17013| Pedro
 |:heavy_check_mark:   | 17014| Aetheric Shockwave Inducer
-|                     | 17015| The Gambler's Gun
+|:heavy_check_mark:   | 17015| The Gambler's Gun
 |:heavy_check_mark:   | 17016| Get Behind Me, Satan!
 |:heavy_check_mark:   | 17017| Ghostly Communion
 |:heavy_check_mark:   | 17018| Calling The Cavalry

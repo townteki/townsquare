@@ -24,7 +24,11 @@ class JonahsAlliance extends OutfitCard {
                         ability.effects.determineControlByBullets()
                     ]
                 }));
-                context.costs.boot.increaseBounty(2, 4);
+                this.game.resolveGameAction(GameActions.addBounty({ 
+                    card: context.costs.boot,
+                    amount: 2,
+                    maxAmount: 4
+                }), context);
                 context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a hex',
                     waitingPromptTitle: 'Waiting for opponent to select hex',

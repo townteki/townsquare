@@ -18,7 +18,7 @@ class TheMixer2 extends DudeCard {
                     match: context.target,
                     effect: [
                         ability.effects.ignoreBulletModifiers('any', context => 
-                            context.player !== this.controller &&
+                            !context.player.equals(this.controller) &&
                             (context.source.getType() === 'action' || (context.ability && context.ability.isCardAbility())))
                     ]
                 }));

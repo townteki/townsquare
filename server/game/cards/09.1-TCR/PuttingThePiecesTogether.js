@@ -6,6 +6,8 @@ class PuttingThePiecesTogether extends ActionCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.traitReaction({
+            location: 'play area',
+            ignoreActionCosts: true,            
             when: {
                 onDrawHandsRevealed: () => this.controller.isCheatin()
             },
@@ -18,8 +20,8 @@ class PuttingThePiecesTogether extends ActionCard {
 
         this.persistentEffect({
             location: 'play area',
-            condition: () => this.game.shootout,
-            match: this.controller,
+            condition: () => !!this.parent && this.game.shootout,
+            match: player => player.equals(this.controller),
             effect: ability.effects.dynamicHandRankMod(() => this.booted ? -1 : 1)
         });
 

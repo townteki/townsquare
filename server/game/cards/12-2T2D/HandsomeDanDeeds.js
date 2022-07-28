@@ -32,7 +32,7 @@ class HandsomeDanDeeds extends DudeCard {
                     effect: ability.effects.modifyControl(1)
                 }));
                 this.game.onceConditional('onDudeMoved', { 
-                    condition: event => event.card === this
+                    condition: event => this.equals(event.card)
                 }, () => this.danMoved = true);
                 this.game.once('onSundownAfterVictoryCheck', () => {
                     const thisLocationCard = this.locationCard;

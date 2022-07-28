@@ -7,7 +7,7 @@ class JimmyTheSaint extends DudeCard {
             when: {
                 onPhaseStarted: event => event.phase === PhaseNames.Upkeep &&
                     this.isAtDeed() && 
-                    this.controller === this.locationCard.controller
+                    this.controller.equals(this.locationCard.controller)
             },
             handler: context => {
                 this.untilEndOfPhase(context.ability, ability => ({
@@ -19,9 +19,9 @@ class JimmyTheSaint extends DudeCard {
 
         this.persistentEffect({
             condition: () => this.isAtDeed() && 
-                this.controller === this.locationCard.controller &&
+                this.controller.equals(this.locationCard.controller) &&
                 this.locationCard.hasKeyword('Casino'),
-            match: card => card === this.locationCard,
+            match: card => card.equals(this.locationCard),
             effect: ability.effects.modifyProduction(1)
         });
     }

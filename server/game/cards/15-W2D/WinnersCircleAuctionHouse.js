@@ -15,7 +15,7 @@ class WinnersCircleAuctionHouse extends DeedCard {
             return 0;
         }
         return this.game.getPlayers().reduce((aggregate, player) => {
-            if(gameLocation.getDudes().find(dude => dude.controller === player)) {
+            if(gameLocation.getDudes().find(dude => dude.controller.equals(player))) {
                 return aggregate + 1;
             }
             return aggregate;
