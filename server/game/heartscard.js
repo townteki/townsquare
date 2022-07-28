@@ -32,7 +32,7 @@ class HeartsCard extends DrawCard {
         }
         if(fOptions.providesStudBonus) {
             this.whileAttached({
-                condition: () => !fOptions.useMeleeEffect || !this.meleeWeaponCondition(),
+                condition: () => (!fOptions.useMeleeEffect || !this.meleeWeaponCondition()) && !this.areBulletBonusesBlanked(),
                 effect: AbilityDsl.effects.setAsStud(),
                 fromTrait: true
             });            
