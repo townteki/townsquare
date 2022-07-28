@@ -39,7 +39,7 @@
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
-|                     | 01026| Prof. Eustace True
+|:heavy_check_mark:   | 01026| Prof. Eustace True
 |:heavy_check_mark:   | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
 |:heavy_check_mark:   | 01029| Jon Longstride
@@ -206,7 +206,7 @@
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |:heavy_check_mark:   | 03015| Holy Wheel Gun
-|                     | 03016| Stone Idol
+|:heavy_check_mark:   | 03016| Stone Idol
 |:heavy_check_mark:   | 03017| Corporeal Twist
 |:heavy_check_mark:   | 03018| Fetch
 |:heavy_check_mark:   | 03019| ...It's who you know
@@ -348,7 +348,7 @@
 |                     | 08006| Jack O'Hara
 |:heavy_check_mark:   | 08007| John "Aces" Radcliffe
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
-|                     | 08009| Old Man McDroste
+|:heavy_check_mark:   | 08009| Old Man McDroste
 |:heavy_check_mark:   | 08010| Flint's Amusements
 |:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
@@ -380,7 +380,7 @@
 |:heavy_check_mark:   | 09012| Yunxu Jiang
 |:heavy_check_mark:   | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
-|                     | 09015| T'ou Chi Chow
+|:heavy_check_mark:   | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |:heavy_check_mark:   | 09017| Mazatl
 |:heavy_check_mark:   | 09018| Marcia Ridge
@@ -468,7 +468,7 @@
 |:heavy_check_mark:   | 11007| Zachary Deloria
 |:heavy_check_mark:   | 11008| Karl Odett
 |:heavy_check_mark:   | 11009| Erik Samson
-|                     | 11010| Dr. Brian Foxworth
+|:heavy_check_mark:   | 11010| Dr. Brian Foxworth
 |:heavy_check_mark:   | 11011| Buford Hurley
 |:heavy_check_mark:   | 11012| Doris Powell
 |                     | 11013| Rico Rodegain
@@ -519,7 +519,7 @@
 |                     | 13004| Jia Mein (Exp.1)
 |:heavy_check_mark:   | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
-|                     | 13007| Luke, the Errand Boy
+|:heavy_check_mark:   | 13007| Luke, the Errand Boy
 |:heavy_check_mark:   | 13008| Arnold Stewart
 |                     | 13009| Rick Henderson
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
@@ -645,7 +645,7 @@
 |                     | 17006| Erin Knight
 |:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
-|                     | 17009| The Grey Man
+|:heavy_check_mark:   | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble
