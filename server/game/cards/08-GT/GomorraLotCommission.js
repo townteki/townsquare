@@ -24,7 +24,8 @@ class GomorraLotCommission extends DeedCard {
                         gameAction: 'moveDude',
                         onSelect: (player, movingDude) => {
                             const erstwhileLocation = movingDude.locationCard;
-                            context.ability.promptForLocation(context.player, {
+                            this.game.promptForLocation(context.player, {
+
                                 activePromptTitle: 'Select destination for ' + movingDude.title,
                                 waitingPromptTitle: 'Waiting for opponent to select location',
                                 cardCondition: {
