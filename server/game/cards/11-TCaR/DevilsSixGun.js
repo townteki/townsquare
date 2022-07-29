@@ -2,10 +2,11 @@ const GoodsCard = require('../../goodscard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class DevilsSixGun extends GoodsCard {
+    constructor(owner, cardData) {
+        super(owner, cardData, { providesStudBonus: true });
+    }
+
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.setAsStud()
-        });
         this.action({
             title: 'Devil\'s Six Gun',
             cost: ability.costs.bootSelf(),
