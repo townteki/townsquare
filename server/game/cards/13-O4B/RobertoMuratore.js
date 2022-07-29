@@ -19,22 +19,29 @@ class RobertoMuratore extends DudeCard {
                         if(!this.locationCard) {
                             return;
                         }
-                        if(pulledSuit1 === 'Hearts' && pulledSuit2 === 'Hearts') {
+                        if(this.isSuitRed(pulledSuit1) && this.isSuitRed(pulledSuit2)) {
                             this.locationCard.modifyControl(1);
                             this.game.addMessage('{0} uses {1} and boots {2} to give {3} a permanent CP', 
                                 context.player, this, context.costs.boot, this.locationCard);
-                        } else if(pulledSuit1 === 'Hearts' || pulledSuit2 === 'Hearts') {
+                        } else if(this.isSuitRed(pulledSuit1) || this.isSuitRed(pulledSuit2)) {
                             this.applyAbilityEffect(context.ability, ability => ({
                                 match: this.locationCard,
                                 effect: ability.effects.modifyControl(1)
                             }));
                             this.game.addMessage('{0} uses {1} and boots {2} to give {3} a CP', 
                                 context.player, this, context.costs.boot, this.locationCard);
+                        } else {
+                            this.game.addMessage('{0} uses {1} and boots {2}, but it does not have any effect', 
+                                context.player, this, context.costs.boot);
                         }
                     }, true, { context });
                 }, true, { context });
             }
         });
+    }
+
+    isSuitRed(suit) {
+        return suit.toLowerCase() === 'hearts' || suit.toLowerCase() === 'diams';
     }
 }
 
