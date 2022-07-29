@@ -38,24 +38,20 @@ class TeleportationDevice extends GoodsCard {
             handler: context => {
                 let teleMessage = '{0} uses {1} on {2}';
                 if(context.pull.pulledSuit.toLowerCase() === 'clubs') {
-                    if(context.targets.tDude.allowGameAction('discard', context)) {
-                        this.game.resolveGameAction(GameActions.discardCard({ card: context.targets.tDude }), context);
+                    this.game.resolveGameAction(GameActions.discardCard({ card: context.targets.tDude }), context).thenExecute(() => {
                         teleMessage += ', no one knows where they ended up';
-                    } else {
-                        teleMessage += ', sparks fly but they are safe';
-                    }
+                    });
                 } else {
-                    if(context.targets.tDude.allowGameAction('moveDude', context)) {
-                        this.game.resolveGameAction(GameActions.moveDude({ 
-                            card: context.targets.tDude, 
-                            targetUuid: context.targets.tDest.uuid 
-                        }), context);
+                    this.game.resolveGameAction(GameActions.moveDude({ 
+                        card: context.targets.tDude, 
+                        targetUuid: context.targets.tDest.uuid 
+                    }), context).thenExecute(() => {
                         teleMessage += ', moving them to {3}';
-                    } else {
-                        teleMessage += ', but they won\'t be moved';
-                    }
+                    });
                 }
-                this.game.addMessage(teleMessage, context.player, this, context.targets.tDude, context.targets.tDest);
+                this.game.queueSimpleStep(() => {
+                    this.game.addMessage(teleMessage, context.player, this, context.targets.tDude, context.targets.tDest);
+                });
             }
         });
     }
