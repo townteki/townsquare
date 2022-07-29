@@ -47,7 +47,7 @@
 |:heavy_check_mark:   | 01031| Jarrett Blake
 |:heavy_check_mark:   | 01032| Harold Aimslee
 |:heavy_check_mark:   | 01033| Rémy LaPointe
-|                     | 01034| Max Baine
+|:heavy_check_mark:   | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
 |:heavy_check_mark:   | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
@@ -552,7 +552,7 @@
 |:heavy_check_mark:   | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
 |:heavy_check_mark:   | 14013| Henry Moran
-|                     | 14014| Gomorra Lot Commission
+|:heavy_check_mark:   | 14014| Gomorra Lot Commission
 |:heavy_check_mark:   | 14015| Wagner Memorial Ranch
 |:heavy_check_mark:   | 14016| Notary Public
 |                     | 14017| Market Street
