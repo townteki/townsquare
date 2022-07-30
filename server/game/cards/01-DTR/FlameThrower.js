@@ -1,13 +1,11 @@
 const GoodsCard = require('../../goodscard.js');
 
 class FlameThrower extends GoodsCard {
+    constructor(owner, cardData) {
+        super(owner, cardData, { providesStudBonus: true });
+    }
+
     setupCardAbilities(ability) {
-        this.whileAttached({
-            condition: () => true,
-            effect: [
-                ability.effects.setAsStud()
-            ]
-        });
         this.action({
             title: 'Flame-Thrower',
             playType: ['shootout'],
