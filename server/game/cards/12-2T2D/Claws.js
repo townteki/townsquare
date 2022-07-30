@@ -2,16 +2,11 @@ const GoodsCard = require('../../goodscard.js');
 
 class Claws extends GoodsCard {
     constructor(owner, cardData) {
-        super(owner, cardData, true);
+        super(owner, cardData, { useMeleeEffect: true, providesStudBonus: true });
     }
 
     setupCardAbilities(ability) {
         this.attachmentRestriction({ keyword: ['harrowed', 'abomination'] });
-
-        this.whileAttached({
-            condition: () => !this.meleeWeaponCondition(),
-            effect: ability.effects.setAsStud()
-        });
 
         this.persistentEffect({
             match: this,
