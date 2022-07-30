@@ -41,7 +41,7 @@ class RobertoMuratore extends DudeCard {
     }
 
     isSuitRed(suit) {
-        return suit.toLowerCase() === 'hearts' || suit.toLowerCase() === 'diams';
+        return suit && (suit.toLowerCase() === 'hearts' || suit.toLowerCase() === 'diams');
     }
 }
 
