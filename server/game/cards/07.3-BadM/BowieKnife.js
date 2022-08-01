@@ -3,13 +3,9 @@ const GoodsCard = require('../../goodscard.js');
 
 class BowieKnife extends GoodsCard {
     constructor(owner, cardData) {
-        super(owner, cardData, true);
+        super(owner, cardData, { useMeleeEffect: true, providesStudBonus: true });
     }
     setupCardAbilities(ability) {
-        this.whileAttached({
-            condition: () => !this.meleeWeaponCondition(),
-            effect: ability.effects.setAsStud()
-        });
         this.playAction({
             title: 'Bowie Knife: Equip',
             cost: ability.costs.payReduceableGRCost(),

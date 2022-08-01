@@ -2,7 +2,7 @@ const GoodsCard = require('../../goodscard.js');
 
 class TlalocsFuries extends GoodsCard {
     constructor(owner, cardData) {
-        super(owner, cardData, true, true);
+        super(owner, cardData, { useMeleeEffect: true, providesBullets: true });
     }
 
     setupCardAbilities(ability) {

@@ -1403,6 +1403,10 @@ class Player extends Spectator {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
         }
+        if(this.drawDeck.length === 0) {
+            this.game.addAlert('danger', '{0} cannot pull because their deck and discard are empty', this);
+            return null;
+        }
         const pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'being played');
         if(addMessage) {
