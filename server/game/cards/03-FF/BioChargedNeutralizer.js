@@ -1,10 +1,11 @@
 const GoodsCard = require('../../goodscard.js');
 
 class BioChargedNeutralizer extends GoodsCard {
+    constructor(owner, cardData) {
+        super(owner, cardData, { providesStudBonus: true });
+    }
+
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.setAsStud()
-        });
         this.persistentEffect({
             match: this,
             effect: [

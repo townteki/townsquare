@@ -441,6 +441,10 @@ class Player extends Spectator {
         var toDiscard = Math.min(number, this.hand.length);
         var cards = [];
 
+        if(toDiscard <= 0) {
+            return false;
+        }
+
         while(cards.length < toDiscard) {
             var cardIndex = MathHelper.randomInt(this.hand.length);
 
@@ -456,6 +460,8 @@ class Player extends Spectator {
             }
             callback(discarded);
         });
+
+        return true;
     }
 
     resetCardPile(pile) {
@@ -1396,6 +1402,10 @@ class Player extends Spectator {
     pull(callback, addMessage = false, props = {}) {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
+        }
+        if(this.drawDeck.length === 0) {
+            this.game.addAlert('danger', '{0} cannot pull because their deck and discard are empty', this);
+            return null;
         }
         const pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'being played');

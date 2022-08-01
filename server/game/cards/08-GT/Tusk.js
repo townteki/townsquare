@@ -1,6 +1,11 @@
 const GoodsCard = require('../../goodscard.js');
 
 class Tusk extends GoodsCard {
+    constructor(owner, cardData) {
+        super(owner, cardData);
+        this.registerEvents(['onAbilityTargetsResolution']);
+    }
+
     setupCardAbilities() {
         this.traitReaction({
             when: {
@@ -11,20 +16,20 @@ class Tusk extends GoodsCard {
                 context.player.drawCardsToHand(1, context);
             }
         });
-        this.traitReaction({
-            when: {
-                onAbilityTargetsResolution: event => event.ability.isCardAbility() && event.player === this.controller.getOpponent()
+    }
+
+    onAbilityTargetsResolution(targetResEvent) {
+        if(!targetResEvent.ability.isCardAbility() || targetResEvent.player !== this.controller.getOpponent() || 
+            this.isFullBlank() || this.isTraitBlank()) {
+            return;
+        }
+        this.lastingEffect(targetResEvent.ability, ability => ({
+            until: {
+                onCardAbilityResolved: event => event.ability === targetResEvent.ability
             },
-            handler: context => {
-                this.lastingEffect(context.ability, ability => ({
-                    until: {
-                        onCardAbilityResolved: event => event.ability === context.event.ability
-                    },
-                    match: this.parent,
-                    effect: ability.effects.modifyValue(5)
-                }));
-            }
-        });
+            match: this.parent,
+            effect: ability.effects.modifyValue(5)
+        }));
     }
 }
 
