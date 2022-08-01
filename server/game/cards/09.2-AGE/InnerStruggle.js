@@ -30,10 +30,14 @@ class InnerStruggle extends ActionCard {
                 const theirhome = context.player.getOpponent().getOutfitCard();
                 context.player.attach(this, theirhome, 'ability', () => {
                     this.booted = true;
-                    this.controller.discardAtRandom(1, discarded => {
-                        this.game.addMessage('{0} uses {1}, attaches it to {2} and {3} randomly discards {4}', 
-                            context.player, this, theirhome, this.controller, discarded);
-                    }, false);
+                    if(this.controller.hand.length) {
+                        this.controller.discardAtRandom(1, discarded => {
+                            this.game.addMessage('{0} uses {1}, attaches it to {2} and {3} randomly discards {4}', 
+                                context.player, this, theirhome, this.controller, discarded);
+                        }, false);
+                    } else {
+                        this.game.addMessage('{0} uses {1}, attaching it to {2}', context.player, this, theirhome);
+                    }
                 });
             }
         });
