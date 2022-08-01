@@ -33,7 +33,7 @@ class ChristinePerfect extends DudeCard {
     }
 
     isOpposingDudeWithHighestGrit(dude, context) {
-        const opponentsDudes = this.game.getDudesInPlay(dude.controller.getOpponent());
+        const opponentsDudes = this.game.getDudesInPlay(dude.controller);
         const highestGrit = opponentsDudes.reduce((highestGrit, dude) => {
             return Math.max(dude.getGrit(context), highestGrit);
         }, 0);

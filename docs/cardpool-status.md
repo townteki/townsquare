@@ -283,12 +283,12 @@
 |:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
 |:heavy_check_mark:   | 05040| Meet The New Boss
-|:heavy_check_mark:   | 06001| Funtime Freddy
 
 ## `04.1-FJ` Frontier Justice
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 06001| Funtime Freddy
 |:heavy_check_mark:   | 06002| The Flying Popescus
 |                     | 06003| Andrew Burton
 |                     | 06004| Elmore Rhine

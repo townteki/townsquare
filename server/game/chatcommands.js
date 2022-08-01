@@ -670,7 +670,7 @@ class ChatCommands {
             activePromptTitle: 'Select a card',
             waitingPromptTitle: 'Waiting for opponent to remove a card from the game',
             cardCondition: card => card.controller === player && card.owner === player && !['out of game'].includes(card.location),
-            cardType: ['dude', 'deed', 'goods', 'spell', 'action'],
+            cardType: ['dude', 'deed', 'goods', 'spell', 'action', 'joker'],
             onSelect: (p, card) => {
                 player.removeCardFromGame(card);
                 this.game.addAlert('danger', '{0} uses the /remove-from-game command to remove {1} from the game', player, card);
