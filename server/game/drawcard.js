@@ -330,8 +330,12 @@ class DrawCard extends BaseCard {
         if(!this.attachments) {
             return [];
         }
+        let searchKeywords = keywords;
+        if(!Array.isArray(keywords)) {
+            searchKeywords = [keywords];
+        }
         return this.attachments.filter(attachment => {
-            for(let keyword of keywords) {
+            for(let keyword of searchKeywords) {
                 if(!attachment.hasKeyword(keyword)) {
                     return false;
                 }
@@ -341,11 +345,7 @@ class DrawCard extends BaseCard {
     }
 
     hasAttachmentWithKeywords(keywords) {
-        let searchKeywords = keywords;
-        if(!Array.isArray(keywords)) {
-            searchKeywords = [keywords];
-        }
-        return this.getAttachmentsByKeywords(searchKeywords).length > 0;
+        return this.getAttachmentsByKeywords(keywords).length > 0;
     }
 
     removeAttachment(attachment) {

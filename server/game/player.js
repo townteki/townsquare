@@ -441,6 +441,10 @@ class Player extends Spectator {
         var toDiscard = Math.min(number, this.hand.length);
         var cards = [];
 
+        if(toDiscard <= 0) {
+            return false;
+        }
+
         while(cards.length < toDiscard) {
             var cardIndex = MathHelper.randomInt(this.hand.length);
 
@@ -456,6 +460,8 @@ class Player extends Spectator {
             }
             callback(discarded);
         });
+
+        return true;
     }
 
     resetCardPile(pile) {
