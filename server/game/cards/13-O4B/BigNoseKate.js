@@ -40,7 +40,9 @@ class BigNoseKate extends DudeCard {
                         source: this
                     });
                 }
-                this.game.addMessage(msg, context.player, this, context.costs.discardFromHand, context.target);
+                this.game.queueSimpleStep(() => {
+                    this.game.addMessage(msg, context.player, this, context.costs.discardFromHand, context.target);
+                });
             }
         });
     }
