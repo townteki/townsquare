@@ -946,7 +946,7 @@ class Player extends Spectator {
             if(!card.locationCard || !card.locationCard.controller.equals(attachment.controller)) {
                 return false;
             } 
-            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
+            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem()) && !attachment.isImprovement()) {
                 return false;
             }
         }
