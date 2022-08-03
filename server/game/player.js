@@ -143,7 +143,8 @@ class Player extends Spectator {
                 modifyGhostRock: () => true,
                 cardsInPlay: [], 
                 drawDeck: [],
-                hand: []
+                hand: [],
+                deadPile: []
             };
         }
         return opponents[0];
