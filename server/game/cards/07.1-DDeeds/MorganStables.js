@@ -15,8 +15,9 @@ class MorganStables extends OutfitCard {
         this.reaction({
             title: 'React: Morgan Stables',
             when: {
-                onDudeMoved: event => event.options.context && event.options.context.ability &&
-                    event.options.context.player === this.controller &&
+                onDudeMoved: event => this.controller.equals(event.card.controller) &&
+                    event.options.context && event.options.context.ability &&
+                    this.controller.equals(event.options.context.player) &&
                     event.options.context.ability.isCardAbility() &&
                     ['shootout', 'shootout:join', 'noon'].includes(event.options.context.ability.playTypePlayed())
             },
