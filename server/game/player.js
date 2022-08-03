@@ -800,7 +800,7 @@ class Player extends Spectator {
                     if(card.isGadget() && this.game.currentPhase !== 'setup') {
                         this.inventGadget(card, updatedParams.scientist, (context, scientist) => {
                             putIntoPlayFunc(scientist.gamelocation);
-                        });
+                        }, scientist => scientist.locationCard.controller.equals(this));
                     } else {
                         let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
                         putIntoPlayFunc(target);
@@ -876,7 +876,7 @@ class Player extends Spectator {
         });
     }
 
-    inventGadget(gadget, scientist, successHandler = () => true) {
+    inventGadget(gadget, scientist, successHandler = () => true, scientistCondition = () => true) {
         const getPullProperties = (scientist, bootedToInvent) => {
             return {
                 successHandler: context => {
@@ -916,7 +916,8 @@ class Player extends Spectator {
                     card.controller.equals(this) &&
                     !card.cannotInventGadgets() &&
                     (!card.booted || gadget.canBeInventedWithoutBooting()) &&
-                    card.canPerformSkillOn(gadget),
+                    card.canPerformSkillOn(gadget) &&
+                    scientistCondition(card),
                 cardType: 'dude',
                 onSelect: (player, card) => {
                     pullToInvent(card, gadget);
