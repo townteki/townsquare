@@ -3,20 +3,21 @@ const DudeCard = require('../../dudecard.js');
 class BogieMan extends DudeCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => this.controller.deadPile.length === 0,
+            condition: () => !this.controller.deadPile.some(card => card.getType() === 'dude'),
             match: this,
             effect: ability.effects.modifyInfluence(1)
         });
 
         this.persistentEffect({
-            condition: () => this.controller.deadPile.length > 0,
+            condition: () => this.controller.deadPile.length > 0 || this.controller.getOpponent().deadPile.length > 0,
             match: this,
             effect: ability.effects.dynamicBullets(() => this.findHighestInfInBootHill())
         });
     }
 
     findHighestInfInBootHill() {
-        return this.controller.deadPile.reduce((max, card) => {
+        const oppDeadPile = this.controller.getOpponent().deadPile;
+        return this.controller.deadPile.concat(oppDeadPile).reduce((max, card) => {
             if(card.getPrintedStat('influence') > max) {
                 return card.getPrintedStat('influence');
             }
