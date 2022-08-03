@@ -11,8 +11,7 @@ class HaroldAimslee extends DudeCard {
             ],
             target: {
                 activePromptTitle: 'Select non-Weapon Gadget',
-                cardCondition: { location: 'discard pile', condition: card => card.hasKeyword('Gadget') && !card.hasKeyword('Weapon') },
-                cardType: ['goods']
+                cardCondition: { location: 'discard pile', condition: card => card.hasKeyword('Gadget') && !card.hasKeyword('Weapon') }
             },
             message: context => 
                 this.game.addMessage('{0} uses {1} to discard {2} and get {3} to hand from discard pile', 
