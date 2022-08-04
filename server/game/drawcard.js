@@ -269,7 +269,7 @@ class DrawCard extends BaseCard {
     clearBlank(type) {
         super.clearBlank(type);
         this.attachments.forEach(attachment => {
-            if(!this.canAttach(this.controller, attachment)) {
+            if(!attachment.canAttach(this.controller, this)) {
                 this.controller.discardCard(attachment, false);
             }
         });
