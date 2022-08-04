@@ -1,4 +1,4 @@
-const CliffsNo4Saloon = require('../07.3-BadM/CliffsNo4Saloon');
+const CliffsNo4Saloon = require('../10-BMR/CliffsNo4Saloon');
 
 class CliffsNo4Saloon2 extends CliffsNo4Saloon {}
 
