@@ -2,7 +2,7 @@ const ActionCard = require('../../actioncard.js');
 const PhaseNames = require('../../Constants/PhaseNames.js');
 
 class LadyLuck extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Lady Luck',
             playType: ['noon'],
