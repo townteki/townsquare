@@ -641,7 +641,7 @@
 |                     | 17002| Seamus McCaffrey
 |:heavy_check_mark:   | 17003| Gene North Star
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
-|                     | 17005| Quimby R. Tuttlemeir
+|:heavy_check_mark:   | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
 |:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
