@@ -120,7 +120,7 @@
 |                     | 01104| Raising Hell
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
 |:heavy_check_mark:   | 01106| Hired Guns
-|                     | 01107| Lady Luck
+|:heavy_check_mark:   | 01107| Lady Luck
 |:heavy_check_mark:   | 01108| Bottom Dealin'
 |:heavy_check_mark:   | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
