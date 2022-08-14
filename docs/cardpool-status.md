@@ -353,7 +353,7 @@
 |:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
-|                     | 08014| Stoker's Sabre
+|:heavy_check_mark:   | 08014| Stoker's Sabre
 |:heavy_check_mark:   | 08015| Fate Dispenser
 |:heavy_check_mark:   | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
