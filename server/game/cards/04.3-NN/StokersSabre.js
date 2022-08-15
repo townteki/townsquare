@@ -18,7 +18,7 @@ class StokersSabre extends GoodsCard {
                 activePromptTitle: 'Choose spell',
                 cardCondition: {
                     location: 'play area',
-                    condition: card => card.parent === this && card.booted
+                    condition: card => card.parent === this.parent && card.booted
                 },
                 cardType: ['spell']
             },
