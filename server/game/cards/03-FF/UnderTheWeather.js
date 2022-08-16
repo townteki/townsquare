@@ -2,7 +2,7 @@ const ActionCard = require('../../actioncard.js');
 const GameActions = require('../../GameActions/index.js');
 
 class UnderTheWeather extends ActionCard {
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Under the Weather',
             playType: ['noon'],
