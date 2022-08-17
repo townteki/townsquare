@@ -630,7 +630,7 @@
 |:heavy_check_mark:   | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
 |:heavy_check_mark:   | 16019| Siege Of The Orphanage
-|                     | 16020| Lighting The Fuse
+|:heavy_check_mark:   | 16020| Lighting The Fuse
 |                     | 16021| One Fights As Many
 
 ## `09.3-TSs` The Showstopper
