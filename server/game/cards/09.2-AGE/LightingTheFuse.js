@@ -31,7 +31,7 @@ class LightingTheFuse extends ActionCard {
                                 cardCondition: card => card.location === 'play area' &&
                                     card.controller.equals(thecheater) && !card.booted,
                                 cardType: 'dude',
-                                gameAction: ['moveDude','boot'],
+                                gameAction: ['moveDude', 'boot'],
                                 multiSelect: true,
                                 numCards: 2,
                                 mode: 'exactly',
@@ -54,7 +54,7 @@ class LightingTheFuse extends ActionCard {
                         onNo: () => kaboomification(),
                         source: this
                     });
-                } else {//not gambling, must be a shootout
+                } else { //not gambling, must be a shootout
                     kaboomification();
                 }
             },
