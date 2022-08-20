@@ -10,8 +10,7 @@ class BBAttorneys extends DeedCard {
             target: {
                 activePromptTitle: 'Select a wanted dude',
                 cardCondition: { location: 'play area', wanted: true },
-                cardType: ['dude'],
-                gameAction: ['addBounty', 'removeBounty']
+                cardType: ['dude']
             },
             handler: context => {
                 this.abilityContext = context;
