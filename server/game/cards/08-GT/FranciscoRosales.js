@@ -15,7 +15,7 @@ class FranciscoRosales extends DudeCard {
                 this.game.resolveGameAction(
                     GameActions.search({
                         title: 'Select a horse or sidekick',
-                        match: { keyword: ['Horse', 'sidekick'], type: 'goods' },
+                        match: { keyword: ['Horse', 'sidekick'], type: ['goods', 'spell'] },
                         location: ['discard pile'],
                         numToSelect: 1,
                         message: {

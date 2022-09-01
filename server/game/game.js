@@ -295,7 +295,10 @@ class Game extends EventEmitter {
     findCardsInPlay(predicate) {
         let foundCards = [];
         for(let player of this.getPlayers()) {
-            foundCards = foundCards.concat(player.findCards(player.cardsInPlay, predicate));        
+            var playerCards = player.findCards(player.cardsInPlay, predicate);
+            // need to filter out duplicates - can happen if attachment controlled by one player is attached to 
+            // a card owned by the other player
+            foundCards = foundCards.concat(playerCards.filter(pCard => !foundCards.includes(pCard)));
         }
         return foundCards;
     }

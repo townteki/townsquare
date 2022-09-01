@@ -220,7 +220,11 @@ class Shootout extends Phase {
                 this.game.raiseEvent('onDudesReturnAfterJob', { job: this }, event => {
                     event.job.actOnLeaderPosse(card => {
                         if(!card.doesNotReturnAfterJob()) {
-                            event.job.sendHome(card, { isCardEffect: false, isAfterJob: true });
+                            event.job.sendHome(card, { 
+                                game: this.game, player: this.leaderPlayer 
+                            }, { 
+                                isCardEffect: false, isAfterJob: true 
+                            });
                         }
                     });
                 });
@@ -290,6 +294,11 @@ class Shootout extends Phase {
 
     isInShootout(card) {
         return this.isInLeaderPosse(card) || this.isInOpposingPosse(card);
+    }
+
+    isShooter(dude, checkLeader = true, checkOpposing = true) {
+        return (checkLeader && this.leaderPosse && this.leaderPosse.shooter && this.leaderPosse.shooter.equals(dude)) ||
+            (checkOpposing && this.opposingPosse && this.opposingPosse.shooter && this.opposingPosse.shooter.equals(dude));        
     }
 
     getPosseSize(player) {

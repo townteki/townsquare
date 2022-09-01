@@ -47,7 +47,7 @@ class ShootoutPossePrompt extends UiPrompt {
                 return true;
             },
             onCancel: (player) => {
-                if(!this.passesJobCondition()) {
+                if(player.equals(this.shootout.leaderPlayer) && !this.passesJobCondition()) {
                     return true;
                 }
                 if(this.shootout.isJob() && this.shootout.opposingPlayer === player) {
@@ -72,7 +72,7 @@ class ShootoutPossePrompt extends UiPrompt {
     }
 
     formPosse(player, dudes) {
-        if(!this.passesJobCondition(dudes)) {
+        if(player.equals(this.shootout.leaderPlayer) && !this.passesJobCondition(dudes)) {
             return true;
         }
         this.joinLeaderAndMark(player);

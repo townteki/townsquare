@@ -3,7 +3,7 @@ const GoodsCard = require('../../goodscard.js');
 
 class LaQuema extends GoodsCard {
     constructor(owner, cardData) {
-        super(owner, cardData, false, true);
+        super(owner, cardData, { providesBullets: true });
     }
 
     setupCardAbilities(ability) {

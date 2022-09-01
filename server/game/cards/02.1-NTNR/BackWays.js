@@ -31,6 +31,7 @@ class BackWays extends ActionCard {
                         }), context);
                         this.game.addMessage('{0} uses {1} to move {2} from {3} to {4}',
                             player, this, context.target, erstwhileLocation, location);
+                        return true;
                     },
                     source: this
                 });

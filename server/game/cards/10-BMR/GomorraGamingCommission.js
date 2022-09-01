@@ -27,7 +27,8 @@ class GomorraGamingCommission extends DeedCard {
                                 this.game.resolveGameAction(GameActions.drawCards({ player: context.player, amount: 1 }), context).thenExecute(() => {
                                     this.game.addMessage('{0} uses {1} to boost its production by 1 and draw a card', context.player, this);
                                 });
-                            }
+                            },
+                            source: this
                         });
                     } else {
                         this.game.resolveGameAction(GameActions.drawCards({ player: context.player, amount: 1 }), context).thenExecute(() => {
