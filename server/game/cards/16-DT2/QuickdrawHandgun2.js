@@ -17,9 +17,9 @@ class QuickdrawHandgun2 extends GoodsCard {
                 context.player.handResult = savedOppInfo.handResult;
                 opponent.drawHand = savedThisInfo.drawHand;
                 opponent.handResult = savedThisInfo.handResult;
-                opponent.getHandRank().cheatin = false;
                 context.player.determineHandResult('changes hand to');
                 opponent.determineHandResult('changes hand to');
+                context.player.getHandRank().cheatin = false;
                 this.game.addMessage('{0}\'s current rank: {1} (modifier {2})', 
                     context.player, context.player.getTotalRank(), context.player.rankModifier);
                 this.game.addMessage('{0}\'s current rank: {1} (modifier {2})', 

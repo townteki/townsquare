@@ -8,7 +8,7 @@ class MongwauTheMighty extends DudeCard {
             title: 'Shootout: Mongwau the Mighty',
             playType: ['shootout'],
             cost: ability.costs.discardFromPlay(card => 
-                card.parent === this &&
+                this.equals(card.parent) &&
                 card.hasKeyword('hex')),
             message: context => 
                 this.game.addMessage('{0} uses {1} and discards {2} to make him a stud', 

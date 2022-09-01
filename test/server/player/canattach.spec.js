@@ -13,7 +13,7 @@ describe('Player', function() {
         this.cardSpy.allowAttachment = jasmine.createSpy('allowAttachment');
         this.cardSpy.allowAttachment.and.returnValue(true);
         this.cardSpy.location = 'play area';
-        this.attachmentSpy = jasmine.createSpyObj('goods', ['canAttach', 'getType']);
+        this.attachmentSpy = jasmine.createSpyObj('goods', ['canAttach', 'getType', 'isImprovement']);
         this.attachmentSpy.canAttach.and.returnValue(true);
         this.attachmentSpy.controller = this.player;
     });
