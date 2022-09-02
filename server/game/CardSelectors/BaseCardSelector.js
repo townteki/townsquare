@@ -91,13 +91,29 @@ class BaseCardSelector {
         if(!card.allowGameAction('target', context)) {
             return false;
         }
-        if(typeof(this.gameAction) === 'function') {
+        return this.checkGameAction(card, context, this.gameAction);
+    }
+
+    checkGameAction(card, context, action) {
+        if(typeof(action) === 'function') {
             return card.allowGameAction(this.gameAction(card, context), context);
         }
-        if(!Array.isArray(this.gameAction)) {
-            return card.allowGameAction(this.gameAction, context);
+        if(action && (action.or || action.and)) {
+            let partial = false;
+            if(action.or) {
+                action.or = Array.isArray(action.or) ? action.or : [action.or];
+                partial = action.or.some(gameAction => this.checkGameAction(card, context, gameAction));
+            }
+            if(partial && action.and) {
+                action.and = Array.isArray(action.and) ? action.and : [action.and];
+                partial = action.and.every(gameAction => this.checkGameAction(card, context, gameAction));
+            }            
+            return partial;
+        }        
+        if(!Array.isArray(action)) {
+            return card.allowGameAction(action, context);
         }
-        return this.gameAction.every(gameAction => card.allowGameAction(gameAction, context));
+        return action.every(gameAction => card.allowGameAction(gameAction, context));
     }
 
     /**

@@ -15,7 +15,8 @@ class ThirstForBlood extends ActionCard {
                     participating: true,
                     condition: card => card.influence > 0
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: { or: ['setAsStud', 'increaseBullets', 'addBounty'] }
             },
             handler: context => {
                 this.abilityContext = context;
@@ -27,19 +28,19 @@ class ThirstForBlood extends ActionCard {
                                 text: 'Make them a stud', 
                                 method: 'applyTfBEffects',
                                 arg: 'makeStud',
-                                disabled: !this.abilityContext.target.allowGameAction('setAsStud')
+                                disabled: !this.abilityContext.target.allowGameAction('setAsStud', this.abilityContext)
                             },
                             { 
                                 text: 'Give them +2 bullets', 
                                 method: 'applyTfBEffects',
                                 arg: 'giveBullets',
-                                disabled: !this.abilityContext.target.allowGameAction('increaseBullets')
+                                disabled: !this.abilityContext.target.allowGameAction('increaseBullets', this.abilityContext)
                             },
                             { 
                                 text: 'Increase bounty to gain both', 
                                 method: 'applyTfBEffects',
                                 arg: 'gainBoth',
-                                disabled: !this.abilityContext.target.allowGameAction('addBounty')
+                                disabled: !this.abilityContext.target.allowGameAction('addBounty', this.abilityContext)
                             }
                         ]
                     },
