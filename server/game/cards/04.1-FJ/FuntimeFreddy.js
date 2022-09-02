@@ -20,6 +20,7 @@ class FuntimeFreddy extends DudeCard {
                         },
                         location: ['draw deck'],
                         numToSelect: 2,
+                        mode: 'exact',
                         message: {
                             format: '{player} aces {source} to search their draw deck and let opponent choose between {searchTarget}'
                         },
