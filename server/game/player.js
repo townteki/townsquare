@@ -939,7 +939,7 @@ class Player extends Spectator {
             bootedToInvent = true;
         }
         this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
-            this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillRatingForCard(event.gadget), 
+            this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillForCard(event.gadget), 
                 getPullProperties(event.scientist, event.bootedToInvent));
         });
     }
