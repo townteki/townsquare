@@ -146,7 +146,7 @@ class PlayerInteractionWrapper {
         var items = card.getMenu(this.player).filter(item => item.text === menuText);
 
         if(items.length === 0) {
-            throw new Error(`Card ${card.name} does not have a menu item "${menuText}"`);
+            throw new Error(`Card ${card.title} does not have a menu item "${menuText}"`);
         }
 
         this.game.menuItemClick(this.player.name, card.uuid, items[0]);

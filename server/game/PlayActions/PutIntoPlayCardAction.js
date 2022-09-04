@@ -13,6 +13,8 @@ class PutIntoPlayCardAction extends BaseAbility {
             target: properties.targetProperties
         });
         this.properties = properties;
+        // TODO needs to be refactored to change all to playingType
+        this.properties.playingType = properties.playType;
         this.playType = properties.playType;
         this.reduceAmount = properties.reduceAmount;
         this.callback = callback;
