@@ -798,7 +798,7 @@ class Player extends Spectator {
                             this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
                         }
                     };
-                    if(card.isGadget() && this.game.currentPhase !== 'setup') {
+                    if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== 'drop') {
                         this.inventGadget(card, updatedParams.scientist, (context, scientist) => {
                             putIntoPlayFunc(scientist.gamelocation);
                         }, scientist => scientist.locationCard.controller.equals(this));
@@ -819,7 +819,7 @@ class Player extends Spectator {
                     }
                     this.entersPlay(card, updatedParams);                    
                 };              
-                if(card.isGadget()) {
+                if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== 'drop') {
                     this.inventGadget(card, updatedParams.scientist, () => {
                         putIntoPlayFunc();
                     });
