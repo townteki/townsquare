@@ -12,34 +12,36 @@ class Disarm extends ActionCard {
                 cardType: ['dude']
             },
             handler: context => {
-                context.ability.selectAnotherTarget(context.player, context, {
-                    activePromptTitle: 'Select attachment',
-                    waitingPromptTitle: 'Waiting for opponent to select attachment',
-                    cardCondition: card => card.parent === context.target,
-                    onSelect: (player, att) => {
-                        if(this.game.shootout) {
-                            if(att.isUnique()) {
-                                this.game.resolveGameAction(GameActions.discardCard({ card: att }), context).thenExecute(() => {
-                                    this.game.addMessage('{0} uses {1} to discard {2}\'s attachment {3}', 
+                if(context.target.hasAttachment()) {
+                    context.ability.selectAnotherTarget(context.player, context, {
+                        activePromptTitle: 'Select attachment',
+                        waitingPromptTitle: 'Waiting for opponent to select attachment',
+                        cardCondition: card => card.parent === context.target,
+                        onSelect: (player, att) => {
+                            if(this.game.shootout) {
+                                if(att.isUnique()) {
+                                    this.game.resolveGameAction(GameActions.discardCard({ card: att }), context).thenExecute(() => {
+                                        this.game.addMessage('{0} uses {1} to discard {2}\'s attachment {3}', 
+                                            context.player, this, context.target, att);
+                                    });
+                                } else {
+                                    this.game.resolveGameAction(GameActions.aceCard({ card: att }), context).thenExecute(() => {
+                                        this.game.addMessage('{0} uses {1} to ace {2}\'s attachment {3}', 
+                                            context.player, this, context.target, att);
+                                    });                                
+                                }
+                                this.game.resolveGameAction(GameActions.decreaseCasualties({ player: context.player }), context);
+                            } else {
+                                this.game.resolveGameAction(GameActions.bootCard({ card: att }), context).thenExecute(() => {
+                                    this.game.addMessage('{0} uses {1} to boot {2}\'s attachment {3}', 
                                         context.player, this, context.target, att);
                                 });
-                            } else {
-                                this.game.resolveGameAction(GameActions.aceCard({ card: att }), context).thenExecute(() => {
-                                    this.game.addMessage('{0} uses {1} to ace {2}\'s attachment {3}', 
-                                        context.player, this, context.target, att);
-                                });                                
                             }
-                            this.game.resolveGameAction(GameActions.decreaseCasualties({ player: context.player }), context);
-                        } else {
-                            this.game.resolveGameAction(GameActions.bootCard({ card: att }), context).thenExecute(() => {
-                                this.game.addMessage('{0} uses {1} to boot {2}\'s attachment {3}', 
-                                    context.player, this, context.target, att);
-                            });
-                        }
-                        return true;
-                    },
-                    source: this
-                });
+                            return true;
+                        },
+                        source: this
+                    });
+                }
                 this.game.queueSimpleStep(() => { 
                     if(this.game.shootout) {
                         this.game.resolveGameAction(GameActions.decreaseCasualties({ player: context.player }), context).thenExecute(() => {
