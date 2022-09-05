@@ -25,7 +25,7 @@ class SoulCage extends GoodsCard {
                     player: context.player,
                     card: context.target,
                     params: {
-                        target: this.gamelocation,
+                        targetLocationUuid: this.gamelocation,
                         context: context
                     } 
                 }), context).thenExecute(() => {

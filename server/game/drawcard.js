@@ -269,7 +269,7 @@ class DrawCard extends BaseCard {
     clearBlank(type) {
         super.clearBlank(type);
         this.attachments.forEach(attachment => {
-            if(!this.canAttach(this.controller, attachment)) {
+            if(!attachment.canAttach(this.controller, this)) {
                 this.controller.discardCard(attachment, false);
             }
         });
@@ -330,8 +330,12 @@ class DrawCard extends BaseCard {
         if(!this.attachments) {
             return [];
         }
+        let searchKeywords = keywords;
+        if(!Array.isArray(keywords)) {
+            searchKeywords = [keywords];
+        }
         return this.attachments.filter(attachment => {
-            for(let keyword of keywords) {
+            for(let keyword of searchKeywords) {
                 if(!attachment.hasKeyword(keyword)) {
                     return false;
                 }
@@ -341,11 +345,7 @@ class DrawCard extends BaseCard {
     }
 
     hasAttachmentWithKeywords(keywords) {
-        let searchKeywords = keywords;
-        if(!Array.isArray(keywords)) {
-            searchKeywords = [keywords];
-        }
-        return this.getAttachmentsByKeywords(searchKeywords).length > 0;
+        return this.getAttachmentsByKeywords(keywords).length > 0;
     }
 
     removeAttachment(attachment) {

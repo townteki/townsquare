@@ -143,7 +143,8 @@ class Player extends Spectator {
                 modifyGhostRock: () => true,
                 cardsInPlay: [], 
                 drawDeck: [],
-                hand: []
+                hand: [],
+                deadPile: []
             };
         }
         return opponents[0];
@@ -441,6 +442,10 @@ class Player extends Spectator {
         var toDiscard = Math.min(number, this.hand.length);
         var cards = [];
 
+        if(toDiscard <= 0) {
+            return false;
+        }
+
         while(cards.length < toDiscard) {
             var cardIndex = MathHelper.randomInt(this.hand.length);
 
@@ -456,6 +461,8 @@ class Player extends Spectator {
             }
             callback(discarded);
         });
+
+        return true;
     }
 
     resetCardPile(pile) {
@@ -794,7 +801,7 @@ class Player extends Spectator {
                     if(card.isGadget() && this.game.currentPhase !== 'setup') {
                         this.inventGadget(card, updatedParams.scientist, (context, scientist) => {
                             putIntoPlayFunc(scientist.gamelocation);
-                        });
+                        }, scientist => scientist.locationCard.controller.equals(this));
                     } else {
                         let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
                         putIntoPlayFunc(target);
@@ -870,7 +877,7 @@ class Player extends Spectator {
         });
     }
 
-    inventGadget(gadget, scientist, successHandler = () => true) {
+    inventGadget(gadget, scientist, successHandler = () => true, scientistCondition = () => true) {
         const getPullProperties = (scientist, bootedToInvent) => {
             return {
                 successHandler: context => {
@@ -910,7 +917,8 @@ class Player extends Spectator {
                     card.controller.equals(this) &&
                     !card.cannotInventGadgets() &&
                     (!card.booted || gadget.canBeInventedWithoutBooting()) &&
-                    card.canPerformSkillOn(gadget),
+                    card.canPerformSkillOn(gadget) &&
+                    scientistCondition(card),
                 cardType: 'dude',
                 onSelect: (player, card) => {
                     pullToInvent(card, gadget);
@@ -939,7 +947,7 @@ class Player extends Spectator {
             if(!card.locationCard || !card.locationCard.controller.equals(attachment.controller)) {
                 return false;
             } 
-            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
+            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem()) && !attachment.isImprovement()) {
                 return false;
             }
         }
@@ -1396,6 +1404,10 @@ class Player extends Spectator {
     pull(callback, addMessage = false, props = {}) {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
+        }
+        if(this.drawDeck.length === 0) {
+            this.game.addAlert('danger', '{0} cannot pull because their deck and discard are empty', this);
+            return null;
         }
         const pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'being played');
