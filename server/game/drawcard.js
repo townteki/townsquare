@@ -365,6 +365,17 @@ class DrawCard extends BaseCard {
             .concat(this.abilities.actions.filter(action => !action.allowMenu()));
     }
 
+    hasAbilityForType(abilityType, checkAttached = true) {
+        if(this.abilities.actions.some(action => action.playType.includes(abilityType))) {
+            return true;
+        }
+        if(!checkAttached) {
+            return false;
+        }
+        return this.attachments.some(att => att.abilities.actions.some(action => 
+            action.playType.includes('shootout') || action.playType.includes('resolution')));
+    }
+
     leavesPlay() {
         this.booted = false;
         this.attachments.forEach(attachment => {
