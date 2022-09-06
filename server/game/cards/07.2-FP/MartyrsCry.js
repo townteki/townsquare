@@ -8,7 +8,7 @@ class MartyrsCry extends ActionCard {
             playType: 'resolution',
             cost: ability.costs.discardFromPlay({
                 type: 'spell',
-                condition: card => card.isMiracle() && card.parent.isParticipating()
+                condition: card => card.isMiracle() && card.parent && card.parent.isParticipating()
             }),
             handler: context => {
                 const cryStrength = (context.player.getOpponent().isCheatin() ? 5 : 3);
