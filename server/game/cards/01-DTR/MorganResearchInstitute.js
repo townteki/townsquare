@@ -11,11 +11,10 @@ class MorganResearchInstitute extends DeedCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'any', 
-                    condition: card => card.locationCard === this && 
-                        card.isSkilled() &&
-                        (card.allowGameAction('increaseSkill') || card.allowGameAction('decreaseSkill'))
+                    condition: (card) => card.locationCard === this && card.isSkilled()
                 }, 
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: { or: ['increaseSkill', 'decreaseSkill'] }
             },
             handler: context => {
                 this.abilityContext = context;
@@ -48,13 +47,13 @@ class MorganResearchInstitute extends DeedCard {
                         text: 'Raise by 2', 
                         arg: skill, 
                         method: 'raise',
-                        disabled: !this.abilityContext.target.allowGameAction('increaseSkill')
+                        disabled: !this.abilityContext.target.allowGameAction('increaseSkill', this.abilityContext)
                     },
                     { 
                         text: 'Lower by 2', 
                         arg: skill, 
                         method: 'lower',
-                        disabled: !this.abilityContext.target.allowGameAction('decreaseSkill')
+                        disabled: !this.abilityContext.target.allowGameAction('decreaseSkill', this.abilityContext)
                     }
                 ]
             },
