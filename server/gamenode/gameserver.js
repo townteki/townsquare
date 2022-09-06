@@ -212,8 +212,8 @@ class GameServer {
         next();
     }
 
-    gameWon(game, reason, winner) {
-        this.zmqSocket.send('GAMEWIN', { game: game.getSaveState(), winner: winner.name, reason: reason });
+    gameWon(game) {
+        this.zmqSocket.send('GAMEWIN', { game: game.getSaveState() });
     }
 
     rematch(game) {
@@ -242,6 +242,9 @@ class GameServer {
         game.started = true;
         for(let player of Object.values(pendingGame.players)) {
             game.selectDeck(player.name, player.deck);
+        }
+        if(game.gameType === 'solo') {
+            game.selectDeckForAutomaton(pendingGame.soloPlayer.deck);
         }
 
         game.initialise();

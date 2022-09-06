@@ -7,7 +7,7 @@ class FasterOnTheDraw extends ActionCard {
             playType: ['shootout'],
             target: {
                 activePromptTitle: 'Select your dude who will be faster on the draw',
-                cardCondition: { location: 'play area', participating: true },
+                cardCondition: { location: 'play area', controller: 'current', participating: true },
                 cardType: ['dude']
             },
             handler: context => {

@@ -35,9 +35,12 @@ class StartingPossePrompt extends AllPlayerPrompt {
 
     onMenuCommand(player) {
         if(this.validPosse) {
-            player.startPosse();
-            this.game.addMessage('{0} has rounded up their starting posse', player);
+            this.roundUpPosse(player);
         }
+    }
+
+    handleSolo() {
+        this.roundUpPosse(this.game.automaton);
     }
 
     validateStartingPosse(player) {
@@ -86,6 +89,11 @@ class StartingPossePrompt extends AllPlayerPrompt {
                 return 'Starting multiple copies of unique card';
             }
         }
+    }
+
+    roundUpPosse(player) {
+        player.startPosse();
+        this.game.addMessage('{0} has rounded up their starting posse', player);
     }
 }
 

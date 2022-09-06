@@ -43,29 +43,41 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
     }
 
     promptPlayer(player) {
-        let cardsForPlayer = this.abilityChoices.filter(choice => choice.player === player).map(choice => choice.card);
+        let choicesForPlayer = this.abilityChoices.filter(choice => choice.player === player);
+        let cardsForPlayer = choicesForPlayer.map(choice => choice.card);
 
-        this.game.promptForSelect(player, {
-            activePromptTitle: TriggeredAbilityWindowTitles.getTitle(this.abilityType, this.event.getPrimaryEvent()),
-            isCardEffect: false,
-            cardCondition: card => cardsForPlayer.includes(card),
-            cardType: ['dude', 'deed', 'action', 'goods', 'spell', 'outfit', 'legend'],
-            additionalButtons: this.getButtons(player),
-            additionalControls: this.getAdditionalPromptControls(),
-            doneButtonText: 'Pass',
-            onSelect: (player, card) => this.chooseCardToTrigger(player, card),
-            onCancel: () => this.pass(),
-            onMenuCommand: (player, arg) => {
-                if(arg === 'pass') {
-                    this.pass();
-                } else if(arg === 'passAndPauseForRound') {
-                    player.disableTimerForRound();
-                    this.pass();
-                }
-
-                return true;
+        if(player === this.game.automaton) {
+            if(this.game.automaton.decideReacts(cardsForPlayer[0], this.event)) {
+                let choice = choicesForPlayer.find(choice => choice.card === cardsForPlayer[0]);
+                this.chooseAbility(choice);
             }
-        });
+        } else {
+            this.game.promptForSelect(player, {
+                activePromptTitle: TriggeredAbilityWindowTitles.getTitle(this.abilityType, this.event.getPrimaryEvent()),
+                isCardEffect: false,
+                cardCondition: card => cardsForPlayer.includes(card),
+                cardType: ['dude', 'deed', 'action', 'goods', 'spell', 'outfit', 'legend'],
+                additionalButtons: this.getButtons(player),
+                additionalControls: this.getAdditionalPromptControls(),
+                doneButtonText: 'Pass',
+                onSelect: (player, card) => {
+                    let choice = choicesForPlayer.find(choice => choice.card === card);
+                    this.chooseAbility(choice);
+                    return true;
+                },
+                onCancel: () => this.pass(),
+                onMenuCommand: (player, arg) => {
+                    if(arg === 'pass') {
+                        this.pass();
+                    } else if(arg === 'passAndPauseForRound') {
+                        player.disableTimerForRound();
+                        this.pass();
+                    }
+
+                    return true;
+                }
+            });
+        }
 
         this.forceReactPerPlayer[player.name] = false;
     }
@@ -104,46 +116,12 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
         return controls;
     }
 
-    chooseCardToTrigger(player, card) {
-        let choices = this.abilityChoices.filter(choice => choice.player === player && choice.card === card);
-
-        if(choices.length === 0) {
-            return false;
-        }
-
-        let availableTargets = choices.map(choice => choice.context.event.card || choice.context.event.target).filter(card => !!card);
-
-        if(choices.length === 1 || availableTargets.length <= 1) {
-            this.chooseAbility(choices[0]);
-            return true;
-        }
-
-        this.game.promptForSelect(player, {
-            activePromptTitle: `Choose triggering card for ${card.title}`,
-            isCardEffect: false,
-            cardCondition: card => availableTargets.includes(card),
-            onSelect: (player, selectedCard) => {
-                let choice = choices.find(choice => choice.context.event.card === selectedCard || choice.context.event.target === selectedCard);
-
-                if(!choice || choice.player !== player) {
-                    return false;
-                }
-
-                this.chooseAbility(choice);
-
-                return true;
-            }
-        });
-
-        return true;
-    }
-
     chooseAbility(choice) {
         this.resolveAbility(choice.ability, choice.context);
 
         // Always rotate player order without filtering, in case an ability is
         // triggered that could then make another ability eligible after it is
-        // resolved: e.g. Rains of Castamere into Wardens of the West
+        // resolved.
         this.players = this.rotatedPlayerOrder(choice.player);
     }
 

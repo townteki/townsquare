@@ -16,6 +16,10 @@ class Spectator {
         return true;
     }
 
+    isAutomaton() {
+        return false;
+    }
+    
     equals(spectator) {
         return spectator && this.id === spectator.id;
     }
