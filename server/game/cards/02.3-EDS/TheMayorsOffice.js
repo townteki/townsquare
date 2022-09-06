@@ -7,9 +7,12 @@ class TheMayorsOffice extends DeedCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),
             target: {
-                cardCondition: {location: 'play area', condition: card => (card.gamelocation === this.gamelocation || card.isAdjacent(this.gamelocation))},
+                cardCondition: {
+                    location: 'play area', 
+                    condition: card => (card.gamelocation === this.gamelocation || card.isAdjacent(this.gamelocation))
+                },
                 cardType: 'dude',
-                gameAction: ['increaseInfluence', 'decreaseInfluence']
+                gameAction: { or: ['increaseInfluence', 'decreaseInfluence'] }
             },
             handler: context => {
                 this.abilityContext = context;
@@ -19,11 +22,13 @@ class TheMayorsOffice extends DeedCard {
                         buttons: [
                             {
                                 text: 'Raise by one',
-                                method: 'raise'
+                                method: 'raise',
+                                disabled: !this.abilityContext.target.allowGameAction('increaseInfluence', this.abilityContext)
                             },
                             {
                                 text: 'Lower by one',
-                                method: 'lower'
+                                method: 'lower',
+                                disabled: !this.abilityContext.target.allowGameAction('decreaseInfluence', this.abilityContext)
                             }
                         ]
                     },

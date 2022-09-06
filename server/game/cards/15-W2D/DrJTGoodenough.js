@@ -21,6 +21,7 @@ class DrJTGoodenough extends DudeCard {
                         },
                         location: ['draw deck'],
                         numToSelect: 2,
+                        mode: 'exactly',
                         message: {
                             format: '{player} plays {source} to search their draw deck and let opponent choose between {searchTarget}'
                         },
