@@ -51,7 +51,8 @@ class Framed extends ActionCard {
             target: {
                 activePromptTitle: 'Select opposing wanted dude',
                 cardCondition: { location: 'play area', controller: 'opponent', wanted: true},
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: ['addBounty']
             },
             message: context => this.game.addMessage('{0} plays {1} on {2} to further increase their bounty by 3',
                 context.player, this, context.target),

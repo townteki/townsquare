@@ -3,8 +3,7 @@ const UiPrompt = require('../uiprompt');
 
 class DrawHandPrompt extends UiPrompt {
     constructor(game, drawCounts) {
-        super();
-        this.game = game;
+        super(game);
         this.players = game.getPlayers();
         this.drawCounts = drawCounts;
         if(!this.drawCounts) {
@@ -159,6 +158,21 @@ class DrawHandPrompt extends UiPrompt {
             return true;
         }
         return false;
+    }
+
+    handleSolo() {
+        if(this.game.currentPhase === PhaseNames.Gambling) {
+            this.onMenuCommand(this.game.automaton, 'revealdraw');
+        }
+        if(this.game.shootout) {
+            const drawCount = this.getDrawCount(this.game.automaton);
+            this.game.automaton.makeDrawHand(drawCount.number, drawCount.redraw);
+            this.game.automaton.drawHandSelected = true;
+        }     
+    }
+
+    canHandleSolo() {
+        return super.canHandleSolo() && this.game.automaton.getOpponent().drawHandSelected;
     }
 }
 

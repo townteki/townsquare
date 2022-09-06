@@ -41,6 +41,8 @@ const AbilityContext = require('./AbilityContext.js');
 const ValuePrompt = require('./gamesteps/valueprompt.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 const { TownSquareUUID } = require('./Constants/index.js');
+const Automaton = require('./Solo/automaton.js');
+const PlayWindow = require('./gamesteps/playwindow.js');
 const MathHelper = require('./MathHelper.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
@@ -94,6 +96,10 @@ class Game extends EventEmitter {
             this.playersAndSpectators[player.user.username] = new Player(player.id, player.user, this.owner === player.user.username, this);
         }
 
+        if(this.isSolo()) {
+            this.automaton = new Automaton(this, details.soloPlayer.user);
+        }
+
         for(let spectator of Object.values(details.spectators || {})) {
             this.playersAndSpectators[spectator.user.username] = new Spectator(spectator.id, spectator.user);
         }
@@ -111,7 +117,11 @@ class Game extends EventEmitter {
     }
 
     isLegacy() {
-        this.restrictedList.cardSet === 'original';
+        return this.restrictedList.cardSet === 'original';
+    }
+
+    isSolo() {
+        return this.gameType === 'solo';
     }
 
     reportError(e) {
@@ -168,10 +178,15 @@ class Game extends EventEmitter {
     /**
      * Returns all players in the game (not Spectators).
      *
+     * @param {boolean} includeSoloPlayer - including Automaton for Solo games
      * @returns {Array.<Player>} - array of Players.
      */    
-    getPlayers() {
-        return Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
+    getPlayers(includeSoloPlayer = true) {
+        const humanPlayers = Object.values(this.playersAndSpectators).filter(player => !player.isSpectator());
+        if(this.automaton && includeSoloPlayer) {
+            return humanPlayers.concat([this.automaton]);
+        }
+        return humanPlayers;
     }
 
     getNumberOfPlayers() {
@@ -179,6 +194,9 @@ class Game extends EventEmitter {
     }
 
     getPlayerByName(playerName) {
+        if(this.automaton && this.automaton.name === playerName) {
+            return this.automaton;
+        }
         let player = this.playersAndSpectators[playerName];
 
         if(!player || player.isSpectator()) {
@@ -444,15 +462,16 @@ class Game extends EventEmitter {
         }
     }
 
-    drop(playerName, cardId, target, gameLocation) {
+    drop(playerName, cardId, target, gameLocation, targetPlayerName) {
         let player = this.getPlayerByName(playerName);
+        let targetPlayer = this.getPlayerByName(targetPlayerName);
         let card = this.allCards.find(card => card.uuid === cardId);
 
         if(!player || !card) {
             return;
         }
 
-        let command = new DropCommand(this, player, card, target, gameLocation);
+        let command = new DropCommand(this, player, card, target, gameLocation, targetPlayer);
         command.execute();
     }
 
@@ -530,11 +549,11 @@ class Game extends EventEmitter {
         return clonedGame;
     }
 
-    simulateSundown() {
+    simulateSundown(parClonedGame) {
         if(this.currentPhase === PhaseNames.Sundown) {
             return this;
         }
-        let clonedGame = this.simulateEndOfShootout();
+        let clonedGame = this.simulateEndOfShootout(parClonedGame);
         this.allCards.forEach(card => card.game = clonedGame);
         if(clonedGame.currentPhase === PhaseNames.Gambling) {
             clonedGame.effectEngine.onPhaseEnded({ phase: PhaseNames.Gambling });
@@ -591,6 +610,29 @@ class Game extends EventEmitter {
         return clonedGame;
     }
 
+    simulateShootout(playWindow = 'shootout plays', gamelocation) {
+        if(this.currentPhase === PhaseNames.Shootout) {
+            return this.clone();
+        }
+        if(this.currentPhase !== PhaseNames.HighNoon) {
+            return;
+        }
+        let clonedGame = this.clone();
+        this.allCards.forEach(card => card.game = clonedGame); 
+        clonedGame.shootout = new Shootout(clonedGame, clonedGame.currentPhase, {}, { gamelocation: gamelocation }, { isSimulation: true });
+        clonedGame.currentPhase = PhaseNames.Shootout;
+        clonedGame.effectEngine.onShootoutPhaseStarted();
+        clonedGame.effectEngine.onShootoutRoundStarted();
+        for(const player of clonedGame.getPlayers()) {
+            player.phase = PhaseNames.Shootout;
+        }
+
+        clonedGame.currentPlayWindow = new PlayWindow(clonedGame, playWindow);
+        clonedGame.effectEngine.reapplyStateDependentEffects();
+        this.allCards.forEach(card => card.game = this);
+        return clonedGame;
+    }
+
     checkWinCondition() {
         if([PhaseNames.HighNoon, PhaseNames.Sundown, PhaseNames.Shootout].includes(this.currentPhase)) {
             let gameToCheck = this.simulateSundown();
@@ -634,10 +676,10 @@ class Game extends EventEmitter {
             }
         }
         for(let i = 0; i < player1.getHandRank().tiebreakerHighCards.length; i++) {
-            if(player1.getHandRank().tiebreakerHighCards[i] > player2.getHandRank().tiebreakerHighCards[i]) {
+            if(player1.getHandRank().tiebreakerHighCards[i].value > player2.getHandRank().tiebreakerHighCards[i].value) {
                 return isForLowball ? { winner: player2, loser: player1, decision: 'tiebreaker' } : { winner: player1, loser: player2, decision: 'tiebreaker' };
             }
-            if(player1.getHandRank().tiebreakerHighCards[i] < player2.getHandRank().tiebreakerHighCards[i]) {
+            if(player1.getHandRank().tiebreakerHighCards[i].value < player2.getHandRank().tiebreakerHighCards[i].value) {
                 return isForLowball ? { winner: player1, loser: player2, decision: 'tiebreaker' } : { winner: player2, loser: player1, decision: 'tiebreaker' };
             }
         }     
@@ -654,7 +696,7 @@ class Game extends EventEmitter {
         this.finishedAt = new Date();
         this.winReason = 'draw';
 
-        this.router.gameWon(this, this.winReason, this.winner);
+        this.router.gameWon(this);
     }
 
     recordWinner(winner, reason) {
@@ -662,17 +704,26 @@ class Game extends EventEmitter {
             return;
         }
 
-        this.addAlert('success', '{0} has won the game', winner);
+        if(this.isSolo()) {
+            const humanPlayer = this.getPlayers().find(player => player !== this.automaton);
+            this.soloScore = humanPlayer.braggingRightsScore();
+            this.addAlert('success', '{0} has won the game with final score: {1}', winner, this.soloScore.finalScore);
+        } else {
+            this.addAlert('success', '{0} has won the game', winner);
+        }
 
         this.winner = winner;
         this.finishedAt = new Date();
         this.winReason = reason;
 
-        this.router.gameWon(this, reason, winner);
+        this.router.gameWon(this);
     }
 
-    changeStat(playerName, stat, value) {
+    changeStat(playerName, stat, value, forAutomaton) {
         let player = this.getPlayerByName(playerName);
+        if(forAutomaton) {
+            player = this.automaton;
+        }
         if(!player) {
             return;
         }
@@ -740,6 +791,14 @@ class Game extends EventEmitter {
         }
 
         player.selectDeck(deck);
+    }
+
+    selectDeckForAutomaton(deck) {
+        if(!this.automaton) {
+            return;
+        }
+
+        this.automaton.selectDeck(deck);
     }
 
     discardFromDrawHand(playerName) {
@@ -1457,7 +1516,8 @@ class Game extends EventEmitter {
             return {
                 name: player.name,
                 outfit: player.outfit.title || player.outfit.gang_code,
-                legend: player.legend ? player.legend.title : undefined
+                legend: player.legend ? player.legend.title : undefined,
+                standaloneDeckId: player.standaloneDeckId
             };
         });
 
@@ -1468,7 +1528,8 @@ class Game extends EventEmitter {
             players: players,
             winner: this.winner ? this.winner.name : undefined,
             winReason: this.winReason,
-            finishedAt: this.finishedAt
+            finishedAt: this.finishedAt,
+            soloScore: this.soloScore
         };
     }
 
@@ -1494,6 +1555,7 @@ class Game extends EventEmitter {
                 owner: this.owner,
                 players: playerState,
                 messages: this.gameChat.messages,
+                gameType: this.gameType,
                 showHand: this.showHand,
                 shootout: shootoutState,
                 spectators: this.getSpectators().map(spectator => {

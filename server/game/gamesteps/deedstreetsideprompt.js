@@ -9,16 +9,26 @@ class DeedStreetSidePrompt extends MenuPrompt {
     }
 
     continue() {
-        let leftButton = { text: 'Left', method: 'leftSide', arg: ''};
-        let rightButton = { text: 'Right', method: 'rightSide', arg: ''};
+        if(this.player === this.game.automaton) {
+            let leftNum = 0 - this.player.leftmostLocation().order;
+            let rightNum = this.player.rightmostLocation().order;
+            if(rightNum < leftNum) {
+                this.rightSide();
+            } else {
+                this.leftSide();
+            }
+        } else {
+            let leftButton = { text: 'Left', method: 'leftSide', arg: ''};
+            let rightButton = { text: 'Right', method: 'rightSide', arg: ''};
         
-        this.game.promptWithMenu(this.player, this, {
-            activePrompt: {
-                menuTitle: 'Place ' + this.context.title + ' on Left/Right?',
-                buttons: [leftButton, rightButton]
-            },
-            source: this.context
-        });
+            this.game.promptWithMenu(this.player, this, {
+                activePrompt: {
+                    menuTitle: 'Place ' + this.context.title + ' on Left/Right?',
+                    buttons: [leftButton, rightButton]
+                },
+                source: this.context
+            });
+        }
     }
 
     leftSide() {
