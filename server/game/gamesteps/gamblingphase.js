@@ -13,7 +13,6 @@ class GamblingPhase extends Phase {
         this.initialise([
             new SimpleStep(game, () => this.ante()),
             new SimpleStep(game, () => this.game.drawHands(5, null, 'lowball')),
-            // TODO M2 Shootout testing - comment out DrawHandPrompt and cheatinResolutions
             new DrawHandPrompt(game),
             new SimpleStep(game, () => this.game.revealHands()),
             new SimpleStep(game, () => this.cheatinResolutions()),

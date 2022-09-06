@@ -33,6 +33,7 @@ class GhostlyCommunion extends SpellCard {
             playType: 'shootout:join',
             cost: ability.costs.bootSelf(),
             difficulty: 7,
+            actionContext: { card: this.parent, gameAction: 'joinPosse' },
             condition: () => this.game.shootout &&
                 (this.game.shootout.shootoutLocation.locationCard.hasKeyword('holy ground') || 
                 this.game.shootout.shootoutLocation.locationCard.adjacentLocations().some(location => location.locationCard.hasKeyword('holy ground'))),

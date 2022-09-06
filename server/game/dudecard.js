@@ -346,16 +346,7 @@ class DudeCard extends DrawCard {
         this.shootoutStatus = ShootoutStatuses.CallingOut;
         card.shootoutStatus = ShootoutStatuses.CalledOut;
         if(!card.booted && card.canRejectCallout(this, canReject)) {
-            this.game.promptWithMenu(card.controller, this, {
-                activePrompt: {
-                    menuTitle: this.title + ' is calling out ' + card.title,
-                    buttons: [
-                        { text: 'Accept Callout', method: 'acceptCallout', arg: card.uuid },
-                        { text: 'Refuse Callout', method: 'rejectCallout', arg: card.uuid }
-                    ]
-                },
-                waitingPromptTitle: 'Waiting for opponent to decide if they run or fight'
-            });
+            card.controller.decideCallout(this, card);
         } else {
             this.acceptCallout(card.controller, card.uuid);
         }
@@ -460,6 +451,43 @@ class DudeCard extends DrawCard {
             needToBoot: !this.canJoinWithoutBooting(),
             allowBooted: !this.canJoinWhileBooted()
         };
+    }
+
+    requirementsToMove(origin, destination, options = {}) {
+        if(origin.uuid === destination.uuid) {
+            return { canMove: false };
+        }
+
+        if(this.booted) {
+            if((!options.needToBoot && options.isCardEffect) || options.allowBooted) {
+                return { canMove: true, needToBoot: false };
+            }
+            return { canMove: false };
+        }
+
+        if(this.canMoveWithoutBooting(Object.assign(options, { dude: this, origin, destination }))) {
+            return { canMove: true, needToBoot: false };
+        }
+
+        if(options.isCardEffect) {
+            return { canMove: true, needToBoot: options.needToBoot};
+        }
+
+        if(options.needToBoot === null || options.needToBoot === undefined) {
+            if(!origin.isAdjacent(destination.uuid)) {
+                return { canMove: true, needToBoot: true };
+            } 
+            if(origin.isTownSquare()) {
+                if(destination.uuid === this.controller.outfit.uuid) {
+                    return { canMove: true, needToBoot: true };
+                }
+            } else if(origin.uuid !== this.controller.outfit.uuid) {
+                return { canMove: true, needToBoot: true };
+            }
+            return { canMove: true, needToBoot: false };
+        }
+
+        return { canMove: true, needToBoot: options.needToBoot };
     }
 
     needToMoveToJoinPosse() {
@@ -573,6 +601,12 @@ class DudeCard extends DrawCard {
 
     isDraw() {
         return this.studReferenceArray[0].shooter === 'Draw';
+    }
+
+    isDrawAfterShootout() {
+        const clonedGame = this.game.simulateEndOfShootout();
+        const clonedCard = clonedGame.findCardInPlayByUuid(this.uuid);
+        return clonedCard.isDraw();
     }
 
     isHarrowed() {
