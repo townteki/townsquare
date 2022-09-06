@@ -8,7 +8,8 @@ class WarPaint extends ActionCard {
             target: {
                 activePromptTitle: 'Select your dude who applies war paint',
                 cardCondition: { location: 'play area', controller: 'current' },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: ['increaseBullets']
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to give {2} +2 bullets', context.player, this, context.target),
