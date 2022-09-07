@@ -506,7 +506,7 @@
 |                     | 12017| Righteous Fury
 |:heavy_check_mark:   | 12018| Owl's Insight
 |:heavy_check_mark:   | 12019| Outgunned
-|                     | 12020| Martyr's Cry
+|:heavy_check_mark:   | 12020| Martyr's Cry
 |                     | 12021| Deliberate Infection
 
 ## `07.3-BadM` Bad Medicine
