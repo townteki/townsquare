@@ -300,7 +300,7 @@
 |:heavy_check_mark:   | 06010| Shane & Graves Security
 |                     | 06011| Gomorra Jail
 |                     | 06012| Diable en Boite
-|                     | 06013| Legal Instruments
+|:heavy_check_mark:   | 06013| Legal Instruments
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |:heavy_check_mark:   | 06016| Fancy New Hat
