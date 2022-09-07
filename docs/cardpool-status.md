@@ -278,7 +278,7 @@
 |:heavy_check_mark:   | 05033| Walk the Path
 |:heavy_check_mark:   | 05034| Soothe
 |                     | 05035| Swinford Finds Trouble
-|                     | 05036| Under the Weather
+|:heavy_check_mark:   | 05036| Under the Weather
 |:heavy_check_mark:   | 05037| Faster on the Draw
 |:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
