@@ -14,7 +14,9 @@ class CardVisibility {
             (card) => this.isSetupRule(card),
             (card, player) => this.isControllerRule(card, player),
             (card, player) => this.isSpectatorRule(card, player),
-            (card, player) => this.isDrawHandRule(card, player)
+            (card, player) => this.isDrawHandRule(card, player),
+            // TODO M2 solo - remove once solo is implemented
+            (card, player) => this.isSoloRule(card, player)
         ];
     }
 
@@ -56,6 +58,11 @@ class CardVisibility {
             card.getType() === 'outfit' ||
             card.getType() === 'legend');
     }
+    
+    isSoloRule(card) {
+        return this.game.isSolo() &&
+               ['hand', 'draw hand'].includes(card.location);
+    }    
 }
 
 module.exports = CardVisibility;

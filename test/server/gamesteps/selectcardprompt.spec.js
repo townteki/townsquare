@@ -13,7 +13,7 @@ describe('the SelectCardPrompt', function() {
     }
 
     beforeEach(function() {
-        this.game = jasmine.createSpyObj('game', ['getPlayers', 'getNumberOfPlayers']);
+        this.game = jasmine.createSpyObj('game', ['getPlayers', 'getNumberOfPlayers', 'isSolo']);
         this.game.getPlayers.and.returnValue([]);
         this.game.allCards = ['card1', 'card2', 'card3'];
 

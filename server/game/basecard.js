@@ -142,6 +142,12 @@ class BaseCard {
         return location.locationCard;
     }
 
+    getSundownInfluence() {
+        const clonedGame = this.game.simulateSundown();
+        const clonedCard = clonedGame.findCardInPlayByUuid(this.uuid);
+        return clonedCard.influence;
+    }
+    
     equals(card) {
         return card && this.uuid === card.uuid;
     }
@@ -635,8 +641,9 @@ class BaseCard {
         return menu;
     }
 
-    hasEnabledCardAbility(player, options = {}) {
-        const cardAbilityMenuItems = this.getActionMenuItems(player, options).filter(menuItem => menuItem.action.abilitySourceType === 'card');
+    hasEnabledCardAbility(player, options = {}, action) {
+        const cardAbilityMenuItems = this.getActionMenuItems(player, options)
+            .filter(menuItem => (!action || action === menuItem.action) && menuItem.action.abilitySourceType === 'card');
         return cardAbilityMenuItems && cardAbilityMenuItems.some(menuItem => !menuItem.item.disabled);
     }
 
@@ -1098,7 +1105,11 @@ class BaseCard {
         return false;
     }
 
-    coversCasualties(type = 'any') {
+    coversCasualties(type = 'any', context) {
+        if((context && !this.allowGameAction(type, context, { isCardEffect: false })) ||
+            this.cannotBeChosenAsCasualty()) {
+            return 0;
+        }
         if(this.getType() === 'dude') {
             let harrowCasualty = this.isHarrowed() ? 1 : 0;
             if(type === 'ace' || type === 'any') {

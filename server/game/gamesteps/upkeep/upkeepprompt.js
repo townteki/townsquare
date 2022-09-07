@@ -17,8 +17,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     }
 
     activePrompt(player) {
-        let upkeep = player.determineUpkeep(this.selectedCards);
-        let requiredGR = this.getRequiredUpkeep(player, upkeep);
+        let requiredGR = this.getRequiredUpkeep(player);
         let promptInfo = requiredGR > 0 ? { type: 'danger', message: `${requiredGR} GR missing`} : {};
         return {
             promptTitle: 'Payday',
@@ -61,7 +60,10 @@ class UpkeepPrompt extends PlayerOrderPrompt {
         player.setSelectableCards(this.getCardsWithUpkeep(player));
     }
 
-    onMenuCommand(player) {
+    onMenuCommand(player, arg) {
+        if(arg === 'manualForAutomaton') {
+            player = this.game.automaton;
+        }
         let upkeep = player.determineUpkeep(this.selectedCards);
         let difference = this.getRequiredUpkeep(player, upkeep);
         if(difference > 0) {
@@ -98,12 +100,36 @@ class UpkeepPrompt extends PlayerOrderPrompt {
     }
 
     getRequiredUpkeep(player, upkeep) {
-        const difference = upkeep - player.ghostrock;
+        let totalUpkeep = upkeep || player.determineUpkeep(this.selectedCards);
+        const difference = totalUpkeep - player.ghostrock;
         return difference < 0 ? 0 : difference;
     }
 
     getCardsWithUpkeep(player) {
         return player.cardsInPlay.filter(card => card.upkeep);
+    }
+
+    handleSolo() {
+        const requiredUpkeep = this.getRequiredUpkeep(this.game.automaton);
+        if(requiredUpkeep > 0) {
+            this.selectedCards = this.game.automaton.getCardsToDiscardForUpkeep(this.getCardsWithUpkeep(this.game.automaton));
+        }
+        if(!this.onMenuCommand(this.game.automaton)) {
+            this.game.addAlert('warn', '{0} could not pay the upkeep, please resolve manually', this.currentPlayer);
+            this.game.promptWithMenu(this.game.automaton.getOpponent(), this, {
+                activePrompt: {
+                    menuTitle: `Resolve upkeep for ${this.game.automaton.name} manually`,
+                    buttons: [
+                        { text: 'Done', method: 'onMenuCommand', arg: 'manualForAutomaton' }
+                    ]
+                },
+                source: this
+            });
+        }
+    }
+
+    canHandleSolo() {
+        return super.canHandleSolo() && this.currentPlayer === this.game.automaton;
     }
 }
 

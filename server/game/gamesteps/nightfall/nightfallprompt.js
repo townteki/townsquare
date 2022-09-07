@@ -21,6 +21,10 @@ class NightfallPrompt extends AllPlayerPrompt {
     onMenuCommand(player) {
         player.passTurn = true;
     }
+
+    handleSolo() {
+        this.game.automaton.passTurn = true;
+    }
 }
 
 module.exports = NightfallPrompt;

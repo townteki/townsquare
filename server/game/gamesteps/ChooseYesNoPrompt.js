@@ -12,10 +12,10 @@ class ChooseYesNoPrompt extends UiPrompt {
     }
 
     activeCondition(player) {
-        if(this.player === player) {
-            return true;
-        }
-        return false;
+        if(this.player === this.game.automaton) {
+            return player === this.player.getOpponent();
+        }        
+        return this.player === player;
     }
 
     activePrompt() {
@@ -25,11 +25,16 @@ class ChooseYesNoPrompt extends UiPrompt {
                 { arg: 'yes', text: 'Yes' },
                 { arg: 'no', text: 'No' }
             ],
-            promptTitle: this.source ? this.source.title : this.promptTitle
+            promptTitle: this.source ? this.source.title : this.promptTitle,
+            promptInfo: this.player === this.game.automaton ? 
+                { type: 'info', message: this.game.automaton.name } : undefined
         };
     }    
 
     onMenuCommand(player, arg) {
+        if(this.player === this.game.automaton) {
+            player = this.player;
+        }        
         if(arg === 'yes') {
             this.onYes(player);
         }
