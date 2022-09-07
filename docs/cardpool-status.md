@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/953/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
+![Cards implemented](https://progress-bar.dev/957/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
 
 **Legend**
 
@@ -630,7 +630,7 @@
 |:heavy_check_mark:   | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
 |:heavy_check_mark:   | 16019| Siege Of The Orphanage
-|                     | 16020| Lighting The Fuse
+|:heavy_check_mark:   | 16020| Lighting The Fuse
 |                     | 16021| One Fights As Many
 
 ## `09.3-TSs` The Showstopper
