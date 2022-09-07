@@ -7,20 +7,27 @@ const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
 const StandardActions = require('../PlayActions/StandardActions');
 
 class DropCommand {
-    constructor(game, player, card, targetLocation, gamelocation) {
+    constructor(game, player, card, targetLocation, gamelocation, targetPlayer) {
         this.game = game;
         this.player = player;
         this.card = card;
         this.originalLocation = card.location;
         this.targetLocation = targetLocation;
         this.gamelocation = gamelocation;
+        this.targetPlayer = targetPlayer;
     }
 
     execute() {
-        if(!this.card.controller.equals(this.player)) {
-            return;
+        if(!this.game.isSolo()) {
+            if(!this.card.controller.equals(this.player)) {
+                return;
+            }
+            if(this.targetPlayer && !this.targetPlayer.equals(this.player)) {
+                return;
+            }
         }
-        const defaultContext = { game: this.game, player: this.player };
+        let actingPlayer = this.targetPlayer || this.player;        
+        const defaultContext = { game: this.game, player: actingPlayer };
 
         if(this.originalLocation === this.targetLocation) {
             if(this.card.getType() === 'dude' && this.targetLocation === 'play area' &&
@@ -48,54 +55,54 @@ class DropCommand {
                             } 
                         }), context);
                     },
-                    player: this.player,
+                    player: actingPlayer,
                     printed: false
                 };
                 if(this.gamelocation === this.game.townsquare.uuid) {
                     moveActionProps.target = 'townsquare';
                 }
-                this.game.resolveStandardAbility(new CardAction(this.game, this.card, moveActionProps), this.player, this.card);
+                this.game.resolveStandardAbility(new CardAction(this.game, this.card, moveActionProps), actingPlayer, this.card);
             }
             return;
         }
 
-        if(!this.isValidDropCombination()) {
+        if(!this.isValidDropCombination(actingPlayer)) {
             return;
         }
 
         if(this.originalLocation !== 'play area' && this.targetLocation === 'play area') {
             if(this.originalLocation === 'hand' && this.game.currentPhase !== 'setup') {
-                this.game.queueStep(new ChooseYesNoPrompt(this.game, this.player, {
+                this.game.queueStep(new ChooseYesNoPrompt(this.game, actingPlayer, {
                     title: 'Are you perfoming Shoppin\' play?',
                     onYes: () => {
-                        this.game.resolveStandardAbility(StandardActions.shoppin(this.card, this.gamelocation), this.player, this.card);
+                        this.game.resolveStandardAbility(StandardActions.shoppin(this.card, this.gamelocation), actingPlayer, this.card);
                     },
                     onNo: () => this.game.resolveGameAction(GameActions.putIntoPlay({ 
-                        player: this.player,
+                        player: actingPlayer,
                         card: this.card, 
                         params: { target: this.gamelocation }
                     }), defaultContext)
                 }));
             } else {
                 this.game.resolveGameAction(GameActions.putIntoPlay({ 
-                    player: this.player,
+                    player: actingPlayer,
                     card: this.card, 
                     params: { playingType: 'setup', target: this.gamelocation, force: true }
                 }), defaultContext);
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
-            this.player.aceCard(this.card, false, { force: true }, defaultContext);
+            actingPlayer.aceCard(this.card, false, { force: true }, defaultContext);
         } else if(this.targetLocation === 'discard pile' && DiscardCard.allow({ card: this.card, force: true })) {
-            this.player.discardCard(this.card, false, { force: true }, defaultContext);
+            actingPlayer.discardCard(this.card, false, { force: true }, defaultContext);
         } else {
-            this.player.moveCard(this.card, this.targetLocation);
+            actingPlayer.moveCard(this.card, this.targetLocation);
         }
 
         if(this.game.currentPhase !== 'setup') {
             if(this.targetLocation === 'being played' && this.originalLocation === 'hand') {
-                this.game.addAlert('warning', '{0} is playing {1}', this.player, this.card);
+                this.game.addAlert('warning', '{0} is playing {1}', actingPlayer, this.card);
                 if(this.game.currentPlayWindow) {
-                    this.player.unscriptedCardPlayed = this.card;
+                    actingPlayer.unscriptedCardPlayed = this.card;
                 }
             } else {
                 this.addGameMessage();
@@ -103,7 +110,7 @@ class DropCommand {
         }
     }
 
-    isValidDropCombination() {
+    isValidDropCombination(player) {
         const DrawDeckCardTypes = ['goods', 'dude', 'action', 'deed', 'spell', 'joker'];
         const AllowedTypesForPile = {
             'being played': DrawDeckCardTypes,
@@ -126,7 +133,7 @@ class DropCommand {
         if(this.gamelocation === 'townsquare' && !AllowedTypesForTownSquare.includes(this.card.getType())) {
             return false;
         }
-        if(['street-left', 'street-right'].includes(this.gamelocation) && (this.card.getType() !== 'deed' || this.card.owner !== this.player)) {
+        if(['street-left', 'street-right'].includes(this.gamelocation) && (this.card.getType() !== 'deed' || this.card.owner !== player)) {
             return false;
         }
         return allowedTypes.includes(this.card.getType());
@@ -134,8 +141,9 @@ class DropCommand {
 
     addGameMessage() {
         let movedCard = this.isPublicMove() ? this.card : 'a card';
-        this.game.addAlert('danger', '{0} has moved {1} from their {2} to their {3}',
-            this.player, movedCard, this.originalLocation, this.targetLocation);
+        let playerText = !this.targetPlayer || this.player === this.targetPlayer ? 'their' : `${this.targetPlayer.name}'s`;
+        this.game.addAlert('danger', '{0} has moved {1} from {2} {3} to {2} {4}',
+            this.player, movedCard, playerText, this.originalLocation, this.targetLocation);
     }
 
     isPublicMove() {

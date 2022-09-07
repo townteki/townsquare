@@ -60,10 +60,7 @@ class Scattergun extends GoodsCard {
         if(!this.game.shootout) {
             return false;
         }
-        const leaderPosse = this.game.shootout.leaderPosse;
-        const oppPosse = this.game.shootout.opposingPosse;
-        return (leaderPosse && leaderPosse.shooter.equals(dude)) ||
-            (oppPosse && oppPosse.shooter.equals(dude));
+        return this.game.shootout.isShooter(dude);
     }
 }
 

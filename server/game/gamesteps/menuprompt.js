@@ -28,13 +28,17 @@ class MenuPrompt extends UiPrompt {
     }
 
     activeCondition(player) {
+        if(this.player === this.game.automaton) {
+            return player === this.player.getOpponent();
+        }
         return player === this.player;
     }
 
     activePrompt() {
         let promptTitle = this.properties.promptTitle || (this.properties.source ? this.properties.source.title : undefined);
+        let promptInfo = this.player === this.game.automaton ? { type: 'info', message: this.game.automaton.name } : undefined;
 
-        return Object.assign({ promptTitle: promptTitle }, this.properties.activePrompt);
+        return Object.assign({ promptTitle: promptTitle, promptInfo }, this.properties.activePrompt);
     }
 
     waitingPrompt() {
@@ -42,6 +46,9 @@ class MenuPrompt extends UiPrompt {
     }
 
     onMenuCommand(player, arg, method) {
+        if(this.player === this.game.automaton) {
+            player = this.player;
+        }
         if(player !== this.player) {
             return false;
         }
