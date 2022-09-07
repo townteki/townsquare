@@ -19,7 +19,6 @@ class LightingTheFuse extends ActionCard {
                 const thecheater = context.player.getOpponent();
                 const kaboomification = () =>
                     this.game.resolveGameAction(GameActions.returnCardToHand({ card: context.target }), context).thenExecute(() => {
-
                         this.game.addMessage('{0} uses {1} to detonate {2}', context.player, this, context.target);
                     });
                 if(this.game.currentPhase === PhaseNames.Gambling) {
