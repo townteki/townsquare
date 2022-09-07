@@ -41,7 +41,8 @@ class EBFarnum extends DudeCard {
                     controller: 'any', 
                     condition: card => card.gamelocation === this.gamelocation 
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: ['decreaseInfluence']
             },
             message: context => 
                 this.game.addMessage('{0} uses {1} to give {2} -1 influence', context.player, this, context.target),

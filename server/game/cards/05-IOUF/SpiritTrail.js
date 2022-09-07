@@ -7,7 +7,7 @@ class SpiritTrail extends SpellCard {
             targetController: 'any',
             condition: () => true,
             effect: [
-                ability.effects.additionalDynamicAdjacency(card => card.attachments && card.attachments.find(att => att.code === '09033'), this.uuid)
+                ability.effects.additionalDynamicAdjacency(card => card.attachments && card.attachments.find(att => ['09033', '24207'].includes(att.code)), this.uuid)
             ]
         });
         this.spellAction({
