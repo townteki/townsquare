@@ -278,7 +278,7 @@
 |:heavy_check_mark:   | 05033| Walk the Path
 |:heavy_check_mark:   | 05034| Soothe
 |                     | 05035| Swinford Finds Trouble
-|                     | 05036| Under the Weather
+|:heavy_check_mark:   | 05036| Under the Weather
 |:heavy_check_mark:   | 05037| Faster on the Draw
 |:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
@@ -300,7 +300,7 @@
 |:heavy_check_mark:   | 06010| Shane & Graves Security
 |                     | 06011| Gomorra Jail
 |                     | 06012| Diable en Boite
-|                     | 06013| Legal Instruments
+|:heavy_check_mark:   | 06013| Legal Instruments
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |:heavy_check_mark:   | 06016| Fancy New Hat
@@ -506,7 +506,7 @@
 |                     | 12017| Righteous Fury
 |:heavy_check_mark:   | 12018| Owl's Insight
 |:heavy_check_mark:   | 12019| Outgunned
-|                     | 12020| Martyr's Cry
+|:heavy_check_mark:   | 12020| Martyr's Cry
 |                     | 12021| Deliberate Infection
 
 ## `07.3-BadM` Bad Medicine
