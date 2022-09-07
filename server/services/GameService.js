@@ -20,6 +20,7 @@ class GameService {
             eventName: game.eventName,
             startedAt: game.startedAt,
             players: game.players,
+            score: game.soloScore,
             winner: game.winner,
             winReason: game.winReason,
             finishedAt: game.finishedAt

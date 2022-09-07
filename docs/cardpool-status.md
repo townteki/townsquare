@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/950/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
+![Cards implemented](https://progress-bar.dev/953/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
 
 **Legend**
 
@@ -120,7 +120,7 @@
 |                     | 01104| Raising Hell
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
 |:heavy_check_mark:   | 01106| Hired Guns
-|                     | 01107| Lady Luck
+|:heavy_check_mark:   | 01107| Lady Luck
 |:heavy_check_mark:   | 01108| Bottom Dealin'
 |:heavy_check_mark:   | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
@@ -300,7 +300,7 @@
 |:heavy_check_mark:   | 06010| Shane & Graves Security
 |                     | 06011| Gomorra Jail
 |                     | 06012| Diable en Boite
-|                     | 06013| Legal Instruments
+|:heavy_check_mark:   | 06013| Legal Instruments
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |:heavy_check_mark:   | 06016| Fancy New Hat
@@ -353,7 +353,7 @@
 |:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
-|                     | 08014| Stoker's Sabre
+|:heavy_check_mark:   | 08014| Stoker's Sabre
 |:heavy_check_mark:   | 08015| Fate Dispenser
 |:heavy_check_mark:   | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
@@ -506,7 +506,7 @@
 |                     | 12017| Righteous Fury
 |:heavy_check_mark:   | 12018| Owl's Insight
 |:heavy_check_mark:   | 12019| Outgunned
-|                     | 12020| Martyr's Cry
+|:heavy_check_mark:   | 12020| Martyr's Cry
 |                     | 12021| Deliberate Infection
 
 ## `07.3-BadM` Bad Medicine
@@ -641,7 +641,7 @@
 |                     | 17002| Seamus McCaffrey
 |:heavy_check_mark:   | 17003| Gene North Star
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
-|                     | 17005| Quimby R. Tuttlemeir
+|:heavy_check_mark:   | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
 |:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
