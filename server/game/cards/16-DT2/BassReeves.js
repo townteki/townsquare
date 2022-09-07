@@ -34,7 +34,8 @@ class BassReeves extends DudeCard {
                     wanted: true,
                     condition: card => card.isNearby(this.gamelocation) 
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: { or: ['boot', 'callout'] }
             },
             ifCondition: () => !this.booted,
             ifFailMessage: context => 
@@ -49,12 +50,12 @@ class BassReeves extends DudeCard {
                             { 
                                 text: 'Boot', 
                                 method: 'bassBoot',
-                                disabled: !this.abilityContext.target.allowGameAction('boot')
+                                disabled: !this.abilityContext.target.allowGameAction('boot', this.abilityContext)
                             },
                             { 
                                 text: 'Call Out', 
                                 method: 'bassCallout',
-                                disabled: !this.abilityContext.target.allowGameAction('callout')
+                                disabled: !this.abilityContext.target.allowGameAction('callout', this.abilityContext)
                             }
                         ]
                     },
