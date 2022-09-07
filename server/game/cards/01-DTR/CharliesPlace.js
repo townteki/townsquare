@@ -11,11 +11,10 @@ class CharliesPlace extends DeedCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'any', 
-                    condition: (card, context) => card.locationCard === this &&
-                        (card.allowGameAction('increaseBullets', context) || 
-                        card.allowGameAction('decreaseBullets', context))
+                    condition: (card) => card.locationCard === this
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: { or: ['increaseBullets', 'decreaseBullets'] }
             },
             handler: context => {
                 this.abilityContext = context;

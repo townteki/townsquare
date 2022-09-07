@@ -16,7 +16,8 @@ class CliffsNo4Saloon extends DeedCard {
                         card.isAdjacent(this.gamelocation) &&
                         card.isInControlledLocation()
                 },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: ['setAsStud']
             },
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({

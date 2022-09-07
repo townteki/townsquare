@@ -14,6 +14,7 @@ class DisgenuineCurrencyPress extends GoodsCard {
             }
         });
         this.traitReaction({
+            triggerBefore: true,
             when: {
                 onCardDiscarded: event => event.card === this && event.originalLocation === 'play area'
             },
