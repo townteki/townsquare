@@ -141,7 +141,7 @@ describe('Game', function() {
                     this.player1.getHandRank.and.callFake(function() { 
                         return { 
                             tiebreaker: [],
-                            tiebreakerHighCards: [1, 5, 11]
+                            tiebreakerHighCards: [{ value: 1 }, { value: 5 }, { value: 11 }]
                         };
                     });
                 });
@@ -150,7 +150,7 @@ describe('Game', function() {
                         this.player2.getHandRank.and.callFake(function() { 
                             return { 
                                 tiebreaker: [],
-                                tiebreakerHighCards: [1, 4, 12]
+                                tiebreakerHighCards: [{ value: 1 }, { value: 4 }, { value: 12 }]
                             };
                         });
                         var result = this.game.resolveTiebreaker(this.player1, this.player2, true);
@@ -167,7 +167,7 @@ describe('Game', function() {
                     this.player1.getHandRank.and.callFake(function() { 
                         return { 
                             tiebreaker: [2, 4],
-                            tiebreakerHighCards: [5]
+                            tiebreakerHighCards: [{ value: 5 }]
                         };
                     });
                 });
@@ -176,7 +176,7 @@ describe('Game', function() {
                         this.player2.getHandRank.and.callFake(function() { 
                             return { 
                                 tiebreaker: [2, 4],
-                                tiebreakerHighCards: [3]
+                                tiebreakerHighCards: [{ value: 3 }]
                             };
                         });
                         var result = this.game.resolveTiebreaker(this.player1, this.player2, true);

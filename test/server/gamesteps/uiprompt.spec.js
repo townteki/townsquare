@@ -5,7 +5,7 @@ describe('the UiPrompt', function() {
         this.player1 = jasmine.createSpyObj('player', ['setPrompt', 'cancelPrompt']);
         this.player2 = jasmine.createSpyObj('player', ['setPrompt', 'cancelPrompt']);
 
-        this.game = jasmine.createSpyObj('game', ['getPlayers']);
+        this.game = jasmine.createSpyObj('game', ['getPlayers', 'isSolo']);
         this.game.getPlayers.and.returnValue([this.player1, this.player2]);
 
         this.activePrompt = {

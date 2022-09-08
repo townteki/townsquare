@@ -9,7 +9,8 @@ class YanLisTailoring extends DeedCard {
             target: {
                 activePromptTitle: 'Select dude to raise influence',
                 cardCondition: { location: 'play area' },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: ['increaseInfluence']
             },
             message: context =>
                 this.game.addMessage('{0} uses {1} to raise influence for {2}', context.player, this, context.target),

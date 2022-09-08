@@ -39,16 +39,18 @@ class Shootout extends Phase {
         this.cancelled = false;
         this.shootoutLoseWinOrder = [];
         this.remainingSteps = [];
-        this.abilityRestrictions = [];									  
-        this.initialise([
-            new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
-            new SimpleStep(this.game, () => this.gatherLeaderPosse()),
-            new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
-            new SimpleStep(this.game, () => this.gatherOpposingPosse()),
-            new SimpleStep(this.game, () => this.raisePossesFormedEvent()),
-            new SimpleStep(this.game, () => this.breakinAndEnterin()),
-            new SimpleStep(this.game, () => this.beginShootoutRound())
-        ]);
+        this.abilityRestrictions = [];
+        if(!options.isSimulation) {									  
+            this.initialise([
+                new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
+                new SimpleStep(this.game, () => this.gatherLeaderPosse()),
+                new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
+                new SimpleStep(this.game, () => this.gatherOpposingPosse()),
+                new SimpleStep(this.game, () => this.raisePossesFormedEvent()),
+                new SimpleStep(this.game, () => this.breakinAndEnterin()),
+                new SimpleStep(this.game, () => this.beginShootoutRound())
+            ]);
+        }
     }
 
     initialiseLeaderPosse() {
@@ -68,29 +70,39 @@ class Shootout extends Phase {
             } else {
                 if(this.game.getDudesInPlay(opponent, card => card.requirementsToJoinPosse().canJoin).length) {
                     this.opposingPlayerName = opponent.name;
-                    this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
-                        title: 'Do you want to oppose?',
-                        onYes: () => {
-                            this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer);
-                            this.queueStep(new ShootoutPossePrompt(this.game, this, this.opposingPlayer));                    
-                        },
-                        onNo: () => {
-                            this.game.addAlert('info', '{0} decides to not oppose job {1}', 
-                                opponent, this.options.jobAbility.card);
-                            this.jobUnopposed = true;
-                            this.endShootout();
-                        },
-                        source: this.options.jobAbility.card
-                    }));
+                    if(opponent === this.game.automaton) {
+                        if(this.game.automaton.decideJobOpposing(this)) {
+                            this.handleJobOpposing(opponent, true);
+                        } else {
+                            this.handleJobOpposing(opponent, false);
+                        }
+                    } else {
+                        this.game.queueStep(new ChooseYesNoPrompt(this.game, opponent, {
+                            title: 'Do you want to oppose?',
+                            onYes: () => this.handleJobOpposing(opponent, true),
+                            onNo: () => this.handleJobOpposing(opponent, false),
+                            source: this.options.jobAbility.card
+                        }));
+                    }
                 } else {
-                    this.game.addAlert('info', '{0} does not have any available dudes to oppose job {2}', 
-                        opponent, this.options.jobAbility.card);
-                    this.jobUnopposed = true;
-                    this.endShootout();
+                    this.handleJobOpposing(opponent, false, true);
                 }
             }
         }
         this.leaderOpponentOrder = [this.leader.controller.name, this.opposingPlayerName];
+    }
+
+    handleJobOpposing(opponent, isOpposing, noDudesToOppose = false) {
+        if(isOpposing) {
+            this.opposingPosse = new ShootoutPosse(this, opponent);
+            this.queueStep(new ShootoutPossePrompt(this.game, this, opponent)); 
+        } else {
+            let text = noDudesToOppose ? '{0} does not have any available dudes to oppose job {1}' :
+                '{0} decides to not oppose job {1}';
+            this.game.addAlert('info', text, opponent, this.options.jobAbility.card);
+            this.jobUnopposed = true;
+            this.endShootout();
+        }
     }
 
     raisePossesFormedEvent() {

@@ -103,7 +103,13 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         this.orderPassed = true;        
         this.game.raiseEvent('onPassAction', { playWindow: this });
         this.game.addMessage('{0} passes {1} action', player, this.name);
-        super.completePlayer();
+        if(this.game.isSolo() && this.passedPlayers.length) {
+            this.passedPlayers.push(this.game.automaton);
+            this.players = [];
+        } else {
+            this.soloCompleted = false;
+            super.completePlayer();
+        }
     }
 
     makePlayOutOfOrder(player, card, properties = {}) {
@@ -138,7 +144,29 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
         this.doNotMarkActionAsTaken = false;
         this.outOfOrderMenuPrompt = null;
         return true;
-    }    
+    }
+
+    nextPlayer() {
+        if(this.game.isSolo() && this.currentPlayer !== this.game.automaton) {
+            this.passedPlayers = [];
+        }
+        const savePassedForSolo = [...this.passedPlayers];
+        super.nextPlayer();
+        if(this.game.isSolo()) {
+            this.passedPlayers = savePassedForSolo;
+            if(this.currentPlayer === this.game.automaton) {
+                this.soloCompleted = false;
+            }
+        }
+    }
+    
+    handleSolo() {
+        this.game.automaton.handlePlayWindow(this);
+    }
+
+    canHandleSolo() {
+        return !this.soloCompleted && this.currentPlayer === this.game.automaton;
+    }
 }
 
 module.exports = PlayWindow;

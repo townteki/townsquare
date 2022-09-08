@@ -17,8 +17,6 @@ class PendingGame {
         this.allowSpectators = details.spectators;
         this.showHand = details.showHand;
         this.gameType = details.gameType;
-        this.isMelee = details.isMelee;
-        this.useRookery = details.useRookery;
         this.createdAt = new Date();
         this.gameChat = new GameChat();
         this.useGameTimeLimit = details.useGameTimeLimit;
@@ -99,6 +97,19 @@ class PendingGame {
         };
     }
 
+    addSoloPlayer() {
+        let user = {
+            username: 'POST-A-TRON',
+            settings: {},
+            forSoloPlayer: true
+        };
+        this.soloPlayer = {
+            name: user.username,
+            user: user,
+            isAutomaton: true
+        };
+    }
+
     addSpectator(id, user) {
         this.spectators[user.username] = {
             id: id,
@@ -113,6 +124,9 @@ class PendingGame {
         }
 
         this.addPlayer(id, user);
+        if(this.gameType === 'solo') {
+            this.addSoloPlayer();
+        }
     }
 
     isUserBlocked(user) {
@@ -216,8 +230,11 @@ class PendingGame {
         this.addMessage('{0} {1}', player, message);
     }
 
-    selectDeck(playerName, deck) {
+    selectDeck(playerName, deck, forSolo) {
         var player = this.getPlayerByName(playerName);
+        if(forSolo) {
+            player = this.soloPlayer;
+        }
         if(!player) {
             return;
         }
@@ -314,6 +331,7 @@ class PendingGame {
             players: playerSummaries,
             restrictedList: this.restrictedList,
             showHand: this.showHand,
+            soloPlayer: this.soloPlayer,
             started: this.started,
             spectators: _.map(this.spectators, spectator => {
                 return {
@@ -360,6 +378,7 @@ class PendingGame {
             players,
             restrictedList: this.restrictedList,
             showHand: this.showHand,
+            soloPlayer: this.soloPlayer,
             spectators,
             useGameTimeLimit: this.useGameTimeLimit,
             gameTimeLimit: this.gameTimeLimit
