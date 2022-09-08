@@ -33,9 +33,9 @@ class Automaton extends Player {
         }, updatedOptions, context);
     }
 
-    selectScientistToInvent() {
+    selectScientistToInvent(gadget, successHandler, scientistCondition) {
         // TODO M2 solo - update this once there will be Automaton rules for this
-        super.selectScientistToInvent();
+        super.selectScientistToInvent(gadget, successHandler, scientistCondition);
     }
 
     finalizeDrawHand(handResult) {
