@@ -43,8 +43,9 @@ class Shootout extends Phase {
         if(!options.isSimulation) {									  
             this.initialise([
                 new SimpleStep(this.game, () => this.initialiseLeaderPosse()),
+                new SimpleStep(this.game, () => this.gatherLeaderPosse()),
                 new SimpleStep(this.game, () => this.initialiseOpposingPosse()),
-                new SimpleStep(this.game, () => this.gatherPosses()),
+                new SimpleStep(this.game, () => this.gatherOpposingPosse()),
                 new SimpleStep(this.game, () => this.raisePossesFormedEvent()),
                 new SimpleStep(this.game, () => this.breakinAndEnterin()),
                 new SimpleStep(this.game, () => this.beginShootoutRound())
@@ -362,17 +363,23 @@ class Shootout extends Phase {
         }
     }
 
-    gatherPosses() {
+    gatherLeaderPosse() {
+        this.actOnLeaderPosse(dude => this.moveDudeToMark(dude));
+    }
+
+    gatherOpposingPosse() {
         if(!this.checkEndCondition()) {
-            this.actOnAllParticipants(dude => {
-                let dudeMoveOptions = dude.getMoveOptions();
-                if(dudeMoveOptions.moveToPosse) {
-                    if(!dude.moveToShootoutLocation(dudeMoveOptions)) {
-                        this.removeFromPosse(dude);
-                    }
-                }
-            });
+            this.actOnOpposingPosse(dude => this.moveDudeToMark(dude));
             this.game.raiseEvent('onShootoutPossesGathered');
+        }
+    }
+
+    moveDudeToMark(dude) {
+        let dudeMoveOptions = dude.getMoveOptions();
+        if(dudeMoveOptions.moveToPosse) {
+            if(!dude.moveToShootoutLocation(dudeMoveOptions)) {
+                this.removeFromPosse(dude);
+            }
         }
     }
 
