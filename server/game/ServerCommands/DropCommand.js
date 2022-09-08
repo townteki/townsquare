@@ -80,7 +80,10 @@ class DropCommand {
                     onNo: () => this.game.resolveGameAction(GameActions.putIntoPlay({ 
                         player: actingPlayer,
                         card: this.card, 
-                        params: { target: this.gamelocation }
+                        params: { 
+                            playingType: 'drop', 
+                            target: this.gamelocation 
+                        }
                     }), defaultContext)
                 }));
             } else {

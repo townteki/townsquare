@@ -46,7 +46,7 @@ class JohnAcesRadcliffeExp1 extends DudeCard {
                         player: context.player,
                         card: context.target,
                         params: {
-                            playType: 'ability',
+                            playingType: 'ability',
                             targetParent: this,
                             context
                         }
