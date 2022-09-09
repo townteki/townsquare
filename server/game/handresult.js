@@ -13,6 +13,9 @@ class HandResult {
         if(!hand || !_.isArray(hand)) {
             return;
         }
+        if(hand.length < 5) {
+            doLowest = true;
+        }
 
         this.pokerHands = new PokerHands(hand, doLowest, forSolo);
         this.possibleHands = _.filter(this.pokerHands.allHandRanks, (hr) => (hr.rank !== undefined));

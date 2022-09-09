@@ -146,7 +146,7 @@ class DrawHandPrompt extends UiPrompt {
             return false;
         }
         if(arg === 'revealdraw') {
-            if(player.drawHand.length !== 5) {
+            if(player.drawHand.length !== 5 && player.hasCardsToDraw()) {
                 player.drawHandSelected = false;
                 this.promptInfo.type = 'danger';
                 this.promptInfo.message = `Number of cards in draw hand (${player.drawHand.length}) is not 5!`;
