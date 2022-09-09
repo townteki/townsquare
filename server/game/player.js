@@ -692,6 +692,10 @@ class Player extends Spectator {
         return card.controller.equals(this) || card.canUseControllerAbilities(this);
     }
 
+    hasCardsToDraw() {
+        return this.drawDeck.length || this.discardPile.length;
+    }
+
     canTrigger(card) {
         return !this.triggerRestrictions.some(restriction => restriction(card));
     }
