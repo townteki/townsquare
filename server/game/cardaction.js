@@ -146,7 +146,7 @@ class CardAction extends PlayTypeAbility {
             return false;
         }
 
-        if(this.card.isAnyBlank()) {
+        if(this.card.isAnyBlank() && this.abilitySourceType !== 'game') {
             return false ;
         }
 
