@@ -1,4 +1,4 @@
-const BaijiuJar = require('../07.3-BadM/BaijiuJar');
+const BaijiuJar = require('../10-BMR/BaijiuJar');
 
 class BaijiuJar2 extends BaijiuJar {}
 

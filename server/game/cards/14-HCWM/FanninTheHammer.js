@@ -22,7 +22,6 @@ class FanninTheHammer extends ActionCard {
                             cardType: 'dude',
                             multiSelect: true,
                             numCards: context.target.bullets,
-                            mode: 'exactly',
                             onSelect: (player, cards) => {
                                 this.game.addMessage('{0} uses {1} and boots {2} to give {3} -1 bullets', 
                                     context.player, this, context.target, cards);

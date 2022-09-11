@@ -18,6 +18,7 @@ class JarretBlake extends DudeCard {
                     return actions;
                 }
             },
+            actionContext: { card: this, gameAction: 'joinPosse' },
             ifCondition: () => this.hasAttachment(attachment => attachment.hasKeyword('Horse')),
             ifFailMessage: context => 
                 this.game.addMessage('{0} uses {1} but fails because he does not have a horse', context.player, this),

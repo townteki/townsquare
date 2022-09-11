@@ -3,7 +3,7 @@ const GoodsCard = require('../../goodscard.js');
 
 class LaQuema extends GoodsCard {
     constructor(owner, cardData) {
-        super(owner, cardData, false, true);
+        super(owner, cardData, { providesBullets: true });
     }
 
     setupCardAbilities(ability) {
@@ -19,7 +19,7 @@ class LaQuema extends GoodsCard {
             title: 'La Quema',
             playType: ['shootout:join'],
             cost: ability.costs.bootSelf(),
-            actionContext: { card: this.parent, gameAction: 'moveDude' },
+            actionContext: { card: this.parent, gameAction: 'joinPosse' },
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }), context);
                 context.ability.selectAnotherTarget(context.player, context, {

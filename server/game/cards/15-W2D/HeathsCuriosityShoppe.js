@@ -35,7 +35,7 @@ class HeathsCuriosityShoppe extends DeedCard {
                             },
                             source: this
                         }), context);
-                }, {}, context);
+                }, { discardExactly: true }, context);
             }
         });
     }

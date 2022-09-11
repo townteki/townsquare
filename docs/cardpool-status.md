@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/940/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
+![Cards implemented](https://progress-bar.dev/957/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
 
 **Legend**
 
@@ -39,7 +39,7 @@
 |:heavy_check_mark:   | 01023| Abram Grothe
 |                     | 01024| Sheriff Dave Montreal
 |:heavy_check_mark:   | 01025| Irving Patterson
-|                     | 01026| Prof. Eustace True
+|:heavy_check_mark:   | 01026| Prof. Eustace True
 |:heavy_check_mark:   | 01027| Elander Boldman
 |:heavy_check_mark:   | 01028| James Ghetty
 |:heavy_check_mark:   | 01029| Jon Longstride
@@ -47,7 +47,7 @@
 |:heavy_check_mark:   | 01031| Jarrett Blake
 |:heavy_check_mark:   | 01032| Harold Aimslee
 |:heavy_check_mark:   | 01033| Rémy LaPointe
-|                     | 01034| Max Baine
+|:heavy_check_mark:   | 01034| Max Baine
 |:heavy_check_mark:   | 01035| Allie Hensman
 |:heavy_check_mark:   | 01036| Fred Aims
 |:heavy_check_mark:   | 01037| Lawrence Blackwood
@@ -120,7 +120,7 @@
 |                     | 01104| Raising Hell
 |:heavy_check_mark:   | 01105| Establishin' Who's in Charge
 |:heavy_check_mark:   | 01106| Hired Guns
-|                     | 01107| Lady Luck
+|:heavy_check_mark:   | 01107| Lady Luck
 |:heavy_check_mark:   | 01108| Bottom Dealin'
 |:heavy_check_mark:   | 01109| Make the Smart Choice
 |                     | 01110| Tresspassin'
@@ -206,7 +206,7 @@
 |:heavy_check_mark:   | 03013| Baird's Build and Loan
 |                     | 03014| Ballot Counter
 |:heavy_check_mark:   | 03015| Holy Wheel Gun
-|                     | 03016| Stone Idol
+|:heavy_check_mark:   | 03016| Stone Idol
 |:heavy_check_mark:   | 03017| Corporeal Twist
 |:heavy_check_mark:   | 03018| Fetch
 |:heavy_check_mark:   | 03019| ...It's who you know
@@ -231,7 +231,7 @@
 |:heavy_check_mark:   | 04012| The Mayor's Office
 |:heavy_check_mark:   | 04013| Hunter Protections
 |:heavy_check_mark:   | 04014| The Evidence
-|                     | 04015| Teleportation Device
+|:heavy_check_mark:   | 04015| Teleportation Device
 |                     | 04016| Mayfair Family Deck
 |:heavy_check_mark:   | 04017| Puppet
 |                     | 04018| Summoning
@@ -278,17 +278,17 @@
 |:heavy_check_mark:   | 05033| Walk the Path
 |:heavy_check_mark:   | 05034| Soothe
 |                     | 05035| Swinford Finds Trouble
-|                     | 05036| Under the Weather
+|:heavy_check_mark:   | 05036| Under the Weather
 |:heavy_check_mark:   | 05037| Faster on the Draw
 |:heavy_check_mark:   | 05038| This'll Hurt in the Mornin'
 |                     | 05039| Prayer
 |:heavy_check_mark:   | 05040| Meet The New Boss
-|:heavy_check_mark:   | 06001| Funtime Freddy
 
 ## `04.1-FJ` Frontier Justice
 
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 06001| Funtime Freddy
 |:heavy_check_mark:   | 06002| The Flying Popescus
 |                     | 06003| Andrew Burton
 |                     | 06004| Elmore Rhine
@@ -300,7 +300,7 @@
 |:heavy_check_mark:   | 06010| Shane & Graves Security
 |                     | 06011| Gomorra Jail
 |                     | 06012| Diable en Boite
-|                     | 06013| Legal Instruments
+|:heavy_check_mark:   | 06013| Legal Instruments
 |                     | 06014| Recursive Motion Machine
 |:heavy_check_mark:   | 06015| Winchester Model 1873
 |:heavy_check_mark:   | 06016| Fancy New Hat
@@ -348,12 +348,12 @@
 |                     | 08006| Jack O'Hara
 |:heavy_check_mark:   | 08007| John "Aces" Radcliffe
 |:heavy_check_mark:   | 08008| Steele Archer (Exp.1)
-|                     | 08009| Old Man McDroste
+|:heavy_check_mark:   | 08009| Old Man McDroste
 |:heavy_check_mark:   | 08010| Flint's Amusements
 |:heavy_check_mark:   | 08011| Lula's Exploit
 |                     | 08012| Testing Range
 |:heavy_check_mark:   | 08013| Dog's Duster
-|                     | 08014| Stoker's Sabre
+|:heavy_check_mark:   | 08014| Stoker's Sabre
 |:heavy_check_mark:   | 08015| Fate Dispenser
 |:heavy_check_mark:   | 08016| Soul Cage
 |                     | 08017| For Such a Time as This
@@ -380,7 +380,7 @@
 |:heavy_check_mark:   | 09012| Yunxu Jiang
 |:heavy_check_mark:   | 09013| Abuelita Espinoza
 |:heavy_check_mark:   | 09014| Bai Yang Chen
-|                     | 09015| T'ou Chi Chow
+|:heavy_check_mark:   | 09015| T'ou Chi Chow
 |                     | 09016| Butch Deuces
 |:heavy_check_mark:   | 09017| Mazatl
 |:heavy_check_mark:   | 09018| Marcia Ridge
@@ -468,7 +468,7 @@
 |:heavy_check_mark:   | 11007| Zachary Deloria
 |:heavy_check_mark:   | 11008| Karl Odett
 |:heavy_check_mark:   | 11009| Erik Samson
-|                     | 11010| Dr. Brian Foxworth
+|:heavy_check_mark:   | 11010| Dr. Brian Foxworth
 |:heavy_check_mark:   | 11011| Buford Hurley
 |:heavy_check_mark:   | 11012| Doris Powell
 |                     | 11013| Rico Rodegain
@@ -506,7 +506,7 @@
 |                     | 12017| Righteous Fury
 |:heavy_check_mark:   | 12018| Owl's Insight
 |:heavy_check_mark:   | 12019| Outgunned
-|                     | 12020| Martyr's Cry
+|:heavy_check_mark:   | 12020| Martyr's Cry
 |                     | 12021| Deliberate Infection
 
 ## `07.3-BadM` Bad Medicine
@@ -519,7 +519,7 @@
 |                     | 13004| Jia Mein (Exp.1)
 |:heavy_check_mark:   | 13005| Janosz Pratt
 |:heavy_check_mark:   | 13006| Vasilis the Boar
-|                     | 13007| Luke, the Errand Boy
+|:heavy_check_mark:   | 13007| Luke, the Errand Boy
 |:heavy_check_mark:   | 13008| Arnold Stewart
 |                     | 13009| Rick Henderson
 |:heavy_check_mark:   | 13010| Willa Mae MacGowan
@@ -552,7 +552,7 @@
 |:heavy_check_mark:   | 14011| "Mahogany" Jackson
 |                     | 14012| Travis Moone (Exp.1)
 |:heavy_check_mark:   | 14013| Henry Moran
-|                     | 14014| Gomorra Lot Commission
+|:heavy_check_mark:   | 14014| Gomorra Lot Commission
 |:heavy_check_mark:   | 14015| Wagner Memorial Ranch
 |:heavy_check_mark:   | 14016| Notary Public
 |                     | 14017| Market Street
@@ -630,7 +630,7 @@
 |:heavy_check_mark:   | 16017| Inner Struggle
 |                     | 16018| Serendipitous Arrival
 |:heavy_check_mark:   | 16019| Siege Of The Orphanage
-|                     | 16020| Lighting The Fuse
+|:heavy_check_mark:   | 16020| Lighting The Fuse
 |                     | 16021| One Fights As Many
 
 ## `09.3-TSs` The Showstopper
@@ -641,11 +641,11 @@
 |                     | 17002| Seamus McCaffrey
 |:heavy_check_mark:   | 17003| Gene North Star
 |:heavy_check_mark:   | 17004| Speaks-With-Earth
-|                     | 17005| Quimby R. Tuttlemeir
+|:heavy_check_mark:   | 17005| Quimby R. Tuttlemeir
 |                     | 17006| Erin Knight
 |:heavy_check_mark:   | 17007| Nicholas Kramer
 |                     | 17008| Pancho Castillo (Exp.1)
-|                     | 17009| The Grey Man
+|:heavy_check_mark:   | 17009| The Grey Man
 |                     | 17010| J.W. Byrne, P. I.
 |:heavy_check_mark:   | 17011| Grimoires & More
 |                     | 17012| Knight's Chasuble

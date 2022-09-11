@@ -11,7 +11,8 @@ class LauraBanks extends DudeCard {
             target: {
                 activePromptTitle: 'Choose a dude',
                 cardCondition: { location: 'play area', controller: 'any', participating: true },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: { or: ['addBounty', 'removeBounty'] }
             },
             handler: context => {
                 this.abilityContext = context;
@@ -23,13 +24,13 @@ class LauraBanks extends DudeCard {
                                 text: 'Increase by 1', 
                                 method: 'changeBountyLaura',
                                 arg: 'increase',
-                                disabled: !this.abilityContext.target.allowGameAction('addBounty')
+                                disabled: !this.abilityContext.target.allowGameAction('addBounty', this.abilityContext)
                             },
                             { 
                                 text: 'Decrease by 1', 
                                 method: 'changeBountyLaura',
                                 arg: 'decrease',
-                                disabled: !this.abilityContext.target.allowGameAction('removeBounty') &&
+                                disabled: !this.abilityContext.target.allowGameAction('removeBounty', this.abilityContext) &&
                                     context.target.bounty > 0
                             }
                         ]

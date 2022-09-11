@@ -2,12 +2,12 @@ const GoodsCard = require('../../goodscard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class BlueLightnin extends GoodsCard {
+    constructor(owner, cardData) {
+        super(owner, cardData, { providesStudBonus: true });
+    }
+
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
-        this.whileAttached({
-            effect: ability.effects.setAsStud()
-        });
-
         this.action({
             title: 'Shootout: Blue Lightin\'',
             playType: ['shootout'],

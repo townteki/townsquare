@@ -1,4 +1,4 @@
-const BowieKnife = require('../07.3-BadM/BowieKnife');
+const BowieKnife = require('../10-BMR/BowieKnife');
 
 class BowieKnife2 extends BowieKnife {}
 

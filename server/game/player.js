@@ -143,7 +143,8 @@ class Player extends Spectator {
                 modifyGhostRock: () => true,
                 cardsInPlay: [], 
                 drawDeck: [],
-                hand: []
+                hand: [],
+                deadPile: []
             };
         }
         return opponents[0];
@@ -324,7 +325,7 @@ class Player extends Spectator {
 
     determineHandResult(handResultText = 'reveals', doLowest = false) {
         if(this.drawHand.length > 1) {
-            this.handResult = new HandResult(this.drawHand, doLowest);
+            this.handResult = new HandResult(this.drawHand, doLowest, false);
         }
 
         let cheatin = this.isCheatin() ? 'Cheatin\' ' : '';
@@ -441,6 +442,10 @@ class Player extends Spectator {
         var toDiscard = Math.min(number, this.hand.length);
         var cards = [];
 
+        if(toDiscard <= 0) {
+            return false;
+        }
+
         while(cards.length < toDiscard) {
             var cardIndex = MathHelper.randomInt(this.hand.length);
 
@@ -456,6 +461,8 @@ class Player extends Spectator {
             }
             callback(discarded);
         });
+
+        return true;
     }
 
     resetCardPile(pile) {
@@ -601,25 +608,37 @@ class Player extends Spectator {
         return card.isUnique() && this.deadPile.some(c => c.title === card.title && (checkSelf || c !== card));
     }
 
-    playCard(card, arg) {
+    playablePlayActions(card, playType, context) {
+        let cardToUpgrade = this.findUpgrade(card);
+        if(!context) {
+            context = new AbilityContext({
+                game: this.game,
+                player: this,
+                source: card,
+                cardToUpgrade: cardToUpgrade
+            });
+        } else {
+            context.cardToUpgrade = cardToUpgrade;
+        }
+        return card.getPlayActions(playType).filter(action =>
+            action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
+    }
+
+    playCard(card, arg, options = {}) {
         if(!card) {
             return false;
         }
 
-        let cardToUpgrade = this.findUpgrade(card);
-
         let context = new AbilityContext({
             game: this.game,
             player: this,
-            source: card,
-            cardToUpgrade: cardToUpgrade
+            source: card
         });
-        var playActions = card.getPlayActions(arg).filter(action =>
-            action.meetsRequirements(context) && action.canPayCosts(context) && action.canResolveTargets(context));
-
+        var playActions = this.playablePlayActions(card, arg, context);
         if(playActions.length === 0) {
             return false;
         }
+        playActions.forEach(playAction => playAction = Object.assign(playAction.options || {}, { options }));
 
         if(playActions.length === 1) {
             context.ability = playActions[0];
@@ -671,6 +690,10 @@ class Player extends Spectator {
             return card.owner.equals(this);
         }
         return card.controller.equals(this) || card.canUseControllerAbilities(this);
+    }
+
+    hasCardsToDraw() {
+        return this.drawDeck.length || this.discardPile.length;
     }
 
     canTrigger(card) {
@@ -776,25 +799,22 @@ class Player extends Spectator {
             case 'dude':
                 if(updatedParams.context && updatedParams.context.cardToUpgrade) {
                     updatedParams.context.cardToUpgrade.upgrade(card);
+                    this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
                 } else {
                     const putIntoPlayFunc = target => {
                         card.moveToLocation(target);
                         this.moveCard(card, 'play area');
                         this.entersPlay(card, updatedParams);
                         if(updatedParams.playingType === 'shoppin') {
-                            if(updatedParams.context && updatedParams.context.cardToUpgrade) {
-                                this.game.addMessage('{0} replaces {1} with {2}', this, updatedParams.context.cardToUpgrade, card);
-                            } else {
-                                this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
-                            }
+                            this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
                         } else if(this.game.currentPhase !== 'setup') {
                             this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
                         }
                     };
-                    if(card.isGadget() && this.game.currentPhase !== 'setup') {
+                    if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== 'drop') {
                         this.inventGadget(card, updatedParams.scientist, (context, scientist) => {
                             putIntoPlayFunc(scientist.gamelocation);
-                        });
+                        }, scientist => scientist.locationCard.controller.equals(this));
                     } else {
                         let target = updatedParams.target === '' ? this.outfit.uuid : updatedParams.target;
                         putIntoPlayFunc(target);
@@ -812,7 +832,7 @@ class Player extends Spectator {
                     }
                     this.entersPlay(card, updatedParams);                    
                 };              
-                if(card.isGadget()) {
+                if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== 'drop') {
                     this.inventGadget(card, updatedParams.scientist, () => {
                         putIntoPlayFunc();
                     });
@@ -870,7 +890,33 @@ class Player extends Spectator {
         });
     }
 
-    inventGadget(gadget, scientist, successHandler = () => true) {
+    inventGadget(gadget, scientist, successHandler = () => true, scientistCondition = () => true) {
+        if(!scientist) {
+            this.selectScientistToInvent(gadget, successHandler, scientistCondition);
+        } else {
+            this.pullToInvent(scientist, gadget, successHandler);
+        }
+    }
+
+    selectScientistToInvent(gadget, successHandler, scientistCondition = () => true) {
+        this.game.promptForSelect(this, {
+            activePromptTitle: 'Select a dude to invent ' + gadget.title,
+            waitingPromptTitle: 'Waiting for opponent to select dude',
+            cardCondition: card => card.location === 'play area' &&
+                card.controller.equals(this) &&
+                !card.cannotInventGadgets() &&
+                (!card.booted || gadget.canBeInventedWithoutBooting()) &&
+                card.canPerformSkillOn(gadget) &&
+                scientistCondition(card),
+            cardType: 'dude',
+            onSelect: (player, card) => {
+                this.pullToInvent(card, gadget, successHandler);
+                return true;
+            }
+        });
+    }
+
+    pullToInvent(scientist, gadget, successHandler) {
         const getPullProperties = (scientist, bootedToInvent) => {
             return {
                 successHandler: context => {
@@ -891,35 +937,15 @@ class Player extends Spectator {
                 bootedToInvent
             };
         };
-        const pullToInvent = (scientist, gadget) => {
-            let bootedToInvent = false;
-            if(!gadget.canBeInventedWithoutBooting()) {
-                this.bootCard(scientist);
-                bootedToInvent = true;
-            }
-            this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
-                this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillForCard(event.gadget), 
-                    getPullProperties(event.scientist, event.bootedToInvent));
-            });
-        };
-        if(!scientist) {
-            this.game.promptForSelect(this, {
-                activePromptTitle: 'Select a dude to invent ' + gadget.title,
-                waitingPromptTitle: 'Waiting for opponent to select dude',
-                cardCondition: card => card.location === 'play area' &&
-                    card.controller.equals(this) &&
-                    !card.cannotInventGadgets() &&
-                    (!card.booted || gadget.canBeInventedWithoutBooting()) &&
-                    card.canPerformSkillOn(gadget),
-                cardType: 'dude',
-                onSelect: (player, card) => {
-                    pullToInvent(card, gadget);
-                    return true;
-                }
-            });
-        } else {
-            pullToInvent(scientist, gadget);
+        let bootedToInvent = false;
+        if(!gadget.canBeInventedWithoutBooting()) {
+            this.bootCard(scientist);
+            bootedToInvent = true;
         }
+        this.game.raiseEvent('onGadgetInventing', { gadget, scientist, bootedToInvent }, event => {
+            this.pullForSkill(event.gadget.difficulty, event.scientist.getSkillForCard(event.gadget), 
+                getPullProperties(event.scientist, event.bootedToInvent));
+        });
     }
 
     canAttach(attachment, card, playingType) {
@@ -939,7 +965,7 @@ class Player extends Spectator {
             if(!card.locationCard || !card.locationCard.controller.equals(attachment.controller)) {
                 return false;
             } 
-            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem())) {
+            if(card.booted && (attachment.getType() !== 'spell' || !attachment.isTotem()) && !attachment.isImprovement()) {
                 return false;
             }
         }
@@ -1397,6 +1423,10 @@ class Player extends Spectator {
         if(this.drawDeck.length === 0) {
             this.shuffleDiscardToDrawDeck();
         }
+        if(this.drawDeck.length === 0) {
+            this.game.addAlert('danger', '{0} cannot pull because their deck and discard are empty', this);
+            return null;
+        }
         const pulledCard = this.drawDeck[0];
         this.moveCard(pulledCard, 'being played');
         if(addMessage) {
@@ -1635,26 +1665,11 @@ class Player extends Spectator {
             return;
         }
 
-        if(dude.canMoveWithoutBooting(Object.assign(options, { dude, origin, destination }))) {
-            options.needToBoot = false;
+        const reqToMove = dude.requirementsToMove(origin, destination, options);
+        if(!reqToMove.canMove) {
+            return;
         }
-
-        if(options.needToBoot === null && !options.isCardEffect) {
-            if(!options.allowBooted && dude.booted) {
-                return;
-            }
-            if(!origin.isAdjacent(destination.uuid)) {
-                options.needToBoot = true;
-            } else {
-                if(origin.isTownSquare()) {
-                    if(destination.uuid === this.outfit.uuid) {
-                        options.needToBoot = true;
-                    }
-                } else if(origin.uuid !== this.outfit.uuid) {
-                    options.needToBoot = true;
-                }
-            }
-        }
+        options.needToBoot = reqToMove.needToBoot;
 
         if(options.needToBoot) {
             this.bootCard(dude);
@@ -1823,6 +1838,48 @@ class Player extends Spectator {
         }
     }
 
+    decideCallout(caller, callee) {
+        this.game.promptWithMenu(this, caller, {
+            activePrompt: {
+                menuTitle: caller.title + ' is calling out ' + callee.title,
+                buttons: [
+                    { text: 'Accept Callout', method: 'acceptCallout', arg: callee.uuid },
+                    { text: 'Refuse Callout', method: 'rejectCallout', arg: callee.uuid }
+                ]
+            },
+            waitingPromptTitle: 'Waiting for opponent to decide if they run or fight'
+        });        
+    }
+
+    braggingRightsScore() {
+        if(this.game.getNumberOfPlayers() < 2) {
+            return 0;
+        }
+        let finalScore = 0;
+        let braggingRights = {};
+        braggingRights.totalCost = this.cardsInPlay.reduce((totalCost, card) => totalCost + (card.cost ? card.cost : 0), 0);
+        finalScore += braggingRights.totalCost;
+        braggingRights.ghostRock = Math.floor(this.ghostrock / 2);
+        finalScore += braggingRights.ghostRock;
+        if(this.getTotalControl() > this.getOpponent().getTotalInfluence()) {
+            braggingRights.aboveCP = this.getTotalControl() - this.getOpponent().getTotalInfluence();
+            finalScore += braggingRights.aboveCP;
+        }
+        if(this.getTotalInfluence() > this.getOpponent().getTotalControl()) {
+            braggingRights.aboveInf = this.getTotalInfluence() - this.getOpponent().getTotalControl();
+            finalScore += braggingRights.aboveInf;
+        }
+        braggingRights.oppDead = this.getOpponent().deadPile.filter(card => card.getType() === 'dude').length * 2;
+        finalScore += braggingRights.oppDead;
+        braggingRights.myDead = this.deadPile.filter(card => card.getType() === 'dude').length * -4;
+        finalScore += braggingRights.myDead;
+        braggingRights.numOfDays = this.game.round * -5;
+        finalScore += braggingRights.numOfDays;
+        braggingRights.finalScore = finalScore;
+
+        return braggingRights;
+    }
+
     setSelectedCards(cards) {
         this.promptState.setSelectedCards(cards);
     }
@@ -1886,7 +1943,7 @@ class Player extends Spectator {
     }
 
     isTimerEnabled() {
-        return !this.noTimer && this.user.settings.windowTimer !== 0;
+        return !this.noTimer && this.timerSettings.windowTimer !== 0;
     }
 
     cannotModifyHandRanks(context = {}) {
@@ -1962,7 +2019,8 @@ class Player extends Spectator {
             totalControl: this.getTotalControl(),
             totalInfluence: this.getTotalInfluence(),
             user: {
-                username: this.user.username
+                username: this.user.username,
+                isAutomaton: this === this.game.automaton
             }
         };
 

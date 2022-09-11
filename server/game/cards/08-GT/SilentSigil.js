@@ -1,4 +1,3 @@
-const PhaseNames = require('../../Constants/PhaseNames.js');
 const DeedCard = require('../../deedcard.js');
 
 class SilentSigil extends DeedCard {
@@ -11,7 +10,7 @@ class SilentSigil extends DeedCard {
         this.reaction({
             title: 'Silent Sigil',
             when: {
-                onCardsDrawn: event => event.reason === PhaseNames.Nightfall && event.player === this.controller
+                onAfterHandRefill: event => event.player.equals(this.controller)
             },
             message: context => this.game.addMessage('{0} uses {1} to draw an additional card', context.player, this),
             handler: context => {
