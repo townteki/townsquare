@@ -93,8 +93,6 @@ function writeFile(path, data, opts = 'utf8') {
     });
 }
 
-const DefaultEmailHash = crypto.createHash('md5').update('noreply@doomtown.online').digest('hex');
-
 module.exports.init = function(server, options) {
     userService = ServiceFactory.userService(options.db, configService);
     let banlistService = ServiceFactory.banlistService(options.db);
@@ -376,6 +374,8 @@ module.exports.init = function(server, options) {
         }
 
         let userObj = user.getWireSafeDetails();
+        userObj.discord.server = configService.getValue('discordServer');
+        userObj.discord.channel = configService.getValue('discordChannel');
 
         let authToken = jwt.sign(userObj, configService.getValue('secret'), { expiresIn: '5m' });
         let ip = req.get('x-real-ip');
@@ -761,8 +761,7 @@ module.exports.init = function(server, options) {
 };
 
 async function downloadAvatar(user) {
-    let emailHash = user.enableGravatar ? crypto.createHash('md5').update(user.email).digest('hex') : DefaultEmailHash;
-    let avatar = await util.httpRequest(`https://www.gravatar.com/avatar/${emailHash}?d=identicon&s=24`, { encoding: null });
+    let avatar = await util.httpRequest(user.avatarLink, { encoding: null });
     await writeFile(`public/img/avatar/${user.username}.png`, avatar, 'binary');
 }
 

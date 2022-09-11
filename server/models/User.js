@@ -1,5 +1,7 @@
 const Settings = require('../settings');
+const crypto = require('crypto');
 
+const DefaultEmailHash = crypto.createHash('md5').update('noreply@doomtown.online').digest('hex');
 class User {
     constructor(userData) {
         this.userData = userData;
@@ -59,6 +61,11 @@ class User {
 
     get enableGravatar() {
         return this.userData.enableGravatar;
+    }
+
+    get avatarLink() {
+        let emailHash = this.enableGravatar ? crypto.createHash('md5').update(this.email).digest('hex') : DefaultEmailHash;
+        return `https://www.gravatar.com/avatar/${emailHash}?d=identicon&s=24`;
     }
 
     get verified() {
@@ -132,7 +139,9 @@ class User {
             settings: this.userData.settings,
             permissions: this.userData.permissions,
             verified: this.userData.verified,
-            enableGravatar: this.userData.enableGravatar
+            enableGravatar: this.userData.enableGravatar,
+            avatarLink: this.avatarLink,
+            discord: {}
         };
 
         user = Settings.getUserWithDefaultsSet(user);
