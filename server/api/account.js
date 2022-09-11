@@ -299,6 +299,8 @@ module.exports.init = function(server, options) {
     server.post('/api/account/checkauth', passport.authenticate('jwt', { session: false }), wrapAsync(async (req, res) => {
         let user = await userService.getUserByUsername(req.user.username);
         let userDetails = user.getWireSafeDetails();
+        userDetails.discord.server = configService.getValue('discordServer');
+        userDetails.discord.channel = configService.getValue('discordChannel');
 
         if(!user.patreon || !user.patreon.refresh_token) {
             return res.send({ success: true, user: userDetails });

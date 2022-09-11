@@ -63,11 +63,6 @@ class User {
         return this.userData.enableGravatar;
     }
 
-    get avatarLink() {
-        let emailHash = this.enableGravatar ? crypto.createHash('md5').update(this.email).digest('hex') : DefaultEmailHash;
-        return `https://www.gravatar.com/avatar/${emailHash}?d=identicon&s=24`;
-    }
-
     get verified() {
         return this.userData.verified;
     }
@@ -121,12 +116,18 @@ class User {
         return this.blockList.includes(otherUser.username.toLowerCase());
     }
 
+    getAvatarLink() {
+        let emailHash = this.enableGravatar ? crypto.createHash('md5').update(this.email).digest('hex') : DefaultEmailHash;
+        return `https://www.gravatar.com/avatar/${emailHash}?d=identicon&s=24`;
+    }
+
     getFullDetails() {
         let user = Object.assign({}, this.userData);
 
         delete user.password;
 
         user = Settings.getUserWithDefaultsSet(user);
+        user.avatarLink = this.getAvatarLink();
 
         return user;
     }
@@ -140,7 +141,7 @@ class User {
             permissions: this.userData.permissions,
             verified: this.userData.verified,
             enableGravatar: this.userData.enableGravatar,
-            avatarLink: this.avatarLink,
+            avatarLink: this.getAvatarLink(),
             discord: {}
         };
 
@@ -165,6 +166,7 @@ class User {
 
         user = Settings.getUserWithDefaultsSet(user);
         user.role = this.role;
+        user.avatarLink = this.getAvatarLink();
 
         return user;
     }
