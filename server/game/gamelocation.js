@@ -183,6 +183,7 @@ class TownSquare extends GameLocation {
             gamelocation: 'townsquare',
             allowGameAction: () => true,
             isAdjacent: (targetUuid) => this.isAdjacent(targetUuid),
+            isNearby: (targetUuid) => this.gamelocation === targetUuid || this.isAdjacent(targetUuid),
             isOutOfTown: () => false,
             isPublic: () => true,
             isPrivate: () => false,
