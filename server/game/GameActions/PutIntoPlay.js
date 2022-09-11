@@ -21,7 +21,7 @@ class PutIntoPlay extends GameAction {
     getDefaultParams(params) {
         const defaultParams = {
             targetLocationUuid: params.targetLocationUuid || '',
-            playingType: params.playType || 'play',
+            playingType: params.playingType || 'play',
             context: params.context || {}
         };
         return Object.assign(params, defaultParams);
