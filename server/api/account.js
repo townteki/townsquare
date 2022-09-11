@@ -374,6 +374,8 @@ module.exports.init = function(server, options) {
         }
 
         let userObj = user.getWireSafeDetails();
+        userObj.discord.server = configService.getValue('discordServer');
+        userObj.discord.channel = configService.getValue('discordChannel');
 
         let authToken = jwt.sign(userObj, configService.getValue('secret'), { expiresIn: '5m' });
         let ip = req.get('x-real-ip');

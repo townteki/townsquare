@@ -140,7 +140,8 @@ class User {
             permissions: this.userData.permissions,
             verified: this.userData.verified,
             enableGravatar: this.userData.enableGravatar,
-            avatarLink: this.avatarLink
+            avatarLink: this.avatarLink,
+            discord: {}
         };
 
         user = Settings.getUserWithDefaultsSet(user);
