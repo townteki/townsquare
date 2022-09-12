@@ -13,7 +13,8 @@ class NotaryPublic extends DeedCard {
                 cardCondition: { location: 'play area', controller: 'any', condition: card => 
                     (card.owner === this.controller || card.controller === this.controller) &&
                     card.hasOneOfKeywords(['Government', 'Public']) &&
-                    this.isSameStreet(card)
+                    this.isSameStreet(card) &&
+                    !this.equals(card)
                 },
                 cardType: ['deed'],
                 gameAction: 'boot'

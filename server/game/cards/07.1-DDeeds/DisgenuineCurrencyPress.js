@@ -20,7 +20,7 @@ class DisgenuineCurrencyPress extends GoodsCard {
             },
             message: context => this.game.addMessage('{0} draws a card thanks to the {1}', context.player, this),
             handler: context => {
-                context.player.drawCardsToHand(1, context);
+                this.owner.drawCardsToHand(1, context);
             }
         });
     }
