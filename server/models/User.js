@@ -118,7 +118,7 @@ class User {
 
     getAvatarLink() {
         let emailHash = this.enableGravatar ? crypto.createHash('md5').update(this.email).digest('hex') : DefaultEmailHash;
-        return `https://www.gravatar.com/avatar/${emailHash}?d=identicon&s=24`;
+        return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
     }
 
     getFullDetails() {

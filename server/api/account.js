@@ -763,7 +763,7 @@ module.exports.init = function(server, options) {
 };
 
 async function downloadAvatar(user) {
-    let avatar = await util.httpRequest(user.avatarLink, { encoding: null });
+    let avatar = await util.httpRequest(user.avatarLink + '&s=24', { encoding: null });
     await writeFile(`public/img/avatar/${user.username}.png`, avatar, 'binary');
 }
 
