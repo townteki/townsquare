@@ -980,7 +980,8 @@ class Player extends Spectator {
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && 
             ['shoppin', 'ability', 'play'].includes(playingType) &&
-            !attachment.doesNotHaveToBeInvented()) {
+            !attachment.doesNotHaveToBeInvented() &&
+            attachment.location !== 'play area') {
             let scientist = defaultScientist || 
                 (playingType === 'shoppin' && !attachment.isImprovement() ? card : null);
             this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
