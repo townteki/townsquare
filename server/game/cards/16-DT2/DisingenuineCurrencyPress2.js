@@ -12,12 +12,13 @@ class DisingenuineCurrencyPress2 extends GoodsCard {
             }
         });
         this.traitReaction({
+            triggerBefore: true,
             when: {
                 onCardDiscarded: event => this.equals(event.card) && event.originalLocation === 'play area'
             },
             message: context => this.game.addMessage('{0} draws a card thanks to the {1}', context.player, this),
             handler: context => {
-                context.player.drawCardsToHand(1, context);
+                this.owner.drawCardsToHand(1, context);
             }
         });
     }
