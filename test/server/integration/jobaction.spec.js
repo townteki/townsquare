@@ -1,4 +1,4 @@
-describe('JobAction', function() {
+fdescribe('JobAction', function() {
     integration({ numOfPlayers: 2 }, function() {
         describe('ability', function() {
             beforeEach(function() {
@@ -8,8 +8,8 @@ describe('JobAction', function() {
                     startingTitles: ['Tommy Harden', 'Jake Smiley', 'Olivia Jenks']
                 });
                 const deck2 = this.buildDeck({
-                    outfitTitle: 'The Sloane Gang',
-                    cardTitles: ['The Sloane Gang', 'Allie Hensman', 'Barton Everest', 'Maza Gang Hideout'], 
+                    outfitTitle: 'Desolation Row',
+                    cardTitles: ['Desolation Row', 'Allie Hensman', 'Barton Everest', 'Maza Gang Hideout'], 
                     startingTitles: ['Allie Hensman', 'Barton Everest']
                 });
                 this.player1.selectDeck(deck1);
@@ -24,6 +24,7 @@ describe('JobAction', function() {
                 [this.allie] = this.player2.filterCardsByName('Allie Hensman', 'play area');
                 this.coachAction = this.player1.filterCardsByName('A Coach Comes to Town')[0];
                 this.maza = this.player2.filterCardsByName('Maza Gang Hideout')[0];
+                this.desRow = this.player2.filterCardsByName('Desolation Row')[0];
                 this.player1.dragCard(this.coachAction, 'hand');
                 this.player2.dragCard(this.maza, 'hand');
                 this.player2.clickMenu(this.maza, 'Shoppin\' play');
@@ -32,12 +33,29 @@ describe('JobAction', function() {
                 this.olivia.booted = true;
                 this.player1.moveDude(this.tommy, 'townsquare');
                 this.player2.moveDude(this.allie, this.maza.uuid);
-                this.player1.clickMenu(this.coachAction, 'Use ability');
-                this.player1.clickCard(this.tommy, 'play area');
-                this.player1.clickCard(this.jake, 'play area');
+            });
+
+            describe('leaving posses after job', function() {
+                beforeEach(function() {
+                    this.player1.clickPrompt('Pass');
+                    this.player2.clickMenu(this.desRow, 'Use ability');
+                    this.player2.clickCard(this.allie, 'play area');
+                    this.player2.clickPrompt('Done');
+                    this.player1.clickPrompt('No');
+                });
+
+                it ('dudes should leave after onSuccessful() handler is done', function() {
+                    expect(this.allie.bounty).toBe(2);
+                });
             });
 
             describe('selecting posses', function() {
+                beforeEach(function() {
+                    this.player1.clickMenu(this.coachAction, 'Use ability');
+                    this.player1.clickCard(this.tommy, 'play area');
+                    this.player1.clickCard(this.jake, 'play area');
+                });
+
                 it ('booted dudes not at mark location are not selectable', function() {
                     expect(this.player1).not.toAllowSelect(this.olivia);
                 });
@@ -50,6 +68,9 @@ describe('JobAction', function() {
 
             describe('deciding to oppose', function() {
                 beforeEach(function() {
+                    this.player1.clickMenu(this.coachAction, 'Use ability');
+                    this.player1.clickCard(this.tommy, 'play area');
+                    this.player1.clickCard(this.jake, 'play area');
                     this.player1.clickPrompt('Done');
                     this.jobAbility = this.game.shootout.options.jobAbility;   
                     this.jobAbility.setResult = jasmine.createSpy('setResult');
