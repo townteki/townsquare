@@ -1,4 +1,4 @@
-fdescribe('JobAction', function() {
+describe('JobAction', function() {
     integration({ numOfPlayers: 2 }, function() {
         describe('ability', function() {
             beforeEach(function() {
