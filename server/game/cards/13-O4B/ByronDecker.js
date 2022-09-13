@@ -27,8 +27,9 @@ class ByronDecker extends DudeCard {
                 gameAction: 'discard'
             },
             handler: context => {
+                context.event.cancel(); 
                 this.game.resolveGameAction(GameActions.discardCard({ card: context.target }), context).thenExecute(() => {
-                    context.replaceHandler(() => this.game.addMessage('{0} uses {1} and discards {2} to save {1}', context.player, this, context.target));
+                    this.game.addMessage('{0} uses {1} and discards {2} to save {1}', context.player, this, context.target);
                 });
             }
         });
