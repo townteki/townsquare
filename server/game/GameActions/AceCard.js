@@ -16,7 +16,8 @@ class AceCard extends GameAction {
             originalLocation: card.location,
             isCardEffect: options.isCardEffect,
             isCasualty: options.isCasualty,
-            fromPosse: card.isParticipating()
+            fromPosse: card.isParticipating(),
+            context: context
         };
         if(context) {
             params.isFromOpponent = context.player !== card.controller;
