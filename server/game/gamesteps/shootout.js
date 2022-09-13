@@ -233,10 +233,12 @@ class Shootout extends Phase {
             this.options.jobAbility.setResult(this.jobSuccessful, this);
             this.options.jobAbility.reset();
         }
-        this.game.endShootout(isCancel);
-        let phaseName = this.isJob() ? 'Job' : 'Shootout';
-        let whatHappened = this.cancelled ? ' cancelled!' : ' ended!';
-        this.game.addAlert('phasestart', phaseName + whatHappened);        
+        this.queueStep(new SimpleStep(this.game, () => {
+            this.game.endShootout(isCancel);
+            let phaseName = this.isJob() ? 'Job' : 'Shootout';
+            let whatHappened = this.cancelled ? ' cancelled!' : ' ended!';
+            this.game.addAlert('phasestart', phaseName + whatHappened); 
+        }));       
     }
 
     endShootout(recordStatus = true) {
