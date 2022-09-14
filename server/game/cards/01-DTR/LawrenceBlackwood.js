@@ -5,8 +5,11 @@ class LawrenceBlackwood extends DudeCard {
         this.action({
             title: 'Lawrence Blackwood',
             playType: 'noon',
-            condition: () => this.locationCard.owner !== this.controller,
             cost: ability.costs.bootSelf(),
+            ifCondition: () => this.locationCard.owner !== this.controller && this.isAtDeed(),
+            ifFailMessage: context =>
+                this.game.addMessage('{0} uses {1} but does not gain any CP because he is not at deed {0} does not own', 
+                    context.player, this),
             message: context =>
                 this.game.addMessage('{0} uses {1} to gain CP unless he moves', context.player, this),
             handler: context => {
