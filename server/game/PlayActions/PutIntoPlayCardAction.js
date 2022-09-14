@@ -48,6 +48,7 @@ class PutIntoPlayCardAction extends BaseAbility {
             });
             player.addCostReducer(this.costReducer);
         }
+        context.targetParent = this.properties.targetParent;
         return super.resolveCosts(context);
     }
 

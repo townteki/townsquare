@@ -25,7 +25,7 @@ class MoveDude extends GameAction {
         params.context = context;
         return this.event('onDudeMoved', { card, target: targetUuid, options: params }, event => {
             event.card.controller.moveDude(event.card, event.target, event.options);
-            if(event.card.game.shootout && event.card.isParticipating() && 
+            if(event.card.game.shootout && event.card.isParticipating() && !event.options.isAfterJob &&
                 event.options.originalLocation === event.card.game.shootout.shootoutLocation.uuid) {
                 event.thenAttachEvent(RemoveFromPosse.createEvent({ card: event.card, context: event.options.context }));
             }

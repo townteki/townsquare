@@ -5,12 +5,13 @@ class MountMoriahCemetery extends DeedCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.persistentEffect({
-            targetController: 'current',
+            targetController: 'any',
             effect: ability.effects.reduceCost({
-                playingTypes: ['play', 'shoppin'],
+                playingTypes: ['ability', 'play', 'shoppin'],
                 amount: 1,
                 match: (card, context) => card.getType() === 'spell' &&
-                    context.target && context.target.gamelocation === this.uuid
+                    (context.target && context.target.gamelocation === this.uuid) ||
+                    (context.targetParent && context.targetParent.gamelocation === this.uuid)
             })
         });
     }
