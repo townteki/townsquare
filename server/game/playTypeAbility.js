@@ -74,7 +74,10 @@ class PlayTypeAbility extends BaseAbility {
             return false;
         }
 
-        if(this.playType !== 'any' && this.game.currentPlayWindow) {
+        if(this.playType !== 'any') {
+            if(!this.game.currentPlayWindow) {
+                return false;
+            }
             let allowedTypes = AllowedTypesForPhase[this.game.getCurrentPlayWindowName()];
             if(!allowedTypes) {
                 return false;
