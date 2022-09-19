@@ -141,6 +141,7 @@ class Player extends Spectator {
                 name: 'test player', 
                 isCheatin: () => false, 
                 modifyGhostRock: () => true,
+                equals: player => player.name === 'test player',
                 cardsInPlay: [], 
                 drawDeck: [],
                 hand: [],
