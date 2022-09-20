@@ -1164,6 +1164,7 @@ class BaseCard {
                 control: this.cardData.control,
                 value: this.cardData.rank,
                 suit: this.cardData.suit,
+                keywords: this.keywords.printedData,
                 upkeep: this.cardData.upkeep,
                 production: this.cardData.production
             },
