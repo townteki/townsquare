@@ -801,14 +801,18 @@ class Game extends EventEmitter {
         this.automaton.selectDeck(deck);
     }
 
-    discardFromDrawHand(playerName) {
+    discardFromDrawHand(playerName, discardType) {
         let player = this.getPlayerByName(playerName);
-        const cards = player.promptState.selectedCards;
+        const selectedCards = player.promptState.selectedCards;
 
-        if(!player || !cards || cards.length === 0) {
+        if(!player || !selectedCards || selectedCards.length === 0) {
             return;
         }
 
+        let cards = selectedCards;
+        if(discardType === 'keep') {
+            cards = player.drawHand.filter(card => !selectedCards.includes(card));
+        }
         player.discardCards(cards);
         this.addMessage('{0} discards {1} from draw hand', player, cards);
         this.clearDrawHandSelection(playerName);
