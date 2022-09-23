@@ -28,7 +28,7 @@ class Automaton extends Player {
         if(updatedOptions.discardExactly && cardsToDiscard.length !== number) {
             return;
         }
-        this.discardCards(cardsToDiscard, false, discarded => {
+        this.discardCards(cardsToDiscard, discarded => {
             callback(discarded);
         }, updatedOptions, context);
     }
@@ -42,7 +42,7 @@ class Automaton extends Player {
         if(this.drawHand.length > 5) {
             const cardsToDiscard = this.drawHand.filter(drawCard => 
                 !handResult.getHandRank().cards.map(card => card.uuid).includes(drawCard.uuid));
-            this.discardCards(cardsToDiscard, false, () =>
+            this.discardCards(cardsToDiscard, () =>
                 this.game.addMessage('{0} discards {1} to make its draw hand', this, cardsToDiscard));
         }
     }

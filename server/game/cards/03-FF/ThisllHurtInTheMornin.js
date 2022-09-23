@@ -15,7 +15,7 @@ class ThisllHurtInTheMornin extends ActionCard {
                 this.game.addMessage('{0} uses {1} to discard {2} from {3}\'s draw hand and replaces it/them from {3}\'s draw deck', 
                     context.player, this, context.target, context.player.getOpponent()),
             handler: context => {
-                context.player.discardCards(context.target, false, (discardedCards) => {
+                context.player.discardCards(context.target, (discardedCards) => {
                     const opponent = context.player.getOpponent();
                     opponent.drawDeckAction(discardedCards.length, 
                         card => opponent.moveCardWithContext(card, 'draw hand', context));

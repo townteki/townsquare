@@ -13,7 +13,7 @@ class AttachmentValidityCheck {
 
             this.game.queueSimpleStep(() => {
                 for(let [owner, cards] of this.groupAttachmentsByOwner(needsDiscard)) {
-                    owner.discardCards(cards, false, discarded => {
+                    owner.discardCards(cards, discarded => {
                         this.game.addMessage('{0} is forced to discard {1} due to being invalidly attached', owner, discarded);
                     });
                 }
@@ -50,7 +50,7 @@ class AttachmentValidityCheck {
             multiSelect: true,
             numCards: limitObject.cards.length - limitObject.limit,
             onSelect: (player, cards) => {
-                player.discardCards(cards, false, () => 
+                player.discardCards(cards, () => 
                     this.game.addMessage('{0} discards over the limit {1}(s): {2}', player, attType, cards)
                 );
                 return true;

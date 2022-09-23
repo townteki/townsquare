@@ -15,8 +15,8 @@ class SightBeyondSight extends SpellCard {
                     title: `Look at ${context.player.getOpponent().name}'s hand to ace a card`,
                     numToShow: 2,
                     condition: card => !card.isUnique(),
-                    onSelect: (player, cards) => this.game.resolveGameAction(GameActions.aceCard({ card: this, allowSave: false }), context).thenExecute(() => {
-                        player.aceCards(cards, false, () => 
+                    onSelect: (player, cards) => this.game.resolveGameAction(GameActions.aceCard({ card: this }), context).thenExecute(() => {
+                        player.aceCards(cards, () => 
                             context.game.addMessage('{0} uses {1} to look at opponent\'s hand and ace itself to ace {2}', player, this, cards), {}, context);
                     }),
                     onCancel: player => 

@@ -46,7 +46,7 @@ class CurseOfFailure extends ActionCard {
                 }));                
                 if(job.mark.location === 'play area') {
                     if(job.mark.attachments.length > 0) {
-                        context.player.discardCards(job.mark.attachments, false, () => true, {}, context);                 
+                        context.player.discardCards(job.mark.attachments, () => true, {}, context);                 
                     }
                     this.game.resolveGameAction(GameActions.sendHome({ card: job.mark }), context);
                     context.player.attach(this, job.mark, 'ability', () => {

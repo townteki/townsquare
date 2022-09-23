@@ -9,11 +9,11 @@ class RemoveFromGame extends GameAction {
         return card.location !== 'out of game';
     }
 
-    createEvent({ card, player, allowSave = true }) {
+    createEvent({ card, player }) {
         player = player || card.controller;
-        return this.event('onCardRemovedFromGame', { player, card, allowSave }, event => {
+        return this.event('onCardRemovedFromGame', { player, card }, event => {
             event.cardStateWhenRemoved = event.card.createSnapshot();
-            event.player.moveCard(event.card, 'out of game', { allowSave: event.allowSave });
+            event.player.moveCard(event.card, 'out of game', {});
         });
     }
 }

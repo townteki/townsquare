@@ -40,7 +40,7 @@ class TenFootPunch extends TechniqueCard {
                         } else {
                             this.game.addMessage('{0} discards cards revealed by {1}', context.player, this);
                         }
-                        context.player.discardCards(cardsToDiscard, false, () => true, {}, context);
+                        context.player.discardCards(cardsToDiscard, () => true, {}, context);
                     });
                 }
             }

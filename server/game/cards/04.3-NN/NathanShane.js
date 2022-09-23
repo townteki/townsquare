@@ -14,7 +14,7 @@ class NathanShane extends DudeCard {
                     title: `Look at ${context.player.getOpponent().name}'s hand to discard an action card`,
                     numToShow: this.bullets,
                     condition: card => card.getType() === 'action',
-                    onSelect: (player, cards) => player.discardCards(cards, false, () => 
+                    onSelect: (player, cards) => player.discardCards(cards, () => 
                         context.game.addMessage('{0} uses {1} to look at opponent\' hand and discard {2}', player, this, cards), {}, context),
                     onCancel: player => 
                         context.game.addMessage('{0} uses {1} to look at opponent\' hand but did not find any action card to discard', player, this),

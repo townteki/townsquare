@@ -9,7 +9,7 @@ class DiscardFromPlayCost {
 
     pay(cards, context) {
         context.saveCostCardsInfo(cards);
-        context.player.discardCards(cards, false);
+        context.player.discardCards(cards);
     }
 }
 

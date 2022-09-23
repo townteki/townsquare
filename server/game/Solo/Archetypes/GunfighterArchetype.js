@@ -91,7 +91,7 @@ class GunfighterArchetype extends BaseArchetype {
             }
             const cardsToDiscard = this.player.getCardsToDiscardDownToHandSize();
             if(cardsToDiscard.length) {
-                this.player.discardCards(cardsToDiscard, false, () => {
+                this.player.discardCards(cardsToDiscard, () => {
                     this.game.addMessage('{0} discards {1} to meet hand size limit', this.player, cardsToDiscard);
                 });
             }
