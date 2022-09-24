@@ -21,7 +21,7 @@ class Kidnappin extends ActionCard {
                     this.game.resolveGameAction(GameActions.addBounty({ card: dude }), context)));
             },
             onSuccess: (job, context) => {
-                if(this.game.discardFromPlay([job.mark], true, () => true, { isCardEffect: true }, context)) {
+                if(this.game.discardFromPlay([job.mark], () => true, { isCardEffect: true }, context)) {
                     this.game.addMessage('{0} was discarded as a result of the {1}', job.mark, this);
                 }
             }
