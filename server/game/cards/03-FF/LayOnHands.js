@@ -19,7 +19,7 @@ class LayOnHands extends SpellCard {
             cost: ability.costs.bootSelf(),
             difficulty: 8,
             onSuccess: context => {
-                this.game.resolveGameAction(GameActions.bootCard({ card: this.parent, allowSave: false }), context).thenExecute(() => {
+                this.game.resolveGameAction(GameActions.bootCard({ card: this.parent }), context).thenExecute(() => {
                     const saveEventHandler = context.event.handler;
                     context.replaceHandler(event => {
                         const sendHomeEvent = this.game.resolveGameAction(GameActions.sendHome({ card: context.event.card }), context);

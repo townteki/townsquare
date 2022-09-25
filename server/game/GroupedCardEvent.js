@@ -1,12 +1,6 @@
 const Event = require('./event.js');
 
 class GroupedCardEvent extends Event {
-    saveCard(card) {
-        this.removeCard(card);
-        card.markAsSaved();
-        card.game.raiseEvent('onCardSaved', { card: card });
-    }
-
     removeCard(card) {
         this.cards = this.cards.filter(c => c !== card);
 

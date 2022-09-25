@@ -21,7 +21,7 @@ class ArnoldStewart extends DudeCard {
                 const cards = context.player.drawDeckAction(5, card => {
                     context.player.removeCardFromPile(card);
                 });
-                context.player.discardCards(cards, false, discardedCards => {
+                context.player.discardCards(cards, discardedCards => {
                     if(!this.booted && discardedCards.find(card => card.hasKeyword('out of town'))) {
                         context.game.promptForYesNo(context.player, {
                             title: 'Do you want to boot ' + this.title + ' to put one Out of Town deed to your hand?',

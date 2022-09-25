@@ -1211,12 +1211,7 @@ class Game extends EventEmitter {
         return !!this.skipPhase[name];
     }
 
-    saveCard(card) {
-        card.markAsSaved();
-        this.vent('onCardSaved', { card: card });
-    }
-
-    discardFromPlay(cards, allowSave = true, callback = () => true, options, context) {
+    discardFromPlay(cards, callback = () => true, options, context) {
         let inPlayCards = cards.filter(card => card.location === 'play area');
         if(inPlayCards.length === 0) {
             return false;
@@ -1226,7 +1221,7 @@ class Game extends EventEmitter {
         // any abilities that respond to cards being discarded from play. This
         // should be a temporary workaround until better support is added for
         // simultaneous resolution of events.
-        inPlayCards[0].owner.discardCards(inPlayCards, allowSave, callback, options, context);
+        inPlayCards[0].owner.discardCards(inPlayCards, callback, options, context);
         return true;
     }
 
@@ -1241,12 +1236,6 @@ class Game extends EventEmitter {
     revealHands() {
         this.raiseEvent('onDrawHandsRevealed', { shootout: this.shootout }, () => {
             this.getPlayers().forEach(player => player.revealDrawHand());
-        });
-    }
-
-    placeOnBottomOfDeck(card, options = { allowSave: true }) {
-        this.applyGameAction('placeOnBottomOfDeck', card, card => {
-            card.owner.moveCard(card, 'draw deck', { allowSave: options.allowSave, bottom: true });
         });
     }
 

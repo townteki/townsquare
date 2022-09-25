@@ -1026,9 +1026,8 @@ handler: card => {
  - `card`: card to which the bounty will be added
  - `amount` (1): amount of bounty to be added
 
-**aceCard** - can be called using `player.aceCard(card, allowSave = true, options)`. If you need to ace multiple cards, you can use `player.aceCards(card, allowSave = true, callback = () => true, options)`
+**aceCard** - can be called using `player.aceCard(card, options)`. If you need to ace multiple cards, you can use `player.aceCards(card, callback = () => true, options)`
  - `card`: card to be aced
- - `allowSave` (true): (to be added)
  - `source`: source location of the card to be aced
 
 **addToHand**
@@ -1045,9 +1044,8 @@ handler: card => {
 
 **choose**
 
-**discardCard** - can be called using `player.discardCard(card, allowSave = true, options)`. If you need to discard multiple cards, you can use `player.discardCards(cards, allowSave = true, callback = () => true, options)`
+**discardCard** - can be called using `player.discardCard(card, options)`. If you need to discard multiple cards, you can use `player.discardCards(cards, callback = () => true, options)`
  - `card`: card to be discarded
- - `allowSave` (true): (to be added)
  - `source`: source location of the card to be discarded
 
 **discardTopCards**

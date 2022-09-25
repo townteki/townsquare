@@ -40,7 +40,7 @@ class Mugging extends ActionCard {
                     multiSelect: true,
                     gameAction: 'ace',
                     onSelect: (player, cards) => {
-                        player.aceCards(cards, false, () => 
+                        player.aceCards(cards, () => 
                             this.game.addMessage('{0} uses {1} to ace {2} attached to {3}', player, this, cards, job.mark), {}, context);
                         return true;
                     }

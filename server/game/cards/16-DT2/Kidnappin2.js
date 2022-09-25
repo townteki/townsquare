@@ -30,7 +30,7 @@ class Kidnappin2 extends ActionCard {
                 });
             },
             onSuccess: (job, context) => {
-                if(this.game.discardFromPlay([job.mark], true, () => true, { isCardEffect: true }, context)) {
+                if(this.game.discardFromPlay([job.mark], () => true, { isCardEffect: true }, context)) {
                     this.game.addMessage('{0} discards {1} as a result of the {2}', context.player, job.mark, this);
                 }
             }

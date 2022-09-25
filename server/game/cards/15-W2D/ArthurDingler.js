@@ -24,7 +24,7 @@ class ArthurDingler extends DudeCard {
                         const actualAmount = Math.min(5, player.drawDeck.length);
                         let topCards = player.drawDeck.slice(0, actualAmount);
                         if(arg === 'discard') {
-                            player.discardCards(topCards, false, discarded => 
+                            player.discardCards(topCards, discarded => 
                                 this.game.addMessage('{0} uses {1} to discard {2} from top of their deck', player, this, discarded), 
                             {}, context);
                             return true;

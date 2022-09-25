@@ -33,7 +33,7 @@ class TheEvidence extends GoodsCard {
                 this.game.addMessage('{0} plays {1} on {2} to increase their bounty by 2', context.player, this, context.target),
             handler: context => {
                 this.game.resolveGameAction(GameActions.addBounty({ card: context.target, amount: 2 }), context);
-                this.game.resolveGameAction(GameActions.aceCard({ card: this, allowSave: false }), context);
+                this.game.resolveGameAction(GameActions.aceCard({ card: this }), context);
             }
         });
     }

@@ -8,7 +8,7 @@ class DiscardFromHandCost {
     }
 
     pay(cards, context) {
-        context.player.discardCards(cards, false);
+        context.player.discardCards(cards);
     }
 }
 

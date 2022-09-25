@@ -111,12 +111,12 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         if(type === 'ace') {
             numCoveredCasualties = card.coversCasualties('ace');
             if(numCoveredCasualties > 0) {
-                player.aceCard(card, true, { isCasualty: true }, this.createContext(card, player));    
+                player.aceCard(card, { isCasualty: true }, this.createContext(card, player));    
             }         
         } else if(type === 'discard') {
             numCoveredCasualties = card.coversCasualties('discard');
             if(numCoveredCasualties > 0) {
-                player.discardCard(card, true, { isCasualty: true }, this.createContext(card, player));
+                player.discardCard(card, { isCasualty: true }, this.createContext(card, player));
             }
         }
 

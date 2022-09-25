@@ -401,7 +401,7 @@ class Player extends Spectator {
         number = Math.min(number, this.drawDeck.length);
 
         var cards = this.drawDeck.slice(0, number);
-        this.discardCards(cards, false, discarded => {
+        this.discardCards(cards, discarded => {
             callback(discarded);
         }, options);
     }
@@ -424,7 +424,7 @@ class Player extends Spectator {
                 if(updatedOptions.discardExactly && cards.length !== number) {
                     return false;
                 }
-                this.discardCards(cards, false, discarded => {
+                this.discardCards(cards, discarded => {
                     callback(discarded);
                 }, updatedOptions, context);
                 return true;
@@ -456,7 +456,7 @@ class Player extends Spectator {
             }
         }
 
-        this.discardCards(cards, false, discarded => {
+        this.discardCards(cards, discarded => {
             if(showMessage) {
                 this.game.addMessage('{0} discards {1} at random', this, discarded);
             }
@@ -1315,15 +1315,14 @@ class Player extends Spectator {
         }
     }
 
-    aceCard(card, allowSave = true, options, context) {
-        this.aceCards([card], allowSave, () => true, options, context);
+    aceCard(card, options, context) {
+        this.aceCards([card], () => true, options, context);
     }
 
-    aceCards(cards, allowSave = true, callback = () => true, options, context) {
+    aceCards(cards, callback = () => true, options, context) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.aceCard({
                 card,
-                allowSave,
                 options
             }))
         );
@@ -1336,15 +1335,14 @@ class Player extends Spectator {
         return event;
     }
 
-    discardCard(card, allowSave = true, options, context) {
-        this.discardCards([card], allowSave, () => true, options, context);
+    discardCard(card, options, context) {
+        this.discardCards([card], () => true, options, context);
     }
 
-    discardCards(cards, allowSave = true, callback = () => true, options, context) {
+    discardCards(cards, callback = () => true, options, context) {
         let action = GameActions.simultaneously(
             cards.map(card => GameActions.discardCard({
                 card,
-                allowSave,
                 originalLocation: cards[0].location,
                 options
             }))
@@ -1542,35 +1540,35 @@ class Player extends Spectator {
         this.handlePull(props, context);
     }
 
-    returnCardToHand(card, allowSave = true, context) {
-        return this.game.resolveGameAction(GameActions.returnCardToHand({ card, allowSave }), this.createContext(context));
+    returnCardToHand(card, context) {
+        return this.game.resolveGameAction(GameActions.returnCardToHand({ card }), this.createContext(context));
     }
 
-    removeCardFromGame(card, allowSave = true) {
-        return this.game.resolveGameAction(RemoveFromGame, { allowSave, card, player: this });
+    removeCardFromGame(card) {
+        return this.game.resolveGameAction(RemoveFromGame, { card, player: this });
     }
 
-    moveCardToTopOfDeck(card, allowSave = true) {
+    moveCardToTopOfDeck(card) {
         this.game.applyGameAction('moveToTopOfDeck', card, card => {
-            this.game.raiseEvent('onCardReturnedToDeck', { player: this, card: card, allowSave: allowSave }, event => {
+            this.game.raiseEvent('onCardReturnedToDeck', { player: this, card: card }, event => {
                 event.cardStateWhenMoved = card.createSnapshot();
-                this.moveCard(card, 'draw deck', { allowSave: allowSave });
+                this.moveCard(card, 'draw deck', {});
             });
         });
     }
 
-    moveCardToBottomOfDeck(card, allowSave = true) {
+    moveCardToBottomOfDeck(card) {
         this.game.applyGameAction('moveToBottomOfDeck', card, card => {
-            this.game.raiseEvent('onCardReturnedToDeck', { player: this, card: card, allowSave: allowSave }, event => {
+            this.game.raiseEvent('onCardReturnedToDeck', { player: this, card: card }, event => {
                 event.cardStateWhenMoved = card.createSnapshot();
-                this.moveCard(card, 'draw deck', { bottom: true, allowSave: allowSave });
+                this.moveCard(card, 'draw deck', { bottom: true });
             });
         });
     }
 
-    shuffleCardIntoDeck(card, allowSave = true) {
+    shuffleCardIntoDeck(card) {
         this.game.applyGameAction('shuffleIntoDeck', card, card => {
-            this.moveCard(card, 'draw deck', { allowSave: allowSave }, () => {
+            this.moveCard(card, 'draw deck', {}, () => {
                 this.shuffleDrawDeck();
             });
         });
@@ -1612,9 +1610,9 @@ class Player extends Spectator {
         return this.currentCheck;
     }
 
-    removeAttachment(attachment, allowSave = true) {
+    removeAttachment(attachment) {
         attachment.isBeingRemoved = true;
-        attachment.owner.moveCard(attachment, 'discard pile', { allowSave: allowSave }, () => {
+        attachment.owner.moveCard(attachment, 'discard pile', {}, () => {
             attachment.isBeingRemoved = false;
         });
     }
@@ -1714,7 +1712,7 @@ class Player extends Spectator {
         this.removeCardFromPile(card);
         let targetPile = this.getSourceList(targetLocation);
 
-        options = Object.assign({ allowSave: false, bottom: false, isDupe: false, raiseEvents: true }, options);
+        options = Object.assign({ bottom: false, isDupe: false, raiseEvents: true }, options);
 
         if(!targetPile) {
             return;

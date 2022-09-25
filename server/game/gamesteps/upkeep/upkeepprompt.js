@@ -94,7 +94,7 @@ class UpkeepPrompt extends PlayerOrderPrompt {
 
     discardCards(player, cards, callback) {
         if(cards.length > 0) {
-            player.discardCards(cards, false, callback, { isUpkeep: true });
+            player.discardCards(cards, callback, { isUpkeep: true });
             this.game.addMessage('{0} discards {1} so that they do not have to pay upkeep for them', player, cards);
         }
     }
