@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/957/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
+![Cards implemented](https://progress-bar.dev/958/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
 
 **Legend**
 
@@ -507,7 +507,7 @@
 |:heavy_check_mark:   | 12018| Owl's Insight
 |:heavy_check_mark:   | 12019| Outgunned
 |:heavy_check_mark:   | 12020| Martyr's Cry
-|                     | 12021| Deliberate Infection
+|:heavy_check_mark:   | 12021| Deliberate Infection
 
 ## `07.3-BadM` Bad Medicine
 
