@@ -1,6 +1,5 @@
 const _ = require('underscore');
-const { TownSquareUUID } = require('./Constants');
-const NullCard = require('./nullcard');
+const TownsquareCard = require('./townsquarecard');
 
 /**
  * Base class representing a location on the game board.
@@ -172,35 +171,7 @@ class GameLocation {
  */
 class TownSquare extends GameLocation {
     constructor(game) {
-        // TODO M2 probably will have to create town square card since it is possible to
-        // attach to town square
-        super(game, Object.assign(new NullCard(), {
-            title: 'Town Square',
-            uuid: TownSquareUUID,
-            getType: () => 'townsquare',
-            location: 'play area',
-            getGameLocation: () => this,
-            gamelocation: 'townsquare',
-            allowGameAction: () => true,
-            isAdjacent: (targetUuid) => this.isAdjacent(targetUuid),
-            isNearby: (targetUuid) => this.gamelocation === targetUuid || this.isAdjacent(targetUuid),
-            isOutOfTown: () => false,
-            isPublic: () => true,
-            isPrivate: () => false,
-            hasKeyword: () => false,
-            hasAttachment: () => false,
-            hasAttachmentWithKeywords: () => false,
-            adjacentLocations: () => 
-                this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation()),
-            getShortSummary: () => {
-                return {
-                    code: 'townsquare',
-                    title: 'Town Square',
-                    type: 'townsquare'
-                };
-            }
-        }), null, null);
-
+        super(game, new TownsquareCard(game), null, null);
         this.key = 'townsquare';
     }
 

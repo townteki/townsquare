@@ -26,8 +26,9 @@ const SpellJobAction = require('./spelljobaction');
 /** @typedef {import('./game')} Game */
 /** @typedef {import('./player')} Player */
 
-class BaseCard {
+class BaseCard extends NullCard {
     constructor(owner, cardData) {
+        super();
         /** @type {Player} */
         this.owner = owner;
         /** @type {Player} */
