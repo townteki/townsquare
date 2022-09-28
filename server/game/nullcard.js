@@ -13,6 +13,22 @@ class NullCard {
         };
     }
 
+    isUnique() {
+        return false;
+    }
+
+    isToken() {
+        return false;
+    }
+
+    isPublic() {
+        return false;
+    }
+
+    isPrivate() {
+        return false;
+    }
+
     hasKeyword() {
         return false;
     }
@@ -29,11 +45,51 @@ class NullCard {
         return '';
     }
 
+    getPrintedStat() {
+        return null;
+    }
+
+    getGrit() {
+        return null;
+    }
+
     isLocationCard() {
         return false;
     }
 
+    isParticipating() {
+        return false;
+    }
+
+    isOpposing() {
+        return false;
+    }
+
     isOutOfTown() {
+        return false;
+    }
+
+    isInTownSquare() {
+        return false;
+    }
+
+    isAtHome() {
+        return false;
+    }
+
+    isAtDeed() {
+        return false;
+    }
+
+    isInSameLocation() {
+        return false;
+    }
+
+    isInControlledLocation() {
+        return false;
+    }
+
+    isInOpponentsHome() {
         return false;
     }
 
@@ -52,8 +108,76 @@ class NullCard {
     isNearby() {
         return false;
     }
+
+    isWanted() {
+        return false;
+    }
     
     hasAttachmentWithKeywords() {
+        return false;
+    }
+
+    hasAttachment() {
+        return false;
+    }
+
+    hasHorse() {
+        return false;
+    }
+
+    hasWeapon() {
+        return false;
+    }
+
+    canBeCalledOut() {
+        return false;
+    }
+
+    canAttach() {
+        return false;
+    }
+
+    isStud() {
+        return false;
+    }
+
+    isDraw() {
+        return false;
+    }
+
+    isSkilled() {
+        return false;
+    }
+
+    isGadget() {
+        return false;
+    }
+
+    isSpell() {
+        return false;
+    }
+
+    isSpellcaster() {
+        return false;
+    }
+
+    isHex() {
+        return false;
+    }
+
+    isSpirit() {
+        return false;
+    }
+
+    isMiracle() {
+        return false;
+    }
+
+    isTotem() {
+        return false;
+    }
+
+    isTaoTechnique() {
         return false;
     }
 
