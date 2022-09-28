@@ -1,12 +1,12 @@
 class NullCard {
-    get controller() {
-        return {
+    constructor() {
+        this.owner = {
             id: 'game',
             equals: () => false
         };
     }
-
-    get owner() {
+    
+    get controller() {
         return {
             id: 'game',
             equals: () => false
