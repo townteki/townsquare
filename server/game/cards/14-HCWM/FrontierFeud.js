@@ -33,7 +33,11 @@ class FrontierFeud extends ActionCard {
                             menuTitle: 'Make your choice',
                             buttons: [
                                 { text: `Give 1 CP to ${context.target.title}`, method: 'giveCP' },
-                                { text: `Call out ${context.target.title}`, method: 'calloutFeud' }
+                                { 
+                                    text: `Call out ${context.target.title}`, 
+                                    method: 'calloutFeud', 
+                                    disabled: this.isCalloutDisabled(context.player.getOpponent()) 
+                                }
                             ]
                         },
                         source: this
@@ -41,6 +45,12 @@ class FrontierFeud extends ActionCard {
                 });
             }
         });
+    }
+
+    isCalloutDisabled(player) {
+        const intownDudes = player.cardsInPlay.filter(card => card.getType() === 'dude' && 
+            !card.locationCard.isOutOfTown() && !card.isInTownSquare());
+        return intownDudes.every(dude => !dude.allowGameAction('moveDude', this.abilityContext));
     }
 
     giveCP() {
