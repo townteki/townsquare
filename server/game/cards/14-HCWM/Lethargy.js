@@ -18,7 +18,7 @@ class Lethargy extends SpellCard {
                 },
                 cardType: ['dude']
             },
-            difficulty: context => context.target.getGrit(),
+            difficulty: context => context.target.getGrit(context),
             onSuccess: (context) => {
                 this.game.addMessage('{0} uses {1} to prevent {2}\'s unboot at Nightfall unless their controller pays 1 GR', 
                     context.player, this, context.target);
