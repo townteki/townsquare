@@ -590,6 +590,7 @@ class BaseCard extends NullCard {
     }
 
     leavesPlay() {
+        this.resetAbilities();
         this.tokens = {};        
         this.clearNew();
         this.gamelocation = '';
