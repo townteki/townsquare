@@ -26,7 +26,7 @@ class RosenbaumsGolem extends DudeCard {
                                 ]
                             }));
                             this.game.addMessage('{0} uses {1} to give {2} +5 value', context.player, this, context.target);
-                            if(context.target.getGrit() >= 11) {
+                            if(context.target.getGrit(context) >= 11) {
                                 context.ability.selectAnotherTarget(context.player, context, {
                                     activePromptTitle: 'Select your dude',
                                     cardCondition: {

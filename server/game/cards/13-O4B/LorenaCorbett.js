@@ -19,7 +19,8 @@ class LorenaCorbett extends DudeCard {
                     match: context.target,
                     effect: [
                         ability.effects.setGritFunc((grit, context) => {
-                            if(context.player === this.controller && context.ability && context.ability.isCardAbility()) {
+                            if(context && this.controller.equals(context.player) && 
+                                context.ability && context.ability.isCardAbility()) {
                                 return grit < 11 ? 11 : grit;
                             }
                             return grit;

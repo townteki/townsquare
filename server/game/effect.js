@@ -103,11 +103,11 @@ class Effect {
     }
 
     hasEnded() {
-        return this.duration === 'custom' && Object.keys(this.until).length === 0 && !this.condition();
+        return this.duration === 'custom' && Object.keys(this.until).length === 0 && !this.condition(this.context);
     }
 
     addTargets(targets) {
-        if(!this.active || !this.condition()) {
+        if(!this.active || !this.condition(this.context)) {
             return;
         }
 
@@ -234,7 +234,7 @@ class Effect {
     }
 
     clearInvalidTargets() {
-        if(!this.condition()) {
+        if(!this.condition(this.context)) {
             this.cancel();
             return;
         }
@@ -285,7 +285,7 @@ class Effect {
         }
 
         if(this.isConditional) {
-            let newCondition = this.condition();
+            let newCondition = this.condition(this.context);
 
             if(!newCondition) {
                 this.cancel();
