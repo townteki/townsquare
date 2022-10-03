@@ -10,6 +10,10 @@ class TownsquareCard extends NullCard {
         this.location = 'play area';
         this.gamelocation = 'townsquare';
     }
+    
+    getType() {
+        return 'townsquare';
+    }
 
     getGameLocation() {
         return this.game.townsquare;
