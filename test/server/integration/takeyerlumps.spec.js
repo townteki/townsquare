@@ -1,4 +1,4 @@
-const Hands = require('../../helpers/hands');
+const Hands = require('../../helpers/Hands');
 
 describe('Take Yer Lumps', function() {
     integration({ numOfPlayers: 2 }, function() {
