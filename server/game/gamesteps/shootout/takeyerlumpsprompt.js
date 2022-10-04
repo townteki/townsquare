@@ -128,7 +128,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                         this.firstCasualty = null;
                         this.firstCasualtySelected = true;
                     }
-                    const casualtyTypeText = type === 'sendHome' ? 'sends home' : type;
+                    const casualtyTypeText = type === 'sendHome' ? 'sends home' : type + 's';
                     if(newCasualtiesToCover < 0) {
                         this.game.addMessage('danger', '{0} {1} {2} as a casualty; This is more casualties ({3}) than required!',
                             player, casualtyTypeText, card, -1 * newCasualtiesToCover);
