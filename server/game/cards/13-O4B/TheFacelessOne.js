@@ -20,7 +20,7 @@ class TheFacelessOne extends DudeCard {
                 }));
                 this.game.addMessage('{0} uses {1} to increase its bullets by {2}\'s bullet rating ({3})', 
                     context.player, this, context.target, bulletBonus);
-                if(context.target.getGrit() >= 11) {
+                if(context.target.getGrit(context) >= 11) {
                     this.applyAbilityEffect(context.ability, ability => ({
                         match: context.target,
                         effect: ability.effects.setMaxBullets(4)

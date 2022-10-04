@@ -32,7 +32,7 @@ class AdlersNeedle extends GoodsCard {
                         this.parent.modifyControl(1);
                         this.game.addMessage('{0} uses {1} and attempts to bring {2} into posse, but {3} decides not to, ' +
                             'therefore {4} gains 1 CP', context.player, this, context.target, player, this.parent);
-                        if(this.parent.getGrit() > context.target.getGrit()) {
+                        if(this.parent.getGrit(context) > context.target.getGrit(context)) {
                             this.untilEndOfRound(context.ability, ability => ({
                                 condition: () => !context.target.isAtHome(),
                                 match: context.target,

@@ -18,10 +18,10 @@ class DrArdenGillman extends DudeCard {
                 cardType: ['dude']
             },
             handler: context => {
-                context.player.pullForSkill(context.target.getGrit(), 'mad scientist', {
+                context.player.pullForSkill(context.target.getGrit(context), 'mad scientist', {
                     successHandler: context => {
                         let targetAced = false;
-                        if(context.totalPullValue - 6 >= context.target.getGrit()) {
+                        if(context.totalPullValue - 6 >= context.target.getGrit(context)) {
                             targetAced = true;
                             this.game.resolveGameAction(GameActions.aceCard({ card: context.target }), context)
                                 .thenExecute(() => this.game.addMessage('{0} uses {1} to ace {2}', context.player, this, context.target));

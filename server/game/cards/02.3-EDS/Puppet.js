@@ -15,7 +15,7 @@ class Puppet extends SpellCard {
                 },
                 cardType: ['dude']
             },
-            difficulty: context => context.target.getGrit(),
+            difficulty: context => context.target.getGrit(context),
             message: context => 
                 this.game.addMessage('{0} uses {1} to take control of {2}', context.player, this, context.target),
             onSuccess: (context) => {
