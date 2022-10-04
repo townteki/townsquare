@@ -75,7 +75,7 @@ describe('Take Yer Lumps', function() {
                 describe('game should', function() {
                     beforeEach(function() {
                         this.player1.prepareHand(Hands.getHand(this.player1, Hands.HighCard));
-                        this.player2.prepareHand(Hands.getHand(this.player2, Hands.Straight));
+                        this.player2.prepareHand(Hands.getHand(this.player2, Hands.FullHouse));
                         this.player1.clickPrompt('Ready');
                         this.player2.clickPrompt('Ready');
                         this.completeShootoutResolutionStep();

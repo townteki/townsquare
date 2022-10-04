@@ -117,7 +117,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
         const maxToCover = card.coversCasualties('any', context);
         const newCasualtiesToCover = casualtyContext.currentCasualtiesNum - numToCover;
         const newMaxCasualties = casualtyContext.maxPossibleCasualties - maxToCover;
-        if(newCasualtiesToCover < 0 || (newMaxCasualties > newCasualtiesToCover && numToCover < maxToCover)) {
+        if(newCasualtiesToCover < 0 || (newMaxCasualties < newCasualtiesToCover && numToCover < maxToCover)) {
             let title = newCasualtiesToCover < 0 ? 'Selected casualty will cover more than required. Do you want to continue?' :
                 'Selected casualty will not cover required number. Do you want to continue?';
             this.game.promptForYesNo(player, {
@@ -130,14 +130,16 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                     }
                     const casualtyTypeText = type === 'sendHome' ? 'sends home' : type + 's';
                     if(newCasualtiesToCover < 0) {
-                        this.game.addMessage('danger', '{0} {1} {2} as a casualty; This is more casualties ({3}) than required!',
-                            player, casualtyTypeText, card, -1 * newCasualtiesToCover);
+                        this.game.addAlert('danger', '{0} {1} {2} as a casualty; This is more casualties ({3}) than required ({4})!',
+                            player, casualtyTypeText, card, numToCover, -1 * newCasualtiesToCover);
                     } else {
-                        this.game.addMessage('danger', '{0} {1} {2} as a casualty; This is not enough to cover remaining casualties!',
+                        this.game.addAlert('danger', '{0} {1} {2} as a casualty; This is not enough to cover remaining casualties!',
                             player, casualtyTypeText, card);                   
                     }
                 }
             });
+        } else {
+            this.coverCasualty(player, card, type);
         }
     }
 
@@ -204,8 +206,8 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
 
         if(numCoveredCasualties > 0) {
             this.modifyCasualties(player, card, numCoveredCasualties);
-            this.game.addMessage('{0} {1}s {2} to cover {3} casualties ({4} remaining).', 
-                player, type, card, numCoveredCasualties, player.casualties); 
+            this.game.addMessage('{0} {1} {2} to cover {3} casualties ({4} remaining).', 
+                player, type + 's', card, numCoveredCasualties, player.casualties); 
         }
     }
 
