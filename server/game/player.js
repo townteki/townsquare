@@ -1841,7 +1841,8 @@ class Player extends Spectator {
     decideCallout(caller, callee) {
         this.game.promptWithMenu(this, caller, {
             activePrompt: {
-                menuTitle: caller.title + ' is calling out ' + callee.title,
+                menuTitle: 'There has been a Call Out!',
+                controls: [{ source: caller.getShortSummary(), targets: [callee.getShortSummary()], type: 'targeting'}],
                 buttons: [
                     { text: 'Accept Callout', method: 'acceptCallout', arg: callee.uuid },
                     { text: 'Refuse Callout', method: 'rejectCallout', arg: callee.uuid }

@@ -12,6 +12,7 @@ const DefaultDeck = [
     'Hustings', 'Hustings',
     'Blake Ranch', 'Blake Ranch',
     'Bunkhouse', 'Bunkhouse',
+    'Circle M Ranch', 'Circle M Ranch',
     'Mustang', 'Mustang',
     'Roan', 'Roan',
     'Shotgun', 'Shotgun',
