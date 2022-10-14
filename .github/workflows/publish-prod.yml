@@ -1,0 +1,26 @@
+# This is a workflow to bump the version
+
+name: CI Publish Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-bump-version:
+    uses: townteki/townsquare/.github/workflows/bump-version.yml@master
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: call-bump-version
+    steps:
+      - name: Trigger deploy workflow in townsquare-client
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: townteki
+          repo: townsquare-client
+          github_token: ${{ secrets.MMELDO_PAT }}
+          github_user: mmeldo
+          workflow_file_name: publish-prod.yml
+          ref: master
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
