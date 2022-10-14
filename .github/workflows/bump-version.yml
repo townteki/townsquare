@@ -1,6 +1,6 @@
 # This is a workflow to bump the version
 
-name: Bump Version
+name: CI Publish Prod
 
 on:
   workflow_dispatch:
@@ -24,3 +24,18 @@ jobs:
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+  deploy-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy workflow in townsquare-client
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: townteki
+          repo: townsquare-client
+          github_token: ${{ secrets.MMELDO_PAT }}
+          github_user: mmeldo
+          workflow_file_name: publish-prod.yml
+          ref: master
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
