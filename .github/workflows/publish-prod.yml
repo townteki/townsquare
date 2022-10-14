@@ -10,6 +10,7 @@ jobs:
     uses: townteki/townsquare/.github/workflows/bump-version.yml@master
   deploy-prod:
     runs-on: ubuntu-latest
+    needs: call-bump-version
     steps:
       - name: Trigger deploy workflow in townsquare-client
         uses: convictional/trigger-workflow-and-wait@v1.6.1
