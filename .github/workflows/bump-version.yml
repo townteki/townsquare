@@ -10,17 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - run: git config user.name "$GITHUB_ACTOR"
-      - run: npm version patch --git-tag-version false
-      - run: VERSION=$(node -p "require('./package.json').version")
-      - run: echo "module.exports = {" > version.js
-      - run: dateNow=$(date +"%Y-%m-%d")
-      - run: echo "    releaseDate:'${dateNow}'," >> version.js
-      - run: echo "    build:'${VERSION}'" >> version.js
-      - run: echo "}" >> version.js
-      - run: git add version.js
-      - run: git commit -m "bump version to ${VERSION}"
-      - run: git tag ${VERSION}
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
-      - run: git push "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+      - name: Update version and commit
+        run: |
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+          npm version patch --git-tag-version false
+          VERSION=$(node -p "require('./package.json').version")
+          echo "module.exports = {" > version.js
+          dateNow=$(date +"%Y-%m-%d")
+          echo "    releaseDate:'${dateNow}'," >> version.js
+          echo "    build:'${VERSION}'" >> version.js
+          echo "}" >> version.js
+          git add version.js
+          git add package.json
+          git add package-lock.json
+          git commit -m "bump version to ${VERSION}"
+          git tag ${VERSION}
+      - name: Push to protected branch
+        uses: CasperWA/push-protected@v2
+        with:
+          token: ${{ secrets.MMELDO_PAT }}
+          branch: master
+          tags: true
+          unprotect_reviews: true      
