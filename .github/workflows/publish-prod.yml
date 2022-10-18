@@ -8,8 +8,7 @@ on:
 jobs:
   call-bump-version:
     uses: townteki/townsquare/.github/workflows/bump-version.yml@master
-    secrets:
-      mmeldoPAT: ${{ secrets.MMELDO_PAT }}
+    secrets: inherit
   deploy-prod:
     runs-on: ubuntu-latest
     needs: call-bump-version
