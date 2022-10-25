@@ -20,7 +20,7 @@ jobs:
           repo: townsquare-client
           github_token: ${{ secrets.MMELDO_PAT }}
           github_user: mmeldo
-          workflow_file_name: publish-prod.yml
+          workflow_file_name: deploy.yml
           ref: master
           propagate_failure: true
           trigger_workflow: true
