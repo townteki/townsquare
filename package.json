@@ -34,7 +34,7 @@
     "config": "^3.2.2",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
-    "jimp": "^0.6.8",
+    "jimp": "^0.16.2",
     "jsonwebtoken": "^8.2.2",
     "lodash.range": "^3.2.0",
     "lodash.sample": "^4.2.1",
@@ -54,7 +54,7 @@
     "underscore": "^1.12.1",
     "uuid": "^8.3.2",
     "winston": "^2.2.0",
-    "winston-daily-rotate-file": "^1.7.2",
+    "winston-daily-rotate-file": "^4.7.1",
     "zeromq": "^5.2.8"
   },
   "devDependencies": {
