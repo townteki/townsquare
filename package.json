@@ -39,7 +39,7 @@
     "lodash.range": "^3.2.0",
     "lodash.sample": "^4.2.1",
     "lodash.shuffle": "^4.2.0",
-    "moment": "^2.21.0",
+    "moment": "^2.29.4",
     "mongodb": "^3.1.13",
     "monk": "^7.0.0",
     "passport": "^0.3.2",
