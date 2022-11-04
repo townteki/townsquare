@@ -8,6 +8,7 @@ on:
 jobs:
   call-bump-version:
     uses: townteki/townsquare/.github/workflows/bump-version.yml@development
+    secrets: inherit
     with:
       branch: development
   deploy-dev:
