@@ -7,7 +7,10 @@ on:
 
 jobs:
   call-bump-version:
-    uses: townteki/townsquare/.github/workflows/bump-version.yml@master
+    uses: townteki/townsquare/.github/workflows/bump-version.yml@development
+    secrets: inherit
+    with:
+      branch: development
   deploy-dev:
     runs-on: ubuntu-latest
     needs: call-bump-version
@@ -19,8 +22,8 @@ jobs:
           repo: townsquare-client
           github_token: ${{ secrets.MMELDO_PAT }}
           github_user: mmeldo
-          workflow_file_name: publish-dev.yml
-          ref: master
+          workflow_file_name: deploy-dev.yml
+          ref: development
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
