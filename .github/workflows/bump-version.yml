@@ -4,6 +4,10 @@ name: Bump Version
 
 on:
   workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
 
 jobs:
   bump-version:
@@ -19,7 +23,7 @@ jobs:
           echo "module.exports = {" > version.js
           dateNow=$(date +"%Y-%m-%d")
           echo "    releaseDate:'${dateNow}'," >> version.js
-          echo "    build:'${VERSION}'" >> version.js
+          echo "    build:'${VERSION}-dev'" >> version.js
           echo "}" >> version.js
           git add version.js
           git add package.json
@@ -30,6 +34,6 @@ jobs:
         uses: CasperWA/push-protected@v2
         with:
           token: ${{ secrets.MMELDO_PAT }}
-          branch: master
+          branch: ${{ inputs.branch }}
           tags: true
           unprotect_reviews: true      
