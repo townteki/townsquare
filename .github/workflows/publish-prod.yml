@@ -8,6 +8,8 @@ on:
 jobs:
   call-bump-version:
     uses: townteki/townsquare/.github/workflows/bump-version.yml@master
+    with:
+      branch: master
     secrets: inherit
   deploy-prod:
     runs-on: ubuntu-latest
