@@ -39,7 +39,7 @@ class Lobby {
         this.userService.on('onBlocklistChanged', this.onBlocklistChanged.bind(this));
 
         this.io = options.io || socketio(server, { perMessageDeflate: false });
-        this.io.set('heartbeat timeout', 30000);
+        this.io.eio.pingTimeout = 30000;
         this.io.use(this.handshake.bind(this));
         this.io.on('connection', this.onConnection.bind(this));
 
