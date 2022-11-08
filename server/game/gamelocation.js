@@ -42,6 +42,10 @@ class GameLocation {
         return this.locationCard.uuid;
     }
 
+    get title() {
+        return this.locationCard ? this.locationCard.title : '';
+    }
+
     determineController() {
         if(this.isTownSquare()) {
             // TODO M2 Harry Highbinder can control townsquare, needs to be implemented

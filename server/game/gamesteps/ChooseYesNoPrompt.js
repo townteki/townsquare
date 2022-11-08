@@ -6,6 +6,7 @@ class ChooseYesNoPrompt extends UiPrompt {
         this.player = player;
         this.source = properties.source;
         this.title = properties.title;
+        this.promptInfo = properties.promptInfo;
         this.promptTitle = properties.promptTitle;
         this.onYes = properties.onYes || (() => true);
         this.onNo = properties.onNo || (() => true);
@@ -26,8 +27,8 @@ class ChooseYesNoPrompt extends UiPrompt {
                 { arg: 'no', text: 'No' }
             ],
             promptTitle: this.source ? this.source.title : this.promptTitle,
-            promptInfo: this.player === this.game.automaton ? 
-                { type: 'info', message: this.game.automaton.name } : undefined
+            promptInfo: this.promptInfo || 
+                (this.player === this.game.automaton ? { type: 'info', message: this.game.automaton.name } : undefined)
         };
     }    
 
