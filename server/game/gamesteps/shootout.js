@@ -29,6 +29,8 @@ class Shootout extends Phase {
             this.mark.shootoutStatus = ShootoutStatuses.MarkPosse;
             this.opposingPlayerName = this.mark.controller.name;
             this.opposingPosse = new ShootoutPosse(this, this.opposingPlayer, false);
+        } else if(this.mark) {
+            this.mark.shootoutStatus = ShootoutStatuses.CalledOut;
         }
 
         this.loserCasualtiesMod = 0;
@@ -81,6 +83,10 @@ class Shootout extends Phase {
                             title: 'Do you want to oppose?',
                             onYes: () => this.handleJobOpposing(opponent, true),
                             onNo: () => this.handleJobOpposing(opponent, false),
+                            promptInfo: { 
+                                type: 'info', 
+                                message: `Job in "${this.shootoutLocation.title}"`
+                            },
                             source: this.options.jobAbility.card
                         }));
                     }
@@ -96,6 +102,11 @@ class Shootout extends Phase {
         if(isOpposing) {
             this.opposingPosse = new ShootoutPosse(this, opponent);
             this.queueStep(new ShootoutPossePrompt(this.game, this, opponent)); 
+            this.queueStep(new SimpleStep(this, () => {
+                if(this.mark.getType() !== 'dude') {
+                    this.mark.shootoutStatus = ShootoutStatuses.None;
+                }
+            }));
         } else {
             let text = noDudesToOppose ? '{0} does not have any available dudes to oppose job {1}' :
                 '{0} decides to not oppose job {1}';
@@ -213,6 +224,7 @@ class Shootout extends Phase {
 
         this.actOnAllParticipants(dude => dude.shootoutStatus = ShootoutStatuses.None);
         this.leader.shootoutStatus = ShootoutStatuses.None;
+        this.mark.shootoutStatus = ShootoutStatuses.None;
         this.resetModifiers();
         if(this.isJob()) {
             if(this.cancelled) {
