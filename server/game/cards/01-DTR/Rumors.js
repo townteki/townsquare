@@ -17,7 +17,7 @@ class Rumors extends ActionCard {
                 this.applyAbilityEffect(context.ability, ability => ({
                     condition: () => 
                         !this.game.isHome(context.target.gamelocation, context.target.controller),
-                    match: context.target,
+                    match: card => card.equals(context.target),
                     effect: ability.effects.modifyInfluence(-1)
                 }));
             }

@@ -562,12 +562,14 @@ class Shootout extends Phase {
                 casualties: player.casualties
             };
         });
+        const effects = this.game.effectEngine.getAppliedEffectsOnTarget(this)
+            .filter(effect => effect.effect && effect.effect.title).map(effect => effect.getSummary());
 
         return {
-            effects: null,
+            classType: 'shootout',
+            effects: effects,
             round: this.round,
             playerStats
-
         };
     }
 }
