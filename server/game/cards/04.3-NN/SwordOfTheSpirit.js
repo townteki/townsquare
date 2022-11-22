@@ -26,7 +26,7 @@ class SwordOfTheSpirit extends SpellCard {
                             onSelect: (player, weapon) => {
                                 this.applyAbilityEffect(context.ability, ability => ({
                                     condition: () => !!weapon.parent && weapon.parent === dudeWithWeapon,
-                                    match: dudeWithWeapon,
+                                    match: card => card.equals(dudeWithWeapon),
                                     effect: [
                                         ability.effects.modifyBullets(1),
                                         ability.effects.setAsStud(),
