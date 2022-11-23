@@ -65,7 +65,7 @@ class GameServer {
         if(process.env.NODE_ENV !== 'production') {
             options.path = '/' + (process.env.SERVER || config.nodeIdentity) + '/socket.io';
         } else {
-            options.cors.origin = [/^http(s)?:\/\/www\.doomtown\.online:.*/, /^http(s)?:\/\/dev\.doomtown\.us:.*/];
+            options.cors.origin = [/^http(s)?:\/\/(www\.)?doomtown\.online(:)?.*/, /^http(s)?:\/\/dev\.doomtown\.us:.*/];
         }
 
         this.io = socketio(server, options);

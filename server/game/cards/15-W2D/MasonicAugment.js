@@ -6,7 +6,7 @@ class MasonicAugment extends ActionCard {
     setupCardAbilities(ability) {
         this.action({
             title: 'Noon/Shootout: Masonic Augment',
-            playType: ['noon'],
+            playType: ['noon', 'shootout'],
             cost: ability.costs.discardFromPlay(card => card.getType() === 'spell' &&
                 card.controller === this.controller &&
                 card.owner === this.controller),
