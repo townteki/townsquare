@@ -6,8 +6,8 @@ describe('BaseCard', function () {
         this.testCard = { code: '111', title: 'test 1', gang_code: 'neutral' };
         this.game = jasmine.createSpyObj('game', ['isCardVisible', 'raiseEvent']);
         this.owner = jasmine.createSpyObj('owner', ['getCardSelectionState', 'isSpectator']);
-        this.game.effectEngine = jasmine.createSpyObj('effectEngine', ['getAppliedEffectsOnCard']);
-        this.game.effectEngine.getAppliedEffectsOnCard.and.returnValue([]);
+        this.game.effectEngine = jasmine.createSpyObj('effectEngine', ['getAppliedEffectsOnTarget']);
+        this.game.effectEngine.getAppliedEffectsOnTarget.and.returnValue([]);
         this.owner.getCardSelectionState.and.returnValue({});
         this.owner.game = this.game;
         this.card = new BaseCard(this.owner, this.testCard);

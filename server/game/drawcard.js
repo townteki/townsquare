@@ -265,7 +265,7 @@ class DrawCard extends BaseCard {
             targetController: 'any',
             effect: properties.effect,
             recalculateWhen: properties.recalculateWhen,
-            fromTrait: properties.fromTrait
+            fromTrait: properties.fromTrait === undefined ? true : properties.fromTrait
         });
     }
 
