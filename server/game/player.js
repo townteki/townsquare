@@ -1266,7 +1266,7 @@ class Player extends Spectator {
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
             const gl = key === TownSquareUUID ? this.game.townsquare : this.findLocation(key);
-            if(gl.adjacencyMap.has(gameLocation.uuid)) {
+            if(gl && gl.adjacencyMap.has(gameLocation.uuid)) {
                 gl.adjacencyMap.delete(gameLocation.uuid);
             }
         });
