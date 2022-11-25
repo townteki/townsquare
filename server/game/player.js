@@ -1992,9 +1992,10 @@ class Player extends Spectator {
                 order: location.order
             };
         });
+        const effects = this.game.effectEngine.getAppliedEffectsOnTarget(this)
+            .filter(effect => effect.effect && effect.effect.title).map(effect => effect.getSummary());
 
         let state = {
-            legend: this.legend ? this.legend.getSummary(activePlayer) : null,
             cardPiles: {
                 cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
                 deadPile: this.getSummaryForCardList(this.deadPile, activePlayer).reverse(),
@@ -2004,11 +2005,14 @@ class Player extends Spectator {
                 drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
                 beingPlayed: this.getSummaryForCardList(this.beingPlayed, activePlayer)
             },
+            classType: 'player',
+            effects: effects,
             inCheck: this.currentCheck,
             disconnected: !!this.disconnectedAt,
             outfit: this.outfit.getSummary(activePlayer),
             firstPlayer: this.firstPlayer,
             handRank: this.handResult.rank,
+            legend: this.legend ? this.legend.getSummary(activePlayer) : null,
             locations: locationsState,
             id: this.id,
             left: this.left,

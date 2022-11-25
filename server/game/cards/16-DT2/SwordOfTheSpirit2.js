@@ -20,7 +20,7 @@ class SwordOfTheSpirit2 extends SpellCard {
                         }));  
                         this.applyAbilityEffect(context.ability, ability => ({
                             condition: () => dudeWithWeapon.hasAttachmentWithKeywords(['melee', 'weapon']),
-                            match: dudeWithWeapon,
+                            match: card => card.equals(dudeWithWeapon),
                             effect: [
                                 ability.effects.setAsStud(),
                                 ability.effects.cannotBeAffected('opponent', context => context.source && context.source.getType() === 'spell')
