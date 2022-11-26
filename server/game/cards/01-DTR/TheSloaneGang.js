@@ -8,7 +8,7 @@ class TheSloaneGang extends OutfitCard {
             playType: 'noon',
             cost: ability.costs.bootSelf(),        
             target: {
-                activePromptTitle: 'Select your dude in Town Square',
+                activePromptTitle: 'Select dude in Town Square',
                 cardCondition: {
                     location: 'play area',
                     controller: 'current',
