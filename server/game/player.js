@@ -321,10 +321,11 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult('reveals', this.game.currentPhase === PhaseNames.Gambling);
+        this.determineHandResult('reveals');
     }
 
-    determineHandResult(handResultText = 'reveals', doLowest = false) {
+    determineHandResult(handResultText = 'reveals', doWorst = false) {
+        let doLowest = this.game.currentPhase === PhaseNames.Gambling ? !doWorst : doWorst;
         if(this.drawHand.length > 1) {
             this.handResult = new HandResult(this.drawHand, doLowest, false);
         }
