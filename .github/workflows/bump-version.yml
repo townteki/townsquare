@@ -23,7 +23,7 @@ jobs:
           echo "module.exports = {" > version.js
           dateNow=$(date +"%Y-%m-%d")
           echo "    releaseDate:'${dateNow}'," >> version.js
-          echo "    build:'${VERSION}-dev'" >> version.js
+          echo "    build:'${VERSION}'" >> version.js
           echo "}" >> version.js
           git add version.js
           git add package.json
