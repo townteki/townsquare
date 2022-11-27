@@ -11,6 +11,7 @@ const GameActions = require('../GameActions/index.js');
 const ChooseYesNoPrompt = require('./ChooseYesNoPrompt.js');
 const PlayWindow = require('./playwindow.js');
 const PhaseNames = require('../Constants/PhaseNames.js');
+const NullLocation = require('../nulllocation.js');
 
 // Pseudo phase which is not part of the main pipeline.
 class Shootout extends Phase {
@@ -140,7 +141,7 @@ class Shootout extends Phase {
     }
 
     get shootoutLocation() {
-        return this.game.findLocation(this.gamelocation);
+        return this.game.findLocation(this.gamelocation) || new NullLocation();
     }   
 
     isJob() {

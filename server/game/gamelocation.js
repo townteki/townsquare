@@ -1,14 +1,15 @@
 const _ = require('underscore');
+const NullLocation = require('./nulllocation');
 const TownsquareCard = require('./townsquarecard');
 
 /**
  * Base class representing a location on the game board.
  */
-class GameLocation {
+class GameLocation extends NullLocation {
     constructor(game, locationCard, neighbourLocation, order) {
+        super();
         this.game = game;
         this.card = locationCard;
-        this.adjacencyMap = new Map();
         /*Keeps track of location order on player street
           for flexbox order parameter info
           0 === outfit (on street) or townsquare
@@ -26,7 +27,6 @@ class GameLocation {
             locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect =>
                 this.addAdjacency(adjacencyEffect.location, adjacencyEffect.source, adjacencyEffect.type));
         }
-        this.occupants = [];
         locationCard.gameLocationObject = this;
     }
 

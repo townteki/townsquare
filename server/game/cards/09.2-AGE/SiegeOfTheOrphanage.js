@@ -7,7 +7,7 @@ class SiegeOfTheOrphanage extends ActionCard {
             title: 'Siege of the Orphanage',
             playType: ['shootout'],
             message: context => {
-                const shootoutLoc = this.game.shootout.shootoutLocation.locationCard;
+                const shootoutLoc = this.game.getShootoutLocationCard();
                 if(!shootoutLoc.owner) {
                     this.game.addMessage('{0} uses {1}, but there is no owner of the {2} thus it has no effect', 
                         context.player, this, shootoutLoc);
@@ -17,7 +17,7 @@ class SiegeOfTheOrphanage extends ActionCard {
                 }
             },
             handler: context => {
-                const shootoutLoc = this.game.shootout.shootoutLocation.locationCard;
+                const shootoutLoc = this.game.getShootoutLocationCard();
                 if(!shootoutLoc.owner) {
                     return;
                 }

@@ -10,7 +10,7 @@ class AdrianVallejo extends DudeCard {
                     event.options.context.ability && event.options.context.ability.isCardAbility() && 
                     !this.equals(event.card) &&
                     !this.isParticipating() &&
-                    event.target === this.game.shootout.shootoutLocation.uuid &&
+                    event.target === this.game.getShootoutGameLocation().uuid &&
                     event.options.toPosse &&
                     this.hasHorse()
             },
