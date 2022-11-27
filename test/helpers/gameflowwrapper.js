@@ -84,7 +84,7 @@ class GameFlowWrapper {
     }
 
     guardCurrentPlayWindow(playWindowName) {
-        if(this.game.currentPlayWindow.name !== playWindowName) {
+        if(!this.game.currentPlayWindow || this.game.currentPlayWindow.name !== playWindowName) {
             throw new Error(`Expected to be in the ${playWindowName} play window but actually was ${this.game.currentPlayWindow.name}`);
         }
     }

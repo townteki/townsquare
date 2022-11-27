@@ -14,7 +14,7 @@ class WeStandAmazed extends SpellCard {
                     event.isCasualty
             },
             cost: ability.costs.bootSelf(),
-            difficulty: context => context.event.card.getGrit(),
+            difficulty: context => context.event.card.getGrit(context),
             onSuccess: (context) => {
                 const saveEventHandler = context.event.handler;
                 context.replaceHandler(event => {

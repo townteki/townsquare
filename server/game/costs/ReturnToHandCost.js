@@ -9,7 +9,7 @@ class ReturnToHandCost {
 
     pay(cards, context) {
         for(let card of cards) {
-            context.player.returnCardToHand(card, false);
+            context.player.returnCardToHand(card);
         }
     }
 }

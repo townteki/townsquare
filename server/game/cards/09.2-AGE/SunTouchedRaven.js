@@ -23,7 +23,7 @@ class SunTouchedRaven extends SpellCard {
                             format: '{player} plays {source} and looks at top 5 cards of their deck, but does not discard any of them'
                         },
                         handler: (cards, searchContext) => {
-                            context.player.discardCards(cards, false, () => true, {}, searchContext);
+                            context.player.discardCards(cards, () => true, {}, searchContext);
                         }
                     }),
                     context

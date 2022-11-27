@@ -71,7 +71,7 @@ class Raven extends LegendCard {
                     this.permanentBulletGiven = false;
                 });
                 this.game.once('onSundownAfterVictoryCheck', () => {
-                    if(context.target.controllerequals(context.player) && !context.target.owner.equals(context.player)) {
+                    if(context.target.controller.equals(context.player) && !context.target.owner.equals(context.player)) {
                         eventHandler();
                     }
                 });

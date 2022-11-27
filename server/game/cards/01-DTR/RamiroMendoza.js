@@ -15,13 +15,13 @@ class RamiroMendoza extends DudeCard {
                             this.game.addMessage('{0} has to pay 1 GR to {1} to make him join the posse', player, this);                            
                         },
                         onNo: player => {
-                            player.discardCard(this, false);
+                            player.discardCard(this);
                             this.game.addMessage('{0} decides to not pay 1 GR to {1}, who leaves town', player, this);
                         },
                         source: this
                     });
                 } else {
-                    context.player.discardCard(this, false);
+                    context.player.discardCard(this);
                     this.game.addMessage('{0} does not have 1 GR to pay to {1}, who leaves town', context.player, this);
                 }
             }

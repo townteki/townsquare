@@ -10,8 +10,8 @@ describe('DrawCard', function () {
     beforeEach(function () {
         this.gameSpy = jasmine.createSpyObj('game', ['isCardVisible']);
         this.gameSpy.isCardVisible.and.returnValue(true);
-        this.gameSpy.effectEngine = jasmine.createSpyObj('effectEngine', ['getAppliedEffectsOnCard']);
-        this.gameSpy.effectEngine.getAppliedEffectsOnCard.and.returnValue([]);
+        this.gameSpy.effectEngine = jasmine.createSpyObj('effectEngine', ['getAppliedEffectsOnTarget']);
+        this.gameSpy.effectEngine.getAppliedEffectsOnTarget.and.returnValue([]);
         this.testCard = { code: '111', title: 'test 1', gang_code: 'neutral' };
         this.card = new DrawCard({}, this.testCard);
         this.card.game = this.gameSpy;

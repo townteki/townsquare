@@ -38,13 +38,13 @@ class LewisGrizzlyEvans extends DudeCard {
                     this.applyAbilityEffect(context.ability, ability => ({
                         condition: () => this.game.shootout && 
                             this.game.shootout.getPosseSize(context.player) > 1,
-                        match: this,
+                        match: card => card.equals(this),
                         effect: ability.effects.doesNotProvideBulletRatings()
                     }));
                     this.applyAbilityEffect(context.ability, ability => ({
                         condition: () => this.game.shootout && 
                             this.game.shootout.getPosseSize(context.target.controller) > 1,
-                        match: context.target,
+                        match: card => card.equals(context.target),
                         effect: ability.effects.doesNotProvideBulletRatings()
                     }));                    
                 }

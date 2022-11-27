@@ -24,7 +24,7 @@ class VasilisTheBoar extends DudeCard {
                     doNotMarkActionAsTaken: true,
                     allowUsed: true,
                     skipCost: cost => cost.action.name === 'boot',
-                    callback: () => context.player.aceCard(context.target, false, {}, context)
+                    callback: () => context.player.aceCard(context.target, {}, context)
                 });
             }
         });

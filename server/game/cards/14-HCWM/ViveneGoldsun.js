@@ -27,14 +27,14 @@ class ViveneGoldsun extends DudeCard {
                     location: 'play area', 
                     controller: 'opponent', 
                     participating: true,
-                    condition: card => {
+                    condition: (card, context) => {
                         const maxValue = this.attachments.reduce((maxValue, att) => {
                             if(att.getType() !== 'goods' || !att.hasKeyword('mystical')) {
                                 return maxValue;
                             }
                             return att.value > maxValue ? att.value : maxValue;
                         }, 0);
-                        return card.getGrit() < maxValue;
+                        return card.getGrit(context) < maxValue;
                     } 
                 },
                 cardType: ['dude'],
@@ -54,14 +54,14 @@ class ViveneGoldsun extends DudeCard {
             return false;
         }
         if(context.target) {
-            return card.value > context.target.getGrit();
+            return card.value > context.target.getGrit(context);
         }
         const oppPosse = this.game.shootout.getPosseByPlayer(this.controller.getOpponent());
         if(!oppPosse) {
             return false;
         }
         const minGrit = oppPosse.getDudes().reduce((min, dude) =>
-            dude.getGrit() < min ? dude.getGrit() : min, 999);
+            dude.getGrit(context) < min ? dude.getGrit(context) : min, 999);
         return card.value < minGrit;
     }
 }

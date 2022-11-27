@@ -4,11 +4,14 @@ const {flatten} = require('../Array');
  * Represents a card based effect applied to one or more targets.
  *
  * Properties:
- * match            - function that takes a card and context object and returns
+ * match            - function that takes a card or player and context object and returns
  *                    a boolean about whether the passed card should have the
  *                    effect applied. Alternatively, a card can be passed as the
  *                    match property to match that single card, or an array of
  *                    cards to match each of them.
+ *                    WARNING: match has to be a function in case duration is not 'persistent'
+ *                             and effect is conditional if you want targets to be dynamically
+ *                             updated.
  * duration         - string representing how long the effect lasts.
  * until            - optional object to specify events that will cancel the
  *                    effect when duration is 'custom'. The keys of the object
@@ -103,11 +106,11 @@ class Effect {
     }
 
     hasEnded() {
-        return this.duration === 'custom' && Object.keys(this.until).length === 0 && !this.condition();
+        return this.duration === 'custom' && Object.keys(this.until).length === 0 && !this.condition(this.context);
     }
 
     addTargets(targets) {
-        if(!this.active || !this.condition()) {
+        if(!this.active || !this.condition(this.context)) {
             return;
         }
 
@@ -234,7 +237,7 @@ class Effect {
     }
 
     clearInvalidTargets() {
-        if(!this.condition()) {
+        if(!this.condition(this.context)) {
             this.cancel();
             return;
         }
@@ -285,7 +288,7 @@ class Effect {
         }
 
         if(this.isConditional) {
-            let newCondition = this.condition();
+            let newCondition = this.condition(this.context);
 
             if(!newCondition) {
                 this.cancel();
@@ -326,9 +329,11 @@ class Effect {
 
     getSummary() {
         return {
-            title: this.effect.title,
+            duration: this.duration,
+            fromTrait: this.fromTrait,
             gameAction: this.effect.gameAction,
-            source: this.source.uuid
+            source: this.source.uuid,
+            title: this.effect.title
         };
     }
 }

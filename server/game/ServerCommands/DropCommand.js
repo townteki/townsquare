@@ -94,9 +94,9 @@ class DropCommand {
                 }), defaultContext);
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {
-            actingPlayer.aceCard(this.card, false, { force: true }, defaultContext);
+            actingPlayer.aceCard(this.card, { force: true }, defaultContext);
         } else if(this.targetLocation === 'discard pile' && DiscardCard.allow({ card: this.card, force: true })) {
-            actingPlayer.discardCard(this.card, false, { force: true }, defaultContext);
+            actingPlayer.discardCard(this.card, { force: true }, defaultContext);
         } else {
             actingPlayer.moveCard(this.card, this.targetLocation);
         }

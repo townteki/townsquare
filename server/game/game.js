@@ -801,14 +801,18 @@ class Game extends EventEmitter {
         this.automaton.selectDeck(deck);
     }
 
-    discardFromDrawHand(playerName) {
+    discardFromDrawHand(playerName, discardType) {
         let player = this.getPlayerByName(playerName);
-        const cards = player.promptState.selectedCards;
+        const selectedCards = player.promptState.selectedCards;
 
-        if(!player || !cards || cards.length === 0) {
+        if(!player || !selectedCards || selectedCards.length === 0) {
             return;
         }
 
+        let cards = selectedCards;
+        if(discardType === 'keep') {
+            cards = player.drawHand.filter(card => !selectedCards.includes(card));
+        }
         player.discardCards(cards);
         this.addMessage('{0} discards {1} from draw hand', player, cards);
         this.clearDrawHandSelection(playerName);
@@ -1207,12 +1211,7 @@ class Game extends EventEmitter {
         return !!this.skipPhase[name];
     }
 
-    saveCard(card) {
-        card.markAsSaved();
-        this.vent('onCardSaved', { card: card });
-    }
-
-    discardFromPlay(cards, allowSave = true, callback = () => true, options, context) {
+    discardFromPlay(cards, callback = () => true, options, context) {
         let inPlayCards = cards.filter(card => card.location === 'play area');
         if(inPlayCards.length === 0) {
             return false;
@@ -1222,7 +1221,7 @@ class Game extends EventEmitter {
         // any abilities that respond to cards being discarded from play. This
         // should be a temporary workaround until better support is added for
         // simultaneous resolution of events.
-        inPlayCards[0].owner.discardCards(inPlayCards, allowSave, callback, options, context);
+        inPlayCards[0].owner.discardCards(inPlayCards, callback, options, context);
         return true;
     }
 
@@ -1237,12 +1236,6 @@ class Game extends EventEmitter {
     revealHands() {
         this.raiseEvent('onDrawHandsRevealed', { shootout: this.shootout }, () => {
             this.getPlayers().forEach(player => player.revealDrawHand());
-        });
-    }
-
-    placeOnBottomOfDeck(card, options = { allowSave: true }) {
-        this.applyGameAction('placeOnBottomOfDeck', card, card => {
-            card.owner.moveCard(card, 'draw deck', { allowSave: options.allowSave, bottom: true });
         });
     }
 

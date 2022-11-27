@@ -1,0 +1,32 @@
+# This is a workflow to publish to dev server
+
+name: CI Publish Dev
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "module.exports = {" > version.js
+          dateNow=$(date +"%Y-%m-%d")
+          echo "    releaseDate:'${dateNow}'," >> version.js
+          echo "    build:'${VERSION}-dev'" >> version.js
+          echo "}" >> version.js  
+      - name: Trigger deploy workflow in townsquare-client
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: townteki
+          repo: townsquare-client
+          github_token: ${{ secrets.MMELDO_PAT }}
+          github_user: mmeldo
+          workflow_file_name: deploy-dev.yml
+          ref: development
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true

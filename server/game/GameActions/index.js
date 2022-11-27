@@ -48,7 +48,6 @@ const GameActions = {
      * 
      * @param {*} props properties:
      *  - `card`: card to be aced
-     *  - `allowSave` (true): (to be added)
      *  - `source`: source location of the card to be aced
      */
     aceCard: props => new AbilityAdapter(AceCard, props),
@@ -83,7 +82,6 @@ const GameActions = {
      * 
      * @param {*} props properties:
      *  - `card`: card to be discarded
-     *  - `allowSave` (true): (to be added)
      *  - `source`: source location of the card to be discarded
      */
     discardCard: props => new AbilityAdapter(DiscardCard, props),

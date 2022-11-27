@@ -49,7 +49,11 @@ class PutIntoPlayCardAction extends BaseAbility {
             player.addCostReducer(this.costReducer);
         }
         context.targetParent = this.properties.targetParent;
-        return super.resolveCosts(context);
+        let resolvedCosts = super.resolveCosts(context);
+        if(resolvedCosts.some(resolvedCost => !resolvedCost.value)) {
+            player.removeCostReducer(this.costReducer);
+        }
+        return resolvedCosts;
     }
 
     executeHandler(context) {

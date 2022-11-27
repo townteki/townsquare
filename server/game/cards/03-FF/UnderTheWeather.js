@@ -13,7 +13,7 @@ class UnderTheWeather extends ActionCard {
                 cardType: ['dude']
             },
             handler: context => {
-                const health = context.target.getGrit();
+                const health = context.target.getGrit(context);
                 context.player.pull((pulledCard, pulledValue) => {
                     if(pulledValue >= health) {
                         this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);

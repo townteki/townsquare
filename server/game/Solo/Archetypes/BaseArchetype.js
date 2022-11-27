@@ -193,10 +193,10 @@ class BaseArchetype {
     static handleCasualty(type, casualty, resolutions, casualtyContext) {
         let maxCoveredNum = casualty.coversCasualties('any');
         let coveredNum = casualty.coversCasualties(type);
-        if((casualtyContext.maxCasualties - (maxCoveredNum - coveredNum)) < casualtyContext.currentCasualties) {
+        if((casualtyContext.maxPossibleCasualties - (maxCoveredNum - coveredNum)) < casualtyContext.currentCasualtiesNum) {
             return resolutions;
         }
-        if(casualtyContext.currentCasualties - coveredNum >= 0) {
+        if(casualtyContext.currentCasualtiesNum - coveredNum >= 0) {
             casualtyContext.currentCasualtiesNum -= coveredNum;
             casualtyContext.availableVictims = casualtyContext.availableVictims.filter(victim => victim !== casualty);
             resolutions.push({

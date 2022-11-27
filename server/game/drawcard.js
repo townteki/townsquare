@@ -1,5 +1,6 @@
 const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
+const { ShootoutStatuses } = require('./Constants/index.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
@@ -19,6 +20,7 @@ class DrawCard extends BaseCard {
         this.currentUpkeep = this.cardData.upkeep;
         this.permanentControl = 0;
         this.permanentUpkeep = 0;
+        this.shootoutStatus = ShootoutStatuses.None;
         if(!this.hasKeyword('rowdy')) {
             this.controlDeterminator = 'influence:deed';
         } else {
@@ -131,6 +133,7 @@ class DrawCard extends BaseCard {
         clone.booted = this.booted;
         clone.parent = this.parent;
         clone.options = this.options;
+        clone.shootoutStatus = this.shootoutStatus;
 
         return clone;
     }
@@ -262,7 +265,7 @@ class DrawCard extends BaseCard {
             targetController: 'any',
             effect: properties.effect,
             recalculateWhen: properties.recalculateWhen,
-            fromTrait: properties.fromTrait
+            fromTrait: properties.fromTrait === undefined ? true : properties.fromTrait
         });
     }
 
@@ -270,7 +273,7 @@ class DrawCard extends BaseCard {
         super.clearBlank(type);
         this.attachments.forEach(attachment => {
             if(!attachment.canAttach(this.controller, this)) {
-                this.controller.discardCard(attachment, false);
+                this.controller.discardCard(attachment);
             }
         });
     }
@@ -530,7 +533,8 @@ class DrawCard extends BaseCard {
                 return attachment.getSummary(activePlayer);
             }),
             booted: this.booted,
-            control: this.control
+            control: this.control,
+            shootoutStatus: this.shootoutStatus
         };
 
         if(baseSummary.facedown) {

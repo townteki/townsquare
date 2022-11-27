@@ -8,7 +8,7 @@ class AceCost {
     }
 
     pay(cards, context) {
-        context.player.aceCards(cards, { allowSave: false });
+        context.player.aceCards(cards);
     }
 }
 

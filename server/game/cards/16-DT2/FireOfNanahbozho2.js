@@ -44,7 +44,7 @@ class FireOfNanahbozho2 extends SpellCard {
     }
 
     isAffectedByFire(card) {
-        const effects = this.game.effectEngine.getAppliedEffectsOnCard(card);
+        const effects = this.game.effectEngine.getAppliedEffectsOnTarget(card);
         return effects && effects.some(effect => effect.source && ['25257', '10033'].includes(effect.source.code));
     }
 }

@@ -8,6 +8,7 @@ coverage
 nodeconfig.js
 server/events.txt
 server/logs/*.gz
+server/logs/*.json
 features/conf/*
 testoutput/*
 dist/*

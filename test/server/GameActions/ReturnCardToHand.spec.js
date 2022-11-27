@@ -5,7 +5,7 @@ describe('ReturnCardToHand', function() {
         this.playerSpy = jasmine.createSpyObj('player', ['moveCard']);
         this.cardSpy = jasmine.createSpyObj('card', ['allowGameAction', 'createSnapshot']);
         this.cardSpy.controller = this.playerSpy;
-        this.props = { card: this.cardSpy, allowSave: true };
+        this.props = { card: this.cardSpy };
     });
 
     describe('allow()', function() {
@@ -44,7 +44,6 @@ describe('ReturnCardToHand', function() {
         it('creates a onCardReturnedToHand event', function() {
             expect(this.event.name).toBe('onCardReturnedToHand');
             expect(this.event.card).toBe(this.cardSpy);
-            expect(this.event.allowSave).toBe(true);
         });
 
         describe('the event handler', function() {
@@ -58,7 +57,7 @@ describe('ReturnCardToHand', function() {
             });
 
             it('moves the card to hand', function() {
-                expect(this.playerSpy.moveCard).toHaveBeenCalledWith(this.cardSpy, 'hand', { allowSave: true });
+                expect(this.playerSpy.moveCard).toHaveBeenCalledWith(this.cardSpy, 'hand', {});
             });
         });
     });

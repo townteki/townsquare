@@ -21,7 +21,7 @@ class CookinUpTrouble extends ActionCard {
                     title: lookAtHandTitle,
                     numToShow: context.player.getOpponent().hand.length,
                     condition: card => this.tracker.eventHappened() && this.checkIfValidForTrouble(card),
-                    onSelect: (player, cards) => player.discardCards(cards, false, () => 
+                    onSelect: (player, cards) => player.discardCards(cards, () => 
                         context.game.addMessage('{0} uses {1} to look at opponent\' hand and discard {2}', player, this, cards), {}, context),
                     onCancel: player => {
                         if(this.tracker.eventHappened()) {
