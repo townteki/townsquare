@@ -9,7 +9,12 @@ class TheSloaneGang extends OutfitCard {
             cost: ability.costs.bootSelf(),        
             target: {
                 activePromptTitle: 'Select dude in Town Square',
-                cardCondition: { location: 'play area', condition: card => this.game.isTownSquare(card.gamelocation) && !card.booted },
+                cardCondition: {
+                    location: 'play area',
+                    controller: 'current',
+                    booted: false,
+                    condition: card => this.game.isTownSquare(card.gamelocation)
+                },
                 cardType: 'dude',
                 gameAction: 'boot'
             },
