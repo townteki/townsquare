@@ -20,14 +20,14 @@ class Malison extends SpellCard {
                 if(context.target.isStud()) {
                     this.applyAbilityEffect(context.ability, ability => ({
                         condition: () => context.target.isParticipating(),
-                        match: this.controller,
+                        match: player => player.equals(this.controller),
                         effect: ability.effects.modifyPosseStudBonus(1)
                     }));
                     this.game.addMessage('{0} uses {1} to give their posse +1 stud bonus', context.player, this);
                 } else {
                     this.applyAbilityEffect(context.ability, ability => ({
                         condition: () => context.target.isParticipating(),
-                        match: this.controller,
+                        match: player => player.equals(this.controller),
                         effect: ability.effects.modifyPosseDrawBonus(1)
                     }));
                     this.game.addMessage('{0} uses {1} to give their posse +1 draw bonus', context.player, this);            

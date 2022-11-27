@@ -120,6 +120,7 @@ describe('Message', function() {
                         title: 'Funslinger Emtwo',
                         type_code: 'dude'
                     });
+                    this.cardUuid = card.uuid;
                     this.message = new Message({
                         format: 'Player 1 plays {card}',
                         args: { card }
@@ -127,7 +128,7 @@ describe('Message', function() {
                 });
 
                 it('converts the card argument', function() {
-                    expect(this.message.flatten()).toEqual(['Player 1 plays ', { argType: 'card', code: '12345', label: 'Funslinger Emtwo', type: 'dude' }]);
+                    expect(this.message.flatten()).toEqual(['Player 1 plays ', { argType: 'card', code: '12345', title: 'Funslinger Emtwo', type: 'dude', uuid: this.cardUuid }]);
                 });
             });
 

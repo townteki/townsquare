@@ -14,7 +14,7 @@ class KevinWainwrightExp1 extends DudeCard {
                     location: 'play area', 
                     controller: 'any', 
                     condition: card => card.uuid !== this.gamelocation &&
-                        (!this.game.shootout || this.game.shootout.shootoutLocation.uuid === card.uuid) &&
+                        (!this.game.shootout || (this.game.shootout.shootoutLocation && this.game.shootout.shootoutLocation.uuid === card.uuid)) &&
                         this.game.getDudesAtLocation(card.uuid,
                             dude => dude.hasOneOfKeywords(['abomination', 'huckster'])).length
                 },

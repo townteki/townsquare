@@ -619,7 +619,7 @@ class BaseCard extends NullCard {
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
         if(menuCardActionItems.length > 0) {
-            let menuIcon = 'flash';
+            let menuIcon = 'cog';
             const disabled = menuCardActionItems.every(menuItem => menuItem.item.disabled);
             if(disabled) {
                 if(menuCardActionItems.length === 1) {
@@ -1156,7 +1156,8 @@ class BaseCard extends NullCard {
             }
             return facedownSummary;
         }
-        const effects = this.game.effectEngine.getAppliedEffectsOnCard(this).map(effect => effect.getSummary());
+        const effects = this.game.effectEngine.getAppliedEffectsOnTarget(this)
+            .filter(effect => effect.effect.title).map(effect => effect.getSummary());
 
         let state = {
             printedStats: {
@@ -1171,6 +1172,7 @@ class BaseCard extends NullCard {
                 production: this.cardData.production
             },
             bullets: this.bullets,
+            classType: 'card',
             code: this.cardData.code,
             cost: this.cardData.cost,
             controlled: this.owner !== this.controller,
