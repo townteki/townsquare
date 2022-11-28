@@ -33,6 +33,19 @@ describe('Effects.dynamicBullets', function() {
         });
     });
 
+    describe('reapply()', function() {
+        beforeEach(function() {
+            this.calculateMethod.and.returnValue(3);
+            this.effect.apply(this.card1, this.context);
+            this.calculateMethod.and.returnValue(4);
+            this.effect.reapply(this.card1, this.context);
+        });
+
+        it('should increase the bullets by the difference', function() {
+            expect(this.card1.modifyBullets).toHaveBeenCalledWith(1, true, true);
+        });
+    });
+
     describe('unapply()', function() {
         beforeEach(function() {
             this.calculateMethod.and.returnValue(3);

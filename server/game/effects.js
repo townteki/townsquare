@@ -199,6 +199,14 @@ function dynamicStatModifier(propName) {
                 this.title = `${propNameCapital} dynamically modified: ${value > 0 ? '+' : ''}${value}`;
                 card[functionName](value, true, true);
             },
+            reapply: function(card, context) {
+                let currentProperty = context[dynamicPropName][card.uuid];
+                let newProperty = calculate(card, context) || 0;
+                context[dynamicPropName][card.uuid] = newProperty;
+                let value = newProperty - currentProperty;
+                this.title = `${propNameCapital} dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
+                card[functionName](value, true, true);
+            },
             unapply: function(card, context) {
                 let value = context[dynamicPropName][card.uuid];
                 this.title = `${propNameCapital} dynamically modified`;
@@ -564,6 +572,14 @@ const Effects = {
                 this.title = `${type[0].toUpperCase() + type.slice(1)} rating dynamically modified: ${value > 0 ? '+' : ''}${value}`;
                 card.modifySkillRating(type, value);
             },
+            reapply: function(card, context) {
+                let currentProperty = context.dynamicSkillRating[card.uuid];
+                let newProperty = skillRatingFunc(card, context) || 0;
+                context.dynamicSkillRating[card.uuid] = newProperty;
+                let value = newProperty - currentProperty;
+                this.title = `${type[0].toUpperCase() + type.slice(1)} rating dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
+                card.modifySkillRating(type, value);
+            },
             unapply: function(card, context) {
                 let value = context.dynamicSkillRating[card.uuid];
                 card.modifySkillRating(type, -value, false);
@@ -679,6 +695,14 @@ const Effects = {
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
                 let value = context.dynamicHandRank[player.name];
                 this.title = `Hand Rank dynamically modified: ${value > 0 ? '+' : ''}${value}`;
+                player.modifyRank(value, context, true, true);
+            },
+            reapply: function(player, context) {
+                let currentProperty = context.dynamicHandRank[player.name];
+                let newProperty = calculate(player, context) || 0;
+                context.dynamicHandRank[player.name] = newProperty;
+                let value = newProperty - currentProperty;
+                this.title = `Hand Rank dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
                 player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
