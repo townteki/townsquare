@@ -204,7 +204,7 @@ function dynamicStatModifier(propName) {
                 let newProperty = calculate(card, context) || 0;
                 context[dynamicPropName][card.uuid] = newProperty;
                 let value = newProperty - currentProperty;
-                this.title = `${propNameCapital} dynamically modified: ${value > 0 ? '+' : ''}${value}`;
+                this.title = `${propNameCapital} dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
                 card[functionName](value, true, true);
             },
             unapply: function(card, context) {
@@ -577,7 +577,7 @@ const Effects = {
                 let newProperty = skillRatingFunc(card, context) || 0;
                 context.dynamicSkillRating[card.uuid] = newProperty;
                 let value = newProperty - currentProperty;
-                this.title = `${type[0].toUpperCase() + type.slice(1)} rating dynamically modified: ${value > 0 ? '+' : ''}${value}`;
+                this.title = `${type[0].toUpperCase() + type.slice(1)} rating dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
                 card.modifySkillRating(type, value);
             },
             unapply: function(card, context) {
@@ -615,10 +615,18 @@ const Effects = {
     productionToBeReceivedBy: function(player) {
         const isStateDependent = (typeof player === 'function');
         return {
-            title: `Production to be received by: ${player.name}`,
+            title: 'Production receiver is decided dynamically',
             apply: function(card) {
                 if(card.getType() === 'deed') {
-                    card.productionToBeReceivedBy = isStateDependent ? player() : player;
+                    if(isStateDependent) {
+                        card.productionToBeReceivedBy = player();
+                        if(card.productionToBeReceivedBy) {
+                            this.title = `Production to be received by: ${card.productionToBeReceivedBy.name}`;
+                        }
+                    } else {
+                        card.productionToBeReceivedBy = player;
+                        this.title = `Production to be received by: ${player.name}`;
+                    }
                 }
             },
             unapply: function(card) {
@@ -694,7 +702,7 @@ const Effects = {
                 let newProperty = calculate(player, context) || 0;
                 context.dynamicHandRank[player.name] = newProperty;
                 let value = newProperty - currentProperty;
-                this.title = `Hand Rank dynamically modified: ${value > 0 ? '+' : ''}${value}`;
+                this.title = `Hand Rank dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
                 player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
