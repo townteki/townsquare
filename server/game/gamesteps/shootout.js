@@ -155,8 +155,8 @@ class Shootout extends Phase {
         if(this.leaderPosse) {
             this.leaderPosse.resetForTheRound();
         }
-        if(this.markPosse) {
-            this.markPosse.resetForTheRound();
+        if(this.opposingPosse) {
+            this.opposingPosse.resetForTheRound();
         }
     }
 
@@ -572,7 +572,9 @@ class Shootout extends Phase {
                 studBonus: posse ? posse.getStudBonus() : 0,
                 drawBonus: posse ? posse.getDrawBonus() : 0,
                 handRank: player.getTotalRank(),
-                casualties: player.casualties
+                baseHandRank: player.getHandRank().rank,
+                casualties: player.casualties,
+                cheatinResNum: player.getOpponent().isCheatin() ? player.maxAllowedCheatin - player.numCheatinPlayed : 0
             };
         });
         const effects = this.game.effectEngine.getAppliedEffectsOnTarget(this)
