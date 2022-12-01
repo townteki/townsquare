@@ -32,6 +32,7 @@ class BioChargedNeutralizer2 extends GoodsCard {
                         activePromptTitle: 'Select a dude for trade',
                         waitingPromptTitle: 'Waiting for opponent to select dude',
                         cardCondition: card => card.location === 'play area' &&
+                            !card.equals(this.parent) &&
                             card.controller === this.controller &&
                             card.gamelocation === this.gamelocation,
                         cardType: 'dude',

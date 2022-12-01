@@ -26,7 +26,8 @@ class FireOfNanahbozho2 extends SpellCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'any', 
-                    condition: card => card.isNearby(this.gamelocation) 
+                    condition: card => card.isNearby(this.gamelocation) &&
+                        card.isAtDeed()
                 },
                 cardType: ['dude'],
                 gameAction: 'unboot'

@@ -17,7 +17,11 @@ class Enapay extends DudeCard {
             target: {
                 activePromptTitle: 'Choose a dude',
                 waitingPromptTitle: 'Waiting for opponent to choose a dude',
-                cardCondition: { location: 'play area', condition: card => card.gamelocation === this.gamelocation },
+                cardCondition: { 
+                    location: 'play area', 
+                    condition: card => !card.equals(this) &&
+                        card.gamelocation === this.gamelocation 
+                },
                 cardType: 'dude'
             },
             message: context => this.game.addMessage('{0} boots {1} to give {2} +1 influence', context.player, this, context.target),
