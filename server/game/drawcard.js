@@ -381,9 +381,9 @@ class DrawCard extends BaseCard {
 
     leavesPlay() {
         this.booted = false;
-        this.attachments.forEach(attachment => {
-            attachment.controller.moveCard(attachment, 'discard pile', { raiseEvents: false });
-        });
+        if(this.attachments.length) {
+            this.owner.discardCards(this.attachments, () => true, { isCardEffect: false });
+        }
         if(this.parent) {
             this.parent.removeAttachment(this);
         }
