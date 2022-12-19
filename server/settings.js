@@ -1,7 +1,8 @@
 const defaultSettings = {
     windowTimer: 10,
     background: 'BG1',
-    cardSize: 'normal'
+    cardSize: 'normal',
+    showBgTexture: true
 };
 
 const defaultTimerSettings = {
