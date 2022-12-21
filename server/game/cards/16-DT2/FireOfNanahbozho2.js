@@ -26,7 +26,8 @@ class FireOfNanahbozho2 extends SpellCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'any', 
-                    condition: card => card.isNearby(this.gamelocation) 
+                    condition: card => card.isNearby(this.gamelocation) &&
+                        card.isAtDeed()
                 },
                 cardType: ['dude'],
                 gameAction: 'unboot'
@@ -44,7 +45,7 @@ class FireOfNanahbozho2 extends SpellCard {
     }
 
     isAffectedByFire(card) {
-        const effects = this.game.effectEngine.getAppliedEffectsOnCard(card);
+        const effects = this.game.effectEngine.getAppliedEffectsOnTarget(card);
         return effects && effects.some(effect => effect.source && ['25257', '10033'].includes(effect.source.code));
     }
 }

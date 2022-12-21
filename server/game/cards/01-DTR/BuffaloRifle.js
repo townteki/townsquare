@@ -5,8 +5,7 @@ class BuffaloRifle extends GoodsCard {
         this.traitReaction({
             when: {
                 onDudeJoiningPosse: event => 
-                    event.card === this.parent &&
-                    this.game.shootout.shootoutLocation.isAdjacent(this.gamelocation)
+                    event.card === this.parent && this.game.getShootoutGameLocation().isAdjacent(this.gamelocation)
             },
             handler: context => {
                 context.game.promptForYesNo(context.player, {

@@ -14,7 +14,7 @@ class KevinWainwrightExp1 extends DudeCard {
                     location: 'play area', 
                     controller: 'any', 
                     condition: card => card.uuid !== this.gamelocation &&
-                        (!this.game.shootout || this.game.shootout.shootoutLocation.uuid === card.uuid) &&
+                        (!this.game.shootout || (this.game.shootout.shootoutLocation && this.game.shootout.shootoutLocation.uuid === card.uuid)) &&
                         this.game.getDudesAtLocation(card.uuid,
                             dude => dude.hasOneOfKeywords(['abomination', 'huckster'])).length
                 },
@@ -46,7 +46,7 @@ class KevinWainwrightExp1 extends DudeCard {
                     }));
                     this.game.addMessage(actionText + ' and make him a stud', context.player, this, this.locationCard);
                     if(this.game.getNumberOfPlayers() > 1 && 
-                        context.player.getOpponent().getDudesAtLocation(this.gamelocation, dude => dude.getGrit() >= 11).length) {
+                        context.player.getOpponent().getDudesAtLocation(this.gamelocation, dude => dude.getGrit(context) >= 11).length) {
                         context.player.drawCardsToHand(2, context);
                         this.game.addMessage('{0} uses {1} to draw 2 cards', context.player, this);
                     }

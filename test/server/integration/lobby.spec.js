@@ -3,7 +3,8 @@ const Lobby = require('../../../server/lobby.js');
 describe('lobby', function() {
     beforeEach(function() {
         this.socketSpy = jasmine.createSpyObj('socket', ['joinChannel', 'send']);
-        this.ioSpy = jasmine.createSpyObj('io', ['set', 'use', 'on', 'emit']);
+        this.ioSpy = jasmine.createSpyObj('io', ['use', 'on', 'emit']);
+        this.ioSpy.eio = {};
         this.routerSpy = jasmine.createSpyObj('router', ['on']);
         this.userSpy = jasmine.createSpyObj('User', ['getDetails', 'hasUserBlocked']);
         this.userSpy.username = 'test';

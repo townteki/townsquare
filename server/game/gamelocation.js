@@ -1,15 +1,15 @@
 const _ = require('underscore');
-const { TownSquareUUID } = require('./Constants');
-const NullCard = require('./nullcard');
+const NullLocation = require('./nulllocation');
+const TownsquareCard = require('./townsquarecard');
 
 /**
  * Base class representing a location on the game board.
  */
-class GameLocation {
+class GameLocation extends NullLocation {
     constructor(game, locationCard, neighbourLocation, order) {
+        super();
         this.game = game;
         this.card = locationCard;
-        this.adjacencyMap = new Map();
         /*Keeps track of location order on player street
           for flexbox order parameter info
           0 === outfit (on street) or townsquare
@@ -27,7 +27,6 @@ class GameLocation {
             locationCard.defaultAdjacencyEffects.forEach(adjacencyEffect =>
                 this.addAdjacency(adjacencyEffect.location, adjacencyEffect.source, adjacencyEffect.type));
         }
-        this.occupants = [];
         locationCard.gameLocationObject = this;
     }
 
@@ -41,6 +40,10 @@ class GameLocation {
 
     get uuid() {
         return this.locationCard.uuid;
+    }
+
+    get title() {
+        return this.locationCard ? this.locationCard.title : '';
     }
 
     determineController() {
@@ -172,35 +175,7 @@ class GameLocation {
  */
 class TownSquare extends GameLocation {
     constructor(game) {
-        // TODO M2 probably will have to create town square card since it is possible to
-        // attach to town square
-        super(game, Object.assign(new NullCard(), {
-            title: 'Town Square',
-            uuid: TownSquareUUID,
-            getType: () => 'townsquare',
-            location: 'play area',
-            getGameLocation: () => this,
-            gamelocation: 'townsquare',
-            allowGameAction: () => true,
-            isAdjacent: (targetUuid) => this.isAdjacent(targetUuid),
-            isNearby: (targetUuid) => this.gamelocation === targetUuid || this.isAdjacent(targetUuid),
-            isOutOfTown: () => false,
-            isPublic: () => true,
-            isPrivate: () => false,
-            hasKeyword: () => false,
-            hasAttachment: () => false,
-            hasAttachmentWithKeywords: () => false,
-            adjacentLocations: () => 
-                this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid)).map(card => card.getGameLocation()),
-            getShortSummary: () => {
-                return {
-                    code: 'townsquare',
-                    title: 'Town Square',
-                    type: 'townsquare'
-                };
-            }
-        }), null, null);
-
+        super(game, new TownsquareCard(game), null, null);
         this.key = 'townsquare';
     }
 

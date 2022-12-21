@@ -10,7 +10,7 @@ class ZebWhateleyDupont extends DudeCard {
         });
 
         this.persistentEffect({
-            condition: () => this.controller.getFaction() === Factions.Fearmongers && this.opposingHighGritDude(),
+            condition: context => this.controller.getFaction() === Factions.Fearmongers && this.opposingHighGritDude(context),
             match: this,
             effect: [
                 ability.effects.setMinBullets(2),
@@ -19,7 +19,7 @@ class ZebWhateleyDupont extends DudeCard {
         });
     }
 
-    opposingHighGritDude() {
+    opposingHighGritDude(context) {
         if(!this.game.shootout) {
             return false;
         }
@@ -27,7 +27,7 @@ class ZebWhateleyDupont extends DudeCard {
         if(!opposingPosse) {
             return false;
         }
-        return opposingPosse.getDudes(dude => dude.getGrit() >= 11).length;
+        return opposingPosse.getDudes(dude => dude.getGrit(context) >= 11).length;
     }
 }
 

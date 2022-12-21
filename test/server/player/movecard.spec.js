@@ -4,7 +4,7 @@ const DrawCard = require('../../../server/game/drawcard.js');
 describe('Player', function() {
     describe('moveCard', function() {
         beforeEach(function() {
-            this.gameSpy = jasmine.createSpyObj('game', ['raiseEvent', 'on']);
+            this.gameSpy = jasmine.createSpyObj('game', ['raiseEvent', 'on', 'resolveGameAction']);
             this.player = new Player('1', {username: 'Player 1', settings: {}}, true, this.gameSpy);
             this.player.addOutfitToTown = jasmine.createSpy('addOutfitToTown');
             this.player.addOutfitToTown.and.callFake(function() {});
@@ -97,13 +97,13 @@ describe('Player', function() {
                     this.attachment.parent = this.card;
                     this.attachment.location = 'play area';
                     this.card.attachments.push(this.attachment);
-                    spyOn(this.card, 'removeAttachment');
+                    spyOn(this.player, 'discardCards');
 
                     this.player.moveCard(this.card, 'hand');
                 });
 
-                it('should remove the attachments', function() {
-                    expect(this.card.removeAttachment).toHaveBeenCalledWith(this.attachment);
+                it('should discard the attachments', function() {
+                    expect(this.player.discardCards).toHaveBeenCalledWith(this.card.attachments, jasmine.any(Function), jasmine.any(Object));
                 });
             });
 

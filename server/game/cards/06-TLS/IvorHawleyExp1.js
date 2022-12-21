@@ -39,9 +39,8 @@ class IvorHawleyExp1 extends DudeCard {
     }
 
     getNumOfAboms() {
-        const cardsInPlayAndBH = this.controller.cardsInPlay.concat(this.controller.deadPile);
-        return cardsInPlayAndBH.reduce((num, card) => {
-            if(card.hasKeyword('abomination')) {
+        return this.game.allCards.reduce((num, card) => {
+            if(['play area', 'dead pile'].includes(card.location) && card.hasKeyword('abomination')) {
                 return num + 1;
             }
             return num;

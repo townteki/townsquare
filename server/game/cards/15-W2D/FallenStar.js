@@ -15,14 +15,14 @@ class FallenStar extends ActionCard {
                         selection.value.getType() === 'dude' &&
                         selection.value.controller === this.controller
                     )) || 
-                    (event.cards && event.cards.some(card => card.getType() === 'dude')))
+                    (this.someMatchesCondition(event.cards, card => card.getType() === 'dude')))
             },
             targets: {
                 original: {
                     activePromptTitle: 'Select dude that was targeted',  
                     cardCondition: (card, context) => {
                         if(context.event.cards) {
-                            return context.event.cards.includes(card);
+                            return this.someMatchesCondition(context.event.cards, eventCard => eventCard.equals(card));
                         }
                         return context.event.targets.getTargets().includes(card);
                     },
@@ -47,8 +47,12 @@ class FallenStar extends ActionCard {
                         savedEventHandler(event);
                     }
                     if(event.cards) {
-                        let index = event.cards.indexOf(context.targets.original);
-                        event.cards[index] = context.targets.redirect;
+                        if(Array.isArray(event.cards)) {
+                            let index = event.cards.indexOf(context.targets.original);
+                            event.cards[index] = context.targets.redirect;
+                        } else {
+                            event.cards = context.targets.redirect;
+                        }
                         event.properties.onSelect(context.player, event.cards);
                     }
                 });                                    
@@ -62,7 +66,8 @@ class FallenStar extends ActionCard {
         }
         if(context.event.cards) {
             const selector = context.event.properties.selector || CardSelector.for(context.event.properties);
-            return !context.event.cards.includes(card) && selector.canTarget(card, context);
+            return !this.someMatchesCondition(context.event.cards, eventCard => eventCard.equals(card)) && 
+                selector.canTarget(card, context);
         }
         const targets = context.event.targets.getTargets();
         const selection = context.event.targets.selections.find(selection => selection.value === targets[0]);
@@ -72,6 +77,14 @@ class FallenStar extends ActionCard {
             card.controller === this.controller &&
             card.getType() === 'dude'
         );
+    }
+
+    someMatchesCondition(card, condition) {
+        let tempCards = card;
+        if(!Array.isArray(tempCards)) {
+            tempCards = [tempCards];
+        }
+        return tempCards.some(card => condition(card));
     }
 }
 

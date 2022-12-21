@@ -7,10 +7,9 @@ class ShaneGravesSecurity extends DeedCard {
             title: 'Shane & Graves Security',
             playType: ['shootout:join'],
             cost: ability.costs.bootSelf(),
-            condition: () => this.game.shootout &&
-                this.game.getShootoutLocationCard().getType() === 'deed' &&
+            condition: () => this.game.getShootoutLocationCard().getType() === 'deed' &&
                 (this.game.getShootoutLocationCard() === this ||
-                this.game.shootout.shootoutLocation.isAdjacent(this.uuid)),
+                this.game.getShootoutGameLocation().isAdjacent(this.uuid)),
             handler: context => {
                 let token = context.player.placeToken('Gunslinger', this.game.shootout.shootoutLocation.uuid);
                 this.game.resolveGameAction(GameActions.joinPosse({ card: token, moveToPosse: false }), context);

@@ -55,27 +55,22 @@ class GameServer {
         server.listen(process.env.PORT || config.socketioPort);
 
         var options = {
-            perMessageDeflate: false
+            perMessageDeflate: false,
+            cors: {
+                origin: true,
+                methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+            }
         };
 
         if(process.env.NODE_ENV !== 'production') {
             options.path = '/' + (process.env.SERVER || config.nodeIdentity) + '/socket.io';
+        } else {
+            options.cors.origin = [/^http(s)?:\/\/(www\.)?doomtown\.online(:)?.*/, /^http(s)?:\/\/dev\.doomtown\.us:.*/];
         }
-
-        // ignore CORS 
-        // @link https://socket.io/docs/v2/handling-cors/
-        // TODO update is to it is not disabled completely if possible
-        options.allowRequest = (req, callback) => {
-            callback(null, true);
-        };
 
         this.io = socketio(server, options);
-        this.io.set('heartbeat timeout', 30000);
+        this.io.eio.pingTimeout = 30000;
         this.io.use(this.handshake.bind(this));
-
-        if(process.env.NODE_ENV === 'production') {
-            this.io.set('origins', 'http://www.doomtown.online:* https://www.doomtown.online:* http://dev.doomtown.us:* https://dev.doomtown.us:*');
-        }
 
         this.io.on('connection', this.onConnection.bind(this));
 

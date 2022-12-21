@@ -104,19 +104,6 @@ function shootoutRestrictionEffect(restrictions, title) {
     }; 
 }
 
-function losesAspectEffect(aspect) {
-    return function() {
-        return {
-            apply: function(card) {
-                card.loseAspect(aspect);
-            },
-            unapply: function(card) {
-                card.restoreAspect(aspect);
-            }
-        };
-    };
-}
-
 function optionEffect(key, title) {
     return function(source, condition) {
         return {
@@ -149,6 +136,8 @@ function playerOptionEffect(key, title) {
 function adjacency(type) {
     return function(location, source) {
         return {
+            title: type === 'adjacent' ? `Added adjacency to ${location.title}` :
+                `Prevented adjacency to ${location.title}`,
             apply: function(card) {
                 if(card.isLocationCard()) {
                     card.addAdjacencyLocation(location, source, type);
@@ -164,6 +153,7 @@ function adjacency(type) {
 function conditionalAdjacency(type) {
     return function (condition, source) {
         return {
+            title: type === 'adjacent' ? 'Added conditional adjacency' : 'Prevented conditional adjacency',
             apply: function(card, context) {
                 if(!card.isLocationCard()) {
                     return;
@@ -206,7 +196,7 @@ function dynamicStatModifier(propName) {
                 context[dynamicPropName] = context[dynamicPropName] || {};
                 context[dynamicPropName][card.uuid] = calculate(card, context) || 0;
                 let value = context[dynamicPropName][card.uuid];
-                this.title = `${propNameCapital} modified: ${value}`;
+                this.title = `${propNameCapital} dynamically modified: ${value > 0 ? '+' : ''}${value}`;
                 card[functionName](value, true, true);
             },
             reapply: function(card, context) {
@@ -214,10 +204,12 @@ function dynamicStatModifier(propName) {
                 let newProperty = calculate(card, context) || 0;
                 context[dynamicPropName][card.uuid] = newProperty;
                 let value = newProperty - currentProperty;
+                this.title = `${propNameCapital} dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
                 card[functionName](value, true, true);
             },
             unapply: function(card, context) {
                 let value = context[dynamicPropName][card.uuid];
+                this.title = `${propNameCapital} dynamically modified`;
                 card[functionName](-value, false, true);
                 delete context[dynamicPropName][card.uuid];
             },
@@ -229,7 +221,7 @@ function dynamicStatModifier(propName) {
 const Effects = {
     setAsStud: function() {
         return {
-            title: 'Stud bullet modifier',
+            title: 'Make Dude a Stud',
             gameAction: 'setAsStud',
             apply: function(card, context) {
                 if(card.getType() === 'dude') {
@@ -248,7 +240,7 @@ const Effects = {
     },
     setAsDraw: function() {
         return {
-            title: 'Draw bullet modifier',
+            title: 'Make Dude a Draw',
             gameAction: 'setAsDraw',
             apply: function(card, context) {
                 if(card.getType() === 'dude') {
@@ -267,7 +259,7 @@ const Effects = {
     },
     setMaxBullets: function(value) {
         return {
-            title: `Set Max Bullets to ${value}`,
+            title: `Set max Bullets to ${value}`,
             apply: function(card, context) {
                 context.setMaxBullets = context.setMaxBullets || {};
                 context.setMaxBullets[card.uuid] = card.maxBullets;
@@ -281,7 +273,7 @@ const Effects = {
     },
     setMinBullets: function(value) {
         return {
-            title: `Set Min Bullets to ${value}`,
+            title: `Set min Bullets to ${value}`,
             apply: function(card, context) {
                 context.setMinBullets = context.setMinBullets || {};
                 context.setMinBullets[card.uuid] = card.minBullets;
@@ -307,7 +299,7 @@ const Effects = {
     },
     setMaxInfByLocation: function(value) {
         return {
-            title: `Set Max Inf in Location to ${value}`,
+            title: `Set max Influence in location to ${value}`,
             targetType: 'player',
             apply: function(player, context) {
                 context.setMaxInfByLocation = context.setMaxInfByLocation || {};
@@ -322,7 +314,7 @@ const Effects = {
     },
     determineControlByBullets: function() {
         return {
-            title: 'Control Determinator: Bullets',
+            title: 'Determine control by Bullets',
             apply: function(card, context) {
                 context.controlDeterminator = context.controlDeterminator || {};
                 context.controlDeterminator[card.uuid] = card.controlDeterminator;
@@ -336,7 +328,7 @@ const Effects = {
     }, 
     determineControlBySkill: function(skillName) {
         return {
-            title: `Control Determinator: Skill - ${skillName}`,
+            title: `Determine control by Skill - ${skillName}`,
             apply: function(card, context) {
                 context.controlDeterminator = context.controlDeterminator || {};
                 context.controlDeterminator[card.uuid] = card.controlDeterminator;
@@ -385,7 +377,7 @@ const Effects = {
     },
     modifyBullets: function(value) {
         return {
-            title: `Bullets modified: ${value}`,
+            title: `Bullets modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseBullets' : 'increaseBullets',
             apply: function(card) {
                 card.modifyBullets(value, true, true);
@@ -412,7 +404,7 @@ const Effects = {
     },
     modifyInfluence: function(value) {
         return {
-            title: `Influence modified: ${value}`,
+            title: `Influence modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
                 card.modifyInfluence(value, true, true);
@@ -439,7 +431,7 @@ const Effects = {
     },
     modifyDeedInfluence: function(value) {
         return {
-            title: `Deed Influence modified: ${value}`,
+            title: `Influence for Deed control modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseInfluence' : 'increaseInfluence',
             apply: function(card) {
                 card.modifyDeedInfluence(value, true);
@@ -451,7 +443,7 @@ const Effects = {
     },
     modifyControl: function(value) {
         return {
-            title: `Control modified: ${value}`,
+            title: `Control modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseControl' : 'increaseControl',
             apply: function(card) {
                 card.modifyControl(value, true, true);
@@ -478,7 +470,7 @@ const Effects = {
     },
     modifyValue: function(value) {
         return {
-            title: `Value modified: ${value}`,
+            title: `Value modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseValue' : 'increaseValue',
             apply: function(card) {
                 card.modifyValue(value, true, true);
@@ -505,7 +497,7 @@ const Effects = {
     },
     modifyProduction: function(value) {
         return {
-            title: `Production modified: ${value}`,
+            title: `Production modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseProduction' : 'increaseProduction',
             apply: function(card) {
                 card.modifyProduction(value, true, true);
@@ -534,7 +526,7 @@ const Effects = {
 
     modifyUpkeep: function(value) {
         return {
-            title: `Upkeep modified: ${value}`,
+            title: `Upkeep modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseUpkeep' : 'increaseUpkeep',
             apply: function(card) {
                 card.modifyUpkeep(value, true, true);
@@ -546,7 +538,7 @@ const Effects = {
     },
     modifySkillRating: function(type, value) {
         return {
-            title: `Skill Rating modified: ${value}`,
+            title: `Skill Rating modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseSkill' + type : 'increaseSkill' + type,
             apply: function(card) {
                 if(type === 'anySkill') {
@@ -577,6 +569,7 @@ const Effects = {
                 context.dynamicSkillRating = context.dynamicSkillRating || {};
                 context.dynamicSkillRating[card.uuid] = skillRatingFunc(card, context) || 0;
                 let value = context.dynamicSkillRating[card.uuid];
+                this.title = `${type[0].toUpperCase() + type.slice(1)} rating dynamically modified: ${value > 0 ? '+' : ''}${value}`;
                 card.modifySkillRating(type, value);
             },
             reapply: function(card, context) {
@@ -584,11 +577,13 @@ const Effects = {
                 let newProperty = skillRatingFunc(card, context) || 0;
                 context.dynamicSkillRating[card.uuid] = newProperty;
                 let value = newProperty - currentProperty;
+                this.title = `${type[0].toUpperCase() + type.slice(1)} rating dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
                 card.modifySkillRating(type, value);
             },
             unapply: function(card, context) {
                 let value = context.dynamicSkillRating[card.uuid];
                 card.modifySkillRating(type, -value, false);
+                this.title = `${type[0].toUpperCase() + type.slice(1)} rating dynamically modified`;
                 delete context.dynamicSkillRating[card.uuid];
             },
             isStateDependent: true
@@ -596,7 +591,7 @@ const Effects = {
     },
     modifyDifficulty: function(value) {
         return {
-            title: `Difficulty modified: ${value}`,
+            title: `Difficulty modified: ${value > 0 ? '+' : ''}${value}`,
             gameAction: value < 0 ? 'decreaseDifficulty' : 'increaseDifficulty',
             apply: function(card) {
                 card.difficultyMod += value;
@@ -608,7 +603,7 @@ const Effects = {
     },    
     modifyPlayerControl: function(value) {
         return {
-            title: `Player Control modified: ${value}`,
+            title: `Player Control modified: ${value > 0 ? '+' : ''}${value}`,
             apply: function(player) {
                 player.control += value;
             },
@@ -620,10 +615,18 @@ const Effects = {
     productionToBeReceivedBy: function(player) {
         const isStateDependent = (typeof player === 'function');
         return {
-            title: `Production to be received by: ${player.name}`,
+            title: 'Production receiver is decided dynamically',
             apply: function(card) {
                 if(card.getType() === 'deed') {
-                    card.productionToBeReceivedBy = isStateDependent ? player() : player;
+                    if(isStateDependent) {
+                        card.productionToBeReceivedBy = player();
+                        if(card.productionToBeReceivedBy) {
+                            this.title = `Production to be received by: ${card.productionToBeReceivedBy.name}`;
+                        }
+                    } else {
+                        card.productionToBeReceivedBy = player;
+                        this.title = `Production to be received by: ${player.name}`;
+                    }
                 }
             },
             unapply: function(card) {
@@ -644,7 +647,7 @@ const Effects = {
     dynamicUpkeep: dynamicStatModifier('upkeep'),
     modifyHandSize: function(value) {
         return {
-            title: `Hand Size modified: ${value}`,
+            title: `Hand Size modified: ${value > 0 ? '+' : ''}${value}`,
             targetType: 'player',
             apply: function(player) {
                 player.handSize += value;
@@ -656,7 +659,7 @@ const Effects = {
     },
     modifyNightfallDiscard: function(value) {
         return {
-            title: `Nightfall Discard modified: ${value}`,
+            title: `Nightfall Discard modified: ${value > 0 ? '+' : ''}${value}`,
             targetType: 'player',
             apply: function(player) {
                 player.discardNumber += value;
@@ -668,7 +671,7 @@ const Effects = {
     },
     modifyHandRankMod: function(value) {
         return {
-            title: `Hand Rank modified: ${value}`,
+            title: `Hand Rank modified: ${value > 0 ? '+' : ''}${value}`,
             targetType: 'player',
             gameAction: 'modifyHandRank',
             apply: function(player, context) {
@@ -691,7 +694,7 @@ const Effects = {
                 context.dynamicHandRank = context.dynamicHandRank || {};
                 context.dynamicHandRank[player.name] = calculate(player, context) || 0;
                 let value = context.dynamicHandRank[player.name];
-                this.title = `Hand Rank modified: ${value}`;
+                this.title = `Hand Rank dynamically modified: ${value > 0 ? '+' : ''}${value}`;
                 player.modifyRank(value, context, true, true);
             },
             reapply: function(player, context) {
@@ -699,10 +702,12 @@ const Effects = {
                 let newProperty = calculate(player, context) || 0;
                 context.dynamicHandRank[player.name] = newProperty;
                 let value = newProperty - currentProperty;
+                this.title = `Hand Rank dynamically modified: ${newProperty > 0 ? '+' : ''}${newProperty}`;
                 player.modifyRank(value, context, true, true);
             },
             unapply: function(player, context) {
                 let value = context.dynamicHandRank[player.name];
+                this.title = 'Hand Rank dynamically modified';
                 player.modifyRank(-value, context, false, true);
                 delete context.dynamicHandRank[player.name];
             },
@@ -773,7 +778,6 @@ const Effects = {
             }
         };
     },
-    losesAllKeywords: losesAspectEffect('keywords'),
     addCardAction: function(properties) {
         return {
             title: `Card Action added: ${properties.title}`,
@@ -793,7 +797,7 @@ const Effects = {
     },
     addSkillKfBonus: function(bonus, source) {
         return {
-            title: 'Skill or KF bonus added',
+            title: 'Skill or Kung Fu bonus added',
             apply: function(card) {
                 if(card.getType() === 'dude') {
                     card.addSkillKfBonus(bonus, source);
@@ -1020,7 +1024,7 @@ const Effects = {
         playerOptionEffect('discardAllDuringNightfall', 'Discard all cards during Nightfall'),        
     modifyPosseStudBonus: function(amount) {
         return {
-            title: `Stud Bonus modified: ${amount}`,
+            title: `Stud Bonus modified: ${amount > 0 ? '+' : ''}${amount}`,
             targetType: 'player',
             apply: function(player) {
                 player.modifyPosseBonus(amount, 'stud');
@@ -1032,7 +1036,7 @@ const Effects = {
     },
     modifyPosseDrawBonus: function(amount) {
         return {
-            title: `Draw Bonus modified: ${amount}`,
+            title: `Draw Bonus modified: ${amount > 0 ? '+' : ''}${amount}`,
             targetType: 'player',
             apply: function(player) {
                 player.modifyPosseBonus(amount, 'draw');
@@ -1044,7 +1048,7 @@ const Effects = {
     },
     modifyPosseShooterBonus: function(amount) {
         return {
-            title: `Shooter Bonus modified: ${amount}`,
+            title: `Shooter Bonus modified: ${amount > 0 ? '+' : ''}${amount}`,
             targetType: 'player',
             apply: function(player) {
                 player.modifyPosseShooterBonus(amount);
@@ -1056,7 +1060,7 @@ const Effects = {
     },
     addRedrawBonus: function(amount) {
         return {
-            title: `Redraw Bonus modified: ${amount}`,
+            title: `Redraw Bonus modified: ${amount > 0 ? '+' : ''}${amount}`,
             targetType: 'player',
             apply: function(player) {
                 player.redrawBonus += amount;
@@ -1068,7 +1072,7 @@ const Effects = {
     },
     modifyLoserCasualties: function(amount) {
         return {
-            title: `Loser Casualties modified: ${amount}`,
+            title: `Loser Casualties modified: ${amount > 0 ? '+' : ''}${amount}`,
             targetType: 'shootout',
             apply: function(shootout) {
                 shootout.loserCasualtiesMod += amount;
@@ -1192,6 +1196,7 @@ const Effects = {
     changeWeaponLimitFunction: function(weaponLimitFunc) {
         var savedFunc;
         return {
+            title: 'Changes Weapon Limit',
             apply: function(card) {
                 savedFunc = card.checkWeaponLimit;
                 card.checkWeaponLimit = () => {
@@ -1205,6 +1210,7 @@ const Effects = {
     },
     setGritFunc: function(func) {
         return {
+            title: 'Changes Grit',
             apply: function(card, context) {
                 context.setGritFunc = context.setGritFunc || {};
                 context.setGritFunc[card.uuid] = card.gritFunc;
@@ -1219,6 +1225,7 @@ const Effects = {
     reduceCost: function(properties) {
         return {
             targetType: 'player',
+            title: `${properties.isIncrease ? 'Increase' : 'Reduce'} cost by ${properties.amount}`,
             apply: function(player, context) {
                 context.reducers = context.reducers || [];
                 var reducer = new CostReducer(context.game, context.source, properties);

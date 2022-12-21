@@ -25,6 +25,7 @@ class MagnumOpusTenebri extends GoodsCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'opponent', 
+                    participating: true,
                     condition: (card, context) => this.game.shootout &&
                         card.value < this.game.shootout.getPosseStat(context.player, 'bullets') 
                 },
@@ -33,7 +34,7 @@ class MagnumOpusTenebri extends GoodsCard {
             handler: context => {
                 const difference = this.game.shootout.getPosseStat(context.player, 'bullets') - context.target.value;
                 if(difference < 4) {
-                    this.game.shootout.sendHome(context.target, context, () => {
+                    this.game.shootout.sendHome(context.target, context).thenExecute(() => {
                         this.game.addMessage('{0} uses {1} and boots {2} to send {3} home booted', 
                             context.player, this, this.parent, context.target);
                     });
@@ -42,6 +43,7 @@ class MagnumOpusTenebri extends GoodsCard {
                         activePromptTitle: 'Select an Abomination to ace',
                         waitingPromptTitle: 'Waiting for opponent to select Abomination',
                         cardCondition: card => card.location === 'play area' &&
+                            card.controller.equals(context.player) &&
                             card.hasKeyword('abomination'),
                         cardType: 'dude',
                         gameAction: 'ace',
@@ -55,7 +57,7 @@ class MagnumOpusTenebri extends GoodsCard {
                             return true;
                         },
                         onCancel: player => {
-                            this.game.shootout.sendHome(context.target, context, () => {
+                            this.game.shootout.sendHome(context.target, context).thenExecute(() => {
                                 this.game.addMessage('{0} uses {1} and boots {2} to send {3} home booted', 
                                     player, this, this.parent, context.target);
                             });

@@ -45,7 +45,7 @@ class Sentinel extends SpellCard {
                                 this.game.resolveGameAction(GameActions.discardCard({ card: this }), context).thenExecute(() => {
                                     parent.modifyControl(1);
                                     this.game.addMessage('{0} discards {1} to give {2} +1 CP', 
-                                        player, this, this.parent);
+                                        player, this, parent);
                                 });
                             },
                             source: this

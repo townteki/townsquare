@@ -5,7 +5,7 @@ class Fort51 extends OutfitCard {
     setupCardAbilities(ability) {
         this.reaction({
             when: {
-                onGadgetInvented: event => (event.gadget.hasKeyword('Weapon') || event.gadget.getType() === 'dude') && event.player === this.controller
+                onGadgetInvented: event => (event.gadget.hasKeyword('Weapon') || event.gadget.getType() === 'dude') && this.controller.equals(event.context.player)
             },
             handler: context => {
                 context.ability.selectAnotherTarget(context.player, context, {

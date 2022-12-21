@@ -31,7 +31,7 @@ class Raven extends LegendCard {
             handler: context => {
                 this.untilEndOfRound(context.ability, ability => ({
                     condition: () => this.game.shootout &&
-                        context.target.equals(this.game.shootout.shootoutLocation.locationCard),
+                        context.target.equals(this.game.getShootoutLocationCard()),
                     match: context.player,
                     effect: ability.effects.modifyPosseShooterBonus(2)
                 }));

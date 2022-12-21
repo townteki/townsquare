@@ -1,6 +1,7 @@
 class ParentCost {
     constructor(action) {
         this.action = action;
+        this.name = 'parent' + this.action.name;
     }
 
     canPay(context) {
@@ -8,7 +9,7 @@ class ParentCost {
     }
 
     resolve(context, result = { resolved: false }) {
-        context.addCost(this.action.name, context.source.parent);
+        context.addCost(this.name, context.source.parent);
 
         result.resolved = true;
         result.value = context.source.parent;
@@ -16,7 +17,7 @@ class ParentCost {
     }
 
     pay(context) {
-        this.action.pay(context.getCostValuesFor(this.action.name), context);
+        this.action.pay(context.getCostValuesFor(this.name), context);
     }
 }
 

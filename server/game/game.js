@@ -44,6 +44,8 @@ const { TownSquareUUID } = require('./Constants/index.js');
 const Automaton = require('./Solo/automaton.js');
 const PlayWindow = require('./gamesteps/playwindow.js');
 const MathHelper = require('./MathHelper.js');
+const NullCard = require('./nullcard.js');
+const NullLocation = require('./nulllocation.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -1307,10 +1309,17 @@ class Game extends EventEmitter {
     }
 
     getShootoutLocationCard() {
-        if(!this.shootout) {
-            return;
+        if(!this.shootout || !this.shootout.shootoutLocation) {
+            return new NullCard();
         }
         return this.shootout.shootoutLocation.locationCard;
+    }
+
+    getShootoutGameLocation() {
+        if(!this.shootout) {
+            return new NullLocation();
+        }
+        return this.shootout.shootoutLocation;
     }
 
     isParticipatingInShootout(card) {

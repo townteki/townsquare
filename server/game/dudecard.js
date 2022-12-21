@@ -15,7 +15,6 @@ class DudeCard extends DrawCard {
         this.gritFunc = null;
         this.currentDeedInfluence = 0;
 
-        this.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
         this.skillKfBonuses = [];
         this.skillKfConditions = [];
@@ -249,7 +248,6 @@ class DudeCard extends DrawCard {
         clone = super.createSnapshot(clone, cloneBaseAttributes);
 
         clone.currentUpkeep = this.currentUpkeep;
-        clone.shootoutStatus = this.shootoutStatus;
         if(cloneBaseAttributes) {
             clone.studReferenceArray = this.studReferenceArray;
         }
@@ -674,8 +672,7 @@ class DudeCard extends DrawCard {
         let drawCardSummary = super.getSummary(activePlayer);
 
         let publicSummary = {
-            shooter: this.shooter,
-            shootoutStatus: this.shootoutStatus
+            shooter: this.shooter
         };
 
         if(drawCardSummary.facedown) {

@@ -7,11 +7,11 @@ class HidingInTheShadows extends ActionCard {
             playType: ['noon'],
             target: {
                 activePromptTitle: 'Select your dude to hide in shadows',
-                cardCondition: { location: 'play area' },
+                cardCondition: { location: 'play area', controller: 'current' },
                 cardType: ['dude']
             },
             message: context =>
-                this.game.addMessage('{0} uses {1} to hide {2}.', context.player, this, context.target),
+                this.game.addMessage('{0} uses {1} to hide {2}', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,

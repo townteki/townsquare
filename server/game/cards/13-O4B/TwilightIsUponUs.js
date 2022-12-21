@@ -29,20 +29,24 @@ class TwilightIsUponUs extends ActionCard {
                         this.game.addMessage('{0} uses {1} to join {2} to posse', context.player, this, context.target);
                     });
                 }
-                const eventHandler = event => {
-                    const thisPosse = this.game.shootout.getPosseByPlayer(event.player);
-                    if(thisPosse.getDudes(dude => dude.isSkilled()).length) {
-                        this.applyAbilityEffect(context.ability, ability => ({
-                            match: event.card,
-                            effect: ability.effects.modifyBullets(2)
-                        }));
-                    }
-                };
-                this.game.on('onShooterPicked', eventHandler);
-                this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onShooterPicked', eventHandler));                
-                this.game.once('onShootoutRoundFinished', () => this.game.removeListener('onShooterPicked', eventHandler));
+                this.untilEndOfShootoutPhase(context.ability, ability => ({
+                    condition: () => this.game.shootout,
+                    match: player => this.isSkilledDudeInPosse(player),
+                    effect: ability.effects.modifyPosseShooterBonus(2)
+                }));
             }
         });
+    }
+
+    isSkilledDudeInPosse(player) {
+        if(!this.game.shootout) {
+            return false;
+        }
+        const playerPosse = this.game.shootout.getPosseByPlayer(player);
+        if(!playerPosse) {
+            return false;
+        }
+        return !!playerPosse.findInPosse(dude => dude.isSkilled());
     }
 }
 

@@ -2,6 +2,7 @@ class SelfCost {
     constructor(action, unpayAction) {
         this.action = action;
         this.unpayAction = unpayAction;
+        this.name = 'self' + this.action.name;
     }
 
     canPay(context) {
@@ -9,7 +10,7 @@ class SelfCost {
     }
 
     resolve(context, result = { resolved: false }) {
-        context.addCost(this.action.name, context.source);
+        context.addCost(this.name, context.source);
 
         result.resolved = true;
         result.value = context.source;
@@ -17,7 +18,7 @@ class SelfCost {
     }
 
     pay(context) {
-        this.action.pay(context.getCostValuesFor(this.action.name), context);
+        this.action.pay(context.getCostValuesFor(this.name), context);
     }
 
     canUnpay(context) {

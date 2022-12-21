@@ -26,8 +26,9 @@ const SpellJobAction = require('./spelljobaction');
 /** @typedef {import('./game')} Game */
 /** @typedef {import('./player')} Player */
 
-class BaseCard {
+class BaseCard extends NullCard {
     constructor(owner, cardData) {
+        super();
         /** @type {Player} */
         this.owner = owner;
         /** @type {Player} */
@@ -589,6 +590,7 @@ class BaseCard {
     }
 
     leavesPlay() {
+        this.resetAbilities();
         this.tokens = {};        
         this.clearNew();
         this.gamelocation = '';
@@ -617,7 +619,7 @@ class BaseCard {
         }
         let menuCardActionItems = menuActionItems.filter(menuItem => menuItem.action.abilitySourceType === 'card');
         if(menuCardActionItems.length > 0) {
-            let menuIcon = 'flash';
+            let menuIcon = 'cog';
             const disabled = menuCardActionItems.every(menuItem => menuItem.item.disabled);
             if(disabled) {
                 if(menuCardActionItems.length === 1) {
@@ -1154,7 +1156,8 @@ class BaseCard {
             }
             return facedownSummary;
         }
-        const effects = this.game.effectEngine.getAppliedEffectsOnCard(this).map(effect => effect.getSummary());
+        const effects = this.game.effectEngine.getAppliedEffectsOnTarget(this)
+            .filter(effect => effect.effect.title).map(effect => effect.getSummary());
 
         let state = {
             printedStats: {
@@ -1169,6 +1172,7 @@ class BaseCard {
                 production: this.cardData.production
             },
             bullets: this.bullets,
+            classType: 'card',
             code: this.cardData.code,
             cost: this.cardData.cost,
             controlled: this.owner !== this.controller,

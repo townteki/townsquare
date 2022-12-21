@@ -321,10 +321,11 @@ class Player extends Spectator {
 
     revealDrawHand() {
         this.drawHandRevealed = true;
-        this.determineHandResult('reveals', this.game.currentPhase === PhaseNames.Gambling);
+        this.determineHandResult('reveals');
     }
 
-    determineHandResult(handResultText = 'reveals', doLowest = false) {
+    determineHandResult(handResultText = 'reveals', doWorst = false) {
+        let doLowest = this.game.currentPhase === PhaseNames.Gambling ? !doWorst : doWorst;
         if(this.drawHand.length > 1) {
             this.handResult = new HandResult(this.drawHand, doLowest, false);
         }
@@ -1266,7 +1267,7 @@ class Player extends Spectator {
         gameLocation.getDudes().forEach(dude => dudeAction(dude));
         gameLocation.adjacencyMap.forEach((value, key) => {
             const gl = key === TownSquareUUID ? this.game.townsquare : this.findLocation(key);
-            if(gl.adjacencyMap.has(gameLocation.uuid)) {
+            if(gl && gl.adjacencyMap.has(gameLocation.uuid)) {
                 gl.adjacencyMap.delete(gameLocation.uuid);
             }
         });
@@ -1841,7 +1842,8 @@ class Player extends Spectator {
     decideCallout(caller, callee) {
         this.game.promptWithMenu(this, caller, {
             activePrompt: {
-                menuTitle: caller.title + ' is calling out ' + callee.title,
+                menuTitle: 'There has been a Call Out!',
+                controls: [{ source: caller.getShortSummary(), targets: [callee.getShortSummary()], type: 'targeting'}],
                 buttons: [
                     { text: 'Accept Callout', method: 'acceptCallout', arg: callee.uuid },
                     { text: 'Refuse Callout', method: 'rejectCallout', arg: callee.uuid }
@@ -1991,9 +1993,10 @@ class Player extends Spectator {
                 order: location.order
             };
         });
+        const effects = this.game.effectEngine.getAppliedEffectsOnTarget(this)
+            .filter(effect => effect.effect && effect.effect.title).map(effect => effect.getSummary());
 
         let state = {
-            legend: this.legend ? this.legend.getSummary(activePlayer) : null,
             cardPiles: {
                 cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
                 deadPile: this.getSummaryForCardList(this.deadPile, activePlayer).reverse(),
@@ -2003,11 +2006,14 @@ class Player extends Spectator {
                 drawHand: this.getSummaryForCardList(this.drawHand, activePlayer),
                 beingPlayed: this.getSummaryForCardList(this.beingPlayed, activePlayer)
             },
+            classType: 'player',
+            effects: effects,
             inCheck: this.currentCheck,
             disconnected: !!this.disconnectedAt,
             outfit: this.outfit.getSummary(activePlayer),
             firstPlayer: this.firstPlayer,
             handRank: this.handResult.rank,
+            legend: this.legend ? this.legend.getSummary(activePlayer) : null,
             locations: locationsState,
             id: this.id,
             left: this.left,

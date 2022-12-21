@@ -3,7 +3,7 @@ const DeedCard = require('../../deedcard.js');
 class CrystalPalace extends DeedCard {
     setupCardAbilities(ability) {
         this.persistentEffect({
-            controller: 'any',
+            targetController: 'any',
             condition: () => true,
             match: card => card.getType() === 'dude' && card.hasKeyword('abomination') && this.equals(card.locationCard),
             effect: [

@@ -12,7 +12,7 @@ const EventToTitleFunc = {
         return `${event.card.title} moving${locCardTitle}`;
     },
     onDrawHandsRevealed: () => 'draw hands being revealed',
-    onTargetsChosen: event => `targets being chosen by ${event.ability.card}`
+    onTargetsChosen: event => `targets being chosen by ${event.ability.card.title}`
 };
 
 const AbilityTypeToWord = {

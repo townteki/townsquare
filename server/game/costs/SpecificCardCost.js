@@ -2,6 +2,7 @@ class SpecificCardCost {
     constructor(action, cardFunc) {
         this.action = action;
         this.cardFunc = cardFunc;
+        this.name = 'specific' + this.action.name;
     }
 
     canPay(context) {
@@ -11,7 +12,7 @@ class SpecificCardCost {
 
     resolve(context, result = { resolved: false }) {
         let card = this.cardFunc(context);
-        context.addCost(this.action.name, card);
+        context.addCost(this.name, card);
 
         result.resolved = true;
         result.value = card;
@@ -19,7 +20,7 @@ class SpecificCardCost {
     }
 
     pay(context) {
-        this.action.pay(context.getCostValuesFor(this.action.name), context);
+        this.action.pay(context.getCostValuesFor(this.name), context);
     }
 }
 

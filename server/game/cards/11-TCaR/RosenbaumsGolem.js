@@ -26,29 +26,34 @@ class RosenbaumsGolem extends DudeCard {
                                 ]
                             }));
                             this.game.addMessage('{0} uses {1} to give {2} +5 value', context.player, this, context.target);
-                            if(context.target.getGrit() >= 11) {
-                                context.ability.selectAnotherTarget(context.player, context, {
-                                    activePromptTitle: 'Select your dude',
-                                    cardCondition: {
-                                        condition: card => card.controller === this.controller && card !== this,
-                                        location: 'play area'
-                                    },
-                                    cardType: 'dude',
-                                    gameAction: 'unboot',
-                                    onSelect: (player, card) => {
-                                        this.game.resolveGameAction(GameActions.unbootCard({ card }), context).thenExecute(() => {
-                                            this.game.addMessage('{0} uses {1} to unboot {2}', player, this, card);
-                                        });
-                                        return true;
-                                    },
-                                    source: this
-                                });
-                            }
-                        }
+                            this.unbootTargetifGritOver11(context);
+                        },
+                        onNo: () => this.unbootTargetifGritOver11(context)
                     });
                 });
             }
         });
+    }
+
+    unbootTargetifGritOver11(context) {
+        if(context.target.getGrit(context) >= 11) {
+            context.ability.selectAnotherTarget(context.player, context, {
+                activePromptTitle: 'Select your dude',
+                cardCondition: {
+                    condition: card => card.controller === this.controller && card !== this,
+                    location: 'play area'
+                },
+                cardType: 'dude',
+                gameAction: 'unboot',
+                onSelect: (player, card) => {
+                    this.game.resolveGameAction(GameActions.unbootCard({ card }), context).thenExecute(() => {
+                        this.game.addMessage('{0} uses {1} to unboot {2}', player, this, card);
+                    });
+                    return true;
+                },
+                source: this
+            });
+        }
     }
 }
 

@@ -104,7 +104,10 @@ class TriggeredAbilityWindow extends BaseAbilityWindow {
                     targets: event.targets.map(target => target.getShortSummary())
                 });
             } else if(event.name === 'onTargetsChosen') {
-                const targets = event.targets ? event.targets.getTargets() : event.cards;
+                let targets = event.targets ? event.targets.getTargets() : event.cards;
+                if(!Array.isArray(targets)) {
+                    targets = [targets];
+                }
                 controls.push({
                     type: 'targeting',
                     source: event.ability.card.getShortSummary(),

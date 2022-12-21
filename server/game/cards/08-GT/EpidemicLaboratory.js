@@ -5,7 +5,7 @@ class EpidemicLaboratory extends DeedCard {
         this.job({
             title: 'Epidemic Laboratory',
             playType: 'noon',
-            cost: ability.costs.bootLeader(),
+            cost: ability.costs.bootLeader(card => card.isSkilled()),
             target: {
                 cardCondition: { 
                     condition: card => card === this
