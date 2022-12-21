@@ -103,6 +103,13 @@ class AbilityTarget {
             return [context.player.getOpponent()];
         }
 
+        if(this.choosingPlayer === 'thisIfShootout') {
+            if(this.game.shootout) {
+                return [context.player];
+            }
+            return [context.player.getOpponent()];
+        }
+
         return [context.player];
     }
 
