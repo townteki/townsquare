@@ -15,7 +15,7 @@ class FallenStar extends ActionCard {
                         selection.value.getType() === 'dude' &&
                         selection.value.controller === this.controller
                     )) || 
-                    (event.cards && this.someMatchesCondition(event.cards, card => card.getType() === 'dude')))
+                    (event.cards && this.someMatchesCondition(event.cards, card => card && card.getType() === 'dude')))
             },
             targets: {
                 original: {
