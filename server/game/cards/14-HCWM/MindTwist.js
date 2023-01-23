@@ -53,7 +53,8 @@ class MindTwist extends SpellCard {
                         ability.effects.cannotIncreaseInfluence('any', context => context.source !== this),
                         ability.effects.cannotDecreaseInfluence('any', context => context.source !== this)
                     ]
-                }));                
+                }));      
+                this.game.addMessage('{0} uses {1} to set {2}\'s influence to 1 until after Sundown', context.player, this, context.target); 
             },
             source: this
         });

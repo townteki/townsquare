@@ -62,7 +62,7 @@ class ViveneGoldsun extends DudeCard {
         }
         const minGrit = oppPosse.getDudes().reduce((min, dude) =>
             dude.getGrit(context) < min ? dude.getGrit(context) : min, 999);
-        return card.value < minGrit;
+        return card.value > minGrit;
     }
 }
 
