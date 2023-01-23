@@ -19,7 +19,7 @@ class JoinPosse extends GameAction {
     createEvent({ card, options = {}, context }) {
         let params = this.getDefaultOptions(options);
         params.context = context;
-        if(card.game.shootout.isJob() && !params.needToBoot) {
+        if(card.game.shootout.isJob() && !params.needToBoot && !params.isCardEffect) {
             params.needToBoot = card.requirementsToJoinPosse(params.allowBooted).needToBoot;
         }
         let toLeaderPosse = card.controller.equals(card.game.shootout.leaderPlayer);
@@ -28,8 +28,7 @@ class JoinPosse extends GameAction {
         return this.event('_DO_NOT_USE_', { card, leaderPosse: toLeaderPosse, options: params }, event => {
             let bootingReq = 'not-needed';
             const shootout = event.card.game.shootout;
-            if(shootout.isJob() && event.card.requirementsToJoinPosse(event.options.allowBooted).needToBoot && 
-                !event.card.canJoinWithoutBooting()) {
+            if(shootout.isJob() && event.options.needToBoot && !event.card.canJoinWithoutBooting()) {
                 if(event.card.allowGameAction('boot', context, options)) {
                     bootingReq = 'do-boot';
                 } else {
