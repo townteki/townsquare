@@ -22,7 +22,7 @@ class CallingTheCavalry2 extends ActionCard {
                 this.game.onceConditional('onPlayWindowOpened', { condition: event => event.playWindow.name === 'shootout resolution' }, eventHandler);
                 this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onPlayWindowOpened', eventHandler));
                 context.ability.selectAnotherTarget(context.player, context, {
-                    activePromptTitle: 'Select a dude',
+                    activePromptTitle: 'Select a dude to become a stud',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' && card.controller === context.player && card.isParticipating(),
                     cardType: 'dude',
@@ -33,7 +33,8 @@ class CallingTheCavalry2 extends ActionCard {
                         }));
                         this.game.addMessage('{0} uses {1} to set {2} as stud', player, this, card);
                         return true;
-                    }
+                    },
+                    source: this
                 });
             }
         });
