@@ -38,6 +38,7 @@ class BlackOwl extends DudeCard {
                         source: this
                     });
                 }
+                this.game.addMessage('{0} uses {1} to give {2} +5 value', player, this, context.target);
             }
         });
     }
