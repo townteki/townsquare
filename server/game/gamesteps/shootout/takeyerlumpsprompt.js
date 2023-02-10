@@ -49,6 +49,7 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
                     source: this
                 });
             } else {
+                this.firstCasualty = null;
                 this.firstCasualtySelected = true;
                 this.selectCasualtyType();
             }
