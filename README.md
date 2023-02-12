@@ -23,7 +23,7 @@ If you only need help with setting the development IDE, please see [Development]
 
 Status of implemented card scripts: [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md)
 
-Solo variant with basic automation is under development, you can check progress [here](https://github.com/townteki/townsquare/issues/1218).
+Solo variant with basic automation is deployed on ([Doomtown Online](https://doomtown.online)). You can check progress of advanced automation [here](https://github.com/townteki/townsquare/issues/1328).
 
 ## Issues
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.
