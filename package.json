@@ -1,6 +1,6 @@
 {
   "name": "townsquare",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Doomtown:Reloaded Card Game Server",
   "main": "index.js",
   "scripts": {
