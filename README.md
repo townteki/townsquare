@@ -16,14 +16,14 @@ If you would like to contribute and help us to bring this client to life, please
 If you only need help with setting the development IDE, please see [Development](https://github.com/townteki/townsquare/blob/master/docs/contributing.md#Development).
 
 ## Project status
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/townteki/townsquare/Node.js%20CI/master?style=plastic)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/townteki/townsquare/node.js.yml?branch=master&style=plastic)
 ![Website](https://img.shields.io/website?down_message=offline&style=plastic&up_message=online&url=https%3A%2F%2Fimg.shields.io%2Fwebsite%2Fhttps%2Fdoomtown.online%2Fplay)
 
 ### Implementation:
 
 Status of implemented card scripts: [current progress and list](https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md)
 
-Solo variant with basic automation is under development, you can check progress [here](https://github.com/townteki/townsquare/issues/1218).
+Solo variant with basic automation is deployed on ([Doomtown Online](https://doomtown.online)). You can check progress of advanced automation [here](https://github.com/townteki/townsquare/issues/1328).
 
 ## Issues
 If you encounter any issues on the site or while playing games, please raise an issue with as much detail as possible.
