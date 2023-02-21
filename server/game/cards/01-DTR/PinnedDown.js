@@ -26,7 +26,7 @@ class PinnedDown extends ActionCard {
                             effect: [
                                 ability.effects.modifyBullets(-3)
                             ]
-                        }));
+                        }), context.causedByPlayType);
                     }
                 };
                 this.game.on('onShooterPicked', eventHandler);
