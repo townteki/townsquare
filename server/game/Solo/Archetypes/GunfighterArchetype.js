@@ -417,11 +417,11 @@ class GunfighterArchetype extends BaseArchetype {
         [...casualtyContext.availableVictims].forEach(victim => {
             if(victim.hasKeyword('token') && casualtyContext.currentCasualtiesNum > 0) {
                 const numOfResolutions = resolutions.length;
-                resolutions = BaseArchetype.handleCasualty('ace', firstCasualty, resolutions, casualtyContext);
+                resolutions = BaseArchetype.handleCasualty('ace', victim, resolutions, casualtyContext);
                 if (resolutions.length === numOfResolutions) {
-                    resolutions = BaseArchetype.handleCasualty('discard', firstCasualty, resolutions, casualtyContext);
+                    resolutions = BaseArchetype.handleCasualty('discard', victim, resolutions, casualtyContext);
                     if (resolutions.length === numOfResolutions) {
-                        resolutions = BaseArchetype.handleCasualty('sendHome', firstCasualty, resolutions, casualtyContext);
+                        resolutions = BaseArchetype.handleCasualty('sendHome', victim, resolutions, casualtyContext);
                     }
                 }
             }
