@@ -9,9 +9,10 @@ class CallingTheCavalry2 extends ActionCard {
                 this.game.addMessage('{0} uses {1} to give player with the most Horses +1 hand rank', 
                     context.player, this),
             handler: context => {
-                let eventHandler = () => {
+                const eventHandler = () => {
                     this.lastingEffect(context.ability, ability => ({
                         until: {
+                            onPlayWindowClosed: event => event.playWindow.name === 'shootout resolution',
                             onShootoutRoundFinished: () => true
                         },
                         condition: () => this.game.shootout && this.playerWithMostHorses(),
@@ -19,8 +20,20 @@ class CallingTheCavalry2 extends ActionCard {
                         effect: ability.effects.modifyHandRankMod(1)
                     }));
                 };
+                const modifyHandRankEventHandler = () => {
+                    if(this.playerWithMostHorses()) {
+                        if(context.player.modifyRank(1, context)) {
+                            this.game.addMessage('{0}\'s hand rank is increased by 1 thanks to {1} since their posse has the most horses; Current hand rank is {2}', 
+                                context.player, this, context.player.getTotalRank());
+                        }
+                    }
+                }
                 this.game.onceConditional('onPlayWindowOpened', { condition: event => event.playWindow.name === 'shootout resolution' }, eventHandler);
-                this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onPlayWindowOpened', eventHandler));
+                this.game.onceConditional('onPlayWindowClosed', { condition: event => event.playWindow.name === 'shootout resolution' }, modifyHandRankEventHandler);                
+                this.game.once('onShootoutPhaseFinished', () => {
+                    this.game.removeListener('onPlayWindowOpened', eventHandler);
+                    this.game.removeListener('onPlayWindowOpened', modifyHandRankEventHandler);
+                });
                 context.ability.selectAnotherTarget(context.player, context, {
                     activePromptTitle: 'Select a dude to become a stud',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
