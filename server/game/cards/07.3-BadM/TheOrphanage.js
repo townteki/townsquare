@@ -12,6 +12,7 @@ class TheOrphanage extends DeedCard {
                     context.player, this),
             handler: context => {
                 this.untilEndOfPhase(context.ability, ability => ({
+                    targetController: 'any',
                     condition: () => true,
                     match: card => card.getType() === 'deed' && this.getDeedControlWoOrphanage(card) >= 2,
                     effect: [
