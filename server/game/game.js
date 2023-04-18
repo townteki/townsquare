@@ -1312,7 +1312,8 @@ class Game extends EventEmitter {
         if(!this.shootout || !this.shootout.shootoutLocation) {
             return new NullCard();
         }
-        return this.shootout.shootoutLocation.locationCard;
+        const locationCard = this.shootout.shootoutLocation.locationCard;
+        return locationCard || new NullCard();
     }
 
     getShootoutGameLocation() {
