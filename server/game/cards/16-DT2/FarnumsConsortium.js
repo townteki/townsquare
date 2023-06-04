@@ -5,6 +5,7 @@ class FarnumsConsortium extends OutfitCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.persistentEffect({
+            targetController: 'any',
             condition: () => true,
             match: card => card.location === 'play area' &&
                 card.getType() === 'deed' &&
