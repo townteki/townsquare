@@ -87,7 +87,7 @@ class Player extends Spectator {
         if(!this.outfit) {
             return '';
         }
-        return this.outfit.gang_code;
+        return this.outfit.gang_code.length && this.outfit.gang_code[0];
     }
 
     modifyCasualties(amount) {

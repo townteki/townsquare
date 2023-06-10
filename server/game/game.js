@@ -1518,7 +1518,7 @@ class Game extends EventEmitter {
         var players = this.getPlayers().map(player => {
             return {
                 name: player.name,
-                outfit: player.outfit.title || player.outfit.gang_code,
+                outfit: player.outfit.title || player.getFaction(),
                 legend: player.legend ? player.legend.title : undefined,
                 standaloneDeckId: player.standaloneDeckId
             };

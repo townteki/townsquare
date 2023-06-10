@@ -28,8 +28,8 @@ class DudeCard extends DrawCard {
         };
         this.persistentEffect({
             condition: () => this.controller.outfit && 
-                    this.gang_code !== this.controller.outfit.gang_code && 
-                    this.gang_code !== 'neutral',
+                    !this.belongsToGang(this.controller.getFaction()) && 
+                    !this.belongsToGang('neutral'),
             match: this,
             effect: AbilityDsl.effects.dynamicUpkeep(() => this.influence),
             fromTrait: false
@@ -140,6 +140,10 @@ class DudeCard extends DrawCard {
 
     getKungFuRating() {
         return this.getSkillRating('kung fu');
+    }
+
+    belongsToGang(gang) {
+        return this.gang_code.includes(gang);
     }
 
     canPerformSkillOn(spellOrGadget) {

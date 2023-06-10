@@ -11,7 +11,7 @@ class PrescottUtter extends DudeCard {
         });
     }
     getNumberOfLawDogsAtCurrentLocation() {
-        return this.game.getDudesAtLocation(this.gamelocation).filter(dude => dude.gang_code === 'lawdogs').length;
+        return this.game.getDudesAtLocation(this.gamelocation).filter(dude => dude.belongsToGang('lawdogs')).length;
     }
 }
 

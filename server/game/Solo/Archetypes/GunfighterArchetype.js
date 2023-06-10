@@ -382,9 +382,9 @@ class GunfighterArchetype extends BaseArchetype {
         if(casualtyContext.availableVictims.includes(firstCasualty)) {
             const numOfResolutions = resolutions.length;
             resolutions = BaseArchetype.handleCasualty('sendHome', firstCasualty, resolutions, casualtyContext);
-            if (resolutions.length === numOfResolutions) {
+            if(resolutions.length === numOfResolutions) {
                 resolutions = BaseArchetype.handleCasualty('discard', firstCasualty, resolutions, casualtyContext);
-                if (resolutions.length === numOfResolutions) {
+                if(resolutions.length === numOfResolutions) {
                     resolutions = BaseArchetype.handleCasualty('ace', firstCasualty, resolutions, casualtyContext);
                 }
             }
@@ -418,9 +418,9 @@ class GunfighterArchetype extends BaseArchetype {
             if(victim.hasKeyword('token') && casualtyContext.currentCasualtiesNum > 0) {
                 const numOfResolutions = resolutions.length;
                 resolutions = BaseArchetype.handleCasualty('ace', victim, resolutions, casualtyContext);
-                if (resolutions.length === numOfResolutions) {
+                if(resolutions.length === numOfResolutions) {
                     resolutions = BaseArchetype.handleCasualty('discard', victim, resolutions, casualtyContext);
-                    if (resolutions.length === numOfResolutions) {
+                    if(resolutions.length === numOfResolutions) {
                         resolutions = BaseArchetype.handleCasualty('sendHome', victim, resolutions, casualtyContext);
                     }
                 }
