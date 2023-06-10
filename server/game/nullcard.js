@@ -181,6 +181,10 @@ class NullCard {
         return false;
     }
 
+    belongsToGang() {
+        return false;
+    }    
+
     equals() {
         return false;
     }
