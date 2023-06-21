@@ -561,7 +561,7 @@
 |:heavy_check_mark:   | 14020| Walters Creek Distillery
 |:heavy_check_mark:   | 14021| Silent Sigil
 |:heavy_check_mark:   | 14022| Auto-Gatling
-|                     | 14023| Sunday Best
+|:heavy_check_mark:   | 14023| Sunday Best
 |:heavy_check_mark:   | 14024| Tusk
 |:heavy_check_mark:   | 14025| Mountain Lion Friend
 |                     | 14026| Spirit Steed
