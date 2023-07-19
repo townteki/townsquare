@@ -22,6 +22,7 @@ class SundayBest extends GoodsCard {
                 },
                 cardType: 'location'
             },
+            actionContext: { card: this.parent, gameAction: 'moveDude'},
             message: context => this.game.addMessage('{0} uses {1} to move {2} to {3}',
                 context.player, this, this.parent, context.target),
             handler: context => {
