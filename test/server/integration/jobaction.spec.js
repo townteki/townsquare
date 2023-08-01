@@ -99,17 +99,15 @@ describe('JobAction', function() {
                         this.player2.clickPrompt('Done');
                     });
 
-                    it('should give another chance to select dudes', function() {
-                        expect(this.player2).toHavePromptButton('Done');
+                    it('should end shootout and give noon actiom prompt', function() {
+                        expect(this.player2).toHavePromptButton('Pass');
                     });                    
 
                     it('should succeed the job', function() {
-                        this.player2.clickPrompt('Done');
                         expect(this.jobAbility.setResult).toHaveBeenCalledWith(true, jasmine.any(Object));
                     });
 
                     it('should send dudes home booted', function() {
-                        this.player2.clickPrompt('Done');
                         expect(this.tommy.booted).toBe(true);
                         expect(this.tommy.gamelocation).toBe(this.player1.player.outfit.uuid);
                         expect(this.jake.booted).toBe(true);
