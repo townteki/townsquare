@@ -380,9 +380,14 @@ class GunfighterArchetype extends BaseArchetype {
         let resolutions = [];
         // 1. check if there are any cards that has to be selected as first casualty
         if(casualtyContext.availableVictims.includes(firstCasualty)) {
-            resolutions = BaseArchetype.handleCasualty('sendHome', firstCasualty, resolutions, casualtyContext) || 
-                BaseArchetype.handleCasualty('discard', firstCasualty, resolutions, casualtyContext) || 
-                BaseArchetype.handleCasualty('ace', firstCasualty, resolutions, casualtyContext);
+            const numOfResolutions = resolutions.length;
+            resolutions = BaseArchetype.handleCasualty('sendHome', firstCasualty, resolutions, casualtyContext);
+            if(resolutions.length === numOfResolutions) {
+                resolutions = BaseArchetype.handleCasualty('discard', firstCasualty, resolutions, casualtyContext);
+                if(resolutions.length === numOfResolutions) {
+                    resolutions = BaseArchetype.handleCasualty('ace', firstCasualty, resolutions, casualtyContext);
+                }
+            }
         }
         // if casualties are zero by resolving the first casualty, we are done
         if(casualtyContext.currentCasualtiesNum === 0) {
@@ -411,9 +416,14 @@ class GunfighterArchetype extends BaseArchetype {
 
         [...casualtyContext.availableVictims].forEach(victim => {
             if(victim.hasKeyword('token') && casualtyContext.currentCasualtiesNum > 0) {
-                resolutions = BaseArchetype.handleCasualty('ace', victim, resolutions, casualtyContext) || 
-                    BaseArchetype.handleCasualty('discard', victim, resolutions, casualtyContext) || 
-                    BaseArchetype.handleCasualty('sendHome', victim, resolutions, casualtyContext);
+                const numOfResolutions = resolutions.length;
+                resolutions = BaseArchetype.handleCasualty('ace', victim, resolutions, casualtyContext);
+                if(resolutions.length === numOfResolutions) {
+                    resolutions = BaseArchetype.handleCasualty('discard', victim, resolutions, casualtyContext);
+                    if(resolutions.length === numOfResolutions) {
+                        resolutions = BaseArchetype.handleCasualty('sendHome', victim, resolutions, casualtyContext);
+                    }
+                }
             }
         });
         // 3. check other cards that can be selected as casualties to resolve rest

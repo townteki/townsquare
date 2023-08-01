@@ -13,7 +13,7 @@ class DaomeiWang extends DudeCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'current', 
-                    condition: card => card.gang_code === 'anarchists' && card !== this
+                    condition: card => card.belongsToGang('anarchists') && card !== this
                 },
                 cardType: ['dude'],
                 gameAction: 'moveDude'

@@ -10,6 +10,7 @@ class CallingTheCavalry extends ActionCard {
                 let eventHandler = () => {
                     this.lastingEffect(context.ability, ability => ({
                         until: {
+                            onPlayWindowClosed: event => event.playWindow.name === 'shootout resolution',
                             onShootoutRoundFinished: () => true
                         },
                         condition: () => this.game.shootout,
@@ -21,6 +22,17 @@ class CallingTheCavalry extends ActionCard {
                     until: 'onShootoutPhaseFinished',
                     condition: event => event.playWindow.name === 'shootout resolution' 
                 }, eventHandler);
+                const modifyHandRankEventHandler = () => {
+                    this.game.getPlayers().forEach(player => {
+                        const numOfMounts = this.getNumberOfMountsForPlayer(player);
+                        if(numOfMounts > 0 && player.modifyRank(numOfMounts, context)) {
+                            this.game.addMessage('{0}\'s hand rank is increased by {1} thanks to {2}; Current hand rank is {3}', 
+                                player, this, player.getTotalRank());
+                        }
+                    });
+                };
+                this.game.onceConditional('onPlayWindowClosed', { condition: event => event.playWindow.name === 'shootout resolution' }, modifyHandRankEventHandler);                
+                this.game.once('onShootoutPhaseFinished', () => this.game.removeListener('onPlayWindowOpened', modifyHandRankEventHandler));
                 this.game.promptForSelect(context.player, {
                     activePromptTitle: 'Select a dude',
                     waitingPromptTitle: 'Waiting for opponent to select dude',

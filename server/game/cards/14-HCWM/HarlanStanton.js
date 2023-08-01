@@ -15,8 +15,7 @@ class HarlanStanton extends DudeCard {
             title: 'Shootout: Harlan Stanton',
             playType: ['shootout:join'],
             actionContext: { card: this, gameAction: 'joinPosse' },
-            ifCondition: () => this.game.shootout &&
-                this.game.shootout.shootoutLocation.locationCard.hasKeyword('ranch'),
+            ifCondition: () => this.game.getShootoutLocationCard().hasKeyword('ranch'),
             ifFailMessage: context =>
                 this.game.addMessage('{0} uses {1}, but it does not have any effect because shootout is not at Ranch', 
                     context.player, this),
