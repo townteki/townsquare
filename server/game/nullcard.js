@@ -129,6 +129,14 @@ class NullCard {
         return false;
     }
 
+    hasAttire() {
+        return false;
+    }    
+
+    hasSidekick() {
+        return false;
+    }    
+
     canBeCalledOut() {
         return false;
     }

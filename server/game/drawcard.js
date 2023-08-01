@@ -488,6 +488,14 @@ class DrawCard extends BaseCard {
         return this.options.contains('cannotFlee');
     }
 
+    cannotJoinPosse(posse) {
+        return this.options.contains('cannotJoinPosse', posse);
+    }
+    
+    cannotMakeCallout(targetDude) {
+        return this.options.contains('cannotMakeCallout', targetDude);
+    }    
+
     cannotAttachCards(attachment) {
         return this.options.contains('cannotAttachCards', attachment);
     }

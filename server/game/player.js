@@ -58,6 +58,7 @@ class Player extends Spectator {
         this.costReducers = [];
         this.redrawBonus = 0;
         this.control = 0;
+        this.stash = 0;        
         this.maxInfByLocation = 999;
         this.ghostrockSources = [new GhostRockSource(this)];
         this.timerSettings = user.settings.timerSettings || {};
@@ -81,6 +82,14 @@ class Player extends Spectator {
 
     set casualties(value) {
         this.currentCasualties = value;
+    }
+
+    get ghostrock() {
+        return this.stash || 0;
+    }
+
+    set ghostrock(value) {
+        this.stash = value;
     }
 
     getFaction() {
@@ -1648,11 +1657,13 @@ class Player extends Spectator {
             needToBoot: params.needToBoot || params.needToBoot === false ? params.needToBoot : null,
             allowBooted: !!params.allowBooted,
             markActionAsTaken: !!params.markActionAsTaken,
-            context: params.context
+            context: params.context,
+            reason: params.reason || 'default'
         };
         let origin = this.game.findLocation(dude.gamelocation);
         let destination = this.game.findLocation(targetLocationUuid);
-        let moveMessage = '{0} moves {1} to {2} without booting';
+        let moveTypeText = options.moveType === 'toHome' ? 'sends {1} home' : 'moves {1} to {2}';
+        let moveMessage = '{0} ' + moveTypeText + ' without booting';
         if(!origin || !destination) {
             return;
         }
@@ -1674,11 +1685,12 @@ class Player extends Spectator {
 
         if(options.needToBoot) {
             this.bootCard(dude);
-            moveMessage = '{0} boots {1} to move them to {2}';
+            moveMessage = options.moveType === 'toHome' ? '{0} sends {1} home booted' : '{0} boots {1} to move them to {2}';
         }
 
         dude.moveToLocation(destination.uuid, options);
-        if(!options.isCardEffect && !dude.isToken()) {
+        if(!options.isCardEffect && !dude.isToken() && options.reason !== 'callout_reject') {
+            moveMessage += options.reason === 'fleeing' ? ' (fleeing)' : '';
             this.game.addMessage(moveMessage, this, dude, destination.locationCard);
         }
         if(options.markActionAsTaken) {
