@@ -19,7 +19,7 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
-            "postDebugTask": "kill_lobby",
+            "postDebugTask": null,
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
@@ -40,7 +40,7 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
-            "postDebugTask": "kill_gamenode",
+            "postDebugTask": null,
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"

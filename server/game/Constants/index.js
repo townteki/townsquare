@@ -9,5 +9,9 @@ module.exports = {
     DevilJokerCodes: ['10040', '10041'],
     HereticJokerCodes: ['14040', '14041'],
     Tokens,
-    ShootoutStatuses
+    ShootoutStatuses,
+    BountyType: {
+        default: 'default',
+        breaking: 'b&e'
+    }
 };

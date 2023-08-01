@@ -1106,6 +1106,10 @@ const Effects = {
         optionEffect('cannotBeTraded', 'Cannot be Traded'),
     cannotFlee:
         optionEffect('cannotFlee', 'Cannot Flee'),
+    cannotJoinPosse:
+        optionEffect('cannotJoinPosse', 'Cannot join Posse'),
+    cannotMakeCallout:
+        optionEffect('cannotMakeCallout', 'Cannot make Callout'),                
     cannotAttachCards:
         optionEffect('cannotAttachCards', 'Cannot Attach Cards'),
     canRefuseWithoutGoingHomeBooted:

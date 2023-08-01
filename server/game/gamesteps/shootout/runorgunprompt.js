@@ -11,7 +11,7 @@ class RunOrGunPrompt extends PlayerOrderPrompt {
             return true;
         }
         const context = { game: this.game, player: this.currentPlayer };
-        const options = { isCardEffect: false, isFleeing: true };
+        const options = { isCardEffect: false, reason: 'fleeing' };
         const currentPlayerPosse = this.shootout.getPosseByPlayer(this.currentPlayer);
         if(currentPlayerPosse.isEmpty() || this.currentPlayer.dudesCannotFlee() ||
             currentPlayerPosse.getDudes().every(dude => (dude.cannotFlee() || !dude.allowGameAction('sendHome', context, options)))) {

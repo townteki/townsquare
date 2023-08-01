@@ -32,7 +32,6 @@ class ShootoutPossePrompt extends UiPrompt {
         }
         this.game.promptForSelect(this.player, {
             activePromptTitle: this.activePromptTitle,
-            promptInfo: this.promptInfo,
             multiSelect: true,
             numCards: 0,
             additionalButtons: additionalButtons,
@@ -42,7 +41,8 @@ class ShootoutPossePrompt extends UiPrompt {
                 (!card.equals(this.shootout.mark) || this.shootout.isJob()) &&
                 !card.equals(this.shootout.leader) &&
                 !card.isParticipating() &&
-                card.requirementsToJoinPosse().canJoin,
+                card.requirementsToJoinPosse().canJoin &&
+                !card.cannotJoinPosse(this.shootout.getPosseByPlayer(this.player)),
             onSelect: (player, dudeSelection) => {
                 this.formPosse(player, dudeSelection);
                 return true;
@@ -52,11 +52,6 @@ class ShootoutPossePrompt extends UiPrompt {
                     return true;
                 }
                 if(this.shootout.isJob() && this.shootout.opposingPlayer === player) {
-                    if(!this.promptInfo) {
-                        this.promptInfo = { type: 'warning', message: 'No dudes selected! Select dudes or press Done to NOT oppose' };
-                        return true;
-                    }
-                    this.game.addAlert('info', '{0} does not select any dudes to oppose job {1}', player, this.shootout.options.jobAbility.card);
                     this.shootout.endShootout();
                 } else {
                     this.joinLeaderAndMark(player);
