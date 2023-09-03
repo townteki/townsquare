@@ -8,6 +8,7 @@
     "coverage": "nyc npm run test",
     "jasmine": "cross-env JASMINE_CONFIG_PATH=./jasmine.json jasmine",
     "lint": "eslint server/ test/server/ --ext=js",
+    "lint-fix": "eslint server/ test/server/ --ext=js --fix",
     "pack-lobby": "node ./pack.js"
   },
   "repository": {

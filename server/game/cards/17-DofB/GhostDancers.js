@@ -38,6 +38,6 @@ class GhostDancers extends DudeCard {
     }
 }
 
-GhostDancers.code = '26013';
+GhostDancers.code = '25013';
 
 module.exports = GhostDancers;
