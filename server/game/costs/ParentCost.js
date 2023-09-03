@@ -5,11 +5,12 @@ class ParentCost {
     }
 
     canPay(context) {
-        const parentToBoot = getParentToBoot(context);
+        const parentToBoot = this.getParentToBoot(context);
         return !!parentToBoot && parentToBoot.controller.equals(context.source.controller) && this.action.isEligible(parentToBoot, context);
     }
 
     resolve(context, result = { resolved: false }) {
+        const parentToBoot = this.getParentToBoot(context);
         context.addCost(this.name, parentToBoot);
 
         result.resolved = true;

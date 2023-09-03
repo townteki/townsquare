@@ -91,7 +91,7 @@ class DrawCard extends BaseCard {
 
     get locationCard() {
         if(this.isNotPlanted()) {
-            return new NullCard()
+            return new NullCard();
         }
         return super.locationCard;
     }    

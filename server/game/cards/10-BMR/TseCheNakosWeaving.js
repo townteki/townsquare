@@ -6,7 +6,7 @@ class TseCheNakosWeaving extends SpellCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.whileAttached({
-            condition: () => this.locationCard &&  this.locationCard.getType() === 'deed',
+            condition: () => this.locationCard && this.locationCard.getType() === 'deed',
             effect: [
                 ability.effects.addKeyword('holy ground'),
                 ability.effects.doesNotUnbootAtNightfall()

@@ -1,4 +1,3 @@
-const CardSelector = require('../../CardSelector.js');
 const DudeCard = require('../../dudecard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
@@ -33,7 +32,7 @@ class GhostDancers extends DudeCard {
             message: context => 
                 this.game.addMessage('{0} uses {1} to attach {2} to them', context.player, this, context.target),
             handler: context => {
-                context.player.attach(context.target)
+                context.player.attach(context.target);
             }
         });
     }
