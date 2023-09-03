@@ -27,23 +27,28 @@ class RavensRuin extends SpellCard {
                     card: context.target,
                     targetUuid: this.gamelocation
                 }), context);
-                this.game.addMessage('{0} uses {1} to move {2} to {3}', 
-                    context.player, this, context.target, this.parent);
-                if(this.parent && this.parent.owner !== context.player && this.parent.control > 0) {
+                const totemLocationCard = this.locationCard;
+                if(!totemLocationCard) {
+                    this.game.addAlert('danger', 'No location card available when using {0} by {1}', this, context.player);
+                    return;
+                }
+                if(totemLocationCard.owner !== context.player && totemLocationCard.control > 0) {
                     this.game.promptForYesNo(context.player, {
-                        title: `Do you want to boot ${this.parent.title}?`,
+                        title: `Do you want to boot ${totemLocationCard.title}?`,
                         onYes: player => {
                             this.game.resolveGameAction(GameActions.bootCard({ 
-                                card: this.parent 
+                                card: totemLocationCard 
                             }), context).thenExecute(() => {
                                 player.modifyGhostRock(1);
                                 this.game.addMessage('{0} uses {1} and boots {2} to gain 1 GR', 
-                                    context.player, this, this.parent);
+                                    context.player, this, totemLocationCard);
                             });
                         },
                         source: this
                     });
                 }
+                this.game.addMessage('{0} uses {1} to move {2} to {3}', 
+                    context.player, this, context.target, totemLocationCard);                
             },
             source: this
         });

@@ -5,19 +5,25 @@ class ParentCost {
     }
 
     canPay(context) {
-        return !!context.source.parent && context.source.parent.controller.equals(context.source.controller) && this.action.isEligible(context.source.parent, context);
+        const parentToBoot = getParentToBoot(context);
+        return !!parentToBoot && parentToBoot.controller.equals(context.source.controller) && this.action.isEligible(parentToBoot, context);
     }
 
     resolve(context, result = { resolved: false }) {
-        context.addCost(this.name, context.source.parent);
+        context.addCost(this.name, parentToBoot);
 
         result.resolved = true;
-        result.value = context.source.parent;
+        result.value = parentToBoot;
         return result;
     }
 
     pay(context) {
         this.action.pay(context.getCostValuesFor(this.name), context);
+    }
+
+    getParentToBoot(context) {
+        const parentToBoot = context.source.isTotem() ? context.source.locationCard : context.source.parent;
+        return parentToBoot || context.source.parent;
     }
 }
 

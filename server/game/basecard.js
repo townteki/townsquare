@@ -1050,7 +1050,7 @@ class BaseCard extends NullCard {
     }
 
     isInControlledLocation() {
-        return this.locationCard && this.locationCard.controller.equals(this.controller);
+        return this.locationCard.controller.equals(this.controller);
     }
 
     isInSameLocation(card) {

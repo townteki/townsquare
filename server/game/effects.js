@@ -1096,6 +1096,8 @@ const Effects = {
     },
     selectAsFirstCasualty:
         optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty'),
+    totemIsUnplanted:
+        optionEffect('isNotPlanted', 'This Totem is not planted'),        
     cannotBringDudesIntoPosse:
         cannotEffectType('joinPosse', opponent => `Cannot bring dudes to posse by${opponent}`, 'shootout'),
     cannotBringDudesIntoPosseByShootout: 
@@ -1132,6 +1134,8 @@ const Effects = {
         optionEffect('canCallOutAdjacent', 'Can Call out Adjacent Dude'),
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
+    canAttachTotems:
+        optionEffect('canAttachTotems', 'Can attach Totems'),        
     canPerformSkillUsing: function(skillnameOrKF, condition) {
         return {
             title: `Can perform other skills using ${skillnameOrKF}`,
