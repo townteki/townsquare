@@ -10,7 +10,7 @@ class RedHorsesTail extends SpellCard {
             target: {
                 activePromptTitle: 'Choose a dude',
                 cardCondition: { 
-                    condition: card => card.gamelocation === this.parent.gamelocation
+                    condition: card => card.gamelocation === this.gamelocation
                 },
                 cardType: ['dude'],
                 gameAction: 'boot'

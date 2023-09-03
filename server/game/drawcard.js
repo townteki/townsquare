@@ -2,6 +2,7 @@ const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
 const { ShootoutStatuses } = require('./Constants/index.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+const NullCard = require('./nullcard.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
@@ -87,6 +88,13 @@ class DrawCard extends BaseCard {
     set upkeep(amount) {
         this.currentUpkeep = amount;
     }
+
+    get locationCard() {
+        if(this.isNotPlanted()) {
+            return new NullCard();
+        }
+        return super.locationCard;
+    }    
 
     modifyControl(amount, applying = true, fromEffect = false) {
         this.currentControl += amount;
@@ -260,7 +268,7 @@ class DrawCard extends BaseCard {
      */
     whileAttached(properties) {
         this.persistentEffect({
-            condition: () => !!this.parent && (!properties.condition || properties.condition()),
+            condition: () => !!this.parent && (!this.isTotem() || !this.isNotPlanted()) && (!properties.condition || properties.condition()),
             match: (card, context) => card.uuid === this.parent.uuid && (!properties.match || properties.match(card, context)),
             targetController: 'any',
             effect: properties.effect,
@@ -305,7 +313,7 @@ class DrawCard extends BaseCard {
         
         let context = { player: player };
 
-        return !this.attachmentRestrictions || 
+        return !this.attachmentRestrictions || (this.isTotem() && card.canAttachTotems(this)) ||
             this.attachmentRestrictions.some(restriction => restriction(card, context));
     }
 
@@ -460,6 +468,10 @@ class DrawCard extends BaseCard {
         return this.options.contains('isSelectedAsFirstCasualty', this);
     }
 
+    isNotPlanted() {
+        return this.options.contains('isNotPlanted', this);
+    }    
+
     calloutCannotBeRefused(opponentDude) {
         return this.options.contains('calloutCannotBeRefused', opponentDude);
     }
@@ -510,7 +522,11 @@ class DrawCard extends BaseCard {
 
     canBeInventedWithoutBooting() {
         return this.options.contains('canBeInventedWithoutBooting');
-    }    
+    }
+    
+    canAttachTotems(totem) {
+        return this.options.contains('canAttachTotems', totem);
+    }
 
     canBeAced(context) {
         return this.allowGameAction('ace', context);
