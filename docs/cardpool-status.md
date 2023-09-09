@@ -1324,5 +1324,5 @@
 |:heavy_check_mark:   | 25052| Puttin' On Airs
 |:heavy_check_mark:   | 25053| Ready Fer Anythin'
 |:heavy_check_mark:   | 25054| Debt of Blood
-|:heavy_check_mark:   | 25055| Supressing Fire
+|:heavy_check_mark:   | 25055| Suppressing Fire
 |:heavy_check_mark:   | 25056| Any Port in a Storm
