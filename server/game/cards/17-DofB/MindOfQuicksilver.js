@@ -23,11 +23,11 @@ class MindOfQuicksilver extends TechniqueCard {
                 if(context.pull.pulledCard) {
                     // set the flag to prevent discarding of pulled card in abilityresolver
                     context.pull.doNotHandlePulledCard = true;
-                }
-                if(context.player.moveCardcontext.player.moveCardWithContext(context.target, 'hand', context)) {
-                    this.game.addMessage('{0} uses {1} to put pulled card {2} to hand', context.player, this, context.pull.pulledCard);                    
-                } else {
-                    context.player.handlePulledCard(context.pull.pulledCard);
+                    if(context.player.moveCardWithContext(context.pull.pulledCard, 'hand', context)) {
+                        this.game.addMessage('{0} uses {1} to put pulled card {2} to hand', context.player, this, context.pull.pulledCard);                    
+                    } else {
+                        context.player.handlePulledCard(context.pull.pulledCard);
+                    }                    
                 }
             },
             source: this

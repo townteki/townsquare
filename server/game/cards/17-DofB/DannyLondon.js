@@ -29,7 +29,7 @@ class DannyLondon extends DudeCard {
                 cardType: ['dude']
             },
             message: context => 
-                this.game.addMessage('{0} uses {1} to set his bullet type and bullet count based on {3} ({4}, {5})', 
+                this.game.addMessage('{0} uses {1} to set his bullet type and bullet count based on {2} ({3}, {4})', 
                     context.player, this, context.target, context.target.isStud() ? 'stud' : 'draw', context.target.bullets),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({

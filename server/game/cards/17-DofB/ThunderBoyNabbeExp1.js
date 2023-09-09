@@ -27,7 +27,11 @@ class ThunderBoyNabbeExp1 extends DudeCard {
                     match: context.target,
                     effect: ability.effects.setAsDraw()
                 }));
-                this.game.addMessage('{0} uses {1} to make {2} a draw', context.player, this, context.target);
+                if(this.equals(context.costs.boot)) {
+                    this.game.addMessage('{0} uses {1} and boots himself to make {2} a draw', context.player, this, context.target);
+                } else {
+                    this.game.addMessage('{0} uses {1} and boots {2} to make {3} a draw', context.player, this, context.costs.boot, context.target);
+                }
             }
         });
     }

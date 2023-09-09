@@ -6,7 +6,7 @@ class JamesBogue extends DudeCard {
             title: 'React: James Bogue',
             when: {
                 onTakenCasualties: event => this.isParticipating() && 
-                    this.controller.equals(event.player) && event.casualtiesTaken > 0
+                    this.controller.equals(event.player) && event.casualtiesTaken.length
             },
             message: context => 
                 this.game.addMessage('{0} uses {1} to give him +1 bullets', context.player, this),

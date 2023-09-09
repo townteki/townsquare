@@ -5,7 +5,7 @@ class CoinneachKenCarn extends DudeCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.persistentEffect({
-            condition: () => true,
+            condition: () => this.isInTownSquare(),
             match: this,
             effect: [
                 ability.effects.dynamicControl(() => this.factionsCheck())
@@ -16,6 +16,11 @@ class CoinneachKenCarn extends DudeCard {
     factionsCheck() {
         const dudes = this.controller.cardsInPlay.filter(card => card.getType() === 'dude');
         const factions = [];
+        dudes.forEach(dude => {
+            if(!factions.includes(dude.gang_code[0])) {
+                factions.push(dude.gang_code[0]);
+            }
+        });
         const multiFactionDudes = dudes.filter(dude => dude.gang_code.length > 1);
         let remainingMultiFactions = [];
         for(const dude of multiFactionDudes) {

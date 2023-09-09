@@ -93,6 +93,10 @@ class NullCard {
         return false;
     }
 
+    isInShootoutLocation() {
+        return false;
+    }    
+
     allowGameAction() {
         return true;
     }

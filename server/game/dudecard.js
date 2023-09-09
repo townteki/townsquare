@@ -367,8 +367,10 @@ class DudeCard extends DrawCard {
         this.acceptedCallout = false;
         this.game.addMessage('{0} uses {1} to call out {2} who refuses', this.controller, this, targetDude);
         if(!targetDude.canRefuseWithoutGoingHomeBooted()) {
-            this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false, reason: 'callout_reject' } })).thenExecute(() => {
-                this.game.addMessage('{0}\'s dude {1} runs home to mama after they refused callout from {2}', targetDude.controller, targetDude, this);
+            this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false, reason: 'callout_reject' } })).thenExecute(event => {
+                if(!event.handlerReplaced) {
+                    this.game.addMessage('{0}\'s dude {1} runs home to mama after they refused callout from {2}', targetDude.controller, targetDude, this);
+                }
             });
         } else {
             this.game.addMessage('{0}\'s dude {1} stays put after they refused callout from {2}', targetDude.controller, targetDude, this);

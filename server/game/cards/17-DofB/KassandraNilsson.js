@@ -6,26 +6,32 @@ class KassandraNilsson extends DudeCard {
         this.action({
             title: 'Move to Location',
             playType: ['noon', 'shootout:join'],
+            actionContext: { card: this, gameAction: () => {
+                if(this.game.shootout) {
+                    const actionArray = ['joinPosse'];
+                    if(this.isInShootoutLocation()) {
+                        actionArray.unshift('moveDude');
+                    }
+                    return actionArray;
+                }
+                return 'moveDude';
+            } },             
             handler: context => {
-                if(this.game.shootout && context.target.equals(this.game.shootout.shootoutLocation.locationCard)) {
+                if(this.game.shootout && this.game.shootout.getPosseByPlayer(this.controller).findInPosse(dude => dude.hasHorse())) {
                     this.game.resolveGameAction(GameActions.joinPosse({ card: this }), context)
                         .thenExecute(() => this.game.addMessage('{0} uses {1} to join posse', context.player, this, context.target));                    
                 } else {
-                    context.ability.selectAnotherTarget(context.player, context, {
-                        activePromptTitle: 'Choose location to move to',
+                    this.game.promptForLocation(context.player, {
+                        activePromptTitle: 'Select where Kassandra should move to',
+                        waitingPromptTitle: 'Waiting for opponent to select location',
                         cardCondition: { 
                             location: 'play area', 
                             controller: 'any', 
-                            condition: card => {
-                                const gameLocation = card.getGameLocation();
-                                if(gameLocation) {
-                                    return gameLocation.getDudes(dude => 
-                                        dude.controller.equals(this.controller) && dude.hasHorse());
-                                }
-                                return false;
+                            condition: locationCard => {
+                                return this.game.findCardsInLocation(locationCard.uuid, 
+                                    card => card.controller.equals(this.controller) && card.hasKeyword('horse')).length;
                             }
                         },
-                        cardType: ['location'],
                         onSelect: (player, card) => {
                             this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: card.uuid }), context)
                                 .thenExecute(() => this.game.addMessage('{0} uses {1} to move her to {2}', player, this, card));

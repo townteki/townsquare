@@ -40,7 +40,7 @@ class OneEyedJacksAreWild extends ActionCard {
             player, this, this.cardContext.target, this.cardContext.target.value, arg);
         player.determineHandResult('changes hand to');
         player.getHandRank().cheatin = false;
-        this.game.addMessage('{0}\'s new hand rank is {2}', player, this, player.getTotalRank());
+        this.game.addMessage('{0}\'s new hand is considered legal, and rank is {2}', player, this, player.getTotalRank());
         return true;
     } 
 }

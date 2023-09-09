@@ -23,15 +23,15 @@ class LiveryStables extends DeedCard {
                 this.abilityContext = context;
                 this.game.promptWithMenu(context.player, this, {
                     activePrompt: {
-                        menuTitle: 'Raise or lower bullets (by 2)?',
+                        menuTitle: 'Raise or lower bullets (by 1)?',
                         buttons: [
                             { 
-                                text: 'Raise by 1', 
+                                text: 'Raise', 
                                 method: 'raise',
                                 disabled: !this.abilityContext.target.allowGameAction('increaseBullets', context)
                             },
                             { 
-                                text: 'Lower by 1', 
+                                text: 'Lower', 
                                 method: 'lower',
                                 disabled: !this.abilityContext.target.allowGameAction('decreaseBullets', context)
                             }

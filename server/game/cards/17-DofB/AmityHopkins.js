@@ -1,14 +1,11 @@
 const DudeCard = require('../../dudecard.js');
 const GameActions = require('../../GameActions/index.js');
-/** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class AmityHopkins extends DudeCard {
-    /** @param {AbilityDsl} ability */
-    setupCardAbilities(ability) {
+    setupCardAbilities() {
         this.action({
             title: 'Boot a Dude',
             playType: ['noon'],
-            cost: ability.costs.bootSelf(),
             target: {
                 activePromptTitle: 'Select a dude to boot',
                 cardCondition: { 
@@ -28,6 +25,6 @@ class AmityHopkins extends DudeCard {
     }
 }
 
-AmityHopkins.code = '25011';
+AmityHopkins.code = '25017';
 
 module.exports = AmityHopkins;

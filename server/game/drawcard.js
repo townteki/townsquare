@@ -269,7 +269,16 @@ class DrawCard extends BaseCard {
     whileAttached(properties) {
         this.persistentEffect({
             condition: () => !!this.parent && (!this.isTotem() || !this.isNotPlanted()) && (!properties.condition || properties.condition()),
-            match: (card, context) => card.uuid === this.parent.uuid && (!properties.match || properties.match(card, context)),
+            match: (card, context) => {
+                if(this.isTotem()) {
+                    if(card.uuid !== this.gamelocation) {
+                        return false;
+                    }
+                } else if(card.uuid !== this.parent.uuid) {
+                    return false;
+                }
+                return !properties.match || properties.match(card, context);
+            },
             targetController: 'any',
             effect: properties.effect,
             recalculateWhen: properties.recalculateWhen,

@@ -27,10 +27,11 @@ class YuanMin extends DudeCard {
                     },
                     handler: (card, searchContext) => {
                         if(context.player.moveCardWithContext(card, 'hand', searchContext, true)) {
-                            this.game.addMessage('{0} uses {1} to put {2} in their hand', context.player, this, card);
+                            this.game.addMessage('{0} uses {1} and discards {2} to put {3} in their hand', 
+                                context.player, this, context.costs.discardFromHand, card);
                         }
                     }
-                }));
+                }), context);
             }
         });
     }

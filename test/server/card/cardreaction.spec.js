@@ -4,7 +4,7 @@ const Event = require('../../../server/game/event.js');
 describe('CardReaction', function () {
     beforeEach(function () {
         this.gameSpy = jasmine.createSpyObj('game', 
-            ['on', 'getPlayers', 'popAbilityContext', 'pushAbilityContext', 'queueStep', 'removeListener', 'registerAbility', 'resolveGameAction']);
+            ['on', 'getPlayers', 'popAbilityContext', 'pushAbilityContext', 'queueStep', 'removeListener', 'registerAbility', 'resolveGameAction', 'wasHeadlineUsed']);
         this.gameSpy.resolveGameAction.and.callFake(() => { 
             return { thenExecute: () => true };
         });

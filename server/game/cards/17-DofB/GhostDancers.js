@@ -7,7 +7,8 @@ class GhostDancers extends DudeCard {
         this.persistentEffect({
             match: this,
             effect: [
-                ability.effects.canAttachTotems(this, () => !this.hasAttachmentWithKeywords(['totem']))
+                ability.effects.canAttachTotems(this, 
+                    card => !this.hasAttachment(att => !att.equals(card) && card.hasKeyword('totem')))
             ]
         });
 
@@ -23,16 +24,16 @@ class GhostDancers extends DudeCard {
             playType: ['noon'],
             condition: () => this.location === 'play area' &&
                 this.isInControlledLocation() &&
-                this.getGameLocation() && this.getGameLocation().getDudes(dude => dude.hasKeyword('shaman') && !dude.booted),
+                this.getGameLocation() && this.getGameLocation().getDudes(dude => dude.hasKeyword('shaman') && !dude.booted).length &&
+                !this.hasAttachmentWithKeywords(['totem']),
             target: {
                 activePromptTitle: 'Choose Totem to attach',
                 cardCondition: { location: 'hand', controller: 'current', condition: card => card.isTotem() },
                 cardType: ['spell']
             },
-            message: context => 
-                this.game.addMessage('{0} uses {1} to attach {2} to them', context.player, this, context.target),
             handler: context => {
-                context.player.attach(context.target);
+                context.player.attach(context.target, this, 'ability', 
+                    () => this.game.addMessage('{0} uses {1} to attach {2} to them', context.player, this, context.target));
             }
         });
     }

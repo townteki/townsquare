@@ -10,15 +10,14 @@ class FelixCutler extends DudeCard {
                 activePromptTitle: 'Select Hex or Goods',
                 cardCondition: { 
                     location: 'play area', 
+                    controller: 'current',
                     participating: true,
                     condition: card => card.getType() === 'goods' ||
                         card.isHex()
                 },
                 cardType: ['spell', 'goods']
             },
-            ifCondition: context => {
-                context.player.isCheatin();
-            },
+            ifCondition: context => context.player.isCheatin(),
             ifFailMessage: context => 
                 this.game.addMessage('{0} uses {1} but fails because their hand is legal', context.player, this),            
             message: context => this.game.addMessage('{0} uses {1} to unboot {2} and reset its abilities', 

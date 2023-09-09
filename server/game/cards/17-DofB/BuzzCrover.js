@@ -16,7 +16,7 @@ class BuzzCrover extends DudeCard {
     getBuzzBonus() {
         let locations = [];
         const numOfLocations = this.controller.cardsInPlay.reduce((memo, card) => {
-            if(card.getType() === 'dude' && card.isNearby(this.gamelocation) && !locations.includes(card.gamelocation)) {
+            if(card.getType() === 'dude' && !card.equals(this) && card.isNearby(this.gamelocation) && !locations.includes(card.gamelocation)) {
                 locations.push(card.gamelocation);
                 return memo + 1;
             }
