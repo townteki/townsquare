@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/958/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1136
+![Cards implemented](https://progress-bar.dev/1014/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1192
 
 **Legend**
 
@@ -1265,3 +1265,64 @@
 |:heavy_check_mark:   | 24259| Joker (red)
 |:heavy_check_mark:   | 24260| Ancestor Spirit
 |:heavy_check_mark:   | 24261| Gunslinger
+
+## `17-DofB` Debt of Blood
+
+| Status | Code | Title                    |
+|--------|-----:|:------------------------:|
+|:heavy_check_mark:   | 25001| Buzz Crover
+|:heavy_check_mark:   | 25002| Yuan Min
+|:heavy_check_mark:   | 25003| Lu Feng
+|:heavy_check_mark:   | 25004| Anthony Shepherd
+|:heavy_check_mark:   | 25005| Kassandra Nilsson
+|:heavy_check_mark:   | 25006| Obadiah Angstrom
+|:heavy_check_mark:   | 25007| Howling Howell Melton
+|:heavy_check_mark:   | 25008| Roger Wilcox
+|:heavy_check_mark:   | 25009| Empty Schell
+|:heavy_check_mark:   | 25010| Fred Ayres
+|:heavy_check_mark:   | 25011| Alonzo
+|:heavy_check_mark:   | 25012| Danny London
+|:heavy_check_mark:   | 25013| Ghost Dancers
+|:heavy_check_mark:   | 25014| SuAnne Bettelyuon
+|:heavy_check_mark:   | 25015| Dakota Katzeek
+|:heavy_check_mark:   | 25016| Charley Bull
+|:heavy_check_mark:   | 25017| Amity Hopkins
+|:heavy_check_mark:   | 25018| Stan Fredricks
+|:heavy_check_mark:   | 25019| "Thunder Boy" Nabbe
+|:heavy_check_mark:   | 25020| Dr. Shane Tilton
+|:heavy_check_mark:   | 25021| Kim Lloyd
+|:heavy_check_mark:   | 25022| Felix Cutler
+|:heavy_check_mark:   | 25023| Frank Bryant
+|:heavy_check_mark:   | 25024| Christine Perfect
+|:heavy_check_mark:   | 25025| TLC John Yarbrough
+|:heavy_check_mark:   | 25026| James Bogue
+|:heavy_check_mark:   | 25027| Carmilla
+|:heavy_check_mark:   | 25028| Agent Moquin
+|:heavy_check_mark:   | 25029| Coinneach "Ken" Càrn
+|:heavy_check_mark:   | 25030| Smith Family Farm
+|:heavy_check_mark:   | 25031| Livery Stables
+|:heavy_check_mark:   | 25032| Worm Canyon
+|:heavy_check_mark:   | 25033| Dispatch Office
+|:heavy_check_mark:   | 25034| Carson's Cantina
+|:heavy_check_mark:   | 25035| The Veiled Crossing
+|:heavy_check_mark:   | 25036| Tai Chi Chuan Garden
+|:heavy_check_mark:   | 25037| The Father's Cross
+|:heavy_check_mark:   | 25038| Rattler-Hide Coat
+|:heavy_check_mark:   | 25039| Jacc's Fail Safe
+|:heavy_check_mark:   | 25040| Articulated Reloading Manager
+|:heavy_check_mark:   | 25041| Colt-Patterson Model '36
+|:heavy_check_mark:   | 25042| Whistle Stop
+|:heavy_check_mark:   | 25043| Kentucky Windage
+|:heavy_check_mark:   | 25044| 54 Card Pick-Up
+|:heavy_check_mark:   | 25045| Turn the Other Cheek
+|:heavy_check_mark:   | 25046| Cloak
+|:heavy_check_mark:   | 25047| Mountain Lion's Den
+|:heavy_check_mark:   | 25048| Stoic Buffalo
+|:heavy_check_mark:   | 25049| Like a Bull...
+|:heavy_check_mark:   | 25050| Mind of Quicksilver
+|:heavy_check_mark:   | 25051| One-Eyed Jacks are Wild
+|:heavy_check_mark:   | 25052| Puttin' On Airs
+|:heavy_check_mark:   | 25053| Ready Fer Anythin'
+|:heavy_check_mark:   | 25054| Debt of Blood
+|:heavy_check_mark:   | 25055| Suppressing Fire
+|:heavy_check_mark:   | 25056| Any Port in a Storm
