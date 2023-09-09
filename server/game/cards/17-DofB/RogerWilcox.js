@@ -1,6 +1,8 @@
 const DudeCard = require('../../dudecard.js');
+/** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class RogerWilcox extends DudeCard {
+    /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.persistentEffect({
             match: this,
@@ -8,17 +10,16 @@ class RogerWilcox extends DudeCard {
                 attachment.hasKeyword('gadget'))
         });        
         this.persistentEffect({
-            condition: () => true,
+            condition: () => this.isGadgetInThisLocation(),
             match: this,
             effect: [
-                ability.effects.dynamicBullets(() => this.getGadgetsInThisLocation())
+                ability.effects.modifyBullets(2)
             ]
         });
     }
 
-    getGadgetsInThisLocation() {
-        const numOfGadgets = this.game.getNumberOfCardsInPlay(card => card.hasKeyword('gadget') && card.gamelocation === this.gamelocation);
-        return numOfGadgets > 4 ? 4 : numOfGadgets;
+    isGadgetInThisLocation() {
+        return this.game.getNumberOfCardsInPlay(card => card.hasKeyword('gadget') && card.gamelocation === this.gamelocation) > 0;
     }    
 }
 

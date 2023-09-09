@@ -8,7 +8,7 @@ class ArticulatedReloadingManager extends GoodsCard {
         this.attachmentRestriction(card => 
             card.controller.equals(this.controller) &&
             card.getType() === 'dude' &&
-            !card.hasAttachment(att => att.code === '25040'));
+            !card.hasAttachment(att => !att.equals(this) && att.code === '25040'));
 
         this.action({
             title: 'Unboot a card',
@@ -19,7 +19,7 @@ class ArticulatedReloadingManager extends GoodsCard {
                 cardCondition: { 
                     location: 'play area', 
                     controller: 'current', 
-                    condition: card => card.parent === this.parent 
+                    condition: card => card.parent && card.parent.equals(this.parent)
                 },
                 cardType: ['goods']
             },

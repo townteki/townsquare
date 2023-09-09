@@ -8,7 +8,7 @@ class SmithFamilyFarm extends DeedCard {
             targetController: 'any',
             // Add always-on condition if effect is state dependent so it will be 
             // rechecked after every event
-            condition: () => this.locationCard && this.locationCard.getDudes(dude => !dude.booted),
+            condition: () => this.game.findCardsInLocation(this.uuid, card => card.getType() === 'dude' && !card.booted).length,
             match: this,
             effect: [
                 ability.effects.modifyControl(1)

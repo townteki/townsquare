@@ -27,7 +27,7 @@ class PuttingOnAirs extends ActionCard {
                         title: `Do you want to remove bounty from ${context.target.title} ?`,
                         onYes: player => {
                             this.game.resolveGameAction(GameActions.removeBounty({ card: context.target }), context).thenExecute(() => {
-                                this.game.addMessage(message + ', remove a bounty from them' + suffix, 
+                                this.game.addMessage(message + ' , remove a bounty from them' + suffix, 
                                     player, this, context.target);
                             });
                         },

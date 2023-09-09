@@ -1,6 +1,8 @@
 const DudeCard = require('../../dudecard.js');
+/** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class Alonzo extends DudeCard {
+    /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.action({
             title: 'Draw a card',

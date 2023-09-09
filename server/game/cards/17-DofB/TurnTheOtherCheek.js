@@ -17,10 +17,10 @@ class TurnTheOtherCheek extends SpellCard {
             },
             difficulty: context => context.target.getGrit(context),
             onSuccess: (context) => {
-                const dudesSendHome = [];
+                const dudesSentHome = [];
                 const dudesUnbooted = [];
-                this.game.shootout.sendHome(context.target, context, { needToBoot: false }, () => dudesSendHome.push(context.target));
-                this.game.shootout.sendHome(this.parent, context, { needToBoot: false }, () => dudesSendHome.push(this.parent));
+                this.game.shootout.sendHome(context.target, context, { needToBoot: false }, () => dudesSentHome.push(context.target));
+                this.game.shootout.sendHome(this.parent, context, { needToBoot: false }, () => dudesSentHome.push(this.parent));
                 if(context.target.booted) {
                     this.game.resolveGameAction(GameActions.unbootCard({ card: context.target }), context);
                     dudesUnbooted.push(context.target);
@@ -29,12 +29,14 @@ class TurnTheOtherCheek extends SpellCard {
                     this.game.resolveGameAction(GameActions.unbootCard({ card: this.parent }), context);
                     dudesUnbooted.push(this.parent);
                 }    
-                if(dudesSendHome.length) {
-                    this.game.addMessage('{0} uses {1} to send {2} home', context.player, this, dudesSendHome);                    
-                }
-                if(dudesUnbooted.length) {
-                    this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, dudesUnbooted);
-                }
+                this.game.queueSimpleStep(() => {
+                    if(dudesSentHome.length) {
+                        this.game.addMessage('{0} uses {1} to send {2} home', context.player, this, dudesSentHome);                    
+                    }
+                    if(dudesUnbooted.length) {
+                        this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, dudesUnbooted);
+                    }
+                });                
             },
             source: this
         });

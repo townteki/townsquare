@@ -19,7 +19,10 @@ class SpellCard extends HeartsCard {
             return false;
         }
         if(card.getType() === 'dude') {
-            return card.canPerformSkillOn(this) && !this.isTotem();
+            if(this.isTotem()) {
+                return card.canAttachTotems(this);
+            }
+            return card.canPerformSkillOn(this);
         } else if(card.isLocationCard() && this.isTotem()) {
             if(['ability', 'validityCheck', 'chatcommand'].includes(playingType)) {
                 return true;

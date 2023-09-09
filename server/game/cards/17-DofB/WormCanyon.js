@@ -9,11 +9,15 @@ class WormCanyon extends DeedCard {
             playType: ['noon'],
             cost: ability.costs.bootSelf(),
             handler: context => {
-                context.player.discardFromHand(context.player.hand.length, discarded => {
-                    context.player.modifyGhostRock(discarded.length);
-                    this.game.addMessage('{0} uses {1} to discard {2} and gain {3} GR', 
-                        context.player, this, discarded, discarded.length);
-                }, {}, context);
+                if(context.player.hand.length) {
+                    context.player.discardCards(context.player.hand, discarded => {
+                        context.player.modifyGhostRock(discarded.length);
+                        this.game.addMessage('{0} uses {1} to discard {2} and gain {3} GR', 
+                            context.player, this, discarded, discarded.length);
+                    }, {}, context);
+                } else {
+                    this.game.addMessage('{0} uses {1}, but does not discard any cards', context.player, this);
+                }
             }
         });
     }

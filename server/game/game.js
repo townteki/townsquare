@@ -71,6 +71,7 @@ class Game extends EventEmitter {
         this.owner = details.owner.username;
         this.started = false;
         this.playStarted = false;
+        this.headlineUsed = false;
         this.createdAt = new Date();
         this.useGameTimeLimit = details.useGameTimeLimit;
         this.gameTimeLimit = details.gameTimeLimit;
@@ -304,6 +305,10 @@ class Game extends EventEmitter {
         }
         return foundCards;
     }
+
+    findCardsInLocation(locationUuid, predicate) {
+        return this.findCardsInPlay(card => card.gamelocation === locationUuid && predicate(card));
+    }    
     
     findLocation(uuid) {
         if(!uuid) {
@@ -982,6 +987,25 @@ class Game extends EventEmitter {
             }
         });
         this.queueStep(new SimpleStep(this, () => this.beginRound()));
+    }
+
+    endRound() {
+        this.raiseEvent('onRoundEnded');
+
+        this.getPlayers().forEach(player => player.resetForRound());
+        this.round++;
+        this.headlineUsed = false;
+        this.addAlert('endofround', 'End of day {0}', this.round);
+        this.addAlert('startofround', 'Day {0}', this.round + 1);
+
+        this.checkForTimeExpired();        
+    }
+
+    wasHeadlineUsed() {
+        if(this.shootout) {
+            return this.shootout.headlineUsed;
+        }
+        return this.headlineUsed;
     }
 
     addPhase(phase) {

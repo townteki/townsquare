@@ -20,7 +20,9 @@ class MountainLionsDen extends SpellCard {
                         ability.effects.cannotBeSetToDraw('opponent', context => 
                             context.ability && context.ability.isCardAbility())
                     ]
-                }));                
+                }));      
+                this.game.addMessage('{0} uses {1} to give each dude in their posse +1 bullets, and their bullets cannot be affected', 
+                    context.player, this);          
             },
             source: this
         });

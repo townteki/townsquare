@@ -24,12 +24,12 @@ class DispatchOffice extends DeedCard {
                                 { 
                                     text: 'Raise by 1', 
                                     method: 'raise',
-                                    disabled: !this.abilityContext.target.allowGameAction('increaseBounty', context)
+                                    disabled: !this.abilityContext.event.card.allowGameAction('increaseBounty', context)
                                 },
                                 { 
                                     text: 'Lower by 1', 
                                     method: 'lower',
-                                    disabled: !this.abilityContext.target.allowGameAction('decreaseBounty', context)
+                                    disabled: !this.abilityContext.event.card.allowGameAction('decreaseBounty', context)
                                 }
                             ]
                         },

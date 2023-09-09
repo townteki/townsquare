@@ -1054,26 +1054,34 @@ class BaseCard extends NullCard {
     }
 
     isInSameLocation(card) {
-        let thisLocation = this.getGameLocation();
-        let cardLocation = card.getGameLocation();
+        const thisLocation = this.getGameLocation();
+        const cardLocation = card.getGameLocation();
         return thisLocation && cardLocation && thisLocation.uuid === cardLocation.uuid;
     }
 
     isInTownSquare() {
-        let location = this.getGameLocation();
+        const location = this.getGameLocation();
         return location && location.isTownSquare();
     }
 
     isInOpponentsHome() {
-        let location = this.getGameLocation();
+        const location = this.getGameLocation();
         return location && location.isOpponentsHome(this.controller);
     }
     
     isInOutOfTown() {
-        let location = this.getGameLocation();
-        let tempLocCard = location ? location.locationCard : null;
+        const location = this.getGameLocation();
+        const tempLocCard = location ? location.locationCard : null;
         return tempLocCard && tempLocCard.isOutOfTown();
     }
+    
+    isInShootoutLocation() {
+        if(!this.game.shootout) {
+            return false;
+        }
+        const location = this.game.shootout.shootoutLocation;
+        return location && location.uuid === this.gamelocation;
+    }    
 
     isLocationCard() {
         return false;

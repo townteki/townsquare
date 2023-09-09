@@ -249,8 +249,7 @@ class Shootout extends Phase {
         this.queueStep(new SimpleStep(this.game, () => {
             this.game.endShootout(isCancel);
             let phaseName = this.isJob() ? 'Job' : 'Shootout';
-            let whatHappened = this.cancelled ? ' cancelled!' : ' ended!';
-            this.game.addAlert('phasestart', phaseName + whatHappened); 
+            this.game.addAlert('phasestart', phaseName + ' ended!'); 
         }));       
     }
 
@@ -524,12 +523,14 @@ class Shootout extends Phase {
     chamberAnotherRound() {
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));
         this.game.raiseEvent('onShootoutRoundFinished');
-        if(!this.checkEndCondition()) {
-            this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
-            this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
-        } else {
-            this.endShootout(false);
-        }
+        this.queueStep(new SimpleStep(this.game, () => {
+            if(!this.checkEndCondition()) {
+                this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
+                this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
+            } else {
+                this.endShootout(false);
+            }
+        }));
     }
     
     recordJobStatus() {

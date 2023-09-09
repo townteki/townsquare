@@ -22,7 +22,11 @@ class KevinWainwrightExp1 extends DudeCard {
             },
             actionContext: { card: this, gameAction: () => {
                 if(this.game.shootout) {
-                    return ['moveDude', 'joinPosse'];
+                    const actionArray = ['joinPosse'];
+                    if(this.isInShootoutLocation()) {
+                        actionArray.unshift('moveDude');
+                    }
+                    return actionArray;
                 }
                 return 'moveDude';
             } },    

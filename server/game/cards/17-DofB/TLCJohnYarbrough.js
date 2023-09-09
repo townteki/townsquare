@@ -34,11 +34,11 @@ class TLCJohnYarbrough extends DudeCard {
                             effect: ability.effects.modifyUpkeep(-1 * this.upkeep)
                         }), PhaseNames.Upkeep
                         );
-                        this.game.addMessage('{0} uses {1} to discard {2} and give {1} +1 bullets and +1 influence', 
-                            context.player, this, context.target);
-                    } else {
                         this.game.addMessage('{0} uses {1} to discard {2}, give {1} +1 bullets, +1 influence and reduce his upkeep to 0', 
-                            context.player, this, context.target);                       
+                            context.player, this, context.target);                         
+                    } else {
+                        this.game.addMessage('{0} uses {1} to discard {2} and give {1} +1 bullets and +1 influence', 
+                            context.player, this, context.target);                        
                     }
                 });
             }

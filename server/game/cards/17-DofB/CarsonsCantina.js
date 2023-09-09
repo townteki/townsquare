@@ -28,13 +28,13 @@ class CarsonsCantina extends DeedCard {
 
     getGR() {
         this.controller.modifyGhostRock(1);
-        this.game.addMessage('{0} gets 1 GR due to {1}', this.controller, this);
+        this.game.addMessage('{0} uses {1} to get 1 GR', this.controller, this);
         return true;
     }
 
     drawCard() {
         this.abilityContext.player.drawCardsToHand(1, this.abilityContext);
-        this.game.addMessage('{0} draws a card due to {1}', this.controller, this);        
+        this.game.addMessage('{0} uses {1} to draw a card', this.controller, this);        
         return true;
     }    
 }

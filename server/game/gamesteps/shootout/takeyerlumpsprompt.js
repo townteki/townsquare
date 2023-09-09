@@ -198,7 +198,6 @@ class TakeYerLumpsPrompt extends PlayerOrderPrompt {
             type
         });        
         let numCoveredCasualties = 0;
-        this.casualtiesTaken.push(card);
         if(type === 'ace') {
             numCoveredCasualties = card.coversCasualties('ace');
             if(numCoveredCasualties > 0) {

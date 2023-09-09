@@ -11,7 +11,7 @@ class StanFredricks extends DudeCard {
             cost: ability.costs.bootSelf(),
             handler: context => {
                 if(this.isWanted()) {
-                    context.ability.selectAnotherTarget(context.player.getOpponent(), context, {
+                    context.ability.selectAnotherTarget(context.player, context, {
                         activePromptTitle: 'Select a dude to move bounty to',
                         cardCondition: card => card.location === 'play area' &&
                             card.controller !== this.controller &&
@@ -27,13 +27,8 @@ class StanFredricks extends DudeCard {
                         source: this
                     });
                 }
-                this.game.resolveGameAction(GameActions.moveDude({
-                    card: this,
-                    targetUuid: this.controller.getOutfitCard().uuid,
-                    options: {
-                        needToBoot: true
-                    }
-                })).thenExecute(() => this.game.addMessage('{0} uses {1} to move him home booted', context.player, this));
+                this.game.shootout.sendHome(this, context, {}, 
+                    () => this.game.addMessage('{0} uses {1} to send him home booted', context.player, this));
             }
         });
     }

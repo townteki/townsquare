@@ -7,7 +7,13 @@ class SpiritTrail extends SpellCard {
             targetController: 'any',
             condition: () => true,
             effect: [
-                ability.effects.additionalDynamicAdjacency(card => card.attachments && card.attachments.find(att => ['09033', '24207'].includes(att.code)), this.uuid)
+                ability.effects.additionalDynamicAdjacency(card => {
+                    if(!card.isLocationCard()) {
+                        return false;
+                    }
+                    return this.game.findCardsInLocation(card.uuid, 
+                        cardInLocation => ['09033', '24207'].includes(cardInLocation.code) && !cardInLocation.isNotPlanted()).length;
+                }, this.uuid)
             ]
         });
         this.spellAction({

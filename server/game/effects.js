@@ -155,9 +155,6 @@ function conditionalAdjacency(type) {
         return {
             title: type === 'adjacent' ? 'Added conditional adjacency' : 'Prevented conditional adjacency',
             apply: function(card, context) {
-                if(!card.isLocationCard()) {
-                    return;
-                }
                 context.dynamicAdjacency = context.dynamicAdjacency || {};
                 context.dynamicAdjacency[card.uuid] = context.game.findLocations(card => condition(card)) || [];
                 card.addAdjacencyLocations(context.dynamicAdjacency[card.uuid], source, type);

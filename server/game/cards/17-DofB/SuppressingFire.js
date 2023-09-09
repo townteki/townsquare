@@ -18,7 +18,8 @@ class SuppressingFire extends ActionCard {
                 cardType: ['dude'],
                 gameAction: 'setAsDraw'
             },
-            message: context => this.game.addMessage('{0} uses {1} to make {2} a draw', context.player, this),
+            message: context => 
+                this.game.addMessage('{0} uses {1} to make {2} a draw', context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
@@ -36,8 +37,8 @@ class SuppressingFire extends ActionCard {
                 card.isParticipating() &&
                 card.getType() === 'dude' || card.hasKeyword('Weapon')),
             message: context => 
-                this.game.addMessage('{0} uses {1} to make {2} a stud', 
-                    context.player, this, context.costs.boot.getType() === 'dude' ? context.costs.boot : context.costs.boot.parent),
+                this.game.addMessage('{0} uses {1} and boots {2} to make {3} a stud', 
+                    context.player, this, context.costs.boot, context.costs.boot.getType() === 'dude' ? context.costs.boot : context.costs.boot.parent),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.costs.boot.getType() === 'dude' ? context.costs.boot : context.costs.boot.parent,
