@@ -1,6 +1,6 @@
 # Card implementation status
 
-![Cards implemented](https://progress-bar.dev/1114/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1192
+![Cards implemented](https://progress-bar.dev/1014/?scale=1136&title=implemented%20&width=200&suffix=%20cards) out of 1192
 
 **Legend**
 
