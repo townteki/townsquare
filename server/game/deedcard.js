@@ -20,6 +20,30 @@ class DeedCard extends LocationCard {
         return this.hasKeyword('Public');
     }
 
+    isCore() {
+        const foundKeywords = this.getCoreKeyword();
+        return !!foundKeywords;
+    }
+
+    getCoreKeyword() {
+        const foundKeywords = this.findKeywords(keyword => keyword.toLowerCase().startsWith('core'));
+        if(foundKeywords && foundKeywords.length) {
+            return foundKeywords[0];
+        }
+    }
+
+    getCoreFaction() {
+        const coreKeyword = this.getCoreKeyword();
+        if(!coreKeyword) {
+            return;
+        }
+        const keywordWords = coreKeyword.split(' ');
+        if(keywordWords.length < 2) {
+            return 'NONE';
+        }
+        return keywordWords.slice(1).join('');
+    }
+
     isSameStreet(card) {
         if(this.isOutOfTown()) {
             return false;
