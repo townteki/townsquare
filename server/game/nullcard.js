@@ -29,6 +29,10 @@ class NullCard {
         return false;
     }
 
+    isCore() {
+        return false;
+    }
+
     hasKeyword() {
         return false;
     }
