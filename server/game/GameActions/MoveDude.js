@@ -37,7 +37,8 @@ class MoveDude extends GameAction {
             isCardEffect: options.isCardEffect || options.isCardEffect === false ? options.isCardEffect : true,
             moveType: options.moveType || 'default',
             needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : false,
-            allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true
+            allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true,
+            reason: options.reason || 'default'
         };
         if(defaultOptions.isCardEffect) {
             return Object.assign(options, defaultOptions);

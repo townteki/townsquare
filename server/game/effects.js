@@ -155,9 +155,6 @@ function conditionalAdjacency(type) {
         return {
             title: type === 'adjacent' ? 'Added conditional adjacency' : 'Prevented conditional adjacency',
             apply: function(card, context) {
-                if(!card.isLocationCard()) {
-                    return;
-                }
                 context.dynamicAdjacency = context.dynamicAdjacency || {};
                 context.dynamicAdjacency[card.uuid] = context.game.findLocations(card => condition(card)) || [];
                 card.addAdjacencyLocations(context.dynamicAdjacency[card.uuid], source, type);
@@ -1096,6 +1093,8 @@ const Effects = {
     },
     selectAsFirstCasualty:
         optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty'),
+    totemIsUnplanted:
+        optionEffect('isNotPlanted', 'This Totem is not planted'),        
     cannotBringDudesIntoPosse:
         cannotEffectType('joinPosse', opponent => `Cannot bring dudes to posse by${opponent}`, 'shootout'),
     cannotBringDudesIntoPosseByShootout: 
@@ -1106,6 +1105,10 @@ const Effects = {
         optionEffect('cannotBeTraded', 'Cannot be Traded'),
     cannotFlee:
         optionEffect('cannotFlee', 'Cannot Flee'),
+    cannotJoinPosse:
+        optionEffect('cannotJoinPosse', 'Cannot join Posse'),
+    cannotMakeCallout:
+        optionEffect('cannotMakeCallout', 'Cannot make Callout'),                
     cannotAttachCards:
         optionEffect('cannotAttachCards', 'Cannot Attach Cards'),
     canRefuseWithoutGoingHomeBooted:
@@ -1128,6 +1131,8 @@ const Effects = {
         optionEffect('canCallOutAdjacent', 'Can Call out Adjacent Dude'),
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
+    canAttachTotems:
+        optionEffect('canAttachTotems', 'Can attach Totems'),        
     canPerformSkillUsing: function(skillnameOrKF, condition) {
         return {
             title: `Can perform other skills using ${skillnameOrKF}`,

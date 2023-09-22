@@ -13,7 +13,7 @@ class NightfallPhase extends Phase {
             new SimpleStep(game, () => this.nightfallRedraw()),
             new SimpleStep(game, () => this.game.raiseEvent('onNightfallUnbooting')),
             new SimpleStep(game, () => this.unbootCards()),
-            new SimpleStep(game, () => this.roundEnded()),
+            new SimpleStep(game, () => this.game.endRound()),
             new NightfallPrompt(game)
         ]);
     }
@@ -33,19 +33,6 @@ class NightfallPhase extends Phase {
                 }
             });
         });
-    }
-
-    roundEnded() {
-        this.game.raiseEvent('onRoundEnded');
-
-        let players = this.game.getPlayers();
-        players.forEach(player => player.resetForRound());
-        this.game.round++;
-
-        this.game.addAlert('endofround', 'End of day {0}', this.game.round);
-        this.game.addAlert('startofround', 'Day {0}', this.game.round + 1);
-
-        this.game.checkForTimeExpired();
     }
 }
 

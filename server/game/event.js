@@ -18,6 +18,7 @@ class Event {
         this.childEvents = [];
         this.attachedEvents = [];
         this.params = params;
+        this.handlerReplaced = false;
 
         this.assignParamProperties(params);
     }
@@ -63,6 +64,7 @@ class Event {
 
     replaceHandler(handler) {
         this.handler = handler;
+        this.handlerReplaced = true;
     }
 
     executeHandler() {

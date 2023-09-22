@@ -49,13 +49,14 @@ class ElksProtection extends SpellCard {
     }
 
     applyElksEffect(context) {
-        if(this.parent.getPrintedStat('production')) {
+        const prodValue = this.locationCard ? this.locationCard.getPrintedStat('production') : 0;
+        if(prodValue) {
             this.applyAbilityEffect(context.ability, ability => ({
                 match: context.target,
-                effect: ability.effects.modifyBullets(this.parent.getPrintedStat('production'))
+                effect: ability.effects.modifyBullets(prodValue)
             }));
             this.game.addMessage('{0} uses {1} to give {2} {3} bullets', 
-                context.player, this, context.target, this.parent.getPrintedStat('production'));
+                context.player, this, context.target, prodValue);
         } else {
             this.game.addMessage('{0} uses {1}, but {2} does not receive any bullets', 
                 context.player, this, context.target);

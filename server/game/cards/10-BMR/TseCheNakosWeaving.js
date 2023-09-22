@@ -6,7 +6,7 @@ class TseCheNakosWeaving extends SpellCard {
     /** @param {AbilityDsl} ability */
     setupCardAbilities(ability) {
         this.whileAttached({
-            condition: () => this.parent.getType() === 'deed',
+            condition: () => this.locationCard && this.locationCard.getType() === 'deed',
             effect: [
                 ability.effects.addKeyword('holy ground'),
                 ability.effects.doesNotUnbootAtNightfall()
@@ -46,11 +46,12 @@ class TseCheNakosWeaving extends SpellCard {
                             source: this,
                             context
                         });
-                        if(this.parent.booted) {
+                        const totemLocationCard = this.locationCard;
+                        if(totemLocationCard && totemLocationCard.booted) {
                             this.game.promptForYesNo(player, {
-                                title: `Do you want to unboot ${this.parent.title} ?`,
+                                title: `Do you want to unboot ${totemLocationCard.title} ?`,
                                 onYes: player => {
-                                    this.game.resolveGameAction(GameActions.unbootCard({ card: this.parent }), context).thenExecute(() => {
+                                    this.game.resolveGameAction(GameActions.unbootCard({ card: totemLocationCard }), context).thenExecute(() => {
                                         this.lastingEffect(context.ability, ability => ({
                                             until: {
                                                 onRoundEnded: () => true,
@@ -60,7 +61,7 @@ class TseCheNakosWeaving extends SpellCard {
                                             effect: ability.effects.modifyControl(1)
                                         }));
                                         this.game.addMessage('{0} uses {1} to unboot {2} and to give {3} +1 CP until they move (or until end of turn)', 
-                                            player, this, this.parent, context.caster);                                 
+                                            player, this, totemLocationCard, context.caster);                                 
                                     });
                                 },
                                 source: this

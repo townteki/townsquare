@@ -29,6 +29,10 @@ class NullCard {
         return false;
     }
 
+    isCore() {
+        return false;
+    }
+
     hasKeyword() {
         return false;
     }
@@ -93,6 +97,10 @@ class NullCard {
         return false;
     }
 
+    isInShootoutLocation() {
+        return false;
+    }    
+
     allowGameAction() {
         return true;
     }
@@ -128,6 +136,14 @@ class NullCard {
     hasWeapon() {
         return false;
     }
+
+    hasAttire() {
+        return false;
+    }    
+
+    hasSidekick() {
+        return false;
+    }    
 
     canBeCalledOut() {
         return false;

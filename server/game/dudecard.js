@@ -209,7 +209,8 @@ class DudeCard extends DrawCard {
                     card.gamelocation === this.gamelocation &&
                     (!this.game.isHome(this.gamelocation, card.controller) || card.canBeCalledOutAtHome()) &&
                     card.uuid !== this.uuid &&
-                    !card.controller.equals(this.controller),
+                    !card.controller.equals(this.controller) &&
+                    !this.cannotMakeCallout(card),
                 autoSelect: false,
                 gameAction: 'callout'
             },
@@ -269,9 +270,6 @@ class DudeCard extends DrawCard {
     }
 
     sendHome(options = {}, context) {
-        if(options.needToBoot) {
-            this.game.resolveGameAction(GameActions.bootCard({ card: this }), context);
-        }
         this.game.resolveGameAction(GameActions.moveDude({ card: this, targetUuid: this.controller.outfit.uuid, options }), context);
         if(options.fromPosse && this.game.shootout && !options.isAfterJob) {
             this.game.resolveGameAction(GameActions.removeFromPosse({ card: this }), context);
@@ -367,11 +365,15 @@ class DudeCard extends DrawCard {
         this.shootoutStatus = ShootoutStatuses.None;
         targetDude.shootoutStatus = ShootoutStatuses.None;
         this.acceptedCallout = false;
+        this.game.addMessage('{0} uses {1} to call out {2} who refuses', this.controller, this, targetDude);
         if(!targetDude.canRefuseWithoutGoingHomeBooted()) {
-            this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false } }));
-            this.game.addMessage('{0} uses {1} to call out {2} who runs home to mama', this.owner, this, targetDude);
+            this.game.resolveGameAction(GameActions.sendHome({ card: targetDude, options: { isCardEffect: false, reason: 'callout_reject' } })).thenExecute(event => {
+                if(!event.handlerReplaced) {
+                    this.game.addMessage('{0}\'s dude {1} runs home to mama after they refused callout from {2}', targetDude.controller, targetDude, this);
+                }
+            });
         } else {
-            this.game.addMessage('{0} uses {1} to call out {2} who refuses and stays put', this.owner, this, targetDude);
+            this.game.addMessage('{0}\'s dude {1} stays put after they refused callout from {2}', targetDude.controller, targetDude, this);
         }
         this.game.raiseEvent('onDudeRejectedCallOut', { caller: this, callee: targetDude });
         return true;
@@ -417,6 +419,14 @@ class DudeCard extends DrawCard {
         }
         return null;
     }
+
+    hasSidekick() {
+        return this.hasAttachment(att => att.hasKeyword('Sidekick'));
+    }
+
+    hasAttire() {
+        return this.hasAttachment(att => att.hasKeyword('Attire'));
+    }    
 
     // what can be in `moveOptions` can be found in `player.moveDude()`
     canMoveWithoutBooting(moveOptions) {

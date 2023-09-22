@@ -101,7 +101,7 @@ class PlayWindow extends ContinuousPlayerOrderPrompt {
             player.unscriptedCardPlayed = null;
         }
         this.orderPassed = true;        
-        this.game.raiseEvent('onPassAction', { playWindow: this });
+        this.game.raiseEvent('onPassAction', { playWindow: this, player });
         this.game.addMessage('{0} passes {1} action', player, this.name);
         if(this.game.isSolo() && this.passedPlayers.length) {
             this.passedPlayers.push(this.game.automaton);

@@ -30,7 +30,7 @@ class SendHome extends GameAction {
             needToBoot: options.needToBoot || options.needToBoot === false ? options.needToBoot : true,
             allowBooted: options.allowBooted || options.allowBooted === false ? options.allowBooted : true,
             fromPosse: options.fromPosse || options.fromPosse === false ? options.fromPosse : true,
-            isFleeing: !!options.isFleeing
+            reason: options.reason || 'default'
         };
         return Object.assign(options, defaultOptions);
     }
