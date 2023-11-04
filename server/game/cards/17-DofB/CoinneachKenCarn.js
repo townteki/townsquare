@@ -1,3 +1,4 @@
+const Factions = require('../../Constants/Factions.js');
 const DudeCard = require('../../dudecard.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
@@ -17,11 +18,14 @@ class CoinneachKenCarn extends DudeCard {
         const dudes = this.controller.cardsInPlay.filter(card => card.getType() === 'dude');
         const factions = [];
         dudes.forEach(dude => {
-            if(!factions.includes(dude.gang_code[0])) {
+            if(dude.gang_code[0] !== Factions.Drifters && !factions.includes(dude.gang_code[0])) {
                 factions.push(dude.gang_code[0]);
             }
         });
-        const multiFactionDudes = dudes.filter(dude => dude.gang_code.length > 1);
+        const multiFactionDudes = dudes.filter(dude => {
+            const dudeMultiFactions = dude.gang_code.filter(code => code !== Factions.Drifters);
+            return dudeMultiFactions > 1;
+        });
         let remainingMultiFactions = [];
         for(const dude of multiFactionDudes) {
             const dudeFactions = dude.gang_code.filter(code => !factions.includes(code));
