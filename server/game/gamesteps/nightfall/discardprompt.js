@@ -1,11 +1,6 @@
 const PlayerOrderPrompt = require('../playerorderprompt.js');
 
 class DiscardPrompt extends PlayerOrderPrompt {
-    constructor(game) {
-        super(game);
-        this.selectedCards = [];
-    }
-
     continue() {
         if(!this.isComplete()) {
             if(this.currentPlayer.discardAllDuringNightfall()) {
@@ -56,7 +51,7 @@ class DiscardPrompt extends PlayerOrderPrompt {
     }
 
     noDiscard(player) {
-        this.game.addMessage('{0} does not discard any card as part of Nightfall', player);
+        this.game.queueSimpleStep(() => this.game.addMessage('{0} does not discard any card as part of Nightfall', player));
         this.completePlayer();
     }
 }
