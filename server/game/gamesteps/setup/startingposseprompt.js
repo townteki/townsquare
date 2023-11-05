@@ -1,3 +1,4 @@
+const PlayingTypes = require('../../Constants/PlayingTypes.js');
 const AllPlayerPrompt = require('../allplayerprompt.js');
 
 class StartingPossePrompt extends AllPlayerPrompt {
@@ -73,7 +74,7 @@ class StartingPossePrompt extends AllPlayerPrompt {
             return `Too many Grifters (${startingGrifterSize}) in starting gang`;
         }
         const posseCost = player.hand.reduce((aggregator, card) => {
-            let reducedCost = player.getReducedCost('setup', card, player.createContext());
+            let reducedCost = player.getReducedCost(PlayingTypes.Setup, card, player.createContext());
             aggregator + reducedCost;
         }, 0);
         if(posseCost > player.ghostrock) {

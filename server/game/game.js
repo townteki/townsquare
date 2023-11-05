@@ -46,6 +46,7 @@ const PlayWindow = require('./gamesteps/playwindow.js');
 const MathHelper = require('./MathHelper.js');
 const NullCard = require('./nullcard.js');
 const NullLocation = require('./nulllocation.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -499,7 +500,7 @@ class Game extends EventEmitter {
      */
     spendGhostRock(spendParams, callback = () => true) {
         let activePlayer = spendParams.activePlayer || this.currentAbilityContext && this.currentAbilityContext.player;
-        spendParams = Object.assign({ playingType: 'ability', activePlayer: activePlayer }, spendParams);
+        spendParams = Object.assign({ playingType: PlayingTypes.Ability, activePlayer: activePlayer }, spendParams);
 
         this.queueStep(new ChooseGRSourceAmounts(this, spendParams, callback));
     }

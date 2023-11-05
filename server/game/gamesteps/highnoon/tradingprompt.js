@@ -1,3 +1,4 @@
+const PlayingTypes = require('../../Constants/PlayingTypes.js');
 const UiPrompt = require('../uiprompt.js');
 
 class TradingPrompt extends UiPrompt {
@@ -106,7 +107,7 @@ class TradingPrompt extends UiPrompt {
 
     attachAttachments(attachments, fromDude, toDude, actionWord) {
         attachments.forEach(fromAttachment => {
-            if(this.player.attach(fromAttachment, toDude, 'trading')) {
+            if(this.player.attach(fromAttachment, toDude, PlayingTypes.Trading)) {
                 this.game.addMessage('{0} {1} {2} from {3} to {4}', this.player, actionWord, fromAttachment, fromDude, toDude);
             }
         });

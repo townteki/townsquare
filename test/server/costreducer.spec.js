@@ -1,3 +1,4 @@
+const PlayingTypes = require('../../server/game/Constants/PlayingTypes.js');
 const CostReducer = require('../../server/game/costreducer.js');
 
 describe('CostReducer', function () {
@@ -27,12 +28,12 @@ describe('CostReducer', function () {
 
         describe('when playingTypes is not an array', function() {
             beforeEach(function() {
-                this.properties.playingTypes = 'shoppin';
+                this.properties.playingTypes = PlayingTypes.Shoppin;
                 this.reducer = new CostReducer(this.gameSpy, this.source, this.properties);
             });
 
             it('should wrap it in an array', function() {
-                expect(this.reducer.playingTypes).toEqual(['shoppin']);
+                expect(this.reducer.playingTypes).toEqual([PlayingTypes.Shoppin]);
             });
         });
     });

@@ -2,6 +2,7 @@
 /** @typedef {import('../../drawcard')} DrawCard */
 
 const PhaseNames = require('../../Constants/PhaseNames');
+const PlayingTypes = require('../../Constants/PlayingTypes');
 const GameActions = require('../../GameActions');
 const { Priorities, booleanCondition } = require('../priorities');
 const BaseArchetype = require('./BaseArchetype');
@@ -262,17 +263,17 @@ class GunfighterArchetype extends BaseArchetype {
         let playActions = [];
         if(suit !== 'Clubs') {
             possibleCards.forEach(card => {
-                if(this.game.currentPhase === PhaseNames.HighNoon && this.player.playablePlayActions(card, 'shoppin').length) {
+                if(this.game.currentPhase === PhaseNames.HighNoon && this.player.playablePlayActions(card, PlayingTypes.Shoppin).length) {
                     playActions.push({
                         card,
-                        playFunction: () => this.player.playCard(card, 'shoppin', { doNotMarkActionAsTaken: true })
+                        playFunction: () => this.player.playCard(card, PlayingTypes.Shoppin, { doNotMarkActionAsTaken: true })
                     });
                 } else if(card.abilities.playActions.length > 0) {
                     if(card.abilities.playActions.some(playAction => 
                         playAction.meetsRequirements(playAction.createContext(this.player)))) {
                         playActions.push({
                             card,
-                            playFunction: () => this.player.playCard(card, 'play', { doNotMarkActionAsTaken: true })
+                            playFunction: () => this.player.playCard(card, PlayingTypes.Play, { doNotMarkActionAsTaken: true })
                         });
                     }
                 }

@@ -6,6 +6,7 @@ const PlayableLocation = require('./playablelocation.js');
 const CannotRestriction = require('./cannotrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
+const PlayingTypes = require('./Constants/PlayingTypes');
 
 function cannotEffect(type = 'any', playType = 'any', titleFunc = () => '', targetType = '') {
     return function(controller, predicate, overrideType, overridePlayType) {
@@ -933,7 +934,7 @@ const Effects = {
     cannotDecreaseProduction: 
         cannotEffectType('decreaseProduction', opponent => `Cannot have production decreased${opponent ? ' by' + opponent : ''}`),
     cannotPlay: function(condition) {
-        let restriction = (card, playingType) => card.getType() === 'event' && playingType === 'play' && condition(card);
+        let restriction = (card, playingType) => card.getType() === 'event' && playingType === PlayingTypes.Play && condition(card);
         return this.cannotPutIntoPlay(restriction);
     },
     cannotPutIntoPlay: function(restriction) {
@@ -948,7 +949,7 @@ const Effects = {
         };
     },
     cannotSetup: function(condition = () => true) {
-        let restriction = (card, playingType) => playingType === 'setup' && condition(card);
+        let restriction = (card, playingType) => playingType === PlayingTypes.Setup && condition(card);
         return this.cannotPutIntoPlay(restriction);
     },
     cannotBeAffected: 
@@ -1277,11 +1278,11 @@ const Effects = {
         });
     },
     reduceNextPlayedCardCost: function(amount, match) {
-        return this.reduceNextCardCost('play', amount, match);
+        return this.reduceNextCardCost(PlayingTypes.Play, amount, match);
     },
     reduceFirstCardCostEachRound: function(amount, match) {
         return this.reduceCost({
-            playingTypes: ['shoppin', 'ability', 'play'],
+            playingTypes: [PlayingTypes.Shoppin, PlayingTypes.Ability, PlayingTypes.Play],
             amount: amount,
             match: match,
             limit: 1
@@ -1289,7 +1290,7 @@ const Effects = {
     },
     reduceFirstPlayedCardCostEachRound: function(amount, match) {
         return this.reduceCost({
-            playTypes: ['play'],
+            playingTypes: [PlayingTypes.Play],
             amount: amount, 
             match: match,
             limit: 1
