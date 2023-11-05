@@ -1,6 +1,7 @@
 const PublicLocations = new Set(['dead pile', 'discard pile', 'out of game', 'play area']);
 const CardAction = require('../cardaction');
 const PhaseNames = require('../Constants/PhaseNames');
+const PlayingTypes = require('../Constants/PlayingTypes');
 const GameActions = require('../GameActions');
 const DiscardCard = require('../GameActions/DiscardCard');
 const ChooseYesNoPrompt = require('../gamesteps/ChooseYesNoPrompt');
@@ -81,7 +82,7 @@ class DropCommand {
                         player: actingPlayer,
                         card: this.card, 
                         params: { 
-                            playingType: 'drop', 
+                            playingType: PlayingTypes.Drop, 
                             target: this.gamelocation 
                         }
                     }), defaultContext)
@@ -90,7 +91,7 @@ class DropCommand {
                 this.game.resolveGameAction(GameActions.putIntoPlay({ 
                     player: actingPlayer,
                     card: this.card, 
-                    params: { playingType: 'setup', target: this.gamelocation, force: true }
+                    params: { playingType: PlayingTypes.Setup, target: this.gamelocation, force: true }
                 }), defaultContext);
             }
         } else if(this.targetLocation === 'dead pile' && this.originalLocation === 'play area') {

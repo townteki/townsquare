@@ -1,3 +1,5 @@
+const PlayingTypes = require('./Constants/PlayingTypes');
+
 class BaseCostReducer {
     constructor(game, source, properties) {
         this.game = game;
@@ -9,8 +11,8 @@ class BaseCostReducer {
     }
 
     buildPlayingTypes(properties) {
-        if(!properties.playingTypes || properties.playingTypes === 'any') {
-            return 'any';
+        if(!properties.playingTypes || properties.playingTypes === PlayingTypes.Any) {
+            return PlayingTypes.Any;
         }
         let playingTypes = Array.isArray(properties.playingTypes) ? properties.playingTypes : [properties.playingTypes];
         return playingTypes;

@@ -6,6 +6,7 @@ const PlayableLocation = require('./playablelocation.js');
 const CannotRestriction = require('./cannotrestriction.js');
 const GhostRockSource = require('./GhostRockSource.js');
 const CardAction = require('./cardaction');
+const PlayingTypes = require('./Constants/PlayingTypes');
 
 function cannotEffect(type = 'any', playType = 'any', titleFunc = () => '', targetType = '') {
     return function(controller, predicate, overrideType, overridePlayType) {
@@ -155,9 +156,6 @@ function conditionalAdjacency(type) {
         return {
             title: type === 'adjacent' ? 'Added conditional adjacency' : 'Prevented conditional adjacency',
             apply: function(card, context) {
-                if(!card.isLocationCard()) {
-                    return;
-                }
                 context.dynamicAdjacency = context.dynamicAdjacency || {};
                 context.dynamicAdjacency[card.uuid] = context.game.findLocations(card => condition(card)) || [];
                 card.addAdjacencyLocations(context.dynamicAdjacency[card.uuid], source, type);
@@ -936,7 +934,7 @@ const Effects = {
     cannotDecreaseProduction: 
         cannotEffectType('decreaseProduction', opponent => `Cannot have production decreased${opponent ? ' by' + opponent : ''}`),
     cannotPlay: function(condition) {
-        let restriction = (card, playingType) => card.getType() === 'event' && playingType === 'play' && condition(card);
+        let restriction = (card, playingType) => card.getType() === 'event' && playingType === PlayingTypes.Play && condition(card);
         return this.cannotPutIntoPlay(restriction);
     },
     cannotPutIntoPlay: function(restriction) {
@@ -951,7 +949,7 @@ const Effects = {
         };
     },
     cannotSetup: function(condition = () => true) {
-        let restriction = (card, playingType) => playingType === 'setup' && condition(card);
+        let restriction = (card, playingType) => playingType === PlayingTypes.Setup && condition(card);
         return this.cannotPutIntoPlay(restriction);
     },
     cannotBeAffected: 
@@ -1096,6 +1094,8 @@ const Effects = {
     },
     selectAsFirstCasualty:
         optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty'),
+    totemIsUnplanted:
+        optionEffect('isNotPlanted', 'This Totem is not planted'),        
     cannotBringDudesIntoPosse:
         cannotEffectType('joinPosse', opponent => `Cannot bring dudes to posse by${opponent}`, 'shootout'),
     cannotBringDudesIntoPosseByShootout: 
@@ -1106,6 +1106,10 @@ const Effects = {
         optionEffect('cannotBeTraded', 'Cannot be Traded'),
     cannotFlee:
         optionEffect('cannotFlee', 'Cannot Flee'),
+    cannotJoinPosse:
+        optionEffect('cannotJoinPosse', 'Cannot join Posse'),
+    cannotMakeCallout:
+        optionEffect('cannotMakeCallout', 'Cannot make Callout'),                
     cannotAttachCards:
         optionEffect('cannotAttachCards', 'Cannot Attach Cards'),
     canRefuseWithoutGoingHomeBooted:
@@ -1128,6 +1132,8 @@ const Effects = {
         optionEffect('canCallOutAdjacent', 'Can Call out Adjacent Dude'),
     canUseControllerAbilities:
         optionEffect('canUseControllerAbilities', 'Can use Controller Abilities'),
+    canAttachTotems:
+        optionEffect('canAttachTotems', 'Can attach Totems'),        
     canPerformSkillUsing: function(skillnameOrKF, condition) {
         return {
             title: `Can perform other skills using ${skillnameOrKF}`,
@@ -1272,11 +1278,11 @@ const Effects = {
         });
     },
     reduceNextPlayedCardCost: function(amount, match) {
-        return this.reduceNextCardCost('play', amount, match);
+        return this.reduceNextCardCost(PlayingTypes.Play, amount, match);
     },
     reduceFirstCardCostEachRound: function(amount, match) {
         return this.reduceCost({
-            playingTypes: ['shoppin', 'ability', 'play'],
+            playingTypes: [PlayingTypes.Shoppin, PlayingTypes.Ability, PlayingTypes.Play],
             amount: amount,
             match: match,
             limit: 1
@@ -1284,7 +1290,7 @@ const Effects = {
     },
     reduceFirstPlayedCardCostEachRound: function(amount, match) {
         return this.reduceCost({
-            playTypes: ['play'],
+            playingTypes: [PlayingTypes.Play],
             amount: amount, 
             match: match,
             limit: 1

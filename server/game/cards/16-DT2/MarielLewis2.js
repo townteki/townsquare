@@ -6,11 +6,16 @@ class MarielLewis2 extends DudeCard {
         this.action({
             title: 'Mariel Lewis',
             playType: ['shootout'],
-            ifCondition: () => !this.game.shootout.isJob() && 
+            ifCondition: () => (!this.game.shootout.isJob() || !this.game.shootout.belongsToLeaderPlayer(this)) && 
                 this.getPosseInfluence(this.controller) > this.getPosseInfluence(this.controller.getOpponent()),
             ifFailMessage: context => {
-                this.game.addMessage('{0} uses {1} but does not send anyone home because their posse\'s total influence is not more than the opposing posse\'s', 
-                    context.player, this);
+                if(this.game.shootout.isJob() && this.game.shootout.belongsToLeaderPlayer(this)) {
+                    this.game.addMessage('{0} uses {1} but does not send anyone home because they are running a job', 
+                        context.player, this);
+                } else {
+                    this.game.addMessage('{0} uses {1} but does not send anyone home because their posse\'s total influence is not more than the opposing posse\'s', 
+                        context.player, this);
+                }
             },
             handler: context => {
                 context.ability.selectAnotherTarget(context.player, context, {

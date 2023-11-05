@@ -46,6 +46,7 @@ const PlayWindow = require('./gamesteps/playwindow.js');
 const MathHelper = require('./MathHelper.js');
 const NullCard = require('./nullcard.js');
 const NullLocation = require('./nulllocation.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 
 /** @typedef {import('./gamesteps/shootout')} Shootout */
 class Game extends EventEmitter {
@@ -71,6 +72,7 @@ class Game extends EventEmitter {
         this.owner = details.owner.username;
         this.started = false;
         this.playStarted = false;
+        this.headlineUsed = false;
         this.createdAt = new Date();
         this.useGameTimeLimit = details.useGameTimeLimit;
         this.gameTimeLimit = details.gameTimeLimit;
@@ -304,6 +306,10 @@ class Game extends EventEmitter {
         }
         return foundCards;
     }
+
+    findCardsInLocation(locationUuid, predicate) {
+        return this.findCardsInPlay(card => card.gamelocation === locationUuid && predicate(card));
+    }    
     
     findLocation(uuid) {
         if(!uuid) {
@@ -494,7 +500,7 @@ class Game extends EventEmitter {
      */
     spendGhostRock(spendParams, callback = () => true) {
         let activePlayer = spendParams.activePlayer || this.currentAbilityContext && this.currentAbilityContext.player;
-        spendParams = Object.assign({ playingType: 'ability', activePlayer: activePlayer }, spendParams);
+        spendParams = Object.assign({ playingType: PlayingTypes.Ability, activePlayer: activePlayer }, spendParams);
 
         this.queueStep(new ChooseGRSourceAmounts(this, spendParams, callback));
     }
@@ -984,6 +990,25 @@ class Game extends EventEmitter {
         this.queueStep(new SimpleStep(this, () => this.beginRound()));
     }
 
+    endRound() {
+        this.raiseEvent('onRoundEnded');
+
+        this.getPlayers().forEach(player => player.resetForRound());
+        this.round++;
+        this.headlineUsed = false;
+        this.addAlert('endofround', 'End of day {0}', this.round);
+        this.addAlert('startofround', 'Day {0}', this.round + 1);
+
+        this.checkForTimeExpired();        
+    }
+
+    wasHeadlineUsed() {
+        if(this.shootout) {
+            return this.shootout.headlineUsed;
+        }
+        return this.headlineUsed;
+    }
+
     addPhase(phase) {
         this.remainingPhases.unshift(phase);
     }
@@ -1312,7 +1337,8 @@ class Game extends EventEmitter {
         if(!this.shootout || !this.shootout.shootoutLocation) {
             return new NullCard();
         }
-        return this.shootout.shootoutLocation.locationCard;
+        const locationCard = this.shootout.shootoutLocation.locationCard;
+        return locationCard || new NullCard();
     }
 
     getShootoutGameLocation() {
@@ -1517,7 +1543,7 @@ class Game extends EventEmitter {
         var players = this.getPlayers().map(player => {
             return {
                 name: player.name,
-                outfit: player.outfit.title || player.outfit.gang_code,
+                outfit: player.outfit.title || player.getFaction(),
                 legend: player.legend ? player.legend.title : undefined,
                 standaloneDeckId: player.standaloneDeckId
             };

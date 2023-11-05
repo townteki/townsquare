@@ -1,3 +1,4 @@
+const PlayingTypes = require('../../Constants/PlayingTypes.js');
 const AllPlayerPrompt = require('../allplayerprompt.js');
 
 class StartingPossePrompt extends AllPlayerPrompt {
@@ -53,17 +54,15 @@ class StartingPossePrompt extends AllPlayerPrompt {
         if(startingDudesSize > 5) {
             return `Too many cards (${startingDudesSize}) in starting gang`;
         }
-        if(player.hand.some(card => card.getType() === 'deed' && !card.hasKeyword('core'))) {
+        if(player.hand.some(card => card.getType() === 'deed' && !card.isCore())) {
             return 'Only Core deeds can be in the starting gang';
         }
-        const startingCoreSize = player.hand.reduce((size, card) => {
-            if(card.getType() === 'deed' && card.hasKeyword('core')) {
-                return size + card.startingSize;
-            }
-            return size;
-        }, 0);
-        if(startingCoreSize > 1) {
-            return `Too many Core deeds (${startingCoreSize}) in starting gang`;
+        const startingCoreDeeds = player.hand.filter(card => card.isCore());
+        if(startingCoreDeeds.length > 1) {
+            return `Too many Core deeds (${startingCoreDeeds.length}) in starting gang`;
+        }
+        if(startingCoreDeeds.length && !['NONE', player.getFaction()].includes(startingCoreDeeds[0].getCoreFaction())) {
+            return `Core deed faction (${startingCoreDeeds[0].getCoreFaction()}) does not match player faction`;
         }
         const startingGrifterSize = player.hand.reduce((size, card) => {
             if(card.getType() === 'dude' && card.hasKeyword('grifter')) {
@@ -75,7 +74,7 @@ class StartingPossePrompt extends AllPlayerPrompt {
             return `Too many Grifters (${startingGrifterSize}) in starting gang`;
         }
         const posseCost = player.hand.reduce((aggregator, card) => {
-            let reducedCost = player.getReducedCost('setup', card, player.createContext());
+            let reducedCost = player.getReducedCost(PlayingTypes.Setup, card, player.createContext());
             aggregator + reducedCost;
         }, 0);
         if(posseCost > player.ghostrock) {

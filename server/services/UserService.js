@@ -71,8 +71,7 @@ class UserService extends EventEmitter {
             settings: user.settings,
             permissions: user.permissions,
             verified: user.verified,
-            disabled: user.disabled,
-            patreon: user.patreon
+            disabled: user.disabled
         };
 
         if(user.password && user.password !== '') {

@@ -37,8 +37,7 @@ class ShieldOfFaith2 extends SpellCard {
         if(context.ability && context.ability.playTypePlayed(context) === 'cheatin resolution') {
             return false;
         }
-        return (!context.isCasualty && context.player !== context.card.controller) || 
-            (context.shootout && context.shootout.loser !== context.card.controller);
+        return !context.isCasualty && context.player !== context.card.controller;
     }
 }
 

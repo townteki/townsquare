@@ -99,14 +99,6 @@ class User {
         return 'user';
     }
 
-    get patreon() {
-        return this.userData.patreon;
-    }
-
-    set patreon(value) {
-        this.userData.patreon = value;
-    }
-
     block(otherUser) {
         this.userData.blockList = this.userData.blockList || [];
         this.userData.blockList.push(otherUser.username.toLowerCase());

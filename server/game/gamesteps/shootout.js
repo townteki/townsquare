@@ -4,7 +4,7 @@ const ShootoutPossePrompt = require('./shootout/shootoutposseprompt.js');
 const TakeYerLumpsPrompt = require('./shootout/takeyerlumpsprompt.js');
 const SimpleStep = require('./simplestep.js');
 const RunOrGunPrompt = require('./shootout/runorgunprompt.js');
-const {ShootoutStatuses} = require('../Constants');
+const {ShootoutStatuses, BountyType} = require('../Constants');
 const DrawHandPrompt = require('./shootout/drawhandprompt.js');
 const ShootoutPosse = require('./shootout/shootoutposse.js');
 const GameActions = require('../GameActions/index.js');
@@ -249,8 +249,7 @@ class Shootout extends Phase {
         this.queueStep(new SimpleStep(this.game, () => {
             this.game.endShootout(isCancel);
             let phaseName = this.isJob() ? 'Job' : 'Shootout';
-            let whatHappened = this.cancelled ? ' cancelled!' : ' ended!';
-            this.game.addAlert('phasestart', phaseName + whatHappened); 
+            this.game.addAlert('phasestart', phaseName + ' ended!'); 
         }));       
     }
 
@@ -461,11 +460,17 @@ class Shootout extends Phase {
         }
         const locationCard = this.shootoutLocation.locationCard;
         if(!locationCard.owner.equals(this.leaderPlayer)) {
-            this.actOnLeaderPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), { game: this.game, card: dude }), 
-                dude => !this.isBreakinAndEnterin(dude, locationCard));
+            this.actOnLeaderPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ 
+                card: dude, 
+                reason: BountyType.breaking 
+            }), { game: this.game, card: dude }), 
+            dude => !this.isBreakinAndEnterin(dude, locationCard));
         } else {
-            this.actOnOpposingPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ card: dude }), { game: this.game, card: dude }), 
-                dude => !this.isBreakinAndEnterin(dude, locationCard));
+            this.actOnOpposingPosse(dude => this.game.resolveGameAction(GameActions.addBounty({ 
+                card: dude, 
+                reason: BountyType.breaking 
+            }), { game: this.game, card: dude }), 
+            dude => !this.isBreakinAndEnterin(dude, locationCard));
         }
     } 
 
@@ -518,12 +523,14 @@ class Shootout extends Phase {
     chamberAnotherRound() {
         this.queueStep(new SimpleStep(this.game, () => this.game.discardDrawHands()));
         this.game.raiseEvent('onShootoutRoundFinished');
-        if(!this.checkEndCondition()) {
-            this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
-            this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
-        } else {
-            this.endShootout(false);
-        }
+        this.queueStep(new SimpleStep(this.game, () => {
+            if(!this.checkEndCondition()) {
+                this.game.addAlert('info', 'Both players Chamber another round and go to next round of shootout.');
+                this.queueStep(new SimpleStep(this.game, () => this.beginShootoutRound()));
+            } else {
+                this.endShootout(false);
+            }
+        }));
     }
     
     recordJobStatus() {

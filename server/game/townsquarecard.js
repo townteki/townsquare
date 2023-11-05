@@ -39,6 +39,10 @@ class TownsquareCard extends NullCard {
         return false;
     }
 
+    isLocationCard() {
+        return true;
+    }
+
     adjacentLocations() { 
         return this.game.filterCardsInPlay(card => card.isLocationCard() && this.isAdjacent(card.uuid))
             .map(card => card.getGameLocation());

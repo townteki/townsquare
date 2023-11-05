@@ -1,5 +1,6 @@
 const AbilityUsage = require('./abilityusage');
 const BaseCostReducer = require('./basecostreducer');
+const PlayingTypes = require('./Constants/PlayingTypes');
 
 class CostReducer extends BaseCostReducer {
     constructor(game, source, properties) {
@@ -16,7 +17,7 @@ class CostReducer extends BaseCostReducer {
             return false;
         }
 
-        return (this.playingTypes.includes(playingType) || this.playingTypes.includes('any')) && !!this.match(card, context);
+        return (this.playingTypes.includes(playingType) || this.playingTypes.includes(PlayingTypes.Any)) && !!this.match(card, context);
     }
 
     markUsed() {

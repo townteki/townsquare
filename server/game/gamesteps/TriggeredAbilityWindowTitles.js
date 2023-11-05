@@ -11,6 +11,7 @@ const EventToTitleFunc = {
         const locCardTitle = location ? ` to ${location.locationCard.title}` : '';
         return `${event.card.title} moving${locCardTitle}`;
     },
+    onCardBountyAdded: event => `${event.card.title} getting bounty`,
     onDrawHandsRevealed: () => 'draw hands being revealed',
     onTargetsChosen: event => `targets being chosen by ${event.ability.card.title}`
 };

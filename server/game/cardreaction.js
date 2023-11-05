@@ -60,7 +60,7 @@ class CardReaction extends PromptedTriggeredAbility {
             return false;
         }
     
-        if(this.game.shootout && this.game.shootout.headlineUsed && this.card.hasKeyword('headline')) {
+        if(this.game.wasHeadlineUsed() && this.card.hasKeyword('headline')) {
             return false;
         }
 

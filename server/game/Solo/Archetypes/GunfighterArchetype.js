@@ -2,6 +2,7 @@
 /** @typedef {import('../../drawcard')} DrawCard */
 
 const PhaseNames = require('../../Constants/PhaseNames');
+const PlayingTypes = require('../../Constants/PlayingTypes');
 const GameActions = require('../../GameActions');
 const { Priorities, booleanCondition } = require('../priorities');
 const BaseArchetype = require('./BaseArchetype');
@@ -262,17 +263,17 @@ class GunfighterArchetype extends BaseArchetype {
         let playActions = [];
         if(suit !== 'Clubs') {
             possibleCards.forEach(card => {
-                if(this.game.currentPhase === PhaseNames.HighNoon && this.player.playablePlayActions(card, 'shoppin').length) {
+                if(this.game.currentPhase === PhaseNames.HighNoon && this.player.playablePlayActions(card, PlayingTypes.Shoppin).length) {
                     playActions.push({
                         card,
-                        playFunction: () => this.player.playCard(card, 'shoppin', { doNotMarkActionAsTaken: true })
+                        playFunction: () => this.player.playCard(card, PlayingTypes.Shoppin, { doNotMarkActionAsTaken: true })
                     });
                 } else if(card.abilities.playActions.length > 0) {
                     if(card.abilities.playActions.some(playAction => 
                         playAction.meetsRequirements(playAction.createContext(this.player)))) {
                         playActions.push({
                             card,
-                            playFunction: () => this.player.playCard(card, 'play', { doNotMarkActionAsTaken: true })
+                            playFunction: () => this.player.playCard(card, PlayingTypes.Play, { doNotMarkActionAsTaken: true })
                         });
                     }
                 }
@@ -382,9 +383,9 @@ class GunfighterArchetype extends BaseArchetype {
         if(casualtyContext.availableVictims.includes(firstCasualty)) {
             const numOfResolutions = resolutions.length;
             resolutions = BaseArchetype.handleCasualty('sendHome', firstCasualty, resolutions, casualtyContext);
-            if (resolutions.length === numOfResolutions) {
+            if(resolutions.length === numOfResolutions) {
                 resolutions = BaseArchetype.handleCasualty('discard', firstCasualty, resolutions, casualtyContext);
-                if (resolutions.length === numOfResolutions) {
+                if(resolutions.length === numOfResolutions) {
                     resolutions = BaseArchetype.handleCasualty('ace', firstCasualty, resolutions, casualtyContext);
                 }
             }
@@ -418,9 +419,9 @@ class GunfighterArchetype extends BaseArchetype {
             if(victim.hasKeyword('token') && casualtyContext.currentCasualtiesNum > 0) {
                 const numOfResolutions = resolutions.length;
                 resolutions = BaseArchetype.handleCasualty('ace', victim, resolutions, casualtyContext);
-                if (resolutions.length === numOfResolutions) {
+                if(resolutions.length === numOfResolutions) {
                     resolutions = BaseArchetype.handleCasualty('discard', victim, resolutions, casualtyContext);
-                    if (resolutions.length === numOfResolutions) {
+                    if(resolutions.length === numOfResolutions) {
                         resolutions = BaseArchetype.handleCasualty('sendHome', victim, resolutions, casualtyContext);
                     }
                 }

@@ -1,6 +1,6 @@
 {
   "name": "townsquare",
-  "version": "1.0.21",
+  "version": "1.1.2",
   "description": "Doomtown:Reloaded Card Game Server",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "coverage": "nyc npm run test",
     "jasmine": "cross-env JASMINE_CONFIG_PATH=./jasmine.json jasmine",
     "lint": "eslint server/ test/server/ --ext=js",
+    "lint-fix": "eslint server/ test/server/ --ext=js --fix",
     "pack-lobby": "node ./pack.js"
   },
   "repository": {
@@ -44,7 +45,6 @@
     "monk": "^7.0.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
-    "patreon": "^0.4.1",
     "pluralize": "^7.0.0",
     "pmx": "^1.6.7",
     "raven": "^1.2.1",

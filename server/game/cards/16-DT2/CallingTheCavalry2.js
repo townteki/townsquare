@@ -27,7 +27,7 @@ class CallingTheCavalry2 extends ActionCard {
                                 context.player, this, context.player.getTotalRank());
                         }
                     }
-                }
+                };
                 this.game.onceConditional('onPlayWindowOpened', { condition: event => event.playWindow.name === 'shootout resolution' }, eventHandler);
                 this.game.onceConditional('onPlayWindowClosed', { condition: event => event.playWindow.name === 'shootout resolution' }, modifyHandRankEventHandler);                
                 this.game.once('onShootoutPhaseFinished', () => {

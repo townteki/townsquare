@@ -99,6 +99,10 @@ describe('JobAction', function() {
                         this.player2.clickPrompt('Done');
                     });
 
+                    it('should end shootout and give noon actiom prompt', function() {
+                        expect(this.player2).toHavePromptButton('Pass');
+                    });                    
+
                     it('should succeed the job', function() {
                         expect(this.jobAbility.setResult).toHaveBeenCalledWith(true, jasmine.any(Object));
                     });

@@ -2,6 +2,8 @@ const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
 const { ShootoutStatuses } = require('./Constants/index.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
+const NullCard = require('./nullcard.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 
@@ -87,6 +89,13 @@ class DrawCard extends BaseCard {
     set upkeep(amount) {
         this.currentUpkeep = amount;
     }
+
+    get locationCard() {
+        if(this.isNotPlanted()) {
+            return new NullCard();
+        }
+        return super.locationCard;
+    }    
 
     modifyControl(amount, applying = true, fromEffect = false) {
         this.currentControl += amount;
@@ -260,8 +269,17 @@ class DrawCard extends BaseCard {
      */
     whileAttached(properties) {
         this.persistentEffect({
-            condition: () => !!this.parent && (!properties.condition || properties.condition()),
-            match: (card, context) => card.uuid === this.parent.uuid && (!properties.match || properties.match(card, context)),
+            condition: () => !!this.parent && (!this.isTotem() || !this.isNotPlanted()) && (!properties.condition || properties.condition()),
+            match: (card, context) => {
+                if(this.isTotem()) {
+                    if(card.uuid !== this.gamelocation) {
+                        return false;
+                    }
+                } else if(card.uuid !== this.parent.uuid) {
+                    return false;
+                }
+                return !properties.match || properties.match(card, context);
+            },
             targetController: 'any',
             effect: properties.effect,
             recalculateWhen: properties.recalculateWhen,
@@ -299,13 +317,13 @@ class DrawCard extends BaseCard {
 
         // Do not check attachment restrictions if this is Improvement goods type. That is because the
         // restriction is checked only at the time it is being attached.
-        if(this.isImprovement() && playingType === 'validityCheck') {
+        if(this.isImprovement() && playingType === PlayingTypes.ValidityCheck) {
             return true;
         }
         
         let context = { player: player };
 
-        return !this.attachmentRestrictions || 
+        return !this.attachmentRestrictions || (this.isTotem() && card.canAttachTotems(this)) ||
             this.attachmentRestrictions.some(restriction => restriction(card, context));
     }
 
@@ -460,6 +478,10 @@ class DrawCard extends BaseCard {
         return this.options.contains('isSelectedAsFirstCasualty', this);
     }
 
+    isNotPlanted() {
+        return this.options.contains('isNotPlanted', this);
+    }    
+
     calloutCannotBeRefused(opponentDude) {
         return this.options.contains('calloutCannotBeRefused', opponentDude);
     }
@@ -488,6 +510,14 @@ class DrawCard extends BaseCard {
         return this.options.contains('cannotFlee');
     }
 
+    cannotJoinPosse(posse) {
+        return this.options.contains('cannotJoinPosse', posse);
+    }
+    
+    cannotMakeCallout(targetDude) {
+        return this.options.contains('cannotMakeCallout', targetDude);
+    }    
+
     cannotAttachCards(attachment) {
         return this.options.contains('cannotAttachCards', attachment);
     }
@@ -502,7 +532,11 @@ class DrawCard extends BaseCard {
 
     canBeInventedWithoutBooting() {
         return this.options.contains('canBeInventedWithoutBooting');
-    }    
+    }
+    
+    canAttachTotems(totem) {
+        return this.options.contains('canAttachTotems', totem);
+    }
 
     canBeAced(context) {
         return this.allowGameAction('ace', context);
