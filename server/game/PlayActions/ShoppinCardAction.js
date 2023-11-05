@@ -1,10 +1,11 @@
 const PhaseNames = require('../Constants/PhaseNames');
+const PlayingTypes = require('../Constants/PlayingTypes');
 const PutIntoPlayCardAction = require('./PutIntoPlayCardAction');
 
 class ShoppinCardAction extends PutIntoPlayCardAction {
     constructor(targetLocationUuid = '', targetProperties) {
         super({ 
-            playType: 'shoppin', 
+            playType: PlayingTypes.Shoppin, 
             abilitySourceType: 'game', 
             targetLocationUuid,
             targetProperties

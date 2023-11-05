@@ -23,6 +23,7 @@ const JokerPrompt = require('./gamesteps/jokerprompt.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
 const MathHelper = require('./MathHelper.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 
 /** @typedef {import('./game')} Game */
 
@@ -242,9 +243,9 @@ class Player extends Spectator {
     }
 
     isCardInPlayableLocation(card, playingType) {
-        let playableLocations = ['shoppin', 'play'].map(playingType =>
+        let playableLocations = [PlayingTypes.Shoppin, PlayingTypes.Play].map(playingType =>
             new PlayableLocation(playingType, card => card.controller.equals(this) && card.location === 'hand'));
-        if(playingType === 'combo') {
+        if(playingType === PlayingTypes.Combo) {
             playableLocations.push(new PlayableLocation(playingType, card => 
                 card.controller.equals(this) && (card.location === 'hand' || card.location === 'discard pile')));
         }
@@ -595,7 +596,7 @@ class Player extends Spectator {
 
     getSpendableGhostRockSources(spendParams) {
         let activePlayer = spendParams.activePlayer || this.game.currentAbilityContext && this.game.currentAbilityContext.player || this;
-        let defaultedSpendParams = Object.assign({ activePlayer: activePlayer, playingType: 'ability' }, spendParams);
+        let defaultedSpendParams = Object.assign({ activePlayer: activePlayer, playingType: PlayingTypes.Ability }, spendParams);
         return this.ghostrockSources.filter(source => source.allowSpendingFor(defaultedSpendParams));
     }
 
@@ -711,7 +712,7 @@ class Player extends Spectator {
         return !this.triggerRestrictions.some(restriction => restriction(card));
     }
 
-    canPlay(card, playingType = 'play') {
+    canPlay(card, playingType = PlayingTypes.Play) {
         return !this.playCardRestrictions.some(restriction => restriction(card, playingType));
     }
 
@@ -729,7 +730,7 @@ class Player extends Spectator {
             return false;
         }
 
-        if(card.hasKeyword('gadget') && params.playingType === 'shoppin') {
+        if(card.hasKeyword('gadget') && params.playingType === PlayingTypes.Shoppin) {
             let availableScientist = this.cardsInPlay.find(searchCard =>
                 searchCard.getType() === 'dude' && searchCard.canPerformSkillOn(card) && !searchCard.booted && searchCard.isInControlledLocation());
             if(!availableScientist) {
@@ -768,14 +769,14 @@ class Player extends Spectator {
     putIntoPlay(card, params = {}) {
         const defaultParams = {
             originalLocation: card.location,
-            playingType: params.playingType || 'play',
+            playingType: params.playingType || PlayingTypes.Play,
             target: params.targetLocationUuid || '',
             context: params.context || {},
             booted: !!params.booted
         };
         const updatedParams = Object.assign(params, defaultParams);
         let onAttachCompleted = (card, target, params) => {
-            if(params.playingType === 'shoppin') {
+            if(params.playingType === PlayingTypes.Shoppin) {
                 this.game.addMessage('{0} does Shoppin\' to attach {1} to {2}{3}', this, card, target, costText);
             } else {
                 this.game.addMessage('{0} brings into play {1} attaching it to {2}{3}', this, card, target, costText);
@@ -788,7 +789,7 @@ class Player extends Spectator {
         }
 
         card.facedown = false;
-        card.booted = params.playingType !== 'setup' && !!card.entersPlayBooted || !!updatedParams.booted;
+        card.booted = params.playingType !== PlayingTypes.Setup && !!card.entersPlayBooted || !!updatedParams.booted;
         let costText = '';
         if(updatedParams.context.costs && updatedParams.context.costs.ghostrock !== undefined && updatedParams.context.costs.ghostrock !== null) {
             costText = ', costing ' + updatedParams.context.costs.ghostrock + ' GR';
@@ -796,7 +797,7 @@ class Player extends Spectator {
         switch(card.getType()) {
             case 'spell':
             case 'goods':
-                if(updatedParams.playingType === 'shoppin') {
+                if(updatedParams.playingType === PlayingTypes.Shoppin) {
                     updatedParams.targetParent = updatedParams.context.target;
                 }
                 if(updatedParams.targetParent && this.canAttach(card, updatedParams.targetParent, updatedParams.playingType)) {
@@ -816,13 +817,13 @@ class Player extends Spectator {
                         card.moveToLocation(target);
                         this.moveCard(card, 'play area');
                         this.entersPlay(card, updatedParams);
-                        if(updatedParams.playingType === 'shoppin') {
+                        if(updatedParams.playingType === PlayingTypes.Shoppin) {
                             this.game.addMessage('{0} does Shoppin\' to hire {1}{2}', this, card, costText);
                         } else if(this.game.currentPhase !== 'setup') {
                             this.game.addMessage('{0} brings into play dude {1}{2}', this, card, costText);
                         }
                     };
-                    if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== 'drop') {
+                    if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== PlayingTypes.Drop) {
                         this.inventGadget(card, updatedParams.scientist, (context, scientist) => {
                             putIntoPlayFunc(scientist.gamelocation);
                         }, scientist => scientist.locationCard.controller.equals(this));
@@ -835,7 +836,7 @@ class Player extends Spectator {
             case 'deed': {
                 const putIntoPlayFunc = () => {
                     this.addDeedToStreet(card, updatedParams.target);
-                    if(updatedParams.playingType === 'shoppin') {
+                    if(updatedParams.playingType === PlayingTypes.Shoppin) {
                         const suffix = (card.hasKeyword('Out of Town') ? 'at out of town location' : 'on their street') + costText;
                         this.game.addMessage('{0} does Shoppin\' to build {1} {2}', this, card, suffix);
                     } else if(this.game.currentPhase !== 'setup') {
@@ -843,7 +844,7 @@ class Player extends Spectator {
                     }
                     this.entersPlay(card, updatedParams);                    
                 };              
-                if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== 'drop') {
+                if(card.isGadget() && this.game.currentPhase !== 'setup' && updatedParams.playingType !== PlayingTypes.Drop) {
                     this.inventGadget(card, updatedParams.scientist, () => {
                         putIntoPlayFunc();
                     });
@@ -964,7 +965,7 @@ class Player extends Spectator {
             return false;
         }
 
-        if(card.location !== 'play area' && playingType !== 'technique') {
+        if(card.location !== 'play area' && ![PlayingTypes.Technique, PlayingTypes.ValidityCheck].includes(playingType)) {
             return false;
         }
 
@@ -972,7 +973,7 @@ class Player extends Spectator {
             return false;
         }
 
-        if(playingType === 'shoppin') {
+        if(playingType === PlayingTypes.Shoppin) {
             if(!card.locationCard || !card.locationCard.controller.equals(attachment.controller)) {
                 return false;
             } 
@@ -990,11 +991,11 @@ class Player extends Spectator {
         }
 
         if(attachment.getType() !== 'legend' && attachment.isGadget() && 
-            ['shoppin', 'ability', 'play'].includes(playingType) &&
+            [PlayingTypes.Shoppin, PlayingTypes.Ability, PlayingTypes.Play].includes(playingType) &&
             !attachment.doesNotHaveToBeInvented() &&
             attachment.location !== 'play area') {
             let scientist = defaultScientist || 
-                (playingType === 'shoppin' && !attachment.isImprovement() ? card : null);
+                (playingType === PlayingTypes.Shoppin && !attachment.isImprovement() ? card : null);
             this.inventGadget(attachment, scientist, () => this.performAttach(attachment, card, playingType, attachCallback));
         } else {
             this.performAttach(attachment, card, playingType, attachCallback);
@@ -1011,7 +1012,7 @@ class Player extends Spectator {
             this.game.takeControl(card.controller, attachment);
         }
 
-        if(originalLocation !== card.location && playingType !== 'upgrade') {
+        if(originalLocation !== card.location && playingType !== PlayingTypes.Upgrade) {
             attachment.owner.removeCardFromPile(attachment);
         }
 
@@ -1026,7 +1027,7 @@ class Player extends Spectator {
         if(attachCallback) {
             attachCallback(attachment, card, playingType);
         }
-        if(playingType === 'trading') {
+        if(playingType === PlayingTypes.Trading) {
             attachment.traded = true;
         }
 
@@ -1034,7 +1035,7 @@ class Player extends Spectator {
             attachment.applyPersistentEffects();
         });
 
-        if(playingType !== 'upgrade' && playingType !== 'chatcommand') {
+        if(playingType !== PlayingTypes.Upgrade && playingType !== PlayingTypes.Chatcommand) {
             let event = new AtomicEvent();
             if(originalLocation === 'hand') {
                 event.addChildEvent(new Event('onCardLeftHand', { player: this, card: card }));
@@ -1316,7 +1317,7 @@ class Player extends Spectator {
     }
 
     promptForDeedStreetSide(card) {
-        this.game.queueStep(new DeedStreetSidePrompt(this.game, this, card, 'play'));
+        this.game.queueStep(new DeedStreetSidePrompt(this.game, this, card, PlayingTypes.Play));
     }
 
     inPlayLocation(target) {

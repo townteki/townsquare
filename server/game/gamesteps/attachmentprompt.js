@@ -1,3 +1,4 @@
+const PlayingTypes = require('../Constants/PlayingTypes.js');
 const UiPrompt = require('./uiprompt.js');
 
 class AttachmentPrompt extends UiPrompt {
@@ -6,7 +7,7 @@ class AttachmentPrompt extends UiPrompt {
         this.player = player;
         this.attachmentCard = attachmentCard;
         this.params = params;
-        this.playingType = params.playingType || 'play';
+        this.playingType = params.playingType || PlayingTypes.Play;
         this.targetLocation = params.target || '';
         this.context = params.context || {};
         this.onAttachCompleted = onAttachCompleted;

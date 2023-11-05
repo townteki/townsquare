@@ -1,4 +1,5 @@
 const AbilityUsage = require('./abilityusage.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 const Costs = require('./costs.js');
 const EventRegistrar = require('./eventregistrar.js');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
@@ -136,8 +137,8 @@ class CardAction extends PlayTypeAbility {
         }
 
         if(this.card.getType() === 'action') {
-            let actionType = context.comboNumber ? 'combo' : 'play';
-            if(!context.player.isCardInPlayableLocation(this.card, actionType)) {
+            let playingType = context.comboNumber ? PlayingTypes.Combo : PlayingTypes.Play;
+            if(!context.player.isCardInPlayableLocation(this.card, playingType)) {
                 return false;
             }
         }

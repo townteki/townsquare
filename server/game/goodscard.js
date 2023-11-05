@@ -1,3 +1,4 @@
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 const HeartsCard = require('./heartscard.js');
 
 class GoodsCard extends HeartsCard {
@@ -14,7 +15,7 @@ class GoodsCard extends HeartsCard {
             return false;
         }
 
-        if(this.isGadget() && playingType === 'shoppin' &&
+        if(this.isGadget() && playingType === PlayingTypes.Shoppin &&
             (!card.canPerformSkillOn(this) || card.cannotInventGadgets())) {
             return false;
         }

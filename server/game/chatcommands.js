@@ -2,6 +2,7 @@ const TextHelper = require('./TextHelper');
 const Deck = require('./Deck');
 const RematchPrompt = require('./gamesteps/RematchPrompt');
 const {Tokens} = require('./Constants');
+const PlayingTypes = require('./Constants/PlayingTypes');
 
 class ChatCommands {
     constructor(game) {
@@ -818,14 +819,14 @@ class ChatCommands {
                     activePromptTitle: 'Select where to ' + title,
                     waitingPromptTitle: 'Waiting for opponent to select parent for attachment',
                     cardCondition: card => card.location === 'play area' && 
-                        card.controller.canAttach(cardToAttach, card, 'chatcommand') &&
+                        card.controller.canAttach(cardToAttach, card, PlayingTypes.Chatcommand) &&
                         (card.controller === player || 
                         cardToAttach.hasKeyword('condition') || 
                         cardToAttach.hasKeyword('totem') ||
                         card.controller === this.game.automaton),
                     cardType: ['deed', 'dude', 'outfit'],
                     onSelect: (player, target) => {
-                        player.performAttach(cardToAttach, target, 'chatcommand');    
+                        player.performAttach(cardToAttach, target, PlayingTypes.Chatcommand);    
                         this.game.addAlert('danger', '{0} uses the /attach command to attach {1} to {2}', player, cardToAttach, target);         
                         this.game.attachmentValidityCheck.enforceValidity();                   
                         return true;

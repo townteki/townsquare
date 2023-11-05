@@ -5,6 +5,7 @@ const XValuePrompt = require('./costs/XValuePrompt.js');
 const SelfCost = require('./costs/SelfCost.js');
 const UnbootCost = require('./costs/UnbootCost.js');
 const DiscardFromDeckCost = require('./costs/DiscardFromDeckCost');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 
 const Costs = {
     /**
@@ -134,8 +135,8 @@ const Costs = {
         return {
             name: 'expendAction',
             canPay: function(context) {
-                return context.player.isCardInPlayableLocation(context.source, context.comboNumber ? 'combo' : 'play') && 
-                    context.player.canPlay(context.source, 'play');
+                return context.player.isCardInPlayableLocation(context.source, context.comboNumber ? PlayingTypes.Combo : PlayingTypes.Play) && 
+                    context.player.canPlay(context.source);
             },
             pay: function(context) {
                 // Events become in a "state of being played" while they resolve
@@ -203,7 +204,7 @@ const Costs = {
      */
     playAction: function() {
         return [
-            Costs.payReduceableGRCost('play', true),
+            Costs.payReduceableGRCost(PlayingTypes.Play, true),
             Costs.expendAction()
         ];
     },
@@ -284,7 +285,7 @@ const Costs = {
                 }
                 return context.player.getSpendableGhostRock({ 
                     player: context.player, 
-                    playingType: 'ability', 
+                    playingType: PlayingTypes.Ability, 
                     source: context.source,
                     context: context
                 }) >= amount;
@@ -330,7 +331,7 @@ const Costs = {
      * the passed maximum and either the player's or his opponent's ghostrock.
      * Used by Flame-Thrower.
      */
-    payXGhostRock: function(minFunc, maxFunc, playingType = 'play', opponentFunc) {
+    payXGhostRock: function(minFunc, maxFunc, playingType = PlayingTypes.Play, opponentFunc) {
         return {
             canPay: function(context) {
                 let reduction = context.player.getCostReduction(playingType, context.source, context);

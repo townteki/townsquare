@@ -1,3 +1,4 @@
+const PlayingTypes = require('../Constants/PlayingTypes');
 const GameAction = require('./GameAction');
 
 class PutIntoPlay extends GameAction {
@@ -21,7 +22,7 @@ class PutIntoPlay extends GameAction {
     getDefaultParams(params) {
         const defaultParams = {
             targetLocationUuid: params.targetLocationUuid || '',
-            playingType: params.playingType || 'play',
+            playingType: params.playingType || PlayingTypes.Play,
             context: params.context || {}
         };
         return Object.assign(params, defaultParams);

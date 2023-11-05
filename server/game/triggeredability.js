@@ -1,4 +1,5 @@
 const BaseAbility = require('./baseability.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 const Costs = require('./costs.js');
 const HandlerGameActionWrapper = require('./GameActions/HandlerGameActionWrapper.js');
 const TriggeredAbilityContext = require('./TriggeredAbilityContext.js');
@@ -107,7 +108,7 @@ class TriggeredAbility extends BaseAbility {
             return false;
         }
 
-        if(isPlayableActionAbility && !this.isConditionCardInPlay() && !context.player.isCardInPlayableLocation(this.card, 'play')) {
+        if(isPlayableActionAbility && !this.isConditionCardInPlay() && !context.player.isCardInPlayableLocation(this.card, PlayingTypes.Play)) {
             return false;
         }
 

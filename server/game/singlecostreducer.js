@@ -1,4 +1,5 @@
 const BaseCostReducer = require('./basecostreducer');
+const PlayingTypes = require('./Constants/PlayingTypes');
 
 class SingleCostReducer extends BaseCostReducer {
     constructor(game, player, source, properties) {
@@ -10,7 +11,7 @@ class SingleCostReducer extends BaseCostReducer {
     }
 
     canReduce(playingType, card) {
-        return (this.playingTypes === 'any' || this.playingTypes.includes(playingType)) && card === this.card;
+        return (this.playingTypes === PlayingTypes.Any || this.playingTypes.includes(playingType)) && card === this.card;
     }
 
     markUsed() {

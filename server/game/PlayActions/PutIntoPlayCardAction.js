@@ -1,10 +1,11 @@
 const BaseAbility = require('../baseability');
+const PlayingTypes = require('../Constants/PlayingTypes');
 const Costs = require('../costs');
 const GameActions = require('../GameActions');
 const SingleCostReducer = require('../singlecostreducer');
 
 class PutIntoPlayCardAction extends BaseAbility {
-    constructor(properties = { playType: 'ability', abilitySourceType: 'card', targetLocationUuid: '' }, callback) {
+    constructor(properties = { playType: PlayingTypes.Ability, abilitySourceType: 'card', targetLocationUuid: '' }, callback) {
         super({
             abilitySourceType: properties.abilitySourceType,
             cost: [
@@ -44,7 +45,7 @@ class PutIntoPlayCardAction extends BaseAbility {
                 card: source, 
                 amount: this.reduceAmount, 
                 minimum: this.properties.minimum,
-                playingTypes: 'any'
+                playingTypes: PlayingTypes.Any
             });
             player.addCostReducer(this.costReducer);
         }

@@ -7,6 +7,7 @@ const SpellCard = require('./spellcard.js');
 const ActionCard = require('./actioncard.js');
 const AbilityDsl = require('./abilitydsl.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 
 class DudeCard extends DrawCard {
     constructor(owner, cardData) {
@@ -317,7 +318,7 @@ class DudeCard extends DrawCard {
 
         expDude.attachments = [];
         this.attachments.forEach(attachment => {
-            expDude.controller.attach(attachment, expDude, 'upgrade');
+            expDude.controller.attach(attachment, expDude, PlayingTypes.Upgrade);
         });
 
         this.controller.moveCard(this, 'discard pile', { raiseEvents: false });

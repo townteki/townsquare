@@ -2,6 +2,7 @@ const BaseCard = require('./basecard.js');
 const CardMatcher = require('./CardMatcher.js');
 const { ShootoutStatuses } = require('./Constants/index.js');
 const PhaseNames = require('./Constants/PhaseNames.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 const NullCard = require('./nullcard.js');
 const StandardActions = require('./PlayActions/StandardActions.js');
 const ReferenceConditionalSetProperty = require('./PropertyTypes/ReferenceConditionalSetProperty.js');
@@ -316,7 +317,7 @@ class DrawCard extends BaseCard {
 
         // Do not check attachment restrictions if this is Improvement goods type. That is because the
         // restriction is checked only at the time it is being attached.
-        if(this.isImprovement() && playingType === 'validityCheck') {
+        if(this.isImprovement() && playingType === PlayingTypes.ValidityCheck) {
             return true;
         }
         

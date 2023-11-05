@@ -1,4 +1,5 @@
 const AbilityDsl = require('./abilitydsl.js');
+const PlayingTypes = require('./Constants/PlayingTypes.js');
 const HeartsCard = require('./heartscard.js');
 
 class SpellCard extends HeartsCard {
@@ -24,7 +25,7 @@ class SpellCard extends HeartsCard {
             }
             return card.canPerformSkillOn(this);
         } else if(card.isLocationCard() && this.isTotem()) {
-            if(['ability', 'validityCheck', 'chatcommand'].includes(playingType)) {
+            if([PlayingTypes.Ability, PlayingTypes.ValidityCheck, PlayingTypes.Chatcommand].includes(playingType)) {
                 return true;
             }
             return card.controller.equals(this.controller) && 
