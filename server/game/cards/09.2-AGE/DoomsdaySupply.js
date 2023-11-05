@@ -36,7 +36,7 @@ class DoomsdaySupply extends GoodsCard {
                     cardType: 'dude',
                     onSelect: (player, dude) => {
                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                            playType: 'ability',
+                            playingType: 'ability',
                             abilitySourceType: 'card',
                             targetParent: dude,
                             reduceAmount: 2

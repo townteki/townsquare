@@ -53,7 +53,7 @@ class JohnAcesRadcliffeExp1 extends DudeCard {
                     }), context);
                 } else {
                     this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                        playType: 'ability',
+                        playingType: 'ability',
                         abilitySourceType: 'ability',
                         targetParent: this
                     }), context.player, context.target);                     

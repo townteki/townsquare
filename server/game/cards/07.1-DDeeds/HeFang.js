@@ -18,7 +18,7 @@ class HeFang extends DudeCard {
             },
             handler: context => {
                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                    playType: 'ability',
+                    playingType: 'ability',
                     abilitySourceType: 'card',
                     reduceAmount: 2,
                     targetLocationUuid: this.gamelocation

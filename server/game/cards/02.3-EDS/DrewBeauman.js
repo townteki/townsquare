@@ -28,7 +28,7 @@ class DrewBeauman extends DudeCard {
                             effect: ability.effects.canBeInventedWithoutBooting()
                         }));  
                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                            playType: 'ability',
+                            playingType: 'ability',
                             abilitySourceType: 'card',
                             scientist: this
                         }, () => {

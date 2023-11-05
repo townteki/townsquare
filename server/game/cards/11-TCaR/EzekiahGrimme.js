@@ -36,7 +36,7 @@ class EzekiahGrimme extends LegendCard {
                         this.game.addMessage('{0} uses {1} to attach pulled card {2} booted to {3}', 
                             player, this, context.event.pulledCard, context.event.pullingDude),
                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                            playType: 'ability',
+                            playingType: 'ability',
                             abilitySourceType: 'card',
                             targetParent: context.event.pullingDude,
                             booted: true
@@ -80,7 +80,7 @@ class EzekiahGrimme extends LegendCard {
                             this.game.addMessage('{0} uses {1} to attach {2} from revealed cards to {3} paying all costs', 
                                 context.player, this, spells[0], context.costs.boot);
                             this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                                playType: 'ability',
+                                playingType: 'ability',
                                 abilitySourceType: 'card',
                                 targetParent: context.costs.boot
                             }), player, spells[0]);  

@@ -50,7 +50,7 @@ class FuntimeFreddy extends DudeCard {
                                             cardType: 'dude',
                                             onSelect: (player, huckster) => {
                                                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                                                    playType: 'ability',
+                                                    playingType: 'ability',
                                                     abilitySourceType: 'card',
                                                     targetParent: huckster
                                                 }), player, hexToAttach);  

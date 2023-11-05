@@ -14,7 +14,7 @@ class JiaMein2 extends DudeCard {
             },
             handler: context => {
                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                    playType: 'ability',
+                    playingType: 'ability',
                     abilitySourceType: 'card',
                     targetParent: this
                 }, () => {

@@ -32,7 +32,7 @@ class GrimoiresAndMore extends DeedCard {
                                 },
                                 handler: card => {
                                     this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                                        playType: 'ability',
+                                        playingType: 'ability',
                                         sourceType: 'ability',
                                         targetParent: dude
                                     }), context.player, card);
