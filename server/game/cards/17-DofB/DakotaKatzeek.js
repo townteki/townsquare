@@ -31,7 +31,7 @@ class DakotaKatzeek extends DudeCard {
                             },
                             handler: card => {
                                 this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                                    playType: 'ability',
+                                    playingType: 'ability',
                                     abilitySourceType: 'card',
                                     targetParent: this.locationCard
                                 }), context.player, card);

@@ -5,18 +5,16 @@ const GameActions = require('../GameActions');
 const SingleCostReducer = require('../singlecostreducer');
 
 class PutIntoPlayCardAction extends BaseAbility {
-    constructor(properties = { playType: PlayingTypes.Ability, abilitySourceType: 'card', targetLocationUuid: '' }, callback) {
+    constructor(properties = { playingType: PlayingTypes.Ability, abilitySourceType: 'card', targetLocationUuid: '' }, callback) {
         super({
             abilitySourceType: properties.abilitySourceType,
             cost: [
-                Costs.payReduceableGRCost(properties.playType)
+                Costs.payReduceableGRCost(properties.playingType)
             ],
             target: properties.targetProperties
         });
         this.properties = properties;
-        // TODO needs to be refactored to change all to playingType
-        this.properties.playingType = properties.playType;
-        this.playType = properties.playType;
+        this.playingType = properties.playingType;
         this.reduceAmount = properties.reduceAmount;
         this.callback = callback;
     }
@@ -33,8 +31,8 @@ class PutIntoPlayCardAction extends BaseAbility {
 
         return (
             source.getType() !== 'action' &&
-            player.isCardInPlayableLocation(source, this.playType) &&
-            player.canPutIntoPlay(source, { playingType: this.playType, context })
+            player.isCardInPlayableLocation(source, this.playingType) &&
+            player.canPutIntoPlay(source, { playingType: this.playingType, context })
         );
     }
 
@@ -75,7 +73,7 @@ class PutIntoPlayCardAction extends BaseAbility {
     }
 
     playTypePlayed() {
-        return this.playType;
+        return this.playingType;
     }
 }
 

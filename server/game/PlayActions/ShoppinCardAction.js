@@ -5,7 +5,7 @@ const PutIntoPlayCardAction = require('./PutIntoPlayCardAction');
 class ShoppinCardAction extends PutIntoPlayCardAction {
     constructor(targetLocationUuid = '', targetProperties) {
         super({ 
-            playType: PlayingTypes.Shoppin, 
+            playingType: PlayingTypes.Shoppin, 
             abilitySourceType: 'game', 
             targetLocationUuid,
             targetProperties

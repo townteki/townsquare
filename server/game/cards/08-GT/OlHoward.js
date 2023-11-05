@@ -33,7 +33,7 @@ class OlHoward extends DudeCard {
                         },
                         handler: hauntedDeed => {
                             this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                                playType: 'ability',
+                                playingType: 'ability',
                                 abilitySourceType: 'card'
                             }, () => {
                                 context.player.attach(this, hauntedDeed, 'ability', () =>

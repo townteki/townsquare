@@ -42,7 +42,7 @@ class F1Burch extends DudeCard {
                                     },
                                     handler: card => {
                                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                                            playType: 'ability',
+                                            playingType: 'ability',
                                             abilitySourceType: 'card',
                                             reduceAmount: 1,
                                             targetLocationUuid: this.gamelocation

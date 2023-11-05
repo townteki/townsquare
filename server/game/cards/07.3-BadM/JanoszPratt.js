@@ -47,7 +47,7 @@ class JanoszPratt extends DudeCard {
                     cardType: 'dude',
                     onSelect: (player, dude) => {
                         this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                            playType: 'ability',
+                            playingType: 'ability',
                             abilitySourceType: 'card',
                             scientist: this,
                             targetParent: dude,

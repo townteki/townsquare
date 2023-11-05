@@ -5,7 +5,7 @@ const ShoppinCardAction = require('./ShoppinCardAction');
 var StandardActions = {};
 
 var defaultProperties = {
-    playType: PlayingTypes.Ability, 
+    playingType: PlayingTypes.Ability, 
     abilitySourceType: 'card', 
     targetLocationUuid: ''
 };

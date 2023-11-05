@@ -57,7 +57,7 @@ class DrJTGoodenough extends DudeCard {
                                                 effect: ability.effects.doesNotHaveToBeInvented()
                                             }));                                                  
                                             this.game.resolveStandardAbility(StandardActions.putIntoPlay({
-                                                playType: 'ability',
+                                                playingType: 'ability',
                                                 abilitySourceType: 'card',
                                                 targetParent: dude
                                             }), player, weaponToAttach);                                         
