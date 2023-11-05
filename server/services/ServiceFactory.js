@@ -1,5 +1,4 @@
 const MessageService = require('./MessageService');
-const PatreonService = require('./PatreonService');
 const ConfigService = require('./ConfigService');
 const UserService = require('./UserService');
 const BanlistService = require('./BanlistService');
@@ -28,13 +27,6 @@ module.exports = {
         }
 
         return services.userService;
-    },
-    patreonService: (clientId, secret, userService, callbackUrl) => {
-        if(!services.patreonService) {
-            services.patreonService = new PatreonService(clientId, secret, userService, callbackUrl);
-        }
-
-        return services.patreonService;
     },
     banlistService: (db) => {
         if(!services.banlistService) {
