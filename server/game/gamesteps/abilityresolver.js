@@ -264,7 +264,7 @@ class AbilityResolver extends BaseStep {
         // ability instead.
         if(this.ability.isPlayableActionAbility()) {
             if(this.context.source.location === 'being played') {
-                if(this.context.source.isTaoTechnique && this.context.source.isTaoTechnique()) {
+                if(this.context.source.isTaoTechnique && this.context.source.isTaoTechnique() && !this.ability.cancelled) {
                     this.context.player.handleTaoTechniques(this.context.source, this.context.kfDude, this.context.pull.isSuccessful);
                     this.context.ability.resetKfOptions();
                 } else {
