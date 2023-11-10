@@ -18,6 +18,13 @@ class AgentMoquin extends DudeCard {
                 this.game.addMessage('{0} uses {1} to cancel {2}\'s ability', 
                     context.player, this, context.event.ability.card),
             handler: context => {
+                this.lastingEffect(context.event.ability, ability => ({
+                    until: {
+                        onCardAbilityResolved: event => event.ability === context.event.ability
+                    },
+                    match: this,
+                    effect: ability.effects.setActionPlacementLocation('discard pile')
+                }));                 
                 context.event.ability.cancel(true); 
             }
         });
