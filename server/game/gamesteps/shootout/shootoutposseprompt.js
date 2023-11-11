@@ -34,6 +34,7 @@ class ShootoutPossePrompt extends UiPrompt {
             activePromptTitle: this.activePromptTitle,
             multiSelect: true,
             numCards: 0,
+            isCardEffect: false,
             additionalButtons: additionalButtons,
             cardCondition: card => card.getType() === 'dude' && 
                 card.location === 'play area' &&
