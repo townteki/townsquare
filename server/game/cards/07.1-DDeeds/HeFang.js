@@ -12,7 +12,7 @@ class HeFang extends DudeCard {
                 cardCondition: { 
                     location: 'hand', 
                     controller: 'current', 
-                    condition: card => card.hasKeyword('abomination') 
+                    condition: card => card.hasKeyword('abomination') && !card.isGadget()
                 },
                 cardType: ['dude']
             },
