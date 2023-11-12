@@ -30,7 +30,7 @@ class DrDawnEdwards extends DudeCard {
                                         this.game.resolveGameAction(GameActions.putIntoPlay({ 
                                             player: player,
                                             card: card,
-                                            params: {target: context.event.originalGameLocation}
+                                            params: {targetLocationUuid: context.event.originalGameLocation, context}
                                         }));
                                     }
                                 }),
