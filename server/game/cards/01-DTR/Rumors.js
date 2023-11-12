@@ -15,6 +15,7 @@ class Rumors extends ActionCard {
                     context.player, this, context.target),
             handler: context => {
                 this.applyAbilityEffect(context.ability, ability => ({
+                    targetController: 'any',
                     condition: () => 
                         !this.game.isHome(context.target.gamelocation, context.target.controller),
                     match: card => card.equals(context.target),
