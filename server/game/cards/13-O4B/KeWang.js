@@ -1,4 +1,5 @@
 const DudeCard = require('../../dudecard.js');
+const GameActions = require('../../GameActions/index.js');
 /** @typedef {import('../../AbilityDsl')} AbilityDsl */
 
 class KeWang extends DudeCard {
@@ -23,14 +24,20 @@ class KeWang extends DudeCard {
                 },
                 cardType: ['dude']
             },
-            message: context => 
-                this.game.addMessage('{0} uses {1} and pays {2} GR to give {3} -1 bullets', 
-                    context.player, this, context.target.upkeep, context.target),
             handler: context => {
+                const bootEvent = this.game.resolveGameAction(GameActions.bootCard({ card: context.target }), context);
                 this.applyAbilityEffect(context.ability, ability => ({
                     match: context.target,
                     effect: ability.effects.modifyBullets(-1)
                 }));
+                let message = '{0} uses {1} and pays {2} GR';
+                if(bootEvent.isNull()) {
+                    this.game.addMessage(message + ' to give {3} -1 bullets', 
+                        context.player, this, context.target.upkeep, context.target);
+                } else {
+                    this.game.addMessage(message + ' to boot {3} and give them -1 bullets', 
+                        context.player, this, context.target.upkeep, context.target);
+                }
             }
         });
     }
