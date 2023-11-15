@@ -31,7 +31,14 @@ class YoureADaisyIfYouDo extends ActionCard {
                         this.game.addMessage('{0} uses {1} to unboot {2}', context.player, this, context.target);
                     }));
                 }
-                this.game.resolveGameAction(GameActions.callOut({ caller: context.costs.boot, callee: context.target }), context);
+                this.game.queueSimpleStep(() => { 
+                    if(context.costs.boot.gamelocation === context.target.gamelocation) {
+                        this.game.resolveGameAction(GameActions.callOut({ caller: context.costs.boot, callee: context.target }), context);
+                    } else {
+                        this.game.addMessage('{0} uses {1} but cannot call out {2} with {3} because they are not in the same location', 
+                            context.player, this, context.target, context.costs.boot);
+                    }
+                });                
             }
         });
     }
