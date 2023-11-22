@@ -9,7 +9,7 @@ class EssenceOfArmitage extends GoodsCard {
         this.persistentEffect({
             targetController: 'any',
             condition: () => this.parent && this.parent.isParticipating(),
-            match: card => card.isParticipating() && !card.hasKeyword('abomination'),
+            match: card => card.getType() === 'dude' && card.isParticipating() && !card.hasKeyword('abomination'),
             effect: ability.effects.modifyBullets(-1)
         });
 
