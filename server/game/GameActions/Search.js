@@ -91,6 +91,9 @@ class Search extends GameAction {
             return () => true;
         }
         const validLocations = this.location;
+        if(numCards && choosingPlayer.drawDeck.length < numCards) {
+            choosingPlayer.shuffleDiscardToDrawDeck(true);
+        }        
         return function(card, player) {
             if(player !== choosingPlayer) {
                 return false;

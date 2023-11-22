@@ -397,13 +397,18 @@ class Player extends Spectator {
         this.drawDeck = this.shuffleArray(this.drawDeck);
     }
 
-    shuffleDiscardToDrawDeck() {
+    shuffleDiscardToDrawDeck(onlyShuffleDiscardedCards = false) {
         if(this.discardPile.length > 0) {
+            if(onlyShuffleDiscardedCards) {
+                this.discardPile = this.shuffleArray(this.discardPile);
+            }            
             this.discardPile.forEach(card => {
-                this.moveCard(card, 'draw deck');
+                this.moveCard(card, 'draw deck', { bottom: onlyShuffleDiscardedCards });
             });
 
-            this.shuffleDrawDeck();
+            if(!onlyShuffleDiscardedCards) {
+                this.shuffleDrawDeck();
+            }
             this.game.addAlert('info', '{0} shuffles their discard pile to make a draw deck', this);
         }
     }
