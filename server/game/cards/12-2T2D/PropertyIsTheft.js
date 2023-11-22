@@ -14,8 +14,8 @@ class PropertyIsTheft extends OutfitCard {
                         this.game.addMessage('{0} pays 1 GR to bank due to {1}', opponent, this);
                     } else {
                         this.game.transferGhostRock({
-                            from: context.player,
-                            to: opponent,
+                            from: opponent,
+                            to: context.player,
                             amount: 1
                         });
                         this.game.addMessage('{0} pays 1 GR to {1} due to {2}', opponent, context.player, this);
