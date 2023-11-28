@@ -32,6 +32,7 @@ class DrawCard extends BaseCard {
         if(cardData.starting) {
             this.starting = true;
         }       
+        this.attachmentLimits = []; // other than base ones for weapon, horse and attire
         
         this.actionPlacementLocation = 'discard pile';
         this.options = new ReferenceConditionalSetProperty();
@@ -377,6 +378,19 @@ class DrawCard extends BaseCard {
         this.attachments = this.attachments.filter(a => a !== attachment);
         attachment.parent = undefined;
     }
+
+    addAttachmentLimit(limitToAdd) {
+        const existingLimit = this.attachmentLimits.find(attLimit => attLimit.keyword === limitToAdd.keyword);
+        if(!existingLimit) {
+            this.attachmentLimits.push(limitToAdd);
+        } else {
+            existingLimit.limit = limitToAdd.limit;
+        }
+    }
+
+    removeAttachmentLimit(limitToRemove) {
+        this.attachmentLimits = this.attachmentLimits.filter(attLimit => attLimit.keyword !== limitToRemove.keyword);
+    }    
 
     getPlayActions(type) {
         if(type === 'shoppin') {
