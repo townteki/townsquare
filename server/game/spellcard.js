@@ -21,7 +21,7 @@ class SpellCard extends HeartsCard {
         }
         if(card.getType() === 'dude') {
             if(this.isTotem()) {
-                return card.canAttachTotems(this);
+                return card.canAttachTotems(this, playingType);
             }
             return card.canPerformSkillOn(this);
         } else if(card.isLocationCard() && this.isTotem()) {

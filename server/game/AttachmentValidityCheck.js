@@ -38,6 +38,12 @@ class AttachmentValidityCheck {
                 if(attireLimit) {
                     this.discardByType(parent.controller, 'attire', attireLimit);
                 }
+                for(let attLimit of parent.attachmentLimits) {
+                    const limitedAttachments = parent.getAttachmentsByKeywords([attLimit.keyword]);
+                    if(limitedAttachments.length > attLimit.limit) {
+                        this.discardByType(parent.controller, attLimit.keyword, { limit: attLimit.limit, cards: limitedAttachments });
+                    }
+                }
             }
         });
     }
@@ -54,7 +60,9 @@ class AttachmentValidityCheck {
                     this.game.addMessage('{0} discards over the limit {1}(s): {2}', player, attType, cards)
                 );
                 return true;
-            }
+            },
+            onCancel: (player) => this.game.addAlert('danger', '{0} does not discard attachments with keyword {1} over the limit {2}', 
+                player, attType, limitObject.limit)
         });
     }
 

@@ -1092,6 +1092,17 @@ const Effects = {
             }
         };
     },
+    addAttachmentLimit: function(limit) {
+        return {
+            title: `Limit for ${limit.keyword}: ${limit.limit}`,
+            apply: function(card) {
+                card.addAttachmentLimit(limit);
+            },
+            unapply: function(card) {
+                card.removeAttachmentLimit(limit);
+            }
+        };
+    },    
     selectAsFirstCasualty:
         optionEffect('isSelectedAsFirstCasualty', 'Has to be First Casualty'),
     totemIsUnplanted:
