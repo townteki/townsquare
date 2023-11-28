@@ -1301,7 +1301,7 @@ const Effects = {
     },
     reduceFirstPlayedCardCostEachRound: function(amount, match) {
         return this.reduceCost({
-            playingTypes: [PlayingTypes.Play],
+            playingTypes: [PlayingTypes.Shoppin, PlayingTypes.Play],
             amount: amount, 
             match: match,
             limit: 1
