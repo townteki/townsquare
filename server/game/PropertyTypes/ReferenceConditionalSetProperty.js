@@ -29,7 +29,6 @@ class ReferenceConditionalSetProperty {
         if(!currentRefArray || currentRefArray.length === 0) {
             return false;
         }
-        
         return !currentRefArray[0].condition || currentRefArray[0].condition(conditionContext);
     }
 
