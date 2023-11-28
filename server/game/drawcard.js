@@ -324,7 +324,7 @@ class DrawCard extends BaseCard {
         
         let context = { player: player };
 
-        return !this.attachmentRestrictions || (this.isTotem() && card.canAttachTotems(this, playingType)) ||
+        return !this.attachmentRestrictions || (this.isTotem() && card.canAttachTotems(this)) ||
             this.attachmentRestrictions.some(restriction => restriction(card, context));
     }
 
@@ -548,8 +548,8 @@ class DrawCard extends BaseCard {
         return this.options.contains('canBeInventedWithoutBooting');
     }
     
-    canAttachTotems(totem, playingType) {
-        return this.options.contains('canAttachTotems', totem, playingType);
+    canAttachTotems(totem) {
+        return this.options.contains('canAttachTotems', totem);
     }
 
     canBeAced(context) {

@@ -23,14 +23,14 @@ class ReferenceConditionalSetProperty {
         }
     }
 
-    contains(key, ...conditionContext) {
+    contains(key, conditionContext) {
         let lowerCaseValue = key.toLowerCase();
         let currentRefArray = this.references.get(lowerCaseValue);
         if(!currentRefArray || currentRefArray.length === 0) {
             return false;
         }
         
-        return !currentRefArray[0].condition || currentRefArray[0].condition(...conditionContext);
+        return !currentRefArray[0].condition || currentRefArray[0].condition(conditionContext);
     }
 
     getReferenceArray(key) {
