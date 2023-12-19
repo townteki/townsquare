@@ -23,7 +23,7 @@ class LaQuema extends GoodsCard {
             handler: context => {
                 this.game.resolveGameAction(GameActions.joinPosse({ card: this.parent }), context);
                 context.ability.selectAnotherTarget(context.player, context, {
-                    activePromptTitle: 'Select a dude',
+                    activePromptTitle: 'Select a dude to boot',
                     waitingPromptTitle: 'Waiting for opponent to select dude',
                     cardCondition: card => card.location === 'play area' && 
                         card.controller !== this.controller && 
@@ -38,7 +38,8 @@ class LaQuema extends GoodsCard {
                     },
                     onCancel: player => {
                         this.game.addMessage('{0} uses {1} to have {2} join posse', player, this, this.parent);
-                    }
+                    },
+                    source: this
                 });
             }
         });

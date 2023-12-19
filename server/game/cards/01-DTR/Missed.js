@@ -8,7 +8,12 @@ class Missed extends ActionCard {
             playType: ['shootout'],
             target: {
                 activePromptTitle: 'Select your dude to unboot',
-                cardCondition: { location: 'play area', controller: 'current', participating: true },
+                cardCondition: {
+                    location: 'play area',
+                    controller: 'current',
+                    participating: true,
+                    booted: true
+                },
                 cardType: ['dude'],
                 gameAction: 'unboot'
             },

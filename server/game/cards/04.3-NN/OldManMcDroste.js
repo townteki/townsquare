@@ -6,7 +6,6 @@ class OldManMcDroste extends DudeCard {
         this.persistentEffect({
             targetController: 'any',
             condition: () => this.isAtDeed('out-town'),
-
             match: this,
             effect: ability.effects.modifyControl(1)
         });
@@ -29,6 +28,8 @@ class OldManMcDroste extends DudeCard {
                 },
                 cardType: ['dude']
             },
+            message: context => this.game.addMessage('{0} uses {1} to set {2}\'s influence to 0',
+                context.player, this, context.target),
             handler: context => {
                 this.untilEndOfPhase(context.ability, ability => ({
                     match: context.target,
