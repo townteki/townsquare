@@ -8,7 +8,7 @@ class Disarm extends ActionCard {
             playType: ['cheatin resolution'],
             target: {
                 activePromptTitle: 'Choose an opposing dude',
-                cardCondition: { location: 'play area', controller: 'opponent' },
+                cardCondition: { location: 'play area', controller: 'opponent', participating: true },
                 cardType: ['dude']
             },
             handler: context => {

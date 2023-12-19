@@ -7,7 +7,7 @@ class ACoachComesToTown extends ActionCard {
             playType: 'noon',
             target: 'townsquare',
             message: context =>
-                this.game.addMessage('{0} plays {1} marking {2}.', context.player, this, context.target),
+                this.game.addMessage('{0} plays {1} marking {2}', context.player, this, context.target),
             onSuccess: () => {
                 this.owner.modifyGhostRock(4);
                 this.game.addMessage('{0} successfuly escorts the coach and gets 4 GR', this.owner);

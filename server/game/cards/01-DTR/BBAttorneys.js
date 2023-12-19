@@ -10,7 +10,8 @@ class BBAttorneys extends DeedCard {
             target: {
                 activePromptTitle: 'Select a wanted dude',
                 cardCondition: { location: 'play area', wanted: true },
-                cardType: ['dude']
+                cardType: ['dude'],
+                gameAction: { or: ['addBounty', 'removeBounty'] }
             },
             handler: context => {
                 this.abilityContext = context;
@@ -20,11 +21,13 @@ class BBAttorneys extends DeedCard {
                         buttons: [
                             {
                                 text: 'Raise by one',
-                                method: 'raise'
+                                method: 'raise',
+                                disabled: !this.abilityContext.target.allowGameAction('addBounty', this.abilityContext)
                             },
                             {
                                 text: 'Lower by one',
-                                method: 'lower'
+                                method: 'lower',
+                                disabled: !this.abilityContext.target.allowGameAction('removeBounty', this.abilityContext)
                             }
                         ]
                     },

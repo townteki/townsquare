@@ -8,7 +8,8 @@ class SunInYerEyes extends ActionCard {
             target: {
                 activePromptTitle: 'Select a dude who has sun in their eyes',
                 cardCondition: { location: 'play area', participating: true, controller: 'opponent' },
-                cardType: 'dude'
+                cardType: 'dude',
+                gameAction: { or: ['decreaseBullets', 'setAsDraw'] }
             },
             message: context =>
                 this.game.addMessage('{0} plays {1} on {2} to lower their bullets by 2 and make them a draw', context.player, this, context.target),
