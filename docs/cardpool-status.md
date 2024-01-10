@@ -619,7 +619,7 @@
 |                     | 16006| Lucy Clover (Exp.1)
 |:heavy_check_mark:   | 16007| Buckin' Billy Ballard
 |:heavy_check_mark:   | 16008| Antoine Peterson
-|                     | 16009| Denise Brancini
+|:heavy_check_mark:   | 16009| Denise Brancini
 |:heavy_check_mark:   | 16010| Long Strides Ranch
 |:heavy_check_mark:   | 16011| The Gomorra Gazette
 |:heavy_check_mark:   | 16012| "Open Wound"
