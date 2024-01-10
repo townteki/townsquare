@@ -544,7 +544,7 @@
 |                     | 14003| Rhonda Sageblossom
 |:heavy_check_mark:   | 14004| Francisco Rosales
 |:heavy_check_mark:   | 14005| Ambrose Douglas
-|                     | 14006| Constance Daughtry
+|:heavy_check_mark:   | 14006| Constance Daughtry
 |                     | 14007| Tallulah "Lula" Morgan (Exp.1)
 |                     | 14008| Darragh Mèng
 |:heavy_check_mark:   | 14009| Ol' Howard
