@@ -341,7 +341,7 @@
 | Status | Code | Title                    |
 |--------|-----:|:------------------------:|
 |                     | 08001| Junior
-|                     | 08002| The Fabulous Mister Miss
+|:heavy_check_mark:   | 08002| The Fabulous Mister Miss
 |                     | 08003| Sister Mary Gideon
 |:heavy_check_mark:   | 08004| Nathan Shane
 |                     | 08005| Warren Graves
