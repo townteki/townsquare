@@ -657,7 +657,7 @@
 |:heavy_check_mark:   | 17018| Calling The Cavalry
 |                     | 17019| Rite Of Profane Abstersion
 |:heavy_multiplication_x:| 17020| Showboating
-|                     | 17021| All Or Nothing
+|:heavy_check_mark:   | 17021| All Or Nothing
 
 ## `10-BMR` Blood Moon Rising
 
