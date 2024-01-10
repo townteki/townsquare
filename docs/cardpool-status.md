@@ -223,7 +223,7 @@
 |:heavy_check_mark:   | 04004| Drew Beauman
 |:heavy_check_mark:   | 04005| Dr. Arden Gillman
 |                     | 04006| Arvid Mardh
-|                     | 04007| Allie Hensman (Exp.1)
+|:heavy_check_mark:   | 04007| Allie Hensman (Exp.1)
 |:heavy_check_mark:   | 04008| Milt Clemons
 |:heavy_check_mark:   | 04009| Jake Smiley
 |:heavy_check_mark:   | 04010| QUATERMAN
